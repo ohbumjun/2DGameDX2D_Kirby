@@ -178,14 +178,16 @@ void CSpriteWindow::AddAnimationFrameButton()
 
     Vector2 FrameStartPos = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
     // 220 ? --> 300 - 220  = 80
+    FrameStartPos.x = m_SpriteObject->GetWorldScale().x - FrameStartPos.x;
     FrameStartPos.y = m_SpriteObject->GetWorldScale().y - FrameStartPos.y;
     // 범위 조정 
-    FrameStartPos.x = FrameStartPos.x > 0 ? FrameStartPos.x : 0;
+    FrameStartPos.x = FrameStartPos.x > 0 ? FrameStartPos.x : m_SpriteObject->GetWorldScale().x;
     FrameStartPos.y = FrameStartPos.y > 0 ? FrameStartPos.y : 0;
 
     Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
+    FrameEndPos.x = m_SpriteObject->GetWorldScale().x - FrameEndPos.x;
     FrameEndPos.y = m_SpriteObject->GetWorldScale().y - FrameEndPos.y;
-    FrameEndPos.y = FrameEndPos.y > 0 ? FrameEndPos.y : 0;
+    FrameEndPos.x = FrameEndPos.x > 0 ? FrameEndPos.x : m_SpriteObject->GetWorldScale().x;
     FrameEndPos.y = FrameEndPos.y > 0 ? FrameEndPos.y : 0;
 
     Vector2 StartPos;
