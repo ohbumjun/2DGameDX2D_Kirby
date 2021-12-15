@@ -283,8 +283,13 @@ void CSpriteWindow::AnimtionFrameListClickUpdate()
     CAnimationSequence2D* Sequence             = Resource->FindAnimationSequence2D(SequenceName);
     AnimationFrameData       FrameData           = Sequence->GetFrameData(SelectIdx);
 
+    Vector2 FrameEnd = FrameData.Start + FrameData.Size;
+    Vector2 ImageSize = Vector2(m_SpriteObject->GetWorldScale().x, m_SpriteObject->GetWorldScale().y);
+    FrameEnd.x = FrameEnd.x <= ImageSize.x ? FrameEnd.x : ImageSize.x;
+    FrameEnd.y = FrameEnd.y <= ImageSize.y ? FrameEnd.y : ImageSize.y;
+
     // SpriteSampled¸¸ ¹Ù²ãÁÖ±â 
     m_SpriteSampled->SetImageStart(FrameData.Start);
-    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
+    m_SpriteSampled->SetImageEnd(FrameEnd);
 }
 
