@@ -32,8 +32,9 @@ bool CSpriteEditObject::Init()
 
 	SetRootComponent(m_Sprite);
 
-	m_Sprite->SetRelativeScale(300.f, 300.f, 1.f);
-	//m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	int DefaultTextureIdx = 0;
+	CTexture* DefaultTexture = m_Sprite->GetTexture(DefaultTextureIdx);
+	m_Sprite->SetRelativeScale(DefaultTexture->GetWidth(), DefaultTexture->GetHeight(), 1.f);
 
 	m_Sprite->CreateAnimationInstance<CAnimationSequence2DInstance>();
 

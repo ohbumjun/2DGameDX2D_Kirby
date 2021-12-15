@@ -107,6 +107,7 @@ void CSpriteWindow::LoadTextureButton()
 
     if (GetOpenFileName(&OpenFile) != 0) // NonZero --> specifies file name, clicks ok button
     {
+        int TextureIndex = 0;
         TCHAR FileName[MAX_PATH] = {};
         _wsplitpath_s(FilePath, 0, 0, 0, 0, FileName, MAX_PATH, 0, 0);
 
@@ -115,8 +116,11 @@ void CSpriteWindow::LoadTextureButton()
         WideCharToMultiByte(CP_ACP, 0, FileName, -1, ConvertFileName, Length, 0, 0);
 
         m_Sprite->SetTextureFullPath(ConvertFileName, FilePath);
-        m_SpriteObject->GetSpriteComponent()->SetTextureFullPath(0, 0, (int)ConstantBuffer_Shader_Type::Pixel,
+        m_SpriteObject->GetSpriteComponent()->SetTextureFullPath(TextureIndex, 0, (int)ConstantBuffer_Shader_Type::Pixel,
         ConvertFileName, FilePath);
+
+        CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture(TextureIndex);
+        m_SpriteObject->SetWorldScale(Texture->GetWidth(), Texture->GetHeight(), 1.f);
     }
     
 }

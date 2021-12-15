@@ -29,6 +29,10 @@ public:
     {
         return m_Material->GetTextureName(Index);
     }
+    class CTexture* GetTexture(int Index = 0) const
+    {
+        return m_Material->GetTexture(Index);
+    }
 public:
     void SetMaterial(CMaterial* Material);
 public:

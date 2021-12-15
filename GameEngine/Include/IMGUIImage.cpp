@@ -50,8 +50,8 @@ bool CIMGUIImage::Init()
 {
 	SetTexture("DefaultUI", TEXT("DefaultUI.png"));
 
-	SetImageStart(0.f, 0.f);
-	SetImageEnd(100.f, 100.f);
+	// SetImageStart(0.f, 0.f);
+	// SetImageEnd(100.f, 100.f);
 
 	return true;
 }
@@ -62,10 +62,10 @@ void CIMGUIImage::Render()
 	{
 		unsigned int	Width = m_Texture->GetWidth();
 		unsigned int	Height = m_Texture->GetHeight();
-		if (Width != m_Size.x)
-			Width = m_Size.x;
-		if (Height != m_Size.y)
-			Height = m_Size.y;
+		// if (Width != m_Size.x)
+		//	Width = m_Size.x;
+		//if (Height != m_Size.y)
+		//	Height = m_Size.y;
 
 		ImVec2	StartUV = ImVec2(m_ImageStart.x / Width, m_ImageStart.y / Height);
 		ImVec2	EndUV = ImVec2(m_ImageEnd.x / Width, m_ImageEnd.y / Height);

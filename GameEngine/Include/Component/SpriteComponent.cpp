@@ -5,6 +5,7 @@
 #include "../Animation/AnimationSequence2DInstance.h"
 #include "../Render/RenderManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
+#include "../Resource/Material/Material.h"
 
 CSpriteComponent::CSpriteComponent()	:
 	m_Animation(nullptr)
@@ -127,10 +128,17 @@ void CSpriteComponent::Start()
 
 bool CSpriteComponent::Init()
 {
+	// Mesh 세팅 
 	m_Mesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
+	SetMeshSize(1.f, 1.f, 0.f);
+
+	// Material Setting 
 	SetMaterial(m_Scene->GetResource()->FindMaterial("BaseTexture"));
 
-	SetMeshSize(1.f, 1.f, 0.f);
+	// "BaseTexutre"라는 이름의 Material이 지닌 기본 Default Texture로 SpriteComponent의 World Scale 세팅
+	int DefaultTextureIdx = 0;
+	CTexture* Texture = m_Material->GetTexture(DefaultTextureIdx);
+	SetWorldScale(Texture->GetWidth(), Texture->GetHeight(), 1.f);
 
 	return true;
 }
