@@ -93,6 +93,11 @@ bool CSpriteWindow::Init()
 void CSpriteWindow::Update(float DeltaTime)
 {
     CIMGUIWindow::Update(DeltaTime);
+
+    // Animation Check에 따른 변화 
+    // AnimtionListClickUpdate();
+
+    // Animat
 }
 
 void CSpriteWindow::LoadTextureButton()
@@ -173,22 +178,24 @@ void CSpriteWindow::AddAnimationButton()
 void CSpriteWindow::AddAnimationFrameButton()
 {
     // Animation List의 내용이 선택되어 있어야 한다.
-    if (!m_AnimationList->IsSelected())
+    if (m_AnimationList->IsSelected() == false)
         return;
 
     Vector2 FrameStartPos = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
     // 220 ? --> 300 - 220  = 80
-    FrameStartPos.x = m_SpriteObject->GetWorldScale().x - FrameStartPos.x;
-    FrameStartPos.y = m_SpriteObject->GetWorldScale().y - FrameStartPos.y;
+    Vector2 ImageSize = Vector2(m_SpriteObject->GetWorldScale().x, m_SpriteObject->GetWorldScale().y);
+
+    float XDiff = ImageSize.x - FrameStartPos.x;
+    float YDiff = ImageSize.y - FrameStartPos.y;
     // 범위 조정 
-    FrameStartPos.x = FrameStartPos.x > 0 ? FrameStartPos.x : m_SpriteObject->GetWorldScale().x;
-    FrameStartPos.y = FrameStartPos.y > 0 ? FrameStartPos.y : 0;
+    FrameStartPos.x = XDiff > 0 ? FrameStartPos.x : m_SpriteObject->GetWorldScale().x;
+    FrameStartPos.y = YDiff > 0 ? m_SpriteObject->GetWorldScale().y - FrameStartPos.y : 0;
 
     Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
-    FrameEndPos.x = m_SpriteObject->GetWorldScale().x - FrameEndPos.x;
-    FrameEndPos.y = m_SpriteObject->GetWorldScale().y - FrameEndPos.y;
-    FrameEndPos.x = FrameEndPos.x > 0 ? FrameEndPos.x : m_SpriteObject->GetWorldScale().x;
-    FrameEndPos.y = FrameEndPos.y > 0 ? FrameEndPos.y : 0;
+    XDiff = ImageSize.x - FrameEndPos.x;
+    YDiff = ImageSize.y - FrameEndPos.y;
+    FrameEndPos.x = XDiff > 0 ? FrameEndPos.x : m_SpriteObject->GetWorldScale().x;
+    FrameEndPos.y = YDiff > 0 ? m_SpriteObject->GetWorldScale().y - FrameEndPos.y : 0;
 
     Vector2 StartPos;
     Vector2 EndPos;
@@ -217,12 +224,43 @@ void CSpriteWindow::AddAnimationFrameButton()
     CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
     m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
 
-    // Image, End
+    // Image, End 세팅 
     Vector2 SpriteSize = m_SpriteSampled->GetSize();
-    m_SpriteSampled->SetImageStart(StartPos.x, StartPos.y);
-    m_SpriteSampled->SetImageEnd(EndPos.x , EndPos.y);
+    //float ratiox = spritesize.x / imagesize.x;
+    //float ratioy = spritesize.y / imagesize.y;
+    //vector2 restartpos = vector2(startpos.x * ratiox, startpos.y * ratioy);
+    //vector2 reendpos   = vector2(endpos.x * ratiox, endpos.y * ratioy);
+    m_SpriteSampled->SetImageStart(StartPos);
+    m_SpriteSampled->SetImageEnd(EndPos);
 
-
-    // Sprites Sampled에 실제 추가해야 한다. 
 
 }
+
+
+void CSpriteWindow::AnimtionListClickUpdate()
+{
+    // Animation List로부터 클릭된 idx 
+    bool AnimListIdxChanged = m_AnimationList->IsIndexChanged();
+    if (!AnimListIdxChanged)
+        return;
+
+    // 해당 idx의 Sequence 정보 가져오기
+    CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+    std::string ChangeSequenceName = m_AnimationList->GetSelectItem();
+    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(ChangeSequenceName);
+
+    // 해당 Sequence의 첫번째 Frame 으로 세팅하기 
+    CTexture* BaseTexture = Sequence->GetTexture();
+    m_Sprite->SetTexture(BaseTexture);
+    m_SpriteSampled->SetTexture(BaseTexture);
+
+    // AnimationFrameList 안에 있는 내용 모두 다시 세팅하기 
+
+    // Selected 된 녀석은 0번째로 
+}
+
+void CSpriteWindow::AnimtionFrameListClickUpdate()
+{
+
+}
+

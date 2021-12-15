@@ -25,5 +25,7 @@ public:
 	void SpriteEditButton();
 	void AddAnimationButton();
 	void AddAnimationFrameButton();
+	void AnimtionListClickUpdate();
+	void AnimtionFrameListClickUpdate();
 };
 

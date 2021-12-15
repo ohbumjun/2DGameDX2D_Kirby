@@ -29,10 +29,17 @@ public:
 	{
 		m_ImageStart = ImVec2(x, y);
 	}
-
+	void SetImageStart(const Vector2& V)
+	{
+		m_ImageStart = ImVec2(V.x, V.y);
+	}
 	void SetImageEnd(float x, float y)
 	{
 		m_ImageEnd = ImVec2(x, y);
+	}
+	void SetImageEnd(const Vector2& V)
+	{
+		m_ImageEnd = ImVec2(V.x, V.y);
 	}
 
 	void SetTint(unsigned char r, unsigned char g, unsigned char b)
