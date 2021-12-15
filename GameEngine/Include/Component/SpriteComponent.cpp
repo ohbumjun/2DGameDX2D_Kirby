@@ -95,6 +95,11 @@ void CSpriteComponent::AddTexture(int Register, int ShaderType, const std::strin
 	m_Material->AddTexture(Register, ShaderType, Name, vecFileName, PathName);
 }
 
+void CSpriteComponent::SetTexture(int Index, class CTexture* Texture)
+{
+	m_Material->SetTexture(Index, Texture);
+}
+
 void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const std::string& Name, CTexture* Texture)
 {
 	m_Material->SetTexture(Index, Register, ShaderType, Name, Texture);

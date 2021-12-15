@@ -3,7 +3,8 @@
 CIMGUIListBox::CIMGUIListBox()  :
     m_Select(false),
     m_SelectIndex(-1),
-    m_PageItemCount(3)
+    m_PageItemCount(3),
+    m_IndexChanged(false)
 {
 }
 

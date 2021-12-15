@@ -150,6 +150,11 @@ void CMaterial::AddTexture(int Register, int ShaderType, const std::string& Name
 	m_TextureInfo[Index].ShaderType = ShaderType;*/
 }
 
+void CMaterial::SetTexture(int Index, CTexture* Texture)
+{
+	m_TextureInfo[Index].Texture = Texture;
+}
+
 void CMaterial::SetTexture(int Index, int Register, int ShaderType, const std::string& Name, CTexture* Texture)
 {
 	m_TextureInfo[Index].Register = Register;

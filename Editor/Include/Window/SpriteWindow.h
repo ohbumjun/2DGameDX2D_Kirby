@@ -10,6 +10,8 @@ public:
 	virtual ~CSpriteWindow();
 
 private:
+	bool m_AnimListAdd;
+	bool m_AnimFrameListAdd;
 	class CIMGUIImage* m_Sprite;
 	class CIMGUIImage* m_SpriteSampled;
 	class CIMGUIListBox* m_AnimationList;
