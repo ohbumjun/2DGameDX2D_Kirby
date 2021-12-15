@@ -118,6 +118,13 @@ public:
 		return false;
 	}
 
+	void SetSelectIndex(int Index)
+	{
+		if (Index < 0 || Index >= m_vecItem.size())
+			return;
+		m_SelectIndex = Index;
+	}
+
 public:
 	virtual bool Init();
 	virtual void Render();

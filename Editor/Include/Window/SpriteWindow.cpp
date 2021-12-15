@@ -97,7 +97,8 @@ void CSpriteWindow::Update(float DeltaTime)
     // Animation Check에 따른 변화 
     // AnimtionListClickUpdate();
 
-    // Animat
+    // AnimationFrameList Click에 따른 변화
+    AnimtionFrameListClickUpdate();
 }
 
 void CSpriteWindow::LoadTextureButton()
@@ -217,7 +218,8 @@ void CSpriteWindow::AddAnimationFrameButton()
 
     // Frame List Box에 넣어주기 
     char FrameName[1024] = {};
-    sprintf_s(FrameName, "%d", m_AnimationFrameList->GetItemCount());
+    int   AnimItemCount = m_AnimationFrameList->GetItemCount();
+    sprintf_s(FrameName, "%d", AnimItemCount);
     m_AnimationFrameList->AddItem(FrameName);
 
     // Sampled에 Image 세팅해주기 
@@ -233,6 +235,8 @@ void CSpriteWindow::AddAnimationFrameButton()
     m_SpriteSampled->SetImageStart(StartPos);
     m_SpriteSampled->SetImageEnd(EndPos);
 
+    // AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
+    m_AnimationFrameList->SetSelectIndex(AnimItemCount);
 
 }
 
@@ -261,6 +265,26 @@ void CSpriteWindow::AnimtionListClickUpdate()
 
 void CSpriteWindow::AnimtionFrameListClickUpdate()
 {
+    // AnimationBox에 선택된 Sequence가 없다면 X
+    if (m_AnimationList->IsSelected() == false)
+        return;
 
+    // 바뀌지 않았다면 X
+    bool AnimListIdxChanged = m_AnimationFrameList->IsIndexChanged();
+    if (!AnimListIdxChanged)
+        return;
+
+    // Frame Idx
+    int SelectIdx = m_AnimationFrameList->GetSelectIndex();
+    
+    // 선택한 Idx Frame data 가져오기
+    CSceneResource*            Resource              = CSceneManager::GetInst()->GetScene()->GetResource();
+    std::string                      SequenceName     = m_AnimationList->GetSelectItem();
+    CAnimationSequence2D* Sequence             = Resource->FindAnimationSequence2D(SequenceName);
+    AnimationFrameData       FrameData           = Sequence->GetFrameData(SelectIdx);
+
+    // SpriteSampled만 바꿔주기 
+    m_SpriteSampled->SetImageStart(FrameData.Start);
+    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 }
 
