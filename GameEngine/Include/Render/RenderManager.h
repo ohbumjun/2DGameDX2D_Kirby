@@ -28,6 +28,7 @@ private:
 	// 값이 가장 큰 놈이 가장 맨 앞에 그려지게 , 맨 나중에 그려지게 
 	std::vector<RenderLayer*>	m_RenderLayerList;
 	class CStandard2DConstantBuffer* m_Standard2DCBuffer;
+	class CRenderState* m_DepthDisable;
 
 public:
 	class CStandard2DConstantBuffer* GetStandard2DCBuffer()	const
@@ -47,7 +48,7 @@ public:
 public:
 	bool Init();
 	void Render();
-	// Render State
+// Render State
 public:
 	void SetBlendFactor(const std::string& Name, float r, float g, float b, float a);
 	void AddBlendInfo(const std::string& Name, bool BlendEnable = true, D3D11_BLEND SrcBlend = D3D11_BLEND_SRC_ALPHA,

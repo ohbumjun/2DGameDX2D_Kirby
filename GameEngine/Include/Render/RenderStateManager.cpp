@@ -1,6 +1,7 @@
 
 #include "RenderStateManager.h"
 #include "BlendState.h"
+#include "DepthStencilState.h"
 
 CRenderStateManager::CRenderStateManager()
 {
@@ -14,6 +15,9 @@ bool CRenderStateManager::Init()
 {
 	AddBlendInfo("AlphaBlend");
 	CreateBlendState("AlphaBlend", true, false);
+
+	// 일단은, 깊이 버퍼가 아니라, 출력 우선 순위대로 그릴 수 있게 세팅한다.
+	CreateDepthStencilState("DepthDisable", false, D3D11_DEPTH_WRITE_MASK_ZERO);
 
 	return true;
 }
@@ -69,6 +73,31 @@ bool CRenderStateManager::CreateBlendState(const std::string& Name, bool AlphaTo
 		SAFE_RELEASE(State);
 		return false;
 	}
+
+	return true;
+}
+
+bool CRenderStateManager::CreateDepthStencilState(const std::string& Name, bool DepthEnable, 
+	D3D11_DEPTH_WRITE_MASK DepthWriteMAsk, D3D11_COMPARISON_FUNC DepthFunc, 
+	bool StencilEnable, UINT8 StencilReadMask, UINT8 StencilWriteMask, 
+	D3D11_DEPTH_STENCILOP_DESC FrontFace, D3D11_DEPTH_STENCILOP_DESC BackFace)
+{
+	CDepthStencilState* State = (CDepthStencilState*)FindRenderState(Name);
+	if (State)
+		return false;
+
+	State = new CDepthStencilState;
+
+	if (!State->CreateState(DepthEnable, DepthWriteMAsk, DepthFunc, StencilEnable,
+		StencilReadMask, StencilWriteMask, FrontFace, BackFace))
+	{
+		SAFE_RELEASE(State);
+		return false;
+	}
+
+	State->SetName(Name);
+
+	m_mapRenderState.insert(std::make_pair(Name, State));
 
 	return true;
 }

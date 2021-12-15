@@ -32,10 +32,10 @@ public:
 	void MouseLButtonPush(float DeltaTime);
 	void MouseLButtonUp(float DeltaTime);
 
-	void KeyboardUp(float DeltaTime);
-	void KeyboardDown(float DeltaTime);
-	void KeyboardLeft(float DeltaTime);
-	void KeyboardRight(float DeltaTime);
+	void KeyBoardUp(float DeltaTime);
+	void KeyBoardLeft(float DeltaTime);
+	void KeyBoardRight(float DeltaTime);
+	void KeyBoardDown(float DeltaTime);
 
 	DECLARE_SINGLE(CEditorManager)
 };

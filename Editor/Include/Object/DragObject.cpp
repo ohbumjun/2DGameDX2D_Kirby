@@ -1,6 +1,7 @@
 #include "DragObject.h"
 #include "Component/StaticMeshComponent.h"
 #include "Resource/Material/Material.h"
+#include "Render/RenderManager.h"
 
 CDragObject::CDragObject()
 {
@@ -35,9 +36,14 @@ bool CDragObject::Init()
     if (!CGameObject::Init())
         return false;
 
-    m_MeshComponent = CreateComponent<CStaticMeshComponent>("Mesh");
 
+    m_MeshComponent = CreateComponent<CStaticMeshComponent>("Mesh");
     SetRootComponent(m_MeshComponent);
+
+    // Drag Layer에 세팅하기 
+    m_MeshComponent->SetLayerName("DragLayer");
+    CRenderManager::GetInst()->AddRenderList(m_MeshComponent);
+
 
     m_MeshComponent->SetMesh("FrameRect");
     m_MeshComponent->GetMaterial()->SetShader("PosMeshShader");

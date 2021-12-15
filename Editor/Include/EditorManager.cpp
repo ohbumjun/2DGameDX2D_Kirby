@@ -44,33 +44,28 @@ bool CEditorManager::Init(HINSTANCE hInst)
 		return false;
 	}
 
-	/*CInput::GetInst()->CreateKey("MoveUp", 'W');
-	CInput::GetInst()->CreateKey("MoveDown", 'S');
-	CInput::GetInst()->CreateKey("RotationZInv", 'A');
-	CInput::GetInst()->CreateKey("RotationZ", 'D');
-	CInput::GetInst()->CreateKey("Attack", VK_SPACE);
-	CInput::GetInst()->CreateKey("Attack1", VK_LBUTTON);*/
 
 	// IMGUI로 에디터에서 사용할 윈도우를 만들어준다.
 	CSpriteWindow* SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteWindow>("SpriteWindow");
 
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
 
+	// Mouse
 	CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Down, this, &CEditorManager::MouseLButtonDown);
-	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Push, this, &CEditorManager::MouseLButtonPush);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Up, this, &CEditorManager::MouseLButtonUp);
+	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Push, this, &CEditorManager::MouseLButtonPush);
 
-
+	// KeyBoard
 	CInput::GetInst()->CreateKey("Up", VK_UP);
 	CInput::GetInst()->CreateKey("Down", VK_DOWN);
 	CInput::GetInst()->CreateKey("Left", VK_LEFT);
 	CInput::GetInst()->CreateKey("Right", VK_RIGHT);
 
-	CInput::GetInst()->SetKeyCallback("Up", KeyState_Down, this, &CEditorManager::KeyboardUp);
-	CInput::GetInst()->SetKeyCallback("Down", KeyState_Down, this, &CEditorManager::KeyboardDown);
-	CInput::GetInst()->SetKeyCallback("Left", KeyState_Down, this, &CEditorManager::KeyboardLeft);
-	CInput::GetInst()->SetKeyCallback("Right", KeyState_Down, this, &CEditorManager::KeyboardRight);
+	CInput::GetInst()->SetKeyCallback("Up", KeyState_Push, this, &CEditorManager::KeyBoardUp);
+	CInput::GetInst()->SetKeyCallback("Down", KeyState_Push, this, &CEditorManager::KeyBoardDown);
+	CInput::GetInst()->SetKeyCallback("Left", KeyState_Push, this, &CEditorManager::KeyBoardLeft);
+	CInput::GetInst()->SetKeyCallback("Right", KeyState_Push, this, &CEditorManager::KeyBoardRight);
 
 	return true;
 }
@@ -91,7 +86,6 @@ void CEditorManager::MouseLButtonDown(float DeltaTime)
 	{
 		m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos());
 	}
-
 }
 
 void CEditorManager::MouseLButtonPush(float DeltaTime)
@@ -104,28 +98,37 @@ void CEditorManager::MouseLButtonPush(float DeltaTime)
 
 void CEditorManager::MouseLButtonUp(float DeltaTime)
 {
+
 }
 
-void CEditorManager::KeyboardUp(float DeltaTime)
+void CEditorManager::KeyBoardUp(float DeltaTime)
 {
 	if (m_DragObj)
-		m_DragObj->AddWorldPos(0.f, 1.f, 0.f);
+	{
+		m_DragObj->AddWorldPos(Vector3(0.f, 0.1f, 0.f));
+	}
 }
 
-void CEditorManager::KeyboardDown(float DeltaTime)
+void CEditorManager::KeyBoardLeft(float DeltaTime)
 {
 	if (m_DragObj)
-		m_DragObj->AddWorldPos(0.f, -1.f, 0.f);
+	{
+		m_DragObj->AddWorldPos(Vector3(-1.f, 0.1f, 0.f));
+	}
 }
 
-void CEditorManager::KeyboardLeft(float DeltaTime)
+void CEditorManager::KeyBoardRight(float DeltaTime)
 {
 	if (m_DragObj)
-		m_DragObj->AddWorldPos(-1.f, 0.f, 0.f);
+	{
+		m_DragObj->AddWorldPos(Vector3(1.f, 0.1f, 0.f));
+	}
 }
 
-void CEditorManager::KeyboardRight(float DeltaTime)
+void CEditorManager::KeyBoardDown(float DeltaTime)
 {
 	if (m_DragObj)
-		m_DragObj->AddWorldPos(1.f, 0.f, 0.f);
+	{
+		m_DragObj->AddWorldPos(Vector3(0.f, -0.1f, 0.f));
+	}
 }

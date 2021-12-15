@@ -357,6 +357,9 @@
     <ClInclude Include="Resource\Shader\Shader.h">
       <Filter>02. Resource\02. Shader\02. ShaderClass</Filter>
     </ClInclude>
+    <ClInclude Include="Render\DepthStencilState.h">
+      <Filter>06. Render\01. RenderState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -568,6 +571,9 @@
     </ClCompile>
     <ClCompile Include="Component\StaticMeshComponent.cpp">
       <Filter>05. Component\01. SceneComponent\01. MeshComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\DepthStencilState.cpp">
+      <Filter>06. Render\01. RenderState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

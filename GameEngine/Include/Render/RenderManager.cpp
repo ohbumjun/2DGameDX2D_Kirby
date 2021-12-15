@@ -4,6 +4,7 @@
 #include "../Component/SceneComponent.h"
 #include "RenderStateManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
+#include "DepthStencilState.h"
 
 DEFINITION_SINGLE(CRenderManager)
 
@@ -42,7 +43,6 @@ void CRenderManager::AddRenderList(CSceneComponent* Component)
 			break;
 		}
 	}
-	
 	if (!Layer)
 		return;
 
@@ -92,6 +92,7 @@ bool CRenderManager::Init()
 
 	// 기본 레이어 세팅해두기
 	RenderLayer* DefaultLayer = new RenderLayer;
+
 	// 모든 Scene Component 들은, 생성시 Default 를 m_LayerName으로 들고 있을 것이다
 	// SceneComponent 입장에서는 PrevRender 에서 m_Render가 true 이면 AddRenderList를 통해 들어온다
 	// Default 라는 이름의 m_LayerName을 가진 SceneComponent 들은, 지금 세팅한 Default Layer 에 들어오게 된다.
@@ -100,11 +101,16 @@ bool CRenderManager::Init()
 
 	m_RenderLayerList.push_back(DefaultLayer);
 
+	m_DepthDisable = FindRenderState("DepthDisable");
+
 	return true;
 }
 
 void CRenderManager::Render()
 {
+	// DepthStencilState
+	m_DepthDisable->SetState();
+
 	// 먼저 모든 Layer 를 돌면서, Render Count를 0으로 세팅해둔다. 
 	{
 		auto iter = m_RenderLayerList.begin();
@@ -150,6 +156,8 @@ void CRenderManager::Render()
 			}
 		}
 	}
+
+	m_DepthDisable->ResetState();
 }
 
 bool CRenderManager::SortLayer(RenderLayer* Src, RenderLayer* End)
