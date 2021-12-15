@@ -11,9 +11,13 @@
 #include "PathManager.h"
 #include "../EditorManager.h"
 #include "../Object/SpriteEditObject.h"
+#include "../Object/DragObject.h"
 #include "Scene/SceneManager.h"
+#include "Scene/SceneResource.h"
 #include "Scene/Scene.h"
 #include "Component/SpriteComponent.h"
+#include "Device.h"
+#include "Resource/Texture/Texture.h"
 
 CSpriteWindow::CSpriteWindow()  :
     m_SpriteObject(nullptr)
@@ -43,23 +47,36 @@ bool CSpriteWindow::Init()
 
     m_SpriteSampled = AddWidget<CIMGUIImage>("SpriteSampled", 200.f, 200.f);
 
+    // ================
+
     CIMGUILabel* Label = AddWidget<CIMGUILabel>("AnimationListName", 200.f, 30.f);
     Label->SetColor(0, 0, 255);
     Label->SetAlign(0.5f, 0.0f);
 
     Line = AddWidget<CIMGUISameLine>("Line");
-    Line->SetOffsetX(300.f);
 
-    Label = AddWidget<CIMGUILabel>("AnimationFrameName", 200.f, 30.f);
+    m_AnimInputName = AddWidget<CIMGUITextInput>("AnimNameInput");
+    m_AnimInputName->SetHideName(true);
+    m_AnimInputName->SetSize(80.f, 30.f);
+
+    Line = AddWidget<CIMGUISameLine>("Line");
+
+    Label = AddWidget<CIMGUILabel>("AnimFrameName", 200.f, 30.f);
     Label->SetColor(0, 0, 255);
     Label->SetAlign(0.5f, 0.0f);
+
     
+    // ================
     m_AnimationList = AddWidget<CIMGUIListBox>("AnimationList", 200.f, 300.f);
     m_AnimationList->SetHideName(true);
     m_AnimationList->SetPageItemCount(6);
 
     Line = AddWidget<CIMGUISameLine>("Line");
-    Line->SetOffsetX(300.f);
+
+    Button = AddWidget<CIMGUIButton>("AddAnim", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationButton);
+
+    Line = AddWidget<CIMGUISameLine>("Line");
 
     m_AnimationFrameList = AddWidget<CIMGUIListBox>("AnimationFrameList", 200.f, 300.f);
     m_AnimationFrameList->SetHideName(true);
@@ -67,19 +84,8 @@ bool CSpriteWindow::Init()
 
     Line = AddWidget<CIMGUISameLine>("Line");
 
-    Button = AddWidget<CIMGUIButton>("AddAnimationFrame", 80.f, 30.f);
+    Button = AddWidget<CIMGUIButton>("AddAnimFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationFrameButton);
-
-    /*
-    if (ImGui::TreeNode("Backend Flags"))
-    {
-        // Make a local copy to avoid modifying actual backend flags.
-        //ImGui::LogText("Hello, world!");
-        /ImGui::LogText("Hello, world!");
-        ImGui::TreePop();
-        ImGui::Separator();
-    }
-    */
 
     return true;
 }
@@ -138,8 +144,83 @@ void CSpriteWindow::SpriteEditButton()
 
 void CSpriteWindow::AddAnimationButton()
 {
+    // Sprite Object가 있을 때에만 세팅한다.
+    if (!m_SpriteObject)
+        return;
+
+    // Input으로부터 입력받은 Text 정보를 받아온다. 
+    // Text가 비었다면, 입력 받지 않는다.
+    if (m_AnimInputName->Empty())
+        return;
+
+    // Text 중복방지 
+    const std::string Name = m_AnimInputName->GetTextMultibyte();
+    if (m_AnimationList->CheckItem(Name))
+         return;
+
+    // Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
+    CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+    CTexture* LoadTexture = m_SpriteObject->GetSpriteComponent()->GetTexture();
+
+    if (!Resource->CreateAnimationSequence2D(Name, LoadTexture))
+        return;
+
+    // Text 추가하기 
+    m_AnimationList->AddItem(Name);
+
 }
 
 void CSpriteWindow::AddAnimationFrameButton()
 {
+    // Animation List의 내용이 선택되어 있어야 한다.
+    if (!m_AnimationList->IsSelected())
+        return;
+
+    Vector2 FrameStartPos = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
+    // 220 ? --> 300 - 220  = 80
+    FrameStartPos.y = m_SpriteObject->GetWorldScale().y - FrameStartPos.y;
+    // 범위 조정 
+    FrameStartPos.x = FrameStartPos.x > 0 ? FrameStartPos.x : 0;
+    FrameStartPos.y = FrameStartPos.y > 0 ? FrameStartPos.y : 0;
+
+    Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
+    FrameEndPos.y = m_SpriteObject->GetWorldScale().y - FrameEndPos.y;
+    FrameEndPos.y = FrameEndPos.y > 0 ? FrameEndPos.y : 0;
+    FrameEndPos.y = FrameEndPos.y > 0 ? FrameEndPos.y : 0;
+
+    Vector2 StartPos;
+    Vector2 EndPos;
+
+    // 더 작은 것 선택 
+    StartPos.x = FrameStartPos.x < FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
+    StartPos.y = FrameStartPos.y < FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+
+    // 더 큰 것 선택 
+    EndPos.x = FrameStartPos.x > FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
+    EndPos.y = FrameStartPos.y > FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+
+    // 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
+    // Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
+    CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+    std::string SequenceName = m_AnimationList->GetSelectItem();
+    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(SequenceName);
+    Sequence->AddFrame(StartPos, EndPos);
+
+    // Frame List Box에 넣어주기 
+    char FrameName[1024] = {};
+    sprintf_s(FrameName, "%d", m_AnimationFrameList->GetItemCount());
+    m_AnimationFrameList->AddItem(FrameName);
+
+    // Sampled에 Image 세팅해주기 
+    CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
+    m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
+
+    // Image, End
+    Vector2 SpriteSize = m_SpriteSampled->GetSize();
+    m_SpriteSampled->SetImageStart(StartPos.x, StartPos.y);
+    m_SpriteSampled->SetImageEnd(EndPos.x , EndPos.y);
+
+
+    // Sprites Sampled에 실제 추가해야 한다. 
+
 }

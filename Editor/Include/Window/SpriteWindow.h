@@ -14,6 +14,7 @@ private:
 	class CIMGUIImage* m_SpriteSampled;
 	class CIMGUIListBox* m_AnimationList;
 	class CIMGUIListBox* m_AnimationFrameList;
+	class CIMGUITextInput* m_AnimInputName;
 	CSharedPtr<class CSpriteEditObject> m_SpriteObject;
 
 public:

@@ -61,6 +61,11 @@ public:
 		return m_Text;
 	}
 
+	bool Empty() const
+	{
+		return strlen(m_Text) == 0;
+	}
+
 public:
 	void SetText(const char* Text)
 	{

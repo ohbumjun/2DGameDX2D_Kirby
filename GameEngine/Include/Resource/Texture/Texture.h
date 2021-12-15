@@ -77,7 +77,10 @@ public:
 	{
 		return m_vecTextureInfo[Index]->Height;
 	}
-
+	TCHAR* GetFileName(int Index = 0) const
+	{
+		return m_vecTextureInfo[Index]->FileName;
+	}
 	size_t GetImageCount()	const
 	{
 		return m_vecTextureInfo.size();

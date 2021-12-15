@@ -19,6 +19,10 @@ public:
 	{
 		return m_EditMode;
 	}
+	class CDragObject* GetDragObject() const
+	{
+		return m_DragObj;
+	}
 
 	void SetEditMode(EditMode Mode);
 

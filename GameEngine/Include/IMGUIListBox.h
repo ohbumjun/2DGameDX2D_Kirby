@@ -40,6 +40,11 @@ public:
 	{
 		return (int)m_vecItem.size();
 	}
+	
+	bool IsSelected() const
+	{
+		return m_SelectIndex == -1;
+	}
 
 public:
 	void AddItem(const std::string& Item)
@@ -95,6 +100,17 @@ public:
 			std::sort(m_vecItem.begin(), m_vecItem.end());
 			std::sort(m_vecItemUTF8.begin(), m_vecItemUTF8.end());
 		}
+	}
+
+	// 들어오는 Multibyte의 존재여부를 파악한다.
+	bool CheckItem(const std::string& Item)
+	{
+		for (int i = 0; i < m_vecItem.size(); i++)
+		{
+			if (m_vecItem[i] == Item)
+				return true;
+		}
+		return false;
 	}
 
 public:

@@ -118,6 +118,11 @@ bool CResourceManager::CreateAnimationSequence2D(const std::string& Name,
 	return m_AnimationManager->CreateAnimationSequence2D(Name, TextureName, FileName, PathName);
 }
 
+bool CResourceManager::CreateAnimationSequence2D(const std::string& Name, CTexture* Texture)
+{
+	return m_AnimationManager->CreateAnimationSequence2D(Name, Texture);
+}
+
 void CResourceManager::AddAnimationSequence2DFrame(const std::string& Name, const Vector2& Start,
 	const Vector2& Size)
 {

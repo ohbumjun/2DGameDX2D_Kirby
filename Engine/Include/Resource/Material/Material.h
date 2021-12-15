@@ -48,6 +48,10 @@ public:
     {
         return m_TextureInfo[Index].Texture;
     }
+    TCHAR* GetTextureFileName(int Index = 0) const
+    {
+        return m_TextureInfo[Index].Texture->GetFileName(Index);
+    }
 
 protected:
     CSharedPtr<CGraphicShader>  m_Shader;

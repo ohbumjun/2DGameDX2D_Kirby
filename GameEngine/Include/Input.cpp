@@ -212,6 +212,10 @@ void CInput::ReadDirectInputMouse()
 
 void CInput::UpdateMouse(float DeltaTime)
 {
+	// IMGUI Window 창 위에 있으면 인식 x
+	if (ImGui::GetIO().WantCaptureMouse)
+		return;
+
 	POINT	MouseWindowPos;
 
 	GetCursorPos(&MouseWindowPos);
@@ -277,7 +281,7 @@ void CInput::UpdateKeyState()
 			m_Shift = false;
 		break;
 	case Input_Type::Window:
-		if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+		if (GetAsyncKeyState(VK_CONTROL) & 0x8000 )
 			m_Ctrl = true;
 
 		else
@@ -300,6 +304,9 @@ void CInput::UpdateKeyState()
 	// 등록된 키를 반복하며 해당 키가 눌러졌는지를 판단한다.
 	size_t	Size = m_vecAddKey.size();
 
+	// Imgui Window 위에 올라올 시의 Mouse Event는 Scene이나 Project에는 적용안되게 세팅한다.
+	bool ImGuiMouseHovered = ImGui::GetIO().WantCaptureMouse;
+
 	for (size_t i = 0; i < Size; ++i)
 	{
 		unsigned char Key = m_vecAddKey[i];
@@ -312,13 +319,13 @@ void CInput::UpdateKeyState()
 			switch (Key)
 			{
 			case DIK_MOUSELBUTTON:
-				if (m_MouseState.rgbButtons[0] & 0x80)
+				if ((m_MouseState.rgbButtons[0] & 0x80) && !ImGuiMouseHovered)
 				{
 					KeyPush = true;
 				}
 				break;
 			case DIK_MOUSERBUTTON:
-				if (m_MouseState.rgbButtons[1] & 0x80)
+				if ((m_MouseState.rgbButtons[1] & 0x80) && !ImGuiMouseHovered)
 				{
 					KeyPush = true;
 				}

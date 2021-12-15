@@ -1,5 +1,6 @@
 
 #include "AnimationManager.h"
+#include "../Texture/Texture.h"
 #include "../Shader/Animation2DConstantBuffer.h"
 
 CAnimationManager::CAnimationManager()	:
@@ -42,6 +43,26 @@ bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name,
 	m_mapSequence2D.insert(std::make_pair(Name, Sequence));
 
 	return true;
+}
+
+bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name, CTexture* Texture)
+{
+	CAnimationSequence2D* Sequence = FindSequence(Name);
+
+	if (Sequence)
+		return true;
+
+	Sequence = new CAnimationSequence2D;
+	Sequence->SetName(Name);
+
+	if (!Sequence->Init(Texture))
+	{
+		SAFE_DELETE(Sequence);
+		return false;
+	}
+
+	m_mapSequence2D.insert(std::make_pair(Name, Sequence));
+	
 }
 
 void CAnimationManager::AddFrame(const std::string& Name, const Vector2& Start, const Vector2& Size)

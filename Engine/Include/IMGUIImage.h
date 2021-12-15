@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMGUIWidget.h"
+#include "Resource/Texture/Texture.h"
 
 class CIMGUIImage :
     public CIMGUIWidget
@@ -17,6 +18,11 @@ protected:
 	ImVec2		m_ImageEnd;
 	ImVec4		m_Tint;
 	ImVec4		m_BorderColor;
+public :
+	std::string GetTextureName(int Index = 0) const
+	{
+		return m_Texture->GetName();
+	}
 
 public:
 	void SetImageStart(float x, float y)
