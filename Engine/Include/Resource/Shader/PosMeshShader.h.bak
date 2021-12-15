@@ -1,0 +1,12 @@
+#pragma once
+#include "GraphicShader.h"
+class CPosMeshShader :
+    public CGraphicShader
+{
+public :
+    CPosMeshShader();
+    ~CPosMeshShader();
+public :
+    virtual bool Init() override;
+};
+

@@ -1,0 +1,52 @@
+#include "EditorManager.h"
+#include "Engine.h"
+#include "resource.h"
+#include "Scene/SceneManager.h"
+#include "Scene/DefaultScene.h"
+#include "Input.h"
+#include "IMGUIManager.h"
+#include "Window/SpriteWindow.h"
+
+DEFINITION_SINGLE(CEditorManager)
+
+CEditorManager::CEditorManager()	:
+	m_EditMode(EditMode::Scene)
+{
+}
+
+CEditorManager::~CEditorManager()
+{
+	CEngine::DestroyInst();
+}
+
+bool CEditorManager::Init(HINSTANCE hInst)
+{
+	if (!CEngine::GetInst()->Init(hInst, TEXT("GameEngine"),
+		1280, 720, IDI_ICON1))
+	{
+		CEngine::DestroyInst();
+		return false;
+	}
+
+	/*CInput::GetInst()->CreateKey("MoveUp", 'W');
+	CInput::GetInst()->CreateKey("MoveDown", 'S');
+	CInput::GetInst()->CreateKey("RotationZInv", 'A');
+	CInput::GetInst()->CreateKey("RotationZ", 'D');
+	CInput::GetInst()->CreateKey("Attack", VK_SPACE);
+	CInput::GetInst()->CreateKey("Attack1", VK_LBUTTON);*/
+
+	// IMGUI로 에디터에서 사용할 윈도우를 만들어준다.
+	CSpriteWindow* SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteWindow>("SpriteWindow");
+
+	return true;
+}
+
+void CEditorManager::CreateDefaultSceneMode()
+{
+	CSceneManager::GetInst()->CreateSceneMode<CDefaultScene>();
+}
+
+int CEditorManager::Run()
+{
+	return CEngine::GetInst()->Run();
+}

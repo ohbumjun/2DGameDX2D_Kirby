@@ -1,0 +1,34 @@
+#pragma once
+
+#include "GameInfo.h"
+
+enum class EditMode
+{
+	Scene,
+	Sprite
+};
+
+class CEditorManager
+{
+private:
+	EditMode	m_EditMode;
+
+public:
+	EditMode GetEditMode()
+	{
+		return m_EditMode;
+	}
+
+	void SetEditMode(EditMode Mode)
+	{
+		m_EditMode = Mode;
+	}
+
+public:
+	bool Init(HINSTANCE hInst);
+	void CreateDefaultSceneMode();
+	int Run();
+
+	DECLARE_SINGLE(CEditorManager)
+};
+

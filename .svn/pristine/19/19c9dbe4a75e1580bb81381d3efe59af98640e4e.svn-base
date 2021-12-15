@@ -1,0 +1,42 @@
+
+struct PSOutput_Single
+{
+	float4	Color : SV_TARGET;
+};
+
+cbuffer Transform : register(b0)
+{
+	matrix	g_matWorld;
+	matrix	g_matView;
+	matrix	g_matProj;
+	matrix	g_matWV;
+	matrix	g_matWVP;
+	matrix	g_matVP;
+	float3	g_Pivot;
+	float	g_TransformEmpty1;
+	float3	g_MeshSize;
+	float	g_TransformEmpty;
+};
+
+cbuffer Material : register(b1)
+{
+	float4	g_MtrlBaseColor;
+	float	g_MtrlOpacity;
+	float3	g_MtrlEmpty;
+};
+
+cbuffer Standard2D : register(b2)
+{
+	int		g_Animation2DEnable;
+	float3	g_Standard2DEmpty;
+};
+
+
+
+SamplerState	g_PointSmp : register(s0);
+SamplerState	g_LinearSmp : register(s1);
+SamplerState	g_AnisotropicSmp : register(s2);
+
+SamplerState	g_BaseSmp : register(s3);
+
+Texture2D		g_BaseTexture	: register(t0);

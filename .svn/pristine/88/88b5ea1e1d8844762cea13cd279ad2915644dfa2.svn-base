@@ -1,0 +1,100 @@
+
+#include "RenderManager.h"
+#include "../GameObject/GameObject.h"
+#include "../Component/SceneComponent.h"
+#include "RenderStateManager.h"
+#include "../Resource/Shader/Standard2DConstantBuffer.h"
+
+DEFINITION_SINGLE(CRenderManager)
+
+CRenderManager::CRenderManager()	:
+	m_RenderStateManager(nullptr),
+	m_Standard2DCBuffer(nullptr)
+{
+}
+
+CRenderManager::~CRenderManager()
+{
+	SAFE_DELETE(m_Standard2DCBuffer);
+	SAFE_DELETE(m_RenderStateManager);
+}
+
+void CRenderManager::AddRenderList(CSceneComponent* Component)
+{
+	if (m_RenderCount == (int)m_RenderList.size())
+		m_RenderList.resize(m_RenderCount * 2);
+
+	m_RenderList[m_RenderCount] = Component;
+	++m_RenderCount;
+}
+
+bool CRenderManager::Init()
+{
+	m_RenderList.resize(500);
+	m_RenderCount = 0;
+
+	m_RenderStateManager = new CRenderStateManager;
+
+	m_RenderStateManager->Init();
+
+	m_Standard2DCBuffer = new CStandard2DConstantBuffer;
+
+	m_Standard2DCBuffer->Init();
+
+	return true;
+}
+
+void CRenderManager::Render()
+{
+	m_RenderCount = 0;
+
+	{
+		auto	iter = m_ObjectList->begin();
+		auto	iterEnd = m_ObjectList->end();
+
+		for (; iter != iterEnd; ++iter)
+		{
+			(*iter)->PrevRender();
+		}
+	}
+
+	{
+		for (int i = 0; i < m_RenderCount; ++i)
+		{
+			m_RenderList[i]->Render();
+		}
+	}
+
+	{
+		for (int i = 0; i < m_RenderCount; ++i)
+		{
+			m_RenderList[i]->PostRender();
+		}
+	}
+}
+
+void CRenderManager::SetBlendFactor(const std::string& Name, float r, float g,
+	float b, float a)
+{
+	m_RenderStateManager->SetBlendFactor(Name, r, g, b, a);
+}
+
+void CRenderManager::AddBlendInfo(const std::string& Name, bool BlendEnable,
+	D3D11_BLEND SrcBlend, D3D11_BLEND DestBlend, D3D11_BLEND_OP BlendOp, 
+	D3D11_BLEND SrcBlendAlpha, D3D11_BLEND DestBlendAlpha, 
+	D3D11_BLEND_OP BlendOpAlpha, UINT8 RenderTargetWriteMask)
+{
+	m_RenderStateManager->AddBlendInfo(Name, BlendEnable, SrcBlend, DestBlend,
+		BlendOp, SrcBlendAlpha, DestBlendAlpha, BlendOpAlpha, RenderTargetWriteMask);
+}
+
+bool CRenderManager::CreateBlendState(const std::string& Name, 
+	bool AlphaToCoverageEnable, bool IndependentBlendEnable)
+{
+	return m_RenderStateManager->CreateBlendState(Name, AlphaToCoverageEnable, IndependentBlendEnable);
+}
+
+CRenderState* CRenderManager::FindRenderState(const std::string& Name)
+{
+	return m_RenderStateManager->FindRenderState(Name);
+}
