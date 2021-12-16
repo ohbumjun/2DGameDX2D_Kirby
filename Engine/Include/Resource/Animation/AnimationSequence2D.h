@@ -42,6 +42,10 @@ public :
     {
         m_vecFrameData.clear();
     }
+    void DeleteFrame(int Index)
+    {
+        m_vecFrameData.erase(m_vecFrameData.begin(), m_vecFrameData.begin() + Index);
+    }
 
 public:
     bool Init(class CTexture* Texture);

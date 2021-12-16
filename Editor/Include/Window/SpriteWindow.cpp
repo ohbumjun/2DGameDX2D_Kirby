@@ -253,6 +253,26 @@ void CSpriteWindow::AddAnimationFrameButton()
 
 void CSpriteWindow::DeleteFrameButton()
 {
+    // Empty
+    if (m_AnimationList->GetItemCount() <= 0)
+        return;
+    if (m_AnimationFrameList->GetItemCount() <= 0)
+        return;
+
+    // Not Selected
+    if (m_AnimationList->GetSelectIndex() < 0)
+        return;
+    if (m_AnimationFrameList->GetSelectIndex() < 0)
+        return;
+
+    // Delete Frame Data
+    CSceneResource* Resource             = CSceneManager::GetInst()->GetScene()->GetResource();
+    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+    int SelectedFrameIdx = std::stoi(m_AnimationFrameList->GetSelectItem());
+    Sequence->DeleteFrame(SelectedFrameIdx);
+
+    // Delete Text
+    m_AnimationFrameList->DeleteItem(SelectedFrameIdx);
 
 }
 
