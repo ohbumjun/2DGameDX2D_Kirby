@@ -37,6 +37,11 @@ public:
     {
         return (int)m_vecFrameData.size();
     }
+public :
+    void ClearFrame()
+    {
+        m_vecFrameData.clear();
+    }
 
 public:
     bool Init(class CTexture* Texture);

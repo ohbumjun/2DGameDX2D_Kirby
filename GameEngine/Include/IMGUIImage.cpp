@@ -27,6 +27,7 @@ void CIMGUIImage::SetTexture(const std::string& Name)
 {
 	m_Texture = CResourceManager::GetInst()->FindTexture(Name);
 
+	SetImageStart(0.f, 0.f);
 	SetImageEnd((float)m_Texture->GetWidth(), (float)m_Texture->GetHeight());
 }
 

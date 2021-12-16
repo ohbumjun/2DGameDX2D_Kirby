@@ -25,6 +25,8 @@ public:
 	void SpriteEditButton();
 	void AddAnimationButton();
 	void AddAnimationFrameButton();
+	void DeleteFrameButton();
+	void ClearFrameButton();
 	void SelectAnimationSequence(int , const char*);
 	void SelectAnimationFrame(int, const char*);
 };

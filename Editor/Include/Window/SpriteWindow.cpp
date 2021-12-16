@@ -89,6 +89,15 @@ bool CSpriteWindow::Init()
     Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationFrameButton);
 
+    Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::DeleteFrameButton);
+
+    Line = AddWidget<CIMGUISameLine>("Line");
+    Line->SetOffsetX(90.f);
+
+    Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::ClearFrameButton);
+
     return true;
 }
 
@@ -242,6 +251,37 @@ void CSpriteWindow::AddAnimationFrameButton()
 
 }
 
+void CSpriteWindow::DeleteFrameButton()
+{
+
+}
+
+void CSpriteWindow::ClearFrameButton()
+{
+    // Empty
+    if (m_AnimationFrameList->GetItemCount() <= 0)
+        return;
+    if (m_AnimationList->GetItemCount() < 0)
+        return;
+
+    // Not Selected 
+    if (m_AnimationList->GetSelectIndex() < 0)
+        return;
+
+    // Clear Frame of Sequence
+    CSceneResource* Resource            = CSceneManager::GetInst()->GetScene()->GetResource();
+    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+    Sequence->ClearFrame();
+    
+    // Clear Texts
+    m_AnimationFrameList->Clear();
+
+    // Set Idx 
+    m_AnimationFrameList->SetSelectIndex(-1);
+
+    // Set Default Image 
+    m_SpriteSampled->SetTexture("DefaultUI");
+}
 
 void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
 {
