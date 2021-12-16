@@ -14,6 +14,9 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dinput.h>
+#include <cctype>
+#include <iostream>
+#include <sstream>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -194,4 +197,13 @@ static bool CheckIfStringIsDigit(const std::string& String)
 		if (!isdigit(String[i]))
 			return false;
 	return true;
+}
+
+static bool StringToBool(std::string String)
+{
+	bool result;
+	std::transform(String.begin(), String.end(), String.begin(), ::tolower);
+	std::istringstream is(String);
+	is >> std::boolalpha >> result;
+	return result;
 }

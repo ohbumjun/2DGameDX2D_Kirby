@@ -6,12 +6,13 @@ class CAnimationSequence2DInstance
 {
 	friend class CSpriteComponent;
 
-protected:
+public:
 	CAnimationSequence2DInstance();
 	CAnimationSequence2DInstance(const CAnimationSequence2DInstance& Anim);
 	virtual ~CAnimationSequence2DInstance();
 
 protected:
+	bool m_PlayAnimation;
 	class CSpriteComponent* m_Owner;
 	class CScene* m_Scene;
 	std::unordered_map<std::string, CAnimationSequence2DData*>	m_mapAnimation;
@@ -22,6 +23,14 @@ public:
 	void SetScene(class CScene* Scene)
 	{
 		m_Scene = Scene;
+	}
+	void Stop()
+	{
+		m_PlayAnimation = false;
+	}
+	void Play()
+	{
+		m_PlayAnimation = true;
 	}
 
 	void SetOwner(class CSpriteComponent* Owner)

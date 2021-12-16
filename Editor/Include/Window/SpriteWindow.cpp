@@ -18,6 +18,7 @@
 #include "Component/SpriteComponent.h"
 #include "Device.h"
 #include "Resource/Texture/Texture.h"
+#include "Animation/AnimationSequence2DInstance.h"
 
 CSpriteWindow::CSpriteWindow()  :
     m_SpriteObject(nullptr)
@@ -26,11 +27,17 @@ CSpriteWindow::CSpriteWindow()  :
 
 CSpriteWindow::~CSpriteWindow()
 {
+    SAFE_DELETE(m_Animation);
 }
 
 bool CSpriteWindow::Init()
 {
     CIMGUIWindow::Init();
+
+    m_Animation = new CAnimationSequence2DInstance;
+    m_Animation->Stop();
+
+    // ==============================
 
     CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture");
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::LoadTextureButton);
@@ -47,7 +54,7 @@ bool CSpriteWindow::Init()
 
     m_SpriteSampled = AddWidget<CIMGUIImage>("SpriteSampled", 200.f, 200.f);
 
-    // ================
+    // ==============================
 
     CIMGUILabel* Label = AddWidget<CIMGUILabel>("AnimationListName", 200.f, 30.f);
     Label->SetColor(0, 0, 255);
@@ -66,7 +73,7 @@ bool CSpriteWindow::Init()
     Label->SetAlign(0.5f, 0.0f);
 
     
-    // ================
+    // ==============================
     m_AnimationList = AddWidget<CIMGUIListBox>("AnimationList", 200.f, 300.f);
     m_AnimationList->SetHideName(true);
     m_AnimationList->SetPageItemCount(6);
@@ -89,7 +96,33 @@ bool CSpriteWindow::Init()
     Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationFrameButton);
 
-    // =================================================
+    // ==============================
+    m_AnimationLoop = AddWidget<CIMGUIComboBox>("Loop", 80.f, 30.f);
+    m_AnimationLoop->SetHideName(true);
+    m_AnimationLoop->AddItem("True");
+    m_AnimationLoop->AddItem("False");
+
+    Line = AddWidget<CIMGUISameLine>("Line");
+    Line->SetOffsetX(380.f);
+
+    m_AnimationReverse = AddWidget<CIMGUIComboBox>("Reverse", 80.f, 30.f);
+    m_AnimationReverse->SetHideName(true);
+    m_AnimationReverse->AddItem("True");
+    m_AnimationReverse->AddItem("False");
+    
+    Line = AddWidget<CIMGUISameLine>("Line");
+    Line->SetOffsetX(300.f);
+
+    Button = AddWidget<CIMGUIButton>("Play", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::PlayAnimationButton);
+    
+    Line = AddWidget<CIMGUISameLine>("Line");
+    Line->SetOffsetX(90.f);
+    
+    Button = AddWidget<CIMGUIButton>("Stop", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::StopAnimationButton);
+
+    // ==============================
     Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::DeleteFrameButton);
 
@@ -99,7 +132,7 @@ bool CSpriteWindow::Init()
     Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::ClearFrameButton);
 
-    // =================================================
+    // =============================
 
     m_StartFramePosXInput = AddWidget<CIMGUITextInput>("StartX");
     m_StartFramePosXInput->SetSize(80.f, 30.f);
@@ -130,6 +163,9 @@ bool CSpriteWindow::Init()
 void CSpriteWindow::Update(float DeltaTime)
 {
     CIMGUIWindow::Update(DeltaTime);
+
+    if (m_Animation)
+        m_Animation->Update(DeltaTime);
 }
 
 void CSpriteWindow::LoadTextureButton()
@@ -199,6 +235,10 @@ void CSpriteWindow::AddAnimationButton()
     if (m_AnimationList->CheckItem(Name))
          return;
 
+    // Loop, Reverse 선택 
+    if (m_AnimationLoop->GetSelectIndex() < 0 || m_AnimationReverse->GetSelectIndex() < 0)
+        return;
+
     // Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
     CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
     CTexture* LoadedTexture = m_SpriteObject->GetSpriteComponent()->GetTexture();
@@ -208,6 +248,13 @@ void CSpriteWindow::AddAnimationButton()
 
     // Text 추가하기 
     m_AnimationList->AddItem(Name);
+
+    // Animation Instance에 추가하기 
+    bool Loop = StringToBool(m_AnimationLoop->GetSelectItem());
+    bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
+
+    // Animation 진행
+    m_Animation->Play();
 
 }
 
@@ -352,22 +399,44 @@ void CSpriteWindow::EditFrameButton()
     if (!CheckIfStringIsDigit(EndFrameX) || !CheckIfStringIsDigit(EndFrameY))
         return;
 
+    CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+    Vector2 SequenceSize = Vector2(Sequence->GetTexture()->GetWidth(), Sequence->GetTexture()->GetHeight());
+
     float  FloatStartFrameX = std::stof(StartFrameY);
     float  FloatStartFrameY = std::stof(StartFrameX);
 
     float  FloatEndFrameX = std::stof(EndFrameX);
     float  FloatEndFrameY = std::stof(EndFrameY);
 
-    CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
-    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+    float DStartFrameX = FloatStartFrameX < FloatEndFrameX ? FloatStartFrameX : FloatEndFrameX;
+    float DStartFrameY = FloatStartFrameY < FloatEndFrameY ? FloatStartFrameY : FloatEndFrameY;
+
+    float DEndFrameX = FloatStartFrameX > FloatEndFrameX ? FloatStartFrameX : FloatEndFrameX;
+    float DEndFrameY = FloatStartFrameY > FloatEndFrameY ? FloatStartFrameY : FloatEndFrameY;
+
+
+    // 범위 초과 검사 
+    DStartFrameX = DStartFrameX < SequenceSize.x ? DStartFrameX : SequenceSize.x;
+    DStartFrameY = DStartFrameY < SequenceSize.y ? DStartFrameY : SequenceSize.y;
+    DEndFrameX   = DEndFrameX  < SequenceSize.x ? DEndFrameX : SequenceSize.x;
+    DEndFrameY   = DEndFrameY  < SequenceSize.y ? DEndFrameY : SequenceSize.y;
 
     Sequence->SetFrame(std::stoi(m_AnimationFrameList->GetSelectItem()), 
-       FloatStartFrameX, FloatStartFrameY, 
-        FloatEndFrameX - FloatStartFrameX, 
-        FloatEndFrameY - FloatStartFrameY);
+        DStartFrameX, DStartFrameY, DEndFrameX - DStartFrameX, DEndFrameY - DStartFrameY);
 
-    m_SpriteSampled->SetImageStart(FloatStartFrameX, FloatStartFrameY);
-    m_SpriteSampled->SetImageEnd(FloatEndFrameX, FloatEndFrameY);
+    m_SpriteSampled->SetImageStart(DStartFrameX, DStartFrameY);
+    m_SpriteSampled->SetImageEnd(DEndFrameX, DEndFrameY);
+}
+
+void CSpriteWindow::PlayAnimationButton()
+{
+    m_Animation->Play();
+}
+
+void CSpriteWindow::StopAnimationButton()
+{
+    m_Animation->Stop();
 }
 
 void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
@@ -408,7 +477,7 @@ void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
     // Texture 세팅 
     m_SpriteSampled->SetTexture(ChangedSequenceTexture);
     m_SpriteSampled->SetImageStart(FrameData.Start);
-    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
+    m_SpriteSampled->SetImageEnd(FrameData.Start+ FrameData.Size.x);
 }
 
 void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)

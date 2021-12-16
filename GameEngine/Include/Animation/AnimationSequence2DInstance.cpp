@@ -9,7 +9,8 @@
 
 CAnimationSequence2DInstance::CAnimationSequence2DInstance()	:
 	m_Scene(nullptr),
-	m_Owner(nullptr)
+	m_Owner(nullptr),
+	m_PlayAnimation(false)
 {
 }
 
@@ -208,6 +209,9 @@ bool CAnimationSequence2DInstance::Init()
 
 void CAnimationSequence2DInstance::Update(float DeltaTime)
 {
+	if (!m_PlayAnimation)
+		return;
+
 	if (!m_CurrentAnimation)
 		return;
 
