@@ -53,7 +53,7 @@ public:
 	void SetCurrentAnimation(const std::string& Name);
 	void ChangeAnimation(const std::string& Name);
 	bool CheckCurrentAnimation(const std::string& Name);
-
+	CAnimationSequence2DData* GetCurrentAnimation() const ;
 public:
 	virtual void Start();
 	virtual bool Init();

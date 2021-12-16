@@ -49,10 +49,10 @@ CAnimationSequence2DInstance::~CAnimationSequence2DInstance()
 }
 
 void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName, 
-	const std::string& Name, bool Loop,
+	const std::string& AnimationName, bool Loop,
 	float PlayTime, float PlayScale, bool Reverse)
 {
-	CAnimationSequence2DData* Anim = FindAnimation(Name);
+	CAnimationSequence2DData* Anim = FindAnimation(AnimationName);
 
 	if (Anim)
 		return;
@@ -75,7 +75,7 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 	Anim = new CAnimationSequence2DData;
 
 	Anim->m_Sequence = Sequence;
-	Anim->m_Name = Name;
+	Anim->m_Name = AnimationName;
 	Anim->m_Loop = Loop;
 	Anim->m_PlayTime = PlayTime;
 	Anim->m_PlayScale = PlayScale;
@@ -93,7 +93,7 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 		}
 	}
 
-	m_mapAnimation.insert(std::make_pair(Name, Anim));
+	m_mapAnimation.insert(std::make_pair(AnimationName, Anim));
 }
 
 void CAnimationSequence2DInstance::SetPlayTime(const std::string& Name, float PlayTime)
@@ -191,6 +191,13 @@ bool CAnimationSequence2DInstance::CheckCurrentAnimation(const std::string& Name
 	return m_CurrentAnimation->m_Name == Name;
 }
 
+CAnimationSequence2DData* CAnimationSequence2DInstance::GetCurrentAnimation() const 
+{
+	if (m_CurrentAnimation)
+		return m_CurrentAnimation;
+	return nullptr;
+}
+
 void CAnimationSequence2DInstance::Start()
 {
 	if (m_Owner && m_CurrentAnimation)
@@ -213,6 +220,9 @@ void CAnimationSequence2DInstance::Update(float DeltaTime)
 		return;
 
 	if (!m_CurrentAnimation)
+		return;
+
+	if (m_CurrentAnimation->GetFrameCount() <= 0)
 		return;
 
 	m_CurrentAnimation->m_Time += DeltaTime * m_CurrentAnimation->m_PlayScale;
@@ -291,6 +301,9 @@ void CAnimationSequence2DInstance::Update(float DeltaTime)
 void CAnimationSequence2DInstance::SetShader()
 {
 	if (!m_CurrentAnimation)
+		return;
+
+	if (m_CurrentAnimation->m_Sequence->GetFrameCount() <= 0)
 		return;
 
 	Vector2	StartUV, EndUV;

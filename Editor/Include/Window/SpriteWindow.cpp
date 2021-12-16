@@ -103,7 +103,7 @@ bool CSpriteWindow::Init()
     m_AnimationLoop->AddItem("False");
 
     Line = AddWidget<CIMGUISameLine>("Line");
-    Line->SetOffsetX(380.f);
+    Line->SetOffsetX(90.f);
 
     m_AnimationReverse = AddWidget<CIMGUIComboBox>("Reverse", 80.f, 30.f);
     m_AnimationReverse->SetHideName(true);
@@ -111,13 +111,13 @@ bool CSpriteWindow::Init()
     m_AnimationReverse->AddItem("False");
     
     Line = AddWidget<CIMGUISameLine>("Line");
-    Line->SetOffsetX(300.f);
+    Line->SetOffsetX(310.f);
 
     Button = AddWidget<CIMGUIButton>("Play", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::PlayAnimationButton);
     
     Line = AddWidget<CIMGUISameLine>("Line");
-    Line->SetOffsetX(90.f);
+    Line->SetOffsetX(400.f);
     
     Button = AddWidget<CIMGUIButton>("Stop", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::StopAnimationButton);
@@ -163,9 +163,23 @@ bool CSpriteWindow::Init()
 void CSpriteWindow::Update(float DeltaTime)
 {
     CIMGUIWindow::Update(DeltaTime);
-
+    /*
     if (m_Animation)
+    {
         m_Animation->Update(DeltaTime);
+
+        if (!m_Animation->GetCurrentAnimation())
+            return;
+
+        if (m_Animation->GetCurrentAnimation()->GetFrameCount() <= 0)
+            return;
+
+        AnimationFrameData FrameData = m_Animation->GetCurrentAnimation()->GetCurrentFrameData();
+        m_SpriteSampled->SetImageStart(FrameData.Start);
+        m_SpriteSampled->SetImageEnd(FrameData.Size);
+    }
+    */
+
 }
 
 void CSpriteWindow::LoadTextureButton()
@@ -199,7 +213,7 @@ void CSpriteWindow::LoadTextureButton()
         ConvertFileName, FilePath);
 
         CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture(TextureIndex);
-        m_SpriteObject->SetWorldScale(Texture->GetWidth(), Texture->GetHeight(), 1.f);
+        m_SpriteObject->SetWorldScale((float)Texture->GetWidth(), (float)Texture->GetHeight(), 1.f);
     }
     
 }
@@ -231,8 +245,10 @@ void CSpriteWindow::AddAnimationButton()
         return;
 
     // Text 중복방지 
-    const std::string Name = m_AnimInputName->GetTextMultibyte();
-    if (m_AnimationList->CheckItem(Name))
+    const std::string SequenceName = m_AnimInputName->GetTextMultibyte();
+    const std::string& AnimationName = SequenceName;
+
+    if (m_AnimationList->CheckItem(SequenceName))
          return;
 
     // Loop, Reverse 선택 
@@ -243,15 +259,17 @@ void CSpriteWindow::AddAnimationButton()
     CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
     CTexture* LoadedTexture = m_SpriteObject->GetSpriteComponent()->GetTexture();
 
-    if (!Resource->CreateAnimationSequence2D(Name, LoadedTexture))
+    if (!Resource->CreateAnimationSequence2D(SequenceName, LoadedTexture))
         return;
 
     // Text 추가하기 
-    m_AnimationList->AddItem(Name);
+    m_AnimationList->AddItem(SequenceName);
 
-    // Animation Instance에 추가하기 
-    bool Loop = StringToBool(m_AnimationLoop->GetSelectItem());
+    // Animation 내용 추가 
+    bool Loop      = StringToBool(m_AnimationLoop->GetSelectItem());
     bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
+    m_Animation->AddAnimation(SequenceName, AnimationName, Loop, 1.f, 1.f, Reverse);
+    // m_Animation->SetCurrentAnimation(AnimationName);
 
     // Animation 진행
     m_Animation->Play();
@@ -269,12 +287,13 @@ void CSpriteWindow::AddAnimationFrameButton()
     CSceneResource* Resource              = CSceneManager::GetInst()->GetScene()->GetResource();
     Vector2 FrameStartPos                    = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
     std::string SequenceName               = m_AnimationList->GetSelectItem();
+    const std::string& AnimationName    = SequenceName;
     CAnimationSequence2D* Sequence  = Resource->FindAnimationSequence2D(SequenceName);
     CTexture* SequenceTexture             = Sequence->GetTexture();
 
     // 220 ? --> 300 - 220  = 80
     // AnimationList 에서 선택한 Sequence2D의 Name으로 Texture 정보를 얻어온다
-    Vector2 SequenceImageSize = Vector2(SequenceTexture->GetWidth(), SequenceTexture->GetHeight());
+    Vector2 SequenceImageSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
 
     XDiff = SequenceImageSize.x - FrameStartPos.x;
     YDiff = SequenceImageSize.y - FrameStartPos.y;
@@ -322,6 +341,20 @@ void CSpriteWindow::AddAnimationFrameButton()
     // AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
     m_AnimationFrameList->SetSelectIndex(AnimItemCount);
 
+    // Animation Instance에 추가하기 
+    bool Loop = StringToBool(m_AnimationLoop->GetSelectItem());
+    bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
+
+    // 위에서 가져온 Animation Sequence 2D를 세팅하면 될 것 같다
+    CAnimationSequence2DData* Animation =  m_Animation->GetCurrentAnimation();
+    if (!Animation)
+        return;
+
+    // Animation
+    Animation->AddFrame(StartPos, EndPos - StartPos);
+
+    // Stop Animation
+    m_Animation->Stop();
 
 }
 
@@ -348,6 +381,12 @@ void CSpriteWindow::DeleteFrameButton()
     // Delete Text
     m_AnimationFrameList->DeleteItem(SelectedFrameIdx);
 
+    // Update Names Of FrameDatas
+    int ListNums = m_AnimationFrameList->GetItemCount();
+    for (int i = SelectedFrameIdx; i < ListNums; i++)
+    {
+        m_AnimationFrameList->SetItem(i, std::to_string(i));
+    }
 }
 
 void CSpriteWindow::ClearFrameButton()
@@ -401,7 +440,7 @@ void CSpriteWindow::EditFrameButton()
 
     CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
     CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
-    Vector2 SequenceSize = Vector2(Sequence->GetTexture()->GetWidth(), Sequence->GetTexture()->GetHeight());
+    Vector2 SequenceSize = Vector2((float)Sequence->GetTexture()->GetWidth(), (float)Sequence->GetTexture()->GetHeight());
 
     float  FloatStartFrameX = std::stof(StartFrameY);
     float  FloatStartFrameY = std::stof(StartFrameX);
@@ -451,7 +490,7 @@ void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
 
     // SpriteObject 의 Texture 바꿔주기
     m_SpriteObject->GetSpriteComponent()->SetTexture(MaterialTextureIdx,ChangedSequenceTexture);
-    m_SpriteObject->SetWorldScale(ChangedSequenceTexture->GetWidth(), ChangedSequenceTexture->GetHeight(), 1.f);
+    m_SpriteObject->SetWorldScale((float)ChangedSequenceTexture->GetWidth(), (float)ChangedSequenceTexture->GetHeight(), 1.f);
 
     // m_Sprite의 Texture 바꿔주기 
     m_Sprite->SetTexture(ChangedSequenceTexture);
@@ -478,6 +517,9 @@ void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
     m_SpriteSampled->SetTexture(ChangedSequenceTexture);
     m_SpriteSampled->SetImageStart(FrameData.Start);
     m_SpriteSampled->SetImageEnd(FrameData.Start+ FrameData.Size.x);
+
+    // 현재 애니메이션으로 세팅 
+    m_Animation->SetCurrentAnimation(ChangedSequenceName);
 }
 
 void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)

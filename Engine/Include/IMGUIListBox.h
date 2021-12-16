@@ -75,6 +75,22 @@ public:
 		}
 	}
 
+	void SetItem(const int Index, const std::string& Item)
+	{
+		m_vecItem[Index] = Item;
+
+		wchar_t wItem[1024] = {};
+		char ItemUTF8[1024] = {};
+
+		int Length = MultiByteToWideChar(CP_ACP, 0, Item.c_str(), -1, 0, 0);
+		MultiByteToWideChar(CP_ACP, 0, Item.c_str(), -1, wItem, Length);
+
+		Length = WideCharToMultiByte(CP_ACP, 0, wItem, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, wItem, -1, ItemUTF8, Length, 0, 0);
+
+		m_vecItemUTF8[Index] = ItemUTF8;
+	}
+
 	void SetPageItemCount(int Count)
 	{
 		m_PageItemCount = Count;

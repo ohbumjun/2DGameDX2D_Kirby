@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "../Resource/Animation/AnimationSequence2D.h"
 
 struct Animation2DNotify
 {
@@ -36,7 +37,28 @@ private:
 	bool	m_Reverse;
 	std::function<void()>	m_EndFunction;
 	std::vector<Animation2DNotify*>	m_vecNotify;
-
+public :
+	int GetCurrentFrame() const
+	{
+		return m_Frame;
+	}
+	int GetFrameCount() const
+	{
+		return m_Sequence->GetFrameCount();
+	}
+	AnimationFrameData GetCurrentFrameData() const
+	{
+		return m_Sequence->GetFrameData(m_Frame);
+	}
+public :
+	void AddFrame(const Vector2& StartPos, const Vector2& Size)
+	{
+		m_Sequence->AddFrame(StartPos, Size);
+	}
+	void AddFrame(float StartX, float StartY, float SizeX, float SizeY)
+	{
+		m_Sequence->AddFrame(StartX, StartY, SizeX, SizeY);
+	}
 public:
 	template <typename T>
 	void SetEndFunction(T* Obj, void (T::* Func)())
