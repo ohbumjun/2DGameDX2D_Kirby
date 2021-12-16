@@ -89,6 +89,7 @@ bool CSpriteWindow::Init()
     Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationFrameButton);
 
+    // =================================================
     Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::DeleteFrameButton);
 
@@ -97,6 +98,31 @@ bool CSpriteWindow::Init()
 
     Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::ClearFrameButton);
+
+    // =================================================
+
+    m_StartFramePosXInput = AddWidget<CIMGUITextInput>("StartX");
+    m_StartFramePosXInput->SetSize(80.f, 30.f);
+
+    Line = AddWidget<CIMGUISameLine>("Line");
+    Line->SetOffsetX(160.f);
+
+    m_StartFramePosYInput = AddWidget<CIMGUITextInput>("StartY");
+    m_StartFramePosYInput->SetSize(80.f, 30.f);
+
+    m_EndFramePosXInput = AddWidget<CIMGUITextInput>("EndX");
+    m_EndFramePosXInput->SetSize(80.f,30.f);
+
+    Line = AddWidget<CIMGUISameLine>("Line");
+    Line->SetOffsetX(160.f);
+
+    m_EndFramePosYInput = AddWidget<CIMGUITextInput>("EndY");
+    m_EndFramePosYInput->SetSize(80.f,30.f);
+
+    // =================================================
+
+    Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::EditFrameButton);
 
     return true;
 }
@@ -249,6 +275,7 @@ void CSpriteWindow::AddAnimationFrameButton()
     // AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
     m_AnimationFrameList->SetSelectIndex(AnimItemCount);
 
+
 }
 
 void CSpriteWindow::DeleteFrameButton()
@@ -301,6 +328,46 @@ void CSpriteWindow::ClearFrameButton()
 
     // Set Default Image 
     m_SpriteSampled->SetTexture("DefaultUI");
+}
+
+void CSpriteWindow::EditFrameButton()
+{
+    // Empty
+    if (m_StartFramePosXInput->Empty() || m_StartFramePosYInput->Empty())
+        return;
+    if (m_EndFramePosXInput->Empty() || m_EndFramePosYInput->Empty())
+        return;
+
+    // Not Selected 
+    if (!m_AnimationList->IsSelected() || !m_AnimationFrameList->IsSelected())
+        return;
+
+    const std::string StartFrameX = m_StartFramePosXInput->GetTextUTF8();
+    const std::string StartFrameY = m_StartFramePosYInput->GetTextUTF8();
+    const std::string EndFrameX    = m_EndFramePosXInput->GetTextUTF8();
+    const std::string EndFrameY    = m_EndFramePosYInput->GetTextUTF8();
+
+    if (!CheckIfStringIsDigit(StartFrameX) || !CheckIfStringIsDigit(StartFrameY))
+        return;    
+    if (!CheckIfStringIsDigit(EndFrameX) || !CheckIfStringIsDigit(EndFrameY))
+        return;
+
+    float  FloatStartFrameX = std::stof(StartFrameY);
+    float  FloatStartFrameY = std::stof(StartFrameX);
+
+    float  FloatEndFrameX = std::stof(EndFrameX);
+    float  FloatEndFrameY = std::stof(EndFrameY);
+
+    CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+    CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+
+    Sequence->SetFrame(std::stoi(m_AnimationFrameList->GetSelectItem()), 
+       FloatStartFrameX, FloatStartFrameY, 
+        FloatEndFrameX - FloatStartFrameX, 
+        FloatEndFrameY - FloatStartFrameY);
+
+    m_SpriteSampled->SetImageStart(FloatStartFrameX, FloatStartFrameY);
+    m_SpriteSampled->SetImageEnd(FloatEndFrameX, FloatEndFrameY);
 }
 
 void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)

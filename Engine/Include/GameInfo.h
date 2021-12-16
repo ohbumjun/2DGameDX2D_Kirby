@@ -186,3 +186,12 @@ struct Standard2DCBuffer
 	int		AnimationEnable;
 	Vector3	Empty;
 };
+
+// Functions
+static bool CheckIfStringIsDigit(const std::string& String)
+{
+	for (int i = 0; i < String.length(); i++)
+		if (!isdigit(String[i]))
+			return false;
+	return true;
+}

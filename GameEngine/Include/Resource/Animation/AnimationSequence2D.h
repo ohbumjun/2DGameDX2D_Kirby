@@ -37,6 +37,15 @@ public:
     {
         return (int)m_vecFrameData.size();
     }
+public :
+    void ClearFrame()
+    {
+        m_vecFrameData.clear();
+    }
+    void DeleteFrame(int Index)
+    {
+        m_vecFrameData.erase(m_vecFrameData.begin(), m_vecFrameData.begin() + Index);
+    }
 
 public:
     bool Init(class CTexture* Texture);
@@ -44,5 +53,7 @@ public:
         const std::string& PathName = TEXTURE_PATH);
     void AddFrame(const Vector2& StartPos, const Vector2& Size);
     void AddFrame(float StartX, float StartY, float Width, float Height);
+    void SetFrame(int Index, float StartX, float StartY, float Width, float Height);
+    void SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos);
 };
 

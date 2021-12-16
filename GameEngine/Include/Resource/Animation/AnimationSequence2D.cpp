@@ -60,5 +60,16 @@ void CAnimationSequence2D::AddFrame(float StartX, float StartY, float Width, flo
 	Data.Size = Vector2(Width, Height);
 
 	m_vecFrameData.push_back(Data);
-};
+}
+void CAnimationSequence2D::SetFrame(int Index, float StartX, float StartY, float SizeX, float SizeY)
+{
+	m_vecFrameData[Index].Start = Vector2(StartX, StartY);
+	m_vecFrameData[Index].Size  = Vector2(SizeX, SizeY);
+}
+void CAnimationSequence2D::SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos)
+{
+	m_vecFrameData[Index].Start = StartPos;
+	m_vecFrameData[Index].Size  = EndPos;
+}
+
 
