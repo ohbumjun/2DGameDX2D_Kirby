@@ -71,7 +71,6 @@ bool CSpriteWindow::Init()
     m_AnimationList->SetHideName(true);
     m_AnimationList->SetPageItemCount(6);
     m_AnimationList->SetSelectCallback<CSpriteWindow>(this, &CSpriteWindow::SelectAnimationSequence);
-    m_AnimationList->SetSort(false);
 
     Line = AddWidget<CIMGUISameLine>("Line");
 
@@ -87,7 +86,7 @@ bool CSpriteWindow::Init()
 
     Line = AddWidget<CIMGUISameLine>("Line");
 
-    Button = AddWidget<CIMGUIButton>("AddAnimFrame", 80.f, 30.f);
+    Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationFrameButton);
 
     return true;
@@ -221,7 +220,7 @@ void CSpriteWindow::AddAnimationFrameButton()
 
     // 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
     // Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
-    Sequence->AddFrame(StartPos, EndPos);
+    Sequence->AddFrame(StartPos, EndPos - StartPos);
 
     // Frame List Box에 넣어주기 
     char FrameName[1024] = {};
@@ -233,13 +232,8 @@ void CSpriteWindow::AddAnimationFrameButton()
     CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
     m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
     
-
     // Image, End 세팅 
     Vector2 SpriteSize = m_SpriteSampled->GetSize();
-    //float ratiox = spritesize.x / imagesize.x;
-    //float ratioy = spritesize.y / imagesize.y;
-    //vector2 restartpos = vector2(startpos.x * ratiox, startpos.y * ratioy);
-    //vector2 reendpos   = vector2(endpos.x * ratiox, endpos.y * ratioy);
     m_SpriteSampled->SetImageStart(StartPos);
     m_SpriteSampled->SetImageEnd(EndPos);
 
@@ -249,15 +243,11 @@ void CSpriteWindow::AddAnimationFrameButton()
 }
 
 
-void CSpriteWindow::SelectAnimationSequence(int Index, const char* Name)
+void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
 {
-    // 처음 추가되는 경우라면 X : m_SelectIndex가 -1 일 것이다 -> 아직 선택 전이므로
-    if (m_AnimationList->GetSelectIndex() < 0)
-        return;
-     
     // 해당 idx의 Sequence 정보 가져오기
     CSceneResource* Resource                                 = CSceneManager::GetInst()->GetScene()->GetResource();
-    std::string ChangedSequenceName                     = m_AnimationList->GetSelectItem();
+    std::string ChangedSequenceName                     = m_AnimationList->GetItem(Index);
     CAnimationSequence2D* ChangedSequence         = Resource->FindAnimationSequence2D(ChangedSequenceName);
     CTexture* ChangedSequenceTexture                    = ChangedSequence->GetTexture();
     Vector2 FrameStartPos                                       = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
@@ -265,66 +255,45 @@ void CSpriteWindow::SelectAnimationSequence(int Index, const char* Name)
 
     // SpriteObject 의 Texture 바꿔주기
     m_SpriteObject->GetSpriteComponent()->SetTexture(MaterialTextureIdx,ChangedSequenceTexture);
-    m_SpriteObject->SetWorldScale(ChangedSequenceTexture->GetWidth(),
-        ChangedSequenceTexture->GetHeight(), 1.f);
+    m_SpriteObject->SetWorldScale(ChangedSequenceTexture->GetWidth(), ChangedSequenceTexture->GetHeight(), 1.f);
 
     // m_Sprite의 Texture 바꿔주기 
     m_Sprite->SetTexture(ChangedSequenceTexture);
     
+    // AnimationFrameList 안에 있는 내용 모두 다시 세팅하기 
+    m_AnimationFrameList->Clear();
+
     // 해당 Sequence에 대해서 추가해놓은 Frame정보가 없다면 
     if (ChangedSequence->GetFrameCount() <= 0)
         return;
 
-    AnimationFrameData       FrameData                   = ChangedSequence->GetFrameData(0);
-    Vector2                          SpriteImgeSize             = Vector2(ChangedSequenceTexture->GetWidth(), ChangedSequenceTexture->GetHeight());
-    Vector2 FrameEnd                                              = FrameData.Start + FrameData.Size;
-
-
-    // AnimationFrameList 안에 있는 내용 모두 다시 세팅하기 
-    m_AnimationFrameList->Clear();
-
-    /*
+    // 새로운 Frame 정보들 추가하기 
     char IndexChar[1024];
     for (int i = 0; i < ChangedSequence->GetFrameCount(); i++)
     { 
         sprintf_s(IndexChar, "%d", i);
         m_AnimationFrameList->AddItem(IndexChar);
     }
-    */
 
-    // Selected 된 녀석은 0번째로 
-    FrameEnd.x = FrameEnd.x <= SpriteImgeSize.x ? FrameEnd.x : SpriteImgeSize.x;
-    FrameEnd.y = FrameEnd.y <= SpriteImgeSize.y ? FrameEnd.y : SpriteImgeSize.y;
-
-    m_AnimationFrameList->SetSelectIndex(0);
+    AnimationFrameData       FrameData                   = ChangedSequence->GetFrameData(0);
+   m_AnimationFrameList->SetSelectIndex(0);
 
     // Texture 세팅 
     m_SpriteSampled->SetTexture(ChangedSequenceTexture);
     m_SpriteSampled->SetImageStart(FrameData.Start);
-    m_SpriteSampled->SetImageStart(FrameEnd);
+    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 }
 
 void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)
 {
-    // Frame Idx
-    int SelectIdx = m_AnimationFrameList->GetSelectIndex();
-
     CSceneResource* Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
-    Vector2 FrameStartPos                      = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
     std::string SequenceName                = m_AnimationList->GetSelectItem();
     CAnimationSequence2D* Sequence   = Resource->FindAnimationSequence2D(SequenceName);
     CTexture* SequenceTexture              = Sequence->GetTexture();
-    AnimationFrameData  FrameData      = Sequence->GetFrameData(SelectIdx);
+    AnimationFrameData  FrameData      = Sequence->GetFrameData(Index);
     
-    // 선택한 Idx Frame data 가져오기
-
-    Vector2 FrameEnd = FrameData.Start + FrameData.Size;
-    Vector2 SpriteImgeSize = Vector2(SequenceTexture->GetWidth(), SequenceTexture->GetHeight());
-    FrameEnd.x = FrameEnd.x <= SpriteImgeSize.x ? FrameEnd.x : SpriteImgeSize.x;
-    FrameEnd.y = FrameEnd.y <= SpriteImgeSize.y ? FrameEnd.y : SpriteImgeSize.y;
-
     // SpriteSampled만 바꿔주기 
     m_SpriteSampled->SetImageStart(FrameData.Start);
-    m_SpriteSampled->SetImageEnd(FrameEnd);
+    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 }
 

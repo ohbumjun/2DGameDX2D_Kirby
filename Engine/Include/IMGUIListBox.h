@@ -43,7 +43,7 @@ public:
 	
 	bool IsSelected() const
 	{
-		return m_SelectIndex == -1;
+		return m_SelectIndex != -1;
 	}
 
 	void SetSelectIndex(int Index)

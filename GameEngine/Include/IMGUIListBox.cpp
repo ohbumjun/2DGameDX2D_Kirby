@@ -33,7 +33,8 @@ void CIMGUIListBox::Render()
 
             if (ImGui::Selectable(m_vecItemUTF8[i].c_str(), m_Select))
             {
-                if (m_SelectIndex != i && m_SelectCallback)
+                // if (m_SelectIndex != i && m_SelectCallback)
+                if (m_SelectCallback)
                        m_SelectCallback((int)i, m_vecItem[i].c_str());
 
                 // 선택 Index 정보 Update
