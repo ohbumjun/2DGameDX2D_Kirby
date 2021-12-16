@@ -18,14 +18,9 @@ protected:
 	int			m_SelectIndex;
 	int			m_PageItemCount;
 	bool		m_Sort;
-	bool      m_IndexChanged;
 	std::function<void(int, const char*)>	m_SelectCallback;
 
 public:
-	bool IsIndexChanged() const
-	{
-		return m_IndexChanged;
-	}
 	const std::string& GetItem(int Index)
 	{
 		return m_vecItem[Index];
@@ -49,6 +44,11 @@ public:
 	bool IsSelected() const
 	{
 		return m_SelectIndex == -1;
+	}
+
+	void SetSelectIndex(int Index)
+	{
+		m_SelectIndex = Index;
 	}
 
 public:
@@ -94,9 +94,10 @@ public:
 	void Clear()
 	{
 		m_vecItem.clear();
+		m_vecItemUTF8.clear();
 	}
 
-	void Sort(bool bSort)
+	void SetSort(bool bSort)
 	{
 		m_Sort = bSort;
 

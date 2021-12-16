@@ -4,7 +4,7 @@ CIMGUIListBox::CIMGUIListBox()  :
     m_Select(false),
     m_SelectIndex(-1),
     m_PageItemCount(3),
-    m_IndexChanged(false)
+    m_Sort(false)
 {
 }
 
@@ -33,12 +33,6 @@ void CIMGUIListBox::Render()
 
             if (ImGui::Selectable(m_vecItemUTF8[i].c_str(), m_Select))
             {
-                // 바뀜 여부 정보
-                if (m_SelectIndex != i)
-                    m_IndexChanged = true;
-                else
-                    m_IndexChanged = false;
-
                 if (m_SelectIndex != i && m_SelectCallback)
                        m_SelectCallback((int)i, m_vecItem[i].c_str());
 
