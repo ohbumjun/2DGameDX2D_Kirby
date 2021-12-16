@@ -62,10 +62,10 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("Left", VK_LEFT);
 	CInput::GetInst()->CreateKey("Right", VK_RIGHT);
 
-	CInput::GetInst()->SetKeyCallback("Up", KeyState_Push, this, &CEditorManager::KeyBoardUp);
-	CInput::GetInst()->SetKeyCallback("Down", KeyState_Push, this, &CEditorManager::KeyBoardDown);
-	CInput::GetInst()->SetKeyCallback("Left", KeyState_Push, this, &CEditorManager::KeyBoardLeft);
-	CInput::GetInst()->SetKeyCallback("Right", KeyState_Push, this, &CEditorManager::KeyBoardRight);
+	CInput::GetInst()->SetKeyCallback("Up", KeyState_Down, this, &CEditorManager::KeyBoardUp);
+	CInput::GetInst()->SetKeyCallback("Down", KeyState_Down, this, &CEditorManager::KeyBoardDown);
+	CInput::GetInst()->SetKeyCallback("Left", KeyState_Down, this, &CEditorManager::KeyBoardLeft);
+	CInput::GetInst()->SetKeyCallback("Right", KeyState_Down, this, &CEditorManager::KeyBoardRight);
 
 	return true;
 }
@@ -105,7 +105,7 @@ void CEditorManager::KeyBoardUp(float DeltaTime)
 {
 	if (m_DragObj)
 	{
-		m_DragObj->AddWorldPos(Vector3(0.f, 0.1f, 0.f));
+		m_DragObj->AddWorldPos(Vector3(0.f, 1.f, 0.f));
 	}
 }
 
@@ -113,7 +113,7 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 {
 	if (m_DragObj)
 	{
-		m_DragObj->AddWorldPos(Vector3(-1.f, 0.1f, 0.f));
+		m_DragObj->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
 	}
 }
 
@@ -121,7 +121,7 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 {
 	if (m_DragObj)
 	{
-		m_DragObj->AddWorldPos(Vector3(1.f, 0.1f, 0.f));
+		m_DragObj->AddWorldPos(Vector3(1.f, 0.0f, 0.f));
 	}
 }
 
@@ -129,6 +129,6 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 {
 	if (m_DragObj)
 	{
-		m_DragObj->AddWorldPos(Vector3(0.f, -0.1f, 0.f));
+		m_DragObj->AddWorldPos(Vector3(0.f, -1.f, 0.f));
 	}
 }
