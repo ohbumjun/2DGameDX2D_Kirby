@@ -62,10 +62,24 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("Left", VK_LEFT);
 	CInput::GetInst()->CreateKey("Right", VK_RIGHT);
 
+	CInput::GetInst()->CreateKey("UpXSize", VK_RIGHT);
+	CInput::GetInst()->SetCtrlKey("UpXSize", true);
+	CInput::GetInst()->CreateKey("DownXSize", VK_LEFT);
+	CInput::GetInst()->SetCtrlKey("DownXSize", true);
+	CInput::GetInst()->CreateKey("UpYSize", VK_UP);
+	CInput::GetInst()->SetCtrlKey("UpYSize", true);
+	CInput::GetInst()->CreateKey("DownYSize", VK_DOWN);
+	CInput::GetInst()->SetCtrlKey("DownYSize", true);
+
+
 	CInput::GetInst()->SetKeyCallback("Up", KeyState_Down, this, &CEditorManager::KeyBoardUp);
 	CInput::GetInst()->SetKeyCallback("Down", KeyState_Down, this, &CEditorManager::KeyBoardDown);
 	CInput::GetInst()->SetKeyCallback("Left", KeyState_Down, this, &CEditorManager::KeyBoardLeft);
 	CInput::GetInst()->SetKeyCallback("Right", KeyState_Down, this, &CEditorManager::KeyBoardRight);
+	CInput::GetInst()->SetKeyCallback("UpXSize", KeyState_Down, this, &CEditorManager::IncreaseXSize);
+	CInput::GetInst()->SetKeyCallback("DownXSize", KeyState_Down, this, &CEditorManager::DecreaseXSize);
+	CInput::GetInst()->SetKeyCallback("UpYSize", KeyState_Down, this, &CEditorManager::IncreaseYSize);
+	CInput::GetInst()->SetKeyCallback("DownYSize", KeyState_Down, this, &CEditorManager::DecreaseYSize);
 
 	return true;
 }
@@ -130,5 +144,34 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 	if (m_DragObj)
 	{
 		m_DragObj->AddWorldPos(Vector3(0.f, -1.f, 0.f));
+	}
+}
+
+void CEditorManager::IncreaseXSize(float DeltaTime)
+{
+	if (m_DragObj)
+	{
+		m_DragObj->AddWorldScale(Vector3(1.f, 0.f, 0.f));
+	}
+}
+void CEditorManager::DecreaseXSize(float DeltaTime)
+{
+	if (m_DragObj)
+	{
+		m_DragObj->AddWorldScale(Vector3(-1.f, 0.f, 0.f));
+	}
+}
+void CEditorManager::IncreaseYSize(float DeltaTime)
+{
+	if (m_DragObj)
+	{
+		m_DragObj->AddWorldScale(Vector3(0.f, 1.f, 0.f));
+	}
+}
+void CEditorManager::DecreaseYSize(float DeltaTime)
+{
+	if (m_DragObj)
+	{
+		m_DragObj->AddWorldScale(Vector3(0.f, -1.f, 0.f));
 	}
 }

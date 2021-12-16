@@ -41,6 +41,11 @@ public:
 	void KeyBoardRight(float DeltaTime);
 	void KeyBoardDown(float DeltaTime);
 
+	void IncreaseXSize(float DeltaTime);
+	void DecreaseXSize(float DeltaTime);
+	void IncreaseYSize(float DeltaTime);
+	void DecreaseYSize(float DeltaTime);
+
 	DECLARE_SINGLE(CEditorManager)
 };
 
