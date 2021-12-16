@@ -46,11 +46,15 @@ public :
 	{
 		return m_Sequence->GetFrameCount();
 	}
-	AnimationFrameData GetCurrentFrameData() const
+	AnimationFrameData GetFrameData(int Frame) const
 	{
-		return m_Sequence->GetFrameData(m_Frame);
+		return m_Sequence->GetFrameData(Frame);
 	}
 public :
+	void ClearFrame()
+	{
+		m_Frame = 0;
+	}
 	void AddFrame(const Vector2& StartPos, const Vector2& Size)
 	{
 		m_Sequence->AddFrame(StartPos, Size);

@@ -32,6 +32,10 @@ public:
 	{
 		m_PlayAnimation = true;
 	}
+	bool IsPlay() const 
+	{
+		return m_PlayAnimation == true;
+	}
 
 	void SetOwner(class CSpriteComponent* Owner)
 	{

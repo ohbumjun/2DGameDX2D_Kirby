@@ -209,7 +209,8 @@ void CAnimationSequence2DInstance::Start()
 
 bool CAnimationSequence2DInstance::Init()
 {
-	m_CBuffer = m_Scene->GetResource()->GetAnimation2DCBuffer();
+	if (m_Scene)
+		m_CBuffer = m_Scene->GetResource()->GetAnimation2DCBuffer();
 
 	return true;
 }
@@ -218,12 +219,13 @@ void CAnimationSequence2DInstance::Update(float DeltaTime)
 {
 	if (!m_PlayAnimation)
 		return;
-
 	if (!m_CurrentAnimation)
 		return;
-
 	if (m_CurrentAnimation->GetFrameCount() <= 0)
 		return;
+
+	// FrameTime Update
+	m_CurrentAnimation->m_FrameTime = m_CurrentAnimation->m_PlayTime / m_CurrentAnimation->GetFrameCount();
 
 	m_CurrentAnimation->m_Time += DeltaTime * m_CurrentAnimation->m_PlayScale;
 

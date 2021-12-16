@@ -34,8 +34,6 @@ bool CSpriteWindow::Init()
 {
     CIMGUIWindow::Init();
 
-    m_Animation = new CAnimationSequence2DInstance;
-    m_Animation->Stop();
 
     // ==============================
 
@@ -157,16 +155,24 @@ bool CSpriteWindow::Init()
     Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::EditFrameButton);
 
+    // =================================================
+    m_Animation = new CAnimationSequence2DInstance;
+    m_Animation->Init();
+    m_Animation->Stop();
+
     return true;
 }
 
 void CSpriteWindow::Update(float DeltaTime)
 {
     CIMGUIWindow::Update(DeltaTime);
-    /*
+    
     if (m_Animation)
     {
         m_Animation->Update(DeltaTime);
+
+        if (!m_Animation->IsPlay())
+            return;
 
         if (!m_Animation->GetCurrentAnimation())
             return;
@@ -174,12 +180,12 @@ void CSpriteWindow::Update(float DeltaTime)
         if (m_Animation->GetCurrentAnimation()->GetFrameCount() <= 0)
             return;
 
-        AnimationFrameData FrameData = m_Animation->GetCurrentAnimation()->GetCurrentFrameData();
+        // Update 된 이후, 현재 Frame의 Animation Frame Data를 보여준다
+        int CurrentFrame = m_Animation->GetCurrentAnimation()->GetCurrentFrame();
+        AnimationFrameData FrameData = m_Animation->GetCurrentAnimation()->GetFrameData(CurrentFrame);
         m_SpriteSampled->SetImageStart(FrameData.Start);
         m_SpriteSampled->SetImageEnd(FrameData.Size);
     }
-    */
-
 }
 
 void CSpriteWindow::LoadTextureButton()
@@ -269,7 +275,6 @@ void CSpriteWindow::AddAnimationButton()
     bool Loop      = StringToBool(m_AnimationLoop->GetSelectItem());
     bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
     m_Animation->AddAnimation(SequenceName, AnimationName, Loop, 1.f, 1.f, Reverse);
-    // m_Animation->SetCurrentAnimation(AnimationName);
 
     // Animation 진행
     m_Animation->Play();
@@ -354,8 +359,7 @@ void CSpriteWindow::AddAnimationFrameButton()
     // Animation->AddFrame(StartPos, EndPos - StartPos);
 
     // Stop Animation
-    m_Animation->Stop();
-
+    m_Animation->Play();
 }
 
 void CSpriteWindow::DeleteFrameButton()
@@ -413,6 +417,9 @@ void CSpriteWindow::ClearFrameButton()
     CSceneResource* Resource            = CSceneManager::GetInst()->GetScene()->GetResource();
     CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
     Sequence->ClearFrame();
+
+    // Animation Sequence2D Data Set Frame To 0
+    m_Animation->GetCurrentAnimation()->ClearFrame();
     
     // Clear Texts
     m_AnimationFrameList->Clear();
@@ -541,5 +548,28 @@ void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)
     // SpriteSampled만 바꿔주기 
     m_SpriteSampled->SetImageStart(FrameData.Start);
     m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
+
+    // Drag Object Setting
+    CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+    
+    // 재 설정 
+    
+    Vector2 ImageSize = Vector2(SequenceTexture->GetWidth(), SequenceTexture->GetHeight());
+    Vector2 StartPos = FrameData.Start;
+    Vector2 EndPos   = FrameData.Start + FrameData.Size;
+
+    StartPos.y = ImageSize.y - StartPos.y;
+    EndPos.y = ImageSize.y - EndPos.y;
+
+    Vector2 SpriteObject2DPos = Vector2(m_SpriteObject->GetWorldPos().x, m_SpriteObject->GetWorldPos().y);
+    StartPos += SpriteObject2DPos;
+    EndPos   += SpriteObject2DPos;
+
+    DragObject->SetStartPos(StartPos);
+    DragObject->SetEndPos(EndPos);
+    
+    // 클릭시 Animation 멈춰주기
+    m_Animation->Stop();
+
 }
 
