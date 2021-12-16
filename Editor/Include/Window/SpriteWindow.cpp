@@ -350,8 +350,8 @@ void CSpriteWindow::AddAnimationFrameButton()
     if (!Animation)
         return;
 
-    // Animation
-    Animation->AddFrame(StartPos, EndPos - StartPos);
+    // Animation --> 중복해서 Animation이 들어가게 된다.
+    // Animation->AddFrame(StartPos, EndPos - StartPos);
 
     // Stop Animation
     m_Animation->Stop();
@@ -383,10 +383,18 @@ void CSpriteWindow::DeleteFrameButton()
 
     // Update Names Of FrameDatas
     int ListNums = m_AnimationFrameList->GetItemCount();
-    for (int i = SelectedFrameIdx; i < ListNums; i++)
+    for (int i = 0; i < ListNums; i++)
     {
+        if (i < SelectedFrameIdx)
+            continue;
         m_AnimationFrameList->SetItem(i, std::to_string(i));
     }
+
+    if (m_AnimationFrameList->GetItemCount() <= 0)
+        return;
+    AnimationFrameData FrameData = Sequence->GetFrameData(SelectedFrameIdx - 1);
+    m_SpriteSampled->SetImageStart(FrameData.Start);
+    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 }
 
 void CSpriteWindow::ClearFrameButton()
