@@ -394,11 +394,10 @@ void CSpriteWindow::DeleteFrameButton()
         m_AnimationFrameList->SetItem(i, std::to_string(i));
     }
 
-    if (m_AnimationFrameList->GetItemCount() <= 0)
-        return;
-    AnimationFrameData FrameData = Sequence->GetFrameData(SelectedFrameIdx - 1);
-    m_SpriteSampled->SetImageStart(FrameData.Start);
-    m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
+    // Set Current Frame Of Animation To 0
+    if (m_Animation && m_Animation->GetCurrentAnimation())
+        m_Animation->GetCurrentAnimation()->ResetFrame();
+
 }
 
 void CSpriteWindow::ClearFrameButton()
@@ -419,7 +418,7 @@ void CSpriteWindow::ClearFrameButton()
     Sequence->ClearFrame();
 
     // Animation Sequence2D Data Set Frame To 0
-    m_Animation->GetCurrentAnimation()->ClearFrame();
+    m_Animation->GetCurrentAnimation()->ResetFrame();
     
     // Clear Texts
     m_AnimationFrameList->Clear();
@@ -551,8 +550,6 @@ void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)
 
     // Drag Object Setting
     CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
-    
-    // Àç ¼³Á¤ 
     
     Vector2 ImageSize = Vector2(SequenceTexture->GetWidth(), SequenceTexture->GetHeight());
     Vector2 StartPos = FrameData.Start;

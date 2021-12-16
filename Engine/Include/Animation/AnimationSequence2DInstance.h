@@ -18,7 +18,15 @@ protected:
 	std::unordered_map<std::string, CAnimationSequence2DData*>	m_mapAnimation;
 	CAnimationSequence2DData* m_CurrentAnimation;
 	class CAnimation2DConstantBuffer* m_CBuffer;
-
+public :
+	bool IsPlay() const 
+	{
+		return m_PlayAnimation == true;
+	}
+	int GetAnimationCount()	const
+	{
+		return (int)m_mapAnimation.size();
+	}
 public:
 	void SetScene(class CScene* Scene)
 	{
@@ -32,21 +40,10 @@ public:
 	{
 		m_PlayAnimation = true;
 	}
-	bool IsPlay() const 
-	{
-		return m_PlayAnimation == true;
-	}
-
 	void SetOwner(class CSpriteComponent* Owner)
 	{
 		m_Owner = Owner;
 	}
-
-	int GetAnimationCount()	const
-	{
-		return (int)m_mapAnimation.size();
-	}
-
 public:
 	void AddAnimation(const std::string& SequenceName, const std::string& Name, bool Loop = true, float PlayTime = 1.f,
 		float PlayScale = 1.f, bool Reverse = false);

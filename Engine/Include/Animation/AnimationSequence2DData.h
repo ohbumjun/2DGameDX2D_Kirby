@@ -51,7 +51,7 @@ public :
 		return m_Sequence->GetFrameData(Frame);
 	}
 public :
-	void ClearFrame()
+	void ResetFrame()
 	{
 		m_Frame = 0;
 	}
