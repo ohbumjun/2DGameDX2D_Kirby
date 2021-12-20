@@ -45,6 +45,28 @@ bool CSpriteWindow::Init()
     Button = AddWidget<CIMGUIButton>("SpriteEdit");
     Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::SpriteEditButton);
 
+    // ==============================
+
+    Button = AddWidget<CIMGUIButton>("SaveSeq", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::SaveSequence);
+    
+    Line = AddWidget<CIMGUISameLine>("Line");
+    
+    Button = AddWidget<CIMGUIButton>("LoadSeq", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::LoadSequence);
+    
+    Line = AddWidget<CIMGUISameLine>("Line");
+
+    Button = AddWidget<CIMGUIButton>("SaveAnim", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::SaveAnimation);
+
+    Line = AddWidget<CIMGUISameLine>("Line");
+    
+    Button = AddWidget<CIMGUIButton>("LoadAnim", 80.f, 30.f);
+    Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::LoadAnimation);
+
+    // ==============================
+
     m_Sprite = AddWidget<CIMGUIImage>("SpriteOrigin", 200.f, 200.f);
 
     Line = AddWidget<CIMGUISameLine>("Line");
@@ -492,6 +514,46 @@ void CSpriteWindow::StopAnimationButton()
     m_Animation->Stop();
 }
 
+void CSpriteWindow::SaveSequence()
+{
+    if (m_AnimationList->GetSelectIndex() < 0)
+        return;
+
+    TCHAR FilePath[MAX_PATH] = {};
+
+    OPENFILENAME OpenFile = {};
+    OpenFile.lStructSize = sizeof(OPENFILENAME);
+    OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+    OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0.Sequence File\0*.sqc");
+    OpenFile.lpstrFile = FilePath;
+    OpenFile.nMaxFile = MAX_PATH;
+    OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(TEXTURE_PATH)->Path;
+
+    if (GetSaveFileName(&OpenFile) != 0)
+    {
+        // 저장에 성공했다면
+        char FilePathMultibyte[MAX_PATH] = {};
+        int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, 0, 0, 0, 0);
+        WideCharToMultiByte(CP_ACP, 0, FilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
+    
+        m_Animation->GetCurrentAnimation()->GetAnimationSequence()->Save(FilePathMultibyte);
+    }
+
+}
+
+void CSpriteWindow::LoadSequence()
+{
+}
+
+void CSpriteWindow::SaveAnimation()
+{
+}
+
+void CSpriteWindow::LoadAnimation()
+{
+
+}
+
 void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
 {
     // 해당 idx의 Sequence 정보 가져오기
@@ -551,7 +613,7 @@ void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)
     // Drag Object Setting
     CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
     
-    Vector2 ImageSize = Vector2(SequenceTexture->GetWidth(), SequenceTexture->GetHeight());
+    Vector2 ImageSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
     Vector2 StartPos = FrameData.Start;
     Vector2 EndPos   = FrameData.Start + FrameData.Size;
 

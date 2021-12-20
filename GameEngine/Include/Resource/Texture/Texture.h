@@ -93,9 +93,10 @@ public:
 
 private:
 	bool CreateResource(int Index);
-
 public:
 	void SetShader(int Register, int ShaderType, int Index);
 	void ResetShader(int Register, int ShaderType, int Index);
+public :
+	void Save(FILE* pFile);
 };
 

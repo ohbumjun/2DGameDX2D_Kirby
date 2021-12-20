@@ -41,6 +41,11 @@ public:
 	void PlayAnimationButton();
 	void StopAnimationButton();
 public :
+	void SaveSequence();
+	void LoadSequence();
+	void SaveAnimation();
+	void LoadAnimation();
+public :
 	void SelectAnimationSequence(int , const char*);
 	void SelectAnimationFrame(int, const char*);
 };

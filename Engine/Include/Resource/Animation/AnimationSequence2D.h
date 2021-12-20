@@ -44,8 +44,7 @@ public :
     }
     void DeleteFrame(int Index)
     {
-        auto	iter = m_vecFrameData.begin() + Index;
-        m_vecFrameData.erase(iter);
+        m_vecFrameData.erase(m_vecFrameData.begin(), m_vecFrameData.begin() + Index);
     }
 
 public:
@@ -56,5 +55,7 @@ public:
     void AddFrame(float StartX, float StartY, float Width, float Height);
     void SetFrame(int Index, float StartX, float StartY, float Width, float Height);
     void SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos);
+public :
+    void Save(const char* FullPath);
 };
 

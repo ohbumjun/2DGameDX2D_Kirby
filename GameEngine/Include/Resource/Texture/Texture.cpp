@@ -258,3 +258,30 @@ void CTexture::ResetShader(int Register, int ShaderType, int Index)
 	{
 	}
 }
+
+void CTexture::Save(FILE* pFile)
+{
+	int Length = (int)m_Name.length();
+	fwrite(&Length, sizeof(char), 1, pFile);
+	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
+
+	fwrite(&m_ImageType, sizeof(Image_Type), 1, pFile);
+
+	int InfoCount = (int)m_vecTextureInfo.size();
+	fwrite(&InfoCount, sizeof(int), 1, pFile);
+	
+	for (size_t i = 0; i < m_vecTextureInfo.size(); i++)
+	{
+		Length = lstrlen(m_vecTextureInfo[i]->FullPath);
+		fwrite(&Length, sizeof(int), 1, pFile);
+		fwrite(m_vecTextureInfo[i]->FullPath, sizeof(TCHAR), Length, pFile);
+
+		Length = strlen(m_vecTextureInfo[i]->PathName);
+		fwrite(&Length, sizeof(int), 1, pFile);
+		fwrite(m_vecTextureInfo[i]->PathName, sizeof(char), Length, pFile);
+
+		Length = lstrlen(m_vecTextureInfo[i]->FileName);
+		fwrite(&Length, sizeof(int), 1, pFile);
+		fwrite(m_vecTextureInfo[i]->FileName, sizeof(TCHAR), Length, pFile);
+	}
+}

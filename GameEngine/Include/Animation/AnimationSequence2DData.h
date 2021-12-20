@@ -50,6 +50,14 @@ public :
 	{
 		return m_Sequence->GetFrameData(m_Frame);
 	}
+	CAnimationSequence2D* GetAnimationSequence() const
+	{
+		return m_Sequence;
+	}
+	AnimationFrameData GetFrameData(int Frame)
+	{
+		return m_Sequence->GetFrameData(Frame);
+	}
 public :
 	void AddFrame(const Vector2& StartPos, const Vector2& Size)
 	{
@@ -58,6 +66,11 @@ public :
 	void AddFrame(float StartX, float StartY, float SizeX, float SizeY)
 	{
 		m_Sequence->AddFrame(StartX, StartY, SizeX, SizeY);
+	}
+	void ResetFrame()
+	{
+		m_Frame = 0;
+		m_Sequence->ClearFrame();
 	}
 public:
 	template <typename T>

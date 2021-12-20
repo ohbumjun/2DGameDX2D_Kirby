@@ -34,7 +34,7 @@ bool CSpriteEditObject::Init()
 
 	int DefaultTextureIdx = 0;
 	CTexture* DefaultTexture = m_Sprite->GetTexture(DefaultTextureIdx);
-	m_Sprite->SetRelativeScale(DefaultTexture->GetWidth(), DefaultTexture->GetHeight(), 1.f);
+	m_Sprite->SetRelativeScale((float)DefaultTexture->GetWidth(), (float)DefaultTexture->GetHeight(), 1.f);
 
 	m_Sprite->CreateAnimationInstance<CAnimationSequence2DInstance>();
 

@@ -72,4 +72,32 @@ void CAnimationSequence2D::SetFrame(int Index, const Vector2& StartPos, Vector2&
 	m_vecFrameData[Index].Size  = EndPos;
 }
 
+void CAnimationSequence2D::Save(const char* FullPath)
+{
+	FILE* pFile;
+	fopen_s(&pFile, FullPath, "wb");
+
+	if (!pFile)
+		return;
+
+	int Length = (int)m_Name.length();
+	fwrite(&Length, sizeof(int), Length, pFile);
+	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
+
+	bool TexEnable = false;
+	if (m_Texture)
+		TexEnable = true;
+
+	fwrite(&TexEnable, sizeof(bool), 1, pFile);
+	if (m_Texture)
+		m_Texture->Save(pFile);
+
+	int FrameCount = (int)m_vecFrameData.size();
+	fwrite(&FrameCount, sizeof(int), 1, pFile);
+	fwrite(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
+	fclose(pFile);
+
+	return;
+}
+
 
