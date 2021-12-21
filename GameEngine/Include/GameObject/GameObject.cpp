@@ -36,6 +36,7 @@ CGameObject::CGameObject(const CGameObject& obj)
 
 CGameObject::~CGameObject()
 {
+	
 }
 
 void CGameObject::SetScene(CScene* Scene)

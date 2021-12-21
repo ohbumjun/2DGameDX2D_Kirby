@@ -51,6 +51,16 @@ public:
 		return m_TextureInfo[Index].Texture;
 	}
 
+	unsigned int GetTextureWidth(int Index = 0) const
+	{
+		return m_TextureInfo[Index].Texture->GetWidth();
+	}
+
+	unsigned int GetTextureHeight(int Index = 0) const
+	{
+		return m_TextureInfo[Index].Texture->GetHeight();
+	}
+
 	TCHAR* GetTextureFileName(int Index = 0) const
 	{
 		return m_TextureInfo[Index].Texture->GetFileName(Index);

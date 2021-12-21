@@ -117,7 +117,7 @@ void CEditorMenu::CreateNewComponent()
 		Object->CreateComponent<CSpriteComponent>(m_ComponentNameInput->GetTextMultibyte());
 		}
 		break;
-	case CreateComponent_Type::Static:
+	case CreateComponent_Type::StaticMesh:
 		{
 		Object->CreateComponent<CStaticMeshComponent>(m_ComponentNameInput->GetTextMultibyte());
 		}

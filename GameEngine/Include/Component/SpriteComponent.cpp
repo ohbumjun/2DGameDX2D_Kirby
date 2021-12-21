@@ -141,9 +141,9 @@ bool CSpriteComponent::Init()
 	SetMaterial(m_Scene->GetResource()->FindMaterial("BaseTexture"));
 
 	// "BaseTexutre"라는 이름의 Material이 지닌 기본 Default Texture로 SpriteComponent의 World Scale 세팅
-	int       DefaultTextureIdx = 0;
-	CTexture* Texture           = m_Material->GetTexture(DefaultTextureIdx);
-	SetWorldScale(static_cast<float>(Texture->GetWidth()), static_cast<float>(Texture->GetHeight()), 1.f);
+	float Width = (float)m_Material->GetTextureWidth();
+	float Height = (float)m_Material->GetTextureHeight();
+	SetWorldScale(Width, Height, 1.f);
 
 	return true;
 }

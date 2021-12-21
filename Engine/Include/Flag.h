@@ -83,5 +83,5 @@ enum class CreateObject_Type
 enum class CreateComponent_Type
 {
 	Sprite,
-	Static
+	StaticMesh
 };
