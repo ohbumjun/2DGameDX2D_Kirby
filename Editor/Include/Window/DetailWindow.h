@@ -21,8 +21,8 @@ private :
     class CIMUGITextInput* m_ScaleY;
     class CIMUGITextInput* m_ScaleZ;
 public :
-    bool Init();
-    void Update(float DeltaTime);
+    virtual bool Init() override;
+    virtual void Update(float DeltaTime) override; 
 public :
     void SetPositionXCallback();
     void SetPositionYCallback();

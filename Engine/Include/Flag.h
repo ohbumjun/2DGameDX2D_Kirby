@@ -73,3 +73,15 @@ enum class RenderState_Type
 	DepthStencil,
 	Max
 };
+
+enum class CreateObject_Type
+{
+	GameObject,
+	Player
+};
+
+enum class CreateComponent_Type
+{
+	Sprite,
+	Static
+};
