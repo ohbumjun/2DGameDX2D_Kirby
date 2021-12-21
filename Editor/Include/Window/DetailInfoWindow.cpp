@@ -278,12 +278,51 @@ void CDetailInfoWindow::SetRotationZCallback()
 
 void CDetailInfoWindow::SetScalingXCallback()
 {
+	// 선택한 GameObject + Component가 존재해야 한다.
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+	if (!Hierarchy || !Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+
+	if (!Object)
+		return;
+	Vector3 ObjectScale = Object->GetWorldScale();
+	Object->SetWorldScale(m_ScaleX->GetValueFloat(), ObjectScale.y, ObjectScale.z);
 }
 
 void CDetailInfoWindow::SetScalingYCallback()
 {
+	// 선택한 GameObject + Component가 존재해야 한다.
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+	if (!Hierarchy || !Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+
+	if (!Object)
+		return;
+	Vector3 ObjectScale = Object->GetWorldScale();
+	Object->SetWorldScale(ObjectScale.x,m_ScaleY->GetValueFloat(), ObjectScale.z);
 }
 
 void CDetailInfoWindow::SetScalingZCallback()
 {
+	// 선택한 GameObject + Component가 존재해야 한다.
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+	if (!Hierarchy || !Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+
+	if (!Object)
+		return;
+	Vector3 ObjectScale = Object->GetWorldScale();
+	Object->SetWorldScale(ObjectScale.x, ObjectScale.y, m_ScaleZ->GetValueFloat());
 }
