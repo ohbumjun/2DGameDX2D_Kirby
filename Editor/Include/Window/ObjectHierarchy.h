@@ -20,6 +20,7 @@ public :
         return m_ComponentListBox;
     }
 public :
+    void AddObject(const char* ObjectName);
     void SelectObject(int Index, const char* ObjectName);
     void SelectComponent(int Index, const char* ComponentName);
 public :

@@ -9,15 +9,19 @@ public:
     ~CEditorMenu();
 private :
     class CIMGUIComboBox* m_ObjectComboBox;
-    class CIMGUITextInput* m_ObjectNameInput;
+    class CIMGUITextInput*   m_ObjectNameInput;
+    class CIMGUIButton*      m_ObjectButton;
+
 	class CIMGUIComboBox* m_ComponentComboBox;
-    class CIMGUITextInput* m_ComponentNameInput;
+    class CIMGUITextInput*  m_ComponentNameInput;
+    class CIMGUIButton*      m_ComponentButton;
+
+	CreateObject_Type         m_ObjectType;
+    CreateComponent_Type  m_ComponentType;
 public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
 public :
-    void SelectObjectType(int Index, const char* ObjectType);
-    void SelectComponentType(int Index, const char* ComponentType);
     void CreateNewObject();
     void CreateNewComponent();
 };

@@ -6,7 +6,7 @@ class CStaticMeshComponent :
 {
 	friend class CGameObject;
 
-protected:
+public:
 	CStaticMeshComponent();
 	CStaticMeshComponent(const CStaticMeshComponent& Mesh);
 	virtual ~CStaticMeshComponent() override;

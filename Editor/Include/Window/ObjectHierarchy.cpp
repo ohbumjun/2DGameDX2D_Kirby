@@ -45,6 +45,11 @@ void CObjectHierarchy::Update(float DeltaTime)
 	CIMGUIWindow::Update(DeltaTime);
 }
 
+void CObjectHierarchy::AddObject(const char* ObjectName)
+{
+	m_ObjectListBox->AddItem(ObjectName);
+}
+
 void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 {
 }

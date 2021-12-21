@@ -29,6 +29,8 @@ public:
 		return m_Mode->GetPlayerObject();
 	}
 
+	CGameObject* FindGameObject(const char* ObjectName) const;
+
 public:
 	void Start();
 	void Update(float DeltaTime);

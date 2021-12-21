@@ -9,7 +9,7 @@ class CSpriteComponent :
 {
 	friend class CGameObject;
 
-protected:
+public:
 	CSpriteComponent();
 	CSpriteComponent(const CSpriteComponent& com);
 	virtual ~CSpriteComponent() override;

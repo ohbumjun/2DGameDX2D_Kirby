@@ -82,3 +82,15 @@ void CScene::PostUpdate(float DeltaTime)
 		++iter;
 	}
 }
+
+CGameObject* CScene::FindGameObject(const char* ObjectName) const
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->GetName() == ObjectName)
+			return (*iter);
+	}
+	return nullptr;
+}

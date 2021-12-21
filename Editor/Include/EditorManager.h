@@ -13,6 +13,10 @@ class CEditorManager
 private:
 	EditMode           m_EditMode;
 	class CDragObject* m_DragObj;
+	class CSpriteWindow* m_SpriteWindow;
+	class CEditorMenu* m_EditorMenu;
+	class CObjectHierarchy* m_ObjectHierarchy;
+	class CDetailWindow* m_DetailWindow;
 
 public:
 	EditMode GetEditMode()
@@ -24,7 +28,24 @@ public:
 	{
 		return m_DragObj;
 	}
+	class CSpriteWindow* GetSpriteWindow() const
+	{
+		return m_SpriteWindow;
+	}
+	class CEditorMenu* GetEditorMenu() const
+	{
+		return m_EditorMenu;
+	}
+	class CObjectHierarchy* GetObjectHierarchy() const
+	{
+		return m_ObjectHierarchy;
+	}
+	class CDetailWindow* GetDetailWindow() const
+	{
+		return m_DetailWindow;
+	}
 
+public:
 	void SetEditMode(EditMode Mode);
 
 public:
