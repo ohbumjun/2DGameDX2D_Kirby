@@ -1,7 +1,6 @@
-
 #include "GameObject.h"
 
-CGameObject::CGameObject()	:
+CGameObject::CGameObject() :
 	m_Scene(nullptr),
 	m_Parent(nullptr)
 {
@@ -25,7 +24,7 @@ CGameObject::CGameObject(const CGameObject& obj)
 
 	m_vecObjectComponent.clear();
 
-	size_t	Size = obj.m_vecObjectComponent.size();
+	size_t Size = obj.m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -47,8 +46,8 @@ void CGameObject::SetScene(CScene* Scene)
 CComponent* CGameObject::FindComponent(const std::string& Name)
 {
 	{
-		auto	iter = m_SceneComponentList.begin();
-		auto	iterEnd = m_SceneComponentList.end();
+		auto iter    = m_SceneComponentList.begin();
+		auto iterEnd = m_SceneComponentList.end();
 
 		for (; iter != iterEnd; ++iter)
 		{
@@ -58,8 +57,8 @@ CComponent* CGameObject::FindComponent(const std::string& Name)
 	}
 
 	{
-		auto	iter = m_vecObjectComponent.begin();
-		auto	iterEnd = m_vecObjectComponent.end();
+		auto iter    = m_vecObjectComponent.begin();
+		auto iterEnd = m_vecObjectComponent.end();
 
 		for (; iter != iterEnd; ++iter)
 		{
@@ -76,7 +75,7 @@ void CGameObject::Start()
 	if (m_RootComponent)
 		m_RootComponent->Start();
 
-	size_t	Size = m_vecObjectComponent.size();
+	size_t Size = m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -91,7 +90,7 @@ bool CGameObject::Init()
 
 void CGameObject::Update(float DeltaTime)
 {
-	size_t	Size = m_vecObjectComponent.size();
+	size_t Size = m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -104,7 +103,7 @@ void CGameObject::Update(float DeltaTime)
 
 void CGameObject::PostUpdate(float DeltaTime)
 {
-	size_t	Size = m_vecObjectComponent.size();
+	size_t Size = m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -117,7 +116,7 @@ void CGameObject::PostUpdate(float DeltaTime)
 
 void CGameObject::PrevRender()
 {
-	size_t	Size = m_vecObjectComponent.size();
+	size_t Size = m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -130,7 +129,7 @@ void CGameObject::PrevRender()
 
 void CGameObject::Render()
 {
-	size_t	Size = m_vecObjectComponent.size();
+	size_t Size = m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -143,7 +142,7 @@ void CGameObject::Render()
 
 void CGameObject::PostRender()
 {
-	size_t	Size = m_vecObjectComponent.size();
+	size_t Size = m_vecObjectComponent.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{

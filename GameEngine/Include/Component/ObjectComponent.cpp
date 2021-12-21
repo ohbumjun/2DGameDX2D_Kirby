@@ -1,4 +1,3 @@
-
 #include "ObjectComponent.h"
 
 CObjectComponent::CObjectComponent()
@@ -7,7 +6,7 @@ CObjectComponent::CObjectComponent()
 	m_ComponentType = Component_Type::ObjectComponent;
 }
 
-CObjectComponent::CObjectComponent(const CObjectComponent& com)	:
+CObjectComponent::CObjectComponent(const CObjectComponent& com) :
 	CComponent(com)
 {
 }

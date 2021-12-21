@@ -1,9 +1,8 @@
-
 #include "ResourceManager.h"
 
 DEFINITION_SINGLE(CResourceManager)
 
-CResourceManager::CResourceManager()	:
+CResourceManager::CResourceManager() :
 	m_MeshManager(nullptr),
 	m_ShaderManager(nullptr),
 	m_MaterialManager(nullptr),
@@ -72,7 +71,7 @@ void CResourceManager::ReleaseShader(const std::string& Name)
 }
 
 bool CResourceManager::CreateConstantBuffer(const std::string& Name, int Size, int Register,
-	int ConstantBufferShaderType)
+                                            int                ConstantBufferShaderType)
 {
 	return m_ShaderManager->CreateConstantBuffer(Name, Size, Register, ConstantBufferShaderType);
 }
@@ -113,7 +112,8 @@ void CResourceManager::ReleaseTexture(const std::string& Name)
 }
 
 bool CResourceManager::CreateAnimationSequence2D(const std::string& Name,
-	const std::string& TextureName, const TCHAR* FileName, const std::string& PathName)
+                                                 const std::string& TextureName, const TCHAR* FileName,
+                                                 const std::string& PathName)
 {
 	return m_AnimationManager->CreateAnimationSequence2D(Name, TextureName, FileName, PathName);
 }
@@ -124,13 +124,13 @@ bool CResourceManager::CreateAnimationSequence2D(const std::string& Name, CTextu
 }
 
 void CResourceManager::AddAnimationSequence2DFrame(const std::string& Name, const Vector2& Start,
-	const Vector2& Size)
+                                                   const Vector2&     Size)
 {
 	m_AnimationManager->AddFrame(Name, Start, Size);
 }
 
-void CResourceManager::AddAnimationSequence2DFrame(const std::string& Name, float StartX,
-	float StartY, float Width, float Height)
+void CResourceManager::AddAnimationSequence2DFrame(const std::string& Name, float   StartX,
+                                                   float              StartY, float Width, float Height)
 {
 	m_AnimationManager->AddFrame(Name, StartX, StartY, Width, Height);
 }
@@ -149,3 +149,9 @@ CAnimation2DConstantBuffer* CResourceManager::GetAnimation2DCBuffer() const
 {
 	return m_AnimationManager->GetAnimation2DCBuffer();
 }
+
+bool CResourceManager::LoadSequence2D(std::string& SequenceName, const char* FullPath, const CScene* Scene)
+{
+	return m_AnimationManager->LoadSequence2D(SequenceName, FullPath, Scene);
+}
+

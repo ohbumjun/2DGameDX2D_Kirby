@@ -3,15 +3,14 @@
 #include "Mesh.h"
 
 class CStaticMesh :
-    public CMesh
+	public CMesh
 {
 	friend class CMeshManager;
 
 protected:
 	CStaticMesh();
-	virtual ~CStaticMesh();
+	virtual ~CStaticMesh() override;
 
 public:
-	virtual bool Init();
+	virtual bool Init() override;
 };
-

@@ -7,7 +7,6 @@ CStaticMesh::CStaticMesh()
 
 CStaticMesh::~CStaticMesh()
 {
-
 }
 
 bool CStaticMesh::Init()

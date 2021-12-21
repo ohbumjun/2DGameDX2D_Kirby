@@ -1,20 +1,19 @@
-
 #include "SpriteComponent.h"
-#include "../Scene/Scene.h"
-#include "../Scene/SceneResource.h"
 #include "../Animation/AnimationSequence2DInstance.h"
 #include "../Render/RenderManager.h"
-#include "../Resource/Shader/Standard2DConstantBuffer.h"
 #include "../Resource/Material/Material.h"
+#include "../Resource/Shader/Standard2DConstantBuffer.h"
+#include "../Scene/Scene.h"
+#include "../Scene/SceneResource.h"
 
-CSpriteComponent::CSpriteComponent()	:
+CSpriteComponent::CSpriteComponent() :
 	m_Animation(nullptr)
 {
 	SetTypeID<CSpriteComponent>();
 	m_Render = true;
 }
 
-CSpriteComponent::CSpriteComponent(const CSpriteComponent& com)	:
+CSpriteComponent::CSpriteComponent(const CSpriteComponent& com) :
 	CSceneComponent(com)
 {
 	m_Mesh = com.m_Mesh;
@@ -78,8 +77,8 @@ void CSpriteComponent::AddTexture(int Register, int ShaderType, const std::strin
 	m_Material->AddTexture(Register, ShaderType, Name, Texture);
 }
 
-void CSpriteComponent::AddTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, 
-	const std::string& PathName)
+void CSpriteComponent::AddTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
+                                  const std::string& PathName)
 {
 	m_Material->AddTexture(Register, ShaderType, Name, FileName, PathName);
 }
@@ -89,8 +88,8 @@ void CSpriteComponent::AddTextureFullPath(int Register, int ShaderType, const st
 	m_Material->AddTextureFullPath(Register, ShaderType, Name, FullPath);
 }
 
-void CSpriteComponent::AddTexture(int Register, int ShaderType, const std::string& Name, 
-	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+void CSpriteComponent::AddTexture(int                        Register, int ShaderType, const std::string& Name,
+                                  const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
 {
 	m_Material->AddTexture(Register, ShaderType, Name, vecFileName, PathName);
 }
@@ -105,20 +104,21 @@ void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const
 	m_Material->SetTexture(Index, Register, ShaderType, Name, Texture);
 }
 
-void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
-	const std::string& PathName)
+void CSpriteComponent::SetTexture(int                Index, int Register, int ShaderType, const std::string& Name,
+                                  const TCHAR*       FileName,
+                                  const std::string& PathName)
 {
 	m_Material->SetTexture(Index, Register, ShaderType, Name, FileName, PathName);
 }
 
-void CSpriteComponent::SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, 
-	const TCHAR* FullPath)
+void CSpriteComponent::SetTextureFullPath(int          Index, int Register, int ShaderType, const std::string& Name,
+                                          const TCHAR* FullPath)
 {
 	m_Material->SetTextureFullPath(Index, Register, ShaderType, Name, FullPath);
 }
 
-void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const std::string& Name, 
-	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const std::string& Name,
+                                  const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
 {
 	m_Material->SetTexture(Index, Register, ShaderType, Name, vecFileName, PathName);
 }
@@ -134,16 +134,16 @@ void CSpriteComponent::Start()
 bool CSpriteComponent::Init()
 {
 	// Mesh 세팅 
-	m_Mesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
+	m_Mesh = static_cast<CSpriteMesh*>(m_Scene->GetResource()->FindMesh("SpriteMesh"));
 	SetMeshSize(1.f, 1.f, 0.f);
 
 	// Material Setting 
 	SetMaterial(m_Scene->GetResource()->FindMaterial("BaseTexture"));
 
 	// "BaseTexutre"라는 이름의 Material이 지닌 기본 Default Texture로 SpriteComponent의 World Scale 세팅
-	int DefaultTextureIdx = 0;
-	CTexture* Texture = m_Material->GetTexture(DefaultTextureIdx);
-	SetWorldScale((float)Texture->GetWidth(), (float)Texture->GetHeight(), 1.f);
+	int       DefaultTextureIdx = 0;
+	CTexture* Texture           = m_Material->GetTexture(DefaultTextureIdx);
+	SetWorldScale(static_cast<float>(Texture->GetWidth()), static_cast<float>(Texture->GetHeight()), 1.f);
 
 	return true;
 }

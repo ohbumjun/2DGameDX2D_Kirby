@@ -1,16 +1,19 @@
 #include "EditorManager.h"
 #include "Engine.h"
-#include "resource.h"
-#include "Scene/SceneManager.h"
-#include "Scene/DefaultScene.h"
-#include "Input.h"
 #include "IMGUIManager.h"
-#include "Window/SpriteWindow.h"
+#include "Input.h"
+#include "resource.h"
 #include "Object/DragObject.h"
 #include "Render/RenderManager.h"
+#include "Scene/DefaultScene.h"
+#include "Scene/SceneManager.h"
+#include "Window/SpriteWindow.h"
+#include "Window/EditorMenu.h"
+#include "Window/ObjectHierarchy.h"
+#include "Window/DetailWindow.h"
 
 DEFINITION_SINGLE(CEditorManager)
- 
+
 CEditorManager::CEditorManager() :
 	m_EditMode(EditMode::Scene),
 	m_DragObj(nullptr)
@@ -38,7 +41,7 @@ void CEditorManager::SetEditMode(EditMode Mode)
 bool CEditorManager::Init(HINSTANCE hInst)
 {
 	if (!CEngine::GetInst()->Init(hInst, TEXT("GameEngine"),
-		1280, 720, IDI_ICON1))
+	                              1280, 720, IDI_ICON1))
 	{
 		CEngine::DestroyInst();
 		return false;
@@ -47,6 +50,9 @@ bool CEditorManager::Init(HINSTANCE hInst)
 
 	// IMGUI로 에디터에서 사용할 윈도우를 만들어준다.
 	CSpriteWindow* SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteWindow>("SpriteWindow");
+	CEditorMenu* EditorMenu        = CIMGUIManager::GetInst()->AddWindow<CEditorMenu>("EditorMenu");
+	CObjectHierarchy* ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
+	CDetailWindow* DetailWindow = CIMGUIManager::GetInst()->AddWindow<CDetailWindow>("DetailWindow");
 
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
 
@@ -112,7 +118,6 @@ void CEditorManager::MouseLButtonPush(float DeltaTime)
 
 void CEditorManager::MouseLButtonUp(float DeltaTime)
 {
-
 }
 
 void CEditorManager::KeyBoardUp(float DeltaTime)
@@ -154,6 +159,7 @@ void CEditorManager::IncreaseXSize(float DeltaTime)
 		m_DragObj->AddWorldScale(Vector3(1.f, 0.f, 0.f));
 	}
 }
+
 void CEditorManager::DecreaseXSize(float DeltaTime)
 {
 	if (m_DragObj)
@@ -161,6 +167,7 @@ void CEditorManager::DecreaseXSize(float DeltaTime)
 		m_DragObj->AddWorldScale(Vector3(-1.f, 0.f, 0.f));
 	}
 }
+
 void CEditorManager::IncreaseYSize(float DeltaTime)
 {
 	if (m_DragObj)
@@ -168,6 +175,7 @@ void CEditorManager::IncreaseYSize(float DeltaTime)
 		m_DragObj->AddWorldScale(Vector3(0.f, 1.f, 0.f));
 	}
 }
+
 void CEditorManager::DecreaseYSize(float DeltaTime)
 {
 	if (m_DragObj)

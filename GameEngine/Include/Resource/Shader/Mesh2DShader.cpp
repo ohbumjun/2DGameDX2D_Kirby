@@ -1,4 +1,3 @@
-
 #include "Mesh2DShader.h"
 
 CMesh2DShader::CMesh2DShader()

@@ -1,9 +1,8 @@
-
 #include "Texture.h"
-#include "../../PathManager.h"
 #include "../../Device.h"
+#include "../../PathManager.h"
 
-CTexture::CTexture()	:
+CTexture::CTexture() :
 	m_Scene(nullptr),
 	m_ImageType(Image_Type::Atlas)
 {
@@ -11,7 +10,7 @@ CTexture::CTexture()	:
 
 CTexture::~CTexture()
 {
-	size_t	Size = m_vecTextureInfo.size();
+	size_t Size = m_vecTextureInfo.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -20,7 +19,7 @@ CTexture::~CTexture()
 }
 
 bool CTexture::LoadTexture(const std::string& Name, const TCHAR* FileName,
-	const std::string& PathName)
+                           const std::string& PathName)
 {
 	TextureResourceInfo* Info = new TextureResourceInfo;
 
@@ -48,12 +47,12 @@ bool CTexture::LoadTexture(const std::string& Name, const TCHAR* FileName,
 
 	strcpy_s(Info->PathName, PathName.length() + 1, PathName.c_str());
 
-	char	Ext[_MAX_EXT] = {};
-	char	FullPathMultibyte[MAX_PATH] = {};
+	char Ext[_MAX_EXT]               = {};
+	char FullPathMultibyte[MAX_PATH] = {};
 
 #ifdef UNICODE
 
-	int	ConvertLength = WideCharToMultiByte(CP_ACP, 0, FullPath, -1, nullptr, 0, nullptr, nullptr);
+	int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FullPath, -1, nullptr, 0, nullptr, nullptr);
 	WideCharToMultiByte(CP_ACP, 0, FullPath, -1, FullPathMultibyte, ConvertLength, nullptr, nullptr);
 
 #else
@@ -121,7 +120,7 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 	Info->FileName = new TCHAR[MAX_PATH];
 	memset(Info->FileName, 0, sizeof(TCHAR) * MAX_PATH);
 
-	TCHAR	_FileExt[_MAX_EXT] = {};
+	TCHAR _FileExt[_MAX_EXT] = {};
 
 	_wsplitpath_s(FullPath, nullptr, 0, nullptr, 0, Info->FileName, MAX_PATH, _FileExt, _MAX_EXT);
 
@@ -132,11 +131,11 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 
 	//strcpy_s(Info->PathName, PathName.length() + 1, PathName.c_str());
 
-	char	Ext[_MAX_EXT] = {};
+	char Ext[_MAX_EXT] = {};
 
 #ifdef UNICODE
 
-	int	ConvertLength = WideCharToMultiByte(CP_ACP, 0, _FileExt, -1, nullptr, 0, nullptr, nullptr);
+	int ConvertLength = WideCharToMultiByte(CP_ACP, 0, _FileExt, -1, nullptr, 0, nullptr, nullptr);
 	WideCharToMultiByte(CP_ACP, 0, _FileExt, -1, Ext, ConvertLength, nullptr, nullptr);
 
 #else
@@ -191,12 +190,12 @@ bool CTexture::CreateResource(int Index)
 	TextureResourceInfo* Info = m_vecTextureInfo[Index];
 
 	if (FAILED(CreateShaderResourceView(CDevice::GetInst()->GetDevice(), Info->Image->GetImages(),
-		Info->Image->GetImageCount(), Info->Image->GetMetadata(),
-		&Info->SRV)))
+		           Info->Image->GetImageCount(), Info->Image->GetMetadata(),
+		           &Info->SRV)))
 		return false;
 
-	Info->Width = (unsigned int)Info->Image->GetImages()[0].width;
-	Info->Height = (unsigned int)Info->Image->GetImages()[0].height;
+	Info->Width  = static_cast<unsigned>(Info->Image->GetImages()[0].width);
+	Info->Height = static_cast<unsigned>(Info->Image->GetImages()[0].height);
 
 	return true;
 }
@@ -205,22 +204,22 @@ void CTexture::SetShader(int Register, int ShaderType, int Index)
 {
 	if (m_ImageType != Image_Type::Array)
 	{
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Vertex)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Vertex))
 			CDevice::GetInst()->GetContext()->VSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Pixel)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Pixel))
 			CDevice::GetInst()->GetContext()->PSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Domain)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Domain))
 			CDevice::GetInst()->GetContext()->DSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Hull)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Hull))
 			CDevice::GetInst()->GetContext()->HSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Geometry)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Geometry))
 			CDevice::GetInst()->GetContext()->GSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Compute)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Compute))
 			CDevice::GetInst()->GetContext()->CSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 	}
 
@@ -235,22 +234,22 @@ void CTexture::ResetShader(int Register, int ShaderType, int Index)
 
 	if (m_ImageType != Image_Type::Array)
 	{
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Vertex)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Vertex))
 			CDevice::GetInst()->GetContext()->VSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Pixel)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Pixel))
 			CDevice::GetInst()->GetContext()->PSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Domain)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Domain))
 			CDevice::GetInst()->GetContext()->DSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Hull)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Hull))
 			CDevice::GetInst()->GetContext()->HSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Geometry)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Geometry))
 			CDevice::GetInst()->GetContext()->GSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & (int)ConstantBuffer_Shader_Type::Compute)
+		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Compute))
 			CDevice::GetInst()->GetContext()->CSSetShaderResources(Register, 1, &SRV);
 	}
 
@@ -261,15 +260,15 @@ void CTexture::ResetShader(int Register, int ShaderType, int Index)
 
 void CTexture::Save(FILE* pFile)
 {
-	int Length = (int)m_Name.length();
+	int Length = static_cast<int>(m_Name.length());
 	fwrite(&Length, sizeof(char), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
 	fwrite(&m_ImageType, sizeof(Image_Type), 1, pFile);
 
-	int InfoCount = (int)m_vecTextureInfo.size();
+	int InfoCount = static_cast<int>(m_vecTextureInfo.size());
 	fwrite(&InfoCount, sizeof(int), 1, pFile);
-	
+
 	for (size_t i = 0; i < m_vecTextureInfo.size(); i++)
 	{
 		Length = lstrlen(m_vecTextureInfo[i]->FullPath);

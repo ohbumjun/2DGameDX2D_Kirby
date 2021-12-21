@@ -7,8 +7,7 @@ class CClientManager
 public:
 	bool Init(HINSTANCE hInst);
 	void CreateDefaultSceneMode();
-	int Run();
+	int  Run();
 
 	DECLARE_SINGLE(CClientManager)
 };
-

@@ -1,4 +1,3 @@
-
 #include "BulletTornaido.h"
 #include "Component/SpriteComponent.h"
 
@@ -9,9 +8,9 @@ CBulletTornaido::CBulletTornaido()
 CBulletTornaido::CBulletTornaido(const CBulletTornaido& obj) :
 	CGameObject(obj)
 {
-	m_Root = (CSceneComponent*)FindComponent("Root");
-	m_Root1 = (CSceneComponent*)FindComponent("Root1");
-	m_Sprite = (CSpriteComponent*)FindComponent("BulletSprite");
+	m_Root   = static_cast<CSceneComponent*>(FindComponent("Root"));
+	m_Root1  = static_cast<CSceneComponent*>(FindComponent("Root1"));
+	m_Sprite = static_cast<CSpriteComponent*>(FindComponent("BulletSprite"));
 }
 
 CBulletTornaido::~CBulletTornaido()
@@ -20,8 +19,8 @@ CBulletTornaido::~CBulletTornaido()
 
 bool CBulletTornaido::Init()
 {
-	m_Root = CreateComponent<CSceneComponent>("Root");
-	m_Root1 = CreateComponent<CSceneComponent>("Root1");
+	m_Root   = CreateComponent<CSceneComponent>("Root");
+	m_Root1  = CreateComponent<CSceneComponent>("Root1");
 	m_Sprite = CreateComponent<CSpriteComponent>("BulletSprite");
 
 	SetRootComponent(m_Root);

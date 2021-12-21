@@ -11,11 +11,11 @@ protected:
 	virtual ~CIMGUIWidget();
 
 protected:
-	std::string		m_Name;
+	std::string         m_Name;
 	class CIMGUIWindow* m_Owner;
-	ImVec2			m_Size;
-	ImColor			m_Color;
-	ImFont*			m_Font;
+	ImVec2              m_Size;
+	ImColor             m_Color;
+	ImFont*             m_Font;
 
 public:
 	void SetOwner(class CIMGUIWindow* Owner)
@@ -52,20 +52,21 @@ public:
 	}
 
 	void SetColor(unsigned char r, unsigned char g, unsigned char b,
-		unsigned char a = 255)
+	              unsigned char a = 255)
 	{
 		m_Color.Value.x = r / 255.f;
 		m_Color.Value.y = g / 255.f;
 		m_Color.Value.z = b / 255.f;
 		m_Color.Value.w = a / 255.f;
 	}
+
 public :
 	Vector2 GetSize() const
 	{
-		return Vector2(m_Size.x , m_Size.y);
+		return Vector2(m_Size.x, m_Size.y);
 	}
+
 public:
 	virtual bool Init();
 	virtual void Render();
 };
-

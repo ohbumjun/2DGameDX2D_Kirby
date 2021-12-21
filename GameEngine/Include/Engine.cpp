@@ -1,18 +1,18 @@
 #include "Engine.h"
 #include "Device.h"
-#include "Resource/ResourceManager.h"
+#include "IMGUIManager.h"
+#include "Input.h"
 #include "PathManager.h"
 #include "Timer.h"
-#include "Scene/SceneManager.h"
 #include "Render/RenderManager.h"
-#include "Input.h"
-#include "IMGUIManager.h"
+#include "Resource/ResourceManager.h"
+#include "Scene/SceneManager.h"
 
 DEFINITION_SINGLE(CEngine)
 
 bool CEngine::m_Loop = true;
 
-CEngine::CEngine()	:
+CEngine::CEngine() :
 	m_ClearColor{},
 	m_Timer(nullptr),
 	m_Start(false)
@@ -42,12 +42,12 @@ CEngine::~CEngine()
 	SAFE_DELETE(m_Timer);
 }
 
-bool CEngine::Init(HINSTANCE hInst, const TCHAR* Name, unsigned int Width,
-	unsigned int Height, int IconID, bool WindowMode)
+bool CEngine::Init(HINSTANCE    hInst, const TCHAR* Name, unsigned int Width,
+                   unsigned int Height, int         IconID, bool       WindowMode)
 {
 	m_hInst = hInst;
 
-	m_RS.Width = Width;
+	m_RS.Width  = Width;
 	m_RS.Height = Height;
 
 	Register(Name, IconID);
@@ -56,13 +56,13 @@ bool CEngine::Init(HINSTANCE hInst, const TCHAR* Name, unsigned int Width,
 	return Init(hInst, m_hWnd, Width, Height, WindowMode);
 }
 
-bool CEngine::Init(HINSTANCE hInst, HWND hWnd,
-	unsigned int Width, unsigned int Height, bool WindowMode)
+bool CEngine::Init(HINSTANCE    hInst, HWND         hWnd,
+                   unsigned int Width, unsigned int Height, bool WindowMode)
 {
 	m_hInst = hInst;
-	m_hWnd = hWnd;
+	m_hWnd  = hWnd;
 
-	m_RS.Width = Width;
+	m_RS.Width  = Width;
 	m_RS.Height = Height;
 
 	m_Timer = new CTimer;
@@ -132,7 +132,7 @@ int CEngine::Run()
 		}
 	}
 
-	return (int)msg.wParam;
+	return static_cast<int>(msg.wParam);
 }
 
 void CEngine::Logic()
@@ -145,7 +145,7 @@ void CEngine::Logic()
 
 	m_Timer->Update();
 
-	float	DeltaTime = m_Timer->GetDeltaTime();
+	float DeltaTime = m_Timer->GetDeltaTime();
 
 	CInput::GetInst()->Update(DeltaTime);
 
@@ -210,8 +210,8 @@ ATOM CEngine::Register(const TCHAR* Name, int IconID)
 	// 메세지가 큐에 들어왔을때 해당 메세지를 꺼내오고 꺼내온 메세지를 인자로 전달해서
 	// 호출해줄 함수를 지정한다.
 	wcex.lpfnWndProc = WndProc;
-	wcex.cbClsExtra = 0;
-	wcex.cbWndExtra = 0;
+	wcex.cbClsExtra  = 0;
+	wcex.cbWndExtra  = 0;
 
 	// Window Instance를 지정한다.
 	wcex.hInstance = m_hInst;
@@ -220,14 +220,14 @@ ATOM CEngine::Register(const TCHAR* Name, int IconID)
 	wcex.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IconID));
 
 
-	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wcex.hCursor       = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = nullptr;
+	wcex.lpszMenuName  = nullptr;
 	// 유니코드 문자열을 사용할때 L"" 을 붙여서 사용을 한다.
 	// TEXT 매크로는 "" 앞에 L 을 붙여서 L"" 로 만들어준다.
 	// 유니코드일때는 이렇게 해주고 multibyte  일때는 그냥 "" 로 만들어준다.
 	wcex.lpszClassName = Name;
-	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IconID));
+	wcex.hIconSm       = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IconID));
 
 	return RegisterClassExW(&wcex);
 }
@@ -235,18 +235,18 @@ ATOM CEngine::Register(const TCHAR* Name, int IconID)
 BOOL CEngine::Create(const TCHAR* Name)
 {
 	m_hWnd = CreateWindowW(Name, Name, WS_OVERLAPPEDWINDOW,
-		0, 0, m_RS.Width, m_RS.Height, nullptr, nullptr, m_hInst, nullptr);
+	                       0, 0, m_RS.Width, m_RS.Height, nullptr, nullptr, m_hInst, nullptr);
 
 	if (!m_hWnd)
 	{
 		return FALSE;
 	}
-	
+
 	// 클라이언트 영역을 1280, 720으로 만들어준다.
 	// RECT : 사각형을 표현하는 구조체이다.
 	// left, top, right, bottom 4개의 값으로 구성되어 있다.
-	RECT    rc = { 0, 0, (LONG)m_RS.Width, (LONG)m_RS.Height };
-	
+	RECT rc = {0, 0, static_cast<LONG>(m_RS.Width), static_cast<LONG>(m_RS.Height)};
+
 	// 1번인자 : 클라이언트 영역의 크기를 전달한다.
 	// 이 함수가 완료되면 rc에는 실제 클라이언트 영역이 원하는 크기 될 수 있는
 	// 전체 윈도우의 left, top, right, bottom 정보가 들어오게 된다.
@@ -254,8 +254,8 @@ BOOL CEngine::Create(const TCHAR* Name)
 
 	// 위에서 얻어온 Rect를 이용해서 윈도우 크기를 지정한다.
 	SetWindowPos(m_hWnd, HWND_TOPMOST, 0, 0, rc.right - rc.left,
-		rc.bottom - rc.top,
-		SWP_NOZORDER);
+	             rc.bottom - rc.top,
+	             SWP_NOZORDER);
 
 	// SW_SHOW : 윈도우창을 화면에 보여준다.
 	// SW_HIDE : 창을 만들긴 하지만 화면에 보여주는건 아니다.
@@ -277,15 +277,15 @@ LRESULT CEngine::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
+		{
+			PAINTSTRUCT ps;
 
-		// HDC : 화면에 출력하기 위한 그리기 도구이다.
-		HDC hdc = BeginPaint(hWnd, &ps);
+			// HDC : 화면에 출력하기 위한 그리기 도구이다.
+			HDC hdc = BeginPaint(hWnd, &ps);
 
-		EndPaint(hWnd, &ps);
-	}
-	break;
+			EndPaint(hWnd, &ps);
+		}
+		break;
 	case WM_DESTROY:
 		m_Loop = false;
 		PostQuitMessage(0);

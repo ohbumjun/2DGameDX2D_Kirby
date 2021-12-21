@@ -1,14 +1,14 @@
 #pragma once
 #include "GraphicShader.h"
+
 class CPosMeshShader :
-    public CGraphicShader
+	public CGraphicShader
 {
-    friend class CShaderManager;
+	friend class CShaderManager;
 
 protected:
-    CPosMeshShader();
-    ~CPosMeshShader();
+	CPosMeshShader();
+	virtual ~CPosMeshShader() override;
 public :
-    virtual bool Init() override;
+	virtual bool Init() override;
 };
-

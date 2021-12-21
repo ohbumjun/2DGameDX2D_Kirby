@@ -1,8 +1,8 @@
 #include "IMGUIWindow.h"
-#include "IMGUIWidget.h"
 #include "IMGUIManager.h"
+#include "IMGUIWidget.h"
 
-CIMGUIWindow::CIMGUIWindow()	:
+CIMGUIWindow::CIMGUIWindow() :
 	m_Open(true),
 	m_WindowFlag(ImGuiWindowFlags_NoCollapse),
 	m_ModalPopup(false)
@@ -11,7 +11,7 @@ CIMGUIWindow::CIMGUIWindow()	:
 
 CIMGUIWindow::~CIMGUIWindow()
 {
-	size_t	Size = m_vecPopupWidget.size();
+	size_t Size = m_vecPopupWidget.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -44,7 +44,7 @@ void CIMGUIWindow::ClosePopup()
 {
 	ImGui::CloseCurrentPopup();
 
-	size_t	Size = m_vecPopupWidget.size();
+	size_t Size = m_vecPopupWidget.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{

@@ -1,11 +1,10 @@
-
 #include "PlayerAnimation2D.h"
 
 CPlayerAnimation2D::CPlayerAnimation2D()
 {
 }
 
-CPlayerAnimation2D::CPlayerAnimation2D(const CPlayerAnimation2D& Anim)	:
+CPlayerAnimation2D::CPlayerAnimation2D(const CPlayerAnimation2D& Anim) :
 	CAnimationSequence2DInstance(Anim)
 {
 }

@@ -1,4 +1,3 @@
-
 #include "RenderStateManager.h"
 #include "BlendState.h"
 #include "DepthStencilState.h"
@@ -23,9 +22,9 @@ bool CRenderStateManager::Init()
 }
 
 void CRenderStateManager::SetBlendFactor(const std::string& Name,
-	float r, float g, float b, float a)
+                                         float              r, float g, float b, float a)
 {
-	CBlendState* State = (CBlendState*)FindRenderState(Name);
+	CBlendState* State = static_cast<CBlendState*>(FindRenderState(Name));
 
 	if (!State)
 	{
@@ -39,13 +38,13 @@ void CRenderStateManager::SetBlendFactor(const std::string& Name,
 	State->SetBlendFactor(r, g, b, a);
 }
 
-void CRenderStateManager::AddBlendInfo(const std::string& Name, 
-	bool BlendEnable, D3D11_BLEND SrcBlend,
-	D3D11_BLEND DestBlend, D3D11_BLEND_OP BlendOp, D3D11_BLEND SrcBlendAlpha,
-	D3D11_BLEND DestBlendAlpha, D3D11_BLEND_OP BlendOpAlpha, 
-	UINT8 RenderTargetWriteMask)
+void CRenderStateManager::AddBlendInfo(const std::string& Name,
+                                       bool               BlendEnable, D3D11_BLEND SrcBlend,
+                                       D3D11_BLEND        DestBlend, D3D11_BLEND_OP BlendOp, D3D11_BLEND SrcBlendAlpha,
+                                       D3D11_BLEND        DestBlendAlpha, D3D11_BLEND_OP BlendOpAlpha,
+                                       UINT8              RenderTargetWriteMask)
 {
-	CBlendState* State = (CBlendState*)FindRenderState(Name);
+	CBlendState* State = static_cast<CBlendState*>(FindRenderState(Name));
 
 	if (!State)
 	{
@@ -57,13 +56,13 @@ void CRenderStateManager::AddBlendInfo(const std::string& Name,
 	}
 
 	State->AddBlendInfo(BlendEnable, SrcBlend, DestBlend, BlendOp,
-		SrcBlendAlpha, DestBlendAlpha, BlendOpAlpha, RenderTargetWriteMask);
+	                    SrcBlendAlpha, DestBlendAlpha, BlendOpAlpha, RenderTargetWriteMask);
 }
 
 bool CRenderStateManager::CreateBlendState(const std::string& Name, bool AlphaToCoverageEnable,
-	bool IndependentBlendEnable)
+                                           bool               IndependentBlendEnable)
 {
-	CBlendState* State = (CBlendState*)FindRenderState(Name);
+	CBlendState* State = static_cast<CBlendState*>(FindRenderState(Name));
 
 	if (!State)
 		return false;
@@ -77,19 +76,21 @@ bool CRenderStateManager::CreateBlendState(const std::string& Name, bool AlphaTo
 	return true;
 }
 
-bool CRenderStateManager::CreateDepthStencilState(const std::string& Name, bool DepthEnable, 
-	D3D11_DEPTH_WRITE_MASK DepthWriteMAsk, D3D11_COMPARISON_FUNC DepthFunc, 
-	bool StencilEnable, UINT8 StencilReadMask, UINT8 StencilWriteMask, 
-	D3D11_DEPTH_STENCILOP_DESC FrontFace, D3D11_DEPTH_STENCILOP_DESC BackFace)
+bool CRenderStateManager::CreateDepthStencilState(const std::string& Name, bool DepthEnable,
+                                                  D3D11_DEPTH_WRITE_MASK DepthWriteMAsk,
+                                                  D3D11_COMPARISON_FUNC DepthFunc,
+                                                  bool StencilEnable, UINT8 StencilReadMask, UINT8 StencilWriteMask,
+                                                  D3D11_DEPTH_STENCILOP_DESC FrontFace,
+                                                  D3D11_DEPTH_STENCILOP_DESC BackFace)
 {
-	CDepthStencilState* State = (CDepthStencilState*)FindRenderState(Name);
+	CDepthStencilState* State = static_cast<CDepthStencilState*>(FindRenderState(Name));
 	if (State)
 		return false;
 
 	State = new CDepthStencilState;
 
 	if (!State->CreateState(DepthEnable, DepthWriteMAsk, DepthFunc, StencilEnable,
-		StencilReadMask, StencilWriteMask, FrontFace, BackFace))
+	                        StencilReadMask, StencilWriteMask, FrontFace, BackFace))
 	{
 		SAFE_RELEASE(State);
 		return false;
@@ -104,7 +105,7 @@ bool CRenderStateManager::CreateDepthStencilState(const std::string& Name, bool 
 
 CRenderState* CRenderStateManager::FindRenderState(const std::string& Name)
 {
-	auto	iter = m_mapRenderState.find(Name);
+	auto iter = m_mapRenderState.find(Name);
 
 	if (iter == m_mapRenderState.end())
 		return nullptr;

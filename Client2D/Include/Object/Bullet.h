@@ -3,23 +3,22 @@
 #include "GameObject/GameObject.h"
 
 class CBullet :
-    public CGameObject
+	public CGameObject
 {
-    friend class CScene;
+	friend class CScene;
 
 protected:
-    CBullet();
-    CBullet(const CBullet& obj);
-    virtual ~CBullet();
+	CBullet();
+	CBullet(const CBullet& obj);
+	virtual ~CBullet() override;
 
 private:
-    CSharedPtr<class CSpriteComponent>    m_Sprite;
-    float   m_Distance;
+	CSharedPtr<class CSpriteComponent> m_Sprite;
+	float                              m_Distance;
 
 public:
-    virtual bool Init();
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
-    virtual CBullet* Clone();
+	virtual bool     Init() override;
+	virtual void     Update(float DeltaTime) override;
+	virtual void     PostUpdate(float DeltaTime) override;
+	virtual CBullet* Clone() override;
 };
-

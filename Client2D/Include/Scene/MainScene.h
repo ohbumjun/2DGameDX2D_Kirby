@@ -3,17 +3,16 @@
 #include "Scene/SceneMode.h"
 
 class CMainScene :
-    public CSceneMode
+	public CSceneMode
 {
 public:
-    CMainScene();
-    ~CMainScene();
+	CMainScene();
+	virtual ~CMainScene() override;
 
 public:
-    virtual bool Init();
+	virtual bool Init() override;
 
 private:
-    void CreateMaterial();
-    void CreateAnimationSequence();
+	void CreateMaterial();
+	void CreateAnimationSequence();
 };
-

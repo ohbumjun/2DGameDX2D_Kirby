@@ -1,7 +1,6 @@
-
 #include "Component.h"
 
-CComponent::CComponent()	:
+CComponent::CComponent() :
 	m_Scene(nullptr),
 	m_Object(nullptr)
 {
@@ -9,7 +8,7 @@ CComponent::CComponent()	:
 
 CComponent::CComponent(const CComponent& com)
 {
-	*this = com;
+	*this      = com;
 	m_RefCount = 0;
 
 	m_Object = nullptr;

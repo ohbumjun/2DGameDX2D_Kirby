@@ -69,7 +69,7 @@ bool Vector4::operator==(const Vector4& v) const
 
 bool Vector4::operator==(const XMVECTOR& v) const
 {
-	Vector4	v1;
+	Vector4 v1;
 	XMStoreFloat4((XMFLOAT4*)&v1, v);
 
 	return x == v1.x && y == v1.y && z == v1.z && w == v1.w;
@@ -82,7 +82,7 @@ bool Vector4::operator!=(const Vector4& v) const
 
 bool Vector4::operator!=(const XMVECTOR& v) const
 {
-	Vector4	v1;
+	Vector4 v1;
 	XMStoreFloat4((XMFLOAT4*)&v1, v);
 
 	return x != v1.x || y != v1.y || z != v1.z || w != v1.w;
@@ -97,11 +97,9 @@ float& Vector4::operator[](int Index)
 
 	if (Index == 0)
 		return x;
-
-	else if (Index == 1)
+	if (Index == 1)
 		return y;
-
-	else if (2 == Index)
+	if (2 == Index)
 		return z;
 
 	return w;
@@ -110,8 +108,8 @@ float& Vector4::operator[](int Index)
 // +
 Vector4 Vector4::operator+(const Vector4& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector4(v1 + v2);
 }
@@ -129,8 +127,8 @@ Vector4 Vector4::operator+(const float f) const
 // +=
 Vector4 Vector4::operator+=(const Vector4& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 + v2);
 
@@ -139,7 +137,7 @@ Vector4 Vector4::operator+=(const Vector4& v)
 
 Vector4 Vector4::operator+=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 + v);
 
@@ -159,8 +157,8 @@ Vector4 Vector4::operator+=(const float f)
 // -
 Vector4 Vector4::operator-(const Vector4& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector4(v1 - v2);
 }
@@ -178,8 +176,8 @@ Vector4 Vector4::operator-(const float f) const
 // -=
 Vector4 Vector4::operator-=(const Vector4& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 - v2);
 
@@ -188,7 +186,7 @@ Vector4 Vector4::operator-=(const Vector4& v)
 
 Vector4 Vector4::operator-=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 - v);
 
@@ -208,8 +206,8 @@ Vector4 Vector4::operator-=(const float f)
 // *
 Vector4 Vector4::operator*(const Vector4& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector4(v1 * v2);
 }
@@ -227,8 +225,8 @@ Vector4 Vector4::operator*(const float f) const
 // *=
 Vector4 Vector4::operator*=(const Vector4& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 * v2);
 
@@ -237,7 +235,7 @@ Vector4 Vector4::operator*=(const Vector4& v)
 
 Vector4 Vector4::operator*=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 * v);
 
@@ -257,8 +255,8 @@ Vector4 Vector4::operator*=(const float f)
 // /
 Vector4 Vector4::operator/(const Vector4& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector4(v1 / v2);
 }
@@ -276,8 +274,8 @@ Vector4 Vector4::operator/(const float f) const
 // /=
 Vector4 Vector4::operator/=(const Vector4& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 / v2);
 
@@ -286,7 +284,7 @@ Vector4 Vector4::operator/=(const Vector4& v)
 
 Vector4 Vector4::operator/=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 / v);
 
@@ -343,7 +341,7 @@ Vector4 Vector4::operator--(int)
 	return *this;
 }
 
-XMVECTOR Vector4::Convert()	const
+XMVECTOR Vector4::Convert() const
 {
 	return XMLoadFloat4((XMFLOAT4*)this);
 }

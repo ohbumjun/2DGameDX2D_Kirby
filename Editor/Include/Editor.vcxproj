@@ -162,6 +162,9 @@
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\SpriteEditObject.cpp" />
     <ClCompile Include="Scene\DefaultScene.cpp" />
+    <ClCompile Include="Window\DetailWindow.cpp" />
+    <ClCompile Include="Window\EditorMenu.cpp" />
+    <ClCompile Include="Window\ObjectHierarchy.cpp" />
     <ClCompile Include="Window\SpriteWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +173,9 @@
     <ClInclude Include="Object\SpriteEditObject.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\DefaultScene.h" />
+    <ClInclude Include="Window\DetailWindow.h" />
+    <ClInclude Include="Window\EditorMenu.h" />
+    <ClInclude Include="Window\ObjectHierarchy.h" />
     <ClInclude Include="Window\SpriteWindow.h" />
   </ItemGroup>
   <ItemGroup>

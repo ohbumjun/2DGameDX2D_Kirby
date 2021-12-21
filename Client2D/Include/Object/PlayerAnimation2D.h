@@ -3,15 +3,14 @@
 #include "Animation/AnimationSequence2DInstance.h"
 
 class CPlayerAnimation2D :
-    public CAnimationSequence2DInstance
+	public CAnimationSequence2DInstance
 {
 public:
 	CPlayerAnimation2D();
 	CPlayerAnimation2D(const CPlayerAnimation2D& Anim);
-	~CPlayerAnimation2D();
+	virtual ~CPlayerAnimation2D() override;
 
 public:
-	virtual bool Init();
-	virtual CPlayerAnimation2D* Clone();
+	virtual bool                Init() override;
+	virtual CPlayerAnimation2D* Clone() override;
 };
-

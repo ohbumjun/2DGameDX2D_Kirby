@@ -1,89 +1,95 @@
 #pragma once
 
 #include "SceneComponent.h"
-#include "../Resource/Mesh/SpriteMesh.h"
 #include "../Resource/Material/Material.h"
+#include "../Resource/Mesh/SpriteMesh.h"
 
 class CSpriteComponent :
-    public CSceneComponent
+	public CSceneComponent
 {
-    friend class CGameObject;
+	friend class CGameObject;
 
 protected:
-    CSpriteComponent();
-    CSpriteComponent(const CSpriteComponent& com);
-    virtual ~CSpriteComponent();
+	CSpriteComponent();
+	CSpriteComponent(const CSpriteComponent& com);
+	virtual ~CSpriteComponent() override;
 
 protected:
-    CSharedPtr<CSpriteMesh> m_Mesh;
-    CSharedPtr<CMaterial> m_Material;
-    class CAnimationSequence2DInstance* m_Animation;
+	CSharedPtr<CSpriteMesh>             m_Mesh;
+	CSharedPtr<CMaterial>               m_Material;
+	class CAnimationSequence2DInstance* m_Animation;
 
 
 public:
-    CMaterial* GetMaterial()    const
-    {
-        return m_Material;
-    }
-    std::string GetTextureName(int Index = 0) const
-    {
-        return m_Material->GetTextureName(Index);
-    }
-    class CTexture* GetTexture(int Index = 0) const
-    {
-        return m_Material->GetTexture(Index);
-    }
-public:
-    void SetMaterial(CMaterial* Material);
-public:
-    void SetBaseColor(const Vector4& Color);
-    void SetBaseColor(float r, float g, float b, float a);
-    void SetRenderState(class CRenderState* State);
-    void SetRenderState(const std::string& Name);
-    void SetTransparency(bool Enable);
-    void SetOpacity(float Opacity);
-    void AddOpacity(float Opacity);
+	CMaterial* GetMaterial() const
+	{
+		return m_Material;
+	}
+
+	std::string GetTextureName(int Index = 0) const
+	{
+		return m_Material->GetTextureName(Index);
+	}
+
+	class CTexture* GetTexture(int Index = 0) const
+	{
+		return m_Material->GetTexture(Index);
+	}
 
 public:
-    void AddTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void AddTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void AddTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void AddTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
-
-    void SetTexture(int Index, class CTexture* Texture);
-    void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+	void SetMaterial(CMaterial* Material);
+public:
+	void SetBaseColor(const Vector4& Color);
+	void SetBaseColor(float r, float g, float b, float a);
+	void SetRenderState(class CRenderState* State);
+	void SetRenderState(const std::string& Name);
+	void SetTransparency(bool Enable);
+	void SetOpacity(float Opacity);
+	void AddOpacity(float Opacity);
 
 public:
-    virtual void Start();
-    virtual bool Init();
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
-    virtual void PrevRender();
-    virtual void Render();
-    virtual void PostRender();
-    virtual CSpriteComponent* Clone();
+	void AddTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+	void AddTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
+	                const std::string& PathName = TEXTURE_PATH);
+	void AddTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+	void AddTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName,
+	                const std::string& PathName = TEXTURE_PATH);
+
+	void SetTexture(int Index, class CTexture* Texture);
+	void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+	void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
+	                const std::string& PathName = TEXTURE_PATH);
+	void SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+	void SetTexture(int                        Index, int Register, int ShaderType, const std::string& Name,
+	                const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
 
 public:
-    template <typename T>
-    void CreateAnimationInstance()
-    {
-        T* Anim = new T;
+	virtual void              Start() override;
+	virtual bool              Init() override;
+	virtual void              Update(float DeltaTime) override;
+	virtual void              PostUpdate(float DeltaTime) override;
+	virtual void              PrevRender() override;
+	virtual void              Render() override;
+	virtual void              PostRender() override;
+	virtual CSpriteComponent* Clone() override;
 
-        Anim->SetScene(m_Scene);
-        Anim->SetOwner(this);
+public:
+	template <typename T>
+	void CreateAnimationInstance()
+	{
+		T* Anim = new T;
 
-        if (!Anim->Init())
-        {
-            SAFE_DELETE(Anim);
-            return;
-        }
+		Anim->SetScene(m_Scene);
+		Anim->SetOwner(this);
 
-        SAFE_DELETE(m_Animation);
+		if (!Anim->Init())
+		{
+			SAFE_DELETE(Anim);
+			return;
+		}
 
-        m_Animation = Anim;
-    }
+		SAFE_DELETE(m_Animation);
+
+		m_Animation = Anim;
+	}
 };
-

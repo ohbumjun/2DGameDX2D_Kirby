@@ -1,27 +1,27 @@
 #pragma once
 #include "IMGUIWidget.h"
+
 class CIMGUIButton :
-    public CIMGUIWidget
+	public CIMGUIWidget
 {
 	friend class CIMGUIWindow;
 
 protected:
 	CIMGUIButton();
-	virtual ~CIMGUIButton();
+	virtual ~CIMGUIButton() override;
 
 protected:
-	std::function<void()>	m_ClickCallback;
-	bool					m_Click;
+	std::function<void()> m_ClickCallback;
+	bool                  m_Click;
 
 public:
-	virtual bool Init();
-	virtual void Render();
+	virtual bool Init() override;
+	virtual void Render() override;
 
 public:
 	template <typename T>
-	void SetClickCallback(T* Obj, void(T::* Func)())
+	void SetClickCallback(T* Obj, void (T::*Func)())
 	{
 		m_ClickCallback = std::bind(Func, Obj);
 	}
 };
-

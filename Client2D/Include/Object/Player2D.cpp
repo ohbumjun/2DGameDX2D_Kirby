@@ -1,34 +1,33 @@
-
 #include "Player2D.h"
 #include "Bullet.h"
 #include "BulletTornaido.h"
-#include "Scene/Scene.h"
 #include "Input.h"
-#include "Resource/Material/Material.h"
 #include "PlayerAnimation2D.h"
+#include "Resource/Material/Material.h"
+#include "Scene/Scene.h"
 
 CPlayer2D::CPlayer2D()
 {
-	m_SolW = false;
+	m_SolW      = false;
 	m_WDistance = 0.f;
-	m_Opacity = 1.f;
+	m_Opacity   = 1.f;
 }
 
-CPlayer2D::CPlayer2D(const CPlayer2D& obj)	:
+CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	CGameObject(obj)
 {
-	m_Sprite = (CSpriteComponent*)FindComponent("PlayerSprite");
-	m_ChildLeftSprite = (CSpriteComponent*)FindComponent("PlayerChildLeftSprite");
-	m_ChildRightSprite = (CSpriteComponent*)FindComponent("PlayerChildRightSprite");
-	m_ChildLeftMuzzle = (CSceneComponent*)FindComponent("LeftMuzzle");
-	m_ChildRightMuzzle = (CSceneComponent*)FindComponent("RightMuzzle");
-	m_ChildRoot = (CSceneComponent*)FindComponent("PlayerChildRoot");
-	m_Muzzle = (CSceneComponent*)FindComponent("Muzzle");
+	m_Sprite           = static_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
+	m_ChildLeftSprite  = static_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
+	m_ChildRightSprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
+	m_ChildLeftMuzzle  = static_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
+	m_ChildRightMuzzle = static_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
+	m_ChildRoot        = static_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
+	m_Muzzle           = static_cast<CSceneComponent*>(FindComponent("Muzzle"));
 
-	m_Child1Sprite = (CSpriteComponent*)FindComponent("PlayerChild1Sprite");
-	m_Child2Sprite = (CSpriteComponent*)FindComponent("PlayerChild2Sprite");
-	m_Child3Sprite = (CSpriteComponent*)FindComponent("PlayerChild3Sprite");
-	m_Child4Sprite = (CSpriteComponent*)FindComponent("PlayerChild4Sprite");
+	m_Child1Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
+	m_Child2Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
+	m_Child3Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
+	m_Child4Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
 
 	m_Opacity = obj.m_Opacity;
 }
@@ -39,13 +38,13 @@ CPlayer2D::~CPlayer2D()
 
 bool CPlayer2D::Init()
 {
-	m_Sprite = CreateComponent<CSpriteComponent>("PlayerSprite");
-	m_ChildLeftSprite = CreateComponent<CSpriteComponent>("PlayerChildLeftSprite");
+	m_Sprite           = CreateComponent<CSpriteComponent>("PlayerSprite");
+	m_ChildLeftSprite  = CreateComponent<CSpriteComponent>("PlayerChildLeftSprite");
 	m_ChildRightSprite = CreateComponent<CSpriteComponent>("PlayerChildRightSprite");
-	m_ChildRoot = CreateComponent<CSceneComponent>("PlayerChildRoot");
-	m_Muzzle = CreateComponent<CSceneComponent>("Muzzle");
+	m_ChildRoot        = CreateComponent<CSceneComponent>("PlayerChildRoot");
+	m_Muzzle           = CreateComponent<CSceneComponent>("Muzzle");
 
-	m_ChildLeftMuzzle = CreateComponent<CSceneComponent>("LeftMuzzle");
+	m_ChildLeftMuzzle  = CreateComponent<CSceneComponent>("LeftMuzzle");
 	m_ChildRightMuzzle = CreateComponent<CSceneComponent>("RightMuzzle");
 
 	m_Child1Sprite = CreateComponent<CSpriteComponent>("PlayerChild1Sprite");
@@ -71,8 +70,10 @@ bool CPlayer2D::Init()
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
 
-	m_ChildLeftSprite->SetTexture(0, 0, (int)ConstantBuffer_Shader_Type::Pixel, "Teemo", TEXT("Teemo.jpg"));
-	m_ChildRightSprite->SetTexture(0, 0, (int)ConstantBuffer_Shader_Type::Pixel, "Teemo", TEXT("Teemo.jpg"));
+	m_ChildLeftSprite->SetTexture(0, 0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel), "Teemo",
+	                              TEXT("Teemo.jpg"));
+	m_ChildRightSprite->SetTexture(0, 0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel), "Teemo",
+	                               TEXT("Teemo.jpg"));
 
 	m_ChildLeftSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 	m_ChildRightSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
@@ -148,7 +149,7 @@ void CPlayer2D::Update(float DeltaTime)
 
 	static bool Fire2 = false;
 
-	static bool	Hide = false;
+	static bool Hide = false;
 
 	if (GetAsyncKeyState('2') & 0x8000)
 	{

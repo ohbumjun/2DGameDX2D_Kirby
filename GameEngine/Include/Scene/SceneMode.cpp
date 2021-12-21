@@ -1,4 +1,3 @@
-
 #include "SceneMode.h"
 #include "../GameObject/GameObject.h"
 

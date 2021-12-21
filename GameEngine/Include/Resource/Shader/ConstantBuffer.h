@@ -3,22 +3,21 @@
 #include "../../Ref.h"
 
 class CConstantBuffer :
-    public CRef
+	public CRef
 {
-    friend class CShaderManager;
+	friend class CShaderManager;
 
 private:
-    CConstantBuffer();
-    ~CConstantBuffer();
+	CConstantBuffer();
+	virtual ~CConstantBuffer() override;
 
 private:
-    ID3D11Buffer* m_Buffer;
-    int             m_Size;
-    int             m_Register;
-    int             m_ConstantBufferShaderType;
+	ID3D11Buffer* m_Buffer;
+	int           m_Size;
+	int           m_Register;
+	int           m_ConstantBufferShaderType;
 
 public:
-    bool Init(int Size, int Register, int ConstantBufferShaderType);
-    void UpdateBuffer(void* Data);
+	bool Init(int Size, int Register, int ConstantBufferShaderType);
+	void UpdateBuffer(void* Data);
 };
-

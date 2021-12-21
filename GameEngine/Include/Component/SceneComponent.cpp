@@ -1,14 +1,13 @@
-
 #include "SceneComponent.h"
-#include "../Render/RenderManager.h"
 #include "../GameObject/GameObject.h"
+#include "../Render/RenderManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
 
 CSceneComponent::CSceneComponent()
 {
 	SetTypeID<CSceneComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
-	m_Render = false;
+	m_Render        = false;
 
 	m_Transform = new CTransform;
 
@@ -20,7 +19,7 @@ CSceneComponent::CSceneComponent()
 	m_LayerName = "Default";
 }
 
-CSceneComponent::CSceneComponent(const CSceneComponent& com)	:
+CSceneComponent::CSceneComponent(const CSceneComponent& com) :
 	CComponent(com)
 {
 	m_Transform = com.m_Transform->Clone();
@@ -34,7 +33,7 @@ CSceneComponent::CSceneComponent(const CSceneComponent& com)	:
 
 	m_vecChild.clear();
 
-	size_t	Size = com.m_vecChild.size();
+	size_t Size = com.m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -59,7 +58,7 @@ void CSceneComponent::SetSceneComponent(CGameObject* Object)
 {
 	Object->AddSceneComponent(this);
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -73,7 +72,7 @@ void CSceneComponent::SetScene(CScene* Scene)
 
 	m_Transform->m_Scene = Scene;
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -87,7 +86,7 @@ void CSceneComponent::SetGameObject(CGameObject* Object)
 
 	m_Transform->m_Object = Object;
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -108,17 +107,17 @@ void CSceneComponent::AddChild(CSceneComponent* Child)
 
 bool CSceneComponent::DeleteChild(CSceneComponent* Child)
 {
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
 		if (m_vecChild[i] == Child)
 		{
-			auto	iter = m_vecChild.begin() + i;
+			auto iter = m_vecChild.begin() + i;
 
 			m_vecChild.erase(iter);
 
-			auto	iterTr = m_Transform->m_vecChild.begin() + i;
+			auto iterTr = m_Transform->m_vecChild.begin() + i;
 
 			m_Transform->m_vecChild.erase(iterTr);
 			return true;
@@ -133,17 +132,17 @@ bool CSceneComponent::DeleteChild(CSceneComponent* Child)
 
 bool CSceneComponent::DeleteChild(const std::string& Name)
 {
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
 		if (m_vecChild[i]->GetName() == Name)
 		{
-			auto	iter = m_vecChild.begin() + i;
+			auto iter = m_vecChild.begin() + i;
 
 			m_vecChild.erase(iter);
 
-			auto	iterTr = m_Transform->m_vecChild.begin() + i;
+			auto iterTr = m_Transform->m_vecChild.begin() + i;
 
 			m_Transform->m_vecChild.erase(iterTr);
 			return true;
@@ -161,7 +160,7 @@ CSceneComponent* CSceneComponent::FindComponent(const std::string& Name)
 	if (m_Name == Name)
 		return this;
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -178,7 +177,7 @@ void CSceneComponent::Start()
 {
 	CComponent::Start();
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -195,7 +194,7 @@ void CSceneComponent::Update(float DeltaTime)
 {
 	m_Transform->Update(DeltaTime);
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -207,7 +206,7 @@ void CSceneComponent::PostUpdate(float DeltaTime)
 {
 	m_Transform->PostUpdate(DeltaTime);
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -220,7 +219,7 @@ void CSceneComponent::PrevRender()
 	if (m_Render)
 		CRenderManager::GetInst()->AddRenderList(this);
 
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{

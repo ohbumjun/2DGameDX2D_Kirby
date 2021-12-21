@@ -1,4 +1,3 @@
-
 #include "ColorMeshShader.h"
 
 CColorMeshShader::CColorMeshShader()
@@ -14,7 +13,7 @@ bool CColorMeshShader::Init()
 {
 	if (!LoadVertexShader("ColorMeshVS", TEXT("ColorMesh.fx"), SHADER_PATH))
 		return false;
-	
+
 	if (!LoadPixelShader("ColorMeshPS", TEXT("ColorMesh.fx"), SHADER_PATH))
 		return false;
 

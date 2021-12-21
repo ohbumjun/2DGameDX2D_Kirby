@@ -9,15 +9,15 @@ public:
 	virtual ~CIMGUIWindow();
 
 protected:
-	std::string	m_Name;
-	bool	m_Open;
-	int		m_WindowFlag;
-	std::vector<class CIMGUIWidget*>	m_vecWidget;
+	std::string                      m_Name;
+	bool                             m_Open;
+	int                              m_WindowFlag;
+	std::vector<class CIMGUIWidget*> m_vecWidget;
 
 protected:
-	std::string	m_PopupTitle;
-	bool		m_ModalPopup;
-	std::vector<class CIMGUIWidget*>	m_vecPopupWidget;
+	std::string                      m_PopupTitle;
+	bool                             m_ModalPopup;
+	std::vector<class CIMGUIWidget*> m_vecPopupWidget;
 
 public:
 	void SetName(const std::string& Name)
@@ -41,9 +41,9 @@ public:
 	}
 
 public:
-	void Open();
-	void Close();
-	void ClosePopup();
+	void                Open();
+	void                Close();
+	void                ClosePopup();
 	class CIMGUIWidget* FindWidget(const std::string& Name);
 
 public:
@@ -91,4 +91,3 @@ public:
 		return Widget;
 	}
 };
-

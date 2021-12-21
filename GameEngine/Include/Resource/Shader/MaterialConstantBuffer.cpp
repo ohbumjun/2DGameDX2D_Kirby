@@ -1,4 +1,3 @@
-
 #include "MaterialConstantBuffer.h"
 #include "ConstantBuffer.h"
 

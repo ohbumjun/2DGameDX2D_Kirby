@@ -13,18 +13,18 @@ private:
 	~CScene();
 
 private:
-	CSharedPtr<CSceneMode> m_Mode;
-	CSceneResource* m_Resource;
-	std::list<CSharedPtr<CGameObject>>	m_ObjList;
-	bool		m_Start;
+	CSharedPtr<CSceneMode>             m_Mode;
+	CSceneResource*                    m_Resource;
+	std::list<CSharedPtr<CGameObject>> m_ObjList;
+	bool                               m_Start;
 
 public:
-	CSceneResource* GetResource()	const
+	CSceneResource* GetResource() const
 	{
 		return m_Resource;
 	}
 
-	CGameObject* GetPlayerObject()	const
+	CGameObject* GetPlayerObject() const
 	{
 		return m_Mode->GetPlayerObject();
 	}
@@ -73,4 +73,3 @@ public:
 		return Obj;
 	}
 };
-

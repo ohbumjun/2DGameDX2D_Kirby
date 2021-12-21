@@ -1,6 +1,6 @@
 #include "Ref.h"
 
-CRef::CRef()	:
+CRef::CRef() :
 	m_RefCount(0),
 	m_Enable(true),
 	m_Active(true),

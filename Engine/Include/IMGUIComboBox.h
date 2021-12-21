@@ -3,24 +3,24 @@
 #include "IMGUIWidget.h"
 
 class CIMGUIComboBox :
-    public CIMGUIWidget
+	public CIMGUIWidget
 {
 	friend class CIMGUIWindow;
 
 protected:
 	CIMGUIComboBox();
-	virtual ~CIMGUIComboBox();
+	virtual ~CIMGUIComboBox() override;
 
 protected:
-	std::vector<std::string>	m_vecItem;
-	std::vector<std::string>	m_vecItemUTF8;
-	std::string	m_PrevViewName;
-	bool		m_Select;
-	int			m_SelectIndex;
-	int			m_PageItemCount;
-	bool		m_Sort;
-	ImGuiComboFlags	m_Flag;
-	std::function<void(int, const char*)>	m_SelectCallback;
+	std::vector<std::string>              m_vecItem;
+	std::vector<std::string>              m_vecItemUTF8;
+	std::string                           m_PrevViewName;
+	bool                                  m_Select;
+	int                                   m_SelectIndex;
+	int                                   m_PageItemCount;
+	bool                                  m_Sort;
+	ImGuiComboFlags                       m_Flag;
+	std::function<void(int, const char*)> m_SelectCallback;
 
 public:
 	const std::string& GetItem(int Index)
@@ -28,19 +28,19 @@ public:
 		return m_vecItem[Index];
 	}
 
-	const std::string& GetSelectItem()	const
+	const std::string& GetSelectItem() const
 	{
 		return m_vecItem[m_SelectIndex];
 	}
 
-	int GetSelectIndex()	const
+	int GetSelectIndex() const
 	{
 		return m_SelectIndex;
 	}
 
-	int GetItemCount()	const
+	int GetItemCount() const
 	{
-		return (int)m_vecItem.size();
+		return static_cast<int>(m_vecItem.size());
 	}
 
 public:
@@ -48,15 +48,15 @@ public:
 	{
 		m_vecItem.push_back(Item);
 
-		wchar_t	wItem[1024] = {};
-		char	ItemUTF8[1024] = {};
+		wchar_t wItem[1024]    = {};
+		char    ItemUTF8[1024] = {};
 
-		int	Length = MultiByteToWideChar(CP_ACP, 0, Item.c_str(), -1, 0, 0);
+		int Length = MultiByteToWideChar(CP_ACP, 0, Item.c_str(), -1, nullptr, 0);
 		MultiByteToWideChar(CP_ACP, 0, Item.c_str(), -1, wItem, Length);
 
 		// UTF8로 변환한다.
-		Length = WideCharToMultiByte(CP_UTF8, 0, wItem, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_UTF8, 0, wItem, -1, ItemUTF8, Length, 0, 0);
+		Length = WideCharToMultiByte(CP_UTF8, 0, wItem, -1, nullptr, 0, nullptr, nullptr);
+		WideCharToMultiByte(CP_UTF8, 0, wItem, -1, ItemUTF8, Length, nullptr, nullptr);
 
 		m_vecItemUTF8.push_back(ItemUTF8);
 
@@ -74,11 +74,11 @@ public:
 
 	void DeleteItem(int Index)
 	{
-		auto	iter = m_vecItem.begin() + Index;
+		auto iter = m_vecItem.begin() + Index;
 
 		m_vecItem.erase(iter);
 
-		auto	iter1 = m_vecItemUTF8.begin() + Index;
+		auto iter1 = m_vecItemUTF8.begin() + Index;
 
 		m_vecItemUTF8.erase(iter1);
 	}
@@ -105,14 +105,13 @@ public:
 	}
 
 public:
-	virtual bool Init();
-	virtual void Render();
+	virtual bool Init() override;
+	virtual void Render() override;
 
 public:
 	template <typename T>
-	void SetSelectCallback(T* Obj, void(T::* Func)(int, const char*))
+	void SetSelectCallback(T* Obj, void (T::*Func)(int, const char*))
 	{
 		m_SelectCallback = std::bind(Func, Obj, std::placeholders::_1, std::placeholders::_2);
 	}
 };
-

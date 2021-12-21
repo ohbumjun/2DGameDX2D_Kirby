@@ -10,5 +10,5 @@ CDefaultScene::~CDefaultScene()
 
 bool CDefaultScene::Init()
 {
-    return true;
+	return true;
 }

@@ -11,11 +11,10 @@ private:
 	~CMeshManager();
 
 private:
-	std::unordered_map<std::string, CSharedPtr<class CMesh>>	m_mapMesh;
+	std::unordered_map<std::string, CSharedPtr<class CMesh>> m_mapMesh;
 
 public:
-	bool Init();
+	bool         Init();
 	class CMesh* FindMesh(const std::string& Name);
-	void ReleaseMesh(const std::string& Name);
+	void         ReleaseMesh(const std::string& Name);
 };
-

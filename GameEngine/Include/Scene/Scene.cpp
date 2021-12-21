@@ -1,12 +1,11 @@
-
 #include "Scene.h"
 
 CScene::CScene()
 {
-	m_Mode = new CSceneMode;
+	m_Mode     = new CSceneMode;
 	m_Resource = new CSceneResource;
 
-	m_Mode->m_Scene = this;
+	m_Mode->m_Scene     = this;
 	m_Resource->m_Scene = this;
 
 	m_Start = false;
@@ -21,8 +20,8 @@ void CScene::Start()
 {
 	m_Mode->Start();
 
-	auto	iter = m_ObjList.begin();
-	auto	iterEnd = m_ObjList.end();
+	auto iter    = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
@@ -36,19 +35,18 @@ void CScene::Update(float DeltaTime)
 {
 	m_Mode->Update(DeltaTime);
 
-	auto	iter = m_ObjList.begin();
-	auto	iterEnd = m_ObjList.end();
+	auto iter    = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
 
 	for (; iter != iterEnd;)
 	{
 		if (!(*iter)->IsActive())
 		{
-			iter = m_ObjList.erase(iter);
+			iter    = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 			continue;
 		}
-
-		else if (!(*iter)->IsEnable())
+		if (!(*iter)->IsEnable())
 		{
 			++iter;
 			continue;
@@ -63,19 +61,18 @@ void CScene::PostUpdate(float DeltaTime)
 {
 	m_Mode->PostUpdate(DeltaTime);
 
-	auto	iter = m_ObjList.begin();
-	auto	iterEnd = m_ObjList.end();
+	auto iter    = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
 
 	for (; iter != iterEnd;)
 	{
 		if (!(*iter)->IsActive())
 		{
-			iter = m_ObjList.erase(iter);
+			iter    = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 			continue;
 		}
-
-		else if (!(*iter)->IsEnable())
+		if (!(*iter)->IsEnable())
 		{
 			++iter;
 			continue;

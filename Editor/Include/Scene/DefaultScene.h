@@ -2,13 +2,12 @@
 #include "Scene/SceneMode.h"
 
 class CDefaultScene :
-    public CSceneMode
+	public CSceneMode
 {
 public:
-    CDefaultScene();
-    ~CDefaultScene();
+	CDefaultScene();
+	virtual ~CDefaultScene() override;
 
 public:
-    virtual bool Init();
+	virtual bool Init() override;
 };
-

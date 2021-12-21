@@ -18,10 +18,10 @@ CTimer::~CTimer()
 
 float CTimer::Update()
 {
-	LARGE_INTEGER	Time;
+	LARGE_INTEGER Time;
 	QueryPerformanceCounter(&Time);
 
-	m_DeltaTime = (Time.QuadPart - m_Time.QuadPart) / (float)m_Second.QuadPart;
+	m_DeltaTime = (Time.QuadPart - m_Time.QuadPart) / static_cast<float>(m_Second.QuadPart);
 
 	m_Time = Time;
 
@@ -31,9 +31,9 @@ float CTimer::Update()
 
 	if (m_Tick == 60)
 	{
-		m_FPS = 60 / m_FPSTime;
+		m_FPS     = 60 / m_FPSTime;
 		m_FPSTime = 0.f;
-		m_Tick = 0;
+		m_Tick    = 0;
 	}
 
 	return m_DeltaTime;

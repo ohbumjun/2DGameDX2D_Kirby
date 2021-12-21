@@ -1,9 +1,9 @@
 #pragma once
 
+#include <assert.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
 #include <string.h>
-#include <assert.h>
 
 #include "Flag.h"
 
@@ -20,5 +20,3 @@ static float RadianToDegree(float Angle)
 {
 	return Angle * 180.f / PI;
 }
-
-

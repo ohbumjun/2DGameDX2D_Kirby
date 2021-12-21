@@ -1,12 +1,12 @@
 #include "SpriteEditObject.h"
-#include "Component/SpriteComponent.h"
-#include "Component/SceneComponent.h"
-#include "Animation/AnimationSequence2DInstance.h"
-#include "Input.h"
 #include "Engine.h"
-#include "IMGUIWindow.h"
-#include "IMGUIWidget.h"
 #include "IMGUIImage.h"
+#include "IMGUIWidget.h"
+#include "IMGUIWindow.h"
+#include "Input.h"
+#include "Animation/AnimationSequence2DInstance.h"
+#include "Component/SceneComponent.h"
+#include "Component/SpriteComponent.h"
 
 CSpriteEditObject::CSpriteEditObject() :
 	m_Distance(600.f),
@@ -18,7 +18,7 @@ CSpriteEditObject::CSpriteEditObject() :
 CSpriteEditObject::CSpriteEditObject(const CSpriteEditObject& obj) :
 	CGameObject(obj)
 {
-	m_Sprite = (CSpriteComponent*)FindComponent("BulletSprite");
+	m_Sprite   = static_cast<CSpriteComponent*>(FindComponent("BulletSprite"));
 	m_Distance = obj.m_Distance;
 }
 
@@ -32,9 +32,10 @@ bool CSpriteEditObject::Init()
 
 	SetRootComponent(m_Sprite);
 
-	int DefaultTextureIdx = 0;
-	CTexture* DefaultTexture = m_Sprite->GetTexture(DefaultTextureIdx);
-	m_Sprite->SetRelativeScale((float)DefaultTexture->GetWidth(), (float)DefaultTexture->GetHeight(), 1.f);
+	int       DefaultTextureIdx = 0;
+	CTexture* DefaultTexture    = m_Sprite->GetTexture(DefaultTextureIdx);
+	m_Sprite->SetRelativeScale(static_cast<float>(DefaultTexture->GetWidth()),
+	                           static_cast<float>(DefaultTexture->GetHeight()), 1.f);
 
 	m_Sprite->CreateAnimationInstance<CAnimationSequence2DInstance>();
 
@@ -60,27 +61,27 @@ CSpriteEditObject* CSpriteEditObject::Clone()
 void CSpriteEditObject::UpdateClickInfo()
 {
 	bool MouseDown = CInput::GetInst()->GetLMouseDown();
-	bool MouseUp     = CInput::GetInst()->GetLMouseUp();
-	bool MousePush     = CInput::GetInst()->GetLMousePush();
+	bool MouseUp   = CInput::GetInst()->GetLMouseUp();
+	bool MousePush = CInput::GetInst()->GetLMousePush();
 
-	Vector2 MousePos = CInput::GetInst()->GetMousePos();
-	float MousePosX = MousePos.x;
-	float MousePosY = CEngine::GetInst()->GetResolution().Height - MousePos.y; // 좌 하단 기준, 마우스 높이 
+	Vector2 MousePos  = CInput::GetInst()->GetMousePos();
+	float   MousePosX = MousePos.x;
+	float   MousePosY = CEngine::GetInst()->GetResolution().Height - MousePos.y; // 좌 하단 기준, 마우스 높이 
 
 	Vector3 ObjectStPos = m_RootComponent->GetWorldPos();
 	Vector3 ObjectEdPos = ObjectStPos + m_RootComponent->GetWorldScale();
-	
+
 	// Down
 	if (MouseDown && !m_ObjMouseDown)
 	{
 		// 범위 안에 들어올 때만 
 		if (ObjectStPos.x <= MousePosX &&
 			MousePosX <= ObjectEdPos.x &&
-			ObjectStPos.y <= MousePosY && 
+			ObjectStPos.y <= MousePosY &&
 			MousePosY <= ObjectEdPos.y)
 		{
-			m_ObjMouseDown = true;
-			float EndYPos = (ObjectEdPos.y - MousePosY);
+			m_ObjMouseDown     = true;
+			float EndYPos      = (ObjectEdPos.y - MousePosY);
 			m_ObjImageStartPos = Vector2(MousePosX, EndYPos);
 		}
 	}
@@ -109,9 +110,9 @@ void CSpriteEditObject::UpdateClickInfo()
 		// 범위 안에 들어오면
 		else
 		{
-			m_ObjMouseDown = false;
-			float EndYPos = (ObjectEdPos.y - MousePosY);
-			m_ObjImageEndPos = Vector2(MousePosX, EndYPos);;
+			m_ObjMouseDown   = false;
+			float EndYPos    = (ObjectEdPos.y - MousePosY);
+			m_ObjImageEndPos = Vector2(MousePosX, EndYPos);
 			SetEditWindowTexture();
 		}
 	}
@@ -119,17 +120,16 @@ void CSpriteEditObject::UpdateClickInfo()
 
 void CSpriteEditObject::SetEditWindowTexture()
 {
-	
 	CIMGUIImage* SpriteSampled = dynamic_cast<CIMGUIImage*>(m_EditWindow->FindWidget("SpriteSampled"));
-	std::string TextureName = m_Sprite->GetTextureName();
+	std::string  TextureName   = m_Sprite->GetTextureName();
 	SpriteSampled->SetTexture(TextureName);
 
 	Vector2 SpriteSize = SpriteSampled->GetSize();
-	float RatioX = SpriteSize.x / m_RootComponent->GetWorldScale().x;
-	float RatioY = SpriteSize.y / m_RootComponent->GetWorldScale().y;
+	float   RatioX     = SpriteSize.x / m_RootComponent->GetWorldScale().x;
+	float   RatioY     = SpriteSize.y / m_RootComponent->GetWorldScale().y;
 
 	SpriteSampled->SetImageStart(m_ObjImageStartPos.x * RatioX, m_ObjImageStartPos.y * RatioY);
 	SpriteSampled->SetImageEnd(m_ObjImageEndPos.x * RatioX, m_ObjImageEndPos.y * RatioY);
 
-	MessageBox(0, TEXT("bb"), TEXT("bb"), MB_OK);
+	MessageBox(nullptr, TEXT("bb"), TEXT("bb"), MB_OK);
 }

@@ -11,7 +11,7 @@ enum class EditMode
 class CEditorManager
 {
 private:
-	EditMode	m_EditMode;
+	EditMode           m_EditMode;
 	class CDragObject* m_DragObj;
 
 public:
@@ -19,6 +19,7 @@ public:
 	{
 		return m_EditMode;
 	}
+
 	class CDragObject* GetDragObject() const
 	{
 		return m_DragObj;
@@ -29,7 +30,7 @@ public:
 public:
 	bool Init(HINSTANCE hInst);
 	void CreateDefaultSceneMode();
-	int Run();
+	int  Run();
 
 public:
 	void MouseLButtonDown(float DeltaTime);
@@ -48,4 +49,3 @@ public:
 
 	DECLARE_SINGLE(CEditorManager)
 };
-

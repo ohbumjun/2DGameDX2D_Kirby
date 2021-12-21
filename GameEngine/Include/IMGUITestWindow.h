@@ -1,19 +1,19 @@
 #pragma once
 #include "IMGUIWindow.h"
+
 class CIMGUITestWindow :
-    public CIMGUIWindow
+	public CIMGUIWindow
 {
 public:
 	CIMGUITestWindow();
-	virtual ~CIMGUITestWindow();
+	virtual ~CIMGUITestWindow() override;
 
 public:
-	virtual bool Init();
-	virtual void Update(float DeltaTime);
+	virtual bool Init() override;
+	virtual void Update(float DeltaTime) override;
 
 
 public:
 	void ClickButton1();
 	void ClickButton2();
 };
-

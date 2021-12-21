@@ -9,11 +9,11 @@ public:
 	virtual ~CRef();
 
 protected:
-	std::string	m_Name;
-	int			m_RefCount;
-	bool		m_Enable;
-	bool		m_Active;
-	size_t		m_TypeID;
+	std::string m_Name;
+	int         m_RefCount;
+	bool        m_Enable;
+	bool        m_Active;
+	size_t      m_TypeID;
 
 public:
 	void Enable(bool bEnable)
@@ -26,12 +26,12 @@ public:
 		m_Active = false;
 	}
 
-	bool IsActive()	const
+	bool IsActive() const
 	{
 		return m_Active;
 	}
 
-	bool IsEnable()	const
+	bool IsEnable() const
 	{
 		return m_Enable;
 	}
@@ -41,7 +41,7 @@ public:
 		++m_RefCount;
 	}
 
-	int GetRefCount()	const
+	int GetRefCount() const
 	{
 		return m_RefCount;
 	}
@@ -52,7 +52,7 @@ public:
 
 		if (m_RefCount <= 0)
 		{
-			delete	this;
+			delete this;
 			return 0;
 		}
 
@@ -64,7 +64,7 @@ public:
 		m_Name = Name;
 	}
 
-	const std::string& GetName()	const
+	const std::string& GetName() const
 	{
 		return m_Name;
 	}
@@ -81,4 +81,3 @@ public:
 		return m_TypeID == typeid(T).hash_code();
 	}
 };
-

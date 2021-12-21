@@ -3,20 +3,20 @@
 #include "ConstantBufferBase.h"
 
 class CMaterialConstantBuffer :
-    public CConstantBufferBase
+	public CConstantBufferBase
 {
 public:
 	CMaterialConstantBuffer();
 	CMaterialConstantBuffer(const CMaterialConstantBuffer& Buffer);
-	virtual ~CMaterialConstantBuffer();
+	virtual ~CMaterialConstantBuffer() override;
 
 protected:
-	MaterialCBuffer	m_BufferData;
+	MaterialCBuffer m_BufferData;
 
 public:
-	virtual bool Init();
-	virtual void UpdateCBuffer();
-	virtual CMaterialConstantBuffer* Clone();
+	virtual bool                     Init() override;
+	virtual void                     UpdateCBuffer() override;
+	virtual CMaterialConstantBuffer* Clone() override;
 
 public:
 	void SetBaseColor(const Vector4& BaseColor)
@@ -29,4 +29,3 @@ public:
 		m_BufferData.Opacity = Opacity;
 	}
 };
-

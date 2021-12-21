@@ -1,18 +1,19 @@
 #pragma once
 #include "IMGUIWidget.h"
+
 class CIMGUIText :
-    public CIMGUIWidget
+	public CIMGUIWidget
 {
 	friend class CIMGUIWindow;
 
 protected:
 	CIMGUIText();
-	virtual ~CIMGUIText();
+	virtual ~CIMGUIText() override;
 
 protected:
-	char		m_Text[1024];
-	wchar_t		m_wText[1024];
-	char		m_TextUTF8[1024];
+	char    m_Text[1024];
+	wchar_t m_wText[1024];
+	char    m_TextUTF8[1024];
 
 public:
 	void SetText(const char* Text)
@@ -23,18 +24,18 @@ public:
 
 		strcpy_s(m_Text, Text);
 
-		int	Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, 0, 0);
+		int Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, nullptr, 0);
 		MultiByteToWideChar(CP_ACP, 0, Text, -1, m_wText, Length);
 
 		// UTF8로 변환한다.
-		Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, 0, 0);
+		Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, nullptr, 0, nullptr, nullptr);
+		WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, nullptr, nullptr);
 	}
 
 	void AddText(const char* Text)
 	{
-		wchar_t	wText[1024] = {};
-		int	Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, 0, 0);
+		wchar_t wText[1024] = {};
+		int     Length      = MultiByteToWideChar(CP_ACP, 0, Text, -1, nullptr, 0);
 		MultiByteToWideChar(CP_ACP, 0, Text, -1, wText, Length);
 
 		strcat_s(m_Text, Text);
@@ -42,12 +43,11 @@ public:
 		lstrcat(m_wText, wText);
 
 		// UTF8로 변환한다.
-		Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, 0, 0);
+		Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, nullptr, 0, nullptr, nullptr);
+		WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, nullptr, nullptr);
 	}
 
 public:
-	virtual bool Init();
-	virtual void Render();
+	virtual bool Init() override;
+	virtual void Render() override;
 };
-

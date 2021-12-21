@@ -3,27 +3,26 @@
 #include "../Ref.h"
 
 class CRenderState :
-    public CRef
+	public CRef
 {
-    friend class CRenderStateManager;
+	friend class CRenderStateManager;
 
 protected:
-    CRenderState();
-    virtual ~CRenderState() = 0;
+	CRenderState();
+	virtual ~CRenderState() override = 0;
 
 protected:
-    ID3D11DeviceChild* m_State;
-    ID3D11DeviceChild* m_PrevState;
-    RenderState_Type    m_Type;
+	ID3D11DeviceChild* m_State;
+	ID3D11DeviceChild* m_PrevState;
+	RenderState_Type   m_Type;
 
 public:
-    RenderState_Type GetType()  const
-    {
-        return m_Type;
-    }
-     
+	RenderState_Type GetType() const
+	{
+		return m_Type;
+	}
+
 public:
-    virtual void SetState() = 0;
-    virtual void ResetState() = 0;
+	virtual void SetState() = 0;
+	virtual void ResetState() = 0;
 };
-

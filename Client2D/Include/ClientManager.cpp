@@ -1,9 +1,9 @@
 #include "ClientManager.h"
 #include "Engine.h"
-#include "resource.h"
-#include "Scene/SceneManager.h"
-#include "Scene/MainScene.h"
 #include "Input.h"
+#include "resource.h"
+#include "Scene/MainScene.h"
+#include "Scene/SceneManager.h"
 
 DEFINITION_SINGLE(CClientManager)
 
@@ -19,7 +19,7 @@ CClientManager::~CClientManager()
 bool CClientManager::Init(HINSTANCE hInst)
 {
 	if (!CEngine::GetInst()->Init(hInst, TEXT("GameEngine"),
-		1280, 720, IDI_ICON1))
+	                              1280, 720, IDI_ICON1))
 	{
 		CEngine::DestroyInst();
 		return false;

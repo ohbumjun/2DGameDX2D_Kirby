@@ -1,7 +1,6 @@
-
 #include "RenderState.h"
 
-CRenderState::CRenderState()	:
+CRenderState::CRenderState() :
 	m_State(nullptr),
 	m_PrevState(nullptr)
 {

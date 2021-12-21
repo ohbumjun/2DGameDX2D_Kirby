@@ -3,20 +3,20 @@
 #include "ConstantBufferBase.h"
 
 class CTransformConstantBuffer :
-    public CConstantBufferBase
+	public CConstantBufferBase
 {
 public:
 	CTransformConstantBuffer();
 	CTransformConstantBuffer(const CTransformConstantBuffer& Buffer);
-	virtual ~CTransformConstantBuffer();
+	virtual ~CTransformConstantBuffer() override;
 
 protected:
-	TransformCBuffer	m_BufferData;
+	TransformCBuffer m_BufferData;
 
 public:
-	virtual bool Init();
-	virtual void UpdateCBuffer();
-	virtual CTransformConstantBuffer* Clone();
+	virtual bool                      Init() override;
+	virtual void                      UpdateCBuffer() override;
+	virtual CTransformConstantBuffer* Clone() override;
 
 public:
 	void SetWorldMatrix(const Matrix& matWorld)
@@ -44,4 +44,3 @@ public:
 		m_BufferData.MeshSize = Size;
 	}
 };
-

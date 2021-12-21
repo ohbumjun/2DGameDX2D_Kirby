@@ -3,17 +3,17 @@
 #include "IMGUIWindow.h"
 
 class CSpriteWindow :
-    public CIMGUIWindow
+	public CIMGUIWindow
 {
 public:
 	CSpriteWindow();
-	virtual ~CSpriteWindow();
+	virtual ~CSpriteWindow() override;
 
 private:
-	class CIMGUIImage* m_Sprite;
-	class CIMGUIImage* m_SpriteSampled;
-	class CIMGUIListBox* m_AnimationList;
-	class CIMGUIListBox* m_AnimationFrameList;
+	class CIMGUIImage*     m_Sprite;
+	class CIMGUIImage*     m_SpriteSampled;
+	class CIMGUIListBox*   m_AnimationList;
+	class CIMGUIListBox*   m_AnimationFrameList;
 	class CIMGUITextInput* m_AnimInputName;
 private :
 	class CIMGUITextInput* m_StartFramePosXInput;
@@ -28,8 +28,8 @@ private :
 	class CAnimationSequence2DInstance* m_Animation;
 
 public:
-	virtual bool Init();
-	virtual void Update(float DeltaTime);
+	virtual bool Init() override;
+	virtual void Update(float DeltaTime) override;
 public:
 	void LoadTextureButton();
 	void SpriteEditButton();
@@ -46,7 +46,6 @@ public :
 	void SaveAnimation();
 	void LoadAnimation();
 public :
-	void SelectAnimationSequence(int , const char*);
+	void SelectAnimationSequence(int, const char*);
 	void SelectAnimationFrame(int, const char*);
 };
-

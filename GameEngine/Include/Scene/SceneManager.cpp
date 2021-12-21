@@ -1,10 +1,9 @@
-
 #include "SceneManager.h"
 #include "../Render/RenderManager.h"
 
 DEFINITION_SINGLE(CSceneManager)
 
-CSceneManager::CSceneManager()	:
+CSceneManager::CSceneManager() :
 	m_Scene(nullptr),
 	m_NextScene(nullptr)
 {

@@ -3,20 +3,20 @@
 #include "IMGUIWidget.h"
 
 class CIMGUIImage :
-    public CIMGUIWidget
+	public CIMGUIWidget
 {
 	friend class CIMGUIWindow;
 
 protected:
 	CIMGUIImage();
-	virtual ~CIMGUIImage();
+	virtual ~CIMGUIImage() override;
 
 protected:
-	CSharedPtr<class CTexture>	m_Texture;
-	ImVec2		m_ImageStart;
-	ImVec2		m_ImageEnd;
-	ImVec4		m_Tint;
-	ImVec4		m_BorderColor;
+	CSharedPtr<class CTexture> m_Texture;
+	ImVec2                     m_ImageStart;
+	ImVec2                     m_ImageEnd;
+	ImVec4                     m_Tint;
+	ImVec4                     m_BorderColor;
 
 public:
 	void SetImageStart(float x, float y)
@@ -35,10 +35,12 @@ public:
 	{
 		m_ImageEnd = ImVec2(V.x, V.y);
 	}
+
 	void SetTint(unsigned char r, unsigned char g, unsigned char b)
 	{
 		m_Tint = ImVec4(r / 255.f, g / 255.f, b / 255.f, 1.f);
 	}
+
 	void SetBorderColor(unsigned char r, unsigned char g, unsigned char b)
 	{
 		m_BorderColor = ImVec4(r / 255.f, g / 255.f, b / 255.f, 1.f);
@@ -46,13 +48,12 @@ public:
 
 public:
 	void SetTexture(const std::string& Name, const TCHAR* FileName,
-		const std::string& PathName = TEXTURE_PATH);
+	                const std::string& PathName = TEXTURE_PATH);
 	void SetTexture(const std::string& Name);
 	void SetTextureFullPath(const std::string& Name, const TCHAR* FullPath);
 	void SetTexture(class CTexture* Texture);
 
 public:
-	virtual bool Init();
-	virtual void Render();
+	virtual bool Init() override;
+	virtual void Render() override;
 };
-

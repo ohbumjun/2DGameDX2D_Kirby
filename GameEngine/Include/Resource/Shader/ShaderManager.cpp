@@ -1,9 +1,8 @@
-
 #include "ShaderManager.h"
 #include "ColorMeshShader.h"
-#include "PosMeshShader.h"
 #include "ConstantBuffer.h"
 #include "Mesh2DShader.h"
+#include "PosMeshShader.h"
 
 CShaderManager::CShaderManager()
 {
@@ -27,23 +26,23 @@ bool CShaderManager::Init()
 
 	// =================== 상수버퍼 ===================
 	CreateConstantBuffer("TransformCBuffer", sizeof(TransformCBuffer), 0,
-		(int)ConstantBuffer_Shader_Type::Graphic);
+	                     static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
 	CreateConstantBuffer("MaterialCBuffer", sizeof(MaterialCBuffer), 1,
-		(int)ConstantBuffer_Shader_Type::Graphic);
+	                     static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
 	CreateConstantBuffer("Standard2DCBuffer", sizeof(Standard2DCBuffer), 2,
-		(int)ConstantBuffer_Shader_Type::Graphic);
+	                     static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
 	CreateConstantBuffer("Animation2DCBuffer", sizeof(Animation2DCBuffer), 10,
-		(int)ConstantBuffer_Shader_Type::Graphic);
+	                     static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
 	return true;
 }
 
 CShader* CShaderManager::FindShader(const std::string& Name)
 {
-	auto	iter = m_mapShader.find(Name);
+	auto iter = m_mapShader.find(Name);
 
 	if (iter == m_mapShader.end())
 		return nullptr;
@@ -53,7 +52,7 @@ CShader* CShaderManager::FindShader(const std::string& Name)
 
 void CShaderManager::ReleaseShader(const std::string& Name)
 {
-	auto	iter = m_mapShader.find(Name);
+	auto iter = m_mapShader.find(Name);
 
 	if (iter != m_mapShader.end())
 	{
@@ -62,8 +61,8 @@ void CShaderManager::ReleaseShader(const std::string& Name)
 	}
 }
 
-bool CShaderManager::CreateConstantBuffer(const std::string& Name, int Size, int Register, 
-	int ConstantBufferShaderType)
+bool CShaderManager::CreateConstantBuffer(const std::string& Name, int Size, int Register,
+                                          int                ConstantBufferShaderType)
 {
 	CConstantBuffer* Buffer = FindConstantBuffer(Name);
 
@@ -87,7 +86,7 @@ bool CShaderManager::CreateConstantBuffer(const std::string& Name, int Size, int
 
 CConstantBuffer* CShaderManager::FindConstantBuffer(const std::string& Name)
 {
-	auto	iter = m_mapConstantBuffer.find(Name);
+	auto iter = m_mapConstantBuffer.find(Name);
 
 	if (iter == m_mapConstantBuffer.end())
 		return nullptr;

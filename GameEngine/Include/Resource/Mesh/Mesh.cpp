@@ -1,4 +1,3 @@
-
 #include "Mesh.h"
 #include "../../Device.h"
 
@@ -8,7 +7,7 @@ CMesh::CMesh()
 
 CMesh::~CMesh()
 {
-	size_t	Size = m_vecContainer.size();
+	size_t Size = m_vecContainer.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -21,13 +20,13 @@ bool CMesh::Init()
 	return true;
 }
 
-bool CMesh::CreateBuffer(Buffer_Type Type, void* Data, int Size,
-	int Count, D3D11_USAGE Usage, ID3D11Buffer** Buffer)
+bool CMesh::CreateBuffer(Buffer_Type Type, void*        Data, int             Size,
+                         int         Count, D3D11_USAGE Usage, ID3D11Buffer** Buffer)
 {
-	D3D11_BUFFER_DESC	Desc = {};
-	
+	D3D11_BUFFER_DESC Desc = {};
+
 	Desc.ByteWidth = Size * Count;
-	Desc.Usage = Usage;
+	Desc.Usage     = Usage;
 
 	if (Type == Buffer_Type::Vertex)
 		Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -41,18 +40,18 @@ bool CMesh::CreateBuffer(Buffer_Type Type, void* Data, int Size,
 	else if (Usage == D3D11_USAGE_STAGING)
 		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 
-	D3D11_SUBRESOURCE_DATA	BufferData = {};
+	D3D11_SUBRESOURCE_DATA BufferData = {};
 
 	BufferData.pSysMem = Data;
 
 	if (FAILED(CDevice::GetInst()->GetDevice()->CreateBuffer(&Desc,
-		&BufferData, Buffer)))
+		           &BufferData, Buffer)))
 		return false;
 
 
 	if (Type == Buffer_Type::Vertex)
 	{
-		char* VertexData = (char*)Data;
+		char* VertexData = static_cast<char*>(Data);
 
 		for (int i = 0; i < Count; ++i)
 		{
@@ -84,64 +83,64 @@ bool CMesh::CreateBuffer(Buffer_Type Type, void* Data, int Size,
 
 void CMesh::Render()
 {
-	size_t	Size = m_vecContainer.size();
+	size_t Size = m_vecContainer.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
-		unsigned int	Stride = m_vecContainer[i]->VB.Size;
-		unsigned int	Offset = 0;
+		unsigned int Stride = m_vecContainer[i]->VB.Size;
+		unsigned int Offset = 0;
 
 		CDevice::GetInst()->GetContext()->IASetPrimitiveTopology(m_vecContainer[i]->Primitive);
 		CDevice::GetInst()->GetContext()->IASetVertexBuffers(0, 1,
-			&m_vecContainer[i]->VB.Buffer, &Stride, &Offset);
+		                                                     &m_vecContainer[i]->VB.Buffer, &Stride, &Offset);
 
-		size_t	IdxCount = m_vecContainer[i]->vecIB.size();
+		size_t IdxCount = m_vecContainer[i]->vecIB.size();
 
 		if (IdxCount > 0)
 		{
 			for (size_t j = 0; j < IdxCount; ++j)
 			{
 				CDevice::GetInst()->GetContext()->IASetIndexBuffer(
-					m_vecContainer[i]->vecIB[j].Buffer,
-					m_vecContainer[i]->vecIB[j].Fmt, 0);
+				                                                   m_vecContainer[i]->vecIB[j].Buffer,
+				                                                   m_vecContainer[i]->vecIB[j].Fmt, 0);
 				CDevice::GetInst()->GetContext()->DrawIndexed(
-					m_vecContainer[i]->vecIB[j].Count, 0, 0);
+				                                              m_vecContainer[i]->vecIB[j].Count, 0, 0);
 			}
 		}
 
 		else
 		{
 			CDevice::GetInst()->GetContext()->IASetIndexBuffer(
-				nullptr, DXGI_FORMAT_UNKNOWN, 0);
+			                                                   nullptr, DXGI_FORMAT_UNKNOWN, 0);
 			CDevice::GetInst()->GetContext()->Draw(
-				m_vecContainer[i]->VB.Count, 0);
+			                                       m_vecContainer[i]->VB.Count, 0);
 		}
 	}
 }
 
-bool CMesh::CreateMesh(void* VtxData, int Size, int Count, D3D11_USAGE Usage, D3D11_PRIMITIVE_TOPOLOGY Primitive, 
-	void* IdxData, int IdxSize, int IdxCount, D3D11_USAGE IdxUsage, DXGI_FORMAT Fmt)
+bool CMesh::CreateMesh(void* VtxData, int Size, int    Count, D3D11_USAGE    Usage, D3D11_PRIMITIVE_TOPOLOGY Primitive,
+                       void* IdxData, int IdxSize, int IdxCount, D3D11_USAGE IdxUsage, DXGI_FORMAT           Fmt)
 {
 	MeshContainer* Container = new MeshContainer;
 
-	Container->VB.Size = Size;
-	Container->VB.Count = Count;
+	Container->VB.Size   = Size;
+	Container->VB.Count  = Count;
 	Container->Primitive = Primitive;
 
 	if (!CreateBuffer(Buffer_Type::Vertex, VtxData, Size,
-		Count, Usage, &Container->VB.Buffer))
+	                  Count, Usage, &Container->VB.Buffer))
 		return false;
 
 	if (IdxData != nullptr)
 	{
 		Container->vecIB.resize(1);
 
-		Container->vecIB[0].Size = IdxSize;
+		Container->vecIB[0].Size  = IdxSize;
 		Container->vecIB[0].Count = IdxCount;
-		Container->vecIB[0].Fmt = Fmt;
+		Container->vecIB[0].Fmt   = Fmt;
 
 		if (!CreateBuffer(Buffer_Type::Index, IdxData, IdxSize,
-			IdxCount, IdxUsage, &Container->vecIB[0].Buffer))
+		                  IdxCount, IdxUsage, &Container->vecIB[0].Buffer))
 			return false;
 	}
 

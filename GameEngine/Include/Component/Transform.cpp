@@ -1,12 +1,12 @@
-
 #include "Transform.h"
 #include "../Resource/Shader/TransformConstantBuffer.h"
 
-CTransform::CTransform()	:
-	m_Parent(nullptr),
+CTransform::CTransform() :
 	m_Scene(nullptr),
 	m_Object(nullptr),
 	m_Owner(nullptr),
+	m_Parent(nullptr),
+	m_CBuffer(nullptr),
 	m_InheritScale(false),
 	m_InheritRotX(false),
 	m_InheritRotY(false),
@@ -16,13 +16,12 @@ CTransform::CTransform()	:
 	m_InheritParentRotationPosZ(true),
 	m_UpdateScale(true),
 	m_UpdateRot(true),
-	m_UpdatePos(true),
-	m_CBuffer(nullptr)
+	m_UpdatePos(true)
 {
 	for (int i = 0; i < AXIS_MAX; ++i)
 	{
 		m_RelativeAxis[i] = Vector3::Axis[i];
-		m_WorldAxis[i] = Vector3::Axis[i];
+		m_WorldAxis[i]    = Vector3::Axis[i];
 	}
 }
 
@@ -46,7 +45,7 @@ void CTransform::InheritScale(bool Current)
 	m_UpdateScale = true;
 
 	// 자식이 있을 경우 모두 갱신해준다.
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -71,11 +70,11 @@ void CTransform::InheritRotation(bool Current)
 			InheritParentRotationPos(false);
 	}
 
-	Vector3	ConvertRot = m_RelativeRot.ConvertAngle();
+	Vector3 ConvertRot = m_RelativeRot.ConvertAngle();
 
 	XMVECTOR Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 
-	Matrix	matRot;
+	Matrix matRot;
 	matRot.RotationQuaternion(Qut);
 
 	for (int i = 0; i < AXIS_MAX; ++i)
@@ -85,7 +84,7 @@ void CTransform::InheritRotation(bool Current)
 	}
 
 	ConvertRot = m_WorldRot.ConvertAngle();
-	Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
+	Qut        = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 	matRot.RotationQuaternion(Qut);
 
 	for (int i = 0; i < AXIS_MAX; ++i)
@@ -97,7 +96,7 @@ void CTransform::InheritRotation(bool Current)
 	m_UpdateRot = true;
 
 	// 자식이 있을 경우 모두 갱신해준다.
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -109,9 +108,9 @@ void CTransform::InheritParentRotationPos(bool Current)
 {
 	if (m_Parent)
 	{
-		Matrix	matRot;
+		Matrix matRot;
 
-		Vector3	ParentRot;
+		Vector3 ParentRot;
 
 		if (m_InheritRotX)
 			ParentRot.x = m_Parent->GetWorldRot().x;
@@ -124,14 +123,14 @@ void CTransform::InheritParentRotationPos(bool Current)
 
 		if (m_InheritRotX || m_InheritRotY || m_InheritRotZ)
 		{
-			Vector3	ConvertRot = ParentRot.ConvertAngle();
+			Vector3 ConvertRot = ParentRot.ConvertAngle();
 
 			XMVECTOR Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 
-			Matrix	matRot;
+			Matrix matRot;
 			matRot.RotationQuaternion(Qut);
 
-			Vector3	ParentPos = m_Parent->GetWorldPos();
+			Vector3 ParentPos = m_Parent->GetWorldPos();
 
 			memcpy(&matRot._41, &ParentPos, sizeof(Vector3));
 
@@ -145,7 +144,7 @@ void CTransform::InheritParentRotationPos(bool Current)
 	m_UpdatePos = true;
 
 	// 자식이 있을 경우 모두 갱신해준다.
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -161,7 +160,7 @@ void CTransform::InheritWorldScale(bool Current)
 	m_UpdateScale = true;
 
 	// 자식이 있을 경우 모두 갱신해준다.
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -186,11 +185,11 @@ void CTransform::InheritWorldRotation(bool Current)
 			InheritParentRotationPos(false);
 	}
 
-	Vector3	ConvertRot = m_RelativeRot.ConvertAngle();
+	Vector3 ConvertRot = m_RelativeRot.ConvertAngle();
 
 	XMVECTOR Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 
-	Matrix	matRot;
+	Matrix matRot;
 	matRot.RotationQuaternion(Qut);
 
 	for (int i = 0; i < AXIS_MAX; ++i)
@@ -200,7 +199,7 @@ void CTransform::InheritWorldRotation(bool Current)
 	}
 
 	ConvertRot = m_WorldRot.ConvertAngle();
-	Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
+	Qut        = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 	matRot.RotationQuaternion(Qut);
 
 	for (int i = 0; i < AXIS_MAX; ++i)
@@ -212,7 +211,7 @@ void CTransform::InheritWorldRotation(bool Current)
 	m_UpdateRot = true;
 
 	// 자식이 있을 경우 모두 갱신해준다.
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -224,9 +223,9 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 {
 	if (m_Parent)
 	{
-		Matrix	matRot;
+		Matrix matRot;
 
-		Vector3	ParentRot;
+		Vector3 ParentRot;
 
 		if (m_InheritRotX)
 			ParentRot.x = m_Parent->GetWorldRot().x;
@@ -239,17 +238,17 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 
 		if (m_InheritRotX || m_InheritRotY || m_InheritRotZ)
 		{
-			Vector3	ConvertRot = ParentRot.ConvertAngle();
+			Vector3 ConvertRot = ParentRot.ConvertAngle();
 
 			XMVECTOR Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 
-			Matrix	matRot;
+			Matrix matRot;
 			matRot.RotationQuaternion(Qut);
 
-			Vector3	ParentPos = m_Parent->GetWorldPos();
+			Vector3 ParentPos = m_Parent->GetWorldPos();
 
 			memcpy(&matRot._41, &ParentPos, sizeof(Vector3));
-			
+
 			matRot.Inverse();
 
 			m_RelativePos = m_WorldPos.TransformCoord(matRot);
@@ -262,7 +261,7 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 	m_UpdatePos = true;
 
 	// 자식이 있을 경우 모두 갱신해준다.
-	size_t	Size = m_vecChild.size();
+	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -300,21 +299,21 @@ void CTransform::SetRelativeRotation(float x, float y, float z)
 
 void CTransform::SetRelativeRotationX(float x)
 {
-	Vector3	Rot(x, m_RelativeRot.y, m_RelativeRot.z);
+	Vector3 Rot(x, m_RelativeRot.y, m_RelativeRot.z);
 
 	SetRelativeRotation(Rot);
 }
 
 void CTransform::SetRelativeRotationY(float y)
 {
-	Vector3	Rot(m_RelativeRot.x, y, m_RelativeRot.z);
+	Vector3 Rot(m_RelativeRot.x, y, m_RelativeRot.z);
 
 	SetRelativeRotation(Rot);
 }
 
 void CTransform::SetRelativeRotationZ(float z)
 {
-	Vector3	Rot(m_RelativeRot.x, m_RelativeRot.y, z);
+	Vector3 Rot(m_RelativeRot.x, m_RelativeRot.y, z);
 
 	SetRelativeRotation(Rot);
 }
@@ -330,7 +329,7 @@ void CTransform::SetRelativePos(const Vector3& Pos)
 
 void CTransform::SetRelativePos(float x, float y, float z)
 {
-	Vector3	Pos(x, y, z);
+	Vector3 Pos(x, y, z);
 
 	SetRelativePos(Pos);
 }
@@ -346,7 +345,7 @@ void CTransform::AddRelativeScale(const Vector3& Scale)
 
 void CTransform::AddRelativeScale(float x, float y, float z)
 {
-	Vector3	Scale(x, y, z);
+	Vector3 Scale(x, y, z);
 
 	AddRelativeScale(Scale);
 }
@@ -362,28 +361,28 @@ void CTransform::AddRelativeRotation(const Vector3& Rot)
 
 void CTransform::AddRelativeRotation(float x, float y, float z)
 {
-	Vector3	Rot(x, y, z);
+	Vector3 Rot(x, y, z);
 
 	AddRelativeRotation(Rot);
 }
 
 void CTransform::AddRelativeRotationX(float x)
 {
-	Vector3	Rot(x, 0.f, 0.f);
+	Vector3 Rot(x, 0.f, 0.f);
 
 	AddRelativeRotation(Rot);
 }
 
 void CTransform::AddRelativeRotationY(float y)
 {
-	Vector3	Rot(0.f, y, 0.f);
+	Vector3 Rot(0.f, y, 0.f);
 
 	AddRelativeRotation(Rot);
 }
 
 void CTransform::AddRelativeRotationZ(float z)
 {
-	Vector3	Rot(0.f, 0.f, z);
+	Vector3 Rot(0.f, 0.f, z);
 
 	AddRelativeRotation(Rot);
 }
@@ -399,7 +398,7 @@ void CTransform::AddRelativePos(const Vector3& Pos)
 
 void CTransform::AddRelativePos(float x, float y, float z)
 {
-	Vector3	Pos(x, y, z);
+	Vector3 Pos(x, y, z);
 
 	AddRelativePos(Pos);
 }
@@ -415,7 +414,7 @@ void CTransform::SetWorldScale(const Vector3& Scale)
 
 void CTransform::SetWorldScale(float x, float y, float z)
 {
-	Vector3	Scale(x, y, z);
+	Vector3 Scale(x, y, z);
 
 	SetWorldScale(Scale);
 }
@@ -431,35 +430,35 @@ void CTransform::SetWorldRotation(const Vector3& Rot)
 
 void CTransform::SetWorldRotation(float x, float y, float z)
 {
-	Vector3	Rot(x, y, z);
+	Vector3 Rot(x, y, z);
 
 	SetWorldRotation(Rot);
 }
 
 void CTransform::SetWorldRotationX(float x)
 {
-	Vector3	Rot(x, m_WorldRot.y, m_WorldRot.z);
+	Vector3 Rot(x, m_WorldRot.y, m_WorldRot.z);
 
 	SetWorldRotation(Rot);
 }
 
 void CTransform::SetWorldRotationY(float y)
 {
-	Vector3	Rot(m_WorldRot.x, y, m_WorldRot.z);
+	Vector3 Rot(m_WorldRot.x, y, m_WorldRot.z);
 
 	SetWorldRotation(Rot);
 }
 
 void CTransform::SetWorldRotationZ(float z)
 {
-	Vector3	Rot(m_WorldRot.x, m_WorldRot.y, z);
+	Vector3 Rot(m_WorldRot.x, m_WorldRot.y, z);
 
 	SetWorldRotation(Rot);
 }
 
 void CTransform::SetWorldPos(const Vector3& Pos)
 {
-	m_WorldPos = Pos;
+	m_WorldPos    = Pos;
 	m_RelativePos = Pos;
 
 	InheritParentRotationWorldPos(true);
@@ -467,7 +466,7 @@ void CTransform::SetWorldPos(const Vector3& Pos)
 
 void CTransform::SetWorldPos(float x, float y, float z)
 {
-	Vector3	Pos(x, y, z);
+	Vector3 Pos(x, y, z);
 
 	SetWorldPos(Pos);
 }
@@ -483,7 +482,7 @@ void CTransform::AddWorldScale(const Vector3& Scale)
 
 void CTransform::AddWorldScale(float x, float y, float z)
 {
-	Vector3	Scale(x, y, z);
+	Vector3 Scale(x, y, z);
 
 	AddWorldScale(Scale);
 }
@@ -499,28 +498,28 @@ void CTransform::AddWorldRotation(const Vector3& Rot)
 
 void CTransform::AddWorldRotation(float x, float y, float z)
 {
-	Vector3	Rot(x, y, z);
+	Vector3 Rot(x, y, z);
 
 	AddWorldRotation(Rot);
 }
 
 void CTransform::AddWorldRotationX(float x)
 {
-	Vector3	Rot(x, 0.f, 0.f);
+	Vector3 Rot(x, 0.f, 0.f);
 
 	AddWorldRotation(Rot);
 }
 
 void CTransform::AddWorldRotationY(float y)
 {
-	Vector3	Rot(0.f, y, 0.f);
+	Vector3 Rot(0.f, y, 0.f);
 
 	AddWorldRotation(Rot);
 }
 
 void CTransform::AddWorldRotationZ(float z)
 {
-	Vector3	Rot(0.f, 0.f, z);
+	Vector3 Rot(0.f, 0.f, z);
 
 	AddWorldRotation(Rot);
 }
@@ -535,7 +534,7 @@ void CTransform::AddWorldPos(const Vector3& Pos)
 
 void CTransform::AddWorldPos(float x, float y, float z)
 {
-	Vector3	Pos(x, y, z);
+	Vector3 Pos(x, y, z);
 
 	AddWorldPos(Pos);
 }
@@ -577,7 +576,7 @@ void CTransform::SetTransform()
 {
 	m_CBuffer->SetWorldMatrix(m_matWorld);
 
-	Matrix	matProj;
+	Matrix matProj;
 
 	matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
 

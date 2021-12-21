@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../GameInfo.h"
 #include "Material.h"
+#include "../../GameInfo.h"
 
 class CMaterialManager
 {
@@ -12,19 +12,19 @@ private:
 	~CMaterialManager();
 
 private:
-	std::unordered_map<std::string, CSharedPtr<CMaterial>>	m_mapMaterial;
-	class CMaterialConstantBuffer* m_CBuffer;
+	std::unordered_map<std::string, CSharedPtr<CMaterial>> m_mapMaterial;
+	class CMaterialConstantBuffer*                         m_CBuffer;
 
 public:
-	bool Init();
+	bool       Init();
 	CMaterial* FindMaterial(const std::string& Name);
-	void ReleaseMaterial(const std::string& Name);
+	void       ReleaseMaterial(const std::string& Name);
 
 public:
 	template <typename T>
 	bool CreateMaterial(const std::string& Name)
 	{
-		T* Material = (T*)FindMaterial(Name);
+		T* Material = static_cast<T*>(FindMaterial(Name));
 
 		if (Material)
 			return false;
@@ -40,4 +40,3 @@ public:
 		return true;
 	}
 };
-

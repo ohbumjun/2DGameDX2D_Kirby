@@ -1,15 +1,15 @@
 #pragma once
 #include "GraphicShader.h"
+
 class CColorMeshShader :
-    public CGraphicShader
+	public CGraphicShader
 {
-    friend class CShaderManager;
+	friend class CShaderManager;
 
 protected:
-    CColorMeshShader();
-    virtual ~CColorMeshShader();
+	CColorMeshShader();
+	virtual ~CColorMeshShader() override;
 
 public:
-    virtual bool Init();
+	virtual bool Init() override;
 };
-

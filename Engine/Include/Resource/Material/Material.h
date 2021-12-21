@@ -5,95 +5,101 @@
 
 struct MaterialTextureInfo
 {
-    std::string     Name;
-    Sampler_Type    SamplerType;
-    CSharedPtr<CTexture>    Texture;
-    int             Register;
-    int             ShaderType;
+	std::string          Name;
+	Sampler_Type         SamplerType;
+	CSharedPtr<CTexture> Texture;
+	int                  Register;
+	int                  ShaderType;
 
-    MaterialTextureInfo()   :
-        SamplerType(Sampler_Type::Linear),
-        Register(0),
-        ShaderType((int)ConstantBuffer_Shader_Type::Pixel)
-    {
-    }
+	MaterialTextureInfo() :
+		SamplerType(Sampler_Type::Linear),
+		Register(0),
+		ShaderType(static_cast<int>(ConstantBuffer_Shader_Type::Pixel))
+	{
+	}
 };
 
 
 class CMaterial :
-    public CRef
+	public CRef
 {
-    friend class CMaterialManager;
+	friend class CMaterialManager;
 
 protected:
-    CMaterial();
-    CMaterial(const CMaterial& Material);
-    virtual ~CMaterial();
+	CMaterial();
+	CMaterial(const CMaterial& Material);
+	virtual ~CMaterial() override;
 
 private:
-    class CScene* m_Scene;
+	class CScene* m_Scene;
 
 
 public:
-    void SetScene(class CScene* Scene)
-    {
-        m_Scene = Scene;
-    }
+	void SetScene(class CScene* Scene)
+	{
+		m_Scene = Scene;
+	}
+
 public:
-    std::string GetTextureName(int Index = 0) const
-    {
-        return m_TextureInfo[Index].Texture->GetName();
-    }
-    CTexture* GetTexture(int Index = 0) const
-    {
-        return m_TextureInfo[Index].Texture;
-    }
-    TCHAR* GetTextureFileName(int Index = 0) const
-    {
-        return m_TextureInfo[Index].Texture->GetFileName(Index);
-    }
+	std::string GetTextureName(int Index = 0) const
+	{
+		return m_TextureInfo[Index].Texture->GetName();
+	}
+
+	CTexture* GetTexture(int Index = 0) const
+	{
+		return m_TextureInfo[Index].Texture;
+	}
+
+	TCHAR* GetTextureFileName(int Index = 0) const
+	{
+		return m_TextureInfo[Index].Texture->GetFileName(Index);
+	}
 
 protected:
-    CSharedPtr<CGraphicShader>  m_Shader;
-    std::vector<MaterialTextureInfo>    m_TextureInfo;
-    Vector4     m_BaseColor;
-    float       m_Opacity;
-    class CMaterialConstantBuffer* m_CBuffer;
-    CSharedPtr<class CRenderState>  m_RenderStateArray[(int)RenderState_Type::Max];
+	CSharedPtr<CGraphicShader>       m_Shader;
+	std::vector<MaterialTextureInfo> m_TextureInfo;
+	Vector4                          m_BaseColor;
+	float                            m_Opacity;
+	class CMaterialConstantBuffer*   m_CBuffer;
+	CSharedPtr<class CRenderState>   m_RenderStateArray[static_cast<int>(RenderState_Type::Max)];
 
 private:
-    void SetConstantBuffer(class CMaterialConstantBuffer* Buffer)
-    {
-        m_CBuffer = Buffer;
-    }
+	void SetConstantBuffer(class CMaterialConstantBuffer* Buffer)
+	{
+		m_CBuffer = Buffer;
+	}
 
 public:
-    void SetRenderState(class CRenderState* State);
-    void SetRenderState(const std::string& Name);
-    void SetTransparency(bool Enable);
-    void SetOpacity(float Opacity);
-    void AddOpacity(float Opacity);
+	void SetRenderState(class CRenderState* State);
+	void SetRenderState(const std::string& Name);
+	void SetTransparency(bool Enable);
+	void SetOpacity(float Opacity);
+	void AddOpacity(float Opacity);
 
 public:
-    void SetBaseColor(const Vector4& Color);
-    void SetBaseColor(float r, float g, float b, float a);
+	void SetBaseColor(const Vector4& Color);
+	void SetBaseColor(float r, float g, float b, float a);
 
 public:
-    void AddTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void AddTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void AddTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void AddTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+	void AddTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+	void AddTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
+	                const std::string& PathName = TEXTURE_PATH);
+	void AddTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+	void AddTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName,
+	                const std::string& PathName = TEXTURE_PATH);
 
-    void SetTexture(int Index, class CTexture* Texture);
-    void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+	void SetTexture(int Index, class CTexture* Texture);
+	void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+	void SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
+	                const std::string& PathName = TEXTURE_PATH);
+	void SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+	void SetTexture(int                        Index, int Register, int ShaderType, const std::string& Name,
+	                const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
 
 public:
-    void SetShader(const std::string& Name);
-    void Render();
-    void Reset();
-    CMaterial* Clone();
+	void       SetShader(const std::string& Name);
+	void       Render();
+	void       Reset();
+	CMaterial* Clone();
 };
-

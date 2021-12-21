@@ -1,7 +1,6 @@
-
 #include "MainScene.h"
-#include "Scene/Scene.h"
 #include "../Object/Player2D.h"
+#include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 
 CMainScene::CMainScene()
@@ -35,6 +34,7 @@ void CMainScene::CreateAnimationSequence()
 
 	for (int i = 0; i < 7; ++i)
 	{
-		m_Scene->GetResource()->AddAnimationSequence2DFrame("PlayerIdle", Vector2(i * 50.f, 148.f), Vector2(50.f, 37.f));
+		m_Scene->GetResource()->
+		         AddAnimationSequence2DFrame("PlayerIdle", Vector2(i * 50.f, 148.f), Vector2(50.f, 37.f));
 	}
 }

@@ -3,24 +3,23 @@
 #include "GameObject/GameObject.h"
 
 class CBulletTornaido :
-    public CGameObject
+	public CGameObject
 {
-    friend class CScene;
+	friend class CScene;
 
 protected:
-    CBulletTornaido();
-    CBulletTornaido(const CBulletTornaido& obj);
-    virtual ~CBulletTornaido();
+	CBulletTornaido();
+	CBulletTornaido(const CBulletTornaido& obj);
+	virtual ~CBulletTornaido() override;
 
 private:
-    CSharedPtr<class CSceneComponent>    m_Root;
-    CSharedPtr<class CSceneComponent>    m_Root1;
-    CSharedPtr<class CSpriteComponent>    m_Sprite;
+	CSharedPtr<class CSceneComponent>  m_Root;
+	CSharedPtr<class CSceneComponent>  m_Root1;
+	CSharedPtr<class CSpriteComponent> m_Sprite;
 
 public:
-    virtual bool Init();
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
-    virtual CBulletTornaido* Clone();
+	virtual bool             Init() override;
+	virtual void             Update(float DeltaTime) override;
+	virtual void             PostUpdate(float DeltaTime) override;
+	virtual CBulletTornaido* Clone() override;
 };
-

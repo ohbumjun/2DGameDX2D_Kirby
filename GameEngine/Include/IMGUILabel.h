@@ -1,16 +1,17 @@
 #pragma once
 #include "IMGUIWidget.h"
+
 class CIMGUILabel :
-    public CIMGUIWidget
+	public CIMGUIWidget
 {
 	friend class CIMGUIWindow;
 
 protected:
 	CIMGUILabel();
-	virtual ~CIMGUILabel();
+	virtual ~CIMGUILabel() override;
 
 protected:
-	ImVec2	m_Align;
+	ImVec2 m_Align;
 
 public:
 	void SetAlign(float x, float y)
@@ -19,7 +20,6 @@ public:
 	}
 
 public:
-	virtual bool Init();
-	virtual void Render();
+	virtual bool Init() override;
+	virtual void Render() override;
 };
-

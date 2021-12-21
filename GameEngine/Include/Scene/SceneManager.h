@@ -9,7 +9,7 @@ private:
 	CScene* m_NextScene;
 
 public:
-	CScene* GetScene()	const
+	CScene* GetScene() const
 	{
 		return m_Scene;
 	}
@@ -32,4 +32,3 @@ public:
 
 	DECLARE_SINGLE(CSceneManager)
 };
-

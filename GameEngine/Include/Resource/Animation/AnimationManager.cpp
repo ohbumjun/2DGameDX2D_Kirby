@@ -1,9 +1,8 @@
-
 #include "AnimationManager.h"
-#include "../Texture/Texture.h"
 #include "../Shader/Animation2DConstantBuffer.h"
+#include "../Texture/Texture.h"
 
-CAnimationManager::CAnimationManager()	:
+CAnimationManager::CAnimationManager() :
 	m_Animation2DCBuffer(nullptr)
 {
 }
@@ -22,8 +21,9 @@ bool CAnimationManager::Init()
 	return true;
 }
 
-bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name, 
-	const std::string& TextureName, const TCHAR* FileName, const std::string& PathName)
+bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name,
+                                                  const std::string& TextureName, const TCHAR* FileName,
+                                                  const std::string& PathName)
 {
 	CAnimationSequence2D* Sequence = FindSequence(Name);
 
@@ -62,7 +62,6 @@ bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name, CText
 	}
 
 	m_mapSequence2D.insert(std::make_pair(Name, Sequence));
-	
 }
 
 void CAnimationManager::AddFrame(const std::string& Name, const Vector2& Start, const Vector2& Size)
@@ -75,8 +74,8 @@ void CAnimationManager::AddFrame(const std::string& Name, const Vector2& Start, 
 	Sequence->AddFrame(Start, Size);
 }
 
-void CAnimationManager::AddFrame(const std::string& Name, float StartX, float StartY, 
-	float Width, float Height)
+void CAnimationManager::AddFrame(const std::string& Name, float  StartX, float StartY,
+                                 float              Width, float Height)
 {
 	CAnimationSequence2D* Sequence = FindSequence(Name);
 
@@ -88,7 +87,7 @@ void CAnimationManager::AddFrame(const std::string& Name, float StartX, float St
 
 CAnimationSequence2D* CAnimationManager::FindSequence(const std::string& Name)
 {
-	auto	iter = m_mapSequence2D.find(Name);
+	auto iter = m_mapSequence2D.find(Name);
 
 	if (iter == m_mapSequence2D.end())
 		return nullptr;
@@ -98,11 +97,25 @@ CAnimationSequence2D* CAnimationManager::FindSequence(const std::string& Name)
 
 void CAnimationManager::ReleaseSequence(const std::string& Name)
 {
-	auto	iter = m_mapSequence2D.find(Name);
+	auto iter = m_mapSequence2D.find(Name);
 
 	if (iter != m_mapSequence2D.end())
 	{
 		if (iter->second->GetRefCount() == 1)
 			m_mapSequence2D.erase(iter);
 	}
+}
+
+bool CAnimationManager::LoadSequence2D(std::string& SequenceName, const char* FullPath, const CScene* Scene)
+{
+	CAnimationSequence2D* Sequence2D = new  CAnimationSequence2D;
+	Sequence2D->SetScene(const_cast<CScene*>(Scene));
+	if (!Sequence2D->Load(FullPath))
+	{
+		SAFE_DELETE(Sequence2D);
+		return false;
+	}
+	SequenceName = Sequence2D->GetName();
+	m_mapSequence2D.insert(std::make_pair(SequenceName, Sequence2D));
+	return true;
 }

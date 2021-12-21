@@ -1,9 +1,8 @@
-
 #include "MaterialManager.h"
 #include "../ResourceManager.h"
 #include "../Shader/MaterialConstantBuffer.h"
 
-CMaterialManager::CMaterialManager()	:
+CMaterialManager::CMaterialManager() :
 	m_CBuffer(nullptr)
 {
 }
@@ -21,7 +20,7 @@ bool CMaterialManager::Init()
 
 	CreateMaterial<CMaterial>("Color");
 
-	CSharedPtr<CMaterial>	Mtrl = FindMaterial("Color");
+	CSharedPtr<CMaterial> Mtrl = FindMaterial("Color");
 
 	Mtrl->SetShader("ColorMeshShader");
 
@@ -33,14 +32,14 @@ bool CMaterialManager::Init()
 
 	CTexture* Texture = CResourceManager::GetInst()->FindTexture("EngineTexture");
 
-	Mtrl->AddTexture(0, (int)ConstantBuffer_Shader_Type::Pixel, "EngineTexture", Texture);
+	Mtrl->AddTexture(0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel), "EngineTexture", Texture);
 
 	return true;
 }
 
 CMaterial* CMaterialManager::FindMaterial(const std::string& Name)
 {
-	auto	iter = m_mapMaterial.find(Name);
+	auto iter = m_mapMaterial.find(Name);
 
 	if (iter == m_mapMaterial.end())
 		return nullptr;
@@ -50,7 +49,7 @@ CMaterial* CMaterialManager::FindMaterial(const std::string& Name)
 
 void CMaterialManager::ReleaseMaterial(const std::string& Name)
 {
-	auto	iter = m_mapMaterial.find(Name);
+	auto iter = m_mapMaterial.find(Name);
 
 	if (iter != m_mapMaterial.end())
 	{

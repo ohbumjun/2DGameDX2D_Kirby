@@ -1,6 +1,6 @@
 #include "Vector2.h"
 
-Vector2::Vector2()	:
+Vector2::Vector2() :
 	x(0.f),
 	y(0.f)
 {
@@ -12,7 +12,7 @@ Vector2::Vector2(float _x, float _y) :
 {
 }
 
-Vector2::Vector2(const Vector2& v)	:
+Vector2::Vector2(const Vector2& v) :
 	x(v.x),
 	y(v.y)
 {
@@ -42,7 +42,7 @@ Vector2& Vector2::operator=(float f)
 {
 	x = f;
 	y = f;
-	
+
 	return *this;
 }
 
@@ -53,7 +53,7 @@ bool Vector2::operator==(const Vector2& v) const
 
 bool Vector2::operator==(const XMVECTOR& v) const
 {
-	Vector2	v1;
+	Vector2 v1;
 	XMStoreFloat2((XMFLOAT2*)&v1, v);
 
 	return x == v1.x && y == v1.y;
@@ -66,7 +66,7 @@ bool Vector2::operator!=(const Vector2& v) const
 
 bool Vector2::operator!=(const XMVECTOR& v) const
 {
-	Vector2	v1;
+	Vector2 v1;
 	XMStoreFloat2((XMFLOAT2*)&v1, v);
 
 	return x != v1.x || y != v1.y;
@@ -88,8 +88,8 @@ float& Vector2::operator[](int Index)
 // +
 Vector2 Vector2::operator+(const Vector2& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector2(v1 + v2);
 }
@@ -107,15 +107,15 @@ Vector2 Vector2::operator+(const float f) const
 // +=
 void Vector2::operator+=(const Vector2& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 + v2);
 }
 
 void Vector2::operator+=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 + v);
 }
@@ -129,8 +129,8 @@ void Vector2::operator+=(const float f)
 // -
 Vector2 Vector2::operator-(const Vector2& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector2(v1 - v2);
 }
@@ -148,15 +148,15 @@ Vector2 Vector2::operator-(const float f) const
 // -=
 void Vector2::operator-=(const Vector2& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 - v2);
 }
 
 void Vector2::operator-=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 - v);
 }
@@ -170,8 +170,8 @@ void Vector2::operator-=(const float f)
 // *
 Vector2 Vector2::operator*(const Vector2& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector2(v1 * v2);
 }
@@ -189,15 +189,15 @@ Vector2 Vector2::operator*(const float f) const
 // *=
 void Vector2::operator*=(const Vector2& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 * v2);
 }
 
 void Vector2::operator*=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 * v);
 }
@@ -211,8 +211,8 @@ void Vector2::operator*=(const float f)
 // /
 Vector2 Vector2::operator/(const Vector2& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector2(v1 / v2);
 }
@@ -230,15 +230,15 @@ Vector2 Vector2::operator/(const float f) const
 // /=
 void Vector2::operator/=(const Vector2& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 / v2);
 }
 
 void Vector2::operator/=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 / v);
 }
@@ -288,7 +288,7 @@ float Vector2::Length() const
 
 float Vector2::Distance(const Vector2& v) const
 {
-	Vector2	Dist = v - *this;
+	Vector2 Dist = v - *this;
 
 	return Dist.Length();
 }
@@ -309,7 +309,7 @@ float Vector2::Angle(const Vector2& v) const
 }
 
 
-XMVECTOR Vector2::Convert()	const
+XMVECTOR Vector2::Convert() const
 {
 	return XMLoadFloat2((XMFLOAT2*)this);
 }

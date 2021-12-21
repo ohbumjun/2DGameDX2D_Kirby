@@ -2,40 +2,42 @@
 
 #define	DIRECTINPUT_VERSION	0x0800
 
-#include <Windows.h>
-#include <list>
-#include <vector>
-#include <unordered_map>
-#include <crtdbg.h>
-#include <functional>
-#include <string>
-#include <math.h>
 #include <algorithm>
+#include <cctype>
+#include <crtdbg.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dinput.h>
-#include <cctype>
+#include <functional>
 #include <iostream>
+#include <list>
+#include <math.h>
 #include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <Windows.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dinput8.lib")
 
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix.h"
-#include "SharedPtr.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+#include "Matrix.h"
+#include "SharedPtr.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
 
-#define	ROOT_PATH		"Root"
-#define	SHADER_PATH		"Shader"
-#define	TEXTURE_PATH	"Texture"
-#define	FONT_PATH		"Font"
+#define	ROOT_PATH		   "Root"
+#define	SHADER_PATH      "Shader"
+#define	TEXTURE_PATH	   "Texture"
+#define	FONT_PATH		   "Font"
+#define	ANIMATION_PATH "Animation"
+#define	SCENE_PATH        "SceneB"
 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
 #define	SAFE_DELETE_ARRAY(p)	if(p)	{ delete[] p; p = nullptr; }
@@ -63,20 +65,20 @@ private:\
 
 struct Resolution
 {
-	unsigned int	Width;
-	unsigned int	Height;
+	unsigned int Width;
+	unsigned int Height;
 };
 
 struct VertexColor
 {
-	Vector3	Pos;
-	Vector4	Color;
+	Vector3 Pos;
+	Vector4 Color;
 
 	VertexColor()
 	{
 	}
 
-	VertexColor(const Vector3& _Pos, const Vector4& _Color)	:
+	VertexColor(const Vector3& _Pos, const Vector4& _Color) :
 		Pos(_Pos),
 		Color(_Color)
 	{
@@ -87,8 +89,8 @@ struct VertexColor
 struct VertexBuffer
 {
 	ID3D11Buffer* Buffer;
-	int		Size;
-	int		Count;
+	int           Size;
+	int           Count;
 
 	VertexBuffer() :
 		Buffer(nullptr),
@@ -106,9 +108,9 @@ struct VertexBuffer
 struct IndexBuffer
 {
 	ID3D11Buffer* Buffer;
-	int		Size;
-	int		Count;
-	DXGI_FORMAT	Fmt;
+	int           Size;
+	int           Count;
+	DXGI_FORMAT   Fmt;
 
 	IndexBuffer() :
 		Buffer(nullptr),
@@ -125,31 +127,30 @@ struct IndexBuffer
 };
 
 
-
 struct MeshContainer
 {
-	VertexBuffer	VB;
-	std::vector<IndexBuffer>	vecIB;
-	D3D11_PRIMITIVE_TOPOLOGY	Primitive;
+	VertexBuffer             VB;
+	std::vector<IndexBuffer> vecIB;
+	D3D11_PRIMITIVE_TOPOLOGY Primitive;
 };
 
 struct TransformCBuffer
 {
-	Matrix	matWorld;
-	Matrix	matView;
-	Matrix	matProj;
-	Matrix	matWV;
-	Matrix	matWVP;
-	Matrix	matVP;
-	Vector3	Pivot;
-	float	Empty1;
-	Vector3	MeshSize;
-	float	Empty;
+	Matrix  matWorld;
+	Matrix  matView;
+	Matrix  matProj;
+	Matrix  matWV;
+	Matrix  matWVP;
+	Matrix  matVP;
+	Vector3 Pivot;
+	float   Empty1;
+	Vector3 MeshSize;
+	float   Empty;
 };
 
 struct VertexUV
 {
-	Vector3	Pos;
+	Vector3 Pos;
 	Vector2 UV;
 
 	VertexUV()
@@ -165,29 +166,29 @@ struct VertexUV
 
 struct MaterialCBuffer
 {
-	Vector4	BaseColor;
-	float	Opacity;
-	Vector3	Empty;
+	Vector4 BaseColor;
+	float   Opacity;
+	Vector3 Empty;
 };
 
 struct AnimationFrameData
 {
-	Vector2	Start;
-	Vector2	Size;
+	Vector2 Start;
+	Vector2 Size;
 };
 
 struct Animation2DCBuffer
 {
-	Vector2	Animation2DStartUV;
-	Vector2	Animation2DEndUV;
-	int		Animation2DType;
-	Vector3	Animation2DEmpty;
+	Vector2 Animation2DStartUV;
+	Vector2 Animation2DEndUV;
+	int     Animation2DType;
+	Vector3 Animation2DEmpty;
 };
 
 struct Standard2DCBuffer
 {
-	int		AnimationEnable;
-	Vector3	Empty;
+	int     AnimationEnable;
+	Vector3 Empty;
 };
 
 // Functions
@@ -202,7 +203,7 @@ static bool CheckIfStringIsDigit(const std::string& String)
 static bool StringToBool(std::string String)
 {
 	bool result;
-	std::transform(String.begin(), String.end(), String.begin(), ::tolower);
+	std::transform(String.begin(), String.end(), String.begin(), tolower);
 	std::istringstream is(String);
 	is >> std::boolalpha >> result;
 	return result;

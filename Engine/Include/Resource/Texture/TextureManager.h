@@ -11,17 +11,17 @@ private:
 	~CTextureManager();
 
 private:
-	std::unordered_map<std::string, CSharedPtr<class CTexture>>	m_mapTexture;
-	std::unordered_map<std::string, ID3D11SamplerState*>	m_mapSampler;
+	std::unordered_map<std::string, CSharedPtr<class CTexture>> m_mapTexture;
+	std::unordered_map<std::string, ID3D11SamplerState*>        m_mapSampler;
 
 public:
 	bool Init();
 
 	bool LoadTexture(const std::string& Name, const TCHAR* FileName,
-		const std::string& PathName = TEXTURE_PATH);
-	bool LoadTextureFullPath(const std::string& Name, const TCHAR* FullPath);
+	                 const std::string& PathName = TEXTURE_PATH);
+	bool            LoadTextureFullPath(const std::string& Name, const TCHAR* FullPath);
 	class CTexture* FindTexture(const std::string& Name);
-	void ReleaseTexture(const std::string& Name);
+	void            ReleaseTexture(const std::string& Name);
 
 public:
 	/*
@@ -36,13 +36,13 @@ public:
     FLOAT MinLOD;
     FLOAT MaxLOD;
 	*/
-	bool CreateSampler(const std::string& Name, D3D11_FILTER Filter,
-		D3D11_TEXTURE_ADDRESS_MODE AddressU,
-		D3D11_TEXTURE_ADDRESS_MODE AddressV,
-		D3D11_TEXTURE_ADDRESS_MODE AddressW,
-		float BorderColor[4]);
+	bool CreateSampler(const std::string&         Name, D3D11_FILTER Filter,
+	                   D3D11_TEXTURE_ADDRESS_MODE AddressU,
+	                   D3D11_TEXTURE_ADDRESS_MODE AddressV,
+	                   D3D11_TEXTURE_ADDRESS_MODE AddressW,
+	                   float                      BorderColor[4]);
 	ID3D11SamplerState* FindSampler(const std::string& Name);
-	void SetSampler(const std::string& Name, int Register,
-		int ShaderType = (int)ConstantBuffer_Shader_Type::All);
+	void                SetSampler(const std::string& Name, int Register,
+	                               int                ShaderType = static_cast<int>(
+		                               ConstantBuffer_Shader_Type::All));
 };
-

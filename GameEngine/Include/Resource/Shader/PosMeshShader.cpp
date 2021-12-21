@@ -7,7 +7,6 @@ CPosMeshShader::CPosMeshShader()
 
 CPosMeshShader::~CPosMeshShader()
 {
-
 }
 
 bool CPosMeshShader::Init()

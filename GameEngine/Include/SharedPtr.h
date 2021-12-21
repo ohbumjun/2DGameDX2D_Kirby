@@ -4,7 +4,7 @@ template <typename T>
 class CSharedPtr
 {
 public:
-	CSharedPtr()	:
+	CSharedPtr() :
 		m_Ptr(nullptr)
 	{
 	}
@@ -35,7 +35,7 @@ private:
 	T* m_Ptr;
 
 public:
-	void operator = (T* Ptr)
+	void operator =(T* Ptr)
 	{
 		if (m_Ptr)
 			m_Ptr->Release();
@@ -46,7 +46,7 @@ public:
 			m_Ptr->AddRef();
 	}
 
-	void operator = (const CSharedPtr<T>& Ptr)
+	void operator =(const CSharedPtr<T>& Ptr)
 	{
 		if (m_Ptr)
 			m_Ptr->Release();
@@ -57,34 +57,33 @@ public:
 			m_Ptr->AddRef();
 	}
 
-	bool operator == (T* Ptr)	const
+	bool operator ==(T* Ptr) const
 	{
 		return m_Ptr == Ptr;
 	}
 
-	bool operator == (const CSharedPtr<T>& Ptr)	const
+	bool operator ==(const CSharedPtr<T>& Ptr) const
 	{
 		return m_Ptr == Ptr.m_Ptr;
 	}
 
-	bool operator != (T* Ptr)	const
+	bool operator !=(T* Ptr) const
 	{
 		return m_Ptr != Ptr;
 	}
 
-	bool operator != (const CSharedPtr<T>& Ptr)	const
+	bool operator !=(const CSharedPtr<T>& Ptr) const
 	{
 		return m_Ptr != Ptr.m_Ptr;
 	}
 
-	operator T* ()	const
+	operator T*() const
 	{
 		return m_Ptr;
 	}
 
-	T* operator -> ()	const
+	T* operator ->() const
 	{
 		return m_Ptr;
 	}
 };
-

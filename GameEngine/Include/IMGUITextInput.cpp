@@ -1,7 +1,6 @@
 #include "IMGUITextInput.h"
 
-CIMGUITextInput::CIMGUITextInput()	:
-	m_TextType(ImGuiText_Type::String),
+CIMGUITextInput::CIMGUITextInput() :
 	m_Text{},
 	m_wText{},
 	m_TextUTF8{},
@@ -10,6 +9,7 @@ CIMGUITextInput::CIMGUITextInput()	:
 	m_HintTextUTF8{},
 	m_MultiLine(false),
 	m_Flag(0),
+	m_TextType(ImGuiText_Type::String),
 	m_ValueInt(0),
 	m_ValueFloat(0.f)
 {
@@ -26,7 +26,7 @@ bool CIMGUITextInput::Init()
 
 void CIMGUITextInput::Render()
 {
-	bool	Input = false;
+	bool Input = false;
 
 	ImGui::PushItemWidth(m_Size.x);
 
@@ -66,12 +66,12 @@ void CIMGUITextInput::Render()
 			memset(m_wText, 0, sizeof(wchar_t) * 1024);
 			memset(m_TextUTF8, 0, sizeof(char) * 1024);
 
-			int	Length = MultiByteToWideChar(CP_ACP, 0, m_Text, -1, 0, 0);
+			int Length = MultiByteToWideChar(CP_ACP, 0, m_Text, -1, nullptr, 0);
 			MultiByteToWideChar(CP_ACP, 0, m_Text, -1, m_wText, Length);
 
 			// UTF8로 변환한다.
-			Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, 0, 0, 0, 0);
-			WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, 0, 0);
+			Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, nullptr, 0, nullptr, nullptr);
+			WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, nullptr, nullptr);
 		}
 
 		if (m_InputCallback)

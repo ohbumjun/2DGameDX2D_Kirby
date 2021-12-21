@@ -1,4 +1,3 @@
-
 #include "ConstantBufferBase.h"
 #include "ConstantBuffer.h"
 #include "../ResourceManager.h"

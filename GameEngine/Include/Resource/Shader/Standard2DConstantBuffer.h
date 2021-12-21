@@ -3,20 +3,20 @@
 #include "ConstantBufferBase.h"
 
 class CStandard2DConstantBuffer :
-    public CConstantBufferBase
+	public CConstantBufferBase
 {
 public:
 	CStandard2DConstantBuffer();
 	CStandard2DConstantBuffer(const CStandard2DConstantBuffer& Buffer);
-	virtual ~CStandard2DConstantBuffer();
+	virtual ~CStandard2DConstantBuffer() override;
 
 protected:
-	Standard2DCBuffer	m_BufferData;
+	Standard2DCBuffer m_BufferData;
 
 public:
-	virtual bool Init();
-	virtual void UpdateCBuffer();
-	virtual CStandard2DConstantBuffer* Clone();
+	virtual bool                       Init() override;
+	virtual void                       UpdateCBuffer() override;
+	virtual CStandard2DConstantBuffer* Clone() override;
 
 public:
 	void SetAnimation2DEnable(bool Enable)
@@ -24,4 +24,3 @@ public:
 		m_BufferData.AnimationEnable = Enable ? 1 : 0;
 	}
 };
-

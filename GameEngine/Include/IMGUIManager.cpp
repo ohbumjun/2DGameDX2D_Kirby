@@ -1,12 +1,12 @@
 #include "IMGUIManager.h"
 #include "Device.h"
-#include "IMGUIWindow.h"
 #include "IMGUITestWindow.h"
+#include "IMGUIWindow.h"
 #include "PathManager.h"
 
 DEFINITION_SINGLE(CIMGUIManager)
 
-CIMGUIManager::CIMGUIManager()	:
+CIMGUIManager::CIMGUIManager() :
 	m_Context(nullptr),
 	m_CurrentFont(nullptr)
 {
@@ -14,8 +14,8 @@ CIMGUIManager::CIMGUIManager()	:
 
 CIMGUIManager::~CIMGUIManager()
 {
-	auto	iter = m_mapWindow.begin();
-	auto	iterEnd = m_mapWindow.end();
+	auto iter    = m_mapWindow.begin();
+	auto iterEnd = m_mapWindow.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
@@ -60,14 +60,14 @@ void CIMGUIManager::Update(float DeltaTime)
 	if (m_mapWindow.empty())
 		return;
 
-	static bool	Open = false;
+	static bool Open = false;
 
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 		Open = true;
 
 	else if (Open)
 	{
-		Open = false;
+		Open                 = false;
 		CIMGUIWindow* Window = FindIMGUIWindow("TestWindow");
 
 		if (Window)
@@ -81,8 +81,8 @@ void CIMGUIManager::Update(float DeltaTime)
 
 	//ImGui::PushFont(m_CurrentFont);
 
-	auto	iter = m_mapWindow.begin();
-	auto	iterEnd = m_mapWindow.end();
+	auto iter    = m_mapWindow.begin();
+	auto iterEnd = m_mapWindow.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
@@ -103,7 +103,7 @@ void CIMGUIManager::Render()
 		return;
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-	
+
 	ImGuiIO& io = ImGui::GetIO();
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -115,7 +115,7 @@ void CIMGUIManager::Render()
 
 CIMGUIWindow* CIMGUIManager::FindIMGUIWindow(const std::string& Name)
 {
-	auto	iter = m_mapWindow.find(Name);
+	auto iter = m_mapWindow.find(Name);
 
 	if (iter == m_mapWindow.end())
 		return nullptr;
@@ -124,14 +124,14 @@ CIMGUIWindow* CIMGUIManager::FindIMGUIWindow(const std::string& Name)
 }
 
 bool CIMGUIManager::AddFont(const std::string& Name, const char* FileName, float Size, bool Korea, int OverH, int OverV,
-	float Spacing, const std::string& PathName)
+                            float              Spacing, const std::string& PathName)
 {
 	ImFont* Font = FindFont(Name);
 
 	if (Font)
 		return false;
 
-	char	FullPath[MAX_PATH] = {};
+	char FullPath[MAX_PATH] = {};
 
 	const PathInfo* Info = CPathManager::GetInst()->FindPath(PathName);
 
@@ -143,8 +143,8 @@ bool CIMGUIManager::AddFont(const std::string& Name, const char* FileName, float
 	return AddFontFullPath(Name, FullPath, Size, Korea, OverH, OverV, Spacing);
 }
 
-bool CIMGUIManager::AddFontFullPath(const std::string& Name, const char* FullPath, float Size, bool Korea, int OverH, 
-	int OverV, float Spacing)
+bool CIMGUIManager::AddFontFullPath(const std::string& Name, const char* FullPath, float Size, bool Korea, int OverH,
+                                    int                OverV, float      Spacing)
 {
 	ImFont* Font = FindFont(Name);
 
@@ -153,12 +153,12 @@ bool CIMGUIManager::AddFontFullPath(const std::string& Name, const char* FullPat
 
 	ImGuiIO& io = ImGui::GetIO();
 
-	ImFontConfig	config;
+	ImFontConfig config;
 
-	config.OversampleH = OverH;
-	config.OversampleV = OverV;
+	config.OversampleH         = OverH;
+	config.OversampleV         = OverV;
 	config.GlyphExtraSpacing.x = Spacing;
-	config.PixelSnapH = 1;
+	config.PixelSnapH          = true;
 
 	if (!Korea)
 		Font = io.Fonts->AddFontFromFileTTF(FullPath, Size, &config, io.Fonts->GetGlyphRangesDefault());
@@ -183,7 +183,7 @@ void CIMGUIManager::SetCurrentFont(const std::string& Name)
 
 ImFont* CIMGUIManager::FindFont(const std::string& Name)
 {
-	auto	iter = m_mapFont.find(Name);
+	auto iter = m_mapFont.find(Name);
 
 	if (iter == m_mapFont.end())
 		return nullptr;

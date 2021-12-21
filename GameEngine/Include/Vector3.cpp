@@ -67,7 +67,7 @@ bool Vector3::operator==(const Vector3& v) const
 
 bool Vector3::operator==(const XMVECTOR& v) const
 {
-	Vector3	v1;
+	Vector3 v1;
 	XMStoreFloat3((XMFLOAT3*)&v1, v);
 
 	return x == v1.x && y == v1.y && z == v1.z;
@@ -80,7 +80,7 @@ bool Vector3::operator!=(const Vector3& v) const
 
 bool Vector3::operator!=(const XMVECTOR& v) const
 {
-	Vector3	v1;
+	Vector3 v1;
 	XMStoreFloat3((XMFLOAT3*)&v1, v);
 
 	return x != v1.x || y != v1.y || z != v1.z;
@@ -95,8 +95,7 @@ float& Vector3::operator[](int Index)
 
 	if (Index == 0)
 		return x;
-
-	else if (Index == 1)
+	if (Index == 1)
 		return y;
 
 	return z;
@@ -105,8 +104,8 @@ float& Vector3::operator[](int Index)
 // +
 Vector3 Vector3::operator+(const Vector3& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector3(v1 + v2);
 }
@@ -124,15 +123,15 @@ Vector3 Vector3::operator+(const float f) const
 // +=
 void Vector3::operator+=(const Vector3& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 + v2);
 }
 
 void Vector3::operator+=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 + v);
 }
@@ -147,8 +146,8 @@ void Vector3::operator+=(const float f)
 // -
 Vector3 Vector3::operator-(const Vector3& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector3(v1 - v2);
 }
@@ -166,15 +165,15 @@ Vector3 Vector3::operator-(const float f) const
 // -=
 void Vector3::operator-=(const Vector3& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 - v2);
 }
 
 void Vector3::operator-=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 - v);
 }
@@ -189,8 +188,8 @@ void Vector3::operator-=(const float f)
 // *
 Vector3 Vector3::operator*(const Vector3& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector3(v1 * v2);
 }
@@ -208,15 +207,15 @@ Vector3 Vector3::operator*(const float f) const
 // *=
 void Vector3::operator*=(const Vector3& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 * v2);
 }
 
 void Vector3::operator*=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 * v);
 }
@@ -231,8 +230,8 @@ void Vector3::operator*=(const float f)
 // /
 Vector3 Vector3::operator/(const Vector3& v) const
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	return Vector3(v1 / v2);
 }
@@ -250,15 +249,15 @@ Vector3 Vector3::operator/(const float f) const
 // /=
 void Vector3::operator/=(const Vector3& v)
 {
-	XMVECTOR	v1 = Convert();
-	XMVECTOR	v2 = v.Convert();
+	XMVECTOR v1 = Convert();
+	XMVECTOR v2 = v.Convert();
 
 	Convert(v1 / v2);
 }
 
 void Vector3::operator/=(const XMVECTOR& v)
 {
-	XMVECTOR	v1 = Convert();
+	XMVECTOR v1 = Convert();
 
 	Convert(v1 / v);
 }
@@ -313,7 +312,7 @@ float Vector3::Length() const
 
 float Vector3::Distance(const Vector3& v) const
 {
-	Vector3	Dist = v - *this;
+	Vector3 Dist = v - *this;
 
 	return Dist.Length();
 }
@@ -335,20 +334,20 @@ Vector3 Vector3::Cross(const Vector3& v) const
 
 float Vector3::Angle(const Vector3& v) const
 {
-	Vector3	v1 = *this;
-	Vector3	v2 = v;
+	Vector3 v1 = *this;
+	Vector3 v2 = v;
 
 	v1.Normalize();
 	v2.Normalize();
 
-	float	Angle = v1.Dot(v2);
+	float Angle = v1.Dot(v2);
 
 	Angle = RadianToDegree(acosf(Angle));
 
 	return Angle;
 }
 
-Vector3 Vector3::ConvertAngle()	const
+Vector3 Vector3::ConvertAngle() const
 {
 	return Vector3(DegreeToRadian(x), DegreeToRadian(y), DegreeToRadian(z));
 }
@@ -364,7 +363,7 @@ Vector3 Vector3::TransformCoord(const Matrix& m) const
 	return Vector3(XMVector3TransformCoord(Convert(), m.m));
 }
 
-XMVECTOR Vector3::Convert()	const
+XMVECTOR Vector3::Convert() const
 {
 	return XMLoadFloat3((XMFLOAT3*)this);
 }

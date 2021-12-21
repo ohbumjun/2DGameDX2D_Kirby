@@ -3,9 +3,9 @@
 
 DEFINITION_SINGLE(CInput)
 
-CInput::CInput()	:
-	m_hInst(0),
-	m_hWnd(0),
+CInput::CInput() :
+	m_hInst(nullptr),
+	m_hWnd(nullptr),
 	m_Input(nullptr),
 	m_Keyboard(nullptr),
 	m_Mouse(nullptr),
@@ -16,14 +16,14 @@ CInput::CInput()	:
 
 	for (int i = 0; i < 256; ++i)
 	{
-		m_vecKeyState[i].Key = (unsigned char)i;
+		m_vecKeyState[i].Key = static_cast<unsigned char>(i);
 	}
 }
 
 CInput::~CInput()
 {
-	auto	iter = m_mapKeyInfo.begin();
-	auto	iterEnd = m_mapKeyInfo.end();
+	auto iter    = m_mapKeyInfo.begin();
+	auto iterEnd = m_mapKeyInfo.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
@@ -46,15 +46,15 @@ bool CInput::CreateKey(const std::string& Name, unsigned char Key)
 
 	Info->Name = Name;
 
-	unsigned char	ConvertkeyValue = ConvertKey(Key);
+	unsigned char ConvertkeyValue = ConvertKey(Key);
 
 	Info->State.Key = ConvertkeyValue;
 
 	m_mapKeyInfo.insert(std::make_pair(Name, Info));
 
-	bool	Add = false;
+	bool Add = false;
 
-	size_t	Size = m_vecAddKey.size();
+	size_t Size = m_vecAddKey.size();
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -109,7 +109,7 @@ bool CInput::SetShiftKey(const std::string& Name, bool State)
 
 KeyInfo* CInput::FindKeyInfo(const std::string& Name)
 {
-	auto	iter = m_mapKeyInfo.find(Name);
+	auto iter = m_mapKeyInfo.find(Name);
 
 	if (iter == m_mapKeyInfo.end())
 		return nullptr;
@@ -142,14 +142,13 @@ bool CInput::InitDirectInput()
 bool CInput::Init(HINSTANCE hInst, HWND hWnd)
 {
 	m_hInst = hInst;
-	m_hWnd = hWnd;
+	m_hWnd  = hWnd;
 
 	m_InputType = Input_Type::Direct;
 
-	
 
-	HRESULT	result = DirectInput8Create(m_hInst, DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&m_Input, nullptr);
+	HRESULT result = DirectInput8Create(m_hInst, DIRECTINPUT_VERSION, IID_IDirectInput8,
+	                                    (void**)&m_Input, nullptr);
 
 	if (FAILED(result))
 		m_InputType = Input_Type::Window;
@@ -190,7 +189,7 @@ void CInput::Update(float DeltaTime)
 
 void CInput::ReadDirectInputKeyboard()
 {
-	HRESULT	result = m_Keyboard->GetDeviceState(256, m_KeyArray);
+	HRESULT result = m_Keyboard->GetDeviceState(256, m_KeyArray);
 
 	if (FAILED(result))
 	{
@@ -201,7 +200,7 @@ void CInput::ReadDirectInputKeyboard()
 
 void CInput::ReadDirectInputMouse()
 {
-	HRESULT	result = m_Mouse->GetDeviceState(sizeof(m_MouseState), &m_MouseState);
+	HRESULT result = m_Mouse->GetDeviceState(sizeof(m_MouseState), &m_MouseState);
 
 	if (FAILED(result))
 	{
@@ -216,18 +215,18 @@ void CInput::UpdateMouse(float DeltaTime)
 	if (ImGui::GetIO().WantCaptureMouse)
 		return;
 
-	POINT	MouseWindowPos;
+	POINT MouseWindowPos;
 
 	GetCursorPos(&MouseWindowPos);
 	ScreenToClient(m_hWnd, &MouseWindowPos);
 
-	Vector2	Ratio = CDevice::GetInst()->GetViewportAspectRatio();
+	Vector2 Ratio = CDevice::GetInst()->GetViewportAspectRatio();
 
-	Vector2	MousePos = Vector2(MouseWindowPos.x * Ratio.x, MouseWindowPos.y * Ratio.y);
+	Vector2 MousePos = Vector2(MouseWindowPos.x * Ratio.x, MouseWindowPos.y * Ratio.y);
 
 	// 위 아래 전환 ( 아래 기준 좌표 )
 	MousePos.y = CDevice::GetInst()->GetResolution().Height - MousePos.y;
- 
+
 	m_MouseMove = MousePos - m_MousePos;
 
 	m_MousePos = MousePos;
@@ -238,7 +237,7 @@ void CInput::UpdateMouse(float DeltaTime)
 		{
 			m_LMouseDown = true;
 			m_LMousePush = true;
-			m_LMouseUp = false;
+			m_LMouseUp   = false;
 		}
 		else
 		{
@@ -249,7 +248,7 @@ void CInput::UpdateMouse(float DeltaTime)
 	{
 		m_LMouseDown = false;
 		m_LMousePush = false;
-		m_LMouseUp = true;
+		m_LMouseUp   = true;
 	}
 	else if (m_LMouseUp)
 	{
@@ -281,7 +280,7 @@ void CInput::UpdateKeyState()
 			m_Shift = false;
 		break;
 	case Input_Type::Window:
-		if (GetAsyncKeyState(VK_CONTROL) & 0x8000 )
+		if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
 			m_Ctrl = true;
 
 		else
@@ -302,7 +301,7 @@ void CInput::UpdateKeyState()
 	}
 
 	// 등록된 키를 반복하며 해당 키가 눌러졌는지를 판단한다.
-	size_t	Size = m_vecAddKey.size();
+	size_t Size = m_vecAddKey.size();
 
 	// Imgui Window 위에 올라올 시의 Mouse Event는 Scene이나 Project에는 적용안되게 세팅한다.
 	bool ImGuiMouseHovered = ImGui::GetIO().WantCaptureMouse;
@@ -311,7 +310,7 @@ void CInput::UpdateKeyState()
 	{
 		unsigned char Key = m_vecAddKey[i];
 
-		bool	KeyPush = false;
+		bool KeyPush = false;
 
 		switch (m_InputType)
 		{
@@ -332,7 +331,7 @@ void CInput::UpdateKeyState()
 				break;
 			case DIK_MOUSEWHEEL:
 				break;
-			default:	// 키보드 키를 알아볼 경우
+			default: // 키보드 키를 알아볼 경우
 				if (m_KeyArray[Key] & 0x80)
 				{
 					KeyPush = true;
@@ -364,7 +363,7 @@ void CInput::UpdateKeyState()
 
 		else if (m_vecKeyState[Key].State[KeyState_Push])
 		{
-			m_vecKeyState[Key].State[KeyState_Up] = true;
+			m_vecKeyState[Key].State[KeyState_Up]   = true;
 			m_vecKeyState[Key].State[KeyState_Down] = false;
 			m_vecKeyState[Key].State[KeyState_Push] = false;
 		}
@@ -378,8 +377,8 @@ void CInput::UpdateKeyState()
 
 void CInput::UpdateKeyInfo(float DeltaTime)
 {
-	auto	iter = m_mapKeyInfo.begin();
-	auto	iterEnd = m_mapKeyInfo.end();
+	auto iter    = m_mapKeyInfo.begin();
+	auto iterEnd = m_mapKeyInfo.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
@@ -418,8 +417,8 @@ void CInput::UpdateKeyInfo(float DeltaTime)
 
 void CInput::ClearCallback()
 {
-	auto	iter = m_mapKeyInfo.begin();
-	auto	iterEnd = m_mapKeyInfo.end();
+	auto iter    = m_mapKeyInfo.begin();
+	auto iterEnd = m_mapKeyInfo.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
@@ -618,7 +617,7 @@ unsigned char CInput::ConvertKey(unsigned char Key)
 			return DIK_DECIMAL;
 		case VK_DIVIDE:
 			return DIK_DIVIDE;
-			//case VK_RETURN:		
+		//case VK_RETURN:		
 			return DIK_NUMPADENTER;
 		case VK_F1:
 			return DIK_F1;

@@ -3,15 +3,14 @@
 #include "GraphicShader.h"
 
 class CMesh2DShader :
-    public CGraphicShader
+	public CGraphicShader
 {
-    friend class CShaderManager;
+	friend class CShaderManager;
 
 protected:
-    CMesh2DShader();
-    virtual ~CMesh2DShader();
+	CMesh2DShader();
+	virtual ~CMesh2DShader() override;
 
 public:
-    virtual bool Init();
+	virtual bool Init() override;
 };
-

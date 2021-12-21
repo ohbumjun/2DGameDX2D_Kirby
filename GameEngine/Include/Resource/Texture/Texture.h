@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Ref.h"
 #include "DirectXTex.h"
+#include "../../Ref.h"
 
 #ifdef _DEBUG
 
@@ -15,22 +15,22 @@
 
 struct TextureResourceInfo
 {
-	ScratchImage*	Image;
+	ScratchImage*             Image;
 	ID3D11ShaderResourceView* SRV;
-	unsigned int	Width;
-	unsigned int	Height;
-	TCHAR* FileName;
-	char* PathName;
-	TCHAR* FullPath;
+	unsigned int              Width;
+	unsigned int              Height;
+	TCHAR*                    FileName;
+	char*                     PathName;
+	TCHAR*                    FullPath;
 
-	TextureResourceInfo()	:
+	TextureResourceInfo() :
 		Image(nullptr),
 		SRV(nullptr),
+		Width(0),
+		Height(0),
 		FileName(nullptr),
 		PathName(nullptr),
-		FullPath(nullptr),
-		Width(0),
-		Height(0)
+		FullPath(nullptr)
 	{
 	}
 
@@ -45,50 +45,58 @@ struct TextureResourceInfo
 };
 
 class CTexture :
-    public CRef
+	public CRef
 {
 	friend class CTextureManager;
 
-protected:
+public:
 	CTexture();
-	virtual ~CTexture();
+	virtual ~CTexture() override;
 
 protected:
-	class CScene* m_Scene;
-	std::vector<TextureResourceInfo*>	m_vecTextureInfo;
-	Image_Type	m_ImageType;
+	class CScene*                     m_Scene;
+	std::vector<TextureResourceInfo*> m_vecTextureInfo;
+	Image_Type                        m_ImageType;
 
 public:
-	ID3D11ShaderResourceView* GetResource(int Index = 0)	const
+	ID3D11ShaderResourceView* GetResource(int Index = 0) const
 	{
 		return m_vecTextureInfo[Index]->SRV;
 	}
-	Image_Type GetImageType()	const
+
+	Image_Type GetImageType() const
 	{
 		return m_ImageType;
 	}
 
-	unsigned int GetWidth(int Index = 0)	const
+	unsigned int GetWidth(int Index = 0) const
 	{
 		return m_vecTextureInfo[Index]->Width;
 	}
 
-	unsigned int GetHeight(int Index = 0)	const
+	unsigned int GetHeight(int Index = 0) const
 	{
 		return m_vecTextureInfo[Index]->Height;
 	}
+
 	TCHAR* GetFileName(int Index = 0) const
 	{
 		return m_vecTextureInfo[Index]->FileName;
 	}
-	size_t GetImageCount()	const
+
+	size_t GetImageCount() const
 	{
 		return m_vecTextureInfo.size();
 	}
 
+	void AddTextureInfo(TextureResourceInfo* Info)
+	{
+		m_vecTextureInfo.push_back(Info);
+	}
+
 public:
 	bool LoadTexture(const std::string& Name, const TCHAR* FileName,
-		const std::string& PathName = TEXTURE_PATH);
+	                 const std::string& PathName = TEXTURE_PATH);
 	bool LoadTextureFullPath(const std::string& Name, const TCHAR* FullPath);
 
 private:
@@ -99,4 +107,3 @@ public:
 public :
 	void Save(FILE* pFile);
 };
-

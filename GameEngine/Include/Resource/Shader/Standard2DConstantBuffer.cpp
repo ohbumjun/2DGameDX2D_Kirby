@@ -1,4 +1,3 @@
-
 #include "Standard2DConstantBuffer.h"
 #include "ConstantBuffer.h"
 

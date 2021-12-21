@@ -10,60 +10,55 @@ enum class ImGuiText_Type
 };
 
 class CIMGUITextInput :
-    public CIMGUIWidget
+	public CIMGUIWidget
 {
 	friend class CIMGUIWindow;
 
 protected:
 	CIMGUITextInput();
-	virtual ~CIMGUITextInput();
+	virtual ~CIMGUITextInput() override;
 
 protected:
-	char		m_Text[1024];
-	wchar_t		m_wText[1024];
-	char		m_TextUTF8[1024];
+	char    m_Text[1024];
+	wchar_t m_wText[1024];
+	char    m_TextUTF8[1024];
 
-	char		m_HintText[1024];
-	wchar_t		m_wHintText[1024];
-	char		m_HintTextUTF8[1024];
-	bool		m_MultiLine;
-	ImGuiInputTextFlags	m_Flag;
+	char                m_HintText[1024];
+	wchar_t           m_wHintText[1024];
+	char                m_HintTextUTF8[1024];
+	bool                m_MultiLine;
+	ImGuiInputTextFlags m_Flag;
 
-	ImGuiText_Type	m_TextType;
+	ImGuiText_Type m_TextType;
 
-	int			m_ValueInt;
-	float		m_ValueFloat;
-	std::function<void()>	m_InputCallback;
+	int                   m_ValueInt;
+	float                 m_ValueFloat;
+	std::function<void()> m_InputCallback;
 
 public:
-	int GetValueInt()	const
+	int GetValueInt() const
 	{
 		return m_ValueInt;
 	}
 
-	float GetValueFloat()	const
+	float GetValueFloat() const
 	{
 		return m_ValueFloat;
 	}
 
-	const wchar_t* GetText()	const
+	const wchar_t* GetText() const
 	{
 		return m_wText;
 	}
 
-	const char* GetTextUTF8()	const
+	const char* GetTextUTF8() const
 	{
 		return m_TextUTF8;
 	}
 
-	const char* GetTextMultibyte()	const
+	const char* GetTextMultibyte() const
 	{
 		return m_Text;
-	}
-
-	bool Empty() const
-	{
-		return strlen(m_Text) == 0;
 	}
 
 public:
@@ -75,12 +70,12 @@ public:
 
 		strcpy_s(m_Text, Text);
 
-		int	Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, 0, 0);
+		int Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, nullptr, 0);
 		MultiByteToWideChar(CP_ACP, 0, Text, -1, m_wText, Length);
 
 		// UTF8로 변환한다.
-		Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, 0, 0);
+		Length = WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, nullptr, 0, nullptr, nullptr);
+		WideCharToMultiByte(CP_UTF8, 0, m_wText, -1, m_TextUTF8, Length, nullptr, nullptr);
 	}
 
 	void SetHintText(const char* Text)
@@ -88,12 +83,12 @@ public:
 		memset(m_wHintText, 0, sizeof(wchar_t) * 1024);
 		memset(m_HintText, 0, sizeof(char) * 1024);
 		memset(m_HintTextUTF8, 0, sizeof(char) * 1024);
-		int	Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, 0, 0);
+		int Length = MultiByteToWideChar(CP_ACP, 0, Text, -1, nullptr, 0);
 		MultiByteToWideChar(CP_ACP, 0, Text, -1, m_wHintText, Length);
 
 		// UTF8로 변환한다.
-		Length = WideCharToMultiByte(CP_UTF8, 0, m_wHintText, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_UTF8, 0, m_wHintText, -1, m_HintTextUTF8, Length, 0, 0);
+		Length = WideCharToMultiByte(CP_UTF8, 0, m_wHintText, -1, nullptr, 0, nullptr, nullptr);
+		WideCharToMultiByte(CP_UTF8, 0, m_wHintText, -1, m_HintTextUTF8, Length, nullptr, nullptr);
 	}
 
 	void SetInt(int Value)
@@ -139,15 +134,19 @@ public:
 		m_TextType = Type;
 	}
 
+	bool Empty() const
+	{
+		return strlen(m_Text) == 0;
+	}
+
 public:
-	virtual bool Init();
-	virtual void Render();
+	virtual bool Init() override;
+	virtual void Render() override;
 
 public:
 	template <typename T>
-	void SetCallback(T* Obj, void(T::* Func)())
+	void SetCallback(T* Obj, void (T::*Func)())
 	{
 		m_InputCallback = std::bind(Func, Obj);
 	}
 };
-

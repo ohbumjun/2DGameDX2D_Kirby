@@ -1,6 +1,6 @@
 #include "Matrix.h"
-#include "Vector3.h"
 #include "Vector2.h"
+#include "Vector3.h"
 
 Matrix::Matrix()
 {
@@ -79,8 +79,8 @@ void Matrix::Transpose()
 
 void Matrix::Inverse()
 {
-	XMVECTOR	Det = XMMatrixDeterminant(m);
-	m = XMMatrixInverse(&Det, m);
+	XMVECTOR Det = XMMatrixDeterminant(m);
+	m            = XMMatrixInverse(&Det, m);
 }
 
 void Matrix::Scaling(const Vector3& _v)
@@ -105,7 +105,7 @@ void Matrix::Scaling(float x, float y)
 
 void Matrix::Rotation(const Vector3& _v)
 {
-	Vector3	ConvertRot = _v.ConvertAngle();
+	Vector3 ConvertRot = _v.ConvertAngle();
 
 	XMVECTOR Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 
@@ -114,8 +114,8 @@ void Matrix::Rotation(const Vector3& _v)
 
 void Matrix::Rotation(float x, float y, float z)
 {
-	Vector3	_v(x, y, z);
-	Vector3	ConvertRot = _v.ConvertAngle();
+	Vector3 _v(x, y, z);
+	Vector3 ConvertRot = _v.ConvertAngle();
 
 	XMVECTOR Qut = XMQuaternionRotationRollPitchYaw(ConvertRot.x, ConvertRot.y, ConvertRot.z);
 
@@ -179,7 +179,7 @@ Matrix Matrix::StaticTranspose(const Matrix& _m)
 
 Matrix Matrix::StaticInverse(const Matrix& _m)
 {
-	XMVECTOR	Det = XMMatrixDeterminant(_m.m);
+	XMVECTOR Det = XMMatrixDeterminant(_m.m);
 	return XMMatrixInverse(&Det, _m.m);
 }
 
@@ -205,18 +205,18 @@ Matrix Matrix::StaticScaling(float x, float y)
 
 Matrix Matrix::StaticRotation(const Vector3& _v)
 {
-	XMMATRIX	X = XMMatrixRotationX(DegreeToRadian(_v.x));
-	XMMATRIX	Y = XMMatrixRotationY(DegreeToRadian(_v.y));
-	XMMATRIX	Z = XMMatrixRotationZ(DegreeToRadian(_v.z));
+	XMMATRIX X = XMMatrixRotationX(DegreeToRadian(_v.x));
+	XMMATRIX Y = XMMatrixRotationY(DegreeToRadian(_v.y));
+	XMMATRIX Z = XMMatrixRotationZ(DegreeToRadian(_v.z));
 
 	return X * Y * Z;
 }
 
 Matrix Matrix::StaticRotation(float x, float y, float z)
 {
-	XMMATRIX	X = XMMatrixRotationX(DegreeToRadian(x));
-	XMMATRIX	Y = XMMatrixRotationY(DegreeToRadian(y));
-	XMMATRIX	Z = XMMatrixRotationZ(DegreeToRadian(z));
+	XMMATRIX X = XMMatrixRotationX(DegreeToRadian(x));
+	XMMATRIX Y = XMMatrixRotationY(DegreeToRadian(y));
+	XMMATRIX Z = XMMatrixRotationZ(DegreeToRadian(z));
 
 	return X * Y * Z;
 	return Matrix();

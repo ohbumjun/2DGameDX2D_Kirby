@@ -1,8 +1,7 @@
-
 #include "Bullet.h"
 #include "Component/SpriteComponent.h"
 
-CBullet::CBullet()	:
+CBullet::CBullet() :
 	m_Distance(600.f)
 {
 }
@@ -10,7 +9,7 @@ CBullet::CBullet()	:
 CBullet::CBullet(const CBullet& obj) :
 	CGameObject(obj)
 {
-	m_Sprite = (CSpriteComponent*)FindComponent("BulletSprite");
+	m_Sprite   = static_cast<CSpriteComponent*>(FindComponent("BulletSprite"));
 	m_Distance = obj.m_Distance;
 }
 
@@ -34,7 +33,7 @@ void CBullet::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	float	Dist = 500.f * DeltaTime;
+	float Dist = 500.f * DeltaTime;
 
 	m_Distance -= Dist;
 

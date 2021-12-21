@@ -1,15 +1,15 @@
 #pragma once
 #include "Mesh.h"
+
 class CSpriteMesh :
-    public CMesh
+	public CMesh
 {
 	friend class CMeshManager;
 
 protected:
 	CSpriteMesh();
-	virtual ~CSpriteMesh();
+	virtual ~CSpriteMesh() override;
 
 public:
-	virtual bool Init();
+	virtual bool Init() override;
 };
-

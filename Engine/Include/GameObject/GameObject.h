@@ -1,45 +1,45 @@
 #pragma once
 
-#include "../Component/SceneComponent.h"
 #include "../Component/ObjectComponent.h"
+#include "../Component/SceneComponent.h"
 
 class CGameObject :
-    public CRef
+	public CRef
 {
-    friend class CScene;
+	friend class CScene;
 
 protected:
-    CGameObject();
-    CGameObject(const CGameObject& obj);
-    virtual ~CGameObject();
+	CGameObject();
+	CGameObject(const CGameObject& obj);
+	virtual ~CGameObject() override;
 
 protected:
-    class CScene* m_Scene;
+	class CScene* m_Scene;
 
 public:
-    class CScene* GetScene()    const
-    {
-        return m_Scene;
-    }
+	class CScene* GetScene() const
+	{
+		return m_Scene;
+	}
 
 public:
-    void SetScene(class CScene* Scene);
+	void SetScene(class CScene* Scene);
 
 protected:
-    CSharedPtr<CSceneComponent> m_RootComponent;
-	std::list<CSceneComponent*>	m_SceneComponentList;
-    std::vector<CSharedPtr<CObjectComponent>>   m_vecObjectComponent;
+	CSharedPtr<CSceneComponent>               m_RootComponent;
+	std::list<CSceneComponent*>               m_SceneComponentList;
+	std::vector<CSharedPtr<CObjectComponent>> m_vecObjectComponent;
 
-	CGameObject* m_Parent;
-	std::vector<CSharedPtr<CGameObject>>   m_vecChildObject;
+	CGameObject*                         m_Parent;
+	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
 
 public:
-    void SetRootComponent(CSceneComponent* Component)
-    {
-        m_RootComponent = Component;
-    }
+	void SetRootComponent(CSceneComponent* Component)
+	{
+		m_RootComponent = Component;
+	}
 
-	CSceneComponent* GetRootComponent()	const
+	CSceneComponent* GetRootComponent() const
 	{
 		return m_RootComponent;
 	}
@@ -52,47 +52,43 @@ public:
 	class CComponent* FindComponent(const std::string& Name);
 
 public:
-    virtual void Start();
-    virtual bool Init();
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
-    virtual void PrevRender();
-    virtual void Render();
-    virtual void PostRender();
-    virtual CGameObject* Clone();
+	virtual void         Start();
+	virtual bool         Init();
+	virtual void         Update(float DeltaTime);
+	virtual void         PostUpdate(float DeltaTime);
+	virtual void         PrevRender();
+	virtual void         Render();
+	virtual void         PostRender();
+	virtual CGameObject* Clone();
 
 public:
-
 public:
-    template <typename T>
-    T* CreateComponent(const std::string& Name)
-    {
-        T* Component = new T;
+	template <typename T>
+	T* CreateComponent(const std::string& Name)
+	{
+		T* Component = new T;
 
-        Component->SetName(Name);
-        Component->SetScene(m_Scene);
-        Component->SetGameObject(this);
+		Component->SetName(Name);
+		Component->SetScene(m_Scene);
+		Component->SetGameObject(this);
 
-        if (!Component->Init())
-        {
-            SAFE_RELEASE(Component);
-            return nullptr;
-        }
+		if (!Component->Init())
+		{
+			SAFE_RELEASE(Component);
+			return nullptr;
+		}
 
 		if (Component->GetComponentType() == Component_Type::ObjectComponent)
-			m_vecObjectComponent.push_back((class CObjectComponent*)Component);
+			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 
 		else
-			m_SceneComponentList.push_back((class CSceneComponent*)Component);
+			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
 
-        return Component;
-    }
-
-
+		return Component;
+	}
 
 
-
-public:	// =============== 历林罐篮 Transform 康开 ===============
+public: // =============== 历林罐篮 Transform 康开 ===============
 	void SetInheritScale(bool Inherit)
 	{
 		if (!m_RootComponent)
@@ -190,7 +186,7 @@ public:	// =============== 历林罐篮 Transform 康开 ===============
 	}
 
 public:
-	Vector3 GetRelativeScale()	const
+	Vector3 GetRelativeScale() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -198,7 +194,7 @@ public:
 		return m_RootComponent->GetRelativeScale();
 	}
 
-	Vector3 GetRelativeRot()	const
+	Vector3 GetRelativeRot() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -206,7 +202,7 @@ public:
 		return m_RootComponent->GetRelativeRot();
 	}
 
-	Vector3 GetRelativePos()	const
+	Vector3 GetRelativePos() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -368,7 +364,7 @@ public:
 	}
 
 public:
-	Vector3 GetWorldScale()	const
+	Vector3 GetWorldScale() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -376,7 +372,7 @@ public:
 		return m_RootComponent->GetWorldScale();
 	}
 
-	Vector3 GetWorldRot()	const
+	Vector3 GetWorldRot() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -384,7 +380,7 @@ public:
 		return m_RootComponent->GetWorldRot();
 	}
 
-	Vector3 GetWorldPos()	const
+	Vector3 GetWorldPos() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -392,7 +388,7 @@ public:
 		return m_RootComponent->GetWorldPos();
 	}
 
-	Vector3 GetPivot()	const
+	Vector3 GetPivot() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -400,7 +396,7 @@ public:
 		return m_RootComponent->GetPivot();
 	}
 
-	Vector3 GetMeshSize()	const
+	Vector3 GetMeshSize() const
 	{
 		if (!m_RootComponent)
 			return Vector3();
@@ -408,7 +404,7 @@ public:
 		return m_RootComponent->GetMeshSize();
 	}
 
-	const Matrix& GetWorldMatrix()	const
+	const Matrix& GetWorldMatrix() const
 	{
 		if (!m_RootComponent)
 			return Matrix();
@@ -602,4 +598,3 @@ public:
 		m_RootComponent->AddWorldPos(x, y, z);
 	}
 };
-
