@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameInfo.h"
+// #include <dxgidebug.h>
 
 class CDevice
 {
@@ -19,6 +20,9 @@ private:
 
 	HWND       m_hWnd;
 	Resolution m_RS;
+
+	// Debug Layer
+	// IDXGIDebug* m_DebugDev;
 
 public:
 	ID3D11Device* GetDevice() const

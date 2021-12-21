@@ -1,6 +1,9 @@
 #include "Device.h"
 
+// #pragma comment(lib, "DXGIDebug")
+
 DEFINITION_SINGLE(CDevice)
+
 
 CDevice::CDevice() :
 	m_Device(nullptr),
@@ -23,6 +26,9 @@ CDevice::~CDevice()
 
 	SAFE_RELEASE(m_Context);
 	SAFE_RELEASE(m_Device);
+
+	// Debug
+	// SAFE_RELEASE(m_DebugDev);
 }
 
 Vector2 CDevice::GetViewportAspectRatio()
@@ -145,6 +151,10 @@ bool CDevice::Init(HWND         hWnd, unsigned int Width,
 	VP.MaxDepth = 1.f;
 
 	m_Context->RSSetViewports(1, &VP);
+
+	// Debug
+	// HRESULT hr2 = DXGIGetDebugInterface(IID_PPV_ARGS(&m_DebugDev));
+	// hr2 = m_DebugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
 
 	return true;
 }

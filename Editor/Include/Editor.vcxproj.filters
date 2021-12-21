@@ -42,13 +42,13 @@
     <ClCompile Include="Object\DragObject.cpp">
       <Filter>03. Object</Filter>
     </ClCompile>
-    <ClCompile Include="Window\DetailWindow.cpp">
-      <Filter>02. Editor</Filter>
-    </ClCompile>
     <ClCompile Include="Window\EditorMenu.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
     <ClCompile Include="Window\ObjectHierarchy.cpp">
+      <Filter>02. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\DetailInfoWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +77,7 @@
     <ClInclude Include="Window\ObjectHierarchy.h">
       <Filter>02. Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Window\DetailWindow.h">
+    <ClInclude Include="Window\DetailInfoWindow.h">
       <Filter>02. Editor</Filter>
     </ClInclude>
   </ItemGroup>

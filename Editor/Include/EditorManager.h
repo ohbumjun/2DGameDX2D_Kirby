@@ -16,7 +16,7 @@ private:
 	class CSpriteWindow* m_SpriteWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
-	class CDetailWindow* m_DetailWindow;
+	class CDetailInfoWindow* m_DetailInfoWindow;
 
 public:
 	EditMode GetEditMode()
@@ -40,9 +40,9 @@ public:
 	{
 		return m_ObjectHierarchy;
 	}
-	class CDetailWindow* GetDetailWindow() const
+	class CDetailInfoWindow* GetDetailWindow() const
 	{
-		return m_DetailWindow;
+		return m_DetailInfoWindow;
 	}
 
 public:

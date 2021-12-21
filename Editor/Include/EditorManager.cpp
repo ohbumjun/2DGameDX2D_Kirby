@@ -10,7 +10,7 @@
 #include "Window/SpriteWindow.h"
 #include "Window/EditorMenu.h"
 #include "Window/ObjectHierarchy.h"
-#include "Window/DetailWindow.h"
+#include "Window/DetailInfoWindow.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -51,7 +51,7 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	m_SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteWindow>("SpriteWindow");
 	m_EditorMenu        = CIMGUIManager::GetInst()->AddWindow<CEditorMenu>("EditorMenu");
 	m_ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
-	m_DetailWindow = CIMGUIManager::GetInst()->AddWindow<CDetailWindow>("DetailWindow");
+	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
 
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
 
