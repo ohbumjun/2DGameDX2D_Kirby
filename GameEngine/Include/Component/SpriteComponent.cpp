@@ -134,7 +134,7 @@ void CSpriteComponent::Start()
 bool CSpriteComponent::Init()
 {
 	// Mesh ¼¼ÆÃ 
-	m_Mesh = static_cast<CSpriteMesh*>(m_Scene->GetResource()->FindMesh("SpriteMesh"));
+	m_Mesh = dynamic_cast<CSpriteMesh*>(m_Scene->GetResource()->FindMesh("SpriteMesh"));
 	SetMeshSize(1.f, 1.f, 0.f);
 
 	// Material Setting 

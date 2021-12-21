@@ -11,8 +11,6 @@ CObjectHierarchy::~CObjectHierarchy()
 {
 }
 
-
-
 bool CObjectHierarchy::Init()
 {
 	CIMGUIWindow::Init();

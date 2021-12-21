@@ -47,7 +47,6 @@ bool CEditorManager::Init(HINSTANCE hInst)
 		return false;
 	}
 
-
 	// IMGUI로 에디터에서 사용할 윈도우를 만들어준다.
 	m_SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteWindow>("SpriteWindow");
 	m_EditorMenu        = CIMGUIManager::GetInst()->AddWindow<CEditorMenu>("EditorMenu");
@@ -76,7 +75,6 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->SetCtrlKey("UpYSize", true);
 	CInput::GetInst()->CreateKey("DownYSize", VK_DOWN);
 	CInput::GetInst()->SetCtrlKey("DownYSize", true);
-
 
 	CInput::GetInst()->SetKeyCallback("Up", KeyState_Down, this, &CEditorManager::KeyBoardUp);
 	CInput::GetInst()->SetKeyCallback("Down", KeyState_Down, this, &CEditorManager::KeyBoardDown);

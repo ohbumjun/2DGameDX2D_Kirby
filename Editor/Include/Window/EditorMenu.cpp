@@ -8,7 +8,7 @@
 #include "../EditorManager.h"
 #include "ObjectHierarchy.h"
 #include "IMGUIListBox.h"
-#include "GameObject/GameObject.h"
+#include "../Object/SpriteEditObject.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 
@@ -41,7 +41,7 @@ bool CEditorMenu::Init()
 
 	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("ComponentComboBox", 150.f, 30.f);
 	m_ComponentComboBox->AddItem("SpriteComponent");
-	m_ComponentComboBox->AddItem("SceneComponent");
+	m_ComponentComboBox->AddItem("StaticComponent");
 	m_ComponentComboBox->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -88,6 +88,7 @@ void CEditorMenu::CreateNewObject()
 	// Add List To Object List
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 	Hierarchy->AddObject(m_ObjectNameInput->GetTextUTF8());
+
 }
 
 void CEditorMenu::CreateNewComponent()
@@ -113,22 +114,18 @@ void CEditorMenu::CreateNewComponent()
 	{
 	case CreateComponent_Type::Sprite :
 		{
-		// #include "Component/SpriteComponent.h"
-		// #include "Component/StaticMeshComponent.h"s
-		CSpriteComponent* SpriteComponent = new CSpriteComponent;
-		SpriteComponent->SetName(m_ComponentNameInput->GetTextMultibyte());
-		Object->AddSceneComponent(SpriteComponent);
+		Object->CreateComponent<CSpriteComponent>(m_ComponentNameInput->GetTextMultibyte());
 		}
 		break;
 	case CreateComponent_Type::Static:
 		{
-		CStaticMeshComponent* StaticMeshComponent = new CStaticMeshComponent;
-		StaticMeshComponent->SetName(m_ComponentNameInput->GetTextMultibyte());
-		Object->AddSceneComponent(StaticMeshComponent);
+		Object->CreateComponent<CStaticMeshComponent>(m_ComponentNameInput->GetTextMultibyte());
 		}
 		break;
 	}
 
 	// Add Item To Component List Box
 	Hierarchy->GetComponentListBox()->AddItem(m_ComponentNameInput->GetTextMultibyte());
+
+
 }
