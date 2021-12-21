@@ -51,7 +51,7 @@ bool CEditorMenu::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	m_ComponentButton = AddWidget<CIMGUIButton>("CreateComponent", 120.f, 30.f);
-	m_ComponentButton->SetClickCallback(this, &CEditorMenu::CreateNewObject);
+	m_ComponentButton->SetClickCallback(this, &CEditorMenu::CreateNewComponent);
 
 	return true;
 }
@@ -102,7 +102,7 @@ void CEditorMenu::CreateNewComponent()
 
 	// Object 가 ObjectHierarcy 에서 선택되어 있어야 한다
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < -1)
+	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	// 해당 Object 의 Component 목록에 추가
