@@ -16,6 +16,9 @@ private :
     class CIMGUITextInput*  m_ComponentNameInput;
     class CIMGUIButton*      m_ComponentButton;
 
+    class CIMGUIButton*      m_SaveSceneButton;
+    class CIMGUIButton*      m_LoadSceneButton;
+
 	CreateObject_Type         m_ObjectType;
     CreateComponent_Type  m_ComponentType;
 public :
@@ -24,6 +27,9 @@ public :
 public :
     void CreateNewObject();
     void CreateNewComponent();
+public :
+    void SaveScene();
+    void LoadScene();
 };
 
 

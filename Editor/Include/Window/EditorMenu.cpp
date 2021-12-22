@@ -48,10 +48,17 @@ bool CEditorMenu::Init()
 
 	m_ComponentNameInput = AddWidget<CIMGUITextInput>("ComponentName", 80.f, 30.f);
 
-	Line = AddWidget<CIMGUISameLine>("Line");
 
 	m_ComponentButton = AddWidget<CIMGUIButton>("CreateComponent", 120.f, 30.f);
 	m_ComponentButton->SetClickCallback(this, &CEditorMenu::CreateNewComponent);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	m_SaveSceneButton = AddWidget<CIMGUIButton>("SaveScene", 80.f, 30.f);
+	m_SaveSceneButton->SetClickCallback(this, &CEditorMenu::SaveScene);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	m_LoadSceneButton = AddWidget<CIMGUIButton>("LoadScene", 80.f, 30.f);
+	m_LoadSceneButton->SetClickCallback(this, &CEditorMenu::LoadScene);
 
 	return true;
 }
@@ -126,6 +133,12 @@ void CEditorMenu::CreateNewComponent()
 
 	// Add Item To Component List Box
 	Hierarchy->GetComponentListBox()->AddItem(m_ComponentNameInput->GetTextMultibyte());
+}
 
+void CEditorMenu::SaveScene()
+{
+}
 
+void CEditorMenu::LoadScene()
+{
 }
