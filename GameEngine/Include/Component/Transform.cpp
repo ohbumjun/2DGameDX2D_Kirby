@@ -597,3 +597,54 @@ CTransform* CTransform::Clone()
 {
 	return new CTransform(*this);
 }
+
+void CTransform::Save(FILE* pFile)
+{
+	/*
+	-------------------------------------------------------------------------------------------------
+	class CScene*          m_Scene;
+	class CGameObject*     m_Object;
+	class CSceneComponent* m_Owner;
+	CTransform*                     m_Parent;
+	std::vector<CTransform*>        m_vecChild;
+	class CTransformConstantBuffer* m_CBuffer; --> Load 하는 과정에서 만들어지는 녀석들 ?
+	-------------------------------------------------------------------------------------------------
+	bool m_UpdateScale;
+	bool m_UpdateRot;
+	bool m_UpdatePos; --> 그때그때 Update 마다 바뀌는 녀석들 
+	-------------------------------------------------------------------------------------------------
+	*/
+	fwrite(&m_InheritScale, sizeof(bool), 1, pFile);
+	fwrite(&m_InheritRotX, sizeof(bool), 1, pFile);
+	fwrite(&m_InheritRotY, sizeof(bool), 1, pFile);
+	fwrite(&m_InheritRotZ, sizeof(bool), 1, pFile);
+
+	fwrite(&m_InheritParentRotationPosX, sizeof(bool), 1, pFile);
+	fwrite(&m_InheritParentRotationPosY, sizeof(bool), 1, pFile);
+	fwrite(&m_InheritParentRotationPosZ, sizeof(bool), 1, pFile);
+
+	fwrite(&m_RelativeScale, sizeof(Vector3), 1, pFile);
+	fwrite(&m_RelativeRot, sizeof(Vector3), 1, pFile);
+	fwrite(&m_RelativePos, sizeof(Vector3), 1, pFile);
+	fwrite(&m_RelativeAxis, sizeof(Vector3), AXIS_MAX, pFile);
+
+	fwrite(&m_WorldScale, sizeof(Vector3), 1, pFile);
+	fwrite(&m_WorldRot, sizeof(Vector3), 1, pFile);
+	fwrite(&m_WorldPos, sizeof(Vector3), 1, pFile);
+	fwrite(&m_WorldAxis, sizeof(Vector3), AXIS_MAX, pFile);
+
+	fwrite(&m_Pivot, sizeof(Vector3), 1, pFile);
+	fwrite(&m_MeshSize, sizeof(Vector3), 1, pFile);
+
+	/*
+	
+	Matrix m_matScale; --> Update 마다, 위에서 저장된 값들을 근거로 계속해서 새로 만들어내는 변수들이다. 
+	Matrix m_matRot;
+	Matrix m_matPos;
+	Matrix m_matWorld;
+	 */
+}
+
+void CTransform::Load(FILE* pFile)
+{
+}
