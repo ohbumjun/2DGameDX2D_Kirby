@@ -12,6 +12,7 @@ public:
 	virtual ~CAnimationSequence2DInstance();
 
 protected:
+	size_t m_TypeID;
 	bool                                                       m_PlayAnimation;
 	class CSpriteComponent*                                    m_Owner;
 	class CScene*                                              m_Scene;
@@ -49,6 +50,10 @@ public:
 	{
 		return static_cast<int>(m_mapAnimation.size());
 	}
+	size_t GetTypeID() const
+	{
+		return m_TypeID;
+	}
 
 public:
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, float PlayTime = 1.f,
@@ -70,6 +75,9 @@ public:
 	void                                  SetShader();
 	void                                  ResetShader();
 	virtual CAnimationSequence2DInstance* Clone();
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
 
 private:
 	CAnimationSequence2DData* FindAnimation(const std::string& Name);
@@ -96,5 +104,10 @@ public:
 			return;
 
 		Data->AddNotify<T>(NotifyName, Frame, Obj, Func);
+	}
+	template<typename T>
+	void SetTypeID()
+	{
+		m_TypeID = typeid(T).hash_code();
 	}
 };

@@ -12,6 +12,7 @@ CAnimationSequence2DInstance::CAnimationSequence2DInstance() :
 	m_Owner(nullptr),
 	m_Scene(nullptr)
 {
+	SetTypeID<CAnimationSequence2DInstance>();
 }
 
 CAnimationSequence2DInstance::CAnimationSequence2DInstance(const CAnimationSequence2DInstance& Anim)
@@ -465,6 +466,54 @@ void CAnimationSequence2DInstance::ResetShader()
 CAnimationSequence2DInstance* CAnimationSequence2DInstance::Clone()
 {
 	return new CAnimationSequence2DInstance(*this);
+}
+
+void CAnimationSequence2DInstance::Save(FILE* pFile)
+{
+	/*
+	class CSpriteComponent* m_Owner;
+	class CScene* m_Scene; --> Load 하면서 세팅되기 때문에 이렇게 해놓은 것인가 ? 
+	std::unordered_map<std::string, CAnimationSequence2DData*> m_mapAnimation;
+	CAnimationSequence2DData* m_CurrentAnimation;
+	class CAnimation2DConstantBuffer* m_CBuffer;
+	*/
+
+	fwrite(&m_PlayAnimation, sizeof(bool), 1, pFile);
+
+	int AnimCount = (int)m_mapAnimation.size();
+	fwrite(&AnimCount, sizeof(int), AnimCount, pFile);
+
+	auto iter      = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	int Length = -1;
+	for (;iter != iterEnd; ++iter)
+	{
+		// Key 세팅
+		Length = iter->first.length();
+		fwrite(&Length, sizeof(int), Length, pFile);
+		fwrite(iter->first.c_str(), sizeof(char), Length, pFile);
+
+		iter->second->Save(pFile);
+	}
+
+	int CurrentAnimEnable = false;
+	if (m_CurrentAnimation)
+		CurrentAnimEnable = true;
+	fwrite(&CurrentAnimEnable, sizeof(bool), 1, pFile);
+
+	if (CurrentAnimEnable)
+	{
+		// CurrentAnimation의  경우, m_mapAnimation 중 하나,
+		// 독립된 녀석이 아니므로, Name 만 저장해서 ResourceManager 로부터 가져오는 작업을 거칠 것이다
+		Length = (int)m_CurrentAnimation->GetName().length();
+		fwrite(&Length, sizeof(int), 1, pFile);
+		fwrite(m_CurrentAnimation->GetName().c_str(), sizeof(char), Length, pFile);
+	}
+}
+
+void CAnimationSequence2DInstance::Load(FILE* pFile)
+{
 }
 
 CAnimationSequence2DData* CAnimationSequence2DInstance::FindAnimation(const std::string& Name)
