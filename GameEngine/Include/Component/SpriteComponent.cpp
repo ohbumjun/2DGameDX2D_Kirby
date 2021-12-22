@@ -194,3 +194,41 @@ CSpriteComponent* CSpriteComponent::Clone()
 {
 	return new CSpriteComponent(*this);
 }
+
+void CSpriteComponent::Save(FILE* pFile)
+{
+	/*
+	CSharedPtr<CSpriteMesh>             m_Mesh;
+	CSharedPtr<CMaterial>               m_Material;
+	class CAnimationSequence2DInstance* m_Animation;
+	*/
+
+	// Mesh의 경우, 이름만 저장해두고, ResourceManager 로부터 불러오는 코드를 작성할 것이다.
+	std::string Name = m_Mesh->GetName();
+	int Length = (int)Name.length();
+	fwrite(&Length, sizeof(int), 1, pFile);
+	fwrite(Name.c_str(), sizeof(char), Length, pFile);
+
+	// Mateiral
+	m_Material->Save(pFile);
+
+	bool Animation = false;
+	if (m_Animation)
+		Animation = true;
+
+	if (Animation)
+	{
+		size_t TypeID = m_Animation->GetTypeID();
+		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		m_Animation->Save(pFile);
+	}
+
+	// SceneComponent Save  에서는 자식 SceneCompoent 목록들을 다 저장하는 코드를 거쳐서 들어간다
+	// 되도록이면, 자기의 고유의 정보를 먼저 저장하고
+	// 그 다음 자식 목록 정보를 저장하기 위해, 의도적으로 순서를 이렇게 짠다.
+	CSceneComponent::Save(pFile);
+}
+
+void CSpriteComponent::Load(FILE* pFile)
+{
+}

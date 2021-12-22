@@ -268,3 +268,52 @@ CMaterial* CMaterial::Clone()
 {
 	return new CMaterial(*this);
 }
+
+void CMaterial::Save(FILE* pFile)
+{
+	CRef::Save(pFile);
+
+	// Shader의 경우, Name을 가져와서 세팅할 것이다. 
+	std::string ShaderName = m_Shader->GetName();
+	int Length = (int)ShaderName.length();
+	fwrite(&Length, sizeof(int), 1, pFile);
+	fwrite(ShaderName.c_str(), sizeof(char), Length, pFile);
+
+	fwrite(&m_BaseColor, sizeof(Vector4), 1, pFile);
+	fwrite(&m_Opacity, sizeof(float), 1, pFile);
+
+	for (int i = 0; i < (int)RenderState_Type::Max; i++)
+	{
+		bool StateEnable = false;
+		if (m_RenderStateArray[i])
+			StateEnable = true;
+		fwrite(&StateEnable, sizeof(bool), 1, pFile);
+
+		if (StateEnable)
+		{
+			// Render State 또한, Resource로부터 가져올 예정이므로 , Name 만 저장한다
+			Length = (int)m_RenderStateArray[i]->GetName().length();
+			fwrite(&Length, sizeof(int), 1, pFile);
+			fwrite(m_RenderStateArray[i]->GetName().c_str(), sizeof(char), Length, pFile);
+		}
+	}
+
+	int TextureCount = (int)m_TextureInfo.size();
+	fwrite(&TextureCount, sizeof(int), 1, pFile);
+	for (int i = 0; i < TextureCount; i++)
+	{
+		Length = (int)m_TextureInfo[i].Name.length();
+		fwrite(&Length, sizeof(int), 1, pFile);
+		fwrite(m_TextureInfo[i].Name.c_str(), sizeof(char), Length, pFile);
+
+		fwrite(&m_TextureInfo[i].SamplerType, sizeof(Sampler_Type), 1, pFile);
+		fwrite(&m_TextureInfo[i].Register, sizeof(int), 1, pFile);
+		fwrite(&m_TextureInfo[i].ShaderType, sizeof(int), 1, pFile);
+
+		m_TextureInfo[i].Texture->Save(pFile);
+	}
+}
+
+void CMaterial::Load(FILE* pFile)
+{
+}

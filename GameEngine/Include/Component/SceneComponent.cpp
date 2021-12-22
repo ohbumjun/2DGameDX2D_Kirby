@@ -248,8 +248,8 @@ void CSceneComponent::Save(FILE* pFile)
 {
 	CComponent::Save(pFile);
 	/*
-	CSceneComponent*                         m_Parent;
-	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; --> Load 되는 과정에서 2개 변수는 알아서 세팅될 것이다. 
+	CSceneComponent*                         m_Parent; --> Load 되는 과정에서 알아서 세팅될 것이다. 
+	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; --> 
 	bool                                     m_Render; 
 	 */
 	int Length = (int)m_LayerName.length();
@@ -258,8 +258,16 @@ void CSceneComponent::Save(FILE* pFile)
 
 	m_Transform->Save(pFile);
 
+	int ChildCount = (int)m_vecChild.size();
+	fwrite(&ChildCount, sizeof(int), 1, pFile);
+	for (int i = 0; i < ChildCount; i++)
+	{
+		size_t TypeID = m_vecChild[i]->GetTypeID();
+		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		m_vecChild[i]->Save(pFile);
+	}
+	
 	fwrite(&m_Render, sizeof(bool), 1, pFile);
-
 }
 
 void CSceneComponent::Load(FILE* pFile)
