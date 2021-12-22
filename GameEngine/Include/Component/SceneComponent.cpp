@@ -243,3 +243,25 @@ CSceneComponent* CSceneComponent::Clone()
 {
 	return new CSceneComponent(*this);
 }
+
+void CSceneComponent::Save(FILE* pFile)
+{
+	CComponent::Save(pFile);
+	/*
+	CSceneComponent*                         m_Parent;
+	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; --> Load 되는 과정에서 2개 변수는 알아서 세팅될 것이다. 
+	bool                                     m_Render; 
+	 */
+	int Length = (int)m_LayerName.length();
+	fwrite(&Length, sizeof(int), 1, pFile);
+	fwrite(m_LayerName.c_str(), sizeof(char), Length, pFile);
+
+	m_Transform->Save(pFile);
+
+	fwrite(&m_Render, sizeof(bool), 1, pFile);
+
+}
+
+void CSceneComponent::Load(FILE* pFile)
+{
+}
