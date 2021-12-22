@@ -173,3 +173,22 @@ CStaticMeshComponent* CStaticMeshComponent::Clone()
 {
 	return new CStaticMeshComponent(*this);
 }
+
+void CStaticMeshComponent::Save(FILE* pFile)
+{
+	/*
+	CSharedPtr<class CStaticMesh> m_Mesh;
+	CSharedPtr<class CMaterial>   m_Material;
+	*/
+	int Length = (int)m_Mesh->GetName().length();
+	fwrite(&Length, sizeof(int), 1, pFile);
+	fwrite(m_Mesh->GetName().c_str(), sizeof(char), Length, pFile);
+
+	m_Material->Save(pFile);
+
+	CSceneComponent::Save(pFile);
+}
+
+void CStaticMeshComponent::Load(FILE* pFile)
+{
+}

@@ -61,4 +61,7 @@ public :
 	virtual void                  Render() override;
 	virtual void                  PostRender() override;
 	virtual CStaticMeshComponent* Clone() override;
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
 };

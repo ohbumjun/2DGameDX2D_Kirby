@@ -112,4 +112,7 @@ public:
 	void       Render();
 	void       Reset();
 	CMaterial* Clone();
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
 };

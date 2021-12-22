@@ -14,12 +14,12 @@ protected:
 	virtual ~CSceneComponent() override;
 
 protected:
+	// 자기가 속한 Layer의 이름
+	std::string m_LayerName;
 	CTransform*                              m_Transform;
 	CSceneComponent*                         m_Parent;
 	std::vector<CSharedPtr<CSceneComponent>> m_vecChild;
 	bool                                     m_Render;
-	// 자기가 속한 Layer의 이름을 지니게 한다 .. ?
-	std::string m_LayerName;
 public :
 	std::string GetLayerName() const
 	{
@@ -59,6 +59,10 @@ public:
 	virtual void             Render() override;
 	virtual void             PostRender() override;
 	virtual CSceneComponent* Clone() override;
+
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
 
 
 public: // =============== 저주받은 Transform 영역 ===============

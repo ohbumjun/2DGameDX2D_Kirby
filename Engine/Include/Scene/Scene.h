@@ -35,6 +35,9 @@ public:
 	void Start();
 	void Update(float DeltaTime);
 	void PostUpdate(float DeltaTime);
+public :
+	void SaveFullPath(const char* FullPath);
+	void LoadFullPath(const char* FullPath);
 
 public:
 	template <typename T>

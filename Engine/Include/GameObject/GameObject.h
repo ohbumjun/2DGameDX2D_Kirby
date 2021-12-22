@@ -61,6 +61,10 @@ public:
 	virtual void         PostRender();
 	virtual CGameObject* Clone();
 
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
+
 public:
 public:
 	template <typename T>
@@ -79,10 +83,10 @@ public:
 		}
 
 		if (Component->GetComponentType() == Component_Type::ObjectComponent)
-			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
+			m_vecObjectComponent.push_back(static_cast<CObjectComponent*>(Component));
 
 		else
-			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
+			m_SceneComponentList.push_back(static_cast<CSceneComponent*>(Component));
 
 		if (!m_RootComponent)
 			m_RootComponent = Component;

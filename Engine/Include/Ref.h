@@ -80,4 +80,11 @@ public:
 	{
 		return m_TypeID == typeid(T).hash_code();
 	}
+	size_t GetTypeID() const
+	{
+		return m_TypeID;
+	}
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
 };
