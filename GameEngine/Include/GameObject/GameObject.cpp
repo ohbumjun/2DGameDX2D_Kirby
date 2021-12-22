@@ -173,7 +173,7 @@ void CGameObject::Save(FILE* pFile)
 	if (Root)
 	{
 		size_t TypeID = m_RootComponent->GetTypeID();
-		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		fwrite(&TypeID, sizeof(size_t), 1, pFile); // 
 		m_RootComponent->Save(pFile);
 	}
 
