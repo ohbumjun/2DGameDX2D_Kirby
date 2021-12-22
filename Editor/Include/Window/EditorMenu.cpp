@@ -11,6 +11,8 @@
 #include "../Object/SpriteEditObject.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
+#include "PathManager.h"
+#include "Engine.h"
 
 
 CEditorMenu::CEditorMenu()
@@ -137,6 +139,27 @@ void CEditorMenu::CreateNewComponent()
 
 void CEditorMenu::SaveScene()
 {
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+	if (!Hierarchy || !Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	TCHAR FileFullPath[MAX_PATH] = {};
+	OPENFILENAME OpenFile = {};
+	OpenFile.lStructSize = sizeof(OPENFILENAME);
+	OpenFile.lpstrFile = FileFullPath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.Scene File\0*.scn");
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+
+	if (GetSaveFileName(&OpenFile) != 0)
+	{
+		char FilePathMultibyte[MAX_PATH] = {};
+		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, FilePathMultibyte, ConvertLength, 0, 0);
+
+		CSceneManager::GetInst()->GetScene()->SaveFullPath(FileFullPath);
+	}
 }
 
 void CEditorMenu::LoadScene()

@@ -83,6 +83,41 @@ void CScene::PostUpdate(float DeltaTime)
 	}
 }
 
+void CScene::SaveFullPath(const char* FullPath)
+{
+	/*
+	CSceneResource*                    m_Resource; --> 왜 저장안해주는 것일까 ??
+	std::list<CSharedPtr<CGameObject>> m_ObjList;
+	bool                               m_Start;
+	 */
+	FILE* pFile = nullptr;
+	fopen_s(&pFile, FullPath, "wb");
+	if (!pFile)
+		return;
+
+	size_t TypeID = m_Mode->GetTypeID();
+	fwrite(&TypeID, sizeof(size_t), 1, pFile);
+
+	int ObjectCount = (int)m_ObjList.size();
+	fwrite(&ObjectCount, sizeof(int), 1, pFile);
+
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (;iter != iterEnd; ++iter)
+	{
+		size_t TypeID = (*iter)->GetTypeID();
+		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		(*iter)->Save(pFile);
+	}
+
+	fclose(pFile);
+}
+
+void CScene::LoadFullPath(const char* FullPath)
+{
+}
+
 CGameObject* CScene::FindGameObject(const char* ObjectName) const
 {
 	auto iter = m_ObjList.begin();

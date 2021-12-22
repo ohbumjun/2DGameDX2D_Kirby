@@ -61,6 +61,10 @@ public:
 	virtual void         PostRender();
 	virtual CGameObject* Clone();
 
+public :
+	void Save(FILE* pFile);
+	void Load(FILE* pFile);
+
 public:
 public:
 	template <typename T>

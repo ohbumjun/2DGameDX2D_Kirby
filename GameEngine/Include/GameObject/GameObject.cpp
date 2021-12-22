@@ -158,3 +158,44 @@ CGameObject* CGameObject::Clone()
 {
 	return new CGameObject(*this);
 }
+
+void CGameObject::Save(FILE* pFile)
+{
+	CRef::Save(pFile);
+
+	int Length = (int)m_Name.length();
+	fwrite(&Length, sizeof(int), 1, pFile);
+	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
+
+	bool Root = false;
+	if (m_RootComponent)
+		Root = true;
+	if (Root)
+	{
+		size_t TypeID = m_RootComponent->GetTypeID();
+		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		m_RootComponent->Save(pFile);
+	}
+
+	int ObjectCount = (int)m_vecObjectComponent.size();
+	fwrite(&ObjectCount, sizeof(int), 1, pFile);
+
+	for (int i = 0; i < ObjectCount; i++)
+	{
+		size_t TypeID = m_vecObjectComponent[i]->GetTypeID();
+		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		m_vecObjectComponent[i]->Save(pFile);
+	}
+
+	/*
+	아래 목록들으 Load 하는 과정에서 자연스럽게 추가할 예정이다.
+	-------------------------------------------------------------------------
+	std::list<CSceneComponent*>               m_SceneComponentList;
+	CGameObject*                         m_Parent;
+	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
+	 */
+}
+
+void CGameObject::Load(FILE* pFile)
+{
+}
