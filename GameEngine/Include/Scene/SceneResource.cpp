@@ -299,3 +299,20 @@ bool CSceneResource::LoadSequence2D(std::string& SequenceName, const char* FileN
 	return true;
 }
 
+bool CSceneResource::LoadSequence2D(const char* FileName, const std::string& PathName)
+{
+	std::string SequenceName;
+
+	if (!CResourceManager::GetInst()->LoadSequence2D(SequenceName, FileName, PathName, m_Scene))
+		return false;
+
+	if (FindAnimationSequence2D(SequenceName))
+		return true;
+
+	CAnimationSequence2D* Sequence2D = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
+
+	m_mapSequence2D.insert(std::make_pair(SequenceName, Sequence2D));
+
+	return true;
+}
+

@@ -67,6 +67,20 @@ void CSceneComponent::SetSceneComponent(CGameObject* Object)
 	}
 }
 
+void CSceneComponent::GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames)
+{
+	FindComponentName Name;
+	Name.Name = m_Name;
+	if (m_Parent)
+		Name.ParentName = m_Parent->GetName();
+	vecNames.push_back(Name);
+
+	for (size_t i = 0; i < m_vecChild.size(); i++)
+	{
+		m_vecChild[i]->GetAllSceneComponentsName(vecNames);
+	}
+}
+
 void CSceneComponent::SetScene(CScene* Scene)
 {
 	CComponent::SetScene(Scene);

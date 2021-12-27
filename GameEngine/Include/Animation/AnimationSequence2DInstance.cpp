@@ -266,7 +266,7 @@ bool CAnimationSequence2DInstance::Save(const char* FullPath)
 
 	auto iter                       = m_mapAnimation.begin();
 	auto iterEnd                    = m_mapAnimation.end();
-	int  SequenceDataNameLength     = -1;
+	size_t  SequenceDataNameLength     = -1;
 	char SequenceDataName[MAX_PATH] = {};
 	for (; iter != iterEnd; ++iter)
 	{
@@ -537,7 +537,7 @@ void CAnimationSequence2DInstance::Save(FILE* pFile)
 	auto iter      = m_mapAnimation.begin();
 	auto iterEnd = m_mapAnimation.end();
 
-	int Length = -1;
+	size_t Length = -1;
 	for (;iter != iterEnd; ++iter)
 	{
 		// Key ¼¼ÆÃ

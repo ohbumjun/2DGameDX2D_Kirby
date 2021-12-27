@@ -27,10 +27,7 @@ private:
 	std::unordered_map<std::string, CSharedPtr<CAnimationSequence2D>> m_mapSequence2D;
 
 public: // =================== Mesh =====================
-
-
 	CMesh* FindMesh(const std::string& Name);
-
 
 public: // =================== Shader =====================
 	template <typename T>
@@ -90,5 +87,6 @@ public: // =================== Sequence2D =====================
 	// Save Load 
 	bool LoadSequence2DFullPath(const char* FullPath);
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath);
-	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string PathName = TEXTURE_PATH);
+	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string PathName = ANIMATION_PATH);
+	bool LoadSequence2D(const char* FileName, const std::string& PathName = ANIMATION_PATH);
 };

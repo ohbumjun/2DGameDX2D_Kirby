@@ -221,3 +221,10 @@ void CGameObject::Load(FILE* pFile)
 		m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 	}
 }
+
+void CGameObject::GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames)
+{
+	if (!m_RootComponent)
+		return;
+	m_RootComponent->GetAllSceneComponentsName(vecNames);
+}

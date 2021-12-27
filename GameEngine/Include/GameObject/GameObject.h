@@ -38,17 +38,14 @@ public:
 	{
 		m_RootComponent = Component;
 	}
-
 	CSceneComponent* GetRootComponent() const
 	{
 		return m_RootComponent;
 	}
-
 	void AddSceneComponent(CSceneComponent* Component)
 	{
 		m_SceneComponentList.push_back(Component);
 	}
-
 	class CComponent* FindComponent(const std::string& Name);
 
 public:
@@ -64,6 +61,9 @@ public:
 public :
 	virtual void Save(FILE* pFile);
 	virtual void Load(FILE* pFile);
+
+public :
+	void GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames);
 
 public:
 	template<typename T>

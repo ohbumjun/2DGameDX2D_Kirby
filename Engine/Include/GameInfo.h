@@ -171,6 +171,12 @@ struct MaterialCBuffer
 	Vector3 Empty;
 };
 
+struct FindComponentName
+{
+	std::string Name;
+	std::string ParentName;
+};
+
 struct AnimationFrameData
 {
 	Vector2 Start;

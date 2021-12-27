@@ -2,6 +2,11 @@
 #include "IMGUISameLine.h"
 #include "IMGUIListBox.h"
 #include "IMGUILabel.h"
+#include "GameObject/GameObject.h"
+#include "Scene/SceneManager.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneResource.h"
+#include "Resource/ResourceManager.h"
 
 CObjectHierarchy::CObjectHierarchy()
 {
@@ -50,6 +55,18 @@ void CObjectHierarchy::AddObject(const char* ObjectName)
 
 void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 {
+	// 선택한 Object 내에 있는 Scene Component 목록을 보여준다
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+
+	// 기존 모두 지워주기
+	m_ComponentListBox->Clear();
+
+	std::vector<FindComponentName> vecComponentsName;
+	Object->GetAllSceneComponentsName(vecComponentsName);
+	for (size_t i = 0; i < vecComponentsName.size(); i++)
+	{
+		m_ComponentListBox->AddItem(vecComponentsName[i].Name);
+	}
 }
 
 void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)

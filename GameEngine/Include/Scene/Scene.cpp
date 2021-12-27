@@ -120,6 +120,7 @@ void CScene::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile = nullptr;
 	fopen_s(&pFile, FullPath, "rb");
+
 	if (!pFile)
 		return;
 
