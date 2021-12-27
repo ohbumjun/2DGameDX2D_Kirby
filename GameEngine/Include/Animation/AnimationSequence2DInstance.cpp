@@ -126,6 +126,28 @@ void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std
 		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
 	}
 
+	if (!Sequence)
+		return;
+
+	Anim = new CAnimationSequence2DData;
+	Anim->m_Sequence = Sequence;
+	Anim->m_Name      = AnimName;
+	Anim->m_Loop        = Loop;
+	Anim->m_Reverse   = Reverse;
+	Anim->m_PlayScale = PlayScale;
+	Anim->m_PlayTime  = PlayTime;
+	Anim->m_FrameTime = PlayTime / Sequence->GetFrameCount();
+
+	if (m_mapAnimation.empty())
+	{
+		m_CurrentAnimation = Anim;
+		if (m_Owner)
+		{
+			m_Owner->SetTexture(0, 0, (int)ConstantBuffer_Shader_Type::Pixel,
+				Anim->m_Sequence->GetTexture()->GetName(), Anim->m_Sequence->GetTexture());
+		}
+	}
+	m_mapAnimation.insert(std::make_pair(AnimName, Anim));
 }
 
 void CAnimationSequence2DInstance::SetPlayTime(const std::string& Name, float PlayTime)

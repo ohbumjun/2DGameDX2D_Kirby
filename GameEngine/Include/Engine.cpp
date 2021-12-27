@@ -146,6 +146,8 @@ void CEngine::Logic()
 	m_Timer->Update();
 
 	float DeltaTime = m_Timer->GetDeltaTime();
+	if (!m_Play)
+		DeltaTime = 0.f;
 
 	CInput::GetInst()->Update(DeltaTime);
 

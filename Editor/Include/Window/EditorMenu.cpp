@@ -9,6 +9,7 @@
 #include "ObjectHierarchy.h"
 #include "IMGUIListBox.h"
 #include "../Object/SpriteEditObject.h"
+#include "../Object/Player2D.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 #include "PathManager.h"
@@ -66,6 +67,12 @@ bool CEditorMenu::Init()
 	m_LoadSceneButton = AddWidget<CIMGUIButton>("LoadScene", 80.f, 30.f);
 	m_LoadSceneButton->SetClickCallback(this, &CEditorMenu::LoadScene);
 
+	// ========================================================================
+
+	m_PlayButton = AddWidget<CIMGUIButton>("Play", 80.f, 30.f);
+	m_PlayButton->SetClickCallback(this, &CEditorMenu::TogglePlay);
+
+
 	return true;
 }
 
@@ -93,7 +100,7 @@ void CEditorMenu::CreateNewObject()
 		break;
 	case CreateObject_Type::Player :
 		{
-			
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
 	}
@@ -139,6 +146,15 @@ void CEditorMenu::CreateNewComponent()
 
 	// Add Item To Component List Box
 	Hierarchy->GetComponentListBox()->AddItem(m_ComponentNameInput->GetTextMultibyte());
+}
+
+void CEditorMenu::TogglePlay()
+{
+	if (CEngine::GetInst()->IsPlay())
+		CEngine::GetInst()->SetPlay(false);
+	else
+		CEngine::GetInst()->SetPlay(true);
+
 }
 
 void CEditorMenu::SaveScene()

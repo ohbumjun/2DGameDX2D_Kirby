@@ -308,8 +308,7 @@ void CSpriteEditWindow::AddAnimationButton()
 void CSpriteEditWindow::AddAnimationFrameButton()
 {
 	// Animation List의 내용이 선택되어 있어야 한다.
-	bool IsSelected = m_AnimationList->IsSelected();
-	if (IsSelected == false)
+	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
 
 	float                 XDiff           = -1, YDiff = -1;
@@ -463,7 +462,7 @@ void CSpriteEditWindow::EditFrameButton()
 		return;
 
 	// Not Selected 
-	if (!m_AnimationList->IsSelected() || !m_AnimationFrameList->IsSelected())
+	if (m_AnimationList->GetSelectIndex() < 0 || m_AnimationList->GetSelectIndex() < 0)
 		return;
 
 	const std::string StartFrameX = m_StartFramePosXInput->GetTextUTF8();

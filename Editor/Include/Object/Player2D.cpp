@@ -31,6 +31,8 @@ bool CPlayer2D::Init()
 	CAnimationSequence2DInstance* Anim = m_Sprite->GetAnimationInstance();
 
 	// animation 에 Sequence2dData 세팅
+	// 즉, Sequence Load + AddAnimation 기능까지 합쳐진 기능이다
+	// 또한, FullPath 가 아닌, FileName + PathName으로도 해당 기능이 가능하게 세팅
 	Anim->AddAnimation(TEXT("PlayerIdle.sqc"), ANIMATION_PATH, 
 		"Idle", true);
 	Anim->AddAnimation(TEXT("PlayerRun.sqc"), ANIMATION_PATH,

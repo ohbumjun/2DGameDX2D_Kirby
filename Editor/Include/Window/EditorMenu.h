@@ -19,6 +19,8 @@ private :
     class CIMGUIButton*      m_SaveSceneButton;
     class CIMGUIButton*      m_LoadSceneButton;
 
+    class CIMGUIButton*      m_PlayButton;
+
 	CreateObject_Type         m_ObjectType;
     CreateComponent_Type  m_ComponentType;
 public :
@@ -27,9 +29,11 @@ public :
 public :
     void CreateNewObject();
     void CreateNewComponent();
+    void TogglePlay();
 public :
     void SaveScene();
     void LoadScene();
+
 };
 
 

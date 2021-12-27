@@ -40,12 +40,6 @@ public:
 	{
 		return static_cast<int>(m_vecItem.size());
 	}
-
-	bool IsSelected() const
-	{
-		return m_SelectIndex == -1;
-	}
-
 	void SetSelectIndex(int Index)
 	{
 		m_SelectIndex = Index;

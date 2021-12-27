@@ -12,6 +12,7 @@ private:
 	float         m_ClearColor[4];
 	class CTimer* m_Timer;
 	bool          m_Start;
+	bool m_Play;
 
 public:
 	HWND GetWindowHandle() const
@@ -27,6 +28,14 @@ public:
 	Resolution GetResolution() const
 	{
 		return m_RS;
+	}
+	bool IsPlay() const
+	{
+		return m_Play;
+	}
+	void SetPlay(bool Play)
+	{
+		m_Play = Play;
 	}
 
 public:
