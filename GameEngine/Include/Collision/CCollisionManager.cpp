@@ -23,7 +23,7 @@ bool CCollisionManager::Init()
 	CreateProfile("Player", Collision_Channel::Default, true);
 	CreateProfile("PlayerAttack", Collision_Channel::Default, true);
 	CreateProfile("Monster", Collision_Channel::Default, true);
-	CreateProfile("MonsterAttack", Collision_Channel::Default, true);
+	CreateProfile("MonsterAttack", Collision_Channel::Default, true); //
 
 	SetCollisionState("Player", Collision_Channel::Player, Collision_State::Ignore);
 	SetCollisionState("Player", Collision_Channel::PlayerAttack, Collision_State::Ignore);
