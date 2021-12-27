@@ -47,4 +47,8 @@ void CComponent::Save(FILE* pFile)
 
 void CComponent::Load(FILE* pFile)
 {
+	CRef::Load(pFile);
+
+	// Scene, Object 정보는, Load되는 과정에서 자동으로 세팅되기 때문에 Save 하지 않는 것인가 ?
+	fread(&m_ComponentType, sizeof(Component_Type), 1, pFile);
 }

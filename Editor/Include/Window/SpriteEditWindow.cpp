@@ -1,4 +1,4 @@
-#include "SpriteWindow.h"
+#include "SpriteEditWindow.h"
 #include "Device.h"
 #include "Engine.h"
 #include "IMGUIButton.h"
@@ -20,17 +20,17 @@
 #include "Scene/SceneManager.h"
 #include "Scene/SceneResource.h"
 
-CSpriteWindow::CSpriteWindow() :
+CSpriteEditWindow::CSpriteEditWindow() :
 	m_SpriteObject(nullptr)
 {
 }
 
-CSpriteWindow::~CSpriteWindow()
+CSpriteEditWindow::~CSpriteEditWindow()
 {
 	SAFE_DELETE(m_Animation);
 }
 
-bool CSpriteWindow::Init()
+bool CSpriteEditWindow::Init()
 {
 	CIMGUIWindow::Init();
 
@@ -38,32 +38,32 @@ bool CSpriteWindow::Init()
 	// ==============================
 
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture");
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::LoadTextureButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
 
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 
 	Button = AddWidget<CIMGUIButton>("SpriteEdit");
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::SpriteEditButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SpriteEditButton);
 
 	// ==============================
 
 	Button = AddWidget<CIMGUIButton>("SaveSeq", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::SaveSequence);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SaveSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	Button = AddWidget<CIMGUIButton>("LoadSeq", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::LoadSequence);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	Button = AddWidget<CIMGUIButton>("SaveAnim", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::SaveAnimation);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SaveAnimation);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	Button = AddWidget<CIMGUIButton>("LoadAnim", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::LoadAnimation);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadAnimation);
 
 	// ==============================
 
@@ -97,24 +97,24 @@ bool CSpriteWindow::Init()
 	m_AnimationList = AddWidget<CIMGUIListBox>("AnimationList", 200.f, 300.f);
 	m_AnimationList->SetHideName(true);
 	m_AnimationList->SetPageItemCount(6);
-	m_AnimationList->SetSelectCallback<CSpriteWindow>(this, &CSpriteWindow::SelectAnimationSequence);
+	m_AnimationList->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SelectAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	Button = AddWidget<CIMGUIButton>("AddAnim", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	m_AnimationFrameList = AddWidget<CIMGUIListBox>("AnimationFrameList", 200.f, 300.f);
 	m_AnimationFrameList->SetHideName(true);
 	m_AnimationFrameList->SetPageItemCount(6);
-	m_AnimationFrameList->SetSelectCallback<CSpriteWindow>(this, &CSpriteWindow::SelectAnimationFrame);
+	m_AnimationFrameList->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SelectAnimationFrame);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
 	Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::AddAnimationFrameButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationFrameButton);
 
 	// ==============================
 	m_AnimationLoop = AddWidget<CIMGUIComboBox>("Loop", 80.f, 30.f);
@@ -134,23 +134,23 @@ bool CSpriteWindow::Init()
 	Line->SetOffsetX(310.f);
 
 	Button = AddWidget<CIMGUIButton>("Play", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::PlayAnimationButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::PlayAnimationButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(400.f);
 
 	Button = AddWidget<CIMGUIButton>("Stop", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::StopAnimationButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::StopAnimationButton);
 
 	// ==============================
 	Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::DeleteFrameButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteFrameButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::ClearFrameButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearFrameButton);
 
 	// =============================
 
@@ -175,7 +175,7 @@ bool CSpriteWindow::Init()
 	// =================================================
 
 	Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteWindow>(this, &CSpriteWindow::EditFrameButton);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditFrameButton);
 
 	// =================================================
 	m_Animation = new CAnimationSequence2DInstance;
@@ -185,7 +185,7 @@ bool CSpriteWindow::Init()
 	return true;
 }
 
-void CSpriteWindow::Update(float DeltaTime)
+void CSpriteEditWindow::Update(float DeltaTime)
 {
 	CIMGUIWindow::Update(DeltaTime);
 
@@ -210,7 +210,7 @@ void CSpriteWindow::Update(float DeltaTime)
 	}
 }
 
-void CSpriteWindow::LoadTextureButton()
+void CSpriteEditWindow::LoadTextureButton()
 {
 	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Sprite)
 		return;
@@ -249,7 +249,7 @@ void CSpriteWindow::LoadTextureButton()
 	}
 }
 
-void CSpriteWindow::SpriteEditButton()
+void CSpriteEditWindow::SpriteEditButton()
 {
 	CEditorManager::GetInst()->SetEditMode(EditMode::Sprite);
 
@@ -264,7 +264,7 @@ void CSpriteWindow::SpriteEditButton()
 	}
 }
 
-void CSpriteWindow::AddAnimationButton()
+void CSpriteEditWindow::AddAnimationButton()
 {
 	// Sprite Object가 있을 때에만 세팅한다.
 	if (!m_SpriteObject)
@@ -305,7 +305,7 @@ void CSpriteWindow::AddAnimationButton()
 	m_Animation->Play();
 }
 
-void CSpriteWindow::AddAnimationFrameButton()
+void CSpriteEditWindow::AddAnimationFrameButton()
 {
 	// Animation List의 내용이 선택되어 있어야 한다.
 	bool IsSelected = m_AnimationList->IsSelected();
@@ -387,7 +387,7 @@ void CSpriteWindow::AddAnimationFrameButton()
 	m_Animation->Play();
 }
 
-void CSpriteWindow::DeleteFrameButton()
+void CSpriteEditWindow::DeleteFrameButton()
 {
 	// Empty
 	if (m_AnimationList->GetItemCount() <= 0)
@@ -424,7 +424,7 @@ void CSpriteWindow::DeleteFrameButton()
 		m_Animation->GetCurrentAnimation()->ResetFrame();
 }
 
-void CSpriteWindow::ClearFrameButton()
+void CSpriteEditWindow::ClearFrameButton()
 {
 	// Empty
 	if (m_AnimationFrameList->GetItemCount() <= 0)
@@ -454,7 +454,7 @@ void CSpriteWindow::ClearFrameButton()
 	m_SpriteSampled->SetTexture("DefaultUI");
 }
 
-void CSpriteWindow::EditFrameButton()
+void CSpriteEditWindow::EditFrameButton()
 {
 	// Empty
 	if (m_StartFramePosXInput->Empty() || m_StartFramePosYInput->Empty())
@@ -507,17 +507,17 @@ void CSpriteWindow::EditFrameButton()
 	m_SpriteSampled->SetImageEnd(DEndFrameX, DEndFrameY);
 }
 
-void CSpriteWindow::PlayAnimationButton()
+void CSpriteEditWindow::PlayAnimationButton()
 {
 	m_Animation->Play();
 }
 
-void CSpriteWindow::StopAnimationButton()
+void CSpriteEditWindow::StopAnimationButton()
 {
 	m_Animation->Stop();
 }
 
-void CSpriteWindow::SaveSequence()
+void CSpriteEditWindow::SaveSequence()
 {
 	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
@@ -539,11 +539,11 @@ void CSpriteWindow::SaveSequence()
 		int  ConvertLength               = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, nullptr, 0, nullptr, nullptr);
 		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, FilePathMultibyte, ConvertLength, nullptr, nullptr);
 
-		m_Animation->GetCurrentAnimation()->GetAnimationSequence()->Save(FilePathMultibyte);
+		m_Animation->GetCurrentAnimation()->GetAnimationSequence()->SaveFullPath(FilePathMultibyte);
 	}
 }
 
-void CSpriteWindow::LoadSequence()
+void CSpriteEditWindow::LoadSequence()
 {
 	TCHAR FullPath[MAX_PATH] = {};
 
@@ -568,7 +568,7 @@ void CSpriteWindow::LoadSequence()
 	}
 }
 
-void CSpriteWindow::SaveAnimation()
+void CSpriteEditWindow::SaveAnimation()
 {
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
@@ -593,7 +593,7 @@ void CSpriteWindow::SaveAnimation()
 	}
 }
 
-void CSpriteWindow::LoadAnimation()
+void CSpriteEditWindow::LoadAnimation()
 {
 	TCHAR FilePath[MAX_PATH] = {};
 
@@ -615,7 +615,7 @@ void CSpriteWindow::LoadAnimation()
 	}
 }
 
-void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
+void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureName)
 {
 	// 해당 idx의 Sequence 정보 가져오기
 	CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
@@ -660,7 +660,7 @@ void CSpriteWindow::SelectAnimationSequence(int Index, const char* TextureName)
 	m_Animation->SetCurrentAnimation(ChangedSequenceName);
 }
 
-void CSpriteWindow::SelectAnimationFrame(int Index, const char* Name)
+void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 {
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();

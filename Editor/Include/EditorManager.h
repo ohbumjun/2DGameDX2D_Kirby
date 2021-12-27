@@ -13,7 +13,7 @@ class CEditorManager
 private:
 	EditMode           m_EditMode;
 	class CDragObject* m_DragObj;
-	class CSpriteWindow* m_SpriteWindow;
+	class CSpriteEditWindow* m_SpriteWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
@@ -28,7 +28,7 @@ public:
 	{
 		return m_DragObj;
 	}
-	class CSpriteWindow* GetSpriteWindow() const
+	class CSpriteEditWindow* GetSpriteWindow() const
 	{
 		return m_SpriteWindow;
 	}
@@ -68,10 +68,10 @@ public:
 	void DecreaseYSize(float DeltaTime);
 
 public :
-	void CreateSceneMode(class CScene* Scene, size_t SceneModeTypeID);
-	class CGameObject* CreateGameObject(class CScene* Scene, size_t GameObjectTypeID);
-	class CComponent* CreateComponent(class CGameObject* Object, size_t ComponentTypeID);
-	void CreateAnimationInstance(class CComponent* Component, size_t AnimationTypeID);
+	void CreateSceneMode(class CScene* Scene, const size_t SceneModeTypeID);
+	class CGameObject* CreateGameObject(class CScene* Scene, const size_t GameObjectTypeID);
+	class CComponent* CreateComponent( class CGameObject* Object, const size_t ComponentTypeID);
+	void CreateAnimationInstance(class CSpriteComponent* Component, const size_t AnimationTypeID);
 	
 
 	DECLARE_SINGLE(CEditorManager)

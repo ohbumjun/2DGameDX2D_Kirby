@@ -58,6 +58,9 @@ public:
 public:
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, float PlayTime = 1.f,
 	                  float              PlayScale                                        = 1.f, bool Reverse = false);
+	void AddAnimation(const TCHAR* FileName, const std::string& PathName, 
+		const std::string& Name, bool Loop = true, float PlayTime = 1.f,
+		float              PlayScale = 1.f, bool Reverse = false);
 	void                      SetPlayTime(const std::string& Name, float PlayTime);
 	void                      SetPlayScale(const std::string& Name, float PlayScale);
 	void                      SetReverse(const std::string& Name, bool Reverse);

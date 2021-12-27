@@ -646,4 +646,25 @@ void CTransform::Save(FILE* pFile)
 
 void CTransform::Load(FILE* pFile)
 {
+	fread(&m_InheritScale, sizeof(bool), 1, pFile);
+	fread(&m_InheritRotX, sizeof(bool), 1, pFile);
+	fread(&m_InheritRotY, sizeof(bool), 1, pFile);
+	fread(&m_InheritRotZ, sizeof(bool), 1, pFile);
+
+	fread(&m_InheritParentRotationPosX, sizeof(bool), 1, pFile);
+	fread(&m_InheritParentRotationPosY, sizeof(bool), 1, pFile);
+	fread(&m_InheritParentRotationPosZ, sizeof(bool), 1, pFile);
+
+	fread(&m_RelativeScale, sizeof(Vector3), 1, pFile);
+	fread(&m_RelativeRot, sizeof(Vector3), 1, pFile);
+	fread(&m_RelativePos, sizeof(Vector3), 1, pFile);
+	fread(&m_RelativeAxis, sizeof(Vector3), AXIS_MAX, pFile);
+
+	fread(&m_WorldScale, sizeof(Vector3), 1, pFile);
+	fread(&m_WorldRot, sizeof(Vector3), 1, pFile);
+	fread(&m_WorldPos, sizeof(Vector3), 1, pFile);
+	fread(&m_WorldAxis, sizeof(Vector3), AXIS_MAX, pFile);
+
+	fread(&m_Pivot, sizeof(Vector3), 1, pFile);
+	fread(&m_MeshSize, sizeof(Vector3), 1, pFile);
 }

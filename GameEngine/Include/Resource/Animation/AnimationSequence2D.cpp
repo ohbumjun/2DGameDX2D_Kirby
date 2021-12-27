@@ -2,6 +2,7 @@
 #include "../ResourceManager.h"
 #include "../../Scene/Scene.h"
 #include "../../Scene/SceneResource.h"
+#include "../../PathManager.h"
 
 CAnimationSequence2D::CAnimationSequence2D() :
 	m_Scene(nullptr)
@@ -73,7 +74,7 @@ void CAnimationSequence2D::SetFrame(int Index, const Vector2& StartPos, Vector2&
 	m_vecFrameData[Index].Size  = EndPos;
 }
 
-void CAnimationSequence2D::Save(const char* FullPath)
+void CAnimationSequence2D::SaveFullPath(const char* FullPath)
 {
 	FILE* pFile;
 	fopen_s(&pFile, FullPath, "wb");
@@ -116,7 +117,7 @@ void CAnimationSequence2D::Save(FILE* pFile)
 		m_Texture->Save(pFile);
 }
 
-bool CAnimationSequence2D::Load(const char* FullPath)
+bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile;
 
@@ -201,6 +202,20 @@ bool CAnimationSequence2D::Load(const char* FullPath)
 	fclose(pFile);
 
 	return true;
+}
+
+bool CAnimationSequence2D::Load(const char* FileName, const std::string& PathName)
+{
+
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	char FileFullPath[MAX_PATH] = {};
+
+	if (Path)
+		strcpy_s(FileFullPath, Path->PathMultibyte);
+	strcat_s(FileFullPath, FileName);
+
+	return LoadFullPath(FileFullPath);
 }
 
 bool CAnimationSequence2D::Load(FILE* pFile)

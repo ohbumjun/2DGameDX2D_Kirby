@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "../Scene/SceneManager.h"
+#include "../Scene/Scene.h"
 
 CGameObject::CGameObject() :
 	m_Scene(nullptr),
@@ -163,13 +165,10 @@ void CGameObject::Save(FILE* pFile)
 {
 	CRef::Save(pFile);
 
-	int Length = (int)m_Name.length();
-	fwrite(&Length, sizeof(int), 1, pFile);
-	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
-
 	bool Root = false;
 	if (m_RootComponent)
 		Root = true;
+	fwrite(&Root, sizeof(bool), 1, pFile);
 	if (Root)
 	{
 		size_t TypeID = m_RootComponent->GetTypeID();
@@ -198,4 +197,27 @@ void CGameObject::Save(FILE* pFile)
 
 void CGameObject::Load(FILE* pFile)
 {
+	CRef::Load(pFile);
+
+	bool Root = false;
+	fread(&Root, sizeof(bool), 1, pFile);
+
+	size_t TypeID;
+	if (Root)
+	{
+		fread(&TypeID, sizeof(size_t), 1, pFile);
+		CSceneManager::GetInst()->CallCreateComponentFunc(this, TypeID);
+		m_RootComponent->Load(pFile);
+	}
+
+	int ObjectCount;
+	fread(&ObjectCount, sizeof(int), 1, pFile);
+
+	for (int i = 0; i < ObjectCount; i++)
+	{
+		fread(&TypeID, sizeof(size_t), 1, pFile);
+		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(this, TypeID);
+		Component->Load(pFile);
+		m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
+	}
 }

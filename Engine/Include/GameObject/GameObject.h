@@ -62,8 +62,8 @@ public:
 	virtual CGameObject* Clone();
 
 public :
-	void Save(FILE* pFile);
-	void Load(FILE* pFile);
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 
 public:
 	template<typename T>

@@ -2,28 +2,28 @@
 
 #include "IMGUIWindow.h"
 
-class CSpriteWindow :
+class CSpriteEditWindow :
 	public CIMGUIWindow
 {
 public:
-	CSpriteWindow();
-	virtual ~CSpriteWindow() override;
+	CSpriteEditWindow();
+	virtual ~CSpriteEditWindow() override;
 
 private:
-	class CIMGUIImage*     m_Sprite;
-	class CIMGUIImage*     m_SpriteSampled;
-	class CIMGUIListBox*   m_AnimationList;
-	class CIMGUIListBox*   m_AnimationFrameList;
+	class CIMGUIImage* m_Sprite;
+	class CIMGUIImage* m_SpriteSampled;
+	class CIMGUIListBox* m_AnimationList;
+	class CIMGUIListBox* m_AnimationFrameList;
 	class CIMGUITextInput* m_AnimInputName;
-private :
+private:
 	class CIMGUITextInput* m_StartFramePosXInput;
 	class CIMGUITextInput* m_StartFramePosYInput;
 	class CIMGUITextInput* m_EndFramePosXInput;
 	class CIMGUITextInput* m_EndFramePosYInput;
-private :
+private:
 	class CIMGUIComboBox* m_AnimationLoop;
 	class CIMGUIComboBox* m_AnimationReverse;
-private :
+private:
 	CSharedPtr<class CSpriteEditObject> m_SpriteObject;
 	class CAnimationSequence2DInstance* m_Animation;
 
@@ -40,12 +40,12 @@ public:
 	void EditFrameButton();
 	void PlayAnimationButton();
 	void StopAnimationButton();
-public :
+public:
 	void SaveSequence();
 	void LoadSequence();
 	void SaveAnimation();
 	void LoadAnimation();
-public :
+public:
 	void SelectAnimationSequence(int, const char*);
 	void SelectAnimationFrame(int, const char*);
 };

@@ -28,4 +28,15 @@ void CRef::Save(FILE* pFile)
 
 void CRef::Load(FILE* pFile)
 {
+	int	Length = 0;
+	fread(&Length, sizeof(int), 1, pFile);
+	char	Name[256] = {};
+
+	fread(Name, sizeof(char), Length, pFile);
+
+	m_Name = Name;
+
+	fread(&m_Enable, sizeof(bool), 1, pFile);
+	fread(&m_Active, sizeof(bool), 1, pFile);
+	fread(&m_TypeID, sizeof(size_t), 1, pFile);
 }

@@ -59,8 +59,9 @@ public:
 	void SetFrame(int Index, float StartX, float StartY, float Width, float Height);
 	void SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos);
 public :
-	void Save(const char* FullPath);
+	void SaveFullPath(const char* FullPath);
 	void Save(FILE* pFile);
-	bool Load(const char* FullPath);
+	bool LoadFullPath(const char* FullPath);
+	bool Load(const char* FileName, const std::string& PathName);
 	bool Load(FILE* pFile);
 };

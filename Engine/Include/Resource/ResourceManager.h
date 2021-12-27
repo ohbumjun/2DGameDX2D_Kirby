@@ -54,6 +54,11 @@ public:
 	{
 		return m_MaterialManager->CreateMaterial<T>(Name);
 	}
+	template <typename T>
+	T* CreateMaterialEmpty()
+	{
+		return m_MaterialManager->CreateMaterialEmpty<T>();
+	}
 
 public: // =================== Texture =====================
 	bool LoadTexture(const std::string& Name, const TCHAR* FileName,
@@ -70,8 +75,12 @@ public: // =================== Sequence2D =====================
 	void AddAnimationSequence2DFrame(const std::string& Name, float StartX, float StartY, float Width, float Height);
 	CAnimationSequence2D* FindAnimationSequence2D(const std::string& Name);
 	void ReleaseAnimationSequence2D(const std::string& Name);
-	class CAnimation2DConstantBuffer* GetAnimation2DCBuffer() const;
-	bool LoadSequence2D(std::string& SequenceName, const char* FullPath, const class CScene* Scene = nullptr);
+	auto GetAnimation2DCBuffer() const -> class CAnimation2DConstantBuffer*;
+
+
+	bool LoadSequence2DFullPath(const char* FullPath, const class CScene* Scene = nullptr);
+	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const class CScene* Scene = nullptr);
+	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName = TEXTURE_PATH ,const class CScene* Scene = nullptr);
 
 	DECLARE_SINGLE(CResourceManager);
 };

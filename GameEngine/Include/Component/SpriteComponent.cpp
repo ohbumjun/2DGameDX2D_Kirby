@@ -5,6 +5,7 @@
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
 #include "../Scene/Scene.h"
 #include "../Scene/SceneResource.h"
+#include "../Scene/SceneManager.h"
 
 CSpriteComponent::CSpriteComponent() :
 	m_Animation(nullptr)
@@ -215,6 +216,7 @@ void CSpriteComponent::Save(FILE* pFile)
 	bool Animation = false;
 	if (m_Animation)
 		Animation = true;
+	fwrite(&m_Animation, sizeof(bool), 1, pFile);
 
 	if (Animation)
 	{
@@ -231,4 +233,31 @@ void CSpriteComponent::Save(FILE* pFile)
 
 void CSpriteComponent::Load(FILE* pFile)
 {
+	// Mesh의 경우, 이름만 저장해두고, ResourceManager 로부터 불러오는 코드를 작성할 것이다.
+	int Length = -1;
+	fread(&Length, sizeof(int), 1, pFile);
+
+	char Name[MAX_PATH] = {};
+	fread(&Length, sizeof(int), 1, pFile);
+	m_Mesh = (CSpriteMesh*)CResourceManager::GetInst()->FindMesh(Name);
+
+	// Mateiral
+	m_Material = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+	m_Material->Load(pFile);
+
+	bool Animation = false;
+	fread(&Animation, sizeof(bool), 1, pFile);
+
+	if (Animation)
+	{
+		size_t TypeID = m_Animation->GetTypeID();
+		fread(&TypeID, sizeof(size_t), 1, pFile);
+		CSceneManager::GetInst()->CallCreateAnimInstanceFunc(this, TypeID);
+		m_Animation->Load(pFile);
+	}
+
+	// SceneComponent Save  에서는 자식 SceneCompoent 목록들을 다 저장하는 코드를 거쳐서 들어간다
+	// 되도록이면, 자기의 고유의 정보를 먼저 저장하고
+	// 그 다음 자식 목록 정보를 저장하기 위해, 의도적으로 순서를 이렇게 짠다.
+	CSceneComponent::Load(pFile);
 }

@@ -271,8 +271,6 @@ CMaterial* CMaterial::Clone()
 
 void CMaterial::Save(FILE* pFile)
 {
-	CRef::Save(pFile);
-
 	// Shader의 경우, Name을 가져와서 세팅할 것이다. 
 	std::string ShaderName = m_Shader->GetName();
 	int Length = (int)ShaderName.length();
@@ -316,4 +314,133 @@ void CMaterial::Save(FILE* pFile)
 
 void CMaterial::Load(FILE* pFile)
 {
+	CRef::Load(pFile);
+
+	// Shader의 경우, Name을 가져와서 세팅할 것이다.
+	char ShaderName[MAX_PATH] = {};
+	int Length = -1;
+	fread(&Length, sizeof(int), 1, pFile);
+	fread(ShaderName, sizeof(char), Length, pFile);
+	m_Shader = (CGraphicShader*)CResourceManager::GetInst()->FindShader(ShaderName);
+
+	fread(&m_BaseColor, sizeof(Vector4), 1, pFile);
+	fread(&m_Opacity, sizeof(float), 1, pFile);
+
+	bool StateEnable = false;
+	char RenderStateName[MAX_PATH] = {};
+	for (int i = 0; i < (int)RenderState_Type::Max; i++)
+	{
+		fread(&StateEnable, sizeof(bool), 1, pFile);
+		if (StateEnable)
+		{
+			// Render State 또한, Resource로부터 가져올 예정이므로 , Name 만 저장한다
+			fread(&Length, sizeof(int), 1, pFile);
+			fread(RenderStateName, sizeof(char), Length, pFile);
+			m_RenderStateArray[i] = CRenderManager::GetInst()->FindRenderState(RenderStateName);
+		}
+	}
+
+	int TextureCount = -1;
+	fread(&TextureCount, sizeof(int), 1, pFile);
+	char TextureName[MAX_PATH] = {};
+
+	for (int i = 0; i < TextureCount; i++)
+	{
+		m_TextureInfo.push_back(MaterialTextureInfo());
+
+		fread(&Length, sizeof(int), 1, pFile);
+		fread(TextureName, sizeof(char), Length, pFile);
+		m_TextureInfo[i].Name = TextureName;
+
+		fread(&m_TextureInfo[i].SamplerType, sizeof(Sampler_Type), 1, pFile);
+		fread(&m_TextureInfo[i].Register, sizeof(int), 1, pFile);
+		fread(&m_TextureInfo[i].ShaderType, sizeof(int), 1, pFile);
+
+		char TexName[MAX_PATH] = {};
+		int Length = -1;
+		fread(&Length, sizeof(char), 1, pFile);
+		fread(TexName, sizeof(char), Length, pFile);
+
+		Image_Type ImageType;
+		fread(&ImageType, sizeof(Image_Type), 1, pFile);
+
+		int InfoCount = -1;
+		fread(&InfoCount, sizeof(int), 1, pFile);
+
+		std::vector<std::wstring> vecFullPath;
+		std::vector<std::wstring> vecFileName;
+		std::string PathName;
+
+		TCHAR FullPath[MAX_PATH] = {};
+		TCHAR FileName[MAX_PATH] = {};
+		char Path[MAX_PATH] = {};
+
+		for (int i = 0; i < InfoCount; i++)
+		{
+			
+			Length = -1;
+			fread(&Length, sizeof(int), 1, pFile);
+			fread(FullPath, sizeof(TCHAR), Length, pFile);
+			vecFullPath.push_back(FullPath);
+
+			fread(&Length, sizeof(int), 1, pFile);
+			fread(Path, sizeof(char), Length, pFile);
+			PathName = Path;
+
+			fread(&Length, sizeof(int), 1, pFile);
+			fread(FileName, sizeof(TCHAR), Length, pFile);
+			vecFileName.push_back(FileName);
+		}
+
+		switch(ImageType)
+		{
+		case Image_Type::Atlas :
+			{
+				if (vecFileName.size() == 1)
+				{
+					if (m_Scene)
+					{
+						m_Scene->GetResource()->LoadTexture(TexName, vecFileName[0].c_str(), PathName);
+					}
+					else
+					{
+						CResourceManager::GetInst()->LoadTexture(TexName, vecFileName[0].c_str(), PathName);
+					}
+				}
+				else
+				{
+				}
+			}
+			break;
+		case Image_Type::Frame:
+			{
+				if (vecFileName.size() == 1)
+				{
+
+				}
+				else
+				{
+
+				}
+			}
+			break;
+		case Image_Type::Array:
+			{
+				if (vecFileName.size() == 1)
+				{
+
+				}
+				else
+				{
+
+				}
+			}
+			break;
+		}
+
+		if (m_Scene)
+			m_TextureInfo[i].Texture = m_Scene->GetResource()->FindTexture(TexName);
+		else 
+			m_TextureInfo[i].Texture = CResourceManager::GetInst()->FindTexture(TexName);
+	}
 }

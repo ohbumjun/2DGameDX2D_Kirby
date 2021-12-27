@@ -150,8 +150,20 @@ CAnimation2DConstantBuffer* CResourceManager::GetAnimation2DCBuffer() const
 	return m_AnimationManager->GetAnimation2DCBuffer();
 }
 
-bool CResourceManager::LoadSequence2D(std::string& SequenceName, const char* FullPath, const CScene* Scene)
+bool CResourceManager::LoadSequence2DFullPath(const char* FullPath, const CScene* Scene)
 {
-	return m_AnimationManager->LoadSequence2D(SequenceName, FullPath, Scene);
+	std::string Name;
+	return m_AnimationManager->LoadSequence2DFullPath(Name, FullPath, Scene);
+}
+
+bool CResourceManager::LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const CScene* Scene)
+{
+	return m_AnimationManager->LoadSequence2DFullPath(SequenceName, FullPath, Scene);
+}
+
+bool CResourceManager::LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName,
+	const CScene* Scene)
+{
+	return m_AnimationManager->LoadSequence2D(SequenceName, FileName, PathName, Scene);
 }
 

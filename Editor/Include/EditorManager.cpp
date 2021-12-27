@@ -8,12 +8,13 @@
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
-#include "Window/SpriteWindow.h"
+#include "Window/SpriteEditWindow.h"
 #include "Window/EditorMenu.h"
 #include "Window/ObjectHierarchy.h"
 #include "Window/DetailInfoWindow.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
+#include "Animation/AnimationSequence2DInstance.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -50,8 +51,13 @@ bool CEditorManager::Init(HINSTANCE hInst)
 		return false;
 	}
 
+	CSceneManager::GetInst()->SetCreateSceneModeCallback(this, &CEditorManager::CreateSceneMode);
+	CSceneManager::GetInst()->SetCreateObjectCallback(this, &CEditorManager::CreateGameObject);
+	CSceneManager::GetInst()->SetCreateComponentCallback(this, &CEditorManager::CreateComponent);
+	CSceneManager::GetInst()->SetCreateAnimInstanceCallback(this, &CEditorManager::CreateAnimationInstance);
+
 	// IMGUI로 에디터에서 사용할 윈도우를 만들어준다.
-	m_SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteWindow>("SpriteWindow");
+	m_SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteEditWindow>("SpriteEditWindow");
 	m_EditorMenu        = CIMGUIManager::GetInst()->AddWindow<CEditorMenu>("EditorMenu");
 	m_ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
@@ -185,7 +191,7 @@ void CEditorManager::DecreaseYSize(float DeltaTime)
 	}
 }
 
-void CEditorManager::CreateSceneMode(CScene* Scene, size_t SceneModeTypeID)
+void CEditorManager::CreateSceneMode(CScene* Scene, const size_t SceneModeTypeID)
 {
 	if (SceneModeTypeID == typeid(CDefaultScene).hash_code())
 	{
@@ -193,7 +199,7 @@ void CEditorManager::CreateSceneMode(CScene* Scene, size_t SceneModeTypeID)
 	}
 }
 
-CGameObject* CEditorManager::CreateGameObject(CScene* Scene, size_t GameObjectTypeID)
+CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameObjectTypeID)
 {
 	if (GameObjectTypeID == typeid(CGameObject).hash_code())
 	{
@@ -210,9 +216,18 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, size_t GameObjectTy
 		CGameObject* Object = Scene->LoadGameObject<CDragObject>();
 		return Object;
 	}
+	/*
+	else if (GameObjectTypeID == typeid(CPlayer2D).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CPlayer2D>();
+
+		return Obj;
+	}
+	*/
+	return nullptr;
 }
 
-CComponent* CEditorManager::CreateComponent(CGameObject* Object, size_t ComponentTypeID)
+CComponent* CEditorManager::CreateComponent(CGameObject* Object, const size_t ComponentTypeID)
 {
 	if (ComponentTypeID == typeid(CSceneComponent).hash_code())
 	{
@@ -229,8 +244,13 @@ CComponent* CEditorManager::CreateComponent(CGameObject* Object, size_t Componen
 		CComponent* Component =  Object->LoadComponent<CStaticMeshComponent>();
 		return Component;
 	}
+	return nullptr;
 }
 
-void CEditorManager::CreateAnimationInstance(CComponent* Component, size_t AnimationTypeID)
+void CEditorManager::CreateAnimationInstance(CSpriteComponent* Component, const size_t AnimationTypeID)
 {
+	if (AnimationTypeID == typeid(CAnimationSequence2DInstance).hash_code())
+	{
+		Component->LoadAnimationInstance<CAnimationSequence2DInstance>();
+	}
 }

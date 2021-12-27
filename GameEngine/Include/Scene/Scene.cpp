@@ -100,8 +100,8 @@ void CScene::SaveFullPath(const char* FullPath)
 	size_t TypeID = m_Mode->GetTypeID();
 	fwrite(&TypeID, sizeof(size_t), 1, pFile);
 
-	int ObjectCount = (int)m_ObjList.size();
-	fwrite(&ObjectCount, sizeof(int), 1, pFile);
+	size_t ObjectCount = m_ObjList.size();
+	fwrite(&ObjectCount, sizeof(size_t), 1, pFile);
 
 	auto iter = m_ObjList.begin();
 	auto iterEnd = m_ObjList.end();
@@ -123,20 +123,20 @@ void CScene::LoadFullPath(const char* FullPath)
 	if (!pFile)
 		return;
 
+	m_ObjList.clear();
+
 	size_t TypeID;
 	fread(&TypeID, sizeof(size_t), 1, pFile);
+	CSceneManager::GetInst()->CallCreateSceneModeFunc(this, TypeID);
 
-	int ObjectCount = (int)m_ObjList.size();
-	fwrite(&ObjectCount, sizeof(int), 1, pFile);
+	size_t ObjectCount;
+	fread(&ObjectCount, sizeof(size_t), 1, pFile);
 
-	auto iter = m_ObjList.begin();
-	auto iterEnd = m_ObjList.end();
-
-	for (; iter != iterEnd; ++iter)
+	for (size_t i = 0; i < ObjectCount; i++)
 	{
-		size_t TypeID = (*iter)->GetTypeID();
-		fwrite(&TypeID, sizeof(size_t), 1, pFile);
-		(*iter)->Save(pFile);
+		fread(&TypeID, sizeof(size_t), 1, pFile);
+		CGameObject* Object = CSceneManager::GetInst()->CallCreateObjectFunc(this, TypeID);
+		Object->Load(pFile);
 	}
 
 	fclose(pFile);

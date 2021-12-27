@@ -35,6 +35,10 @@ public:
 	{
 		return m_Material->GetTexture(Index);
 	}
+	CAnimationSequence2DInstance* GetAnimationInstance() const
+	{
+		return m_Animation;
+	}
 
 public:
 	void SetMaterial(CMaterial* Material);
@@ -90,6 +94,17 @@ public:
 			SAFE_DELETE(Anim);
 			return;
 		}
+
+		SAFE_DELETE(m_Animation);
+
+		m_Animation = Anim;
+	}
+	template<typename T>
+	void LoadAnimationInstance()
+	{
+		T* Anim = new T;
+		Anim->SetScene(m_Scene);
+		Anim->SetOwner(this);
 
 		SAFE_DELETE(m_Animation);
 

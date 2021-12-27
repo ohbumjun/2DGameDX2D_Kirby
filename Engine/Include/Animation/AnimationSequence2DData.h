@@ -26,6 +26,7 @@ private:
 	~CAnimationSequence2DData();
 private:
 	std::string                            m_Name;
+	std::string m_SequenceName;
 	CSharedPtr<class CAnimationSequence2D> m_Sequence;
 	int                                    m_Frame;     // 현재 애니메이션 프레임
 	float                                  m_Time;      // 애니메이션 동작 시간
@@ -83,6 +84,7 @@ public :
 	}
 
 	bool Save(FILE* pFile);
+	bool Load(FILE* pFile);
 	bool Load(FILE* pFile, const char* FullPath);
 public:
 	template <typename T>

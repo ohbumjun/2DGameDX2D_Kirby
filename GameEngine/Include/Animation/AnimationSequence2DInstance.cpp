@@ -99,6 +99,35 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 	m_mapAnimation.insert(std::make_pair(AnimationName, Anim));
 }
 
+void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std::string& PathName,
+	const std::string& AnimName, bool Loop, float PlayTime, float PlayScale, bool Reverse)
+{
+	CAnimationSequence2DData* Anim = FindAnimation(AnimName);
+
+	if (Anim)
+		return;
+
+	char FileNameMultibyte[MAX_PATH] = {};
+	int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FileName, -1, 0, 0, 0, 0);
+	WideCharToMultiByte(CP_ACP, 0, FileName, -1, FileNameMultibyte, ConvertLength, 0, 0);
+
+	CAnimationSequence2D* Sequence = nullptr;
+
+	if (m_Scene)
+	{
+		std::string  SequenceName;
+		m_Scene->GetResource()->LoadSequence2D(SequenceName, FileNameMultibyte);
+		Sequence = m_Scene->GetResource()->FindAnimationSequence2D(SequenceName);
+	}
+	else
+	{
+		std::string  SequenceName;
+		CResourceManager::GetInst()->LoadSequence2D(SequenceName, FileNameMultibyte);
+		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
+	}
+
+}
+
 void CAnimationSequence2DInstance::SetPlayTime(const std::string& Name, float PlayTime)
 {
 	CAnimationSequence2DData* Anim = FindAnimation(Name);
@@ -514,6 +543,50 @@ void CAnimationSequence2DInstance::Save(FILE* pFile)
 
 void CAnimationSequence2DInstance::Load(FILE* pFile)
 {
+	fread(&m_PlayAnimation, sizeof(bool), 1, pFile);
+
+	int AnimCount = -1;
+	fread(&AnimCount, sizeof(int), AnimCount, pFile);
+
+	int Length = -1;
+	char Name[MAX_PATH] = {};
+
+	for (int i = 0; i < AnimCount; i++)
+	{
+		// Key 세팅
+		fread(&Length, sizeof(int), Length, pFile);
+		fread(Name, sizeof(char), Length, pFile);
+		
+		CAnimationSequence2DData* Data = new CAnimationSequence2DData;
+		Data->Load(pFile);
+
+		if (m_Scene)
+		{
+			Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2D(Data->m_SequenceName);
+		}
+		else
+		{
+			Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(Data->m_SequenceName);
+		}
+		m_mapAnimation.insert(std::make_pair(Name, Data));
+	}
+
+	int CurrentAnimEnable = false;
+	fread(&CurrentAnimEnable, sizeof(bool), 1, pFile);
+
+	if (CurrentAnimEnable)
+	{
+		// CurrentAnimation의  경우, m_mapAnimation 중 하나,
+		// 독립된 녀석이 아니므로, Name 만 저장해서 ResourceManager 로부터 가져오는 작업을 거칠 것이다
+		fread(&Length, sizeof(int), 1, pFile);
+		char Name[MAX_PATH] = {};
+		fread(Name, sizeof(char), Length, pFile);
+
+		m_CurrentAnimation = FindAnimation(Name);
+	}
+
+	if (m_Scene)
+		m_CBuffer = m_Scene->GetResource()->GetAnimation2DCBuffer();
 }
 
 CAnimationSequence2DData* CAnimationSequence2DInstance::FindAnimation(const std::string& Name)

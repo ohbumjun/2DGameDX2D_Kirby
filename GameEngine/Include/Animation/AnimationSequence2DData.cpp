@@ -38,7 +38,6 @@ bool CAnimationSequence2DData::Save(FILE* pFile)
 
 	if (m_Sequence)
 	{
-		m_Sequence->Save(pFile);
 		int Frame = 0;
 		fwrite(&Frame, sizeof(int), 1, pFile);
 		float Time = 0; // 애니메이션 동작 시간
@@ -49,8 +48,52 @@ bool CAnimationSequence2DData::Save(FILE* pFile)
 		fwrite(&m_PlayScale, sizeof(float), 1, pFile);
 		fwrite(&m_Loop, sizeof(bool), 1, pFile);
 		fwrite(&m_Reverse, sizeof(bool), 1, pFile);
+
+		std::string SequenceName = m_Sequence->GetName();
+
+		NameLength = (int)SequenceName.length();
+		fwrite(&NameLength, sizeof(int), 1, pFile);
+		fwrite(SequenceName.c_str(), sizeof(char), NameLength, pFile);
 	}
 
+	return true;
+}
+
+bool CAnimationSequence2DData::Load(FILE* pFile)
+{
+	int NameLength = -1;
+	fread(&NameLength, sizeof(int), 1, pFile);
+
+	char Name[MAX_PATH] = {};
+	fread(Name, sizeof(char), NameLength, pFile);
+	m_Name = Name;
+
+	bool SequenceEnable = false;
+	fread(&SequenceEnable, sizeof(bool), 1, pFile);
+
+	if (SequenceEnable)
+	{
+		int Frame = 0;
+		fread(&Frame, sizeof(int), 1, pFile);
+		m_Frame = Frame;
+
+		float Time = 0; // 애니메이션 동작 시간
+		fread(&Time, sizeof(float), 1, pFile);
+		m_Time = Time;
+
+		float FrameTime = 0.f; // 1프레임당 시간
+		fread(&FrameTime, sizeof(float), 1, pFile);
+		m_FrameTime = FrameTime;
+
+		fread(&m_PlayTime, sizeof(float), 1, pFile);
+		fread(&m_PlayScale, sizeof(float), 1, pFile);
+		fread(&m_Loop, sizeof(bool), 1, pFile);
+		fread(&m_Reverse, sizeof(bool), 1, pFile);
+
+		fread(&NameLength, sizeof(int), 1, pFile);
+		fread(Name, sizeof(char), NameLength, pFile);
+		m_SequenceName = Name;
+	}
 
 	return true;
 }

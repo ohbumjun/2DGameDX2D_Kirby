@@ -2,6 +2,7 @@
 #include "../GameObject/GameObject.h"
 #include "../Render/RenderManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
+#include "../Scene/SceneManager.h"
 
 CSceneComponent::CSceneComponent()
 {
@@ -272,4 +273,31 @@ void CSceneComponent::Save(FILE* pFile)
 
 void CSceneComponent::Load(FILE* pFile)
 {
+	CComponent::Load(pFile);
+	/*
+	CSceneComponent*                         m_Parent; --> Load 되는 과정에서 알아서 세팅될 것이다.
+	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; -->
+	 */
+	int Length;
+	fread(&Length, sizeof(int), 1, pFile);
+
+	char LayerName[MAX_PATH] = {};
+	fread(LayerName, sizeof(char), Length, pFile);
+	m_LayerName = LayerName;
+
+	m_Transform->Load(pFile);
+
+	int ChildCount;
+	fread(&ChildCount, sizeof(int), 1, pFile);
+
+	size_t TypeID;
+	for (int i = 0; i < ChildCount; i++)
+	{
+		fread(&TypeID, sizeof(size_t), 1, pFile);
+		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(m_Object, TypeID);
+		Component->Load(pFile);
+		m_vecChild.push_back(dynamic_cast<CSceneComponent*>(Component));
+	}
+
+	fread(&m_Render, sizeof(bool), 1, pFile);
 }

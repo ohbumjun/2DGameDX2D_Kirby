@@ -19,7 +19,7 @@ private:
 	bool                               m_Start;
 
 public:
-	CSceneResource* GetResource() const
+	CSceneResource* GetResource() const 
 	{
 		return m_Resource;
 	}
