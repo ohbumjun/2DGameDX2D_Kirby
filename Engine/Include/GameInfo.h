@@ -214,3 +214,11 @@ static bool StringToBool(std::string String)
 	is >> std::boolalpha >> result;
 	return result;
 }
+
+struct Collision_Profile
+{
+	std::string Name;
+	Collision_Channel Channel;
+	bool CollisionEnable;
+	std::vector<Collision_State> vecState;
+};

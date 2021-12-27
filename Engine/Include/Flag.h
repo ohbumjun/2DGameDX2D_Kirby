@@ -83,5 +83,42 @@ enum class CreateObject_Type
 enum class CreateComponent_Type
 {
 	Sprite,
-	StaticMesh
+	Static
+};
+
+enum Collision_Channel
+{
+	Default,
+	Player,
+	PlayerAttack,
+	Monster,
+	MonsterAttack,
+	Channel1,
+	Channel2,
+	Channel3,
+	Channel4,
+	Channel5,
+	Channel6,
+	Channel7,
+	Channel8,
+	Channel9,
+	Channel10,
+	Channel11,
+	Channel12,
+	Channel13,
+	Channel14,
+	Channel15,
+	Channel16,
+	End
+};
+
+enum class Collision_State
+{
+	Ignore,
+	Collision
+};
+
+enum class Collider_Type
+{
+	Box_2D
 };

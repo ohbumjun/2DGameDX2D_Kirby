@@ -15,6 +15,7 @@
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
+#include "Object/Player2D.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -216,14 +217,12 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Object = Scene->LoadGameObject<CDragObject>();
 		return Object;
 	}
-	/*
 	else if (GameObjectTypeID == typeid(CPlayer2D).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CPlayer2D>();
 
 		return Obj;
 	}
-	*/
 	return nullptr;
 }
 

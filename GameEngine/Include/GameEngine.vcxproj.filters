@@ -127,6 +127,9 @@
     <Filter Include="01. Engine\08. IMGUI\03. Widget">
       <UniqueIdentifier>{5a351436-3ba0-4e8a-9947-83209eeb01ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Collision">
+      <UniqueIdentifier>{cbf6a399-b206-419c-8d3d-506070285ee5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="Render\DepthStencilState.h">
       <Filter>06. Render\01. RenderState</Filter>
     </ClInclude>
+    <ClInclude Include="Collision\CCollisionManager.h">
+      <Filter>08. Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -574,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="Render\DepthStencilState.cpp">
       <Filter>06. Render\01. RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\CCollisionManager.cpp">
+      <Filter>08. Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
