@@ -47,7 +47,6 @@ public:
 
 public:
 	void SetEditMode(EditMode Mode);
-
 public:
 	bool Init(HINSTANCE hInst);
 	void CreateDefaultSceneMode();
@@ -67,6 +66,13 @@ public:
 	void DecreaseXSize(float DeltaTime);
 	void IncreaseYSize(float DeltaTime);
 	void DecreaseYSize(float DeltaTime);
+
+public :
+	void CreateSceneMode(class CScene* Scene, size_t SceneModeTypeID);
+	class CGameObject* CreateGameObject(class CScene* Scene, size_t GameObjectTypeID);
+	class CComponent* CreateComponent(class CGameObject* Object, size_t ComponentTypeID);
+	void CreateAnimationInstance(class CComponent* Component, size_t AnimationTypeID);
+	
 
 	DECLARE_SINGLE(CEditorManager)
 };

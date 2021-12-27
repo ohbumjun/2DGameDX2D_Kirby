@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "resource.h"
 #include "Object/DragObject.h"
+#include "Object/SpriteEditObject.h"
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
@@ -11,6 +12,8 @@
 #include "Window/EditorMenu.h"
 #include "Window/ObjectHierarchy.h"
 #include "Window/DetailInfoWindow.h"
+#include "Component/SpriteComponent.h"
+#include "Component/StaticMeshComponent.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -180,4 +183,54 @@ void CEditorManager::DecreaseYSize(float DeltaTime)
 	{
 		m_DragObj->AddWorldScale(Vector3(0.f, -1.f, 0.f));
 	}
+}
+
+void CEditorManager::CreateSceneMode(CScene* Scene, size_t SceneModeTypeID)
+{
+	if (SceneModeTypeID == typeid(CDefaultScene).hash_code())
+	{
+		Scene->LoadSceneMode<CDefaultScene>();
+	}
+}
+
+CGameObject* CEditorManager::CreateGameObject(CScene* Scene, size_t GameObjectTypeID)
+{
+	if (GameObjectTypeID == typeid(CGameObject).hash_code())
+	{
+		CGameObject* Object = Scene->LoadGameObject<CGameObject>();
+		return Object;
+	}
+	else if (GameObjectTypeID == typeid(CSpriteEditObject).hash_code())
+	{
+		CGameObject* Object  = Scene->LoadGameObject<CSpriteEditObject>();
+		return Object;
+	}
+	else if (GameObjectTypeID == typeid(CDragObject).hash_code())
+	{
+		CGameObject* Object = Scene->LoadGameObject<CDragObject>();
+		return Object;
+	}
+}
+
+CComponent* CEditorManager::CreateComponent(CGameObject* Object, size_t ComponentTypeID)
+{
+	if (ComponentTypeID == typeid(CSceneComponent).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CSceneComponent>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CSpriteComponent).hash_code())
+	{
+		CComponent* Component =  Object->LoadComponent<CSpriteComponent>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CStaticMeshComponent).hash_code())
+	{
+		CComponent* Component =  Object->LoadComponent<CStaticMeshComponent>();
+		return Component;
+	}
+}
+
+void CEditorManager::CreateAnimationInstance(CComponent* Component, size_t AnimationTypeID)
+{
 }

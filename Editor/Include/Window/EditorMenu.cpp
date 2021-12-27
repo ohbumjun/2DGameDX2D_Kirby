@@ -41,6 +41,8 @@ bool CEditorMenu::Init()
 	m_ObjectButton = AddWidget<CIMGUIButton>("CreateObject", 120.f, 30.f);
 	m_ObjectButton->SetClickCallback(this, &CEditorMenu::CreateNewObject);
 
+	// ========================================================================
+
 	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("ComponentComboBox", 150.f, 30.f);
 	m_ComponentComboBox->AddItem("SpriteComponent");
 	m_ComponentComboBox->AddItem("StaticComponent");
@@ -50,11 +52,13 @@ bool CEditorMenu::Init()
 
 	m_ComponentNameInput = AddWidget<CIMGUITextInput>("ComponentName", 80.f, 30.f);
 
+	Line = AddWidget<CIMGUISameLine>("Line");
 
 	m_ComponentButton = AddWidget<CIMGUIButton>("CreateComponent", 120.f, 30.f);
 	m_ComponentButton->SetClickCallback(this, &CEditorMenu::CreateNewComponent);
 
-	Line = AddWidget<CIMGUISameLine>("Line");
+	// ========================================================================
+
 	m_SaveSceneButton = AddWidget<CIMGUIButton>("SaveScene", 80.f, 30.f);
 	m_SaveSceneButton->SetClickCallback(this, &CEditorMenu::SaveScene);
 
@@ -140,7 +144,7 @@ void CEditorMenu::CreateNewComponent()
 void CEditorMenu::SaveScene()
 {
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
-	if (!Hierarchy || !Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	TCHAR FileFullPath[MAX_PATH] = {};
@@ -158,10 +162,26 @@ void CEditorMenu::SaveScene()
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 
-		CSceneManager::GetInst()->GetScene()->SaveFullPath(FileFullPath);
+		CSceneManager::GetInst()->GetScene()->SaveFullPath(FilePathMultibyte);
 	}
 }
 
 void CEditorMenu::LoadScene()
 {
+	TCHAR LoadFilePath[MAX_PATH] = {};
+
+	OPENFILENAME OpenFile = {};
+	OpenFile.lStructSize = sizeof(OPENFILENAME);
+	OpenFile.lpstrFile = LoadFilePath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.Scene File\0*.scn");
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	if (GetOpenFileName(&OpenFile) != 0)
+	{
+		char FilePathMultibyte[MAX_PATH] = {};
+		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, -1, 0, 0);
+		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
+	}
 }

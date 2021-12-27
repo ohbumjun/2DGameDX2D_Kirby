@@ -55,6 +55,12 @@ public:
 
 		return true;
 	}
+	template<typename T>
+	void LoadSceneMode()
+	{
+		m_Mode = new T;
+		m_Mode->m_Scene = this;
+	}
 
 	template <typename T>
 	T* CreateGameObject(const std::string& Name)
@@ -76,5 +82,18 @@ public:
 			Obj->Start();
 
 		return Obj;
+	}
+	template<typename T>
+	T* LoadGameObject()
+	{
+		T* Object = new T;
+		Object->SetScene(this);
+
+		m_ObjList.push_back(Object);
+
+		if (m_Start)
+			Object->Start();
+
+		return Object;
 	}
 };

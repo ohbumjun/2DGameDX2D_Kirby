@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include "SceneManager.h"
+
 CScene::CScene()
 {
 	m_Mode     = new CSceneMode;
@@ -116,6 +118,28 @@ void CScene::SaveFullPath(const char* FullPath)
 
 void CScene::LoadFullPath(const char* FullPath)
 {
+	FILE* pFile = nullptr;
+	fopen_s(&pFile, FullPath, "rb");
+	if (!pFile)
+		return;
+
+	size_t TypeID;
+	fread(&TypeID, sizeof(size_t), 1, pFile);
+
+	int ObjectCount = (int)m_ObjList.size();
+	fwrite(&ObjectCount, sizeof(int), 1, pFile);
+
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		size_t TypeID = (*iter)->GetTypeID();
+		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+		(*iter)->Save(pFile);
+	}
+
+	fclose(pFile);
 }
 
 CGameObject* CScene::FindGameObject(const char* ObjectName) const
