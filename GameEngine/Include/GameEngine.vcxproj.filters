@@ -130,6 +130,9 @@
     <Filter Include="08. Collision">
       <UniqueIdentifier>{cbf6a399-b206-419c-8d3d-506070285ee5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\01. SceneComponent\02. Collider">
+      <UniqueIdentifier>{9853a535-8b36-433f-8060-2505d306d9a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -363,8 +366,11 @@
     <ClInclude Include="Render\DepthStencilState.h">
       <Filter>06. Render\01. RenderState</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\CCollisionManager.h">
+    <ClInclude Include="Collision\CollisionManager.h">
       <Filter>08. Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ColliderComponent.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -583,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="Collision\CCollisionManager.cpp">
       <Filter>08. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ColliderComponent.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

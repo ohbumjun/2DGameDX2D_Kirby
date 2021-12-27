@@ -7,6 +7,7 @@
 #include "Render/RenderManager.h"
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
+#include "Collision/CollisionManager.h"
 
 DEFINITION_SINGLE(CEngine)
 
@@ -36,6 +37,8 @@ CEngine::~CEngine()
 	CResourceManager::DestroyInst();
 
 	CIMGUIManager::DestroyInst();
+
+	CCollisionManager::DestroyInst();
 
 	CDevice::DestroyInst();
 
@@ -95,6 +98,11 @@ bool CEngine::Init(HINSTANCE    hInst, HWND         hWnd,
 
 	// 장면 관리자 초기화
 	if (!CSceneManager::GetInst()->Init())
+		return false;
+
+
+	// 충돌 관리자 초기화
+	if (!CCollisionManager::GetInst()->Init())
 		return false;
 
 	return true;
