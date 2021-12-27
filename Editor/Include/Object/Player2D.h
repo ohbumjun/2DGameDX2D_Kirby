@@ -15,7 +15,7 @@ public :
 	virtual void Start();
 	bool virtual Init() override;;
 	void virtual Update(float DeltaTime) override;;
-	void virtual PostUpdate(float DeltaTime) override;
+	void virtual PostUpdate(float DeltaTime) override; //
 	virtual CPlayer2D* Clone();
 public :
 	virtual void Save(FILE* pFile);
