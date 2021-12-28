@@ -18,7 +18,7 @@ void CCollisionSection::Init(int IndexX, int IndexY, int IndexZ, int Index, cons
 	m_IndexZ = IndexZ;
 
 	m_Index = Index;
-	// 자기가 속한 전체 영역의 최소, 최대값을 미리 처리를 해놓는 것 
+	// 자기가 속한 전체 영역의 최소, 최대값을 미리 처리를 해놓는 것  //
 	m_Min = Min;
 	m_Max = Max;
 
