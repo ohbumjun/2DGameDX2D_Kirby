@@ -32,6 +32,7 @@ bool CColliderBox2D::Init()
 	m_Info.Axis[1] = Vector2(0.f, 1.f);
 	m_Info.Length = Vector2(50.f, 50.f);
 
+	// 부모의 Z 회전에 영향을 받게 세팅한다. 
 	SetInheritRotZ(true);
 	SetWorldScale(m_Info.Length.x * 2.f, m_Info.Length.y * 2.f, 1.f);
 
@@ -47,6 +48,7 @@ void CColliderBox2D::PostUpdate(float DeltaTime)
 {
 	CColliderComponent::PostUpdate(DeltaTime);
 
+	// Center는 WorldPos 로 부터의 상대적 위치로 잡을 것이다. 이를 위해 Offset 정보를 세팅해준 것이다. 
 	m_Info.Center.x = GetWorldPos().x + m_Offset.x;
 	m_Info.Center.y = GetWorldPos().y + m_Offset.y;
 

@@ -1,4 +1,6 @@
 #include "ColliderComponent.h"
+#include "../Scene/Scene.h"
+#include "../Scene/SceneCollision.h"
 
 CColliderComponent::CColliderComponent()
 {
@@ -59,7 +61,10 @@ CColliderComponent* CColliderComponent::Clone()
 
 void CColliderComponent::CheckCollision()
 {
+	// 1) 이렇게 모든 충돌체 목록들을 SceneCollision 내의 충돌체 목록에 모아두고
+	// 2) SceneCollision 내의 CheckColliderSection() 함수를 통해 각 Collider Component를 자기가 속한 영역에 배치해주는 것 
 	m_Scene->GetCollision()->AddCollider(this);
+
 	CSceneComponent::CheckCollision();
 }
 

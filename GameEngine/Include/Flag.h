@@ -123,3 +123,8 @@ enum class Collider_Type
 	Box_2D
 };
 
+enum class Engine_Space
+{
+	Space2D,
+	Space3D
+};

@@ -1,5 +1,5 @@
 #include "Scene.h"
-
+#include "SceneCollision.h"
 #include "SceneManager.h"
 
 CScene::CScene()
@@ -83,6 +83,19 @@ void CScene::PostUpdate(float DeltaTime)
 		(*iter)->PostUpdate(DeltaTime);
 		++iter;
 	}
+
+	// 충돌체들을 충돌 영역에 포함시킨다
+	iter	   = m_ObjList.begin();
+	iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		(*iter)->AddCollision();
+	}
+
+	// 포함된 충돌체들을 이용해서 충돌처리를 진행한다
+	m_Collision->Collision(DeltaTime);
+
 }
 
 void CScene::SaveFullPath(const char* FullPath)

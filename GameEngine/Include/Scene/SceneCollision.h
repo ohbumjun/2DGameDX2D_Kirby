@@ -40,10 +40,12 @@ private :
 	CollisionSectionInfo* m_Section;
 	// CSceneCollision 내의 전체 Section의 모 ~~ 든 충돌체 목록을 지니고 있게 한다.
 	std::vector<class CColliderComponent*> m_vecCollider;
+	class CColliderComponent* m_MouseCollision;
 public :
 	void Start();
 	bool Init();
 	void Collision(float DeltaTime);
+	void CollisionMouse(float DelatTime);
 public :
 	void SetSectionSize(const Vector3& Size);
 	void SetSectionSize(float x, float y, float z = 1.f);

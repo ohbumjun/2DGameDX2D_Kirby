@@ -12,7 +12,7 @@ protected :
 protected :
     Collider_Type m_ColliderType;
     Vector3 m_Offset;
-    Vector3 m_Min;
+    Vector3 m_Min; // 자신이 속한 충돌영역을 구한기 위한 Min, Max 값 
     Vector3 m_Max;
 public :
     Collider_Type GetColliderType() const

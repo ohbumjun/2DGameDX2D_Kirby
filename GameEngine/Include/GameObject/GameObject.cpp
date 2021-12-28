@@ -161,6 +161,12 @@ CGameObject* CGameObject::Clone()
 	return new CGameObject(*this);
 }
 
+void CGameObject::AddCollision()
+{
+	if (m_RootComponent)
+		m_RootComponent->CheckCollision();
+}
+
 void CGameObject::Save(FILE* pFile)
 {
 	CRef::Save(pFile);
