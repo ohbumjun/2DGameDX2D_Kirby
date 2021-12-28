@@ -133,6 +133,9 @@
     <Filter Include="05. Component\01. SceneComponent\02. Collider">
       <UniqueIdentifier>{9853a535-8b36-433f-8060-2505d306d9a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Scene\03. Collision">
+      <UniqueIdentifier>{6eed1ef3-33e6-453e-8c6f-a699bb5e6068}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -370,7 +373,16 @@
       <Filter>08. Collision</Filter>
     </ClInclude>
     <ClInclude Include="Component\ColliderComponent.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>05. Component\01. SceneComponent\02. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ColliderBox2D.h">
+      <Filter>05. Component\01. SceneComponent\02. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CollisionSection.h">
+      <Filter>03. Scene\03. Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneCollision.h">
+      <Filter>03. Scene\03. Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -591,7 +603,16 @@
       <Filter>08. Collision</Filter>
     </ClCompile>
     <ClCompile Include="Component\ColliderComponent.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>05. Component\01. SceneComponent\02. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ColliderBox2D.cpp">
+      <Filter>05. Component\01. SceneComponent\02. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CollisionSection.cpp">
+      <Filter>03. Scene\03. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneCollision.cpp">
+      <Filter>03. Scene\03. Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

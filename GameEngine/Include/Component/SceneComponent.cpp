@@ -250,6 +250,17 @@ void CSceneComponent::Render()
 	CRenderManager::GetInst()->GetStandard2DCBuffer()->UpdateCBuffer();
 }
 
+void CSceneComponent::CheckCollision()
+{
+	size_t Size = m_vecChild.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		m_vecChild[i]->CheckCollision();
+	}
+
+}
+
 void CSceneComponent::PostRender()
 {
 }

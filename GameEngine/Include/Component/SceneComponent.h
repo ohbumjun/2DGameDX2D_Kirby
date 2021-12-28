@@ -58,6 +58,7 @@ public:
 	virtual void             PostUpdate(float DeltaTime) override;
 	virtual void             PrevRender() override;
 	virtual void             Render() override;
+	virtual void CheckCollision();
 	virtual void             PostRender() override;
 	virtual CSceneComponent* Clone() override;
 

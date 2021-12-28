@@ -222,3 +222,12 @@ struct Collision_Profile
 	bool CollisionEnable;
 	std::vector<Collision_State> vecState;
 };
+
+struct Box2DInfo
+{
+	Vector2 Center;
+	Vector2 Axis[2];
+	Vector2 Length;
+	Vector2 Min;
+	Vector2 Max;
+};
