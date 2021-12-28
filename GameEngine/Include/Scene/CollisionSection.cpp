@@ -18,7 +18,7 @@ void CCollisionSection::Init(int IndexX, int IndexY, int IndexZ, int Index, cons
 	m_IndexZ = IndexZ;
 
 	m_Index = Index;
-	// 자기가 속한 전체 영역의 최소, 최대값을 미리 처리를 해놓는 것  //
+	// 자기가 속한 전체 영역의 최소, 최대값을 미리 처리를 해놓는 것  
 	m_Min = Min;
 	m_Max = Max;
 
@@ -60,7 +60,7 @@ CColliderComponent* CCollisionSection::CollisionMouse(bool Is2D, float DeltaTime
 
 		if (Size > 1)
 		{
-			// y sorting을 해준다 --> y 축 좌표 내림 차순 --> 제일 높은 애부터  것이다. --> 제일 낮은 y 좌표애가 가장 나중에 그려질 것
+			// y sorting을 해준다 --> y 축 좌표 오름 차순 --> 제일 낮은 애부터 높은 놈으로 --> 제일 낮은 y 좌표애가 가장 나중에 그려지게 해야한다.
 			qsort(&m_vecCollider[0], (size_t)m_vecCollider.size(), sizeof(CColliderComponent*), SortY);
 		}
 
@@ -79,15 +79,16 @@ CColliderComponent* CCollisionSection::CollisionMouse(bool Is2D, float DeltaTime
 	return nullptr;
 }
 
+// 오름 차순
 int CCollisionSection::SortY(const void* Src, const void* Dest)
 {
 	CColliderComponent* SrcComponent = *(CColliderComponent**)Src;
 	CColliderComponent* DestComponent = *(CColliderComponent**)Dest;
 
 	if (SrcComponent->GetMin().y < DestComponent->GetMin().y)
-		return -1;
-	else if (SrcComponent->GetMin().y > DestComponent->GetMin().y)
 		return 1;
+	else if (SrcComponent->GetMin().y > DestComponent->GetMin().y)
+		return -1;
 
 	return 0;
 }

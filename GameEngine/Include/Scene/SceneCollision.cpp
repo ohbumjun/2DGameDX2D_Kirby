@@ -81,6 +81,26 @@ void CSceneCollision::Collision(float DeltaTime) //
 	// 먼저 마우스와 충돌체들의 충돌 여부를 체크한다.
 	CollisionMouse(DeltaTime);
 
+	// 전체 Section을 반복 돌면서 충돌을 진행한다
+	size_t Size = m_Section->vecSection.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		// 충돌 시키고
+		m_Section->vecSection[i]->Collision(DeltaTime);
+		// Clear 해주고 ( 해당 Section의 모든 충돌체 목록을 비워준다 )
+		m_Section->vecSection[i]->Clear();
+	}
+
+	// 모든 충돌체들을 돌면서
+	// 해당 충돌체들의 정보를 reset 해준다
+	iter = m_ColliderList.begin();
+	iterEnd = m_ColliderList.end();
+	for ( ; iter != iterEnd; ++iter)
+	{
+		(*iter)->ClearFrame();
+	}
+
 	m_ColliderList.clear();
 }
 
@@ -124,11 +144,36 @@ void CSceneCollision::CollisionMouse(float DeltaTime)
 				if (ColliderMouse)
 				{
 					MouseCollision = true;
+					// 현재 충돌한 녀석이 기존에 충돌한 녀석과 다른 녀석이라면 --> 충돌 callback 호출 
 					if (ColliderMouse != m_MouseCollision)
-						ColliderMouse->CallCollisionCallback(Collision_State::Begin);
+						ColliderMouse->CallCollisionMouseCallback(Collision_State::Begin);
+
+					if (m_MouseCollision && m_MouseCollision != ColliderMouse)
+					{
+						// 이번에는 기존 마우스의 마우스 떼짐 Callback 호출
+						m_MouseCollision->CallCollisionMouseCallback(Collision_State::End);
+					}
+
+					// 충돌된 충돌체 정보 교체 
+					m_MouseCollision = ColliderMouse;
 				}
 
 			}
+		}
+		// 3차원
+		else
+		{
+		}
+	}
+
+	// UI 혹은 GameObject 그 어떤 것과도 충돌된 것이 없다면
+	if (!MouseCollision)
+	{
+		// 기존에 충돌된 충돌체에 대해서 충돌 end 함수 호출 
+		if (m_MouseCollision)
+		{
+			m_MouseCollision->CallCollisionMouseCallback(Collision_State::End);
+			m_MouseCollision = nullptr;
 		}
 	}
 }

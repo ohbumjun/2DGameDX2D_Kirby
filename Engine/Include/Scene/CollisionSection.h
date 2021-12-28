@@ -27,6 +27,9 @@ public :
 	void Clear();
 	void AddCollider(class CColliderComponent* Collider);
 	void Collision(float DeltaTime);
+	CColliderComponent* CollisionMouse(bool Is2D, float DeltaTime);
+public :
+	static int SortY(const void* Src, const void* Dest);
 };
 
 

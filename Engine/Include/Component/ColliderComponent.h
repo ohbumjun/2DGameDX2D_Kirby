@@ -25,7 +25,7 @@ protected :
     // 충돌 확인 과정에서 1타 4피를 방지하기 위해 단 하나의 충돌영역 에서만 충돌 처리를 한다.
     std::list<CColliderComponent*> m_CurrentCollisionList;
 
-    Collision_Profile* Profile;
+    Collision_Profile* m_Profile;
 
     // 현재 섹션에서 충돌이 되었는지 여부를 판단하기 위한 변수 
     bool m_CurrentSectionCheck;
@@ -33,6 +33,17 @@ protected :
     // 충돌시 호출할 함수 목록 --> 여러개 넣어줄 수 있게 세팅
     // 즉, 3단계로 생각 --> 해당 함수 포인터 --> 그것들의 list --> 그런 list 들의 배열 
     std::list<std::function<void(const CollisionResult&)>> m_CollisionListCallback[(int)Collision_State::Max];
+
+    // 마우스 충돌시 호출할 함수 목록
+    std::list<std::function<void(const CollisionResult&)>> m_CollisionMouseCallback[(int)Collision_State::Max];
+
+    // Mouse 와 충돌 중인지, 다른 Object와 충돌중인지를 구별해주는 bool 변수 
+    bool m_MouseCollision;
+
+    // 충돌 결과 저장하는 변수
+    CollisionResult m_Result;
+    CollisionResult m_MouseResult;
+
 public :
     Collider_Type GetColliderType() const
 	{
@@ -50,6 +61,51 @@ public :
 	{
 		m_Offset = Offset;
 	}
+    // 매 프레임마다 속한 충돌 영역의 목록을 추가하는 함수
+    void AddSectionIndex(int SectionIndex)
+	{
+		m_vecSectionIndex.push_back(SectionIndex);
+	}
+    CollisionResult GetCurrentResult() const
+	{
+        return m_Result;
+	}
+    void CheckCurrentSection()
+	{
+        m_CurrentSectionCheck = true;
+	}
+    bool GetCurrentSectionCheck() const
+	{
+        return m_CurrentSectionCheck;
+	}
+    Collision_Profile* GetCurrentProfile() const
+	{
+        return m_Profile;
+	}
+public :
+    // Profile 정보 세팅하기 
+    void SetCollisionProfile(const std::string& Name);
+    // 이전에 충돌했던 충돌체들과 현재도 충돌중인지를 판단하는 함수
+	void CheckPrevColliderSection();
+    // 이전 충돌 목록에 추가하기 
+    void AddPrevCollision(CColliderComponent* Collider);
+    // 이전 충돌 목록에서 제거하기 
+    void DeletePrevCollision(CColliderComponent* Collider);
+    // 이전 충돌 목록이 비었는지 판단하기 
+    bool EmptyPrevCollision();
+    // 이전 충돌 목록에 존재하는지 판단하기 
+    bool CheckPrevCollision(CColliderComponent* Collider);
+    // 현재 프레임 충돌 목록에 존재하는가 
+    bool CheckCurrentFrameCollision(CColliderComponent* Collider);
+    // 현재 프레임 충돌 목록에 추가하기 
+    void AddCurrentFrameCollision(CColliderComponent* Collider);
+    // 충돌 콜백 호출 
+    void CallCollisionCallback(Collision_State State);
+    // 마우스 충돌 콜백 호출 
+    void CallCollisionMouseCallback(Collision_State State);
+    // 초기화 
+    void ClearFrame();
+
 public :
     virtual void Start();
     virtual bool Init();
@@ -63,6 +119,20 @@ public :
 public :
     virtual void Save(FILE* pFile);
     virtual void Load(FILE* pFile);
+public :
+    virtual bool Collision(CColliderComponent* Dest) = 0;
+    virtual bool CollisionMouse(const Vector2& MousePos) = 0;
+public :
+    template<typename T>
+    void AddCollisionCallback(Collision_State State, T* Obj, void (T::*Func)(const CollisionResult&))
+	{
+        m_CollisionListCallback[State].push_back(std::bind(Func, Obj, std::placeholders::_1));
+	}
+    template<typename T>
+    void AddCollisionMouseCallback(Collision_State State, T* Obj, void (T::* Func)(const CollisionResult&))
+    {
+        m_CollisionMouseCallback[State].push_back(std::bind(Func, Obj, std::placeholders::_1));
+    }
 };
 
 

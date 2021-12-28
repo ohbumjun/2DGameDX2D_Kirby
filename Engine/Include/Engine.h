@@ -16,7 +16,7 @@ private:
 	Engine_Space m_Space;
 
 public:
-	Engine_Space GetSpace() const
+	Engine_Space GetEngineSpace() const
 	{
 		return m_Space;
 	}

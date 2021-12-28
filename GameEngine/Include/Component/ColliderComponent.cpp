@@ -230,7 +230,8 @@ void CColliderComponent::PostRender()
 
 CColliderComponent* CColliderComponent::Clone()
 {
-	return new CColliderComponent(*this);
+	// 순수 가상함수가 존재하는 추상 클래스 
+	return nullptr;
 }
 
 void CColliderComponent::CheckCollision()
