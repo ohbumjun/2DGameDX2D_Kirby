@@ -30,7 +30,7 @@ bool CSceneCollision::Init()
 	CreateSection();
 }
 
-void CSceneCollision::Collision(float DeltaTime) //
+void CSceneCollision::Collision(float DeltaTime) ///
 {
 	// 충돌체들을 각자의 영역으로 포함시켜주도록 한다.
 	CheckColliderSection();
