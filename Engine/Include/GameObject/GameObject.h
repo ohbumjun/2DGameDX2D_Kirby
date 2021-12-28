@@ -57,6 +57,8 @@ public:
 	virtual void         Render();
 	virtual void         PostRender();
 	virtual CGameObject* Clone();
+public :
+	void AddCollision();
 
 public :
 	virtual void Save(FILE* pFile);

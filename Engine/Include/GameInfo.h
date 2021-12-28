@@ -220,5 +220,22 @@ struct Collision_Profile
 	std::string Name;
 	Collision_Channel Channel;
 	bool CollisionEnable;
-	std::vector<Collision_State> vecState;
+	std::vector<Collision_Interaction> vecInteraction;
+};
+
+struct Box2DInfo
+{
+	Vector2 Center;
+	Vector2 Axis[2];
+	Vector2 Length;
+	Vector2 Min;
+	Vector2 Max;
+};
+
+// 충돌한 결과를 반환하기 위한 구조체 
+struct CollisionResult
+{
+	class CColliderComponent* Src;
+	class CColliderComponent* Dest;
+	Vector3 HitPoint; // 부딪힌 위치 
 };

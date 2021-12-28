@@ -112,7 +112,7 @@ enum Collision_Channel
 	End
 };
 
-enum class Collision_State
+enum class Collision_Interaction
 {
 	Ignore,
 	Collision
@@ -127,4 +127,12 @@ enum class Engine_Space
 {
 	Space2D,
 	Space3D
+};
+
+// 충돌시작 시, 충돌 끝날 시 
+enum class Collision_State
+{
+	Begin,
+	End,
+	Max
 };

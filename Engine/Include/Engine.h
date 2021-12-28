@@ -13,8 +13,13 @@ private:
 	class CTimer* m_Timer;
 	bool          m_Start;
 	bool m_Play;
+	Engine_Space m_Space;
 
 public:
+	Engine_Space GetSpace() const
+	{
+		return m_Space;
+	}
 	HWND GetWindowHandle() const
 	{
 		return m_hWnd;

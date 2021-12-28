@@ -38,9 +38,6 @@ public:
 public:
     virtual void Save(FILE* pFile);
     virtual void Load(FILE* pFile);
-public:
-    virtual bool Collision(CColliderComponent* Dest);
-    virtual bool CollisionMouse(const Vector2& MousePos);
 };
 
 

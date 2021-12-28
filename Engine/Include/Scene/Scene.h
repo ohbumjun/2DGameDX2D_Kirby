@@ -16,9 +16,14 @@ private:
 	CSharedPtr<CSceneMode>             m_Mode;
 	CSceneResource*                    m_Resource;
 	std::list<CSharedPtr<CGameObject>> m_ObjList;
+	class CSceneCollision* m_Collision;
 	bool                               m_Start;
 
 public:
+	class CSceneCollision* GetCollision() const
+	{
+		return m_Collision;
+	}
 	CSceneResource* GetResource() const 
 	{
 		return m_Resource;
@@ -28,9 +33,7 @@ public:
 	{
 		return m_Mode->GetPlayerObject();
 	}
-
 	CGameObject* FindGameObject(const char* ObjectName) const;
-
 public:
 	void Start();
 	void Update(float DeltaTime);

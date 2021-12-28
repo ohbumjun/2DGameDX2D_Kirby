@@ -25,25 +25,25 @@ bool CCollisionManager::Init()
 	CreateProfile("Monster", Collision_Channel::Default, true);
 	CreateProfile("MonsterAttack", Collision_Channel::Default, true); //
 
-	SetCollisionState("Player", Collision_Channel::Player, Collision_State::Ignore);
-	SetCollisionState("Player", Collision_Channel::PlayerAttack, Collision_State::Ignore);
+	SetCollisionState("Player", Collision_Channel::Player, Collision_Interaction::Ignore);
+	SetCollisionState("Player", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
 
-	SetCollisionState("PlayerAttack", Collision_Channel::PlayerAttack, Collision_State::Ignore);
-	SetCollisionState("PlayerAttack", Collision_Channel::Player, Collision_State::Ignore);
-	SetCollisionState("PlayerAttack", Collision_Channel::MonsterAttack, Collision_State::Ignore);
+	SetCollisionState("PlayerAttack", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
+	SetCollisionState("PlayerAttack", Collision_Channel::Player, Collision_Interaction::Ignore);
+	SetCollisionState("PlayerAttack", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
 
-	SetCollisionState("Monster", Collision_Channel::Monster, Collision_State::Ignore);
-	SetCollisionState("Monster", Collision_Channel::MonsterAttack, Collision_State::Ignore);
+	SetCollisionState("Monster", Collision_Channel::Monster, Collision_Interaction::Ignore);
+	SetCollisionState("Monster", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
 
-	SetCollisionState("MonsterAttack", Collision_Channel::Monster, Collision_State::Ignore);
-	SetCollisionState("MonsterAttack", Collision_Channel::MonsterAttack, Collision_State::Ignore);
-	SetCollisionState("MonsterAttack", Collision_Channel::PlayerAttack, Collision_State::Ignore);
+	SetCollisionState("MonsterAttack", Collision_Channel::Monster, Collision_Interaction::Ignore);
+	SetCollisionState("MonsterAttack", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
+	SetCollisionState("MonsterAttack", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
 
 	return true;
 }
 
 void CCollisionManager::CreateProfile(const std::string& Name, Collision_Channel Channel, bool CollisionEnable,
-	Collision_State State)
+	Collision_Interaction State)
 {
 	if (FindCollisionProfile(Name))
 		return;
@@ -52,21 +52,21 @@ void CCollisionManager::CreateProfile(const std::string& Name, Collision_Channel
 	Profile->Name = Name;
 	Profile->Channel = Channel;
 	Profile->CollisionEnable = CollisionEnable;
-	Profile->vecState.resize(Collision_Channel::End);
-	for (size_t i = 0; Profile->vecState.size(); i++)
+	Profile->vecInteraction.resize(Collision_Channel::End);
+	for (size_t i = 0; Profile->vecInteraction.size(); i++)
 	{
-		Profile->vecState[i] = State;
+		Profile->vecInteraction[i] = State;
 	}
 
 	m_mapCollisionProfile.insert(std::make_pair(Name, Profile));
 }
 
-void CCollisionManager::SetCollisionState(const std::string& Name, Collision_Channel Channel, Collision_State State)
+void CCollisionManager::SetCollisionState(const std::string& Name, Collision_Channel Channel, Collision_Interaction State)
 {
 	Collision_Profile* Profile = FindCollisionProfile(Name);
 	if (!Profile)
 		return;
-	Profile->vecState[(int)Channel] = State;
+	Profile->vecInteraction[(int)Channel] = State;
 }
 
 Collision_Profile* CCollisionManager::FindCollisionProfile(const std::string& Name)

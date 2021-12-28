@@ -9,9 +9,9 @@ private :
 public :
 	bool Init();
 	void CreateProfile(const std::string& Name, Collision_Channel Channel, bool CollisionEnable,
-		Collision_State State = Collision_State::Ignore);
+		Collision_Interaction State = Collision_Interaction::Ignore);
 	void SetCollisionState(const std::string& Name, Collision_Channel Channel,
-		Collision_State State);
+		Collision_Interaction State);
 	Collision_Profile* FindCollisionProfile(const std::string& Name);
 
 	// Single Ton
