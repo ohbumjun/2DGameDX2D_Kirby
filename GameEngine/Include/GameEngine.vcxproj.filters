@@ -384,6 +384,9 @@
     <ClInclude Include="Scene\SceneCollision.h">
       <Filter>03. Scene\03. Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Collision\Collision.h">
+      <Filter>08. Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -613,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="Scene\SceneCollision.cpp">
       <Filter>03. Scene\03. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\Collision.cpp">
+      <Filter>08. Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

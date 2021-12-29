@@ -1,4 +1,5 @@
 #include "ColliderBox2D.h"
+#include "../Collision/Collision.h"
 
 CColliderBox2D::CColliderBox2D()
 {
@@ -142,5 +143,7 @@ bool CColliderBox2D::Collision(CColliderComponent* Dest)
 
 bool CColliderBox2D::CollisionMouse(const Vector2& MousePos)
 {
-	return false;
+	CollisionResult Result;
+	m_MouseCollision =  CCollision::CollisionBox2DToPoint(m_MouseResult, Result, m_Info, MousePos))
+	return m_MouseCollision;
 }
