@@ -387,6 +387,9 @@
     <ClInclude Include="Collision\Collision.h">
       <Filter>08. Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\ColliderShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -619,6 +622,9 @@
     </ClCompile>
     <ClCompile Include="Collision\Collision.cpp">
       <Filter>08. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\ColliderShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

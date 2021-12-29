@@ -54,7 +54,7 @@ protected :
     CollisionResult m_MouseResult;
 
     // Mesh
-    class CSMesh* m_Mesh;
+    class CMesh* m_Mesh;
 
 public :
     Collider_Type GetColliderType() const

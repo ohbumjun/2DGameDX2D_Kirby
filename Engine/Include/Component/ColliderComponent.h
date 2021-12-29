@@ -19,6 +19,12 @@ protected :
     std::vector<int> m_vecSectionIndex;
 
     // 이전 프레임에서 해당 충돌체와 충돌한 충돌체 목록
+    // 충돌체끼리 떨어지는 것을 체크하기 위해서는
+    // 기존까지 충돌되어 있었음을 판단할 수 있어야 한다
+    // 즉, 이전까지 충돌이 되어 있었음을 알고 있어야 한다
+    // 따라서, 충돌이 되면, 이 변수에 충돌체들을 넣고
+    // 떨어지게 되면, 이때 충돌 목록에서 빼는 원리이다
+    // 쉽게 말해서, 떨어지는 것을 판단하기 위해 세팅한 변수이다.
     std::list<CColliderComponent*> m_PrevCollisionList;
 
     // 현재 프레임에 이전 영역에서 충돌한 충돌체 목록 : 2개의 충돌체가 충돌영역이 겹쳐서
@@ -27,7 +33,10 @@ protected :
 
     Collision_Profile* m_Profile;
 
-    // 현재 섹션에서 충돌이 되었는지 여부를 판단하기 위한 변수 
+    // 현재 섹션에서 충돌이 되었는지 여부를 판단하기 위한 변수
+    // 쉽게 말해서 같은 충돌체가 중복되어 SceneCollision의 m_ColliderList에 들어있을 수도 있다
+    // (물론 코드상으로는 그렇지 않으나 혹시나 하여)
+    // 따라서 중복처리르 방지하기 위해 세팅하는 변수이다. 
     bool m_CurrentSectionCheck;
 
     // 충돌시 호출할 함수 목록 --> 여러개 넣어줄 수 있게 세팅
@@ -43,6 +52,9 @@ protected :
     // 충돌 결과 저장하는 변수
     CollisionResult m_Result;
     CollisionResult m_MouseResult;
+
+    // Mesh
+    class CMesh* m_Mesh;
 
 public :
     Collider_Type GetColliderType() const

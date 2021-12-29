@@ -1,5 +1,7 @@
 #include "ColliderBox2D.h"
 #include "../Collision/Collision.h"
+#include "../Scene/Scene.h";
+#include "../Scene/SceneResource.h"
 
 CColliderBox2D::CColliderBox2D()
 {
@@ -36,6 +38,8 @@ bool CColliderBox2D::Init()
 	// 부모의 Z 회전에 영향을 받게 세팅한다. 
 	SetInheritRotZ(true);
 	SetWorldScale(m_Info.Length.x * 2.f, m_Info.Length.y * 2.f, 1.f);
+
+	m_Mesh = m_Scene->GetResource()->FindMesh("Box2D");
 
 	return true;
 }
@@ -144,6 +148,6 @@ bool CColliderBox2D::Collision(CColliderComponent* Dest)
 bool CColliderBox2D::CollisionMouse(const Vector2& MousePos)
 {
 	CollisionResult Result;
-	m_MouseCollision =  CCollision::CollisionBox2DToPoint(m_MouseResult, Result, m_Info, MousePos))
+	m_MouseCollision = CCollision::CollisionBox2DToPoint(m_MouseResult, Result, m_Info, MousePos);
 	return m_MouseCollision;
 }
