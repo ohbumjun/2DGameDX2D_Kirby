@@ -11,6 +11,7 @@ CColliderComponent::CColliderComponent()
 	m_CurrentSectionCheck = false;
 	m_MouseCollision = false;
 	m_Profile = nullptr;
+	m_Mesh = nullptr;
 }
 
 CColliderComponent::CColliderComponent(const CColliderComponent& com) :
@@ -206,7 +207,8 @@ bool CColliderComponent::Init()
 	// 2개가 충돌 할때, 둘중 하나라도 서로를 충돌 프로파일 상, 충돌을 안하는 것으로 처리했다면
 	// 처리를 진행하지 않게 세팅할 것이다. 
 	SetCollisionProfile("Object");
-		
+
+	// m_Mesh = CResourceManager::GetInst()->FindMesh("Box2D");
 	return true;
 }
 
