@@ -88,7 +88,7 @@ enum class CreateComponent_Type
 
 enum Collision_Channel
 {
-	Default,
+	Object,
 	Player,
 	PlayerAttack,
 	Monster,

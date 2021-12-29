@@ -19,11 +19,11 @@ CCollisionManager::~CCollisionManager()
 
 bool CCollisionManager::Init()
 {
-	CreateProfile("Default", Collision_Channel::Default, true);
-	CreateProfile("Player", Collision_Channel::Default, true);
-	CreateProfile("PlayerAttack", Collision_Channel::Default, true);
-	CreateProfile("Monster", Collision_Channel::Default, true);
-	CreateProfile("MonsterAttack", Collision_Channel::Default, true); //
+	CreateProfile("Object", Collision_Channel::Object, true);
+	CreateProfile("Player", Collision_Channel::Object, true);
+	CreateProfile("PlayerAttack", Collision_Channel::Object, true);
+	CreateProfile("Monster", Collision_Channel::Object, true);
+	CreateProfile("MonsterAttack", Collision_Channel::Object, true); //
 
 	SetCollisionState("Player", Collision_Channel::Player, Collision_Interaction::Ignore);
 	SetCollisionState("Player", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
