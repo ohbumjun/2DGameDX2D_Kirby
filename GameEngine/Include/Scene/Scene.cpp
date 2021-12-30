@@ -6,6 +6,7 @@ CScene::CScene()
 {
 	m_Mode     = new CSceneMode;
 	m_Resource = new CSceneResource;
+	m_Collision = new CSceneCollision;
 
 	m_Mode->m_Scene     = this;
 	m_Resource->m_Scene = this;
