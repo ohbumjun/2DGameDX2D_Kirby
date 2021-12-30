@@ -89,7 +89,6 @@ void CColliderBox2D::PostUpdate(float DeltaTime)
 			m_Min.x = Pos[i].x;
 		if (Pos[i].x > m_Max.x)
 			m_Max.x = Pos[i].x;
-
 		if (Pos[i].y < m_Min.y)
 			m_Min.y = Pos[i].y;
 		if (Pos[i].y > m_Max.y)
@@ -101,7 +100,6 @@ void CColliderBox2D::PostUpdate(float DeltaTime)
 
 	m_Info.Max.x = m_Max.x;
 	m_Info.Max.y = m_Max.y;
-
 }
 
 void CColliderBox2D::PrevRender()
@@ -163,7 +161,7 @@ void CColliderBox2D::PostRender()
 	
 }
 
-CColliderComponent* CColliderBox2D::Clone()
+CColliderBox2D* CColliderBox2D::Clone()
 {
 	return new CColliderBox2D(*this);
 }

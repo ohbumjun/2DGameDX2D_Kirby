@@ -99,7 +99,10 @@ bool CPlayer2D::Init()
 	m_ChildRightMuzzle->SetInheritRotZ(true);
 
 	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
-	m_Sprite->SetRelativePos(100.f, 50.f, 0.f);
+	m_Sprite->SetRelativePos(150.f, 50.f, 0.f);
+
+	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
+	// Center 가 형성되게 될 것이다. 
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	m_ChildRightSprite->SetRelativeScale(50.f, 50.f, 1.f);
@@ -153,7 +156,7 @@ void CPlayer2D::Update(float DeltaTime)
 	CGameObject::Update(DeltaTime);
 
 	static bool Fire2 = false;
-
+	
 	static bool Hide = false;
 
 	if (GetAsyncKeyState('2') & 0x8000)
@@ -182,7 +185,7 @@ void CPlayer2D::Update(float DeltaTime)
 
 		if (m_Opacity < 0.f)
 			m_Opacity = 0.f;
-
+		
 		m_Sprite->SetOpacity(m_Opacity);
 	}
 }

@@ -17,6 +17,7 @@ CEngine::CEngine() :
 	m_ClearColor{},
 	m_Timer(nullptr),
 	m_Start(false),
+	m_Play(true),
 	m_Space(Engine_Space::Space2D)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -155,6 +156,7 @@ void CEngine::Logic()
 	m_Timer->Update();
 
 	float DeltaTime = m_Timer->GetDeltaTime();
+
 	if (!m_Play)
 		DeltaTime = 0.f;
 

@@ -101,7 +101,6 @@ void CSceneCollision::Collision(float DeltaTime) //
 		(*iter)->ClearFrame();
 	}
 
-	m_ColliderList.clear();
 }
 
 void CSceneCollision::CollisionMouse(float DeltaTime)

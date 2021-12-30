@@ -33,7 +33,7 @@ public:
     virtual void PrevRender();
     virtual void Render();
     virtual void PostRender();
-    virtual CColliderComponent* Clone();
+    virtual CColliderBox2D* Clone();
     virtual void CheckCollision();
 public:
     virtual void Save(FILE* pFile);

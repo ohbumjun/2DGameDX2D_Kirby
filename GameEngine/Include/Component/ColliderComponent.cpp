@@ -182,7 +182,7 @@ void CColliderComponent::CallCollisionCallback(Collision_State State)
 void CColliderComponent::CallCollisionMouseCallback(Collision_State State)
 {
 	auto iter = m_CollisionMouseCallback[(int)State].begin();
-	auto iterEnd = m_CollisionListCallback[(int)State].end();
+	auto iterEnd = m_CollisionMouseCallback[(int)State].end();
 
 	for (; iter != iterEnd; ++iter)
 	{
