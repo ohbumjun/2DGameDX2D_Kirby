@@ -24,5 +24,9 @@ public :
 	{
 		m_BufferData.Color = Vector4(r,g,b,a);
 	}
+	void SetWVP(const Matrix& matWVP)
+	{
+		m_BufferData.matWVP = matWVP;
+	}
 };
 

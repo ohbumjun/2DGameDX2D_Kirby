@@ -27,6 +27,8 @@ private:
 	CSharedPtr<CSpriteComponent> m_Child3Sprite;
 	CSharedPtr<CSpriteComponent> m_Child4Sprite;
 
+	CSharedPtr<class CColliderBox2D> m_Body;
+
 	bool  m_SolW;
 	float m_WDistance;
 	float m_Opacity;

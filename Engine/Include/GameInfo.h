@@ -243,4 +243,5 @@ struct CollisionResult
 struct ColliderCBuffer
 {
 	Vector4 Color;
+	Matrix matWVP;
 };

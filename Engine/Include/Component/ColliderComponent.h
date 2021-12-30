@@ -55,6 +55,9 @@ protected :
 
     // Mesh
     class CMesh* m_Mesh;
+    // Shader
+    class CShader* m_Shader;
+    // CBuffer
     class CColliderConstantBuffer* m_CBuffer;
 
 public :
@@ -125,7 +128,7 @@ public :
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual void PrevRender();
-    virtual void Render(HDC hDC);
+    virtual void Render();
     virtual void PostRender();
     virtual CColliderComponent* Clone();
     virtual void CheckCollision();

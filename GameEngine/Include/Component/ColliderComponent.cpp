@@ -221,6 +221,8 @@ bool CColliderComponent::Init()
 
 	m_CBuffer->SetColliderColor(1.f, 1.f, 0.f, 1.f);
 
+	m_Shader = CResourceManager::GetInst()->FindShader("ColliderShader");
+
 	return true;
 }
 
@@ -239,8 +241,9 @@ void CColliderComponent::PrevRender()
 	CSceneComponent::PrevRender();
 }
 
-void CColliderComponent::Render(HDC hDC)
+void CColliderComponent::Render()
 {
+	CSceneComponent::Render();
 }
 
 void CColliderComponent::PostRender()

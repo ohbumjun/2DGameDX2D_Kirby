@@ -1,5 +1,6 @@
 #include "ColliderBox2D.h"
 #include "../Collision/Collision.h"
+#include "../Resource/Shader/ColliderConstantBuffer.h"
 #include "../Scene/Scene.h";
 #include "../Scene/SceneResource.h"
 
@@ -108,14 +109,58 @@ void CColliderBox2D::PrevRender()
 	CColliderComponent::PrevRender();
 }
 
-void CColliderBox2D::Render(HDC hDC)
+void CColliderBox2D::Render()
 {
-	CColliderComponent::Render(hDC);
+	CColliderComponent::Render();
+
+	Matrix matWorld, matProj, matWVP;
+
+	// XMMatrixOrthographicOffCenterLH : 왼쪽 좌표 시스템에 대한 한 사용자 지정 직교 투영 행렬을 만든다.
+	// ViewLeft   : Minimum x-value of view volume
+	// ViewRight : Maximum x-value of view volume
+	// ViewBottom : Maximum y-value of view volume
+	// ViewTop      : Maximum y-value of view volume
+	// NearZ : Distance to the near Clipping Plane
+	// Farz    : Distance to the far Clipping plane
+	// 리턴 값 : custom orthogonal projection matrix = 사용자 지정 직교 투영 행렬 변환 ( World 공간에서 카메라 공간으로의 변환) 
+	matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
+
+	Matrix matScale, matRot, matTrans;
+
+	matScale.Scaling(m_Info.Length.x * 2.f, m_Info.Length.y * 2.f, 1.f);
+	matRot.Rotation(GetWorldRot());
+	matTrans.Translation(m_Info.Center);
+
+	matWorld = matScale * matRot * matTrans;
+
+	matWVP = matWorld * matProj;
+
+	// Matrix를 CBuffer에 넘겨줄 때 Transpos해서 넘겨줘야 한다.
+	matWVP.Transpose();
+
+	m_CBuffer->SetWVP(matWVP);
+
+	// 현재 충돌중인 목록이 없다면, 초록색으로 그린다
+	if (m_PrevCollisionList.empty())
+		m_CBuffer->SetColliderColor(Vector4(0.f, 1.f, 0.f, 1.f));
+	else
+		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
+
+	if (m_MouseCollision)
+		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
+
+	m_CBuffer->UpdateCBuffer();
+
+	m_Shader->SetShader();
+
+	m_Mesh->Render();
 }
 
 void CColliderBox2D::PostRender()
 {
 	CColliderComponent::PostRender();
+
+	
 }
 
 CColliderComponent* CColliderBox2D::Clone()

@@ -5,6 +5,7 @@
 #include "PlayerAnimation2D.h"
 #include "Resource/Material/Material.h"
 #include "Scene/Scene.h"
+#include "Component/ColliderBox2D.h"
 
 CPlayer2D::CPlayer2D()
 {
@@ -16,18 +17,19 @@ CPlayer2D::CPlayer2D()
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	CGameObject(obj)
 {
-	m_Sprite           = static_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
-	m_ChildLeftSprite  = static_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
-	m_ChildRightSprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
-	m_ChildLeftMuzzle  = static_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
-	m_ChildRightMuzzle = static_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
-	m_ChildRoot        = static_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
-	m_Muzzle           = static_cast<CSceneComponent*>(FindComponent("Muzzle"));
+	m_Sprite           = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
+	m_ChildLeftSprite  = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
+	m_ChildRightSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
+	m_ChildLeftMuzzle  = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
+	m_ChildRightMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
+	m_ChildRoot        = dynamic_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
+	m_Muzzle           = dynamic_cast<CSceneComponent*>(FindComponent("Muzzle"));
 
-	m_Child1Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
-	m_Child2Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
-	m_Child3Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
-	m_Child4Sprite = static_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
+	m_Child1Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
+	m_Child2Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
+	m_Child3Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
+	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
+
 
 	m_Opacity = obj.m_Opacity;
 }
@@ -52,14 +54,17 @@ bool CPlayer2D::Init()
 	m_Child3Sprite = CreateComponent<CSpriteComponent>("PlayerChild3Sprite");
 	m_Child4Sprite = CreateComponent<CSpriteComponent>("PlayerChild4Sprite");
 
+	m_Body = CreateComponent<CColliderBox2D>("Body");
+
 	SetRootComponent(m_Sprite);
 
 	//m_Sprite->GetMaterial()->AddTexture(0, (int)ConstantBuffer_Shader_Type::Pixel, "MainTexture", )
-
+	
 	m_Sprite->AddChild(m_ChildLeftSprite);
 	m_Sprite->AddChild(m_ChildRightSprite);
 	m_Sprite->AddChild(m_Muzzle);
 	m_Sprite->AddChild(m_ChildRoot);
+	m_Sprite->AddChild(m_Body);
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
@@ -70,9 +75,9 @@ bool CPlayer2D::Init()
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
 
-	m_ChildLeftSprite->SetTexture(0, 0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel), "Teemo",
+	m_ChildLeftSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
 	                              TEXT("Teemo.jpg"));
-	m_ChildRightSprite->SetTexture(0, 0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel), "Teemo",
+	m_ChildRightSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
 	                               TEXT("Teemo.jpg"));
 
 	m_ChildLeftSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
