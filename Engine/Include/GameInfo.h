@@ -4,7 +4,9 @@
 
 #include <algorithm>
 #include <cctype>
+// Memory Leak
 #include <crtdbg.h>
+#include <stdlib.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dinput.h>

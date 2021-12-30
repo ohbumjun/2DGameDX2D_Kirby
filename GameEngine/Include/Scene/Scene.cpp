@@ -19,6 +19,7 @@ CScene::CScene()
 CScene::~CScene()
 {
 	SAFE_DELETE(m_Resource);
+	SAFE_DELETE(m_Collision);
 }
 
 void CScene::Start()
