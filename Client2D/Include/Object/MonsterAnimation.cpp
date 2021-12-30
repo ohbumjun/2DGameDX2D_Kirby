@@ -12,7 +12,7 @@ CMonsterAnimation::~CMonsterAnimation()
 
 bool CMonsterAnimation::Init()
 {
-	if (!CAnimationSequence2DInstance::Init())
+	if (!CAnimationSequence2DInstance::Init()) //
 		return false;
 
 	AddAnimation("PlayerIdle", "Idle");
