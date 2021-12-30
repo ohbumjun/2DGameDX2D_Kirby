@@ -2,6 +2,7 @@
 #include "../Input.h"
 #include "../Component/ColliderComponent.h"
 
+
 CCollisionSection::CCollisionSection()
 {
 }
@@ -48,6 +49,37 @@ void CCollisionSection::AddCollider(CColliderComponent* Collider)
 
 void CCollisionSection::Collision(float DeltaTime)
 {
+	size_t Size = m_vecCollider.size();
+
+	// 해당 영역의 충돌체가 2개 이하라면, 충돌시킬 이유가 없다.
+	if (Size < 2)
+		return;
+
+	for (size_t  i = 0; i < Size - 1; i++)
+	{
+		CColliderComponent* Src = m_vecCollider[i];
+		for (size_t  j = i + 1; j < Size; j++)
+		{
+			CColliderComponent* Dest = m_vecCollider[j];
+
+			// 현재 프레임 상 , 이미 충돌 처리된 녀석이라면
+			if (Src->CheckCurrentFrameCollision(Dest))
+				continue;
+
+			Collision_Profile* SrcProfile  = Src->GetCurrentProfile();
+			Collision_Profile* DestProfile = Dest->GetCurrentProfile();
+
+			// 둘 중 하나라도 서로 다른 하나를 무시하게 세팅했다면 continue
+			if (SrcProfile->vecInteraction[(int)DestProfile->Channel] == Collision_Interaction::Ignore ||
+				DestProfile->vecInteraction[(int)SrcProfile->Channel] == Collision_Interaction::Ignore)
+				continue;
+
+			if (Src->Collision(Dest))
+			{
+				
+			}
+		}
+	}
 }
 
 CColliderComponent* CCollisionSection::CollisionMouse(bool Is2D, float DeltaTime)

@@ -2,6 +2,7 @@
 #include "../Object/Player2D.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "../Object/Monster.h"
 
 CMainScene::CMainScene()
 {
@@ -20,6 +21,8 @@ bool CMainScene::Init()
 	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
 	SetPlayerObject(Player);
+
+	CMonster* Monter = m_Scene->CreateGameObject<CMonster>("Monster");
 
 	return true;
 }
