@@ -2,6 +2,7 @@
 #include "../Scene/Scene.h"
 #include "../Scene/SceneCollision.h"
 #include "../Collision/CollisionManager.h"
+#include "../Resource/Shader/ColliderConstantBuffer.h"
 
 CColliderComponent::CColliderComponent()
 {
@@ -12,6 +13,7 @@ CColliderComponent::CColliderComponent()
 	m_MouseCollision = false;
 	m_Profile = nullptr;
 	m_Mesh = nullptr;
+	m_CBuffer = nullptr;
 }
 
 CColliderComponent::CColliderComponent(const CColliderComponent& com) :
@@ -20,12 +22,16 @@ CSceneComponent(com)
 	m_MouseCollision = false;
 	m_CurrentSectionCheck = false;
 	m_Render = com.m_Render;
+
 	// Profile 정보는 공유해서 사용할 것이다. 
 	m_Profile = com.m_Profile;
+	m_CBuffer = com.m_CBuffer->Clone();
 }
 
 CColliderComponent::~CColliderComponent()
 {
+	SAFE_DELETE(m_CBuffer);
+
 	// 사라지게 되면 , 이전에 충돌했던 목록 애들한테 나 이제 너희와의 충돌 목록에서 지워줘 ! 라고 세팅해준다.
 	auto iter = m_PrevCollisionList.begin();
 	auto iterEnd = m_PrevCollisionList.end();
@@ -209,6 +215,12 @@ bool CColliderComponent::Init()
 	SetCollisionProfile("Object");
 
 	// m_Mesh = CResourceManager::GetInst()->FindMesh("Box2D");
+	m_CBuffer = new CColliderConstantBuffer;
+
+	m_CBuffer->Init();
+
+	m_CBuffer->SetColliderColor(1.f, 1.f, 0.f, 1.f);
+
 	return true;
 }
 

@@ -55,6 +55,7 @@ protected :
 
     // Mesh
     class CMesh* m_Mesh;
+    class CColliderConstantBuffer* m_CBuffer;
 
 public :
     Collider_Type GetColliderType() const

@@ -239,3 +239,8 @@ struct CollisionResult
 	class CColliderComponent* Dest;
 	Vector3 HitPoint; // ºÎµúÈù À§Ä¡ 
 };
+
+struct ColliderCBuffer
+{
+	Vector4 Color;
+};

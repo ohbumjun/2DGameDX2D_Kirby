@@ -136,6 +136,9 @@
     <Filter Include="03. Scene\03. Collision">
       <UniqueIdentifier>{6eed1ef3-33e6-453e-8c6f-a699bb5e6068}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\03. ConstantBuffer\05. Collider">
+      <UniqueIdentifier>{ed25910b-0d73-4e40-b02c-b92edd21d8b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -390,6 +393,9 @@
     <ClInclude Include="Resource\Shader\ColliderShader.h">
       <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\ColliderConstantBuffer.h">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\05. Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -626,6 +632,9 @@
     <ClCompile Include="Resource\Shader\ColliderShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Shader\ColliderConstantBuffer.cpp">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\05. Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\Shader\ShaderInfo.fx">
@@ -635,6 +644,9 @@
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Shader\Mesh2D.fx">
+      <Filter>02. Resource\02. Shader\01. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\Collider.fx">
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
   </ItemGroup>

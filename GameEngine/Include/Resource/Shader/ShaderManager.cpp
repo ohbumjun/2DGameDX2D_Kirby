@@ -3,6 +3,7 @@
 #include "ConstantBuffer.h"
 #include "Mesh2DShader.h"
 #include "PosMeshShader.h"
+#include "ColliderShader.h"
 
 CShaderManager::CShaderManager()
 {
@@ -23,6 +24,9 @@ bool CShaderManager::Init()
 	if (!CreateShader<CPosMeshShader>("PosMeshShader"))
 		return false;
 
+	if (!CreateShader<CColliderShader>("ColliderShader"))
+		return false;
+
 
 	// =================== 상수버퍼 ===================
 	CreateConstantBuffer("TransformCBuffer", sizeof(TransformCBuffer), 0,
@@ -36,6 +40,10 @@ bool CShaderManager::Init()
 
 	CreateConstantBuffer("Animation2DCBuffer", sizeof(Animation2DCBuffer), 10,
 	                     static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
+
+	CreateConstantBuffer("ColliderCBuffer", sizeof(Animation2DCBuffer), 10,
+		static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
+
 
 	return true;
 }

@@ -222,6 +222,7 @@
     <ClInclude Include="Resource\Mesh\StaticMesh.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Resource\Shader\Animation2DConstantBuffer.h" />
+    <ClInclude Include="Resource\Shader\ColliderConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\ColliderShader.h" />
     <ClInclude Include="Resource\Shader\ColorMeshShader.h" />
     <ClInclude Include="Resource\Shader\ComputeShader.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="Resource\Mesh\StaticMesh.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Resource\Shader\Animation2DConstantBuffer.cpp" />
+    <ClCompile Include="Resource\Shader\ColliderConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\ColliderShader.cpp" />
     <ClCompile Include="Resource\Shader\ColorMeshShader.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShader.cpp" />
@@ -331,6 +333,20 @@
     <ClCompile Include="Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\Shader\Collider.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ColliderMeshVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ColliderMeshVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ColliderMeshVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ColliderMeshVS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Bin\Shader\ColorMesh.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ColorMeshVS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
