@@ -55,6 +55,7 @@ bool CPlayer2D::Init()
 	m_Child4Sprite = CreateComponent<CSpriteComponent>("PlayerChild4Sprite");
 
 	m_Body = CreateComponent<CColliderBox2D>("Body");
+	m_Body->SetCollisionProfile("Player");
 
 	SetRootComponent(m_Sprite);
 

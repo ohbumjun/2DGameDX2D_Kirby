@@ -20,6 +20,7 @@ bool CMonster::Init()
 
 	m_Sprite = CreateComponent<CSpriteComponent>("MonsterSprite");
 	m_ColliderBody = CreateComponent<CColliderBox2D>("ColliderBody");
+	m_ColliderBody->SetCollisionProfile("Monster");
 
 	SetRootComponent(m_Sprite);
 

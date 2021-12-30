@@ -9,7 +9,7 @@ private :
 public :
 	bool Init();
 	void CreateProfile(const std::string& Name, Collision_Channel Channel, bool CollisionEnable,
-		Collision_Interaction State = Collision_Interaction::Ignore);
+		Collision_Interaction State = Collision_Interaction::Collision);
 	void SetCollisionState(const std::string& Name, Collision_Channel Channel,
 		Collision_Interaction State);
 	Collision_Profile* FindCollisionProfile(const std::string& Name);
