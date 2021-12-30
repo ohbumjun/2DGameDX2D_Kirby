@@ -25,6 +25,9 @@
     <Filter Include="02. Object\02. Bullet">
       <UniqueIdentifier>{67b1d5f3-f66d-45f6-90fe-5978614d6fb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\03. Monster">
+      <UniqueIdentifier>{e49ad913-a9af-4412-9316-221f17d46ef8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="Object\PlayerAnimation2D.cpp">
       <Filter>02. Object\01. Player</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Monster.cpp">
+      <Filter>02. Object\03. Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -70,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Object\PlayerAnimation2D.h">
       <Filter>02. Object\01. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Monster.h">
+      <Filter>02. Object\03. Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,10 +20,10 @@ CCollisionManager::~CCollisionManager()
 bool CCollisionManager::Init()
 {
 	CreateProfile("Object", Collision_Channel::Object, true);
-	CreateProfile("Player", Collision_Channel::Object, true);
-	CreateProfile("PlayerAttack", Collision_Channel::Object, true);
-	CreateProfile("Monster", Collision_Channel::Object, true);
-	CreateProfile("MonsterAttack", Collision_Channel::Object, true); //
+	CreateProfile("Player", Collision_Channel::Player, true);
+	CreateProfile("PlayerAttack", Collision_Channel::PlayerAttack, true);
+	CreateProfile("Monster", Collision_Channel::Monster, true);
+	CreateProfile("MonsterAttack", Collision_Channel::MonsterAttack, true); //
 
 	SetCollisionState("Player", Collision_Channel::Player, Collision_Interaction::Ignore);
 	SetCollisionState("Player", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
@@ -53,7 +53,7 @@ void CCollisionManager::CreateProfile(const std::string& Name, Collision_Channel
 	Profile->Channel = Channel;
 	Profile->CollisionEnable = CollisionEnable;
 	Profile->vecInteraction.resize(Collision_Channel::End);
-	for (size_t i = 0; Profile->vecInteraction.size(); i++)
+	for (size_t i = 0; i <  Profile->vecInteraction.size(); i++)
 	{
 		Profile->vecInteraction[i] = State;
 	}

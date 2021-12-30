@@ -161,6 +161,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Bullet.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
+    <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
+    <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PlayerAnimation2D.h" />
     <ClInclude Include="resource.h" />

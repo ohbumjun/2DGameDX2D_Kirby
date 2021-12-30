@@ -10,9 +10,9 @@ CColliderShader::~CColliderShader()
 
 bool CColliderShader::Init()
 {
-	if (!LoadVertexShader("ColliderMeshVS", TEXT("ColliderMesh.fx"), SHADER_PATH))
+	if (!LoadVertexShader("ColliderMeshVS", TEXT("Collider.fx"), SHADER_PATH))
 		return false;
-	if (!LoadPixelShader("ColliderMeshPS", TEXT("ColliderMesh.fx"), SHADER_PATH))
+	if (!LoadPixelShader("ColliderMeshPS", TEXT("Collider.fx"), SHADER_PATH))
 		return false;
 
 	AddInputDesc("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
