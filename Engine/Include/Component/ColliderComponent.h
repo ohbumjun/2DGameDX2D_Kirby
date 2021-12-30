@@ -5,6 +5,7 @@ class CColliderComponent :
     public CSceneComponent
 {
     friend class CGameObject;
+    friend class CCollision;
 protected :
     CColliderComponent();
     CColliderComponent(const CColliderComponent& com);

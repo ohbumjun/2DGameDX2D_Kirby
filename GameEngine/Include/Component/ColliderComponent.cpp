@@ -202,6 +202,8 @@ void CColliderComponent::ClearFrame()
 void CColliderComponent::Start()
 {
 	CSceneComponent::Start();
+
+	m_Scene->GetCollision()->AddCollider(this);
 }
 
 bool CColliderComponent::Init()

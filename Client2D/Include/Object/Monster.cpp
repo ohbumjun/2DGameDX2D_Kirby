@@ -30,7 +30,7 @@ bool CMonster::Init()
 	m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
 	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
-	m_Sprite->SetRelativePos(100.f, 100.f, 1.f);
+	m_Sprite->SetRelativePos(500.f, 300.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
 }
 

@@ -76,7 +76,31 @@ void CCollisionSection::Collision(float DeltaTime)
 
 			if (Src->Collision(Dest))
 			{
-				
+				// 지금 막 충돌된 것인지 판단한다
+				if (!Src->CheckPrevCollision(Dest))
+				{
+					// 이전 충돌 목록에 존재하지 않았다면, 이번에 처음 충돌하게 된 것이다
+					// 서로의 충돌 목록에 추가해준다.
+					Src->AddPrevCollision(Dest);
+					Dest->AddPrevCollision(Src);
+
+					Src->CallCollisionCallback(Collision_State::Begin);
+					Dest->CallCollisionCallback(Collision_State::Begin);
+				}
+				// 현재 프레임 상에서 이미 충돌 처리를 했다고 표시
+				// 이렇게 해두면, 다른 겹치는 충돌 영역에서 충돌을 하더라도, 서로 충돌 처리를 안해주게 된다. 
+				Src->AddCurrentFrameCollision(Dest);
+				Dest->AddCurrentFrameCollision(Src);
+			}
+			// 충돌은 안했지만
+			// 이전 충돌 목록에 존재하면 : 이번에 떨어진 것
+			else if (Src->CheckPrevCollision(Dest))
+			{
+				Src->DeletePrevCollision(Dest);
+				Dest->DeletePrevCollision(Src);
+
+				Src->CallCollisionCallback(Collision_State::End);
+				Dest->CallCollisionCallback(Collision_State::End);
 			}
 		}
 	}

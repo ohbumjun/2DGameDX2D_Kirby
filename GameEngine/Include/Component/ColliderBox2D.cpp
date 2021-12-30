@@ -190,7 +190,7 @@ bool CColliderBox2D::Collision(CColliderComponent* Dest)
 	switch (Dest->GetColliderType())
 	{
 	case Collider_Type::Box_2D :
-		return CCollision::CollisionBox2DToPoint(this,)
+		return CCollision::CollisionBox2DToBox2D(this, (CColliderBox2D*)Dest);
 	}
 	return true;
 }
