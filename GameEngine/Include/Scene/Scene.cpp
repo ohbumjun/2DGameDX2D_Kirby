@@ -10,8 +10,10 @@ CScene::CScene()
 
 	m_Mode->m_Scene     = this;
 	m_Resource->m_Scene = this;
-
+	m_Collision->m_Scene = this;
+	
 	m_Start = false;
+	m_Collision->Init();
 }
 
 CScene::~CScene()
