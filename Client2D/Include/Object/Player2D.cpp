@@ -207,7 +207,7 @@ void CPlayer2D::MoveDown(float DeltaTime)
 	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_Y) * -300.f * DeltaTime);
 }
 
-void CPlayer2D::RotationZInv(float DeltaTime)
+void CPlayer2D::RotationZInv(float DeltaTime) //
 {
 	m_Sprite->AddRelativeRotationZ(180.f * DeltaTime);
 }
