@@ -187,7 +187,12 @@ void CColliderBox2D::Load(FILE* pFile)
 
 bool CColliderBox2D::Collision(CColliderComponent* Dest)
 {
-	return false;
+	switch (Dest->GetColliderType())
+	{
+	case Collider_Type::Box_2D :
+		return CCollision::CollisionBox2DToPoint(this,)
+	}
+	return true;
 }
 
 bool CColliderBox2D::CollisionMouse(const Vector2& MousePos)
