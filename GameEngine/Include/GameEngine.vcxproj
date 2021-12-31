@@ -169,6 +169,7 @@
     <ClInclude Include="Animation\AnimationSequence2DInstance.h" />
     <ClInclude Include="Collision\Collision.h" />
     <ClInclude Include="Collision\CollisionManager.h" />
+    <ClInclude Include="Component\CameraComponent.h" />
     <ClInclude Include="Component\ColliderBox2D.h" />
     <ClInclude Include="Component\ColliderComponent.h" />
     <ClInclude Include="Component\Component.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="Animation\AnimationSequence2DInstance.cpp" />
     <ClCompile Include="Collision\CCollisionManager.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
+    <ClCompile Include="Component\CameraComponent.cpp" />
     <ClCompile Include="Component\ColliderBox2D.cpp" />
     <ClCompile Include="Component\ColliderComponent.cpp" />
     <ClCompile Include="Component\Component.cpp" />

@@ -110,6 +110,9 @@ void CMesh::Render()
 
 		else
 		{
+
+		}
+		{
 			CDevice::GetInst()->GetContext()->IASetIndexBuffer(
 			                                                   nullptr, DXGI_FORMAT_UNKNOWN, 0);
 			CDevice::GetInst()->GetContext()->Draw(

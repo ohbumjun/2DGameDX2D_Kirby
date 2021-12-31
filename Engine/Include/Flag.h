@@ -136,3 +136,9 @@ enum class Collision_State
 	End,
 	Max
 };
+
+enum class Camera_Type {
+	Camera2D,
+	Camera3D,
+	CameraUI
+};

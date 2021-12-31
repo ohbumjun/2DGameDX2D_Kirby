@@ -139,6 +139,9 @@
     <Filter Include="02. Resource\02. Shader\03. ConstantBuffer\05. Collider">
       <UniqueIdentifier>{ed25910b-0d73-4e40-b02c-b92edd21d8b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\01. SceneComponent\03. Camera">
+      <UniqueIdentifier>{1752ac74-7987-455e-b7e2-e1293e6b9404}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -396,6 +399,9 @@
     <ClInclude Include="Resource\Shader\ColliderConstantBuffer.h">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\05. Collider</Filter>
     </ClInclude>
+    <ClInclude Include="Component\CameraComponent.h">
+      <Filter>05. Component\01. SceneComponent\03. Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -634,6 +640,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\ColliderConstantBuffer.cpp">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\05. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CameraComponent.cpp">
+      <Filter>05. Component\01. SceneComponent\03. Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
