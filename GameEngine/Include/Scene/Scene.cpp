@@ -1,16 +1,19 @@
 #include "Scene.h"
 #include "SceneCollision.h"
 #include "SceneManager.h"
+#include "CameraManager.h"
 
 CScene::CScene()
 {
 	m_Mode     = new CSceneMode;
 	m_Resource = new CSceneResource;
 	m_Collision = new CSceneCollision;
+	m_CameraManager = new CCameraManager;
 
 	m_Mode->m_Scene     = this;
 	m_Resource->m_Scene = this;
 	m_Collision->m_Scene = this;
+	m_CameraManager->m_Scene = this;
 	
 	m_Start = false;
 	m_Collision->Init();
@@ -18,6 +21,7 @@ CScene::CScene()
 
 CScene::~CScene()
 {
+	SAFE_DELETE(m_CameraManager);
 	SAFE_DELETE(m_Resource);
 	SAFE_DELETE(m_Collision);
 }
@@ -34,7 +38,16 @@ void CScene::Start()
 		(*iter)->Start();
 	}
 
+	m_CameraManager->Start();
 	m_Start = true;
+
+	// 카메라 Component가 세팅되어 있다면
+	// 카메라 매니저의 메인 카메라로 세팅해둔다
+	CCameraComponent* Camera = m_Mode->GetPlayerObject()->FindComponentByType<CCameraComponent>();
+	if (Camera)
+	{
+		m_CameraManager->SetCurrentCamera(Camera);
+	}
 }
 
 void CScene::Update(float DeltaTime)

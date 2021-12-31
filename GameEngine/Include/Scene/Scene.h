@@ -15,11 +15,16 @@ private:
 private:
 	CSharedPtr<CSceneMode>             m_Mode;
 	CSceneResource*                    m_Resource;
+	class CCameraManager* m_CameraManager;
 	std::list<CSharedPtr<CGameObject>> m_ObjList;
 	class CSceneCollision* m_Collision;
 	bool                               m_Start;
 
 public:
+	class CCameraManager* GetCameraManager() const
+	{
+		return m_CameraManager;
+	}
 	class CSceneCollision* GetCollision() const
 	{
 		return m_Collision;
