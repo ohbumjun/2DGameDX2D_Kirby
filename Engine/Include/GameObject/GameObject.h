@@ -112,6 +112,19 @@ public:
 		return Component;
 	}
 
+	template<typename T>
+	T* FindComponentByType()
+	{
+		auto iter = m_SceneComponentList.begin();
+		auto iterEnd = m_SceneComponentList.end();
+		for (; iter != iterEnd; ++iter)
+		{
+			if ((*iter)->CheckType<T>())
+				return (T*)*iter;
+		}
+		return nullptr;
+	}
+
 
 public: // =============== 저주받은 Transform 영역 ===============
 	void SetInheritScale(bool Inherit)

@@ -3,6 +3,8 @@
 #include "../Resource/Shader/ColliderConstantBuffer.h"
 #include "../Scene/Scene.h";
 #include "../Scene/SceneResource.h"
+#include "CameraComponent.h"
+#include "../Scene/CameraManager.h"
 
 CColliderBox2D::CColliderBox2D()
 {
@@ -111,17 +113,14 @@ void CColliderBox2D::Render()
 {
 	CColliderComponent::Render();
 
-	Matrix matWorld, matProj, matWVP;
+	// 뿐만 아니라, CameraComponent 에서
+	// ProjMatrix 구하는 식 계속 작성하기
+	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
-	// XMMatrixOrthographicOffCenterLH : 왼쪽 좌표 시스템에 대한 한 사용자 지정 직교 투영 행렬을 만든다.
-	// ViewLeft   : Minimum x-value of view volume
-	// ViewRight : Maximum x-value of view volume
-	// ViewBottom : Maximum y-value of view volume
-	// ViewTop      : Maximum y-value of view volume
-	// NearZ : Distance to the near Clipping Plane
-	// Farz    : Distance to the far Clipping plane
-	// 리턴 값 : custom orthogonal projection matrix = 사용자 지정 직교 투영 행렬 변환 ( World 공간에서 카메라 공간으로의 변환) 
-	matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
+	Matrix matWorld, matView, matProj, matWVP;
+
+	matView = Camera->GetViewMatrix();
+	matProj = Camera->GetProjectionMatrix();
 
 	Matrix matScale, matRot, matTrans;
 
@@ -131,7 +130,7 @@ void CColliderBox2D::Render()
 
 	matWorld = matScale * matRot * matTrans;
 
-	matWVP = matWorld * matProj;
+	matWVP = matWorld * matProj * matView;
 
 	// Matrix를 CBuffer에 넘겨줄 때 Transpos해서 넘겨줘야 한다.
 	matWVP.Transpose();
@@ -157,8 +156,6 @@ void CColliderBox2D::Render()
 void CColliderBox2D::PostRender()
 {
 	CColliderComponent::PostRender();
-
-	
 }
 
 CColliderBox2D* CColliderBox2D::Clone()

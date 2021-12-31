@@ -17,6 +17,7 @@ CScene::CScene()
 	
 	m_Start = false;
 	m_Collision->Init();
+	m_CameraManager->Init();
 }
 
 CScene::~CScene()
@@ -38,6 +39,7 @@ void CScene::Start()
 		(*iter)->Start();
 	}
 
+	m_Collision->Start();
 	m_CameraManager->Start();
 	m_Start = true;
 
