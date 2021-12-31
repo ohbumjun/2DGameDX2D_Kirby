@@ -142,6 +142,9 @@
     <Filter Include="05. Component\01. SceneComponent\03. Camera">
       <UniqueIdentifier>{1752ac74-7987-455e-b7e2-e1293e6b9404}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Scene\04. CameraManager">
+      <UniqueIdentifier>{da18ce0c-d875-42e6-827c-a4d02bd9b35b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -402,6 +405,9 @@
     <ClInclude Include="Component\CameraComponent.h">
       <Filter>05. Component\01. SceneComponent\03. Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\CameraManager.h">
+      <Filter>03. Scene\04. CameraManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -643,6 +649,9 @@
     </ClCompile>
     <ClCompile Include="Component\CameraComponent.cpp">
       <Filter>05. Component\01. SceneComponent\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CameraManager.cpp">
+      <Filter>03. Scene\04. CameraManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
