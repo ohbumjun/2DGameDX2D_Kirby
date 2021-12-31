@@ -28,6 +28,7 @@ private:
 	CSharedPtr<CSpriteComponent> m_Child4Sprite;
 
 	CSharedPtr<class CColliderBox2D> m_Body;
+	CSharedPtr<class CCameraComponent> m_Camera;
 
 	bool  m_SolW;
 	float m_WDistance;

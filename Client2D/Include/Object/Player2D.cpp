@@ -6,6 +6,7 @@
 #include "Resource/Material/Material.h"
 #include "Scene/Scene.h"
 #include "Component/ColliderBox2D.h"
+#include "Component/CameraComponent.h"
 
 CPlayer2D::CPlayer2D()
 {
@@ -57,6 +58,10 @@ bool CPlayer2D::Init()
 	m_Body = CreateComponent<CColliderBox2D>("Body");
 	m_Body->SetCollisionProfile("Player");
 
+	m_Camera = CreateComponent<CCameraComponent>("Camera");
+	m_Camera->OnViewPortCenter(); // Player 중심 세팅
+	// m_Camera->SetViewportRatio(0.7f, 0.7f);
+
 	SetRootComponent(m_Sprite);
 
 	//m_Sprite->GetMaterial()->AddTexture(0, (int)ConstantBuffer_Shader_Type::Pixel, "MainTexture", )
@@ -66,6 +71,7 @@ bool CPlayer2D::Init()
 	m_Sprite->AddChild(m_Muzzle);
 	m_Sprite->AddChild(m_ChildRoot);
 	m_Sprite->AddChild(m_Body);
+	m_Sprite->AddChild(m_Camera);
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
