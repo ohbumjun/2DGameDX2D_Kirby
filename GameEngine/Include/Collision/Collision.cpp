@@ -19,8 +19,9 @@ bool CCollision::CollisionBox2DToPoint(CollisionResult& SrcResult, CollisionResu
 		return false;
 
 	Axis = BoxInfo.Axis[1];
-	CenterDir = BoxInfo.Center.y - Point.y;
+
 	CenterProjDist = abs(CenterDir.Dot(Axis));
+
 	if (CenterProjDist > BoxInfo.Length.y)
 		return false;
 

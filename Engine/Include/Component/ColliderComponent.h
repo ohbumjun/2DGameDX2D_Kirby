@@ -143,12 +143,12 @@ public :
     template<typename T>
     void AddCollisionCallback(Collision_State State, T* Obj, void (T::*Func)(const CollisionResult&))
 	{
-        m_CollisionListCallback[State].push_back(std::bind(Func, Obj, std::placeholders::_1));
+        m_CollisionListCallback[(int)State].push_back(std::bind(Func, Obj, std::placeholders::_1));
 	}
     template<typename T>
     void AddCollisionMouseCallback(Collision_State State, T* Obj, void (T::* Func)(const CollisionResult&))
     {
-        m_CollisionMouseCallback[State].push_back(std::bind(Func, Obj, std::placeholders::_1));
+        m_CollisionMouseCallback[(int)State].push_back(std::bind(Func, Obj, std::placeholders::_1));
     }
 };
 
