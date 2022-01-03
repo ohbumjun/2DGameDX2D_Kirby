@@ -46,7 +46,7 @@ void CSceneCollision::Collision(float DeltaTime) //
 	auto iterEnd = m_ColliderList.end();
 	for (; iter != iterEnd;)
 	{
-		if (!(*iter)->IsActive() && *iter == m_MouseCollision)
+		if (!(*iter)->IsActive() && (*iter) == m_MouseCollision)
 		{
 			m_MouseCollision = nullptr;
 			m_ColliderList.erase(iter);

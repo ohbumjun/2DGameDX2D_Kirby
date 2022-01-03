@@ -20,7 +20,7 @@ public :
 {
 		m_BufferData.Color = Color;
 }
-	void SetColliderColor(float r, float g, float b, float a)
+	void SetColliderColor(float r, float g, float b, float a = 1.f)
 	{
 		m_BufferData.Color = Vector4(r,g,b,a);
 	}

@@ -60,10 +60,11 @@ public :
 	    if (m_CameraType == Camera_Type::Camera2D)
 	    {
             float z = GetRelativePos().z;
-            SetRelativePos(m_RS.Width / 2.f, m_RS.Height / 2.f, z);
+            SetRelativePos(m_RS.Width / -2.f, m_RS.Height / -2.f, z);
 	    }
     }
     // 2D 전용 : 얼마 비율 정도 화면상에 배치할 것인가
+    // 일종의 화면 전체에서의 Pivot 개념이라고 생각하면 된다.
     void SetViewPortRatio(float x, float y)
     {
 	    if (m_CameraType == Camera_Type::Camera2D)

@@ -41,7 +41,7 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("Animation2DCBuffer", sizeof(Animation2DCBuffer), 10,
 	                     static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
-	CreateConstantBuffer("ColliderCBuffer", sizeof(Animation2DCBuffer), 10,
+	CreateConstantBuffer("ColliderCBuffer", sizeof(ColliderCBuffer), 11,
 		static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
 
