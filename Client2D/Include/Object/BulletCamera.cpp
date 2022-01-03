@@ -26,6 +26,9 @@ CBulletCamera::~CBulletCamera()
 void CBulletCamera::Start()
 {
 	CGameObject::Start();
+
+	m_Scene->GetCameraManager()->KeepCamera();
+	m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
 }
 
 bool CBulletCamera::Init()
@@ -63,9 +66,11 @@ void CBulletCamera::Update(float DeltaTime)
 
 	if (m_Distance <= 0.f)
 	{
-		m_Scene->GetCameraManager()->ReturnCamera();
-		Destroy();
+		// m_Scene->GetCameraManager()->ReturnCamera();
+		// Destroy();
 	}
+
+	AddRelativePos(GetWorldAxis(AXIS_Y) * Dist);
 }
 
 void CBulletCamera::PostUpdate(float DeltaTime)
