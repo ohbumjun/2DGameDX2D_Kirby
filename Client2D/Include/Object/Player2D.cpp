@@ -59,7 +59,7 @@ bool CPlayer2D::Init()
 	m_Body->SetCollisionProfile("Player");
 
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
-	// m_Camera->OnViewPortCenter(); // Player 중심 세팅
+	m_Camera->OnViewPortCenter(); // Player 중심 세팅
 	// m_Camera->SetViewportRatio(0.7f, 0.7f);
 
 	SetRootComponent(m_Sprite);
@@ -105,7 +105,6 @@ bool CPlayer2D::Init()
 	m_ChildRightMuzzle->SetInheritRotZ(true);
 
 	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
-	m_Sprite->SetRelativePos(150.f, 50.f, 0.f);
 
 	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
 	// Center 가 형성되게 될 것이다. 

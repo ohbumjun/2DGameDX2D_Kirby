@@ -115,13 +115,13 @@ void CColliderBox2D::Render()
 
 	// 뿐만 아니라, CameraComponent 에서
 	// ProjMatrix 구하는 식 계속 작성하기
-	// CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
+	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
 	Matrix matWorld, matView, matProj, matWVP;
 
-	// matView = Camera->GetViewMatrix();
-	// matProj = Camera->GetProjectionMatrix();
-	matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
+	matView = Camera->GetViewMatrix();
+	matProj = Camera->GetProjMatrix();
+	// matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
 
 	Matrix matScale, matRot, matTrans;
 
