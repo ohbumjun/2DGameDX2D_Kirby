@@ -132,7 +132,8 @@ void CColliderBox2D::Render()
 	matWorld = matScale * matRot * matTrans;
 
 	// matWVP = matWorld * matProj;
-	matWVP = matWorld * matProj * matView;
+	// matWVP = matWorld * matProj * matView; (x) // 곱해주는 순서를 맞춰줘야 한다
+	matWVP = matWorld * matView * matProj;
 
 	// Matrix를 CBuffer에 넘겨줄 때 Transpos해서 넘겨줘야 한다.
 	matWVP.Transpose();
