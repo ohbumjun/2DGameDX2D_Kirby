@@ -66,23 +66,26 @@ public :
 		if (m_CameraType == Camera_Type::Camera2D)
 		{
 	        float z = GetRelativePos().z;
-	        SetRelativePos(m_RS.Width / -2.f, m_RS.Height / -2.f, 1.f);
+	        SetRelativePos(m_RS.Width / -2.f, m_RS.Height / -2.f, z);
 
 	        m_Ratio.x = 0.5f;
 	        m_Ratio.y = 0.5f;
 		}
 	}
-    void SetViewPortRatio(float Ratio)
+    void SetViewPortRatio(float RatioX, float RatioY)
 	{
-        if (Ratio > 1.f || Ratio < 0.f)
-            Ratio = 0.f;
+        if (RatioX > 1.f || RatioX < 0.f)
+            RatioX = 0.f;
+        if (RatioY > 1.f || RatioY < 0.f)
+            RatioY = 0.f;
+
 		if (m_CameraType == Camera_Type::Camera2D)
 		{
 	        float z = GetRelativePos().z;
-	        SetRelativePos(m_RS.Width * -Ratio, m_RS.Height * -Ratio, z);
+	        SetRelativePos(m_RS.Width * -RatioX, m_RS.Height * -RatioY, z);
 
-	        m_Ratio.x = 0.5f;
-	        m_Ratio.y = 0.5f;
+	        m_Ratio.x = RatioX;
+	        m_Ratio.y = RatioY;
 		}
 	}
 public :

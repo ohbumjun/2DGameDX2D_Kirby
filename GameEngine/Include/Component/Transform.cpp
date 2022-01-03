@@ -588,7 +588,7 @@ void CTransform::SetTransform()
 	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
 	m_CBuffer->SetProjMatrix(Camera->GetProjMatrix());
-	m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
+  	m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
 
 	m_CBuffer->SetPivot(m_Pivot);
 	m_CBuffer->SetMeshSize(m_MeshSize);

@@ -60,7 +60,7 @@ bool CPlayer2D::Init()
 
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
 	m_Camera->OnViewPortCenter(); // Player 중심 세팅
-	// m_Camera->SetViewportRatio(0.7f, 0.7f);
+	// m_Camera->SetViewPortRatio(0.7f, 0.7f);
 
 	SetRootComponent(m_Sprite);
 	//m_Sprite->GetMaterial()->AddTexture(0, (int)ConstantBuffer_Shader_Type::Pixel, "MainTexture", )

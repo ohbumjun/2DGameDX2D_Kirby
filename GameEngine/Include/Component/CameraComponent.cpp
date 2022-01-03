@@ -68,7 +68,7 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 	m_matView.Identity();
 
 	// 각 Row를 행으로 하는 행렬 작성
-	for (int i = 0; i < (int)AXIS_MAX; i++)
+	for (int i = 0; i < AXIS_MAX; i++)
 	{
 		Vector3 Axis = GetWorldAxis((AXIS)i);
 		memcpy(&m_matView[i][0], &Axis, sizeof(Vector3));
@@ -80,7 +80,7 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 	// 이동행렬 까지 적용 = 마지막 행 작성 == 각 축과 현재 위치의 내적 형태
 	Vector3 Pos = GetWorldPos() * -1.f;
 
-	for (int i = 0; i < (AXIS)i; i++)
+	for (int i = 0; i < AXIS_MAX; i++)
 	{
 		Vector3 Axis = GetWorldAxis((AXIS)i);
 		m_matView[3][i] = Pos.Dot(Axis);
