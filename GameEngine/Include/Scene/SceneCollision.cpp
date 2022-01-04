@@ -42,14 +42,14 @@ void CSceneCollision::Collision(float DeltaTime) //
 	// --- 2) 마우스 vs Object 충돌
 
 	// - 기존에 Mouse와 충돌 중이던 물체가 제거된다면, 충돌 해제를 해줘야 한다
+	// 뿐만 아니라, 사실상 아래의 코드가 SceneCollision 내의 전체 함수를 돌면서, Update 해주는 과정이라고 할 수 있다.
 	auto iter      = m_ColliderList.begin();
 	auto iterEnd = m_ColliderList.end();
-
 	for (; iter != iterEnd;)
 	{
-		if ((*iter)->IsActive())
+		if (!(*iter)->IsActive())
 		{
-			if ((*iter) == m_MouseCollision)
+			if (m_MouseCollision == *iter)
 				m_MouseCollision = nullptr;
 			iter = m_ColliderList.erase(iter);
 			iterEnd = m_ColliderList.end();
