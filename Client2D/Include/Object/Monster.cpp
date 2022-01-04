@@ -1,6 +1,7 @@
 #include "Monster.h"
 #include "Component/SpriteComponent.h"
 #include "Component/ColliderBox2D.h"
+#include "Component/ColliderCircle.h"
 #include "MonsterAnimation.h"
 
 CMonster::CMonster() :
@@ -10,7 +11,10 @@ CMonster::CMonster() :
 }
 
 CMonster::CMonster(const CMonster& Monster)
-{}
+{
+	m_Sprite = (CSpriteComponent*)const_cast<CMonster&>(Monster).FindComponent("MonsterSprite");
+	m_ColliderBody = (CColliderCircle*)const_cast<CMonster&>(Monster).FindComponent("ColliderBody");
+}
 
 CMonster::~CMonster()
 {}
@@ -29,7 +33,8 @@ bool CMonster::Init()
 		return false;
 
 	m_Sprite = CreateComponent<CSpriteComponent>("MonsterSprite");
-	m_ColliderBody = CreateComponent<CColliderBox2D>("ColliderBody");
+	// m_ColliderBody = CreateComponent<CColliderBox2D>("ColliderBody");
+	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
 	m_ColliderBody->SetCollisionProfile("Monster");
 
 	SetRootComponent(m_Sprite);

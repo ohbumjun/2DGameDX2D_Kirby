@@ -137,8 +137,18 @@ bool CCollision::CollisionCircleToCircle(CColliderCircle* Src, CColliderCircle* 
 	return false;
 }
 
+bool CCollision::CollisionCircleToPoint(const CircleInfo& CircleInfo, const Vector2& Point)
+{
+	CollisionResult srcResult, destResult;
+	if (CollisionCircleToPoint(srcResult, destResult, CircleInfo, Point))
+	{
+		return true;
+	}
+	return false;
+}
+
 bool CCollision::CollisionCircleToPoint(CollisionResult& SrcResult, CollisionResult& DestResult,
-	const CircleInfo& CircleInfo, const Vector2& Point)
+										const CircleInfo& CircleInfo, const Vector2& Point)
 {
 	float Dist = CircleInfo.Center.Distance(Point);
 	return Dist <= CircleInfo.Radius;

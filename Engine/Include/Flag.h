@@ -120,7 +120,9 @@ enum class Collision_Interaction
 
 enum class Collider_Type
 {
-	Box_2D
+	Box_2D,
+	Circle,
+	Pixel
 };
 
 enum class Engine_Space

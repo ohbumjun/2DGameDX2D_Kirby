@@ -1,5 +1,7 @@
 #include "ColliderCircle.h"
 
+#include "ColliderBox2D.h"
+#include "../Collision/Collision.h"
 #include "../Resource/Shader/ColliderConstantBuffer.h"
 #include "../Scene/Scene.h"
 #include "../Scene/CameraManager.h"
@@ -137,7 +139,18 @@ void CColliderCircle::Load(FILE* pFile)
 }
 
 bool CColliderCircle::Collision(CColliderComponent* Dest)
-{}
+{
+	switch (Dest->GetColliderType())
+	{
+	case Collider_Type::Box_2D :
+		return CCollision::CollisionBox2DToCircle((CColliderBox2D*)Dest, this);
+	case Collider_Type::Circle :
+		return CCollision::CollisionCircleToCircle(this, (CColliderCircle*)Dest);
+	}
+}
 
 bool CColliderCircle::CollisionMouse(const Vector2& MousePos)
-{}
+{
+	m_MouseCollision = CCollision::CollisionCircleToPoint(m_Info, MousePos);
+	return m_MouseCollision;
+}

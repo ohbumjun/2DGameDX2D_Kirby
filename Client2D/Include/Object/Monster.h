@@ -9,7 +9,7 @@ public :
     virtual ~CMonster() override;
 private :
     CSharedPtr<class CSpriteComponent> m_Sprite;
-    CSharedPtr<class CColliderBox2D> m_ColliderBody;
+    CSharedPtr<class CColliderCircle> m_ColliderBody;
     float m_HP;
 public :
     void Damage(float Damage);
