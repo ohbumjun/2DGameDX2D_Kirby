@@ -180,6 +180,9 @@ void CColliderComponent::CallCollisionCallback(Collision_State State)
 
 void CColliderComponent::CallCollisionMouseCallback(Collision_State State)
 {
+	if (State == Collision_State::End)
+		m_MouseCollision = false;
+
 	auto iter = m_CollisionMouseCallback[(int)State].begin();
 	auto iterEnd = m_CollisionMouseCallback[(int)State].end();
 
