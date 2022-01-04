@@ -42,7 +42,7 @@ private :
 	// list로 세팅해준 이유는 , 매번 vector에서 넣고 빼고 하는 것은 번거롭기 때문에 ( 비용도 크고 )
 	// list 형태로 만드는 것이다. 
 	std::list<CSharedPtr<CColliderComponent>> m_ColliderList;
-	class CColliderComponent* m_MouseCollision;
+	CSharedPtr<CColliderComponent> m_MouseCollision;
 public :
 	void Start();
 	bool Init();

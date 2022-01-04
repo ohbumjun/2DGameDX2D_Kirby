@@ -173,6 +173,7 @@
     <ClInclude Include="Component\ColliderBox2D.h" />
     <ClInclude Include="Component\ColliderCircle.h" />
     <ClInclude Include="Component\ColliderComponent.h" />
+    <ClInclude Include="Component\ColliderPixel.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\ObjectComponent.h" />
     <ClInclude Include="Component\SceneComponent.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="Component\ColliderBox2D.cpp" />
     <ClCompile Include="Component\ColliderCircle.cpp" />
     <ClCompile Include="Component\ColliderComponent.cpp" />
+    <ClCompile Include="Component\ColliderPixel.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\ObjectComponent.cpp" />
     <ClCompile Include="Component\SceneComponent.cpp" />

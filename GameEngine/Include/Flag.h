@@ -144,3 +144,10 @@ enum class Camera_Type {
 	Camera3D,
 	CameraUI
 };
+
+enum class PixelCollision_Type {
+	Color_Ignore,
+	Color_Confirm,
+	Alpha_Ignore,
+	Alpha_Confirm
+};
