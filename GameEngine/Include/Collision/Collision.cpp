@@ -171,7 +171,7 @@ bool CCollision::CollisionBox2DToCircle(CollisionResult& SrcResult, CollisionRes
 	Axis = CenterDir;
 	Axis.Normalize();
 
-	r1 = abs(Src.Axis[0].Dot(Axis) * Src.Length.x) + abs(Src.Axis[1].Dot(Axis) * Src.Length.y);
+	r1 = abs(Src.Axis[0].Dot(Axis) * Src.Length.x) + abs(Src.Axis[1].Dot(Axis) * Src.Length.y); //
 	if (CenterProjDist > r1 + r2)
 		return false;
 
