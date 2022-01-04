@@ -247,3 +247,10 @@ struct ColliderCBuffer
 	Vector4 Color;
 	Matrix matWVP;
 };
+
+struct CircleInfo {
+	Vector2 Center;
+	float Radius;
+	Vector2 Min;
+	Vector2 Max;
+};

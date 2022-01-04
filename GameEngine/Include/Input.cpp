@@ -1,5 +1,10 @@
 #include "Input.h"
 #include "Device.h"
+#include "Engine.h"
+#include "Component/CameraComponent.h"
+#include "Scene/SceneManager.h"
+#include "Scene/Scene.h"
+#include "Scene/CameraManager.h"
 
 DEFINITION_SINGLE(CInput)
 
@@ -229,7 +234,17 @@ void CInput::UpdateMouse(float DeltaTime)
 
 	m_MouseMove = MousePos - m_MousePos;
 
-	m_MousePos = MousePos;
+	m_MousePos         = MousePos;
+	m_MouseWorldPos = m_MousePos;
+
+	// 2D 공간에서는 월드 공간에서의 마우스 좌표를 구한다
+	// 이를 위해서는 카메라의 Left Bottom ( World상의 Pos 에 해당)을 더해준다
+	// m_MousePos 는 현재 스크린 상의 Mouse Pos 정보를 담고 있기 때문이다.
+	if (CEngine::GetInst()->GetEngineSpace() == Engine_Space::Space2D)
+	{
+		CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+		m_MouseWorldPos += Camera->GetLeftBottom();
+	}
 
 
 	// Mouse State Update 하기 

@@ -408,6 +408,9 @@
     <ClInclude Include="Scene\CameraManager.h">
       <Filter>03. Scene\04. CameraManager</Filter>
     </ClInclude>
+    <ClInclude Include="Component\ColliderCircle.h">
+      <Filter>05. Component\01. SceneComponent\02. Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -652,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="Scene\CameraManager.cpp">
       <Filter>03. Scene\04. CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ColliderCircle.cpp">
+      <Filter>05. Component\01. SceneComponent\02. Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
