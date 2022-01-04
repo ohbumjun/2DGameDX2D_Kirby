@@ -100,7 +100,6 @@ void CColliderComponent::CheckPrevColliderSection()
 			(*iter)->DeletePrevCollision(this);
 			DeletePrevCollision(*iter);
 
-			iter = m_PrevCollisionList.erase(iter);
 			iterEnd = m_PrevCollisionList.end();
 			continue;
 		}
@@ -197,6 +196,11 @@ void CColliderComponent::ClearFrame()
 	m_vecSectionIndex.empty(); // 현재 충돌 영역 clear
 	m_CurrentCollisionList.clear(); // 현재 충돌한 목록 clear
 	m_CurrentSectionCheck = false; // 현재 충돌 목록에서의 충돌 여부도 false
+}
+
+void CColliderComponent::Destroy()
+{
+	CSceneComponent::Destroy();
 }
 
 void CColliderComponent::Start()

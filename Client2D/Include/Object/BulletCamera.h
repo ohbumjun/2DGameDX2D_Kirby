@@ -1,27 +1,22 @@
 #pragma once
-#include "GameObject\GameObject.h"
 
+#include "GameObject/GameObject.h"
 
-class CBulletCamera :
-    public CGameObject
-{
-    friend class CScene;
-protected :
-    CBulletCamera();
-    CBulletCamera(const CBulletCamera& Camera);
-    virtual ~CBulletCamera() override;
-private :
-    CSharedPtr<class CSpriteComponent> m_Sprite;
-    CSharedPtr<class CColliderBox2D> m_Body;
-    CSharedPtr<class CCameraComponent> m_Camera;
-    float m_Distance;
+class CBulletCamera : public CGameObject {
+	friend class CScene;
 public :
-    virtual void Start() override;
-    virtual bool Init() override;
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
-    virtual CBulletCamera* Clone();
+	CBulletCamera();
+	CBulletCamera(const CBulletCamera& Camera);
+	virtual ~CBulletCamera() override;
 private :
-    void CollisionCallback(const CollisionResult& result);
+	float m_Distance;
+	CSharedPtr<class CSpriteComponent> m_Sprite;
+	CSharedPtr<class CCameraComponent> m_Camera;
+	CSharedPtr<class CColliderBox2D> m_Body;
+public :
+	virtual void Start() override;
+	virtual bool Init() override;
+	virtual void Update(float DeltaTime) override;
+public:
+	virtual void CollisionCallback(const CollisionResult& Result);
 };
-

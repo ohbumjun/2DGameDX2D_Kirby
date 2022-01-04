@@ -1,7 +1,7 @@
 #include "ColliderBox2D.h"
 #include "../Collision/Collision.h"
 #include "../Resource/Shader/ColliderConstantBuffer.h"
-#include "../Scene/Scene.h";
+#include "../Scene/Scene.h"
 #include "../Scene/SceneResource.h"
 #include "CameraComponent.h"
 #include "../Scene/CameraManager.h"
@@ -145,7 +145,7 @@ void CColliderBox2D::Render()
 		m_CBuffer->SetColliderColor(Vector4(0.f, 1.f, 0.f, 1.f));
 	else
 		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
-
+	
 	if (m_MouseCollision)
 		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
 

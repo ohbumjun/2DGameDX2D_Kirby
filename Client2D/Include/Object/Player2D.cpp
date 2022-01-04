@@ -271,7 +271,8 @@ void CPlayer2D::Attack1(float DeltaTime)
 
 void CPlayer2D::Skill1(float DeltaTime)
 {
-	CBulletCamera* Bullet = m_Scene->CreateGameObject<CBulletCamera>("Bullet");
-	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
-	Bullet->SetWorldRotation(GetWorldRot());
+	CBulletCamera* BulletCamera = m_Scene->CreateGameObject<CBulletCamera>("BulletCamera");
+	BulletCamera->SetWorldPos(m_Muzzle->GetWorldPos());
+	BulletCamera->SetWorldRotation(GetWorldRot());
 }
+

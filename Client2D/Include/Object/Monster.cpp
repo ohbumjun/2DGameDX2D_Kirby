@@ -3,14 +3,24 @@
 #include "Component/ColliderBox2D.h"
 #include "MonsterAnimation.h"
 
-CMonster::CMonster()
-{}
+CMonster::CMonster() :
+	m_HP(15.f)
+{
+	SetTypeID<CMonster>();
+}
 
 CMonster::CMonster(const CMonster& Monster)
 {}
 
 CMonster::~CMonster()
 {}
+
+void CMonster::Damage(float Damage)
+{
+	m_HP -= Damage;
+	if (m_HP < 0.f)
+		Destroy();
+}
 
 bool CMonster::Init()
 {

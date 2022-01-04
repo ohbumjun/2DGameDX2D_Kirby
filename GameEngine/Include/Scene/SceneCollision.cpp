@@ -44,12 +44,14 @@ void CSceneCollision::Collision(float DeltaTime) //
 	// - 기존에 Mouse와 충돌 중이던 물체가 제거된다면, 충돌 해제를 해줘야 한다
 	auto iter      = m_ColliderList.begin();
 	auto iterEnd = m_ColliderList.end();
+
 	for (; iter != iterEnd;)
 	{
-		if (!(*iter)->IsActive() && (*iter) == m_MouseCollision)
+		if ((*iter)->IsActive())
 		{
-			m_MouseCollision = nullptr;
-			m_ColliderList.erase(iter);
+			if ((*iter) == m_MouseCollision)
+				m_MouseCollision = nullptr;
+			iter = m_ColliderList.erase(iter);
 			iterEnd = m_ColliderList.end();
 			continue;
 		}

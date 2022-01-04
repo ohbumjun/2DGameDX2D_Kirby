@@ -47,7 +47,8 @@ public:
 		m_SceneComponentList.push_back(Component);
 	}
 	class CComponent* FindComponent(const std::string& Name);
-
+public :
+	virtual void Destroy() override;
 public:
 	virtual void         Start();
 	virtual bool         Init();
@@ -59,14 +60,11 @@ public:
 	virtual CGameObject* Clone();
 public :
 	void AddCollision();
-
 public :
 	virtual void Save(FILE* pFile);
 	virtual void Load(FILE* pFile);
-
 public :
 	void GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames);
-
 public:
 	template<typename T>
 	T* LoadComponent()

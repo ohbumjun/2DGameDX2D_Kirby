@@ -7,9 +7,12 @@ public :
     CMonster();
     CMonster(const CMonster& Monster);
     virtual ~CMonster() override;
-public :
+private :
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderBox2D> m_ColliderBody;
+    float m_HP;
+public :
+    void Damage(float Damage);
 public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime);

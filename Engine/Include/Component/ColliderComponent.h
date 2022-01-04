@@ -122,7 +122,8 @@ public :
     void CallCollisionMouseCallback(Collision_State State);
     // √ ±‚»≠ 
     void ClearFrame();
-
+public :
+    virtual void Destroy() override;
 public :
     virtual void Start();
     virtual bool Init();

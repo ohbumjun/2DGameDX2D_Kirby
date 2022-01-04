@@ -50,7 +50,8 @@ public:
 	bool             DeleteChild(CSceneComponent* Child);
 	bool             DeleteChild(const std::string& Name);
 	CSceneComponent* FindComponent(const std::string& Name);
-
+public :
+	virtual void Destroy() override;
 public:
 	virtual void             Start() override;
 	virtual bool             Init() override;

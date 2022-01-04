@@ -21,7 +21,7 @@ public:
 		m_Enable = bEnable;
 	}
 
-	void Destroy()
+	virtual void Destroy()
 	{
 		m_Active = false;
 	}

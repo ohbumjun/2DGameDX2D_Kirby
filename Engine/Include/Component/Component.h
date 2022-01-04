@@ -40,6 +40,8 @@ public:
 		return m_ComponentType;
 	}
 
+public :
+	virtual void Destroy() override;
 public:
 	virtual void        Start();
 	virtual bool        Init();

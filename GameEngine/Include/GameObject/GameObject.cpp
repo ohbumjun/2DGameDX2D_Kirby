@@ -38,7 +38,6 @@ CGameObject::CGameObject(const CGameObject& obj)
 
 CGameObject::~CGameObject()
 {
-	
 }
 
 void CGameObject::SetScene(CScene* Scene)
@@ -51,7 +50,6 @@ CComponent* CGameObject::FindComponent(const std::string& Name)
 	{
 		auto iter    = m_SceneComponentList.begin();
 		auto iterEnd = m_SceneComponentList.end();
-
 		for (; iter != iterEnd; ++iter)
 		{
 			if ((*iter)->GetName() == Name)
@@ -71,6 +69,20 @@ CComponent* CGameObject::FindComponent(const std::string& Name)
 	}
 
 	return nullptr;
+}
+
+void CGameObject::Destroy()
+{
+	CRef::Destroy();
+	if (m_RootComponent)
+		m_RootComponent->Destroy();
+
+	size_t Size = m_vecObjectComponent.size();
+	for (size_t i = 0; i < Size; i++)
+	{
+		m_vecObjectComponent[i]->Destroy();
+	}
+
 }
 
 void CGameObject::Start()
@@ -174,11 +186,13 @@ void CGameObject::Save(FILE* pFile)
 	bool Root = false;
 	if (m_RootComponent)
 		Root = true;
+
 	fwrite(&Root, sizeof(bool), 1, pFile);
+
 	if (Root)
 	{
 		size_t TypeID = m_RootComponent->GetTypeID();
-		fwrite(&TypeID, sizeof(size_t), 1, pFile); // 
+		fwrite(&TypeID, sizeof(size_t), 1, pFile); 
 		m_RootComponent->Save(pFile);
 	}
 
