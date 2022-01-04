@@ -515,7 +515,7 @@ bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResu
 				break;
 		}
 		if (Collision)
-			break; //
+			break; ///
 	}
 
 	return Collision;
