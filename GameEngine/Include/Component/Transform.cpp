@@ -175,14 +175,17 @@ void CTransform::InheritWorldRotation(bool Current)
 {
 	if (m_Parent)
 	{
+		// 만약 부모의 Sprite가 30도 회전을 한다면
+		// Body는 Relative 정보가 0이어도
+		// World Rot은 30도가 되어야 한다.
 		if (m_InheritRotX)
-			m_RelativeRot.x = m_WorldRot.x - m_Parent->GetWorldRot().x;
+			m_WorldRot.x = m_RelativeRot.x + m_Parent->GetWorldRot().x;
 
 		if (m_InheritRotY)
-			m_RelativeRot.y = m_WorldRot.y - m_Parent->GetWorldRot().y;
+			m_WorldRot.y = m_RelativeRot.y + m_Parent->GetWorldRot().y;
 
 		if (m_InheritRotZ)
-			m_RelativeRot.z = m_WorldRot.z - m_Parent->GetWorldRot().z;
+			m_WorldRot.z = m_RelativeRot.z + m_Parent->GetWorldRot().z;
 
 		if ((m_InheritRotX || m_InheritRotY || m_InheritRotZ) && !Current)
 			InheritParentRotationPos(false);
@@ -256,9 +259,12 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 
 			m_RelativePos = m_WorldPos.TransformCoord(matRot);
 		}
-
 		else
-			m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
+		{
+			// 굳이 왜 이렇게 바꿔주는 것일까 ?
+			// m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
+			m_RelativePos = m_WorldPos - m_Parent->GetWorldPos();
+		}
 	}
 
 	m_UpdatePos = true;

@@ -42,13 +42,16 @@ bool CBulletCamera::Init()
 	m_Camera = CreateComponent<CCameraComponent>("BulletCamera");
 	m_Body = CreateComponent<CColliderBox2D>("BulletCollider");
 
-	m_Body->SetCollisionProfile("PlayerAttack");
-	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CBulletCamera::CollisionCallback);
-
 	SetRootComponent(m_Sprite);
 
 	m_Sprite->AddChild(m_Camera);
 	m_Sprite->AddChild(m_Body);
+
+
+	m_Body->SetCollisionProfile("PlayerAttack");
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CBulletCamera::CollisionCallback);
+	// 충돌체도, Sprite Component ( 부모 ) 를 따라서 돌아가게 한다.
+	m_Body->SetInheritRotZ(true);
 
 	m_Camera->OnViewPortCenter();
 
