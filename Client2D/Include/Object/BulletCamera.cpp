@@ -50,8 +50,10 @@ bool CBulletCamera::Init()
 
 	m_Body->SetCollisionProfile("PlayerAttack");
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CBulletCamera::CollisionCallback);
+
 	// 충돌체도, Sprite Component ( 부모 ) 를 따라서 돌아가게 한다.
-	m_Body->SetInheritRotZ(true);
+	// m_Body->SetInheritRotZ(true);
+	// 위코드를 실행 시키지 않아도 알아서 잘 돌아간다.
 
 	m_Camera->OnViewPortCenter();
 

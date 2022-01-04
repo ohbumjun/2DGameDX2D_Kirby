@@ -39,7 +39,7 @@ bool CColliderBox2D::Init()
 	m_Info.Length = Vector2(50.f, 50.f);
 
 	// 부모의 Z 회전에 영향을 받게 세팅한다. 
-	SetInheritRotZ(true);
+	SetInheritRotZ(true); // m_Transform->m_InheritRotz를 true로 세팅하는 것
 	SetWorldScale(m_Info.Length.x * 2.f, m_Info.Length.y * 2.f, 1.f);
 
 	m_Mesh = m_Scene->GetResource()->FindMesh("Box2D");

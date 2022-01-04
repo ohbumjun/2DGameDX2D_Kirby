@@ -173,6 +173,7 @@ void CTransform::InheritWorldScale(bool Current)
 
 void CTransform::InheritWorldRotation(bool Current)
 {
+	// 여기로 들어오는 때는 SetWorldRotation 함수를 실행할 때 이다. 
 	if (m_Parent)
 	{
 		// 만약 부모의 Sprite가 30도 회전을 한다면
@@ -262,8 +263,8 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 		else
 		{
 			// 굳이 왜 이렇게 바꿔주는 것일까 ?
-			// m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
-			m_RelativePos = m_WorldPos - m_Parent->GetWorldPos();
+			// m_RelativePos = m_WorldPos - m_Parent->GetWorldPos();
+			m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
 		}
 	}
 
