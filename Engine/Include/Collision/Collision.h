@@ -9,7 +9,9 @@ public : // Simple Versions
 	static bool CollisionBox2DToCircle(class CColliderBox2D* Dest, class CColliderCircle* Circle);
 	static bool CollisionCircleToCircle(class CColliderCircle* Src, class CColliderCircle* Dest);
 	static bool CollisionCircleToPoint(const CircleInfo& CircleInfo, const Vector2& Point);
-public : // To Point
+	static bool CollisionBox2DToPixel(class CColliderBox2D* Src, class CColliderPixel* Dest);
+	static bool CollisionCircleToPixel(class CColliderCircle* Src, class CColliderPixel* Dest);
+public : 
 	static bool CollisionBox2DToPoint(CollisionResult& SrcResult,
 		CollisionResult& DestResult, const Box2DInfo& BoxInfo, const Vector2& Point);
 	static bool CollisionCircleToPoint(CollisionResult& SrcResult, CollisionResult& DestResult,
@@ -20,5 +22,11 @@ public : // To Point
 		const Box2DInfo& Src, const CircleInfo& Dest);
 	static bool CollisionCircleToCircle(CollisionResult& SrcResult, CollisionResult& DestResult,
 		const CircleInfo& SrcInfo, const CircleInfo& Dest);
+	static bool CollisionBox2DToPixel(CollisionResult& SrcResult, CollisionResult& DestResult, 
+		const Box2DInfo& Src, const PixelInfo& Dest);
+	static bool CollisionCircleToPixel(CollisionResult& SrcResult, CollisionResult& DestResult,
+		const CircleInfo& Src, const PixelInfo& Dest);
+	static bool CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResult& DestResult,
+		const PixelInfo& Info, const Vector2& Point);
 };
 

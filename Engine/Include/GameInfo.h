@@ -254,3 +254,27 @@ struct CircleInfo {
 	Vector2 Min;
 	Vector2 Max;
 };
+
+struct PixelInfo {
+	unsigned char* Pixel; // 저장해야할 pixel 수가 몇개가 될 지 모르고, 이미지 가로 세로 크기도 몰라서 이렇게 세팅 
+	unsigned int Width;
+	unsigned int Height;
+	PixelCollision_Type Type;
+	unsigned char Color[4];// pixel은 하나의 이미지 형태 --> 0에서 255 사이의 r,g,b,a 로 구성되어 있다.
+	Box2DInfo Box; // Pixel 충돌 판별시 먼저 Box 와의 충돌 여부를 파악하기 위함
+	Vector2 Min;
+	Vector2 Max;
+	ID3D11ShaderResourceView* SRV;
+	int RefCount;
+
+	PixelInfo() :
+		RefCount(1),
+		Pixel(nullptr),
+		SRV(nullptr),
+		Width(0),
+		Height(0),
+		Box{},
+		Color{},
+		Type(PixelCollision_Type::Color_Confirm)
+	{}
+};
