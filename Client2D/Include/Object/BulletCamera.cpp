@@ -54,6 +54,7 @@ bool CBulletCamera::Init()
 	// 충돌체도, Sprite Component ( 부모 ) 를 따라서 돌아가게 한다.
 	// m_Body->SetInheritRotZ(true);
 	// 위코드를 실행 시키지 않아도 알아서 잘 돌아간다.
+	// 왜냐면 CColliderBox2D 의 Init 단계에서 이미 Setting하고 형성되기 때문이다.
 
 	m_Camera->OnViewPortCenter();
 

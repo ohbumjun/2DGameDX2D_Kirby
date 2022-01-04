@@ -231,6 +231,8 @@ void CInput::UpdateMouse(float DeltaTime)
 
 	m_MousePos = MousePos;
 
+
+	// Mouse State Update го╠Б 
 	if (m_MouseState.rgbButtons[0] & 0x80)
 	{
 		if (!m_LMouseDown && !m_LMousePush)

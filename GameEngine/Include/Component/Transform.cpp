@@ -186,7 +186,10 @@ void CTransform::InheritWorldRotation(bool Current)
 			m_WorldRot.y = m_RelativeRot.y + m_Parent->GetWorldRot().y;
 
 		if (m_InheritRotZ)
-			m_WorldRot.z = m_RelativeRot.z + m_Parent->GetWorldRot().z;
+		{
+			// m_WorldRot.z = m_RelativeRot.z + m_Parent->GetWorldRot().z;
+			m_RelativeRot.z = m_WorldRot.z - m_Parent->GetWorldRot().z;
+		}
 
 		if ((m_InheritRotX || m_InheritRotY || m_InheritRotZ) && !Current)
 			InheritParentRotationPos(false);
