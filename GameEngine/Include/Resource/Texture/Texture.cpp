@@ -275,7 +275,7 @@ void CTexture::Save(FILE* pFile)
 		fwrite(&Length, sizeof(int), 1, pFile);
 		fwrite(m_vecTextureInfo[i]->FullPath, sizeof(TCHAR), Length, pFile);
 
-		Length = strlen(m_vecTextureInfo[i]->PathName);
+		Length = (int)strlen(m_vecTextureInfo[i]->PathName);
 		fwrite(&Length, sizeof(int), 1, pFile);
 		fwrite(m_vecTextureInfo[i]->PathName, sizeof(char), Length, pFile);
 

@@ -147,6 +147,7 @@ bool CColliderCircle::Collision(CColliderComponent* Dest)
 	case Collider_Type::Circle :
 		return CCollision::CollisionCircleToCircle(this, (CColliderCircle*)Dest);
 	}
+	return false;
 }
 
 bool CColliderCircle::CollisionMouse(const Vector2& MousePos)

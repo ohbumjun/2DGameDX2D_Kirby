@@ -1,7 +1,9 @@
 #include "SceneMode.h"
 #include "../GameObject/GameObject.h"
 
-CSceneMode::CSceneMode()
+CSceneMode::CSceneMode() :
+m_Scene(nullptr),
+m_PlayerObject(nullptr)
 {
 	SetTypeID<CSceneMode>();
 }

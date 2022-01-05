@@ -62,6 +62,8 @@ bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name, CText
 	}
 
 	m_mapSequence2D.insert(std::make_pair(Name, Sequence));
+
+	return true;
 }
 
 void CAnimationManager::AddFrame(const std::string& Name, const Vector2& Start, const Vector2& Size)

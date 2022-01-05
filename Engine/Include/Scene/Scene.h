@@ -18,9 +18,14 @@ private:
 	class CCameraManager* m_CameraManager;
 	std::list<CSharedPtr<CGameObject>> m_ObjList;
 	class CSceneCollision* m_Collision;
+	class CViewPort* m_ViewPort;
 	bool                               m_Start;
 
 public:
+	class CViewPort* GetViewPort() const
+	{
+		return m_ViewPort;
+	}
 	class CCameraManager* GetCameraManager() const
 	{
 		return m_CameraManager;

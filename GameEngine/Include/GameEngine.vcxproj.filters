@@ -151,6 +151,12 @@
     <Filter Include="09. UI">
       <UniqueIdentifier>{678efeca-0e1c-4f0d-afdd-31d0a51ccc34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="09. UI\01. Window">
+      <UniqueIdentifier>{d91949f6-718e-4d91-8b07-a7640bce234c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. UI\02. Widget">
+      <UniqueIdentifier>{bce172ac-9461-4323-9deb-2446e2e4ac5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -423,14 +429,14 @@
     <ClInclude Include="Scene\ViewPort.h">
       <Filter>03. Scene\05. UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIButton.h">
-      <Filter>09. UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\UIWidget.h">
-      <Filter>09. UI</Filter>
+      <Filter>09. UI\02. Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIButton.h">
+      <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
     <ClInclude Include="UI\UIWindow.h">
-      <Filter>09. UI</Filter>
+      <Filter>09. UI\01. Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -686,14 +692,14 @@
     <ClCompile Include="Scene\ViewPort.cpp">
       <Filter>03. Scene\05. UI</Filter>
     </ClCompile>
-    <ClCompile Include="UI\UIWindow.cpp">
-      <Filter>09. UI</Filter>
-    </ClCompile>
     <ClCompile Include="UI\UIWidget.cpp">
-      <Filter>09. UI</Filter>
+      <Filter>09. UI\02. Widget</Filter>
     </ClCompile>
     <ClCompile Include="UI\UIButton.cpp">
-      <Filter>09. UI</Filter>
+      <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIWindow.cpp">
+      <Filter>09. UI\01. Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,10 @@
 #include "UIWindow.h"
 
-CUIWindow::CUIWindow()
+CUIWindow::CUIWindow() :
+	m_ZOrder(0),
+	m_ViewPort(nullptr),
+	m_Scene(nullptr)
+
 {
 	SetTypeID<CUIWindow>();
 }

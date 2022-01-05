@@ -377,6 +377,8 @@ bool CAnimationSequence2DInstance::Load(const char* FullPath)
 	}
 
 	fclose(pFile);
+
+	return true;
 }
 
 void CAnimationSequence2DInstance::Start()

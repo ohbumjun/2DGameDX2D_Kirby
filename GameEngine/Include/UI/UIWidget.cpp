@@ -1,6 +1,9 @@
 #include "UIWidget.h"
 
-CUIWidget::CUIWidget()
+CUIWidget::CUIWidget() :
+	m_Scene(nullptr),
+	m_Owner(nullptr)
+
 {
 	SetTypeID<CUIWidget>();
 }
@@ -16,7 +19,7 @@ bool CUIWidget::Init()
 	return true;
 }
 
-void CUIWidget::Update(float DeltaTime) ////
+void CUIWidget::Update(float DeltaTime) 
 {}
 
 void CUIWidget::PostUpdate(float DeltaTime)

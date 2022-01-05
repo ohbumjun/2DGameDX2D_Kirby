@@ -151,3 +151,11 @@ enum class PixelCollision_Type {
 	Alpha_Ignore,
 	Alpha_Confirm
 };
+
+enum Button_State {
+	Normal,
+	MouseOn,
+	Click,
+	Disable,
+	Max
+};
