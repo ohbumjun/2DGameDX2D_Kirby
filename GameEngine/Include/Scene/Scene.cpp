@@ -2,6 +2,7 @@
 #include "SceneCollision.h"
 #include "SceneManager.h"
 #include "CameraManager.h"
+#include "ViewPort.h"
 
 CScene::CScene()
 {
@@ -9,20 +10,24 @@ CScene::CScene()
 	m_Resource = new CSceneResource;
 	m_Collision = new CSceneCollision;
 	m_CameraManager = new CCameraManager;
+	m_ViewPort = new CViewPort;
 
 	m_Mode->m_Scene     = this;
 	m_Resource->m_Scene = this;
 	m_Collision->m_Scene = this;
 	m_CameraManager->m_Scene = this;
+	m_ViewPort->m_Scene = this;
 	
 	m_Start = false;
 	m_Collision->Init();
 	m_CameraManager->Init();
+	m_ViewPort->Init();
 }
 
 CScene::~CScene()
 {
 	SAFE_DELETE(m_CameraManager);
+	SAFE_DELETE(m_ViewPort);
 	SAFE_DELETE(m_Resource);
 	SAFE_DELETE(m_Collision);
 }
@@ -41,6 +46,7 @@ void CScene::Start()
 
 	m_Collision->Start();
 	m_CameraManager->Start();
+	m_ViewPort->Start();
 	m_Start = true;
 
 	// 카메라 Component가 세팅되어 있다면
@@ -76,6 +82,8 @@ void CScene::Update(float DeltaTime)
 		(*iter)->Update(DeltaTime);
 		++iter;
 	}
+
+	m_ViewPort->Update(DeltaTime);
 }
 
 void CScene::PostUpdate(float DeltaTime)
@@ -115,6 +123,7 @@ void CScene::PostUpdate(float DeltaTime)
 	// 포함된 충돌체들을 이용해서 충돌처리를 진행한다
 	m_Collision->Collision(DeltaTime);
 
+	m_ViewPort->PostUpdate(DeltaTime);
 }
 
 void CScene::SaveFullPath(const char* FullPath)
