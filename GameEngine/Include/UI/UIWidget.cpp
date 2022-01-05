@@ -16,7 +16,7 @@ bool CUIWidget::Init()
 	return true;
 }
 
-void CUIWidget::Update(float DeltaTime) //
+void CUIWidget::Update(float DeltaTime) ////
 {}
 
 void CUIWidget::PostUpdate(float DeltaTime)
