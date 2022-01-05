@@ -321,21 +321,20 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 
 	// 220 ? --> 300 - 220  = 80
 	// AnimationList 에서 선택한 Sequence2D의 Name으로 Texture 정보를 얻어온다
-	Vector2 SequenceImageSize = Vector2(static_cast<float>(SequenceTexture->GetWidth()),
-	                                    static_cast<float>(SequenceTexture->GetHeight()));
+	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()),(float)(SequenceTexture->GetHeight()));
 
 	XDiff = SequenceImageSize.x - FrameStartPos.x;
 	YDiff = SequenceImageSize.y - FrameStartPos.y;
 
 	// 범위 조정 
-	FrameStartPos.x = XDiff > 0 ? FrameStartPos.x : m_SpriteObject->GetWorldScale().x;
-	FrameStartPos.y = YDiff > 0 ? m_SpriteObject->GetWorldScale().y - FrameStartPos.y : 0;
+	FrameStartPos.x = XDiff >= 0 ? FrameStartPos.x : SequenceImageSize.x - 0.1f;
+	FrameStartPos.y = YDiff >= 0 ? SequenceImageSize.y - FrameStartPos.y : 0;
 
 	Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
 	XDiff               = SequenceImageSize.x - FrameEndPos.x;
 	YDiff               = SequenceImageSize.y - FrameEndPos.y;
-	FrameEndPos.x       = XDiff > 0 ? FrameEndPos.x : m_SpriteObject->GetWorldScale().x;
-	FrameEndPos.y       = YDiff > 0 ? m_SpriteObject->GetWorldScale().y - FrameEndPos.y : 0;
+	FrameEndPos.x       = XDiff > 0 ? FrameEndPos.x : SequenceImageSize.x - 0.1f;
+	FrameEndPos.y       = YDiff > 0 ? SequenceImageSize.y - FrameEndPos.y : 0;
 
 	Vector2 StartPos;
 	Vector2 EndPos;
@@ -348,6 +347,7 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	EndPos.x = FrameStartPos.x > FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
 	EndPos.y = FrameStartPos.y > FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
 
+	Vector2 FrameSize = EndPos - StartPos;
 	// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
 	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
 	Sequence->AddFrame(StartPos, EndPos - StartPos);
@@ -363,7 +363,6 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
 
 	// Image, End 세팅 
-	Vector2 SpriteSize = m_SpriteSampled->GetSize();
 	m_SpriteSampled->SetImageStart(StartPos);
 	m_SpriteSampled->SetImageEnd(EndPos);
 
@@ -626,8 +625,7 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 
 	// SpriteObject 의 Texture 바꿔주기
 	m_SpriteObject->GetSpriteComponent()->SetTexture(MaterialTextureIdx, ChangedSequenceTexture);
-	m_SpriteObject->SetWorldScale(static_cast<float>(ChangedSequenceTexture->GetWidth()),
-	                              static_cast<float>(ChangedSequenceTexture->GetHeight()), 1.f);
+	m_SpriteObject->SetWorldScale((float)(ChangedSequenceTexture->GetWidth()),(float)(ChangedSequenceTexture->GetHeight()), 1.f);
 
 	// m_Sprite의 Texture 바꿔주기 
 	m_Sprite->SetTexture(ChangedSequenceTexture);
@@ -647,13 +645,14 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 		m_AnimationFrameList->AddItem(IndexChar);
 	}
 
+	// 첫번째 Seq로 세팅하기 
 	AnimationFrameData FrameData = ChangedSequence->GetFrameData(0);
 	m_AnimationFrameList->SetSelectIndex(0);
 
 	// Texture 세팅 
 	m_SpriteSampled->SetTexture(ChangedSequenceTexture);
 	m_SpriteSampled->SetImageStart(FrameData.Start);
-	m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size.x);
+	m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 
 	// 현재 애니메이션으로 세팅 
 	m_Animation->SetCurrentAnimation(ChangedSequenceName);
