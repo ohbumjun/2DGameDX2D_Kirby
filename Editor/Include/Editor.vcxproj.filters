@@ -52,7 +52,7 @@
       <Filter>03. Object</Filter>
     </ClCompile>
     <ClCompile Include="Window\SpriteEditWindow.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +84,7 @@
       <Filter>03. Object</Filter>
     </ClInclude>
     <ClInclude Include="Window\SpriteEditWindow.h">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

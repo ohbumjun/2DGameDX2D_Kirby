@@ -206,7 +206,7 @@ void CSpriteEditWindow::Update(float DeltaTime)
 		int                CurrentFrame = m_Animation->GetCurrentAnimation()->GetCurrentFrame();
 		AnimationFrameData FrameData    = m_Animation->GetCurrentAnimation()->GetFrameData(CurrentFrame);
 		m_SpriteSampled->SetImageStart(FrameData.Start);
-		m_SpriteSampled->SetImageEnd(FrameData.Size);
+		m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 	}
 }
 

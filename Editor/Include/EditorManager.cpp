@@ -133,6 +133,14 @@ void CEditorManager::KeyBoardUp(float DeltaTime)
 	if (m_DragObj)
 	{
 		m_DragObj->AddWorldPos(Vector3(0.f, 1.f, 0.f));
+
+		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
+		Vector2 StartPos = m_DragObj->GetStartPos();
+		StartPos = Vector2(StartPos.x, StartPos.y + 1.f);
+		Vector2 EndPos   = m_DragObj->GetEndPos();
+		EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
+		m_DragObj->SetStartPos(StartPos);
+		m_DragObj->SetEndPos(EndPos);
 	}
 }
 
@@ -141,6 +149,13 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 	if (m_DragObj)
 	{
 		m_DragObj->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
+		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
+		Vector2 StartPos = m_DragObj->GetStartPos();
+		StartPos = Vector2(StartPos.x - 1.f, StartPos.y);
+		Vector2 EndPos = m_DragObj->GetEndPos();
+		EndPos = Vector2(EndPos.x - 1.f, EndPos.y);
+		m_DragObj->SetStartPos(StartPos);
+		m_DragObj->SetEndPos(EndPos);
 	}
 }
 
@@ -149,6 +164,13 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 	if (m_DragObj)
 	{
 		m_DragObj->AddWorldPos(Vector3(1.f, 0.0f, 0.f));
+		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
+		Vector2 StartPos = m_DragObj->GetStartPos();
+		StartPos = Vector2(StartPos.x + 1.f, StartPos.y);
+		Vector2 EndPos = m_DragObj->GetEndPos();
+		EndPos = Vector2(EndPos.x + 1.f, EndPos.y + 1.f);
+		m_DragObj->SetStartPos(StartPos);
+		m_DragObj->SetEndPos(EndPos);
 	}
 }
 
@@ -157,6 +179,13 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 	if (m_DragObj)
 	{
 		m_DragObj->AddWorldPos(Vector3(0.f, -1.f, 0.f));
+		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
+		Vector2 StartPos = m_DragObj->GetStartPos();
+		StartPos = Vector2(StartPos.x, StartPos.y - 1.f);
+		Vector2 EndPos = m_DragObj->GetEndPos();
+		EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
+		m_DragObj->SetStartPos(StartPos);
+		m_DragObj->SetEndPos(EndPos);
 	}
 }
 
