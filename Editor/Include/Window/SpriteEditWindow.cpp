@@ -436,18 +436,22 @@ void CSpriteEditWindow::DeleteFrameButton()
 	{
 		m_Animation->GetCurrentAnimation()->SetFrame(0);
 
-		// Update DragObj Start, End Info
 		int UpdatedSelectIndex = m_AnimationFrameList->GetSelectIndex();
 		AnimationFrameData NFrameData = m_Animation->GetCurrentAnimation()->GetFrameData(UpdatedSelectIndex);
 		Vector2 StartPos = NFrameData.Start;
-		StartPos.y = (float)Sequence->GetTexture()->GetHeight() - StartPos.y;
 		Vector2 EndPos   = NFrameData.Start + NFrameData.Size;
+
+		// Update Start, End Pos In m_Sampled Image
+		m_SpriteSampled->SetImageStart(StartPos.x, StartPos.y);
+		m_SpriteSampled->SetImageEnd(EndPos.x, EndPos.y);
+
+		// Update DragObj Start, End Info
+		StartPos.y = (float)Sequence->GetTexture()->GetHeight() - StartPos.y;
 		EndPos.y = (float)Sequence->GetTexture()->GetHeight() - EndPos.y;
 		CEditorManager::GetInst()->GetDragObject()->SetStartPos(StartPos);
 		CEditorManager::GetInst()->GetDragObject()->SetEndPos(EndPos);
+
 	}
-
-
 
 	// If No Frame Left, Set Default Texture
 	if (Sequence->GetFrameCount() == 0)
