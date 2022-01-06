@@ -10,7 +10,6 @@
 
 CSpriteEditObject::CSpriteEditObject() :
 	m_Distance(600.f),
-	m_ObjMouseDown(false),
 	m_EditWindow(nullptr)
 {
 }
@@ -18,7 +17,7 @@ CSpriteEditObject::CSpriteEditObject() :
 CSpriteEditObject::CSpriteEditObject(const CSpriteEditObject& obj) :
 	CGameObject(obj)
 {
-	m_Sprite   = static_cast<CSpriteComponent*>(FindComponent("BulletSprite"));
+	m_Sprite   = static_cast<CSpriteComponent*>(FindComponent("SpriteEdit"));
 	m_Distance = obj.m_Distance;
 }
 
@@ -58,66 +57,7 @@ CSpriteEditObject* CSpriteEditObject::Clone()
 	return new CSpriteEditObject(*this);
 }
 
-void CSpriteEditObject::UpdateClickInfo()
-{
-	bool MouseDown = CInput::GetInst()->GetLMouseDown();
-	bool MouseUp   = CInput::GetInst()->GetLMouseUp();
-	bool MousePush = CInput::GetInst()->GetLMousePush();
-
-	Vector2 MousePos  = CInput::GetInst()->GetMousePos();
-	float   MousePosX = MousePos.x;
-	float   MousePosY = CEngine::GetInst()->GetResolution().Height - MousePos.y; // 좌 하단 기준, 마우스 높이 
-
-	Vector3 ObjectStPos = m_RootComponent->GetWorldPos();
-	Vector3 ObjectEdPos = ObjectStPos + m_RootComponent->GetWorldScale();
-
-	// Down
-	if (MouseDown && !m_ObjMouseDown)
-	{
-		// 범위 안에 들어올 때만 
-		if (ObjectStPos.x <= MousePosX &&
-			MousePosX <= ObjectEdPos.x &&
-			ObjectStPos.y <= MousePosY &&
-			MousePosY <= ObjectEdPos.y)
-		{
-			m_ObjMouseDown     = true;
-			float EndYPos      = (ObjectEdPos.y - MousePosY);
-			m_ObjImageStartPos = Vector2(MousePosX, EndYPos);
-		}
-	}
-	// drag 하다가 범위 벗어나면 다시 초기화 
-	else if (MousePush)
-	{
-		// 범위 안에 들어올 때만 
-		if (ObjectStPos.x > MousePosX ||
-			MousePosX > ObjectEdPos.x ||
-			ObjectStPos.y > MousePosY ||
-			MousePosY > ObjectEdPos.y)
-		{
-			m_ObjMouseDown = false;
-		}
-	}
-	else if (MouseUp && m_ObjMouseDown)
-	{
-		// 범위 벗어나면 x
-		if (ObjectStPos.x > MousePosX ||
-			MousePosX > ObjectEdPos.x ||
-			ObjectStPos.y > MousePosY ||
-			MousePosY > ObjectEdPos.y)
-		{
-			m_ObjMouseDown = false;
-		}
-		// 범위 안에 들어오면
-		else
-		{
-			m_ObjMouseDown   = false;
-			float EndYPos    = (ObjectEdPos.y - MousePosY);
-			m_ObjImageEndPos = Vector2(MousePosX, EndYPos);
-			SetEditWindowTexture();
-		}
-	}
-}
-
+/*
 void CSpriteEditObject::SetEditWindowTexture()
 {
 	CIMGUIImage* SpriteSampled = dynamic_cast<CIMGUIImage*>(m_EditWindow->FindWidget("SpriteSampled"));
@@ -133,3 +73,4 @@ void CSpriteEditObject::SetEditWindowTexture()
 
 	MessageBox(nullptr, TEXT("bb"), TEXT("bb"), MB_OK);
 }
+*/

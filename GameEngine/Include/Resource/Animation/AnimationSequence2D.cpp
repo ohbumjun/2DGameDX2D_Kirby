@@ -5,7 +5,8 @@
 #include "../../PathManager.h"
 
 CAnimationSequence2D::CAnimationSequence2D() :
-	m_Scene(nullptr)
+	m_Scene(nullptr),
+	m_vecFrameData{}
 {
 }
 
@@ -83,7 +84,7 @@ void CAnimationSequence2D::SaveFullPath(const char* FullPath)
 		return;
 
 	int Length = static_cast<int>(m_Name.length());
-	fwrite(&Length, sizeof(int), Length, pFile);
+	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
 	bool TexEnable = false;
@@ -190,14 +191,28 @@ bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 		case Image_Type::Array:
 			break;
 		}
+
+		if (m_Scene)
+		{
+			m_Texture = m_Scene->GetResource()->FindTexture(TextureName);
+		}
+		else
+		{
+			m_Texture = CResourceManager::GetInst()->FindTexture(TextureName);
+		}
 	}
 
 	int FrameCount = 0;
 	fread(&FrameCount, sizeof(int), 1, pFile);
-	if (FrameCount >-0)
+	if (FrameCount >0)
 	{
-		m_vecFrameData.reserve(static_cast<const size_t>(FrameCount));
+		m_vecFrameData.resize(static_cast<const size_t>(FrameCount));
 		fread(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
+	}
+	else
+	{
+		// 초기화는 진행해주어야 한다
+		m_vecFrameData = {};
 	}
 	fclose(pFile);
 
@@ -206,7 +221,6 @@ bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 
 bool CAnimationSequence2D::Load(const char* FileName, const std::string& PathName)
 {
-
 	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
 
 	char FileFullPath[MAX_PATH] = {};

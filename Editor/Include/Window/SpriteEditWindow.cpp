@@ -33,8 +33,6 @@ CSpriteEditWindow::~CSpriteEditWindow()
 bool CSpriteEditWindow::Init()
 {
 	CIMGUIWindow::Init();
-
-
 	// ==============================
 
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture");
@@ -311,6 +309,7 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
 
+
 	float                 XDiff           = -1, YDiff = -1;
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 	Vector2               FrameStartPos   = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
@@ -378,8 +377,8 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	m_AnimationFrameList->SetSelectIndex(AnimItemCount);
 
 	// Animation Instance에 추가하기 
-	bool Loop    = StringToBool(m_AnimationLoop->GetSelectItem());
-	bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
+	// bool Loop    = StringToBool(m_AnimationLoop->GetSelectItem());
+	// bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
 
 	// 위에서 가져온 Animation Sequence 2D를 세팅하면 될 것 같다
 	CAnimationSequence2DData* Animation = m_Animation->GetCurrentAnimation();
@@ -588,6 +587,9 @@ void CSpriteEditWindow::SaveSequence()
 	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
 
+	if (!m_Animation)
+		return;
+
 	TCHAR FilePath[MAX_PATH] = {};
 
 	OPENFILENAME OpenFile    = {};
@@ -630,7 +632,67 @@ void CSpriteEditWindow::LoadSequence()
 
 		std::string SequenceName;
 		CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
-		Resource->LoadSequence2D(SequenceName, FullPathMultibyte);
+		Resource->LoadSequence2DFullPath(SequenceName, FullPathMultibyte);
+
+		// 여기에서 모든 사항들을 UI에 뿌려주기
+		// 이름으로 Sequence를 가져오고
+		CAnimationSequence2D* LoadedSequence = Resource->FindAnimationSequence2D(SequenceName);
+
+		// 해당 이름을 m_AnimationList 에 추가해주고
+		m_AnimationList->AddItem(SequenceName);
+
+		// 해당 이름을 클릭한 상태로 만들어주고
+		m_AnimationList->SetSelectIndex(m_AnimationList->GetItemCount() - 1);
+
+		// 해당 Seq를 Sprite Edit Object로 세팅
+		if (!m_SpriteObject)
+		{
+			m_SpriteObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteEditObject>("SpriteEditObject");
+			m_SpriteObject->SetEditWindow(this);
+		}
+		m_SpriteObject->SetTexture(LoadedSequence->GetTexture());
+
+		// 해당 Seq를 m_Sprite 에 추가하기
+		m_Sprite->SetTexture(LoadedSequence->GetTexture());
+
+		// m_Sprite 의 Start, EndPos 세팅 ?
+
+		// 해당 Seq의 Animation 들을 m_AnimationFrameList에 추가
+		size_t  Size = LoadedSequence->GetFrameCount();
+		for (size_t i = 0; i < Size; i++)
+		{
+			m_AnimationFrameList->AddItem(std::to_string(i));
+		}
+
+		// Loop, Reverse 세팅
+		// bool Loop = LoadedSequence->Get
+		//	m_AnimationLoop
+		//	m_AnimationReverse
+
+		// Frame이 있다면 0으로 세팅
+		if (Size > 0)
+		{
+			m_AnimationFrameList->SetSelectIndex(0);
+
+			// 해당 Frame의 St, End를 반영하여 SampledSprite 에 세팅해두기
+			AnimationFrameData AnimFrame = LoadedSequence->GetFrameData(m_AnimationFrameList->GetSelectIndex());
+			Vector2 StartPos = AnimFrame.Start;
+			Vector2 EndPos   = StartPos + AnimFrame.Size;
+			m_SpriteSampled->SetTexture(LoadedSequence->GetTexture());
+			m_SpriteSampled->SetImageStart(StartPos);
+			m_SpriteSampled->SetImageEnd(EndPos);
+
+			// 해당 Frame의 St, End를 이용하여 DragObject 를 그리기
+			EndPos.y = LoadedSequence->GetTexture()->GetHeight() - EndPos.y;
+			if (!CEditorManager::GetInst()->GetDragObject())
+			{
+				// 초기화 안되어 있다면 초기화 
+				CEditorManager::GetInst()->SetEditMode(EditMode::Sprite);
+			}
+			CEditorManager::GetInst()->GetDragObject()->SetStartPos(StartPos);
+			CEditorManager::GetInst()->GetDragObject()->SetEndPos(EndPos);
+		}
+
 	}
 }
 

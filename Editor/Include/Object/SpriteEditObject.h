@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Component/SpriteComponent.h>
+
 #include "GameObject/GameObject.h"
 
 class CSpriteEditObject :
@@ -15,19 +17,20 @@ protected:
 private:
 	CSharedPtr<class CSpriteComponent> m_Sprite;
 	float                              m_Distance;
-	bool                               m_ObjMouseDown;
-	Vector2                            m_ObjImageStartPos;
-	Vector2                            m_ObjImageEndPos;
 	class CIMGUIWindow*                m_EditWindow;
 public:
 	class CSpriteComponent* GetSpriteComponent() const
 	{
 		return m_Sprite;
 	}
-
+public :
 	void SetEditWindow(class CIMGUIWindow* Window)
 	{
 		m_EditWindow = Window;
+	}
+	void SetTexture(class CTexture* Texture, int Index = 0)
+	{
+		m_Sprite->SetTexture(Index, Texture);
 	}
 
 public:
@@ -35,6 +38,5 @@ public:
 	virtual void               Update(float DeltaTime) override;
 	virtual void               PostUpdate(float DeltaTime) override;
 	virtual CSpriteEditObject* Clone() override;
-	void                       UpdateClickInfo();
 	void                       SetEditWindowTexture();
 };

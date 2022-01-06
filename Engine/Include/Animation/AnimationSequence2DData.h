@@ -46,7 +46,7 @@ public :
 	{
 		return m_Frame;
 	}
-	int GetFrameCount() const
+	size_t GetFrameCount() const
 	{
 		return m_Sequence->GetFrameCount();
 	}

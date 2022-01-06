@@ -34,9 +34,9 @@ public:
 		return m_vecFrameData[Index];
 	}
 
-	int GetFrameCount() const
+	size_t GetFrameCount() const
 	{
-		return static_cast<int>(m_vecFrameData.size());
+		return m_vecFrameData.size();
 	}
 
 public :

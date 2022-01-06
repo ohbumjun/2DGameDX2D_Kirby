@@ -261,7 +261,7 @@ void CTexture::ResetShader(int Register, int ShaderType, int Index)
 void CTexture::Save(FILE* pFile)
 {
 	int Length = static_cast<int>(m_Name.length());
-	fwrite(&Length, sizeof(char), 1, pFile);
+	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
 	fwrite(&m_ImageType, sizeof(Image_Type), 1, pFile);
