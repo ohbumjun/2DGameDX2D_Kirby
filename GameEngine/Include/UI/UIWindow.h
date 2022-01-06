@@ -29,6 +29,10 @@ public :
 {
 		return m_Size;
 }
+	class CViewPort* GetViewPort() const
+{
+		return m_ViewPort;
+}
 public :
 	void SetZOrder(int ZOrder)
 {

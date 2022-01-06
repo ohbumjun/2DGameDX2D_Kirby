@@ -1,6 +1,7 @@
 #include "ColliderCircle.h"
 
 #include "ColliderBox2D.h"
+#include "ColliderPixel.h"
 #include "../Collision/Collision.h"
 #include "../Resource/Shader/ColliderConstantBuffer.h"
 #include "../Scene/Scene.h"
@@ -146,6 +147,8 @@ bool CColliderCircle::Collision(CColliderComponent* Dest)
 		return CCollision::CollisionBox2DToCircle((CColliderBox2D*)Dest, this);
 	case Collider_Type::Circle :
 		return CCollision::CollisionCircleToCircle(this, (CColliderCircle*)Dest);
+	case Collider_Type::Pixel:
+		return CCollision::CollisionCircleToPixel(this, (CColliderPixel*)Dest);
 	}
 	return false;
 }

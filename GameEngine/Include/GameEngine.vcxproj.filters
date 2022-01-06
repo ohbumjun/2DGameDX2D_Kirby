@@ -157,6 +157,9 @@
     <Filter Include="09. UI\02. Widget">
       <UniqueIdentifier>{bce172ac-9461-4323-9deb-2446e2e4ac5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\02. ShaderClass\03. Collider">
+      <UniqueIdentifier>{c1112b27-87ef-4094-b7d0-6935afdb6c3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -408,9 +411,6 @@
     <ClInclude Include="Collision\Collision.h">
       <Filter>08. Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Shader\ColliderShader.h">
-      <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\Shader\ColliderConstantBuffer.h">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\05. Collider</Filter>
     </ClInclude>
@@ -437,6 +437,12 @@
     </ClInclude>
     <ClInclude Include="UI\UIWindow.h">
       <Filter>09. UI\01. Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Shader\ColliderShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\03. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Shader\ColliderPixelShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\03. Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -671,9 +677,6 @@
     <ClCompile Include="Collision\Collision.cpp">
       <Filter>08. Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\ColliderShader.cpp">
-      <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Shader\ColliderConstantBuffer.cpp">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\05. Collider</Filter>
     </ClCompile>
@@ -700,6 +703,12 @@
     </ClCompile>
     <ClCompile Include="UI\UIWindow.cpp">
       <Filter>09. UI\01. Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\ColliderShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\03. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\ColliderPixelShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\03. Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

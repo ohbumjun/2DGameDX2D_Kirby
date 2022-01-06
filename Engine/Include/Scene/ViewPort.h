@@ -19,6 +19,11 @@ public :
 	void PostUpdate(float DeltaTime);
 	void Render();
 public :
+	class CScene* GetScene() const
+{
+		return m_Scene;
+}
+public :
 	template<typename T>
 	T* FindUIWindow(const std::string& Name)
 {

@@ -246,7 +246,6 @@ void CInput::UpdateMouse(float DeltaTime)
 		m_MouseWorldPos += Camera->GetLeftBottom();
 	}
 
-
 	// Mouse State Update го╠Б 
 	if (m_MouseState.rgbButtons[0] & 0x80)
 	{

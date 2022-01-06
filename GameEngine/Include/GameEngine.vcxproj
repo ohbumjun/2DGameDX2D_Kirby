@@ -226,6 +226,7 @@
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Resource\Shader\Animation2DConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\ColliderConstantBuffer.h" />
+    <ClInclude Include="Resource\Shader\ColliderPixelShader.h" />
     <ClInclude Include="Resource\Shader\ColliderShader.h" />
     <ClInclude Include="Resource\Shader\ColorMeshShader.h" />
     <ClInclude Include="Resource\Shader\ComputeShader.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Resource\Shader\Animation2DConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\ColliderConstantBuffer.cpp" />
+    <ClCompile Include="Resource\Shader\ColliderPixelShader.cpp" />
     <ClCompile Include="Resource\Shader\ColliderShader.cpp" />
     <ClCompile Include="Resource\Shader\ColorMeshShader.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShader.cpp" />

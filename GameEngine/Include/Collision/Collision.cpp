@@ -2,6 +2,10 @@
 #include "../Component/ColliderBox2D.h"
 #include "../Component/ColliderCircle.h"
 #include "../Component/ColliderPixel.h"
+#include "../Scene/Scene.h"
+#include "../Scene/SceneManager.h"
+#include "../Scene/CameraManager.h"
+#include "../Scene/SceneCollision.h"
 
 bool CCollision::CollisionBox2DToPoint(CollisionResult& SrcResult, CollisionResult& DestResult,
 									   const Box2DInfo& BoxInfo, const Vector2& Point)
@@ -239,18 +243,18 @@ bool CCollision::CollisionCircleToCircle(CollisionResult& SrcResult, CollisionRe
 bool CCollision::CollisionBox2DToPixel(CollisionResult& SrcResult, CollisionResult& DestResult, const Box2DInfo& Src,
 	const PixelInfo& Dest)
 {
-	// Box와의 충돌 처리를 진행하지 않았다면 skip 한다
+	// Box와 Box 충돌을 먼저 판별한다.
 	if (!CollisionBox2DToBox2D(SrcResult, DestResult, Src, Dest.Box))
 		return false;
 
-	// 교집합을 구한다
-	float Left      = Src.Min.x > Dest.Box.Min.x ? Src.Min.x : Dest.Box.Min.x;
-	float Right    = Src.Max.x < Dest.Box.Max.x ? Src.Max.x : Dest.Box.Max.x;
-	float Bottom = Src.Min.y > Dest.Box.Min.y ? Src.Min.y : Dest.Box.Min.y;
-	float Top       = Src.Max.y < Dest.Box.Max.y ? Src.Max.y : Dest.Box.Max.y;
-
-	// 월드 공간에서의 좌,하단 좌표를 구한다
+	// 겹치는 구간을 구한다
 	Vector2 LB = Dest.Box.Center - Dest.Box.Length;
+
+	// 큰것 먼저 구하기 
+	float Left        = Src.Min.x > Dest.Box.Min.x ? Src.Min.x : Dest.Box.Min.x;
+	float Right      = Src.Max.x < Dest.Box.Max.x ? Src.Max.x : Dest.Box.Max.x;
+	float Bottom   = Src.Min.y > Dest.Box.Min.y ? Src.Min.y : Dest.Box.Min.y;
+	float Top        = Src.Max.y < Dest.Box.Max.y ? Src.Max.y : Dest.Box.Max.y;
 
 	Left -= LB.x;
 	Right -= LB.x;
@@ -258,69 +262,73 @@ bool CCollision::CollisionBox2DToPixel(CollisionResult& SrcResult, CollisionResu
 	Top -= LB.y;
 
 	Left = Left < 0.f ? 0.f : Left;
-	Right = Right >= (float)Dest.Width ? (float)Dest.Width - 1.f : Right;
 	Bottom = Bottom < 0.f ? 0.f : Bottom;
+
+	Right = Right >= (float)Dest.Width ? (float)Dest.Width - 1.f : Right;
 	Top = Top >= (float)Dest.Height ? (float)Dest.Height - 1.f : Top;
 
-	// 이미지상 좌표로 구해주기 위해 Top, Bottom은 한번 뒤집어 준다
-	Top = (float)Dest.Height - Top;
-	Bottom = (float)Dest.Height - Bottom;
+	// 이미지 상의 좌표로 변환하여 검사하기 위해 y를 뒤집는다
+	Bottom = Dest.Height - Bottom;
+	Top = Dest.Height - Top;
 
+	int Index = -1;
 	bool Collision = false;
 
-	// 교집합 구간을 반복한다 ( 왼쪽 상단 부터, 오른쪽 하단 방향으로 )
-	for (int row = (int)Top; row < (int)Bottom; row++)
+	for (int row = (int)Top; row <= (int)Bottom; row++)
 	{
-		for (int col = (int)Left; col < (int)Right; col++)
+		for (int col = (int)Left; col <= (int)Right; col++)
 		{
-			int Index = row * ((int)Dest.Width * 4) + (col * 4);
-
-			// 현재 인덱스의 픽셀이, 상대방 박스 안에 존재하는지를 판단한다
-			// 현재 픽셀의 월드 공간에서의 위치를 구해준다
-			// Vector 에서의 x는 column에 해당하고, y는 row에 해당한다.
-			// 이번에는 좌하단 기준 위치를 구해야 하므로, 다시 한번 y를 뒤집어준다 
-			Vector2 PixelWorldPos = LB + Vector2((float)col, (float)Dest.Height - (float)row);
-
-			// 박스와 박스간의 충돌 처리 
-			if (!CollisionBox2DToPoint(SrcResult, DestResult, Src, PixelWorldPos))
+			// 현재 위치와 Box가 충돌하는지 살핀다
+			// 이번에는 World 좌표 기준으로 판단해야 하므로 y를 한번 더 뒤집고
+			// Camera의 World 좌표를 더해준다.
+			Vector2 PixelWorldPos = LB + Vector2(col, (float)Dest.Height - row);
+			if (!CollisionBox2DToPoint(SrcResult, DestResult, Dest.Box, PixelWorldPos))
 				continue;
 
-			// 색상 판단 
+			// 범위 안에 들어왔다면  Pixel 내의 색상을 비교할 것이다
+			Index = (row * (Dest.Width * 4)) + (col * 4);
+
 			switch (Dest.Type)
 			{
-				// 해당 색상이면 무시
-			case PixelCollision_Type::Color_Ignore :
-				if (Dest.Pixel[Index] == Dest.Color[0] &&
-					Dest.Pixel[Index + 1] == Dest.Color[1] && 
-					Dest.Pixel[Index + 2] == Dest.Color[2])
-				{
-					continue;
-				}
-				Collision = true;
-				break;
 			case PixelCollision_Type::Color_Confirm :
+				{
 				if (Dest.Pixel[Index] == Dest.Color[0] &&
 					Dest.Pixel[Index + 1] == Dest.Color[1] &&
 					Dest.Pixel[Index + 2] == Dest.Color[2])
 				{
 					Collision = true;
-					break;
 				}
-			case PixelCollision_Type::Alpha_Ignore:
-				if (Dest.Pixel[Index + 2] == Dest.Color[3])
+				}
+				break;
+			case PixelCollision_Type::Color_Ignore:
+			{
+				if (Dest.Pixel[Index] == Dest.Color[0] &&
+					Dest.Pixel[Index + 1] == Dest.Color[1] &&
+					Dest.Pixel[Index + 2] == Dest.Color[2])
 				{
 					continue;
 				}
 				Collision = true;
-				break;
+			}
+			break;
 			case PixelCollision_Type::Alpha_Confirm:
-				if (Dest.Pixel[Index + 2] == Dest.Color[3])
+			{
+				if (Dest.Pixel[Index + 3] == Dest.Color[3])
 				{
 					Collision = true;
-					break;
 				}
 			}
-
+			break;
+			case PixelCollision_Type::Alpha_Ignore:
+			{
+				if (Dest.Pixel[Index + 3] == Dest.Color[3])
+				{
+					continue;
+				}
+				Collision = true;
+			}
+			break;
+			}
 			if (Collision)
 				break;
 		}
@@ -334,91 +342,81 @@ bool CCollision::CollisionBox2DToPixel(CollisionResult& SrcResult, CollisionResu
 bool CCollision::CollisionCircleToPixel(CollisionResult& SrcResult, CollisionResult& DestResult, const CircleInfo& Src,
 	const PixelInfo& Dest)
 {
-	// Box와의 충돌 처리를 진행하지 않았다면 skip 한다
-	if (!CollisionBox2DToCircle(SrcResult, DestResult, Dest.Box , Src))
+	if (!CollisionBox2DToCircle(SrcResult, DestResult, Dest.Box, Src))
 		return false;
 
-	// 교집합을 구한다
-	float Left = Src.Min.x > Dest.Box.Min.x ? Src.Min.x : Dest.Box.Min.x;
-	float Right = Src.Max.x < Dest.Box.Max.x ? Src.Max.x : Dest.Box.Max.x;
-	float Bottom = Src.Min.y > Dest.Box.Min.y ? Src.Min.y : Dest.Box.Min.y;
-	float Top = Src.Max.y < Dest.Box.Max.y ? Src.Max.y : Dest.Box.Max.y;
+	// 교집합을 구한다.
+	float	Left = Src.Min.x < Dest.Min.x ? Dest.Min.x : Src.Min.x;
+	float	Right = Src.Max.x > Dest.Max.x ? Dest.Max.x : Src.Max.x;
 
-	// 월드 공간에서의 좌,하단 좌표를 구한다
-	Vector2 LB = Dest.Box.Center - Dest.Box.Length;
+	float	Bottom = Src.Min.y < Dest.Min.y ? Dest.Min.y : Src.Min.y;
+	float	Top = Src.Max.y > Dest.Max.y ? Dest.Max.y : Src.Max.y;
+
+	// 월드 공간에서의 좌 하단 좌표를 구한다.
+	Vector2	LB = Dest.Box.Center - Dest.Box.Length;
 
 	Left -= LB.x;
 	Right -= LB.x;
+
 	Bottom -= LB.y;
 	Top -= LB.y;
 
 	Left = Left < 0.f ? 0.f : Left;
-	Right = Right >= (float)Dest.Width ? (float)Dest.Width - 1.f : Right;
 	Bottom = Bottom < 0.f ? 0.f : Bottom;
+
+	Right = Right >= (float)Dest.Width ? (float)Dest.Width - 1.f : Right;
 	Top = Top >= (float)Dest.Height ? (float)Dest.Height - 1.f : Top;
 
-	// 이미지상 좌표로 구해주기 위해 Top, Bottom은 한번 뒤집어 준다
-	Top = (float)Dest.Height - Top;
-	Bottom = (float)Dest.Height - Bottom;
+	Top = Dest.Height - Top;
+	Bottom = Dest.Height - Bottom;
 
-	bool Collision = false;
+	bool	Collision = false;
 
-	// 교집합 구간을 반복한다 ( 왼쪽 상단 부터, 오른쪽 하단 방향으로 )
-	for (int row = (int)Top; row < (int)Bottom; row++)
+	// 교집합 구간을 반복한다.
+	for (int y = (int)Top; y < (int)Bottom; ++y)
 	{
-		for (int col = (int)Left; col < (int)Right; col++)
+		for (int x = (int)Left; x < (int)Right; ++x)
 		{
-			int Index = row * ((int)Dest.Width * 4) + (col * 4);
+			int	Index = y * (int)Dest.Width * 4 + x * 4;
 
-			// 현재 인덱스의 픽셀이, 상대방 박스 안에 존재하는지를 판단한다
-			// 현재 픽셀의 월드 공간에서의 위치를 구해준다
-			// Vector 에서의 x는 column에 해당하고, y는 row에 해당한다.
-			// 이번에는 좌하단 기준 위치를 구해야 하므로, 다시 한번 y를 뒤집어준다 
-			Vector2 PixelWorldPos = LB + Vector2((float)col, (float)Dest.Height - (float)row);
-
-			// 박스와 박스간의 충돌 처리 
+			// 현재 인덱스의 픽셀이 상대방 박스 안에 존재하는지를 판단한다.
+			// 현재 픽셀의 월드공간에서의 위치를 구해준다.
+			Vector2	PixelWorldPos = LB + Vector2((float)x, (float)Dest.Height - (float)y);
 			if (!CollisionCircleToPoint(SrcResult, DestResult, Src, PixelWorldPos))
 				continue;
 
-			// 색상 판단 
 			switch (Dest.Type)
 			{
-				// 해당 색상이면 무시
 			case PixelCollision_Type::Color_Ignore:
 				if (Dest.Pixel[Index] == Dest.Color[0] &&
 					Dest.Pixel[Index + 1] == Dest.Color[1] &&
 					Dest.Pixel[Index + 2] == Dest.Color[2])
-				{
 					continue;
-				}
+
 				Collision = true;
 				break;
 			case PixelCollision_Type::Color_Confirm:
 				if (Dest.Pixel[Index] == Dest.Color[0] &&
 					Dest.Pixel[Index + 1] == Dest.Color[1] &&
 					Dest.Pixel[Index + 2] == Dest.Color[2])
-				{
 					Collision = true;
-					break;
-				}
+				break;
 			case PixelCollision_Type::Alpha_Ignore:
-				if (Dest.Pixel[Index + 2] == Dest.Color[3])
-				{
+				if (Dest.Pixel[Index + 3] == Dest.Color[3])
 					continue;
-				}
+
 				Collision = true;
 				break;
 			case PixelCollision_Type::Alpha_Confirm:
-				if (Dest.Pixel[Index + 2] == Dest.Color[3])
-				{
+				if (Dest.Pixel[Index + 3] == Dest.Color[3])
 					Collision = true;
-					break;
-				}
+				break;
 			}
 
 			if (Collision)
 				break;
 		}
+
 		if (Collision)
 			break;
 	}
@@ -429,54 +427,53 @@ bool CCollision::CollisionCircleToPixel(CollisionResult& SrcResult, CollisionRes
 bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResult& DestResult, const PixelInfo& Info,
 	const Vector2& Point)
 {
+	// Box와 Point 충돌 체크
 	if (!CollisionBox2DToPoint(SrcResult, DestResult, Info.Box, Point))
 		return false;
 
-	Vector2	LB = Info.Box.Center - Info.Box.Length;
+	Vector2 NewPointPos = Point - Info.Min;
+	NewPointPos.y = Info.Height - NewPointPos.y;
 
-	Vector2	ConvertPoint = Point - LB;
-
-	ConvertPoint.y = Info.Height - ConvertPoint.y;
-
-	int	Index = (int)ConvertPoint.y * (int)Info.Width * 4 + (int)ConvertPoint.x * 4;
-
-	bool	Result = false;
+	int Index = (NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4);
+	bool Collision = false;
 
 	switch (Info.Type)
 	{
 	case PixelCollision_Type::Color_Ignore:
-		if (Info.Pixel[Index] == Info.Color[0] &&
-			Info.Pixel[Index + 1] == Info.Color[1] &&
-			Info.Pixel[Index + 2] == Info.Color[2])
-			Result = false;
-
-		else
-			Result = true;
+		{
+			if (Info.Pixel[Index] == Info.Color[0] &&
+				Info.Pixel[Index + 1] == Info.Color[1] &&
+				Info.Pixel[Index + 2] == Info.Color[2])
+				Collision = false;
+			else
+				Collision = true;
+		}
 		break;
 	case PixelCollision_Type::Color_Confirm:
-		if (Info.Pixel[Index] == Info.Color[0] &&
-			Info.Pixel[Index + 1] == Info.Color[1] &&
-			Info.Pixel[Index + 2] == Info.Color[2])
-			Result = true;
-
-		else
-			Result = false;
+		{
+			if (Info.Pixel[Index] == Info.Color[0] &&
+				Info.Pixel[Index + 1] == Info.Color[1] &&
+				Info.Pixel[Index + 2] == Info.Color[2])
+				Collision = true;
+			else
+				Collision = false;
+		}
 		break;
 	case PixelCollision_Type::Alpha_Ignore:
-		if (Info.Pixel[Index + 3] == Info.Color[3])
-			Result = false;
-
-		else
-			Result = true;
+		{
+			if (Info.Pixel[Index + 3] == Info.Color[3])
+				Collision = false;
+			else
+				Collision = true;
+		}
 		break;
 	case PixelCollision_Type::Alpha_Confirm:
+		{
 		if (Info.Pixel[Index + 3] == Info.Color[3])
-			Result = true;
-
+			Collision = true;
 		else
-			Result = false;
-		break;
+			Collision = false;
+		}
 	}
-
-	return Result;
+	return Collision;
 }

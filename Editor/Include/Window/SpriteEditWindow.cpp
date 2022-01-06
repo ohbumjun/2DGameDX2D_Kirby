@@ -399,16 +399,25 @@ void CSpriteEditWindow::DeleteFrameButton()
 	if (m_AnimationFrameList->GetSelectIndex() < 0)
 		return;
 
-	// Delete Frame Data
+	// Delete Acual Frame Data
 	CSceneResource*       Resource         = CSceneManager::GetInst()->GetScene()->GetResource();
 	CAnimationSequence2D* Sequence         = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
 	int                   SelectedFrameIdx = std::stoi(m_AnimationFrameList->GetSelectItem());
 	Sequence->DeleteFrame(SelectedFrameIdx);
 
+	// Update Select Idx Info Of m_AnimationFrameList
+	m_AnimationFrameList->SetSelectIndex(m_AnimationFrameList->GetSelectIndex() - 1);
+
+	// If No Frame Left, Set Default Texture
+	if (Sequence->GetFrameCount() == 0)
+	{
+		m_SpriteSampled->SetTexture("DefaultUI");
+	}
+
 	// Delete Text
 	m_AnimationFrameList->DeleteItem(SelectedFrameIdx);
 
-	// Update Names Of FrameDatas
+	// Update Names Of FrameDatas in AnimationFrameList
 	int ListNums = m_AnimationFrameList->GetItemCount();
 	for (int i = 0; i < ListNums; i++)
 	{
@@ -417,9 +426,7 @@ void CSpriteEditWindow::DeleteFrameButton()
 		m_AnimationFrameList->SetItem(i, std::to_string(i));
 	}
 
-	// Set Current Frame Of Animation To 0
-	if (m_Animation && m_Animation->GetCurrentAnimation())
-		m_Animation->GetCurrentAnimation()->ResetFrame();
+	return;
 }
 
 void CSpriteEditWindow::ClearFrameButton()

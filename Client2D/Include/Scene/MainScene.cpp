@@ -3,6 +3,8 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "../Object/Monster.h"
+#include "../Object/PixelTest.h"
+
 
 CMainScene::CMainScene()
 {
@@ -24,6 +26,8 @@ bool CMainScene::Init()
 
 	CMonster* Monter = m_Scene->CreateGameObject<CMonster>("Monster");
 
+	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");
+		
 	return true;
 }
 

@@ -10,7 +10,8 @@
 #include "../Resource/Shader/ColliderConstantBuffer.h"
 #include "../Scene/CameraManager.h"
 
-CColliderPixel::CColliderPixel()
+CColliderPixel::CColliderPixel() :
+	m_Info{}
 {
 	SetTypeID<CColliderPixel>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -114,6 +115,15 @@ void CColliderPixel::SetInfoFullPath(const TCHAR* FullPath)
 	m_Info.Box.Length.x = m_Info.Width / 2.f;
 	m_Info.Box.Length.y = m_Info.Height / 2.f;
 
+	m_Info.Box.Min  = m_Info.Box.Center - m_Info.Box.Length;
+	m_Info.Box.Max = m_Info.Box.Center + m_Info.Box.Length;
+
+	m_Min.x = m_Info.Box.Min.x;
+	m_Min.y = m_Info.Box.Min.y;
+
+	m_Max.x = m_Info.Box.Max.x;
+	m_Max.y = m_Info.Box.Max.y;
+
 	if (FAILED(CreateShaderResourceView(CDevice::GetInst()->GetDevice(), Image.GetImages(),
 		Image.GetImageCount(), Image.GetMetadata(), &m_Info.SRV)))
 	{
@@ -162,6 +172,11 @@ void CColliderPixel::SetPixelAlpha(unsigned char a)
 	m_Info.Color[3] = a;
 }
 
+void CColliderPixel::SetPixelCollisionType(PixelCollision_Type Type)
+{
+	m_Info.Type = Type;
+}
+
 void CColliderPixel::Start()
 {
 	CColliderComponent::Start();
@@ -176,7 +191,6 @@ bool CColliderPixel::Init()
 
 	m_Info.Box.Axis[0] = Vector2(1.f, 0.f);
 	m_Info.Box.Axis[1] = Vector2(0.f, 1.f);
-
 
 	m_Mesh = m_Scene->GetResource()->FindMesh("Box2D");
 	m_PixelMesh = m_Scene->GetResource()->FindMesh("SpriteMesh");
@@ -198,8 +212,6 @@ void CColliderPixel::PostUpdate(float DeltaTime)
 
 	m_Info.Box.Center.x = GetWorldPos().x + m_Offset.x;
 	m_Info.Box.Center.y = GetWorldPos().y + m_Offset.y;
-
-	Vector2 Pos[4] = {};
 
 	m_Min.x = m_Info.Box.Center.x - m_Info.Box.Length.x;
 	m_Min.y = m_Info.Box.Center.y - m_Info.Box.Length.y;
@@ -306,5 +318,9 @@ bool CColliderPixel::CollisionMouse(const Vector2& MousePos)
 {
 	CollisionResult result;
 	m_MouseCollision = CCollision::CollisionPixelToPoint(m_MouseResult,  result, m_Info, MousePos);
+	if (m_MouseCollision)
+	{
+		return true;
+	}
 	return m_MouseCollision;
 }

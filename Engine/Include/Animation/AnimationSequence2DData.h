@@ -83,6 +83,12 @@ public :
 		m_Sequence->ClearFrame();
 	}
 
+	void DeleteFrame(int Frame)
+	{
+		m_Sequence->DeleteFrame(Frame);
+		m_Frame = Frame - 1;
+	}
+
 	bool Save(FILE* pFile);
 	bool Load(FILE* pFile);
 	bool Load(FILE* pFile, const char* FullPath);

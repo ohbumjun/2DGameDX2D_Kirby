@@ -10,6 +10,7 @@ public :
 private :
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
+    // CSharedPtr<class CColliderComponent> m_ColliderBody;
     float m_HP;
 public :
     void Damage(float Damage);

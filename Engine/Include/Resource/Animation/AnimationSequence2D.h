@@ -47,7 +47,7 @@ public :
 
 	void DeleteFrame(int Index)
 	{
-		m_vecFrameData.erase(m_vecFrameData.begin(), m_vecFrameData.begin() + Index);
+		m_vecFrameData.erase(m_vecFrameData.begin() + Index);
 	}
 
 public:

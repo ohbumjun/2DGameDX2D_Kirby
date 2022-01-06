@@ -4,6 +4,7 @@
 #include "Mesh2DShader.h"
 #include "PosMeshShader.h"
 #include "ColliderShader.h"
+#include "ColliderPixelShader.h"
 
 CShaderManager::CShaderManager()
 {
@@ -25,6 +26,10 @@ bool CShaderManager::Init()
 		return false;
 
 	if (!CreateShader<CColliderShader>("ColliderShader"))
+		return false;
+
+	// ColliderPixelShader
+	if (!CreateShader<CColliderPixelShader>("ColliderPixelShader"))
 		return false;
 
 

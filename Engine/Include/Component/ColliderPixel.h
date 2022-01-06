@@ -26,7 +26,7 @@ public :
     void SetInfoCollisionType(PixelCollision_Type Type);
     void SetPixelColor(unsigned char r, unsigned char g, unsigned char b);
     void SetPixelAlpha(unsigned char a);
-
+    void SetPixelCollisionType(PixelCollision_Type Type);
 public :
     virtual void Start() override;
     virtual bool Init() override;
