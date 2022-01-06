@@ -326,13 +326,21 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	XDiff = SequenceImageSize.x - FrameStartPos.x;
 	YDiff = SequenceImageSize.y - FrameStartPos.y;
 
-	// 범위 조정 
+	// 범위 조정
+	// 초과 (FrameStartPos.x 가 너무 왼쪽에 위치 ex) -20.f )
+	FrameStartPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameStartPos.x;
+	FrameStartPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameStartPos.y;
+
 	FrameStartPos.x = XDiff >= 0 ? FrameStartPos.x : SequenceImageSize.x - 0.1f;
 	FrameStartPos.y = YDiff >= 0 ? SequenceImageSize.y - FrameStartPos.y : 0;
 
 	Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
 	XDiff               = SequenceImageSize.x - FrameEndPos.x;
 	YDiff               = SequenceImageSize.y - FrameEndPos.y;
+
+	FrameEndPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameEndPos.x;
+	FrameEndPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameEndPos.y;
+
 	FrameEndPos.x       = XDiff > 0 ? FrameEndPos.x : SequenceImageSize.x - 0.1f;
 	FrameEndPos.y       = YDiff > 0 ? SequenceImageSize.y - FrameEndPos.y : 0;
 
