@@ -440,7 +440,9 @@ void CSpriteEditWindow::DeleteFrameButton()
 		int UpdatedSelectIndex = m_AnimationFrameList->GetSelectIndex();
 		AnimationFrameData NFrameData = m_Animation->GetCurrentAnimation()->GetFrameData(UpdatedSelectIndex);
 		Vector2 StartPos = NFrameData.Start;
+		StartPos.y = (float)Sequence->GetTexture()->GetHeight() - StartPos.y;
 		Vector2 EndPos   = NFrameData.Start + NFrameData.Size;
+		EndPos.y = (float)Sequence->GetTexture()->GetHeight() - EndPos.y;
 		CEditorManager::GetInst()->GetDragObject()->SetStartPos(StartPos);
 		CEditorManager::GetInst()->GetDragObject()->SetEndPos(EndPos);
 	}
