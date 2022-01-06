@@ -258,7 +258,7 @@ void CColliderPixel::Render()
 	if (m_PrevCollisionList.empty())
 		m_CBuffer->SetColliderColor(Vector4(0.f, 1.f, 0.f, 1.f));
 	else
-		m_CBuffer->SetColliderColor(Vector4(0.f, 1.f, 0.f, 1.f));
+		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
 
 	if (m_MouseCollision)
 		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
