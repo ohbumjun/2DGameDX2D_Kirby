@@ -77,6 +77,11 @@ public :
 		m_Sequence->AddFrame(StartX, StartY, SizeX, SizeY);
 	}
 
+	void SetFrame(int Frame)
+{
+		m_Frame = 0;
+}
+
 	void ResetFrame()
 	{
 		m_Frame = 0;

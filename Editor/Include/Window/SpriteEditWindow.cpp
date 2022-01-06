@@ -406,7 +406,46 @@ void CSpriteEditWindow::DeleteFrameButton()
 	Sequence->DeleteFrame(SelectedFrameIdx);
 
 	// Update Select Idx Info Of m_AnimationFrameList
-	m_AnimationFrameList->SetSelectIndex(m_AnimationFrameList->GetSelectIndex() - 1);
+	int SelectedFrameListIndex = m_AnimationFrameList->GetSelectIndex();
+
+
+	if (SelectedFrameIdx == 0)
+	{
+		if (m_AnimationFrameList->GetItemCount() > 1)
+		{
+			// 0 이라면, 만약 2개 이상의 Frame이 Add된 상태라면, 지운 다음 녀석, 즉, 다시 0을 가리키게 한다 ( 1에서 0이 된 녀석 )
+			// 아무것도 안하면 0을 가리키게 될 것이다. 
+			m_AnimationFrameList->SetSelectIndex(m_AnimationFrameList->GetSelectIndex());
+		}
+		else
+		{
+			// 그게 아니라면, 다 지워진 것 --> Clear 해준다.
+			ClearFrameButton();
+			return;
+		}
+	}
+	else
+	{
+		// 1 이상의 수라면, -1을 해준다. 
+		m_AnimationFrameList->SetSelectIndex(m_AnimationFrameList->GetSelectIndex() - 1);
+		
+	}
+
+	// Set FrameData To 0
+	if (m_Animation && m_Animation->GetCurrentAnimation())
+	{
+		m_Animation->GetCurrentAnimation()->SetFrame(0);
+
+		// Update DragObj Start, End Info
+		int UpdatedSelectIndex = m_AnimationFrameList->GetSelectIndex();
+		AnimationFrameData NFrameData = m_Animation->GetCurrentAnimation()->GetFrameData(UpdatedSelectIndex);
+		Vector2 StartPos = NFrameData.Start;
+		Vector2 EndPos   = NFrameData.Start + NFrameData.Size;
+		CEditorManager::GetInst()->GetDragObject()->SetStartPos(StartPos);
+		CEditorManager::GetInst()->GetDragObject()->SetEndPos(EndPos);
+	}
+
+
 
 	// If No Frame Left, Set Default Texture
 	if (Sequence->GetFrameCount() == 0)
@@ -425,6 +464,10 @@ void CSpriteEditWindow::DeleteFrameButton()
 			continue;
 		m_AnimationFrameList->SetItem(i, std::to_string(i));
 	}
+
+	// Stop Animation
+	if (m_Animation)
+		m_Animation->Stop();
 
 	return;
 }
@@ -457,6 +500,10 @@ void CSpriteEditWindow::ClearFrameButton()
 
 	// Set Default Image 
 	m_SpriteSampled->SetTexture("DefaultUI");
+
+	// Update Drag Object Pos
+	CEditorManager::GetInst()->GetDragObject()->SetStartPos(Vector2(0.f, 0.f));
+	CEditorManager::GetInst()->GetDragObject()->SetEndPos(Vector2(0.f, 0.f));
 }
 
 void CSpriteEditWindow::EditFrameButton()

@@ -77,16 +77,15 @@ public :
 		m_Sequence->AddFrame(StartX, StartY, SizeX, SizeY);
 	}
 
+	void SetFrame(int Frame)
+{
+		m_Frame = 0;
+}
+
 	void ResetFrame()
 	{
 		m_Frame = 0;
 		m_Sequence->ClearFrame();
-	}
-
-	void DeleteFrame(int Frame)
-	{
-		m_Sequence->DeleteFrame(Frame);
-		m_Frame = Frame - 1;
 	}
 
 	bool Save(FILE* pFile);
