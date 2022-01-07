@@ -151,7 +151,7 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(175.f);
+	Line->SetOffsetX(180.f);
 
 	Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteFrameButton);
@@ -673,9 +673,6 @@ void CSpriteEditWindow::LoadSequence()
 		m_Sprite->SetTexture(LoadedSequence->GetTexture());
 
 		// m_Sprite 의 Start, EndPos 세팅 ?
-
-		// 새로운 Seq를 Load 하는 것이므로 m_AnimationFrameList 를 비워준다
-		m_AnimationFrameList->Clear();
 
 		// 해당 Seq의 Animation 들을 m_AnimationFrameList에 추가
 		size_t  Size = LoadedSequence->GetFrameCount();
