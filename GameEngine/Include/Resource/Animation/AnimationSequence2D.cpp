@@ -216,7 +216,7 @@ bool CAnimationSequence2D::Load(FILE* pFile)
 	fread(&FrameCount, sizeof(int), 1, pFile);
 	if (FrameCount > 0)
 	{
-		m_vecFrameData.resize((const size_t)FrameCount);
+		m_vecFrameData.resize((const size_t)FrameCount) ;
 		fread(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
 	}
 	else
