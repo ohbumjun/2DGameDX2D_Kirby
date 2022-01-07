@@ -85,6 +85,15 @@ public :
 		m_Sequence->AddFrame(StartX, StartY, SizeX, SizeY);
 	}
 
+	void SetLoop(bool State)
+{
+		m_Loop = State;
+}
+	void SetReverse(bool State)
+{
+		m_Reverse = State;
+}
+
 	void SetFrame(int Frame)
 {
 		m_Frame = 0;

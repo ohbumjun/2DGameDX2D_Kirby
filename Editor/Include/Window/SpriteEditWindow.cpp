@@ -119,6 +119,7 @@ bool CSpriteEditWindow::Init()
 	m_AnimationLoop->SetHideName(true);
 	m_AnimationLoop->AddItem("True");
 	m_AnimationLoop->AddItem("False");
+	m_AnimationLoop->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurrentAnimationLoop);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
@@ -127,6 +128,7 @@ bool CSpriteEditWindow::Init()
 	m_AnimationReverse->SetHideName(true);
 	m_AnimationReverse->AddItem("True");
 	m_AnimationReverse->AddItem("False");
+	m_AnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurrentAnimationReverse);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(310.f);
@@ -599,6 +601,22 @@ void CSpriteEditWindow::StopAnimationButton()
 	m_Animation->Stop();
 }
 
+void CSpriteEditWindow::SetCurrentAnimationLoop(int Index, const char* Text)
+{
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+	m_AnimationLoop->SetSelectIndex(Index);
+	m_Animation->GetCurrentAnimation()->SetLoop(true);
+}
+
+void CSpriteEditWindow::SetCurrentAnimationReverse(int Index, const char* Text)
+{
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+	m_AnimationReverse->SetSelectIndex(1 - Index);
+	m_Animation->GetCurrentAnimation()->SetReverse(true);
+}
+
 void CSpriteEditWindow::SaveSequence()
 {
 	if (m_AnimationList->GetSelectIndex() < 0)
@@ -875,15 +893,38 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	m_SpriteObject->GetSpriteComponent()->SetTexture(MaterialTextureIdx, ChangedSequenceTexture);
 	m_SpriteObject->SetWorldScale((float)(ChangedSequenceTexture->GetWidth()),(float)(ChangedSequenceTexture->GetHeight()), 1.f);
 
+	// 현재 애니메이션으로 세팅 
+	m_Animation->SetCurrentAnimation(ChangedSequenceName);
+
+	// Loop, Reverse 세팅
+	bool Loop = m_Animation->GetCurrentAnimation()->IsLoop();
+	bool Reverse = m_Animation->GetCurrentAnimation()->IsReverse();
+	m_AnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+	m_AnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
+
 	// m_Sprite의 Texture 바꿔주기 
 	m_Sprite->SetTexture(ChangedSequenceTexture);
 
-	// AnimationFrameList 안에 있는 내용 모두 다시 세팅하기 
-	m_AnimationFrameList->Clear();
-
-	// 해당 Sequence에 대해서 추가해놓은 Frame정보가 없다면 
+	// 해당 Sequence에 대해서 추가해놓은 Frame정보가 없다면 -- Clear 세팅
 	if (ChangedSequence->GetFrameCount() <= 0)
+	{
+		// Animation Sequence2D Data Set Frame To 0
+		m_Animation->GetCurrentAnimation()->ResetFrame();
+
+		// Clear Texts
+		m_AnimationFrameList->Clear();
+
+		// Set Idx 
+		m_AnimationFrameList->SetSelectIndex(-1);
+
+		// Set Default Image 
+		m_SpriteSampled->SetTexture("DefaultUI");
+
+		// Update Drag Object Pos
+		CEditorManager::GetInst()->GetDragObject()->SetStartPos(Vector2(0.f, 0.f));
+		CEditorManager::GetInst()->GetDragObject()->SetEndPos(Vector2(0.f, 0.f));
 		return;
+	}
 
 	// 새로운 Frame 정보들 추가하기 
 	char IndexChar[1024];
@@ -893,17 +934,29 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 		m_AnimationFrameList->AddItem(IndexChar);
 	}
 
-	// 첫번째 Seq로 세팅하기 
-	AnimationFrameData FrameData = ChangedSequence->GetFrameData(0);
+	// 첫번째 AnimationFrame으로 선택한 것으로 세팅
 	m_AnimationFrameList->SetSelectIndex(0);
 
-	// Texture 세팅 
-	m_SpriteSampled->SetTexture(ChangedSequenceTexture);
-	m_SpriteSampled->SetImageStart(FrameData.Start);
-	m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
+	// 첫번째 Seq로 세팅하기 
+	AnimationFrameData NewFrameData = ChangedSequence->GetFrameData(0);
+	Vector2 NewFrameStartPos = NewFrameData.Start;
+	Vector2 NewFrameEndPos   = NewFrameData.Start + NewFrameData.Size;
+	m_AnimationFrameList->SetSelectIndex(0);
 
-	// 현재 애니메이션으로 세팅 
-	m_Animation->SetCurrentAnimation(ChangedSequenceName);
+	// m_SpriteSampled Texture 세팅 
+	m_SpriteSampled->SetTexture(ChangedSequenceTexture);
+	m_SpriteSampled->SetImageStart(NewFrameStartPos);
+	m_SpriteSampled->SetImageEnd(NewFrameEndPos);
+
+	// DragObject의 Image Pos 세팅
+	NewFrameStartPos.y = ChangedSequenceTexture->GetHeight() - NewFrameStartPos.y;
+	NewFrameEndPos.y = ChangedSequenceTexture->GetHeight() - NewFrameEndPos.y;
+
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	DragObject->SetStartPos(NewFrameStartPos);
+	DragObject->SetEndPos(NewFrameEndPos);
+
+
 }
 
 void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)

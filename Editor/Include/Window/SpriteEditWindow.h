@@ -42,6 +42,9 @@ public:
 	void EditFrameButton();
 	void PlayAnimationButton();
 	void StopAnimationButton();
+public :
+	void SetCurrentAnimationLoop(int, const char*);
+	void SetCurrentAnimationReverse(int, const char*);
 public:
 	void SaveSequence();
 	void LoadSequence();
