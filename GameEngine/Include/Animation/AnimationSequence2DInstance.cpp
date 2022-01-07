@@ -49,9 +49,20 @@ CAnimationSequence2DInstance::~CAnimationSequence2DInstance()
 	}
 }
 
+void CAnimationSequence2DInstance::GatherSequenceNames(std::vector<std::string>& vecNames)
+{
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	for (; iter  != iterEnd; ++iter)
+	{
+		vecNames.push_back(iter->second->m_Sequence->GetName());
+	}
+}
+
 void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
-                                                const std::string& AnimationName, bool Loop,
-                                                float              PlayTime, float     PlayScale, bool Reverse)
+												const std::string& AnimationName, bool Loop,
+												float              PlayTime, float     PlayScale, bool Reverse)
 {
 	CAnimationSequence2DData* Anim = FindAnimation(AnimationName);
 
@@ -272,7 +283,7 @@ class CAnimation2DConstantBuffer*                          m_CBuffer;
 	fwrite(&m_TypeID, sizeof(size_t), 1, pFile);
 	fwrite(&m_PlayAnimation, sizeof(bool), 1, pFile);
 
-	int Length = m_Name.length();
+	int Length = (int)m_Name.length();
 	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
@@ -299,7 +310,7 @@ class CAnimation2DConstantBuffer*                          m_CBuffer;
 	if (m_CurrentAnimation)
 	{
 		// Current Anim Length
-		Length = m_CurrentAnimation->m_Name.length();
+		Length = (int)m_CurrentAnimation->m_Name.length();
 		fwrite(&Length, sizeof(int), 1, pFile);
 		fwrite(m_CurrentAnimation->m_Name.c_str(), sizeof(char), Length, pFile);
 	}

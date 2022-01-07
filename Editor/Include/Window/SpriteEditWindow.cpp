@@ -766,6 +766,93 @@ void CSpriteEditWindow::LoadAnimation()
 		if (!m_Animation)
 			m_Animation = new CAnimationSequence2DInstance;
 		m_Animation->LoadFullPath(FilePathMultibyte);
+
+		// CurrentAnimation 이 없다면, 아래의 과정을 진행하지 않는다
+		if (!m_Animation->GetCurrentAnimation())
+			return;
+
+		CTexture* AnimTexture = m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetTexture();
+
+		// Current Animation이 있다면, 해당 Animation 의 Texture를 SpriteEditObject의 Texture로 세팅한다.
+		// 해당 Seq를 Sprite Edit Object로 세팅
+		if (!m_SpriteObject)
+		{
+			m_SpriteObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteEditObject>("SpriteEditObject");
+			m_SpriteObject->SetEditWindow(this);
+		}
+		m_SpriteObject->SetTexture(AnimTexture);
+
+		// 마찬가지로, Sprite의 Texture로 세팅한다.
+		m_Sprite->SetTexture(AnimTexture);
+
+		// AnimList 모두를 지워준다
+		m_AnimationList->Clear();
+
+		// AnimList 에 모든 Seq 내용을 추가해준다
+		int Size = m_Animation->GetAnimationCount();
+		std::vector<std::string> vecSeqNames;
+		m_Animation->GatherSequenceNames(vecSeqNames);
+		for (int i = 0; i < Size; i++)
+		{
+			m_AnimationList->AddItem(vecSeqNames[i]);
+		}
+
+		// 제일 첫번째 Seq를 선택된 녀석으로 세팅한다.
+		m_AnimationList->SetSelectIndex(0);
+
+		// Animatino Frame List를 비워준다.
+		m_AnimationFrameList->Clear();
+
+		int FrameCount = (int)m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetFrameCount();
+
+
+		if (FrameCount > 0)
+		{
+			// 해당 Seq의 Frame Data 목록을 Animation FrameList에 채워준다.
+			for (int i = 0; i < FrameCount; i++)
+			{
+				m_AnimationFrameList->AddItem(std::to_string(i));
+			}
+
+			// Frame이 존재한다면, SpriteSampled의 Texture를 현재 Current Animation의 Texture로 세팅해준다.
+			m_SpriteSampled->SetTexture(AnimTexture);
+
+			// 첫번째 Frame을 SpriteSampled 의 Image Start, End로 세팅한다.
+			AnimationFrameData FirstFrame = m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(0);
+			Vector2 FrameStartPos = FirstFrame.Start;
+			Vector2 FrameEndPos   = FirstFrame.Start + FirstFrame.Size;
+
+			m_SpriteSampled->SetImageStart(FrameStartPos);
+			m_SpriteSampled->SetImageEnd(FrameEndPos);
+
+			// Frame이 존재한다면, 첫번째 Frame을 선택한 상태로 둔다.
+			m_AnimationFrameList->SetSelectIndex(0);
+
+			// Drag Object 세팅
+			// 해당 Frame의 St, End를 이용하여 DragObject 를 그리기
+			FrameStartPos.y = AnimTexture->GetHeight() - FrameStartPos.y;
+			FrameEndPos.y = AnimTexture->GetHeight() - FrameEndPos.y;
+
+			if (!CEditorManager::GetInst()->GetDragObject())
+			{
+				// 초기화 안되어 있다면 초기화 
+				CEditorManager::GetInst()->SetEditMode(EditMode::Sprite);
+			}
+			CEditorManager::GetInst()->GetDragObject()->SetStartPos(FrameStartPos);
+			CEditorManager::GetInst()->GetDragObject()->SetEndPos(FrameEndPos);
+
+		}
+
+		// Loop, Reverse 설정을 해준다.
+		bool Loop     = m_Animation->GetCurrentAnimation()->IsLoop();
+		bool Reverse = m_Animation->GetCurrentAnimation()->IsReverse();
+		m_AnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+		m_AnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
+
+
+		// Animation을 시작한다..
+		m_Animation->Play();
+
 	}
 }
 

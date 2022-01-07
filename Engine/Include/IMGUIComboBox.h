@@ -42,6 +42,11 @@ public:
 	{
 		return static_cast<int>(m_vecItem.size());
 	}
+public :
+	void SetSelectIndex(int Index)
+	{
+		m_SelectIndex = Index;
+	}
 
 public:
 	void AddItem(const std::string& Item)

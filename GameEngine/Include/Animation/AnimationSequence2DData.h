@@ -26,9 +26,9 @@ private:
 	~CAnimationSequence2DData();
 private:
 	std::string                            m_Name;
-	std::string m_SequenceName;
+	std::string							   m_SequenceName;
 	CSharedPtr<class CAnimationSequence2D> m_Sequence;
-	int                                    m_Frame;     // 현재 애니메이션 프레임
+	int                                       m_Frame;     // 현재 애니메이션 프레임
 	float                                  m_Time;      // 애니메이션 동작 시간
 	float                                  m_FrameTime; // 1프레임당 시간
 	float                                  m_PlayTime;
@@ -38,6 +38,14 @@ private:
 	std::function<void()>                  m_EndFunction;
 	std::vector<Animation2DNotify*>        m_vecNotify;
 public :
+	bool IsLoop() const
+{
+		return m_Loop;
+}
+	bool IsReverse() const
+{
+		return m_Reverse;
+}
 	std::string GetName() const
 {
 		return m_Name;

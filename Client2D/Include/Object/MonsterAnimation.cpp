@@ -16,6 +16,8 @@ bool CMonsterAnimation::Init()
 		return false;
 
 	AddAnimation("PlayerIdle", "Idle");
+
+	return true;
 }
 
 void CMonsterAnimation::Update(float DeltaTime)

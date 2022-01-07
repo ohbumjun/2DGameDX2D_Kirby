@@ -55,6 +55,8 @@ public:
 	{
 		return m_TypeID;
 	}
+public :
+	void GatherSequenceNames(std::vector<std::string>& vecNames);
 
 public:
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, float PlayTime = 1.f,
