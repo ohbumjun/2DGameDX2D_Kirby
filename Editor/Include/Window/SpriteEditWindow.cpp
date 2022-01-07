@@ -141,11 +141,23 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::StopAnimationButton);
 
 	// ==============================
+	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteSequence);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearSequence);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(170.f);
+
 	Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteFrameButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(90.f);
+	Line->SetOffsetX(260.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearFrameButton);
@@ -262,6 +274,12 @@ void CSpriteEditWindow::SpriteEditButton()
 	}
 }
 
+void CSpriteEditWindow::DeleteSequence()
+{}
+
+void CSpriteEditWindow::ClearSequence()
+{}
+
 void CSpriteEditWindow::AddAnimationButton()
 {
 	// Sprite Object가 있을 때에만 세팅한다.
@@ -308,7 +326,6 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	// Animation List의 내용이 선택되어 있어야 한다.
 	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
-
 
 	float                 XDiff           = -1, YDiff = -1;
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
@@ -587,7 +604,7 @@ void CSpriteEditWindow::SaveSequence()
 	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
 
-	if (!m_Animation)
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
 	TCHAR FilePath[MAX_PATH] = {};
@@ -683,6 +700,7 @@ void CSpriteEditWindow::LoadSequence()
 			m_SpriteSampled->SetImageEnd(EndPos);
 
 			// 해당 Frame의 St, End를 이용하여 DragObject 를 그리기
+			StartPos.y = LoadedSequence->GetTexture()->GetHeight() - StartPos.y;
 			EndPos.y = LoadedSequence->GetTexture()->GetHeight() - EndPos.y;
 			if (!CEditorManager::GetInst()->GetDragObject())
 			{
