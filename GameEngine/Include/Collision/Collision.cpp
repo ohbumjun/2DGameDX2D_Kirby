@@ -281,7 +281,7 @@ bool CCollision::CollisionBox2DToPixel(CollisionResult& SrcResult, CollisionResu
 			// 현재 위치와 Box가 충돌하는지 살핀다
 			// 이번에는 World 좌표 기준으로 판단해야 하므로 y를 한번 더 뒤집고
 			// Camera의 World 좌표를 더해준다.
-			Vector2 PixelWorldPos = LB + Vector2(col, (float)Dest.Height - row);
+			Vector2 PixelWorldPos = LB + Vector2((float)col, (float)Dest.Height - row);
 			if (!CollisionBox2DToPoint(SrcResult, DestResult, Dest.Box, PixelWorldPos))
 				continue;
 
@@ -434,7 +434,7 @@ bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResu
 	Vector2 NewPointPos = Point - Info.Min;
 	NewPointPos.y = Info.Height - NewPointPos.y;
 
-	int Index = (NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4);
+	int Index = (int)(NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4);
 	bool Collision = false;
 
 	switch (Info.Type)

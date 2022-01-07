@@ -60,6 +60,19 @@ void CAnimationSequence2DInstance::GatherSequenceNames(std::vector<std::string>&
 	}
 }
 
+void CAnimationSequence2DInstance::AddSequence2DToScene()
+{
+	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		Resource->AddSequence2D(iter->second->GetAnimationSequence());
+	}
+}
+
 void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 												const std::string& AnimationName, bool Loop,
 												float              PlayTime, float     PlayScale, bool Reverse)

@@ -207,8 +207,18 @@ bool CSceneResource::CreateAnimationSequence2D(const std::string& Name, CTexture
 	return true;
 }
 
+void CSceneResource::AddSequence2D(CAnimationSequence2D* Sequence)
+{
+	CAnimationSequence2D* Anim = FindAnimationSequence2D(Sequence->GetName());
+
+	if (Anim)
+		return;
+
+	m_mapSequence2D.insert(std::make_pair(Sequence->GetName(), Sequence));
+}
+
 void CSceneResource::AddAnimationSequence2DFrame(const std::string& Name, const Vector2& Start,
-                                                 const Vector2&     Size)
+												 const Vector2&     Size)
 {
 	CAnimationSequence2D* Anim = FindAnimationSequence2D(Name);
 

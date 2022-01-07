@@ -57,7 +57,7 @@ public:
 	}
 public :
 	void GatherSequenceNames(std::vector<std::string>& vecNames);
-
+	void AddSequence2DToScene();
 public:
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, float PlayTime = 1.f,
 	                  float              PlayScale                                        = 1.f, bool Reverse = false);

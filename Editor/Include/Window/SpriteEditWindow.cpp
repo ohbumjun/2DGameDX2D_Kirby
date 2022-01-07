@@ -797,6 +797,9 @@ void CSpriteEditWindow::LoadAnimation()
 			m_AnimationList->AddItem(vecSeqNames[i]);
 		}
 
+		// 현재 Scene에 모든 Sequence2D 내용을 추가한다.
+		m_Animation->AddSequence2DToScene();
+
 		// 제일 첫번째 Seq를 선택된 녀석으로 세팅한다.
 		m_AnimationList->SetSelectIndex(0);
 
@@ -804,7 +807,6 @@ void CSpriteEditWindow::LoadAnimation()
 		m_AnimationFrameList->Clear();
 
 		int FrameCount = (int)m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetFrameCount();
-
 
 		if (FrameCount > 0)
 		{
@@ -849,7 +851,6 @@ void CSpriteEditWindow::LoadAnimation()
 		m_AnimationLoop->SetSelectIndex(Loop ? 0 : 1);
 		m_AnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
 
-
 		// Animation을 시작한다..
 		m_Animation->Play();
 
@@ -862,6 +863,10 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
 	std::string           ChangedSequenceName    = m_AnimationList->GetItem(Index);
 	CAnimationSequence2D* ChangedSequence        = Resource->FindAnimationSequence2D(ChangedSequenceName);
+
+	if (!ChangedSequence)
+		return;
+
 	CTexture*             ChangedSequenceTexture = ChangedSequence->GetTexture();
 	Vector2               FrameStartPos          = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
 	int                   MaterialTextureIdx     = 0;
@@ -906,6 +911,8 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
 	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
+	if (!Sequence)
+		return;
 	CTexture*             SequenceTexture = Sequence->GetTexture();
 	AnimationFrameData    FrameData       = Sequence->GetFrameData(Index);
 
