@@ -254,20 +254,34 @@ CAnimationSequence2DData* CAnimationSequence2DInstance::GetCurrentAnimation() co
 	return nullptr;
 }
 
-bool CAnimationSequence2DInstance::Save(const char* FullPath)
+bool CAnimationSequence2DInstance::SaveFullPath(const char* FullPath)
 {
 	FILE* pFile;
 	fopen_s(&pFile, FullPath, "wb");
 	if (!pFile)
 		return false;
 
-	int mapSize = static_cast<int>(m_mapAnimation.size());
-	fwrite(&mapSize, sizeof(int), 1, pFile);
+	/*
+class CSpriteComponent*                                    m_Owner;
+class CScene*                                              m_Scene;
+std::unordered_map<std::string, CAnimationSequence2DData*> m_mapAnimation;
+CAnimationSequence2DData*                                  m_CurrentAnimation;
+class CAnimation2DConstantBuffer*                          m_CBuffer;
+ */
+
+	fwrite(&m_TypeID, sizeof(size_t), 1, pFile);
+	fwrite(&m_PlayAnimation, sizeof(bool), 1, pFile);
+
+	int Length = m_Name.length();
+	fwrite(&Length, sizeof(int), 1, pFile);
+	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
+
+	size_t mapSize = m_mapAnimation.size();
+	fwrite(&mapSize, sizeof(size_t), 1, pFile);
 
 	auto iter                       = m_mapAnimation.begin();
 	auto iterEnd                    = m_mapAnimation.end();
 	size_t  SequenceDataNameLength     = -1;
-	char SequenceDataName[MAX_PATH] = {};
 	for (; iter != iterEnd; ++iter)
 	{
 		SequenceDataNameLength = strlen(iter->first.c_str());
@@ -284,44 +298,35 @@ bool CAnimationSequence2DInstance::Save(const char* FullPath)
 
 	if (m_CurrentAnimation)
 	{
-		// CurName이 저장된 Key이름을 찾는다
-		auto iter = m_mapAnimation.begin();
-		auto iterEnd = m_mapAnimation.end();
-
-		for (; iter != iterEnd; ++iter)
-		{
-			if (iter->second->GetName() == m_CurrentAnimation->GetName())
-			{
-				int CurAnimNameKeyLength = (int)iter->first.length();
-				char CurAnimNameKey[MAX_PATH] = {};
-				fwrite(m_CurrentAnimation->GetName().c_str(), sizeof(char), CurAnimNameKeyLength, pFile);
-				m_CurrentAnimation->Save(pFile);
-				break;
-			}
-		}
+		// Current Anim Length
+		Length = m_CurrentAnimation->m_Name.length();
+		fwrite(&Length, sizeof(int), 1, pFile);
+		fwrite(m_CurrentAnimation->m_Name.c_str(), sizeof(char), Length, pFile);
 	}
-
-	// CBuffer
-	bool CBufferEnable = false;
-	if (m_CBuffer)
-		CBufferEnable = true;
-	if (m_CBuffer)
-		m_CBuffer->Save(pFile);
 
 	fclose(pFile);
 
 	return true;
 }
 
-bool CAnimationSequence2DInstance::Load(const char* FullPath)
+bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile;
 	fopen_s(&pFile, FullPath, "rb");
 	if (!pFile)
 		return false;
 
-	int MapSize = -1;
-	fread(&MapSize, sizeof(int), 1, pFile);
+	fread(&m_TypeID, sizeof(size_t), 1, pFile);
+	fread(&m_PlayAnimation, sizeof(bool), 1, pFile);
+
+	int Length = 0;
+	fread(&Length, sizeof(int), 1, pFile);
+	char Name[MAX_PATH] = {};
+	fread(Name, sizeof(char), Length, pFile);
+	m_Name = Name;
+
+	size_t MapSize = -1;
+	fread(&MapSize, sizeof(size_t), 1, pFile);
 
 	// -1을 해주는 이유는 CurrentAnimation은 따로 Load하기 위함이다.
 	int SequenceDataKeyNameLength = -1;
@@ -337,7 +342,7 @@ bool CAnimationSequence2DInstance::Load(const char* FullPath)
 
 		// CAnimationSequence2DData 를 저장하기 ===============================
 		CAnimationSequence2DData* Sequence2DData = new CAnimationSequence2DData;
-		Sequence2DData->Load(pFile, FullPath);
+		Sequence2DData->Load(pFile);
 
 		m_mapAnimation.insert(std::make_pair(SequenceData2DNameKey, Sequence2DData));
 	}
@@ -348,32 +353,12 @@ bool CAnimationSequence2DInstance::Load(const char* FullPath)
 
 	if (CurrentAnimEnable)
 	{
-		int CurAnimNameKeyLength = -1;
-		fread(&CurAnimNameKeyLength, sizeof(int), 1, pFile);
-		char CurAnimNameKey[MAX_PATH] = {};
-		fread(CurAnimNameKey, sizeof(char), CurAnimNameKeyLength, pFile);
+		int CurAnimNameLength = -1;
+		fread(&CurAnimNameLength, sizeof(int), 1, pFile);
+		char CurAnimName[MAX_PATH] = {};
+		fread(CurAnimName, sizeof(char), CurAnimNameLength, pFile);
 
-		auto iter = m_mapAnimation.begin();
-		auto iterEnd = m_mapAnimation.end();
-
-		for (;iter != iterEnd; ++iter)
-		{
-			if (iter->first == CurAnimNameKey)
-			{
-				m_CurrentAnimation = iter->second;
-				break;
-			}
-		}
-	}
-
-	bool CBufferEnable = false;
-	fread(&CBufferEnable, sizeof(bool), 1, pFile);
-
-	if (CBufferEnable)
-	{
-		CAnimation2DConstantBuffer* ConstantBuffer = new CAnimation2DConstantBuffer;
-		ConstantBuffer->Init();
-		ConstantBuffer->Load(pFile);
+		m_CurrentAnimation = FindAnimation(CurAnimName);
 	}
 
 	fclose(pFile);

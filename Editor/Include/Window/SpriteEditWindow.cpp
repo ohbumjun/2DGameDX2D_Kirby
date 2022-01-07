@@ -147,7 +147,7 @@ bool CSpriteEditWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
 
-	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("ClearSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -719,7 +719,10 @@ void CSpriteEditWindow::LoadSequence()
 
 void CSpriteEditWindow::SaveAnimation()
 {
-	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+	if (!m_Animation)
+		return;
+
+	if (!m_Animation->GetCurrentAnimation())
 		return;
 
 	TCHAR FiilePath[MAX_PATH] = {};
@@ -738,7 +741,7 @@ void CSpriteEditWindow::SaveAnimation()
 		int  ConvertLength               = WideCharToMultiByte(CP_ACP, 0, FiilePath, -1, nullptr, 0, nullptr, nullptr);
 		WideCharToMultiByte(CP_ACP, 0, FiilePath, -1, FilePathMultibyte, ConvertLength, nullptr, nullptr);
 
-		m_Animation->Save(FilePathMultibyte);
+		m_Animation->SaveFullPath(FilePathMultibyte);
 	}
 }
 
@@ -760,7 +763,9 @@ void CSpriteEditWindow::LoadAnimation()
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 
-		m_Animation->Load(FilePathMultibyte);
+		if (!m_Animation)
+			m_Animation = new CAnimationSequence2DInstance;
+		m_Animation->LoadFullPath(FilePathMultibyte);
 	}
 }
 

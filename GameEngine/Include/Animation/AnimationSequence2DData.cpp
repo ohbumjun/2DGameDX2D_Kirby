@@ -35,6 +35,7 @@ bool CAnimationSequence2DData::Save(FILE* pFile)
 	bool SequenceEnable = false;
 	if (m_Sequence)
 		SequenceEnable = true;
+	fwrite(&SequenceEnable, sizeof(bool), 1, pFile);
 
 	if (m_Sequence)
 	{
@@ -54,6 +55,8 @@ bool CAnimationSequence2DData::Save(FILE* pFile)
 		NameLength = (int)SequenceName.length();
 		fwrite(&NameLength, sizeof(int), 1, pFile);
 		fwrite(SequenceName.c_str(), sizeof(char), NameLength, pFile);
+
+		m_Sequence->Save(pFile);
 	}
 
 	return true;
@@ -69,6 +72,8 @@ bool CAnimationSequence2DData::Load(FILE* pFile)
 	m_Name = Name;
 
 	bool SequenceEnable = false;
+	if (m_Sequence)
+		SequenceEnable = true;
 	fread(&SequenceEnable, sizeof(bool), 1, pFile);
 
 	if (SequenceEnable)
@@ -90,56 +95,21 @@ bool CAnimationSequence2DData::Load(FILE* pFile)
 		fread(&m_Loop, sizeof(bool), 1, pFile);
 		fread(&m_Reverse, sizeof(bool), 1, pFile);
 
-		fread(&NameLength, sizeof(int), 1, pFile);
-		fread(Name, sizeof(char), NameLength, pFile);
+		int SeqNameLength = -1;
+		fread(&SeqNameLength, sizeof(int), 1, pFile);
+
+		char SeqName[MAX_PATH] = {};
+		fread(SeqName, sizeof(char), NameLength, pFile);
+
 		m_SequenceName = Name;
+		m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(m_SequenceName);
+
+		if (!m_Sequence)
+		{
+			m_Sequence = new CAnimationSequence2D;
+		}
+		m_Sequence->Load(pFile);
 	}
 
 	return true;
-}
-
-bool CAnimationSequence2DData::Load(FILE* pFile, const char* FullPath)
-{
-	int SequenceDataNameLength = -1;
-	char SequenceAnimName[MAX_PATH] = {};
-
-	fread(&SequenceDataNameLength, sizeof(int), 1, pFile);
-	fread(SequenceAnimName, sizeof(char), SequenceDataNameLength, pFile);
-	m_Name = SequenceAnimName;
-
-	bool Sequence2DEnable = false;
-	fread(&Sequence2DEnable, sizeof(bool), 1, pFile);
-
-	int Frame = 0;
-	float CurTime = 0, FrameTime = -1, PlayTime = -1, PlayScale = -1;
-	bool Loop = false, Reverse = false;
-
-	// --- CAnimationSequence2D
-	if (Sequence2DEnable)
-	{
-		CAnimationSequence2D* Sequenc2D = new CAnimationSequence2D;
-		Sequenc2D->Load(pFile);
-
-		// Load 한 Sequence2D 정보를 가져오기 
-		m_Sequence = Sequenc2D;
-
-		// Frame 정보 
-		fwrite(&Frame, sizeof(int), 1, pFile);
-		m_Frame = Frame;
-		fwrite(&CurTime, sizeof(float), 1, pFile);
-		m_Time = CurTime;
-		fwrite(&FrameTime, sizeof(float), 1, pFile);
-		m_FrameTime = FrameTime;
-		fwrite(&PlayTime, sizeof(float), 1, pFile);
-		m_PlayTime = PlayTime;
-		fwrite(&PlayScale, sizeof(float), 1, pFile);
-		m_PlayScale = PlayScale;
-		fwrite(&Loop, sizeof(bool), 1, pFile);
-		m_Loop = Loop;
-		fwrite(&Reverse, sizeof(bool), 1, pFile);
-		m_Reverse = Reverse;
-	}
-
-	return true;
-
 }

@@ -90,7 +90,6 @@ public :
 
 	bool Save(FILE* pFile);
 	bool Load(FILE* pFile);
-	bool Load(FILE* pFile, const char* FullPath);
 public:
 	template <typename T>
 	void SetEndFunction(T* Obj, void (T::*Func)())

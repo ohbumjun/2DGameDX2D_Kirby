@@ -260,13 +260,13 @@ void CTexture::ResetShader(int Register, int ShaderType, int Index)
 
 void CTexture::Save(FILE* pFile)
 {
-	int Length = static_cast<int>(m_Name.length());
+	int Length = (int)(m_Name.length());
 	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
 	fwrite(&m_ImageType, sizeof(Image_Type), 1, pFile);
 
-	int InfoCount = static_cast<int>(m_vecTextureInfo.size());
+	int InfoCount = (int)m_vecTextureInfo.size();
 	fwrite(&InfoCount, sizeof(int), 1, pFile);
 
 	for (size_t i = 0; i < m_vecTextureInfo.size(); i++)

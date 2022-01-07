@@ -106,17 +106,127 @@ void CAnimationSequence2D::SaveFullPath(const char* FullPath)
 
 void CAnimationSequence2D::Save(FILE* pFile)
 {
-	int Length = static_cast<int>(m_Name.length());
+	int Length = (int)(m_Name.length());
 	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
 	bool TexEnable = false;
 	if (m_Texture)
 		TexEnable = true;
+	fwrite(&TexEnable, sizeof(bool), 1, pFile);
 
 	if (m_Texture)
 		m_Texture->Save(pFile);
+
+	// FrameCount 정보 세팅
+	int FrameCount = (int)m_vecFrameData.size();
+	fwrite(&FrameCount, sizeof(int), 1, pFile);
+	if (FrameCount > 0)
+	{
+		fwrite(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
+	}
 }
+
+
+bool CAnimationSequence2D::Load(FILE* pFile)
+{
+	int Sequence2DNameLength = -1;
+	fread(&Sequence2DNameLength, sizeof(int), 1, pFile);
+
+	char Sequence2DName[MAX_PATH] = {};
+	fread(Sequence2DName, sizeof(char), Sequence2DNameLength, pFile);
+	m_Name = Sequence2DName;
+
+	bool Sequence2DTexEnable = false;
+	fread(&Sequence2DTexEnable, sizeof(bool), 1, pFile);
+
+	// ----- Texture
+	if (Sequence2DTexEnable)
+	{
+		int TextureNameLength = -1;
+		char TextureName[MAX_PATH] = {};
+		fread(&TextureNameLength, sizeof(int), 1, pFile);
+		fread(TextureName, sizeof(char), TextureNameLength, pFile);
+
+		Image_Type ImageType = Image_Type::Atlas;
+		fread(&ImageType, sizeof(Image_Type), 1, pFile);
+
+		int InfoCount = -1;
+		fread(&InfoCount, sizeof(int), 1, pFile);
+
+		std::vector<std::wstring> vecFullPath;
+		std::vector<std::wstring> vecFileName;
+		std::string PathName;
+
+		for (int i = 0; i < InfoCount; i++)
+		{
+			int PathLength = -1;
+			TCHAR FullPath[MAX_PATH] = {};
+			fread(&PathLength, sizeof(int), 1, pFile);
+			fread(FullPath, sizeof(TCHAR), PathLength, pFile);
+			vecFullPath.push_back(FullPath);
+
+			char Path[MAX_PATH] = {};
+			fread(&PathLength, sizeof(int), 1, pFile);
+			fread(Path, sizeof(char), PathLength, pFile);
+			PathName = Path;
+
+			TCHAR FileName[MAX_PATH] = {};
+			fread(&PathLength, sizeof(int), 1, pFile);
+			fread(FileName, sizeof(TCHAR), PathLength, pFile);
+			vecFileName.push_back(FileName);
+		}
+
+		switch (ImageType)
+		{
+		case Image_Type::Atlas:
+		{
+			if (vecFileName.size() == 1)
+			{
+				if (m_Scene)
+				{
+					m_Scene->GetResource()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+				}
+				else
+				{
+					CResourceManager::GetInst()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+				}
+			}
+		}
+		break;
+		case Image_Type::Frame:
+			break;
+		case Image_Type::Array:
+			break;
+		}
+		if (m_Scene)
+		{
+			m_Texture = m_Scene->GetResource()->FindTexture(TextureName);
+		}
+		else
+		{
+			m_Texture = CResourceManager::GetInst()->FindTexture(TextureName);
+		}
+
+		m_Texture->SetImageType(ImageType);
+	}
+
+	// FrameCount
+	int FrameCount = -1;
+	fread(&FrameCount, sizeof(int), 1, pFile);
+	if (FrameCount > 0)
+	{
+		m_vecFrameData.resize((const size_t)FrameCount);
+		fread(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
+	}
+	else
+	{
+		m_vecFrameData = {};
+	}
+
+	return true;
+}
+
 
 bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 {
@@ -230,87 +340,4 @@ bool CAnimationSequence2D::Load(const char* FileName, const std::string& PathNam
 	strcat_s(FileFullPath, FileName);
 
 	return LoadFullPath(FileFullPath);
-}
-
-bool CAnimationSequence2D::Load(FILE* pFile)
-{
-	int Sequence2DNameLength = -1;
-	fread(&Sequence2DNameLength, sizeof(int), 1, pFile);
-
-	char Sequence2DName[MAX_PATH] = {};
-	fread(Sequence2DName, sizeof(char), Sequence2DNameLength, pFile);
-	m_Name = Sequence2DName;
-
-	bool Sequence2DTexEnable = false;
-	fread(&Sequence2DTexEnable, sizeof(bool), 1, pFile);
-
-	// ----- Texture
-	if (Sequence2DTexEnable)
-	{
-		int TextureNameLength = -1;
-		char TextureName[MAX_PATH] = {};
-		fread(&TextureNameLength, sizeof(int), 1, pFile);
-		fread(TextureName, sizeof(char), MAX_PATH, pFile);
-
-		Image_Type ImageType;
-		fread(&ImageType, sizeof(Image_Type), 1, pFile);
-
-		int InfoCount = -1;
-		fread(&InfoCount, sizeof(int), 1, pFile);
-
-		std::vector<std::wstring> vecFullPath;
-		std::vector<std::wstring> vecFileName;
-		std::string PathName;
-
-		for (int i = 0; i < InfoCount; i++)
-		{
-			int PathLength = -1;
-			TCHAR FullPath[MAX_PATH] = {};
-			fread(&PathLength, sizeof(int), 1, pFile);
-			fread(FullPath, sizeof(TCHAR), PathLength, pFile);
-
-			char Path[MAX_PATH] = {};
-			fread(&PathLength, sizeof(int), 1, pFile);
-			fread(Path, sizeof(char), PathLength, pFile);
-			PathName = Path;
-
-			TCHAR FileName[MAX_PATH] = {};
-			fread(&PathLength, sizeof(TCHAR), 1, pFile);
-			fread(FileName, sizeof(TCHAR), PathLength, pFile);
-		}
-
-		switch (ImageType)
-		{
-		case Image_Type::Frame:
-		{
-			if (vecFileName.size() == 1)
-			{
-				if (m_Scene)
-				{
-					m_Scene->GetResource()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
-				}
-				else
-				{
-					CResourceManager::GetInst()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
-				}
-			}
-		}
-		break;
-		case Image_Type::Atlas:
-			break;
-		case Image_Type::Array:
-			break;
-		}
-	}
-
-	// FrameCount
-	int FrameCount = -1;
-	fread(&FrameCount, sizeof(int), 1, pFile);
-	if (FrameCount > 1)
-	{
-		m_vecFrameData.reserve((const size_t)FrameCount);
-		fread(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
-	}
-
-	return true;
 }

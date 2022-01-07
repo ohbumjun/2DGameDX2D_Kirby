@@ -13,6 +13,7 @@ public:
 
 protected:
 	size_t m_TypeID;
+	std::string m_Name;
 	bool                                                       m_PlayAnimation;
 	class CSpriteComponent*                                    m_Owner;
 	class CScene*                                              m_Scene;
@@ -69,8 +70,8 @@ public:
 	void                      ChangeAnimation(const std::string& Name);
 	bool                      CheckCurrentAnimation(const std::string& Name);
 	CAnimationSequence2DData* GetCurrentAnimation() const;
-	bool                      Save(const char* FullPath);
-	bool						Load(const char* FullPath);
+	bool                      SaveFullPath(const char* FullPath);
+	bool						LoadFullPath(const char* FullPath);
 public:
 	virtual void                          Start();
 	virtual bool                          Init();

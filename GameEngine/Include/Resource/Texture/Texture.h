@@ -88,6 +88,11 @@ public:
 	{
 		return m_vecTextureInfo.size();
 	}
+public :
+	void SetImageType(Image_Type Type)
+	{
+		m_ImageType = Type;
+	}
 
 	void AddTextureInfo(TextureResourceInfo* Info)
 	{
