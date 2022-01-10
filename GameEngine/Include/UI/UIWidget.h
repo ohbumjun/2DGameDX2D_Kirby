@@ -14,6 +14,10 @@ protected:
     class CScene* m_Scene;
     Vector2 m_Size;
     Vector2 m_Pos;
+    bool m_Start;
+    class CWidgetConstantBuffer* m_CBuffer;
+    CSharedPtr<class CShader> m_Shader;
+    CSharedPtr<class CMesh> m_Mesh;
 public :
     void SetSize(const Vector2& Size)
 {

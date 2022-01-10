@@ -5,6 +5,7 @@
 #include "PosMeshShader.h"
 #include "ColliderShader.h"
 #include "ColliderPixelShader.h"
+#include "WidgetConstantBuffer.h"
 
 CShaderManager::CShaderManager()
 {
@@ -32,6 +33,8 @@ bool CShaderManager::Init()
 	if (!CreateShader<CColliderPixelShader>("ColliderPixelShader"))
 		return false;
 
+	if (!CreateShader<CWidgetConstantBuffer>("WidgetShader"))
+		return false;
 
 	// =================== 상수버퍼 ===================
 	CreateConstantBuffer("TransformCBuffer", sizeof(TransformCBuffer), 0,
@@ -49,6 +52,8 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("ColliderCBuffer", sizeof(ColliderCBuffer), 11,
 		static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
+	CreateConstantBuffer("WidgetConstantBuffer", sizeof(WidgetCBuffer), 11,
+		(int)(ConstantBuffer_Shader_Type::Graphic));
 
 	return true;
 }
