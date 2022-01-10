@@ -18,6 +18,8 @@ public :
 	void Update(float DeltaTime);
 	void PostUpdate(float DeltaTime);
 	void Render();
+	bool CollisionMouse();
+	void Collision();
 public :
 	class CScene* GetScene() const
 {
