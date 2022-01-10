@@ -115,20 +115,27 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationFrameButton);
 
 	// ==============================
-	m_AnimationLoop = AddWidget<CIMGUIComboBox>("Loop", 80.f, 30.f);
-	m_AnimationLoop->SetHideName(true);
-	m_AnimationLoop->AddItem("True");
-	m_AnimationLoop->AddItem("False");
-	m_AnimationLoop->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurrentAnimationLoop);
+	Label = AddWidget<CIMGUILabel>("NewSeq", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
 
-	m_AnimationReverse = AddWidget<CIMGUIComboBox>("Reverse", 80.f, 30.f);
-	m_AnimationReverse->SetHideName(true);
-	m_AnimationReverse->AddItem("True");
-	m_AnimationReverse->AddItem("False");
-	m_AnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurrentAnimationReverse);
+	m_NewSeqAnimationLoop = AddWidget<CIMGUIComboBox>("NSeqLp", 80.f, 30.f);
+	m_NewSeqAnimationLoop->SetHideName(true);
+	m_NewSeqAnimationLoop->AddItem("True");
+	m_NewSeqAnimationLoop->AddItem("False");
+	m_NewSeqAnimationLoop->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceLoop);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
+
+	m_NewSeqAnimationReverse = AddWidget<CIMGUIComboBox>("NSeqRev", 80.f, 30.f);
+	m_NewSeqAnimationReverse->SetHideName(true);
+	m_NewSeqAnimationReverse->AddItem("True");
+	m_NewSeqAnimationReverse->AddItem("False");
+	m_NewSeqAnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceReverse);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(310.f);
@@ -136,11 +143,37 @@ bool CSpriteEditWindow::Init()
 	Button = AddWidget<CIMGUIButton>("Play", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::PlayAnimationButton);
 
+	// ==============================
+	/*
+	Label = AddWidget<CIMGUILabel>("CurSeq", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	m_CurSeqAnimationLoop = AddWidget<CIMGUIComboBox>("CSeqLp", 80.f, 30.f);
+	m_CurSeqAnimationLoop->SetHideName(true);
+	m_CurSeqAnimationLoop->AddItem("True");
+	m_CurSeqAnimationLoop->AddItem("False");
+	m_CurSeqAnimationLoop->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceLoop);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
+
+	m_CurSeqAnimationReverse = AddWidget<CIMGUIComboBox>("CSeqRev", 80.f, 30.f);
+	m_CurSeqAnimationReverse->SetHideName(true);
+	m_CurSeqAnimationReverse->AddItem("True");
+	m_CurSeqAnimationReverse->AddItem("False");
+	m_CurSeqAnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceReverse);
+	*/
+	Line = AddWidget<CIMGUISameLine>("Line");
+	// Line->SetOffsetX(310.f);
 	Line->SetOffsetX(400.f);
 
 	Button = AddWidget<CIMGUIButton>("Stop", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::StopAnimationButton);
+
 
 	// ==============================
 	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
@@ -370,10 +403,10 @@ void CSpriteEditWindow::AddAnimationButton()
 		return;
 
 	// Loop, Reverse 선택 
-	if (m_AnimationLoop->GetSelectIndex() < 0 || m_AnimationReverse->GetSelectIndex() < 0)
+	if (m_NewSeqAnimationLoop->GetSelectIndex() < 0 || m_NewSeqAnimationReverse->GetSelectIndex() < 0)
 		return;
 
-	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
+	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로
 	CSceneResource* Resource      = CSceneManager::GetInst()->GetScene()->GetResource();
 	CTexture*       LoadedTexture = m_SpriteObject->GetSpriteComponent()->GetTexture();
 
@@ -384,9 +417,32 @@ void CSpriteEditWindow::AddAnimationButton()
 	m_AnimationList->AddItem(SequenceName);
 
 	// Animation 내용 추가 
-	bool Loop    = StringToBool(m_AnimationLoop->GetSelectItem());
-	bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
+	bool Loop    = StringToBool(m_NewSeqAnimationLoop->GetSelectItem());
+	bool Reverse = StringToBool(m_NewSeqAnimationReverse->GetSelectItem());
 	m_Animation->AddAnimation(SequenceName, AnimationName, Loop, 1.f, 1.f, Reverse);
+
+	// 혹여나 SceneResource에 기존에 추가된 내용이 있었다면 해당 Sequence의 Frame Data 들을
+	// m_AnimationFrameList에 뿌려준다.
+	CAnimationSequence2D* AddedAnimationSequence2D = m_Animation->FindAnimationSequence2D(AnimationName)->GetAnimationSequence();
+	int FrameCount = AddedAnimationSequence2D->GetFrameCount();
+	for (int i = 0; i < FrameCount; i++)
+	{
+		m_AnimationFrameList->AddItem(std::to_string(i));
+	}
+
+	// Sprite Sample에 해당 첫번째 Frame의 Start, End Pos를 세팅해준다
+	if (FrameCount > 0)
+	{
+		// Texture 세팅
+		m_SpriteSampled->SetTexture(AddedAnimationSequence2D->GetTexture());
+
+		// Frame 세팅
+		AnimationFrameData FrameData = AddedAnimationSequence2D->GetFrameData(0);
+		Vector2 StartPos = FrameData.Start;
+		Vector2 EndPos   = FrameData.Start + FrameData.Size;
+		m_SpriteSampled->SetImageStart(StartPos);
+		m_SpriteSampled->SetImageEnd(EndPos);
+	}
 
 	// Animation 진행
 	m_Animation->Play();
@@ -399,11 +455,15 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 		return;
 
 	float                 XDiff           = -1, YDiff = -1;
+
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
+
 	Vector2               FrameStartPos   = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
 	const std::string&    AnimationName   = SequenceName;
+
 	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
+	// CAnimationSequence2D* Sequence        = m_Animation->FindAnimationSequence2D(SequenceName)->GetAnimationSequence();
 	CTexture*             SequenceTexture = Sequence->GetTexture();
 
 	// 220 ? --> 300 - 220  = 80
@@ -465,8 +525,8 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	m_AnimationFrameList->SetSelectIndex(AnimItemCount);
 
 	// Animation Instance에 추가하기 
-	// bool Loop    = StringToBool(m_AnimationLoop->GetSelectItem());
-	// bool Reverse = StringToBool(m_AnimationReverse->GetSelectItem());
+	// bool Loop    = StringToBool(m_NewSeqAnimationLoop->GetSelectItem());
+	// bool Reverse = StringToBool(m_NewSeqAnimationReverse->GetSelectItem());
 
 	// 위에서 가져온 Animation Sequence 2D를 세팅하면 될 것 같다
 	CAnimationSequence2DData* Animation = m_Animation->GetCurrentAnimation();
@@ -671,19 +731,33 @@ void CSpriteEditWindow::StopAnimationButton()
 	m_Animation->Stop();
 }
 
-void CSpriteEditWindow::SetCurrentAnimationLoop(int Index, const char* Text)
+void CSpriteEditWindow::SetNewAnimSequenceLoop(int Index, const char* Text)
 {
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
-	m_AnimationLoop->SetSelectIndex(Index);
+	m_NewSeqAnimationLoop->SetSelectIndex(Index);
+}
+
+void CSpriteEditWindow::SetNewAnimSequenceReverse(int Index, const char* Text)
+{
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+	m_NewSeqAnimationReverse->SetSelectIndex(1 - Index);
+}
+
+void CSpriteEditWindow::SetCurAnimSequenceLoop(int Index, const char* Text)
+{
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+	m_NewSeqAnimationLoop->SetSelectIndex(Index);
 	m_Animation->GetCurrentAnimation()->SetLoop(true);
 }
 
-void CSpriteEditWindow::SetCurrentAnimationReverse(int Index, const char* Text)
+void CSpriteEditWindow::SetCurAnimSequenceReverse(int Index, const char* Text)
 {
-	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
-	m_AnimationReverse->SetSelectIndex(1 - Index);
+	m_NewSeqAnimationLoop->SetSelectIndex(Index);
 	m_Animation->GetCurrentAnimation()->SetReverse(true);
 }
 
@@ -774,8 +848,8 @@ void CSpriteEditWindow::LoadSequence()
 
 		// Loop, Reverse 세팅
 		// bool Loop = LoadedSequence->Get
-		//	m_AnimationLoop
-		//	m_AnimationReverse
+		//	m_NewSeqAnimationLoop
+		//	m_NewSeqAnimationReverse
 
 		// Frame이 있다면 0으로 세팅
 		if (Size > 0)
@@ -886,12 +960,10 @@ void CSpriteEditWindow::LoadAnimation()
 		}
 
 		// 현재 Scene에 모든 Sequence2D 내용을 추가한다.
-		/*
 		m_Animation->AddSequence2DToScene();
 
 		// 현재 Scene의 정보를 m_Scene으로 지정해준다
 		m_Animation->SetScene(CSceneManager::GetInst()->GetScene());
-		*/
 
 		// CurrentAnimation을 선택된 Sequence로 선택해준다
 		int CurAnimIdx = m_Animation->GetCurrentAnimationOrder();
@@ -945,8 +1017,8 @@ void CSpriteEditWindow::LoadAnimation()
 		// Loop, Reverse 설정을 해준다.
 		bool Loop     = m_Animation->GetCurrentAnimation()->IsLoop();
 		bool Reverse = m_Animation->GetCurrentAnimation()->IsReverse();
-		m_AnimationLoop->SetSelectIndex(Loop ? 0 : 1);
-		m_AnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
+		m_NewSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+		m_NewSeqAnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
 
 		// Animation을 시작한다..
 		m_Animation->Play();
@@ -982,8 +1054,8 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	// Loop, Reverse 세팅
 	bool Loop = m_Animation->GetCurrentAnimation()->IsLoop();
 	bool Reverse = m_Animation->GetCurrentAnimation()->IsReverse();
-	m_AnimationLoop->SetSelectIndex(Loop ? 0 : 1);
-	m_AnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
+	m_NewSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+	m_NewSeqAnimationReverse->SetSelectIndex(Reverse ? 1 : 0);
 
 	// m_Sprite의 Texture 바꿔주기 
 	m_Sprite->SetTexture(ChangedSequenceTexture);

@@ -21,8 +21,10 @@ private:
 	class CIMGUITextInput* m_EndFramePosXInput;
 	class CIMGUITextInput* m_EndFramePosYInput;
 private:
-	class CIMGUIComboBox* m_AnimationLoop;
-	class CIMGUIComboBox* m_AnimationReverse;
+	class CIMGUIComboBox* m_NewSeqAnimationLoop;
+	class CIMGUIComboBox* m_NewSeqAnimationReverse;
+	class CIMGUIComboBox* m_CurSeqAnimationLoop;
+	class CIMGUIComboBox* m_CurSeqAnimationReverse;
 private:
 	CSharedPtr<class CSpriteEditObject> m_SpriteObject;
 	class CAnimationSequence2DInstance* m_Animation;
@@ -43,8 +45,10 @@ public:
 	void PlayAnimationButton();
 	void StopAnimationButton();
 public :
-	void SetCurrentAnimationLoop(int, const char*);
-	void SetCurrentAnimationReverse(int, const char*);
+	void SetNewAnimSequenceLoop(int, const char*);
+	void SetNewAnimSequenceReverse(int, const char*);
+	void SetCurAnimSequenceLoop(int, const char*);
+	void SetCurAnimSequenceReverse(int, const char*);
 public:
 	void SaveSequence();
 	void LoadSequence();
