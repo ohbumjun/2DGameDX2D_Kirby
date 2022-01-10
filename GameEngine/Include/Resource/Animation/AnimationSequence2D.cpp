@@ -237,7 +237,7 @@ bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 	if (!pFile)
 		return false;
 
-	int  Length         = -1, Count = -1;
+	int  Length = -1;
 	char Name[MAX_PATH] = {};
 
 	fread(&Length, sizeof(int), 1, pFile);

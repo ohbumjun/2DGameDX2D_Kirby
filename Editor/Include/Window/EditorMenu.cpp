@@ -91,6 +91,12 @@ void CEditorMenu::CreateNewObject()
 	if (m_ObjectNameInput->Empty())
 		return;
 
+	// 중복 방지
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+	const std::string NewObjectName = m_ObjectNameInput->GetTextMultibyte();
+	if (Hierarchy->GetObjectListBox()->CheckItem(NewObjectName))
+		return;
+
 	switch ((CreateObject_Type)m_ObjectComboBox->GetSelectIndex())
 	{
 	case CreateObject_Type::GameObject :
@@ -106,7 +112,7 @@ void CEditorMenu::CreateNewObject()
 	}
 
 	// Add List To Object List
-	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
 	Hierarchy->AddObject(m_ObjectNameInput->GetTextUTF8());
 
 }
