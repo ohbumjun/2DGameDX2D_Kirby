@@ -144,13 +144,13 @@ bool CSpriteEditWindow::Init()
 
 	// ==============================
 	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteSequence);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearSeq", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearSequence);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(175.f);
@@ -276,16 +276,72 @@ void CSpriteEditWindow::SpriteEditButton()
 	}
 }
 
-void CSpriteEditWindow::DeleteSequence()
-{}
+void CSpriteEditWindow::DeleteAnimationSequence()
+{
+	// Empty
+	if (m_AnimationList->GetItemCount() <= 0)
+		return;
 
-void CSpriteEditWindow::ClearSequence()
+	// Not Selected
+	if (m_AnimationList->GetSelectIndex() < 0)
+		return;
+
+	int SelectedSeqIndex = m_AnimationList->GetSelectIndex();
+
+	// Delete Actual Sequence From Animation Instance, Not Sequence
+	std::string SelectedSequenceName = m_AnimationList->GetSelectItem();
+	bool IsDelete = m_Animation->DeleteAnimationSequence(SelectedSequenceName);
+
+	// 정상적으로 지워지지 않았다면 return;
+	if (!IsDelete)
+		return;
+
+	// 선택한 녀석이 가장 첫번째 Seq 라면 
+	if (SelectedSeqIndex == 0)
+	{
+		if (m_AnimationList->GetItemCount() > 1)
+		{
+			// 0 이라면, 만약 2개 이상의 Frame이 Add된 상태라면, 지운 다음 녀석, 즉, 다시 0을 가리키게 한다 ( 1에서 0이 된 녀석 )
+			// 아무것도 안하면 0을 가리키게 될 것이다. 
+			m_AnimationList->SetSelectIndex(m_AnimationList->GetSelectIndex());
+
+			// Current Animation 정보도 바꿔준다. (이것은, 다음 Seq 의 정보로 바꿔준다 )
+			int NextIdx = m_AnimationList->GetSelectIndex() + 1;
+			SelectAnimationSequence(NextIdx, m_AnimationList->GetItem(NextIdx).c_str());
+		}
+		else
+		{
+			// 그게 아니라면, 다 지워진 것 --> Clear 해준다.
+			ClearAnimationSequence();
+			return;
+		}
+	}
+	else
+	{
+		// 1 이상의 수라면, -1을 해준다. 즉, 이전 것을 선택하도록 세팅한다.
+		int PrevIdx = m_AnimationList->GetSelectIndex() - 1;
+		m_AnimationList->SetSelectIndex(PrevIdx);
+		SelectAnimationSequence(PrevIdx, m_AnimationList->GetItem(PrevIdx).c_str());
+	}
+
+	// 실제 AnimationList에서 선택한 사항을 지워주고
+	m_AnimationList->DeleteItem(SelectedSeqIndex);
+
+	// Stop Animation
+	if (m_Animation)
+		m_Animation->Stop();
+
+	return;
+
+}
+
+void CSpriteEditWindow::ClearAnimationSequence()
 {
 	if (!m_Animation)
 		return;
 
 	// 모든 Animation들을 지워준다.
-	m_Animation->ClearSequence();
+	m_Animation->ClearAnimationSequence();
 
 	// Animation List 와 Animation FrameList의 내용들도 모두 지워준다..
 	m_AnimationFrameList->Clear();
@@ -830,10 +886,12 @@ void CSpriteEditWindow::LoadAnimation()
 		}
 
 		// 현재 Scene에 모든 Sequence2D 내용을 추가한다.
+		/*
 		m_Animation->AddSequence2DToScene();
 
 		// 현재 Scene의 정보를 m_Scene으로 지정해준다
 		m_Animation->SetScene(CSceneManager::GetInst()->GetScene());
+		*/
 
 		// CurrentAnimation을 선택된 Sequence로 선택해준다
 		int CurAnimIdx = m_Animation->GetCurrentAnimationOrder();
@@ -899,9 +957,13 @@ void CSpriteEditWindow::LoadAnimation()
 void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureName)
 {
 	// 해당 idx의 Sequence 정보 가져오기
-	CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
+	// SceneResource가 아니라, 해당 m_Animation로 부터 가져와야 하는 거 아닌가 ?
+	// CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
+
 	std::string           ChangedSequenceName    = m_AnimationList->GetItem(Index);
-	CAnimationSequence2D* ChangedSequence        = Resource->FindAnimationSequence2D(ChangedSequenceName);
+
+	// CAnimationSequence2D* ChangedSequence        = Resource->FindAnimationSequence2D(ChangedSequenceName);
+	CAnimationSequence2D* ChangedSequence        = m_Animation->FindAnimationSequence2D(ChangedSequenceName)->GetAnimationSequence();
 
 	if (!ChangedSequence)
 		return;
@@ -982,9 +1044,11 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 
 void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 {
-	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
+	// SceneResource가 아니라, 해당 m_Animation 으로부터 찾을 것이다 
+	// CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
-	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
+	// CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
 	CTexture*             SequenceTexture = Sequence->GetTexture();

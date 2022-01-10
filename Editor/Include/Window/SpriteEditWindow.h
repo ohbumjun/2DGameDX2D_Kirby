@@ -33,8 +33,8 @@ public:
 public:
 	void LoadTextureButton();
 	void SpriteEditButton();
-	void DeleteSequence();
-	void ClearSequence();
+	void DeleteAnimationSequence();
+	void ClearAnimationSequence();
 	void AddAnimationButton();
 	void AddAnimationFrameButton();
 	void DeleteFrameButton();
