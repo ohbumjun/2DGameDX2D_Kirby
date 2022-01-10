@@ -132,6 +132,11 @@ void CEditorMenu::CreateNewComponent()
 	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
 		return;
 
+	// 중복 방지
+	const std::string NewComponentName = m_ComponentNameInput->GetTextMultibyte();
+	if (Hierarchy->GetComponentListBox()->CheckItem(NewComponentName))
+		return;
+
 	// 해당 Object 의 Component 목록에 추가
 	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
