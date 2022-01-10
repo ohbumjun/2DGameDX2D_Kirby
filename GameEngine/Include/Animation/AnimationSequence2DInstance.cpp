@@ -142,7 +142,7 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 
 		if (m_Owner)
 		{
-			m_Owner->SetTexture(0, 0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel),
+			m_Owner->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel),
 			                    Anim->m_Sequence->GetTexture()->GetName(),
 			                    Anim->m_Sequence->GetTexture());
 		}
