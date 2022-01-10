@@ -339,5 +339,9 @@ bool CAnimationSequence2D::Load(const char* FileName, const std::string& PathNam
 		strcpy_s(FileFullPath, Path->PathMultibyte);
 	strcat_s(FileFullPath, FileName);
 
+	// 파일 존재 x
+	if (_access(FileFullPath, 0) == -1)
+		return false;
+
 	return LoadFullPath(FileFullPath);
 }

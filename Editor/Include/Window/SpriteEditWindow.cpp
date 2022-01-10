@@ -935,6 +935,11 @@ void CSpriteEditWindow::LoadAnimation()
 
 		if (!m_Animation)
 			m_Animation = new CAnimationSequence2DInstance;
+		else
+		{
+			// 기존 Animation List에 보여지던 , 즉, 현재 Animation에 Added 되었던 모든 Sequence 정보를 지워준다
+			ClearAnimationSequence();
+		}
 		m_Animation->LoadFullPath(FilePathMultibyte);
 
 		// CurrentAnimation 이 없다면, 아래의 과정을 진행하지 않는다
