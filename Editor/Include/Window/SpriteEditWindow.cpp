@@ -280,7 +280,20 @@ void CSpriteEditWindow::DeleteSequence()
 {}
 
 void CSpriteEditWindow::ClearSequence()
-{}
+{
+	if (!m_Animation)
+		return;
+
+	// 모든 Animation들을 지워준다.
+	m_Animation->ClearSequence();
+
+	// Animation List 와 Animation FrameList의 내용들도 모두 지워준다..
+	m_AnimationFrameList->Clear();
+	m_AnimationList->Clear();
+
+	// SpriteSampled는 Default UI로 세팅해준다.
+	m_SpriteSampled->SetTexture("DefaultUI");
+}
 
 void CSpriteEditWindow::AddAnimationButton()
 {
@@ -454,7 +467,6 @@ void CSpriteEditWindow::DeleteFrameButton()
 	{
 		// 1 이상의 수라면, -1을 해준다. 
 		m_AnimationFrameList->SetSelectIndex(m_AnimationFrameList->GetSelectIndex() - 1);
-		
 	}
 
 	// Set FrameData To 0
@@ -584,9 +596,11 @@ void CSpriteEditWindow::EditFrameButton()
 	DEndFrameX   = DEndFrameX < SequenceSize.x ? DEndFrameX : SequenceSize.x;
 	DEndFrameY   = DEndFrameY < SequenceSize.y ? DEndFrameY : SequenceSize.y;
 
+	// 실제 Frame 반영
 	Sequence->SetFrame(std::stoi(m_AnimationFrameList->GetSelectItem()),
 	                   DStartFrameX, DStartFrameY, DEndFrameX - DStartFrameX, DEndFrameY - DStartFrameY);
 
+	// Sprite 이미지에 반영
 	m_SpriteSampled->SetImageStart(DStartFrameX, DStartFrameY);
 	m_SpriteSampled->SetImageEnd(DEndFrameX, DEndFrameY);
 }
@@ -818,8 +832,12 @@ void CSpriteEditWindow::LoadAnimation()
 		// 현재 Scene에 모든 Sequence2D 내용을 추가한다.
 		m_Animation->AddSequence2DToScene();
 
-		// 제일 첫번째 Seq를 선택된 녀석으로 세팅한다.
-		m_AnimationList->SetSelectIndex(0);
+		// CurrentAnimation을 선택된 Sequence로 선택해준다
+		int CurAnimIdx = m_Animation->GetCurrentAnimationOrder();
+		if (CurAnimIdx == -1)
+			return;
+
+		m_AnimationList->SetSelectIndex(CurAnimIdx);
 
 		// Animatino Frame List를 비워준다.
 		m_AnimationFrameList->Clear();
@@ -905,17 +923,17 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	// m_Sprite의 Texture 바꿔주기 
 	m_Sprite->SetTexture(ChangedSequenceTexture);
 
+	// Clear Texts
+	m_AnimationFrameList->Clear();
+
 	// 해당 Sequence에 대해서 추가해놓은 Frame정보가 없다면 -- Clear 세팅
 	if (ChangedSequence->GetFrameCount() <= 0)
 	{
-		// Animation Sequence2D Data Set Frame To 0
-		m_Animation->GetCurrentAnimation()->ResetFrame();
-
-		// Clear Texts
-		m_AnimationFrameList->Clear();
-
 		// Set Idx 
 		m_AnimationFrameList->SetSelectIndex(-1);
+
+		// Animation Sequence2D Data Set Frame To 0
+		m_Animation->GetCurrentAnimation()->ResetFrame();
 
 		// Set Default Image 
 		m_SpriteSampled->SetTexture("DefaultUI");

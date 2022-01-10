@@ -73,6 +73,22 @@ void CAnimationSequence2DInstance::AddSequence2DToScene()
 	}
 }
 
+void CAnimationSequence2DInstance::ClearSequence()
+{
+	// 현재 Animation은 null로
+	m_CurrentAnimation = nullptr;
+
+	// 나머지는 모두 지워주기
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		SAFE_DELETE(iter->second);
+	}
+
+}
+
 void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 												const std::string& AnimationName, bool Loop,
 												float              PlayTime, float     PlayScale, bool Reverse)
@@ -278,6 +294,25 @@ CAnimationSequence2DData* CAnimationSequence2DInstance::GetCurrentAnimation() co
 	return nullptr;
 }
 
+int CAnimationSequence2DInstance::GetCurrentAnimationOrder()
+{
+	if (!m_CurrentAnimation)
+		return -1;
+
+	int Idx = 0;
+
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+	for (; iter != iterEnd; ++iter)
+	{
+		if (iter->second == m_CurrentAnimation)
+			break;
+		Idx += 1;
+	}
+
+	return Idx;
+}
+
 bool CAnimationSequence2DInstance::SaveFullPath(const char* FullPath)
 {
 	FILE* pFile;
@@ -356,6 +391,9 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 	int SequenceDataKeyNameLength = -1;
 	char SequenceData2DNameKey[MAX_PATH] = {};
 	char AnimName[MAX_PATH] = {};
+
+	// m_mapAnimation.clear();
+	// m_CurrentAnimation = nullptr;
 
 	for (int i = 0; i < MapSize; i++)
 	{

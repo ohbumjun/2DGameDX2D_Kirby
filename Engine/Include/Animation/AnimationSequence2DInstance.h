@@ -55,10 +55,13 @@ public:
 	{
 		return m_TypeID;
 	}
+	CAnimationSequence2DData* GetCurrentAnimation() const;
 public :
+	int GetCurrentAnimationOrder();
 	void GatherSequenceNames(std::vector<std::string>& vecNames);
 	void AddSequence2DToScene();
 public:
+	void ClearSequence();
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, float PlayTime = 1.f,
 	                  float              PlayScale                                        = 1.f, bool Reverse = false);
 	void AddAnimation(const TCHAR* FileName, const std::string& PathName, 
@@ -71,9 +74,6 @@ public:
 	void                      SetCurrentAnimation(const std::string& Name);
 	void                      ChangeAnimation(const std::string& Name);
 	bool                      CheckCurrentAnimation(const std::string& Name);
-	CAnimationSequence2DData* GetCurrentAnimation() const;
-	bool                      SaveFullPath(const char* FullPath);
-	bool						LoadFullPath(const char* FullPath);
 public:
 	virtual void                          Start();
 	virtual bool                          Init();
@@ -82,6 +82,8 @@ public:
 	void                                  ResetShader();
 	virtual CAnimationSequence2DInstance* Clone();
 public :
+	bool                      SaveFullPath(const char* FullPath);
+	bool						LoadFullPath(const char* FullPath);
 	void Save(FILE* pFile);
 	void Load(FILE* pFile);
 
