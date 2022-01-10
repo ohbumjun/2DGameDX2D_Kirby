@@ -144,7 +144,6 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::PlayAnimationButton);
 
 	// ==============================
-	/*
 	Label = AddWidget<CIMGUILabel>("CurSeq", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -156,7 +155,7 @@ bool CSpriteEditWindow::Init()
 	m_CurSeqAnimationLoop->SetHideName(true);
 	m_CurSeqAnimationLoop->AddItem("True");
 	m_CurSeqAnimationLoop->AddItem("False");
-	m_CurSeqAnimationLoop->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceLoop);
+	m_CurSeqAnimationLoop->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurAnimSequenceLoop);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(180.f);
@@ -165,11 +164,9 @@ bool CSpriteEditWindow::Init()
 	m_CurSeqAnimationReverse->SetHideName(true);
 	m_CurSeqAnimationReverse->AddItem("True");
 	m_CurSeqAnimationReverse->AddItem("False");
-	m_CurSeqAnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceReverse);
-	*/
+	m_CurSeqAnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurAnimSequenceReverse);
 	Line = AddWidget<CIMGUISameLine>("Line");
-	// Line->SetOffsetX(310.f);
-	Line->SetOffsetX(400.f);
+	Line->SetOffsetX(310.f);
 
 	Button = AddWidget<CIMGUIButton>("Stop", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::StopAnimationButton);
@@ -421,11 +418,22 @@ void CSpriteEditWindow::AddAnimationButton()
 	bool Reverse = StringToBool(m_NewSeqAnimationReverse->GetSelectItem());
 	m_Animation->AddAnimation(SequenceName, AnimationName, Loop, 1.f, 1.f, Reverse);
 
+	// Loop, Reverse 내용을 세팅해준다.
+	CAnimationSequence2DData* AddedAnimation = m_Animation->FindAnimationSequence2D(AnimationName);
+	if (m_Animation->GetCurrentAnimation() == AddedAnimation)
+	{
+		Loop = AddedAnimation->IsLoop();
+		Reverse = AddedAnimation->IsReverse();
+		m_CurSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+		m_CurSeqAnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
+	}
+
+
 	// 혹여나 SceneResource에 기존에 추가된 내용이 있었다면 해당 Sequence의 Frame Data 들을
 	// m_AnimationFrameList에 뿌려준다.
-	CAnimationSequence2D* AddedAnimationSequence2D = m_Animation->FindAnimationSequence2D(AnimationName)->GetAnimationSequence();
-	int FrameCount = AddedAnimationSequence2D->GetFrameCount();
-	for (int i = 0; i < FrameCount; i++)
+	CAnimationSequence2D* AddedAnimationSequence2D = AddedAnimation->GetAnimationSequence();
+	size_t FrameCount = AddedAnimationSequence2D->GetFrameCount();
+	for (size_t i = 0; i < FrameCount; i++)
 	{
 		m_AnimationFrameList->AddItem(std::to_string(i));
 	}
@@ -749,7 +757,7 @@ void CSpriteEditWindow::SetCurAnimSequenceLoop(int Index, const char* Text)
 {
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
-	m_NewSeqAnimationLoop->SetSelectIndex(Index);
+	m_CurSeqAnimationLoop->SetSelectIndex(Index);
 	m_Animation->GetCurrentAnimation()->SetLoop(true);
 }
 
@@ -757,7 +765,7 @@ void CSpriteEditWindow::SetCurAnimSequenceReverse(int Index, const char* Text)
 {
 		if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
-	m_NewSeqAnimationLoop->SetSelectIndex(Index);
+	m_CurSeqAnimationReverse->SetSelectIndex(Index);
 	m_Animation->GetCurrentAnimation()->SetReverse(true);
 }
 
@@ -1017,8 +1025,8 @@ void CSpriteEditWindow::LoadAnimation()
 		// Loop, Reverse 설정을 해준다.
 		bool Loop     = m_Animation->GetCurrentAnimation()->IsLoop();
 		bool Reverse = m_Animation->GetCurrentAnimation()->IsReverse();
-		m_NewSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
-		m_NewSeqAnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
+		m_CurSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+		m_CurSeqAnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
 
 		// Animation을 시작한다..
 		m_Animation->Play();
@@ -1051,11 +1059,11 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	// 현재 애니메이션으로 세팅 
 	m_Animation->SetCurrentAnimation(ChangedSequenceName);
 
-	// Loop, Reverse 세팅
+	// Current Animation에 대한 Loop, Reverse 세팅
 	bool Loop = m_Animation->GetCurrentAnimation()->IsLoop();
 	bool Reverse = m_Animation->GetCurrentAnimation()->IsReverse();
-	m_NewSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
-	m_NewSeqAnimationReverse->SetSelectIndex(Reverse ? 1 : 0);
+	m_CurSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
+	m_CurSeqAnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
 
 	// m_Sprite의 Texture 바꿔주기 
 	m_Sprite->SetTexture(ChangedSequenceTexture);
