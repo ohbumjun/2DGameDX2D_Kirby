@@ -3,7 +3,8 @@
 CUIWindow::CUIWindow() :
 	m_ZOrder(0),
 	m_ViewPort(nullptr),
-	m_Scene(nullptr)
+	m_Scene(nullptr),
+	m_Start(false)
 
 {
 	SetTypeID<CUIWindow>();
@@ -19,6 +20,7 @@ bool CUIWindow::Init()
 
 void CUIWindow::Start()
 {
+	m_Start = true;
 	auto iter = m_WidgetList.begin();
 	auto iterEnd = m_WidgetList.end();
 
@@ -30,19 +32,26 @@ void CUIWindow::Start()
 
 void CUIWindow::Update(float DeltaTime)
 {
+	if (!m_Start)
+		Start();
+
 	auto iter = m_WidgetList.begin();
 	auto iterEnd = m_WidgetList.end();
 
 	for (; iter != iterEnd;)
 	{
-		if ((*iter)->IsActive())
+		if (!(*iter)->IsActive())
 		{
-			SAFE_DELETE((*iter));
+			// SAFE_DELETE((*iter));
 			iter = m_WidgetList.erase(iter);
 			iterEnd = m_WidgetList.end();
-		}
-		if ((*iter)->IsEnable())
 			continue;
+		}
+		if (!(*iter)->IsEnable())
+		{
+			++iter;
+			continue;
+		}
 		(*iter)->Update(DeltaTime);
 		++iter;
 	}
@@ -55,14 +64,17 @@ void CUIWindow::PostUpdate(float DeltaTime)
 
 	for (; iter != iterEnd;)
 	{
-		if ((*iter)->IsActive())
+		if (!(*iter)->IsActive())
 		{
-			SAFE_DELETE((*iter));
+			// SAFE_DELETE((*iter));
 			iter = m_WidgetList.erase(iter);
 			iterEnd = m_WidgetList.end();
 		}
-		if ((*iter)->IsEnable())
+		if (!(*iter)->IsEnable())
+		{
+			++iter;
 			continue;
+		}
 		(*iter)->PostUpdate(DeltaTime);
 		++iter;
 	}
@@ -75,9 +87,8 @@ void CUIWindow::Render()
 
 	for (; iter != iterEnd;)
 	{
-		if ((*iter)->IsActive())
+		if (!(*iter)->IsActive())
 		{
-			SAFE_DELETE((*iter));
 			iter = m_WidgetList.erase(iter);
 			iterEnd = m_WidgetList.end();
 		}
@@ -89,7 +100,7 @@ void CUIWindow::Render()
 
 	for (; iter != iterEnd; ++iter)
 	{
-		if ((*iter)->IsEnable())
+		if (!(*iter)->IsEnable())
 			continue;
 		(*iter)->Render();
 	}

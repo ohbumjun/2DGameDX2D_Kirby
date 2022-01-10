@@ -15,6 +15,7 @@ private :
 	int m_ZOrder;
 	Vector2 m_Pos;
 	Vector2 m_Size;
+	bool m_Start;
 	std::list<CSharedPtr<CUIWidget>> m_WidgetList;
 public :
 	int GetZOrder() const

@@ -59,7 +59,7 @@ void CViewPort::PostUpdate(float DeltaTime)
 	{
 		if (!(*iter)->IsActive())
 		{
-			SAFE_DELETE((*iter));
+			// SAFE_DELETE((*iter));
 			iter = m_WindowList.erase(iter);
 			iterEnd = m_WindowList.end();
 			continue;
@@ -88,6 +88,7 @@ void CViewPort::Render()
 			iterEnd = m_WindowList.end();
 			continue;
 		}
+		++iter;
 	}
 
 	iter = m_WindowList.begin();
