@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UIWidget.h"
-
+#include "../Resource/Texture/Texture.h"
 struct ButtonStateInfo {
 	CSharedPtr<class CTexture> m_Texture;
 	Vector4 m_Tint;

@@ -31,6 +31,9 @@
     <Filter Include="02. Object\04. Test">
       <UniqueIdentifier>{39f62ae9-7255-4237-98ae-5741380db996}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. UI">
+      <UniqueIdentifier>{2e7a5329-c64c-46fc-b4a2-d4ac06d111f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +69,9 @@
     <ClCompile Include="Object\PixelTest.cpp">
       <Filter>02. Object\04. Test</Filter>
     </ClCompile>
+    <ClCompile Include="UI\MainWidget.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -100,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Object\PixelTest.h">
       <Filter>02. Object\04. Test</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MainWidget.h">
+      <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

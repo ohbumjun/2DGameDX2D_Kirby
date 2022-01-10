@@ -4,6 +4,8 @@
 #include "Scene/SceneResource.h"
 #include "../Object/Monster.h"
 #include "../Object/PixelTest.h"
+#include "Scene/ViewPort.h"
+#include "../UI/MainWidget.h"
 
 
 CMainScene::CMainScene()
@@ -27,7 +29,8 @@ bool CMainScene::Init()
 	CMonster* Monter = m_Scene->CreateGameObject<CMonster>("Monster");
 
 	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");
-		
+
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 	return true;
 }
 

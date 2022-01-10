@@ -8,7 +8,8 @@ class CMainScene :
 public:
 	CMainScene();
 	virtual ~CMainScene() override;
-
+private :
+	class CUIWindow* m_MainWidget;
 public:
 	virtual bool Init() override;
 
