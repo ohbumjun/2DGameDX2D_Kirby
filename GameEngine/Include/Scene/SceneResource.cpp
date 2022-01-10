@@ -214,6 +214,8 @@ void CSceneResource::AddSequence2D(CAnimationSequence2D* Sequence)
 	if (Anim)
 		return;
 
+	// 여기서 ResourceManager 에 까지 넣어줄 필요는 없는 것일까 ?
+
 	m_mapSequence2D.insert(std::make_pair(Sequence->GetName(), Sequence));
 }
 

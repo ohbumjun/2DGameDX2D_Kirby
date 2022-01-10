@@ -434,7 +434,7 @@ bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResu
 	Vector2 NewPointPos = Point - Info.Min;
 	NewPointPos.y = Info.Height - NewPointPos.y;
 
-	int Index = (int)(NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4);
+	int Index = (int)((NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4));
 	bool Collision = false;
 
 	switch (Info.Type)

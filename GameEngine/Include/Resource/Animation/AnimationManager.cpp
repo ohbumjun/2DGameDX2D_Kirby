@@ -108,6 +108,19 @@ void CAnimationManager::ReleaseSequence(const std::string& Name)
 	}
 }
 
+bool CAnimationManager::AddSequence2D(CAnimationSequence2D* Sequence2D)
+{
+	CAnimationSequence2D* Anim = FindSequence(Sequence2D->GetName());
+
+	if (Anim)
+		return true;;
+
+	// 여기서 ResourceManager 에 까지 넣어줄 필요는 없는 것일까 ?
+
+	m_mapSequence2D.insert(std::make_pair(Sequence2D->GetName(), Sequence2D));
+	return true;
+}
+
 bool CAnimationManager::LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const CScene* Scene)
 {
 	CAnimationSequence2D* Sequence2D = new  CAnimationSequence2D;

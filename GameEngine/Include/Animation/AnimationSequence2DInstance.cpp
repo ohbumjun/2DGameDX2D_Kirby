@@ -84,8 +84,20 @@ void CAnimationSequence2DInstance::ClearSequence()
 
 	for (; iter != iterEnd; ++iter)
 	{
+		// SceneResource 혹은 ResourceManager 에서 해당 AnimationSeq2DData의 Sequence2D를 지워줘야 한다
+		if (m_Scene)
+		{
+			
+		}
+		else
+		{
+			
+		}
+
+		// SAFE_DELETE(iter->second);
 		SAFE_DELETE(iter->second);
 	}
+	m_mapAnimation.clear();
 
 }
 
@@ -406,6 +418,18 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 		CAnimationSequence2DData* Sequence2DData = new CAnimationSequence2DData;
 		Sequence2DData->Load(pFile);
 
+		// Scene이 있냐 없냐에 따라
+		// Scene Resource, ResourceManager에 해당 Sequence를 추가해주어야 한다
+		/*
+		if (m_Scene)
+		{
+			m_Scene->GetResource()->AddSequence2D(Sequence2DData->m_Sequence);
+		}
+		else
+		{
+			CResourceManager::GetInst()->AddSequence2D(Sequence2DData->m_Sequence);
+		}
+		*/
 		m_mapAnimation.insert(std::make_pair(SequenceData2DNameKey, Sequence2DData));
 	}
 

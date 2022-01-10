@@ -150,6 +150,11 @@ CAnimation2DConstantBuffer* CResourceManager::GetAnimation2DCBuffer() const
 	return m_AnimationManager->GetAnimation2DCBuffer();
 }
 
+bool CResourceManager::AddSequence2D(CAnimationSequence2D* Sequence2D)
+{
+	return m_AnimationManager->AddSequence2D(Sequence2D);
+}
+
 bool CResourceManager::LoadSequence2DFullPath(const char* FullPath, const CScene* Scene)
 {
 	std::string Name;

@@ -832,6 +832,9 @@ void CSpriteEditWindow::LoadAnimation()
 		// 현재 Scene에 모든 Sequence2D 내용을 추가한다.
 		m_Animation->AddSequence2DToScene();
 
+		// 현재 Scene의 정보를 m_Scene으로 지정해준다
+		m_Animation->SetScene(CSceneManager::GetInst()->GetScene());
+
 		// CurrentAnimation을 선택된 Sequence로 선택해준다
 		int CurAnimIdx = m_Animation->GetCurrentAnimationOrder();
 		if (CurAnimIdx == -1)

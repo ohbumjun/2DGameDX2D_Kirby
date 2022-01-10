@@ -77,7 +77,7 @@ public: // =================== Sequence2D =====================
 	void ReleaseAnimationSequence2D(const std::string& Name);
 	auto GetAnimation2DCBuffer() const -> class CAnimation2DConstantBuffer*;
 
-
+	bool AddSequence2D(CAnimationSequence2D* Sequence2D);
 	bool LoadSequence2DFullPath(const char* FullPath, const class CScene* Scene = nullptr);
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const class CScene* Scene = nullptr);
 	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName = TEXTURE_PATH ,const class CScene* Scene = nullptr);
