@@ -208,7 +208,7 @@ void CSpriteComponent::Save(FILE* pFile)
 	std::string Name = m_Mesh->GetName();
 	int Length = (int)Name.length();
 	fwrite(&Length, sizeof(int), 1, pFile);
-	fwrite(Name.c_str(), sizeof(char), Length, pFile);
+	fwrite(Name.c_str(), sizeof(char), Length, pFile); 
 
 	// Mateiral
 	m_Material->Save(pFile);
