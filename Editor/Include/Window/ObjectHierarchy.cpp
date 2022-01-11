@@ -57,16 +57,25 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 {
 	// 선택한 Object 내에 있는 Scene Component 목록을 보여준다
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+	CSceneComponent* RootComponent = Object->GetRootComponent();
 
 	// 기존 모두 지워주기
 	m_ComponentListBox->Clear();
 
+	// 가장 먼저 들어온 놈이 Root Component 일 것이다 
 	std::vector<FindComponentName> vecComponentsName;
 	Object->GetAllSceneComponentsName(vecComponentsName);
+
+	// 자기 자신을 선택한 상태로 둔다.
+	m_ObjectListBox->SetSelectIndex(Index);
+
 	for (size_t i = 0; i < vecComponentsName.size(); i++)
 	{
 		m_ComponentListBox->AddItem(vecComponentsName[i].Name);
 	}
+
+	// 가장 첫번째 Component를 선택한 상태로 세팅한다.
+	m_ComponentListBox->SetSelectIndex(0);
 }
 
 void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)

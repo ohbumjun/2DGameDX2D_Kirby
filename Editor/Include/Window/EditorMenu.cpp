@@ -220,6 +220,20 @@ void CEditorMenu::LoadScene()
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
 
+		// Scene의 Object 목록을 돌면서, Object Hierarch에 Add 시키기 위해
+		// Object 들의 이름을 가져온다
+		std::vector<std::string> vecObjNames;
+		CSceneManager::GetInst()->GetScene()->GatherObjectsNames(vecObjNames);
 
+		CIMGUIListBox* ObjectListBox = Hierarchy->GetObjectListBox();
+
+		size_t NameCount = vecObjNames.size();
+		for (size_t i = 0; i < NameCount; i++)
+		{
+			ObjectListBox->AddItem(vecObjNames[i]);
+		}
+
+		// 가장 처음 녀석의 Component 들을 세팅해둔다.
+		Hierarchy->SelectObject(0, vecObjNames[0].c_str());
 	}
 }

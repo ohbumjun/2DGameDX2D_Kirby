@@ -44,6 +44,8 @@ public:
 		return m_Mode->GetPlayerObject();
 	}
 	CGameObject* FindGameObject(const char* ObjectName) const;
+public :
+	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
 public:
 	void Start();
 	void Update(float DeltaTime);
@@ -51,7 +53,6 @@ public:
 public :
 	void SaveFullPath(const char* FullPath);
 	void LoadFullPath(const char* FullPath);
-
 public:
 	template <typename T>
 	bool CreateSceneMode()

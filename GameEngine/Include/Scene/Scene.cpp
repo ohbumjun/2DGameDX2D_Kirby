@@ -198,3 +198,14 @@ CGameObject* CScene::FindGameObject(const char* ObjectName) const
 	}
 	return nullptr;
 }
+
+void CScene::GatherObjectsNames(std::vector<std::string>& vecObjNames)
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		vecObjNames.push_back((*iter)->GetName());
+	}
+}
