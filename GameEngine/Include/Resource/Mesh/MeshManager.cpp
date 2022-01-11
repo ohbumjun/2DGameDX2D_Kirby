@@ -19,6 +19,7 @@ bool CMeshManager::Init()
 		SpriteMesh->Release();
 		return false;
 	}
+	SpriteMesh->SetName("SpriteMesh");
 
 	CMesh* FrameRectMesh = new CStaticMesh;
 

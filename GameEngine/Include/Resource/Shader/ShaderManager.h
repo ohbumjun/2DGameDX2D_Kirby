@@ -33,6 +33,7 @@ public:
 			return false;
 
 		Shader = new T;
+		Shader->SetName(Name);
 
 		if (!Shader->Init())
 		{

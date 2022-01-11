@@ -64,8 +64,8 @@ public:
 	virtual CSceneComponent* Clone() override;
 
 public :
-	void Save(FILE* pFile);
-	void Load(FILE* pFile);
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 
 
 public: // =============== 저주받은 Transform 영역 ===============

@@ -148,7 +148,7 @@ bool CAnimationManager::LoadSequence2D(std::string& SequenceName, const char* Fi
 	CAnimationSequence2D* Sequence2D = new CAnimationSequence2D;
 	Sequence2D->SetScene(const_cast<CScene*>(Scene));
 
-	if (Sequence2D->Load(FileName, PathName))
+	if (!Sequence2D->Load(FileName, PathName))
 	{
 		SAFE_DELETE(Sequence2D);
 		return false;

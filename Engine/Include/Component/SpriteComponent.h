@@ -77,8 +77,8 @@ public:
 	virtual void              PostRender() override;
 	virtual CSpriteComponent* Clone() override;
 public :
-	void Save(FILE* pFile);
-	void Load(FILE* pFile);
+	virtual void Save(FILE* pFile) override;
+	virtual void Load(FILE* pFile) override;
 
 public:
 	template <typename T>
