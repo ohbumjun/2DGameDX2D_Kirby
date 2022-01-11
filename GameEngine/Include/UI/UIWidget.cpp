@@ -15,7 +15,8 @@ CUIWidget::CUIWidget() :
 	m_Shader(nullptr),
 	m_Mesh(nullptr),
 	m_ZOrder(0),
-	m_Size(50.f, 50.f)
+	m_Size(50.f, 50.f),
+	m_MoueHovered(false)
 
 
 {
@@ -35,6 +36,23 @@ void CUIWidget::SetShader(const std::string& Name)
 void CUIWidget::SetUseTexture(bool Use)
 {
 	m_CBuffer->SetUseTexture(Use);
+}
+
+bool CUIWidget::CollisionMouse(const Vector2& MousePos)
+{
+	if (m_Pos.x > MousePos.x)
+		return false;
+
+	if (m_Pos.x + m_Size.x < MousePos.x)
+		return false;
+
+	if (m_Pos.y > MousePos.y)
+		return false;
+
+	if (m_Pos.y + m_Size.y < MousePos.y)
+		return false;
+
+	return true;
 }
 
 void CUIWidget::Start()

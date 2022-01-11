@@ -4,6 +4,7 @@
 #include "Component/CameraComponent.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
+#include "Scene/SceneCollision.h"
 #include "Scene/CameraManager.h"
 
 DEFINITION_SINGLE(CInput)
@@ -15,7 +16,9 @@ CInput::CInput() :
 	m_Keyboard(nullptr),
 	m_Mouse(nullptr),
 	m_KeyArray{},
-	m_LMouseDown(false)
+	m_LMouseDown(false),
+	m_LMouseClick(false),
+	m_RMouseClick(false)
 {
 	m_vecKeyState.resize(256);
 
@@ -182,14 +185,18 @@ void CInput::Update(float DeltaTime)
 		ReadDirectInputMouse();
 	}
 
+	// 마우스 입력처리를 한다. --> Mouse 위치를 잡아준다
+	UpdateMouse(DeltaTime);
+
+	// UI와 마우스 충돌 여부를 조사한다.
+	m_CollisionWidget = CSceneManager::GetInst()->GetScene()->GetCollision()->CollisionWidget();
+
 	// 키 상태를 업데이트 해준다.
 	UpdateKeyState();
 
 	// 키보드 키 입력처리를 한다.
 	UpdateKeyInfo(DeltaTime);
 
-	// 마우스 입력처리를 한다.
-	UpdateMouse(DeltaTime);
 }
 
 void CInput::ReadDirectInputKeyboard()
@@ -294,6 +301,8 @@ void CInput::UpdateKeyState()
 
 		else
 			m_Shift = false;
+
+		// todo : 여기에 L,R Button 세팅
 		break;
 	case Input_Type::Window:
 		if (GetAsyncKeyState(VK_CONTROL) & 0x8000)

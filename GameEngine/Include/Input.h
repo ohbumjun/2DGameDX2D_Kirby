@@ -55,14 +55,25 @@ private:
 	bool                                      m_Ctrl;
 	bool                                      m_Alt;
 	bool                                      m_Shift;
-	Vector2                                   m_MousePos;
-	Vector2                                   m_MouseWorldPos;
-	Vector2                                   m_MouseMove;
+	Vector2                                 m_MousePos;
+	Vector2                                 m_MouseWorldPos;
+	Vector2                                 m_MouseMove;
 	bool                                      m_LMouseDown;
 	bool                                      m_LMousePush;
 	bool                                      m_LMouseUp;
+	bool										m_LMouseClick;
+	bool										m_RMouseClick;
+	bool										m_CollisionWidget;
 
 public:
+	bool IsLMouseClicked() const
+	{
+		return m_LMouseClick;
+	}
+	bool IsRMouseClicked() const
+	{
+		return m_RMouseClick;
+	}
 	Vector2 GetMousePos() const
 	{
 		return m_MousePos;

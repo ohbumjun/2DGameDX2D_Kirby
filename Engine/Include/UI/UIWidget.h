@@ -20,6 +20,7 @@ protected:
     class CWidgetConstantBuffer* m_CBuffer;
     CSharedPtr<class CShader> m_Shader;
     CSharedPtr<class CMesh> m_Mesh;
+    bool m_MoueHovered;
 public :
     virtual void Enable(bool bEnable)
 {
@@ -81,6 +82,8 @@ public :
 }
     void SetShader(const std::string& Name);
     void SetUseTexture(bool Use);
+public :
+    virtual bool CollisionMouse(const Vector2& MousePos);
 public :
     virtual void Start();
 	virtual bool Init();

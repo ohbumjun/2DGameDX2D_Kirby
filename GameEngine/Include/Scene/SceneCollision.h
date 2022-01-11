@@ -43,10 +43,12 @@ private :
 	// list 형태로 만드는 것이다. 
 	std::list<CSharedPtr<CColliderComponent>> m_ColliderList;
 	CSharedPtr<CColliderComponent> m_MouseCollision;
+	bool m_WidgetCollision;
 public :
 	void Start();
 	bool Init();
 	void Collision(float DeltaTime);
+	bool CollisionWidget();
 	void CollisionMouse(float DelatTime);
 public :
 	void SetSectionSize(const Vector3& Size);

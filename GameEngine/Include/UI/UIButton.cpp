@@ -2,6 +2,7 @@
 #include "../PathManager.h"
 #include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
+#include "../Input.h"
 
 CUIButton::CUIButton() :
 	m_State(Button_State::Normal)
@@ -28,6 +29,7 @@ bool CUIButton::SetTexture(Button_State State, CTexture* Texture)
 	SetUseTexture(true);
 
 	return true;
+
 }
 
 bool CUIButton::SetTexture(Button_State State, const std::string& Name, const TCHAR* FileName,
@@ -86,6 +88,36 @@ void CUIButton::Start()
 void CUIButton::Update(float DeltaTime)
 {
 	CUIWidget::Update(DeltaTime);
+
+	bool LMouseClick = CInput::GetInst()->IsLMouseClicked();
+
+	if (m_State != Button_State::Disable)
+	{
+		if (m_MoueHovered)
+		{
+			if (m_State == Button_State::Normal)
+			{
+				m_State = Button_State::MouseOn;
+			}
+			if (m_State == Button_State::MouseOn && LMouseClick)
+			{
+				m_State = Button_State::Click;
+			}
+		}
+		else
+		{
+			if (m_State == Button_State::MouseOn)
+			{
+				if (m_ClickCallback)
+					m_ClickCallback();
+				m_State = Button_State::Normal;
+			}
+			else
+			{
+				m_State = Button_State::Normal;
+			}
+		}
+	}
 }
 
 void CUIButton::PostUpdate(float DeltaTime)

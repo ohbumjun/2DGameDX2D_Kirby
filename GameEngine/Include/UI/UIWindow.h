@@ -17,6 +17,7 @@ private :
 	Vector2 m_Size;
 	bool m_Start;
 	float m_Angle;
+	bool m_MoueHovered;
 	std::list<CSharedPtr<CUIWidget>> m_WidgetList;
 public :
 	int GetZOrder() const
@@ -60,13 +61,19 @@ public :
 {
 		m_Scene = Scene;
 }
-
+public :
+	bool CollisionMouse(const Vector2& MousePos);
 public :
 	virtual bool Init();
 	virtual void Start();
 	virtual void Update(float DeltaTime);
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Render();
+public :
+	static bool SortWidget(CSharedPtr<CUIWidget>& A, CSharedPtr<CUIWidget>& B)
+{
+		return A->m_ZOrder > B->m_ZOrder;
+}
 public :
 	template<typename T>
 	T* FindUIWidget(const std::string& Name)

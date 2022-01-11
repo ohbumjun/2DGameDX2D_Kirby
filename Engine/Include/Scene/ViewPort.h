@@ -21,6 +21,11 @@ public :
 	bool CollisionMouse();
 	void Collision();
 public :
+	static bool SortWindow(CSharedPtr<class CUIWindow>& A, CSharedPtr<class CUIWindow>& B)
+{
+		return A->m_ZOrder > B->m_ZOrder;
+}
+public :
 	class CScene* GetScene() const
 {
 		return m_Scene;
