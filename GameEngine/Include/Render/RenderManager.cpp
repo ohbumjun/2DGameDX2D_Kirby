@@ -4,6 +4,9 @@
 #include "../Component/SceneComponent.h"
 #include "../GameObject/GameObject.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
+#include "../Scene/SceneManager.h"
+#include "../Scene/Scene.h"
+#include "../Scene/ViewPort.h"
 
 DEFINITION_SINGLE(CRenderManager)
 
@@ -101,6 +104,7 @@ bool CRenderManager::Init()
 	m_RenderLayerList.push_back(DefaultLayer);
 
 	m_DepthDisable = FindRenderState("DepthDisable");
+	m_AlphaDisable = FindRenderState("AlphaBlend");
 
 	return true;
 }
@@ -155,6 +159,13 @@ void CRenderManager::Render()
 			}
 		}
 	}
+
+	// Widget 출력시 Alpha Blending 처리하기
+	m_AlphaDisable->SetState();
+
+	CSceneManager::GetInst()->GetScene()->GetViewPort()->Render();
+	
+	m_AlphaDisable->ResetState();
 
 	m_DepthDisable->ResetState();
 }

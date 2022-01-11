@@ -6,6 +6,7 @@
 #include "ColliderShader.h"
 #include "ColliderPixelShader.h"
 #include "WidgetConstantBuffer.h"
+#include "WidgetShader.h"
 
 CShaderManager::CShaderManager()
 {
@@ -33,7 +34,7 @@ bool CShaderManager::Init()
 	if (!CreateShader<CColliderPixelShader>("ColliderPixelShader"))
 		return false;
 
-	if (!CreateShader<CWidgetConstantBuffer>("WidgetShader"))
+	if (!CreateShader<CWidgetShader>("WidgetShader"))
 		return false;
 
 	// =================== 상수버퍼 ===================
@@ -52,7 +53,7 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("ColliderCBuffer", sizeof(ColliderCBuffer), 11,
 		static_cast<int>(ConstantBuffer_Shader_Type::Graphic));
 
-	CreateConstantBuffer("WidgetConstantBuffer", sizeof(WidgetCBuffer), 11,
+	CreateConstantBuffer("WidgetCBuffer", sizeof(WidgetCBuffer), 11,
 		(int)(ConstantBuffer_Shader_Type::Graphic));
 
 	return true;

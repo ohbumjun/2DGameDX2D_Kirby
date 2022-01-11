@@ -1,80 +1,73 @@
 #include "UIButton.h"
+#include "../PathManager.h"
+#include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
-#include "../Scene/SceneResource.h"
-#include "../Scene/ViewPort.h"
 
 CUIButton::CUIButton() :
-m_ClickCallback(nullptr),
-m_State(Button_State::Normal)
-{}
+	m_State(Button_State::Normal)
+{
+	SetTypeID<CUIButton>();
+}
+
+CUIButton::CUIButton(const CUIButton& Button) : CUIWidget(Button)
+{
+	m_State = Button_State::Normal;
+}
 
 CUIButton::~CUIButton()
 {}
 
-void CUIButton::Enable(bool enable)
+void CUIButton::SetTextureTint(Button_State State, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	CUIWidget::Enable(enable);
-
-	m_State = enable ? Button_State::Normal : Button_State::Disable;
+	m_Info[(int)State].m_Tint = Vector4(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
 }
 
-void CUIButton::SetTintColor(Button_State State, float r, float g, float b, float a)
+bool CUIButton::SetTexture(Button_State State, CTexture* Texture)
 {
-	m_ButtonStateInfo[(int)State].m_Tint = Vector4(r, g, b, a);
+	m_Info[(int)State].m_Texture = Texture;
+	SetUseTexture(true);
+
+	return true;
 }
 
-void CUIButton::AddFrameData(Button_State State, const Vector2& Start, const Vector2& Size)
+bool CUIButton::SetTexture(Button_State State, const std::string& Name, const TCHAR* FileName,
+						   const std::string& PathName)
 {
-	AnimationFrameData Frame = {};
-	Frame.Start = Start;
-	Frame.Size  = Size;
-	m_ButtonStateInfo[(int)State].m_FrameData.push_back(Frame);
+	TCHAR FullPath[MAX_PATH] = {};
+
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+	if (Path)
+		lstrcpy(FullPath, Path->Path);
+	lstrcat(FullPath, FileName);
+
+	return SetTextureFullPath(State, Name, FullPath);
 }
 
-void CUIButton::SetTexture(Button_State State, CTexture* Texture)
+bool CUIButton::SetTextureFullPath(Button_State State, const std::string& Name, const TCHAR* FullPath)
 {
-	m_ButtonStateInfo[(int)State].m_Texture = Texture;
-}
-
-void CUIButton::SetTexture(Button_State State, const std::string& TextureName, const TCHAR* FileName, const std::string& PathName)
-{
-	CSceneResource* Resource = m_Owner->GetViewPort()->GetScene()->GetResource();
-	Resource->LoadTexture(TextureName, FileName, PathName);
-	CTexture* Texture = Resource->FindTexture(TextureName);
+	if (!CSceneManager::GetInst()->GetScene()->GetResource()->LoadTextureFullPath(Name, FullPath))
+		return false;
+	CTexture* Texture = CSceneManager::GetInst()->GetScene()->GetResource()->FindTexture(Name);
 	if (Texture)
 	{
-		m_ButtonStateInfo[(int)State].m_Texture = Texture;
+		m_Info[(int)State].m_Texture = Texture;
+		SetUseTexture(true);
 	}
+
+	return true;
 }
 
-void CUIButton::SetTextureMultibyte(Button_State State, const std::string& TextureName, const char* FileName, const std::string& PathName)
+void CUIButton::SetButtonEnable(bool Enable)
 {
-	TCHAR ConvertFileName[MAX_PATH] = {};
-	int ConvertLength = MultiByteToWideChar(CP_ACP, -1, FileName, -1, 0, 0);
-	MultiByteToWideChar(CP_ACP, 0, FileName, -1, ConvertFileName, ConvertLength);
-
-	return SetTexture(State, TextureName, ConvertFileName, PathName);
+	m_State = Enable ? Button_State::Normal : Button_State::Disable;
 }
 
-void CUIButton::SetTextureMultibyteFullPath(Button_State State, const std::string& TextureName, const char* FullPath)
+void CUIButton::AddFrameData(Button_State State, const Vector2& StartPos, const Vector2& Size)
 {
-	TCHAR ConvertFullPath[MAX_PATH] = {};
-	int ConvertLength = MultiByteToWideChar(CP_ACP, -1, FullPath, -1, 0, 0);
-	MultiByteToWideChar(CP_ACP, 0, FullPath, -1, ConvertFullPath, ConvertLength);
-
-	return SetTextureFullPath(State, TextureName, ConvertFullPath);
-}
-
-void CUIButton::SetTextureFullPath(Button_State State, const std::string& TextureName, const TCHAR* FullPath)
-{
-	CSceneResource* Resource = m_Owner->GetViewPort()->GetScene()->GetResource();
-	Resource->LoadTextureFullPath(TextureName, FullPath);
-
-	CTexture* Texture = Resource->FindTexture(TextureName);
-	if (Texture)
-	{
-		m_ButtonStateInfo[(int)State].m_Texture = Texture;
-	}
+	AnimationFrameData FrameData = {};
+	FrameData.Start = StartPos;
+	FrameData.Size = StartPos + Size;
+	m_Info[(int)State].vecFrameData.push_back(FrameData);
 }
 
 bool CUIButton::Init()
@@ -95,8 +88,17 @@ void CUIButton::Update(float DeltaTime)
 	CUIWidget::Update(DeltaTime);
 }
 
-void CUIButton::CallClickCallback()
+void CUIButton::PostUpdate(float DeltaTime)
 {
-	if (m_ClickCallback)
-		m_ClickCallback();
+	CUIWidget::PostUpdate(DeltaTime);
+}
+
+void CUIButton::Render()
+{
+	if (m_Info[(int)m_State].m_Texture)
+		m_Info[(int)m_State].m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, 0);
+
+	m_Tint = m_Info[(int)m_State].m_Tint;
+
+	CUIWidget::Render();
 }

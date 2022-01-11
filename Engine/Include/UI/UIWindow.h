@@ -15,6 +15,8 @@ private :
 	int m_ZOrder;
 	Vector2 m_Pos;
 	Vector2 m_Size;
+	bool m_Start;
+	float m_Angle;
 	std::list<CSharedPtr<CUIWidget>> m_WidgetList;
 public :
 	int GetZOrder() const
@@ -58,10 +60,7 @@ public :
 {
 		m_Scene = Scene;
 }
-	void SetViewPort(class CViewPort* m_ViewPort)
-{
-		m_ViewPort = m_ViewPort;
-}
+
 public :
 	virtual bool Init();
 	virtual void Start();
@@ -86,6 +85,7 @@ public :
 {
 		T* Widget = new T;
 		Widget->SetName(Name);
+		Widget->SetOwner(this);
 
 		if (!Widget->Init())
 		{
@@ -93,8 +93,6 @@ public :
 			return nullptr;
 		}
 
-		Widget->SetOwner(this);
-		Widget->SetScene(m_Scene);
 
 		m_WidgetList.push_back(Widget);
 

@@ -42,8 +42,10 @@ public :
 	T* CreateUIWindow(const std::string& Name)
 {
 		T* Window = new T;
+
 		Window->SetName(Name);
 		Window->SetScene(m_Scene);
+		Window->m_ViewPort = this;
 
 		if (!Window->Init())
 		{
@@ -51,7 +53,6 @@ public :
 			return nullptr;
 		}
 
-		Window->SetViewPort(this);
 		m_WindowList.push_back(Window);
 		return Window;
 }

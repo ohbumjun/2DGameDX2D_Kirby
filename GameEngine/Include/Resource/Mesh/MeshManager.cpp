@@ -70,7 +70,8 @@ bool CMeshManager::Init()
 
 
 	CMesh* WidgetMesh = new CStaticMesh;
-	VertexUV WidgetVtx[4] =
+
+	VertexUV	WidgetVtx[4] =
 	{
 		VertexUV(Vector3(0.f, 1.f, 0.f), Vector2(0.f, 0.f)),
 		VertexUV(Vector3(1.f, 1.f, 0.f), Vector2(1.f, 0.f)),
@@ -78,12 +79,14 @@ bool CMeshManager::Init()
 		VertexUV(Vector3(1.f, 0.f, 0.f), Vector2(1.f, 1.f))
 	};
 
-	int WidgetIdx[6] = { 0, 1, 3, 0, 3, 2 };
+	int	WidgetIdx[6] = { 0, 1, 3, 0, 3, 2 };
+
 	WidgetMesh->SetName("WidgetMesh");
 	WidgetMesh->CreateMesh(WidgetVtx, sizeof(VertexUV), 4, D3D11_USAGE_IMMUTABLE,
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,
-		WidgetIdx, 4, 5, D3D11_USAGE_IMMUTABLE,
+		WidgetIdx, 4, 6, D3D11_USAGE_IMMUTABLE,
 		DXGI_FORMAT_R32_UINT);
+
 
 
 	// Sprite Mesh

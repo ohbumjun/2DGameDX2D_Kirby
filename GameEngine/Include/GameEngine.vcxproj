@@ -241,6 +241,7 @@
     <ClInclude Include="Resource\Shader\Standard2DConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\TransformConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\WidgetConstantBuffer.h" />
+    <ClInclude Include="Resource\Shader\WidgetShader.h" />
     <ClInclude Include="Resource\Texture\DirectXTex.h" />
     <ClInclude Include="Resource\Texture\Texture.h" />
     <ClInclude Include="Resource\Texture\TextureManager.h" />
@@ -334,6 +335,7 @@
     <ClCompile Include="Resource\Shader\Standard2DConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\TransformConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\WidgetConstantBuffer.cpp" />
+    <ClCompile Include="Resource\Shader\WidgetShader.cpp" />
     <ClCompile Include="Resource\Texture\Texture.cpp" />
     <ClCompile Include="Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Scene\CameraManager.cpp" />

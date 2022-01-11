@@ -29,6 +29,7 @@ private:
 	std::vector<RenderLayer*>        m_RenderLayerList;
 	class CStandard2DConstantBuffer* m_Standard2DCBuffer;
 	class CRenderState*              m_DepthDisable;
+	class CRenderState*              m_AlphaDisable;
 
 public:
 	class CStandard2DConstantBuffer* GetStandard2DCBuffer() const

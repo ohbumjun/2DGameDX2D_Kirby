@@ -27,7 +27,7 @@ public:
 	template <typename T>
 	bool CreateShader(const std::string& Name)
 	{
-		T* Shader = static_cast<T*>(FindShader(Name));
+		T* Shader = dynamic_cast<T*>(FindShader(Name));
 
 		if (Shader)
 			return false;

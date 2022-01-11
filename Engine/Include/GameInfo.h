@@ -249,6 +249,13 @@ struct ColliderCBuffer
 	Matrix matWVP;
 };
 
+struct WidgetCBuffer {
+	Vector4 Tint;
+	Matrix matWVP;
+	int UseTexture;
+	Vector3 Empty;
+};
+
 struct CircleInfo {
 	Vector2 Center;
 	float Radius;

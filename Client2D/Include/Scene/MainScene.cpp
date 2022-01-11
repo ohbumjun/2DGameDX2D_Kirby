@@ -31,6 +31,7 @@ bool CMainScene::Init()
 	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
+
 	return true;
 }
 

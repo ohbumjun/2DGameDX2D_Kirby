@@ -11,6 +11,9 @@
     <ContentFile>
       <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\Mesh2D.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\Widget.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />
