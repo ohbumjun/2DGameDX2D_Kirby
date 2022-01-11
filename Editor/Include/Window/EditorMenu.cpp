@@ -195,6 +195,15 @@ void CEditorMenu::SaveScene()
 
 void CEditorMenu::LoadScene()
 {
+	// 기존에 작업중인 사항이 있다면, 즉, ObjectHierarchy에 GameObject, Sprite 목록이 남아있다면
+	// Message Box 띄우고 return;
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+	if (Hierarchy->GetObjectListBox()->GetItemCount() > 0)
+	{
+		MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Complete Current Work"), TEXT("Data Might Be Lost"), 0);
+		return;
+	}
+
 	TCHAR LoadFilePath[MAX_PATH] = {};
 
 	OPENFILENAME OpenFile = {};
@@ -210,5 +219,7 @@ void CEditorMenu::LoadScene()
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
+
+
 	}
 }
