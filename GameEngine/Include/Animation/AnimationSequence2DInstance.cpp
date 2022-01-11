@@ -627,7 +627,7 @@ void CAnimationSequence2DInstance::Save(FILE* pFile)
 	fwrite(&m_PlayAnimation, sizeof(bool), 1, pFile);
 
 	int AnimCount = (int)m_mapAnimation.size();
-	fwrite(&AnimCount, sizeof(int), AnimCount, pFile);
+	fwrite(&AnimCount, sizeof(int), 1, pFile);
 
 	auto iter      = m_mapAnimation.begin();
 	auto iterEnd = m_mapAnimation.end();
@@ -637,7 +637,7 @@ void CAnimationSequence2DInstance::Save(FILE* pFile)
 	{
 		// Key 세팅
 		Length = iter->first.length();
-		fwrite(&Length, sizeof(int), Length, pFile);
+		fwrite(&Length, sizeof(int), 1, pFile);
 		fwrite(iter->first.c_str(), sizeof(char), Length, pFile);
 
 		iter->second->Save(pFile);
@@ -663,7 +663,7 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 	fread(&m_PlayAnimation, sizeof(bool), 1, pFile);
 
 	int AnimCount = -1;
-	fread(&AnimCount, sizeof(int), AnimCount, pFile);
+	fread(&AnimCount, sizeof(int), 1, pFile);
 
 	int Length = -1;
 	char Name[MAX_PATH] = {};
@@ -671,7 +671,7 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 	for (int i = 0; i < AnimCount; i++)
 	{
 		// Key 세팅
-		fread(&Length, sizeof(int), Length, pFile);
+		fread(&Length, sizeof(int), 1, pFile);
 		fread(Name, sizeof(char), Length, pFile);
 		
 		CAnimationSequence2DData* Data = new CAnimationSequence2DData;

@@ -271,9 +271,11 @@ CMaterial* CMaterial::Clone()
 
 void CMaterial::Save(FILE* pFile)
 {
-	// Shader의 경우, Name을 가져와서 세팅할 것이다. 
+	// Shader의 경우, Name을 가져와서 세팅할 것이다.
+	CRef::Save(pFile);
 	std::string ShaderName = m_Shader->GetName();
 	int Length = (int)ShaderName.length();
+
 	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(ShaderName.c_str(), sizeof(char), Length, pFile);
 
@@ -358,7 +360,7 @@ void CMaterial::Load(FILE* pFile)
 
 		char TexName[MAX_PATH] = {};
 		int Length = -1;
-		fread(&Length, sizeof(char), 1, pFile);
+		fread(&Length, sizeof(int), 1, pFile);
 		fread(TexName, sizeof(char), Length, pFile);
 
 		Image_Type ImageType;

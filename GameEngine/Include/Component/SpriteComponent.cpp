@@ -238,7 +238,7 @@ void CSpriteComponent::Load(FILE* pFile)
 	fread(&Length, sizeof(int), 1, pFile);
 
 	char Name[MAX_PATH] = {};
-	fread(&Length, sizeof(int), 1, pFile);
+	fread(&Name, sizeof(char), Length, pFile);
 	m_Mesh = (CSpriteMesh*)CResourceManager::GetInst()->FindMesh(Name);
 
 	// Mateiral
@@ -250,7 +250,7 @@ void CSpriteComponent::Load(FILE* pFile)
 
 	if (Animation)
 	{
-		size_t TypeID = m_Animation->GetTypeID();
+		size_t TypeID = -1;
 		fread(&TypeID, sizeof(size_t), 1, pFile);
 		CSceneManager::GetInst()->CallCreateAnimInstanceFunc(this, TypeID);
 		m_Animation->Load(pFile);
