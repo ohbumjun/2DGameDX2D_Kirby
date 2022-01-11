@@ -40,7 +40,7 @@ bool CUIWindow::CollisionMouse(const Vector2& MousePos)
 	{
 		if (!(*iter)->IsEnable())
 			continue;
-		if ((*iter)->CollisionMouse(MousePos))
+		if ((*iter)->CollisionMouse(MousePos)) //
 		{
 			m_MoueHovered = true;
 			return true;
