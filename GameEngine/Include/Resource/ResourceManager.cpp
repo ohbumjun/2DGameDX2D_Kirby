@@ -8,7 +8,8 @@ CResourceManager::CResourceManager() :
 	m_MaterialManager(nullptr),
 	m_TextureManager(nullptr),
 	m_AnimationManager(nullptr),
-	m_SoundManager(nullptr)
+	m_SoundManager(nullptr),
+	m_FontManager(nullptr)
 {
 }
 
@@ -20,6 +21,7 @@ CResourceManager::~CResourceManager()
 	SAFE_DELETE(m_MeshManager);
 	SAFE_DELETE(m_TextureManager);
 	SAFE_DELETE(m_SoundManager);
+	SAFE_DELETE(m_FontManager);
 }
 
 bool CResourceManager::Init()
@@ -53,6 +55,12 @@ bool CResourceManager::Init()
 
 	if (!m_SoundManager->Init())
 		return false;
+
+	m_FontManager = new CFontManager;
+
+	if (!m_FontManager->Init())
+		return false;
+	
 
 	return true;
 }

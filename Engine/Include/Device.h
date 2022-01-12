@@ -23,8 +23,24 @@ private:
 
 	// Debug Layer
 	// IDXGIDebug* m_DebugDev;
+private:
+	ID2D1RenderTarget* m_2DTarget;
+	ID2D1RenderTarget* m_2DTargetWorld;
+	ID2D1Factory* m_2DFactory;
 
 public:
+	ID2D1RenderTarget* Get2DRendeTarget() const
+	{
+		return m_2DTarget;
+	}
+	ID2D1RenderTarget* Get2DWorldRenderTarget() const
+	{
+		return m_2DTargetWorld;
+	}
+	ID2D1Factory* Get2DFactory() const
+	{
+		return m_2DFactory;
+	}
 	ID3D11Device* GetDevice() const
 	{
 		return m_Device;

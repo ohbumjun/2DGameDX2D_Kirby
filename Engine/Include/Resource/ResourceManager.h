@@ -6,6 +6,7 @@
 #include "Shader/ShaderManager.h"
 #include "Texture/TextureManager.h"
 #include "Sound/SoundManager.h"
+#include "Font/FontManager.h"
 
 class CResourceManager
 {
@@ -15,7 +16,8 @@ private:
 	CMaterialManager*  m_MaterialManager;
 	CTextureManager*   m_TextureManager;
 	CAnimationManager* m_AnimationManager;
-	CSoundManager* m_SoundManager;
+	CSoundManager*    m_SoundManager;
+	CFontManager*	     m_FontManager;
 
 public:
 	bool Init();
