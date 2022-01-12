@@ -109,7 +109,7 @@ void CSceneCollision::Collision(float DeltaTime) //
 
 bool CSceneCollision::CollisionWidget()
 {
-	return m_WidgetCollision == m_Scene->GetViewPort()->CollisionMouse();
+	return m_WidgetCollision = m_Scene->GetViewPort()->CollisionMouse();
 }
 
 void CSceneCollision::CollisionMouse(float DeltaTime)
