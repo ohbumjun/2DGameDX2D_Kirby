@@ -413,6 +413,6 @@ void CSceneResource::SetVolume(const std::string& SoundName, float Volume)
 
 void CSceneResource::SetEntireVolume(float Volume)
 {
-	CResourceManager::GetInst()->SetEntireVolume(Volume);
+	CResourceManager::GetInst()->SetEntireVolume(Volume); //
 }
 
