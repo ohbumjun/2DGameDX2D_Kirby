@@ -119,21 +119,12 @@ void CUIWindow::PostUpdate(float DeltaTime)
 
 void CUIWindow::Render()
 {
-	auto iter = m_WidgetList.begin();
-	auto iterEnd = m_WidgetList.end();
-
-	for (; iter != iterEnd;)
-	{
-		if (!(*iter)->IsActive())
-		{
-			iter = m_WidgetList.erase(iter);
-			iterEnd = m_WidgetList.end();
-		}
-		++iter;
-	}
-
-	iter = m_WidgetList.begin();
-	iterEnd = m_WidgetList.end();
+	// Collision Mouse 에서 ZOrder 내림차순 정렬
+	// ZOrdre가 높은 녀석이 위로 오게 해야 한다
+	// 따라서, 뒤에서부터 그린다
+	// 그래야 ZOrder 높은 애가 가장 마지막, 가장 화면 위에 그려지므로
+	auto iter = m_WidgetList.rbegin();
+	auto iterEnd = m_WidgetList.rend();
 
 	for (; iter != iterEnd; ++iter)
 	{

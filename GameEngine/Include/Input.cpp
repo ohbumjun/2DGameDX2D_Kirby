@@ -224,8 +224,8 @@ void CInput::ReadDirectInputMouse()
 void CInput::UpdateMouse(float DeltaTime)
 {
 	// IMGUI Window 창 위에 있으면 인식 x
-	if (ImGui::GetIO().WantCaptureMouse)
-		return;
+	// if (ImGui::GetIO().WantCaptureMouse)
+	//	return;
 
 	POINT MouseWindowPos;
 
@@ -302,7 +302,16 @@ void CInput::UpdateKeyState()
 		else
 			m_Shift = false;
 
-		// todo : 여기에 L,R Button 세팅
+		if (m_MouseState.rgbButtons[0] & 0x80)
+			m_LMouseClick = true;
+		else
+			m_LMouseClick = false;
+
+		if (m_MouseState.rgbButtons[1] & 0x80)
+			m_RMouseClick = true;
+		else
+			m_RMouseClick = false;
+
 		break;
 	case Input_Type::Window:
 		if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
@@ -328,14 +337,26 @@ void CInput::UpdateKeyState()
 	// 등록된 키를 반복하며 해당 키가 눌러졌는지를 판단한다.
 	size_t Size = m_vecAddKey.size();
 
-	// Imgui Window 위에 올라올 시의 Mouse Event는 Scene이나 Project에는 적용안되게 세팅한다.
-	bool ImGuiMouseHovered = ImGui::GetIO().WantCaptureMouse;
-
 	for (size_t i = 0; i < Size; ++i)
 	{
 		unsigned char Key = m_vecAddKey[i];
 
 		bool KeyPush = false;
+
+		// 즉, 원리는 이러하다
+		// 먼저 마우스 왼쪽 오른쪽 버튼이 눌러지면
+		// 무조건 눌러진 것으로 인식은 시킨다
+		// 그래야만, Widget 들 입장에서는 마우스 클릭 여부를 무조건적으로
+		// 알아낼 수 있기 때문이다.
+
+		// 반면, 몇몇 Object 들은 ,아니, 주로 Player 일테지만
+		// 마우스 왼쪽 버튼 콜백에, Player 클래스 내의 함수를 등록해놓는 경우들이 있다
+		// 이 경우에는, 아무리 마우스가 눌린다고 한들
+		// 해당 콜백은 동작하지 않게 해야 한다
+		// 이를 위해서 m_CollisionWidget 을 두어,
+		// 위젯과 충돌했다면, 설령 마우스 클릭을 했더라도
+		// KeyState 입장에서는 눌러진 것으로 인식하지 않게
+		// 세팅하고자 하는 것이다.
 
 		switch (m_InputType)
 		{
@@ -343,14 +364,17 @@ void CInput::UpdateKeyState()
 			switch (Key)
 			{
 			case DIK_MOUSELBUTTON:
-				if ((m_MouseState.rgbButtons[0] & 0x80) && !ImGuiMouseHovered)
+				// Widget 과 충돌이 일어나지 않았을 때에만 => !m_CollisionWidget
+				if ((m_MouseState.rgbButtons[0] & 0x80) && !m_CollisionWidget)
 				{
+					m_LMouseClick = true;
 					KeyPush = true;
 				}
 				break;
 			case DIK_MOUSERBUTTON:
-				if ((m_MouseState.rgbButtons[1] & 0x80) && !ImGuiMouseHovered)
+				if ((m_MouseState.rgbButtons[1] & 0x80) && !m_CollisionWidget)
 				{
+					m_RMouseClick = true;
 					KeyPush = true;
 				}
 				break;
@@ -405,9 +429,13 @@ void CInput::UpdateKeyInfo(float DeltaTime)
 	auto iter    = m_mapKeyInfo.begin();
 	auto iterEnd = m_mapKeyInfo.end();
 
+
 	for (; iter != iterEnd; ++iter)
 	{
 		unsigned char Key = iter->second->State.Key;
+
+		// Imgui Window 위에 올라올 시의 Mouse Event는 Scene이나 Project에는 적용안되게 세팅한다.
+		bool ImGuiMouseHovered = ImGui::GetIO().WantCaptureMouse;
 
 		if (m_vecKeyState[Key].State[KeyState_Down] &&
 			iter->second->Ctrl == m_Ctrl &&
@@ -415,9 +443,11 @@ void CInput::UpdateKeyInfo(float DeltaTime)
 			iter->second->Shift == m_Shift)
 		{
 			if (iter->second->Callback[KeyState_Down])
-				iter->second->Callback[KeyState_Down](DeltaTime);
+			{
+				if (!ImGui::GetIO().WantCaptureMouse)
+					iter->second->Callback[KeyState_Down](DeltaTime);
+			}
 		}
-
 
 		if (m_vecKeyState[Key].State[KeyState_Push] &&
 			iter->second->Ctrl == m_Ctrl &&
@@ -425,9 +455,11 @@ void CInput::UpdateKeyInfo(float DeltaTime)
 			iter->second->Shift == m_Shift)
 		{
 			if (iter->second->Callback[KeyState_Push])
-				iter->second->Callback[KeyState_Push](DeltaTime);
+			{
+				if (!ImGui::GetIO().WantCaptureMouse)
+					iter->second->Callback[KeyState_Push](DeltaTime);
+			}
 		}
-
 
 		if (m_vecKeyState[Key].State[KeyState_Up] &&
 			iter->second->Ctrl == m_Ctrl &&
@@ -435,7 +467,10 @@ void CInput::UpdateKeyInfo(float DeltaTime)
 			iter->second->Shift == m_Shift)
 		{
 			if (iter->second->Callback[KeyState_Up])
-				iter->second->Callback[KeyState_Up](DeltaTime);
+			{
+				if (!ImGui::GetIO().WantCaptureMouse)
+					iter->second->Callback[KeyState_Up](DeltaTime);
+			}
 		}
 	}
 }

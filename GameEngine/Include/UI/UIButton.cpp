@@ -29,7 +29,6 @@ bool CUIButton::SetTexture(Button_State State, CTexture* Texture)
 	SetUseTexture(true);
 
 	return true;
-
 }
 
 bool CUIButton::SetTexture(Button_State State, const std::string& Name, const TCHAR* FileName,
@@ -95,27 +94,22 @@ void CUIButton::Update(float DeltaTime)
 	{
 		if (m_MoueHovered)
 		{
-			if (m_State == Button_State::Normal)
-			{
-				m_State = Button_State::MouseOn;
-			}
-			if (m_State == Button_State::MouseOn && LMouseClick)
+			if (LMouseClick)
 			{
 				m_State = Button_State::Click;
 			}
-		}
-		else
-		{
-			if (m_State == Button_State::MouseOn)
+			else if (m_State == Button_State::Click)
 			{
 				if (m_ClickCallback)
 					m_ClickCallback();
-				m_State = Button_State::Normal;
+				m_State = Button_State::MouseOn;
 			}
 			else
-			{
-				m_State = Button_State::Normal;
-			}
+				m_State = Button_State::MouseOn;
+		}
+		else
+		{
+			m_State = Button_State::Normal;
 		}
 	}
 }

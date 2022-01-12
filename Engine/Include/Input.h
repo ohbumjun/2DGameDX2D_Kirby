@@ -63,6 +63,7 @@ private:
 	bool                                      m_LMouseUp;
 	bool										m_LMouseClick;
 	bool										m_RMouseClick;
+	bool										m_CollisionWidget;
 
 public:
 	bool IsLMouseClicked() const

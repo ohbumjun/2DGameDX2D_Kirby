@@ -40,19 +40,17 @@ void CUIWidget::SetUseTexture(bool Use)
 
 bool CUIWidget::CollisionMouse(const Vector2& MousePos)
 {
-	if (m_Pos.x > MousePos.x)
-		return false; //
+	if (m_Pos.x <= MousePos.x && 
+		MousePos.x <= m_Pos.x + m_Size.x &&
+		m_Pos.y <= MousePos.y && 
+		m_Pos.y + m_Size.y >= MousePos.y)
+	{
+		m_MoueHovered = true;
+		return true;
+	}
+	m_MoueHovered = false;
+	return false;
 
-	if (m_Pos.x + m_Size.x < MousePos.x)
-		return false;
-
-	if (m_Pos.y > MousePos.y)
-		return false;
-
-	if (m_Pos.y + m_Size.y < MousePos.y)
-		return false;
-
-	return true;
 }
 
 void CUIWidget::Start()

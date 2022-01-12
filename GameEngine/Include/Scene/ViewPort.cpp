@@ -110,6 +110,9 @@ bool CViewPort::CollisionMouse()
 		++iter;
 	}
 
+	iter = m_WindowList.begin();
+	iterEnd = m_WindowList.end();
+
 	for (; iter != iterEnd; ++iter)
 	{
 		if (!(*iter)->IsEnable())
