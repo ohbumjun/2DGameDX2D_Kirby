@@ -114,11 +114,7 @@ bool CSceneCollision::CollisionWidget()
 
 void CSceneCollision::CollisionMouse(float DeltaTime)
 {
-	bool MouseCollision = false;
-
-	// UI와 마우스 충돌 처리 먼저 진행
-	m_WidgetCollision = m_Scene->GetViewPort()->CollisionMouse();
-	MouseCollision = m_WidgetCollision;
+	bool MouseCollision = m_WidgetCollision;
 
 	// UI 와 Object 충돌 진행
 	// UI와 충돌하지 않았을 때 비로소 Object와 충돌 진행

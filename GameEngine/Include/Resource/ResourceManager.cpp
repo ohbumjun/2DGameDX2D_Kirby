@@ -7,7 +7,8 @@ CResourceManager::CResourceManager() :
 	m_ShaderManager(nullptr),
 	m_MaterialManager(nullptr),
 	m_TextureManager(nullptr),
-	m_AnimationManager(nullptr)
+	m_AnimationManager(nullptr),
+	m_SoundManager(nullptr)
 {
 }
 
@@ -18,6 +19,7 @@ CResourceManager::~CResourceManager()
 	SAFE_DELETE(m_ShaderManager);
 	SAFE_DELETE(m_MeshManager);
 	SAFE_DELETE(m_TextureManager);
+	SAFE_DELETE(m_SoundManager);
 }
 
 bool CResourceManager::Init()
@@ -45,6 +47,11 @@ bool CResourceManager::Init()
 	m_AnimationManager = new CAnimationManager;
 
 	if (!m_AnimationManager->Init())
+		return false;
+
+	m_SoundManager = new CSoundManager;
+
+	if (!m_SoundManager->Init())
 		return false;
 
 	return true;

@@ -7,9 +7,6 @@
 // Memory Leak
 #include <crtdbg.h>
 #include <stdlib.h>
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <dinput.h>
 #include <functional>
 #include <iostream>
 #include <list>
@@ -21,6 +18,10 @@
 #include <vector>
 #include <Windows.h>
 
+#include <d3d11.h>
+#include <d3dcompiler.h>
+#include <dinput.h>
+
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -29,18 +30,33 @@
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
-#include "Matrix.h"
 #include "SharedPtr.h"
+#include "Matrix.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Resource/Texture/DirectXTex.h"
+#include "fmod.hpp"
+
+#ifdef _DEBUG
+
+#pragma comment(lib, "DirectXTex_Debug.lib")
+
+#else
+
+#pragma comment(lib, "DirectXTex.lib")
+
+#endif // _DEBUG
+
+#pragma comment(lib, "fmod64_vc.lib")
 
 #define	ROOT_PATH		   "Root"
 #define	SHADER_PATH      "Shader"
 #define	TEXTURE_PATH	   "Texture"
 #define	FONT_PATH		   "Font"
 #define	ANIMATION_PATH "Animation"
-#define	SCENE_PATH        "SceneB"
+#define	SCENE_PATH        "Scene"
+#define	SOUND_PATH        "Sound"
 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
 #define	SAFE_DELETE_ARRAY(p)	if(p)	{ delete[] p; p = nullptr; }

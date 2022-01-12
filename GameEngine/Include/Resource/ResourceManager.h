@@ -5,6 +5,7 @@
 #include "Mesh/MeshManager.h"
 #include "Shader/ShaderManager.h"
 #include "Texture/TextureManager.h"
+#include "Sound/SoundManager.h"
 
 class CResourceManager
 {
@@ -14,6 +15,7 @@ private:
 	CMaterialManager*  m_MaterialManager;
 	CTextureManager*   m_TextureManager;
 	CAnimationManager* m_AnimationManager;
+	CSoundManager* m_SoundManager;
 
 public:
 	bool Init();
