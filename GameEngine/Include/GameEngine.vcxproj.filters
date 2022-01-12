@@ -802,4 +802,9 @@
       <Filter>02. Resource\06. Sound\01. FMOD</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="텍스트.txt">
+      <Filter>01. Engine\01. Device</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

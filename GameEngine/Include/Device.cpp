@@ -10,7 +10,10 @@ CDevice::CDevice() :
 	m_Context(nullptr),
 	m_SwapChain(nullptr),
 	m_TargetView(nullptr),
-	m_DepthView(nullptr)
+	m_DepthView(nullptr),
+	m_2DTarget(nullptr),
+	m_2DTargetWorld(nullptr),
+	m_2DFactory(nullptr)
 {
 }
 
@@ -26,6 +29,10 @@ CDevice::~CDevice()
 
 	SAFE_RELEASE(m_Context);
 	SAFE_RELEASE(m_Device);
+
+	SAFE_RELEASE(m_2DTarget);
+	SAFE_RELEASE(m_2DTargetWorld);
+	SAFE_RELEASE(m_2DFactory);
 
 	// Debug
 	// SAFE_RELEASE(m_DebugDev);
@@ -50,6 +57,7 @@ bool CDevice::Init(HWND         hWnd, unsigned int Width,
 	m_RS.Width  = Width;
 	m_RS.Height = Height;
 
+	// 해당 Flag를 세팅해놔야만, DX2D와의 연동이 가능해진다.
 	unsigned int Flag = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 #ifdef _DEBUG
@@ -155,6 +163,32 @@ bool CDevice::Init(HWND         hWnd, unsigned int Width,
 	// Debug
 	// HRESULT hr2 = DXGIGetDebugInterface(IID_PPV_ARGS(&m_DebugDev));
 	// hr2 = m_DebugDev->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+
+
+	// Font 출력을 위한 것이다. DX3D와 DX2D를 연동하는 과정이 필요하다.
+	// 2DFactory를 만든다
+	// Direct2D 자원 객체를 생성하려면, Factory 객체가 필요하다
+	// Direct2D의 자원들은 ID2D1Resource 인터페이스를 상속받는다
+	// ID2D1Factory 도 마찬가지
+	// ID2D1Factory 를 만들어야만, 다른 자원객체들을 만들 수 있다.
+
+	// D2D1_FACTORY_TYPE_SINGLE_THREADED (0) : 싱글 스레드 기반의 Factory 객체 생성
+	// D2D1_FACTORY_TYPE_MULTI_THREADED (1) : 멀티 스레드 기반의 Factory 객체 생성
+	// D2D1_FACTORY_TYPE_MULTI_THREADED 로 생성된 객체는 말 그대로
+	// 멀티스레드들이 병렬적으로 Factory 객체에 접근해서 안전하게 작업할 수 있도록 생성되는 것 
+	if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_2DFactory)))
+		return false;
+
+	// 출력을 위한 Direct2D 자원 객체를 만들어야 한다
+	// ID2D1RenderTarget 이라는 인터페이스를 사용한다.
+
+	// 2D 텍스쳐를 IDXGISurface 형태로 바꾼다. 
+	IDXGISurface* BackSurface = nullptr;
+	m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&BackSurface));
+
+	// CreateDxgiSurfaceRenderTarget	: DX의 그래픽 Infrastructure 서비스에 그릴 수 있는 렌더 타겟 생성
+	// 2D 용 렌더 타겟을 만든다.
+	D2D1_RENDER_TARGET_PROPERTIES
 
 	return true;
 }

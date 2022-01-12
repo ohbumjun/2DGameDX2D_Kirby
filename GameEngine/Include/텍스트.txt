@@ -1,0 +1,21 @@
+https://myoung-min.tistory.com/13?category=1017839
+
+Direct2D와 Direct3D를 함께 사용하는 2가지 방법
+
+1) IDXGISurface 를 얻어 CreateDxgiSurfaceRenderTarget 함수를 통해
+ID2D1RenderTarget을 생성하고, Direct2D 컨텐츠를
+DX3D surface에 쓸 수 있다.
+
+즉, DXGI Surface 에 2D 컨텐츠를
+DXGI surface render target을 사용하여 그릴 수 있다.
+
+DXGI surface render target 는 일종의 ID2D1RenderTarget 이다.
+다른 Direct2D 렌더 타겟처럼, 리소스 생성과 그리기 명령을 실행할 수 있다.
+
+DXGI surface render target과 DXGI surface는 같은 DXGI format을 사용해야 한다. 
+render target을 만들 때 DXGI_FORMAT_UNKOWN 형식을 지정하면 자동으로 surface의 format을 사용한다.
+
+2) DXGI Surface 얻기
+- SwapChain->GetBuffer 로 DXGI surface 를 얻을 수 있다.
+- 이 Surface로 CreateDxgiSurfaceRenderTarget 를 사용해서 2D 컨텐츠를 그릴
+ID2D1RenderTarget 를 생성할 수 있다.
