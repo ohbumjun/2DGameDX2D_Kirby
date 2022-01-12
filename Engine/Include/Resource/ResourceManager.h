@@ -5,6 +5,7 @@
 #include "Mesh/MeshManager.h"
 #include "Shader/ShaderManager.h"
 #include "Texture/TextureManager.h"
+#include "Sound/SoundManager.h"
 
 class CResourceManager
 {
@@ -14,17 +15,15 @@ private:
 	CMaterialManager*  m_MaterialManager;
 	CTextureManager*   m_TextureManager;
 	CAnimationManager* m_AnimationManager;
+	CSoundManager* m_SoundManager;
 
 public:
 	bool Init();
+	void Update();
 
 public: // =================== Mesh =====================
-
-
 	class CMesh* FindMesh(const std::string& Name);
-
 	void ReleaseMesh(const std::string& Name);
-
 
 public: // =================== Shader =====================
 	template <typename T>
@@ -81,6 +80,20 @@ public: // =================== Sequence2D =====================
 	bool LoadSequence2DFullPath(const char* FullPath, const class CScene* Scene = nullptr);
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const class CScene* Scene = nullptr);
 	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName = TEXTURE_PATH ,const class CScene* Scene = nullptr);
+
+public: // =================== Sound =====================
+	CSound* LoadSound(const std::string& GroupName, const std::string& SoundName,
+		bool Loop, const TCHAR* FileName,
+		const std::string& PathName = SOUND_PATH);
+	void ReleaseSound(const std::string& SoundName);
+	CSound* FindSound(const std::string& SoundName);
+	FMOD::ChannelGroup* FindGroup(const std::string& GroupName);
+	void SoundPlay(const std::string& SoundName);
+	void SoundStop(const std::string& SoundName);
+	void SoundResume(const std::string& SoundName);
+	void SoundPause(const std::string& SoundName);
+	void SetVolume(const std::string& SoundName, float Volume);
+	void SetEntireVolume(float Volume);
 
 	DECLARE_SINGLE(CResourceManager);
 };

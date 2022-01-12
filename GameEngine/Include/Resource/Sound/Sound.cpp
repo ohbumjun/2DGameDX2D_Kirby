@@ -86,3 +86,10 @@ void CSound::Pause()
 	}
 	m_IsPlay = false;
 }
+
+void CSound::SetVolume(float Volume)
+{
+	if (Volume > 100.f)
+		Volume = 99.9f;
+	m_Channel->setVolume(Volume / 100.f);
+}

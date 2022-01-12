@@ -18,7 +18,9 @@ private :
 	std::unordered_map<std::string, FMOD::ChannelGroup*> m_mapChannelGroup;
 public :
 	bool Init();
-	bool LoadSound(const std::string& GroupName, const std::string& SoundName,
+	void Update();
+public :
+	CSound* LoadSound(const std::string& GroupName, const std::string& SoundName,
 		bool Loop, const TCHAR* FileName,
 		const std::string& PathName = SOUND_PATH);
 	void ReleaseSound(const std::string& SoundName);
@@ -29,6 +31,7 @@ public :
 	void SoundResume(const std::string& SoundName);
 	void SoundPause(const std::string& SoundName);
 	void SetVolume(const std::string& SoundName, float Volume);
+	void SetEntireVolume(float Volume);
 private :
 	static CSoundManager* m_Inst;
 public :

@@ -43,25 +43,30 @@ bool CSoundManager::Init()
 	return true;
 }
 
-bool CSoundManager::LoadSound(const std::string& GroupName, 
-	const std::string& SoundName, bool Loop, const TCHAR* FileName,
-	const std::string& PathName)
+void CSoundManager::Update()
+{
+	m_System->update();
+}
+
+CSound* CSoundManager::LoadSound(const std::string& GroupName, 
+								 const std::string& SoundName, bool Loop, const TCHAR* FileName,
+								 const std::string& PathName)
 {
 	CSound* Sound = FindSound(SoundName);
 	if (Sound)
-		return true;
+		return Sound;
 
 	FMOD::ChannelGroup* Group = FindGroup(GroupName);
 	if (!Group)
-		return false;
+		return nullptr;
 
 	Sound = new CSound;
 	if (!Sound->LoadSound(SoundName, m_System, Group, true, FileName, PathName))
-		return false;
+		return nullptr;
 
 	m_mapSound.insert(std::make_pair(SoundName, Sound));
 
-	return true;
+	return Sound;
 }
 
 void CSoundManager::ReleaseSound(const std::string& SoundName)
@@ -128,5 +133,12 @@ void CSoundManager::SetVolume(const std::string& SoundName, float Volume)
 	CSound* Sound = FindSound(SoundName);
 	if (!Sound)
 		return;
-	Sound->Pause();
+	Sound->SetVolume(Volume);
+}
+
+void CSoundManager::SetEntireVolume(float Volume)
+{
+	if (Volume > 100.f)
+		Volume = 99.9f;
+	m_MasterGroup->setVolume(Volume / 100.f);
 }

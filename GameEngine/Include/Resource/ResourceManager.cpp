@@ -57,6 +57,11 @@ bool CResourceManager::Init()
 	return true;
 }
 
+void CResourceManager::Update()
+{
+	m_SoundManager->Update();
+}
+
 CMesh* CResourceManager::FindMesh(const std::string& Name)
 {
 	return m_MeshManager->FindMesh(Name);
@@ -177,5 +182,56 @@ bool CResourceManager::LoadSequence2D(std::string& SequenceName, const char* Fil
 	const CScene* Scene)
 {
 	return m_AnimationManager->LoadSequence2D(SequenceName, FileName, PathName, Scene);
+}
+
+CSound* CResourceManager::LoadSound(const std::string& GroupName, const std::string& SoundName, bool Loop,
+	const TCHAR* FileName, const std::string& PathName)
+{
+	return m_SoundManager->LoadSound(GroupName, SoundName, Loop, FileName, PathName);
+}
+
+void CResourceManager::ReleaseSound(const std::string& SoundName)
+{
+	m_SoundManager->ReleaseSound(SoundName);
+}
+
+CSound* CResourceManager::FindSound(const std::string& SoundName)
+{
+	return m_SoundManager->FindSound(SoundName);
+}
+
+FMOD::ChannelGroup* CResourceManager::FindGroup(const std::string& GroupName)
+{
+	return m_SoundManager->FindGroup(GroupName);
+}
+
+void CResourceManager::SoundPlay(const std::string& SoundName)
+{
+	m_SoundManager->SoundPlay(SoundName);
+}
+
+void CResourceManager::SoundStop(const std::string& SoundName)
+{
+	m_SoundManager->SoundStop(SoundName);
+}
+
+void CResourceManager::SoundResume(const std::string& SoundName)
+{
+	m_SoundManager->SoundResume(SoundName);
+}
+
+void CResourceManager::SoundPause(const std::string& SoundName)
+{
+	m_SoundManager->SoundPlay(SoundName);
+}
+
+void CResourceManager::SetVolume(const std::string& SoundName, float Volume)
+{
+	m_SoundManager->SetVolume(SoundName, Volume);
+}
+
+void CResourceManager::SetEntireVolume(float Volume)
+{
+	m_SoundManager->SetEntireVolume(Volume);
 }
 

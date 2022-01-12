@@ -55,7 +55,8 @@
 #define	TEXTURE_PATH	   "Texture"
 #define	FONT_PATH		   "Font"
 #define	ANIMATION_PATH "Animation"
-#define	SCENE_PATH        "SceneB"
+#define	SCENE_PATH        "Scene"
+#define	SOUND_PATH        "Sound"
 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
 #define	SAFE_DELETE_ARRAY(p)	if(p)	{ delete[] p; p = nullptr; }

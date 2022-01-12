@@ -7,6 +7,7 @@
 #include "../Resource/Mesh/Mesh.h"
 #include "../Resource/Shader/Shader.h"
 #include "../Resource/Texture/Texture.h"
+#include "../Resource/Sound/Sound.h"
 
 class CSceneResource
 {
@@ -25,6 +26,7 @@ private:
 	std::unordered_map<std::string, CSharedPtr<CMaterial>>            m_mapMaterial;
 	std::unordered_map<std::string, CSharedPtr<CTexture>>             m_mapTexture;
 	std::unordered_map<std::string, CSharedPtr<CAnimationSequence2D>> m_mapSequence2D;
+	std::unordered_map<std::string, CSharedPtr<CSound>> m_mapSound;
 
 public: // =================== Mesh =====================
 	CMesh* FindMesh(const std::string& Name);
@@ -90,4 +92,16 @@ public: // =================== Sequence2D =====================
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath);
 	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string PathName = ANIMATION_PATH);
 	bool LoadSequence2D(const char* FileName, const std::string& PathName = ANIMATION_PATH);
+public: // =================== Sound =====================
+	CSound* LoadSound(const std::string& GroupName, const std::string& SoundName,
+		bool Loop, const TCHAR* FileName,
+		const std::string& PathName = SOUND_PATH);
+	CSound* FindSound(const std::string& SoundName);
+	FMOD::ChannelGroup* FindGroup(const std::string& GroupName);
+	void SoundPlay(const std::string& SoundName);
+	void SoundStop(const std::string& SoundName);
+	void SoundResume(const std::string& SoundName);
+	void SoundPause(const std::string& SoundName);
+	void SetVolume(const std::string& SoundName, float Volume);
+	void SetEntireVolume(float Volume);
 };

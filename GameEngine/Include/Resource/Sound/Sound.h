@@ -25,5 +25,6 @@ public :
     void Stop();
     void Resume();
     void Pause();
+    void SetVolume(float Volume);
 };
 

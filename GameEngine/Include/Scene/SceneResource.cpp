@@ -328,3 +328,91 @@ bool CSceneResource::LoadSequence2D(const char* FileName, const std::string& Pat
 	return true;
 }
 
+CSound* CSceneResource::LoadSound(const std::string& GroupName, const std::string& SoundName, bool Loop,
+	const TCHAR* FileName, const std::string& PathName)
+{
+	CSound* Sound = FindSound(SoundName);
+	if (Sound)
+		return Sound;
+	FMOD::ChannelGroup* Group = FindGroup(GroupName);
+	if (!Group)
+		return nullptr;
+
+	Sound = CResourceManager::GetInst()->LoadSound(GroupName, SoundName, Loop, FileName, PathName);
+	m_mapSound.insert(std::make_pair(SoundName, Sound));
+
+	return Sound;
+}
+
+CSound* CSceneResource::FindSound(const std::string& SoundName)
+{
+	auto iter = m_mapSound.find(SoundName);
+
+	if (iter == m_mapSound.end())
+	{
+		CSound* Sound = CResourceManager::GetInst()->FindSound(SoundName);
+
+		if (!Sound)
+			return nullptr;
+
+		m_mapSound.insert(std::make_pair(SoundName, Sound));
+
+		return Sound;
+	}
+
+	return iter->second;
+}
+
+FMOD::ChannelGroup* CSceneResource::FindGroup(const std::string& GroupName)
+{
+	FMOD::ChannelGroup* Group = CResourceManager::GetInst()->FindGroup(GroupName);
+	if (Group)
+		return Group;
+	return nullptr;
+}
+
+void CSceneResource::SoundPlay(const std::string& SoundName)
+{
+	CSound* Sound = FindSound(SoundName);
+	if (!Sound)
+		return;
+	Sound->Play();
+}
+
+void CSceneResource::SoundStop(const std::string& SoundName)
+{
+	CSound* Sound = FindSound(SoundName);
+	if (!Sound)
+		return;
+	Sound->Stop();
+}
+
+void CSceneResource::SoundResume(const std::string& SoundName)
+{
+	CSound* Sound = FindSound(SoundName);
+	if (!Sound)
+		return;
+	Sound->Resume();
+}
+
+void CSceneResource::SoundPause(const std::string& SoundName)
+{
+	CSound* Sound = FindSound(SoundName);
+	if (!Sound)
+		return;
+	Sound->Pause();
+}
+
+void CSceneResource::SetVolume(const std::string& SoundName, float Volume)
+{
+	CSound* Sound = FindSound(SoundName);
+	if (!Sound)
+		return;
+	Sound->SetVolume(Volume);
+}
+
+void CSceneResource::SetEntireVolume(float Volume)
+{
+	CResourceManager::GetInst()->SetEntireVolume(Volume);
+}
+
