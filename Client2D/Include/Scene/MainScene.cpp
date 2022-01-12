@@ -22,6 +22,8 @@ bool CMainScene::Init()
 
 	CreateAnimationSequence();
 
+	CreateSound();
+
 	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
 	SetPlayerObject(Player);
@@ -48,4 +50,10 @@ void CMainScene::CreateAnimationSequence()
 		m_Scene->GetResource()->
 		         AddAnimationSequence2DFrame("PlayerIdle", Vector2(i * 50.f, 148.f), Vector2(50.f, 37.f));
 	}
+}
+
+void CMainScene::CreateSound()
+{
+	m_Scene->GetResource()->LoadSound("UI", "Teemo", false, TEXT("Skill.wav"));
+	m_Scene->GetResource()->LoadSound("UI", "Fire", false, TEXT("Fire1.wav"));
 }

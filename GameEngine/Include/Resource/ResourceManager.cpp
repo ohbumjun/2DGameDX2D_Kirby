@@ -190,6 +190,11 @@ CSound* CResourceManager::LoadSound(const std::string& GroupName, const std::str
 	return m_SoundManager->LoadSound(GroupName, SoundName, Loop, FileName, PathName);
 }
 
+bool CResourceManager::CreateChannelGroup(const std::string& GroupName)
+{
+	return m_SoundManager->CreateChannelGroup(GroupName);
+}
+
 void CResourceManager::ReleaseSound(const std::string& SoundName)
 {
 	m_SoundManager->ReleaseSound(SoundName);
@@ -234,4 +239,10 @@ void CResourceManager::SetEntireVolume(float Volume)
 {
 	m_SoundManager->SetEntireVolume(Volume);
 }
+
+void CResourceManager::SetGroupVolume(const std::string& GroupName, float Volume)
+{
+	m_SoundManager->SetGroupVolume(GroupName, Volume);
+}
+
 

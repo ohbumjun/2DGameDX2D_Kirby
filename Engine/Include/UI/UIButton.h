@@ -2,6 +2,7 @@
 
 #include "UIWidget.h"
 #include "../Resource/Texture/Texture.h"
+#include "../Resource/Sound/Sound.h"
 
 struct ButtonStateInfo {
 	CSharedPtr<CTexture> m_Texture;
@@ -24,6 +25,14 @@ private :
 	ButtonStateInfo m_Info[(int)Button_State::Max];
 	std::function<void()> m_ClickCallback;
 	Button_State m_State;
+	CSharedPtr<CSound> m_ButtonSounds[Button_SoundState::BtnMax];
+	bool m_HoverSound;
+	bool m_ClickSound;
+public :
+	void SetMouseHoverSound(CSound* Sound);
+	void SetMouseClickSound(CSound* Sound);
+	void SetMouseSound(Button_SoundState State, const std::string& GroupName, const std::string& SoundName,
+		bool Loop, const TCHAR* FileName, const std::string& PathName = SOUND_PATH);
 public :
 	void SetTextureTint(Button_State State, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 	bool SetTexture(Button_State State, CTexture* Texture);

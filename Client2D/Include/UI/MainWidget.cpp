@@ -1,4 +1,6 @@
 #include "MainWidget.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneResource.h"
 
 CMainWidget::CMainWidget()
 {}
@@ -34,6 +36,8 @@ bool CMainWidget::Init()
 	m_Button->SetTextureTint(Button_State::Click, 150, 150, 150, 255);
 
 	m_Button->SetClickCallback<CMainWidget>(this, &CMainWidget::ButtonClick);
+	m_Button->SetMouseClickSound(m_Scene->GetResource()->FindSound("Fire"));
+	m_Button->SetMouseHoverSound(m_Scene->GetResource()->FindSound("Fire"));
 
 	return true;
 }

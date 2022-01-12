@@ -2,7 +2,12 @@
 #include "../../PathManager.h"
 
 CSound::CSound() :
-	m_IsPlay(false)
+	m_IsPlay(false),
+	m_IsLoop(false),
+	m_System(nullptr),
+	m_Group(nullptr),
+	m_Channel(nullptr),
+	m_Sound(nullptr)
 {}
 
 CSound::CSound(const CSound& Sound)

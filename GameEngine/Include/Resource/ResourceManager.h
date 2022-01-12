@@ -85,6 +85,7 @@ public: // =================== Sound =====================
 	CSound* LoadSound(const std::string& GroupName, const std::string& SoundName,
 		bool Loop, const TCHAR* FileName,
 		const std::string& PathName = SOUND_PATH);
+	bool CreateChannelGroup(const std::string& GroupName);
 	void ReleaseSound(const std::string& SoundName);
 	CSound* FindSound(const std::string& SoundName);
 	FMOD::ChannelGroup* FindGroup(const std::string& GroupName);
@@ -94,6 +95,7 @@ public: // =================== Sound =====================
 	void SoundPause(const std::string& SoundName);
 	void SetVolume(const std::string& SoundName, float Volume);
 	void SetEntireVolume(float Volume);
+	void SetGroupVolume(const std::string& GroupName, float Volume);
 
 	DECLARE_SINGLE(CResourceManager);
 };

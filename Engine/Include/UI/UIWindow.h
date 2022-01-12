@@ -9,7 +9,7 @@ class CUIWindow : public CRef
 protected :
 	CUIWindow();
 	virtual ~CUIWindow();
-private :
+protected :
 	class CScene* m_Scene;
 	class CViewPort* m_ViewPort;
 	int m_ZOrder;

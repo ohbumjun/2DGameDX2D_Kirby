@@ -33,6 +33,9 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("Attack1", VK_LBUTTON);
 	CInput::GetInst()->CreateKey("Skill1", '1');
 
+	// Sound
+	CResourceManager::GetInst()->CreateChannelGroup("UI");
+
 	return true;
 }
 

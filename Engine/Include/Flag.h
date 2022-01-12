@@ -159,3 +159,9 @@ enum Button_State {
 	Disable,
 	Max
 };
+
+enum Button_SoundState {
+	BtnHover,
+	BtnClick,
+	BtnMax
+};

@@ -104,4 +104,5 @@ public: // =================== Sound =====================
 	void SoundPause(const std::string& SoundName);
 	void SetVolume(const std::string& SoundName, float Volume);
 	void SetEntireVolume(float Volume);
+	void SetGroupVolume(const std::string& GroupName, float Volume);
 };

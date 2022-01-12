@@ -75,6 +75,9 @@ CSceneResource::~CSceneResource()
 			CResourceManager::GetInst()->ReleaseAnimationSequence2D(Name);
 		}
 	}
+
+	// Sound Ã³¸®
+	m_mapSound.clear();
 }
 
 CMesh* CSceneResource::FindMesh(const std::string& Name)
@@ -334,11 +337,12 @@ CSound* CSceneResource::LoadSound(const std::string& GroupName, const std::strin
 	CSound* Sound = FindSound(SoundName);
 	if (Sound)
 		return Sound;
-	FMOD::ChannelGroup* Group = FindGroup(GroupName);
-	if (!Group)
-		return nullptr;
 
 	Sound = CResourceManager::GetInst()->LoadSound(GroupName, SoundName, Loop, FileName, PathName);
+
+	if (!Sound)
+		return nullptr;
+
 	m_mapSound.insert(std::make_pair(SoundName, Sound));
 
 	return Sound;
@@ -365,54 +369,41 @@ CSound* CSceneResource::FindSound(const std::string& SoundName)
 
 FMOD::ChannelGroup* CSceneResource::FindGroup(const std::string& GroupName)
 {
-	FMOD::ChannelGroup* Group = CResourceManager::GetInst()->FindGroup(GroupName);
-	if (Group)
-		return Group;
-	return nullptr;
+	return CResourceManager::GetInst()->FindGroup(GroupName);
 }
 
 void CSceneResource::SoundPlay(const std::string& SoundName)
 {
-	CSound* Sound = FindSound(SoundName);
-	if (!Sound)
-		return;
-	Sound->Play();
+	CResourceManager::GetInst()->SoundPlay(SoundName);
 }
 
 void CSceneResource::SoundStop(const std::string& SoundName)
 {
-	CSound* Sound = FindSound(SoundName);
-	if (!Sound)
-		return;
-	Sound->Stop();
+	CResourceManager::GetInst()->SoundStop(SoundName);
 }
 
 void CSceneResource::SoundResume(const std::string& SoundName)
 {
-	CSound* Sound = FindSound(SoundName);
-	if (!Sound)
-		return;
-	Sound->Resume();
+	CResourceManager::GetInst()->SoundResume(SoundName);
 }
 
 void CSceneResource::SoundPause(const std::string& SoundName)
 {
-	CSound* Sound = FindSound(SoundName);
-	if (!Sound)
-		return;
-	Sound->Pause();
+	CResourceManager::GetInst()->SoundPause(SoundName);
 }
 
 void CSceneResource::SetVolume(const std::string& SoundName, float Volume)
 {
-	CSound* Sound = FindSound(SoundName);
-	if (!Sound)
-		return;
-	Sound->SetVolume(Volume);
+	CResourceManager::GetInst()->SetVolume(SoundName, Volume);
 }
 
 void CSceneResource::SetEntireVolume(float Volume)
 {
-	CResourceManager::GetInst()->SetEntireVolume(Volume); //
+	CResourceManager::GetInst()->SetEntireVolume(Volume); 
+}
+
+void CSceneResource::SetGroupVolume(const std::string& GroupName, float Volume)
+{
+	CResourceManager::GetInst()->SetGroupVolume(GroupName, Volume); 
 }
 

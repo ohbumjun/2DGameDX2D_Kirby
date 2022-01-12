@@ -178,6 +178,8 @@ bool CEngine::Update(float DeltaTime)
 	if (CSceneManager::GetInst()->Update(DeltaTime))
 		return true;
 
+	CResourceManager::GetInst()->Update();
+
 	return false;
 }
 

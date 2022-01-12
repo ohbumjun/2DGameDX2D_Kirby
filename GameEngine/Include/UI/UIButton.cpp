@@ -3,9 +3,14 @@
 #include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
 #include "../Input.h"
+#include "UIWindow.h"
+#include "../Scene/ViewPort.h"
 
 CUIButton::CUIButton() :
-	m_State(Button_State::Normal)
+	m_State(Button_State::Normal),
+	m_ButtonSounds{},
+	m_HoverSound(false),
+	m_ClickSound(false)
 {
 	SetTypeID<CUIButton>();
 }
@@ -17,6 +22,28 @@ CUIButton::CUIButton(const CUIButton& Button) : CUIWidget(Button)
 
 CUIButton::~CUIButton()
 {}
+
+void CUIButton::SetMouseHoverSound(CSound* Sound)
+{
+	m_ButtonSounds[(int)Button_SoundState::BtnHover] = Sound;
+}
+
+void CUIButton::SetMouseClickSound(CSound* Sound)
+{
+	m_ButtonSounds[(int)Button_SoundState::BtnClick] = Sound;
+}
+
+void CUIButton::SetMouseSound(Button_SoundState State, const std::string& GroupName, const std::string& SoundName, 
+	bool Loop, const TCHAR* FileName,
+	const std::string& PathName)
+{
+	m_Owner->GetViewPort()->GetScene()->GetResource()->LoadSound(GroupName, SoundName,
+		Loop, FileName, PathName);
+	CSound* Sound = m_Owner->GetViewPort()->GetScene()->GetResource()->FindSound(SoundName);
+	if (!Sound)
+		return;
+	m_ButtonSounds[(int)State] = Sound;
+}
 
 void CUIButton::SetTextureTint(Button_State State, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
@@ -94,22 +121,41 @@ void CUIButton::Update(float DeltaTime)
 	{
 		if (m_MoueHovered)
 		{
+			if (!m_HoverSound)
+			{
+				if (m_ButtonSounds[(int)Button_SoundState::BtnHover])
+					m_ButtonSounds[(int)Button_SoundState::BtnHover]->Play();
+				m_HoverSound = true;
+			}
 			if (LMouseClick)
 			{
 				m_State = Button_State::Click;
+				if (!m_ClickSound)
+				{
+					if (m_ButtonSounds[(int)Button_SoundState::BtnClick])
+						m_ButtonSounds[(int)Button_SoundState::BtnClick]->Play();
+					m_ClickSound = true;
+				}
 			}
 			else if (m_State == Button_State::Click)
 			{
 				if (m_ClickCallback)
 					m_ClickCallback();
 				m_State = Button_State::MouseOn;
+				m_ClickSound = false;
+
 			}
 			else
+			{
 				m_State = Button_State::MouseOn;
+				m_ClickSound = false;
+			}
 		}
 		else
 		{
 			m_State = Button_State::Normal;
+			m_ClickSound = false;
+			m_HoverSound = false;
 		}
 	}
 }
