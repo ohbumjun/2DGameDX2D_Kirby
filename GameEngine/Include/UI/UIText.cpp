@@ -221,7 +221,7 @@ bool CUIText::CreateTextLayout()
 		m_Layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 		break;
 	case TEXT_ALIGN_H::Right:
-		m_Layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+		m_Layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);//d
 		break;
 	}
 
