@@ -2,11 +2,9 @@
 #include "../Component/CameraComponent.h"
 #include "UIWindow.h"
 #include "../Resource/Shader/WidgetConstantBuffer.h"
-#include "../Resource/Mesh/Mesh.h"
 #include "../Scene/CameraManager.h"
 #include "../Scene/Scene.h"
 #include "../Scene/ViewPort.h"
-
 
 CUIWidget::CUIWidget() :
 	m_Owner(nullptr),

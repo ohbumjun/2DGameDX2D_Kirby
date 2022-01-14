@@ -1,6 +1,9 @@
 #pragma once
 
 #include "../Ref.h"
+#include "../Resource/Mesh/Mesh.h"
+#include "../Resource/Shader/Shader.h"
+
 
 class CUIWidget :
     public CRef
