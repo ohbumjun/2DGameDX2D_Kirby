@@ -16,6 +16,7 @@ protected:
     class CUIWindow* m_Owner;
     Vector2 m_Size;
     Vector2 m_Pos;
+    Vector2 m_RenderPos;
     bool m_Start;
     int m_ZOrder;
     float m_Angle;
@@ -24,6 +25,7 @@ protected:
     CSharedPtr<class CShader> m_Shader;
     CSharedPtr<class CMesh> m_Mesh;
     bool m_MoueHovered;
+    bool m_CollisionMouseEnable;
 public :
     virtual void Enable(bool bEnable)
 {
@@ -41,6 +43,10 @@ public :
     {
         return m_Size;
     }
+    void SetCollisionMouseEnable(bool Enable)
+    {
+        m_CollisionMouseEnable = Enable;
+    }
     int GetZOrder() const
 {
         return m_ZOrder;
@@ -51,17 +57,17 @@ public :
 }
 
 public :
-    void SetSize(const Vector2& Size)
-{
-        m_Size = Size;
-}
+    virtual void SetSize(const Vector2& Size)
+	{
+		m_Size = Size;
+	}
+    virtual void SetSize(float x, float y)
+    {
+        m_Size = Vector2(x, y);
+    }
     void SetPos(const Vector2& Pos)
     {
         m_Pos = Pos;
-    }
-    void SetSize(float x, float y)
-    {
-        m_Size = Vector2(x, y);
     }
     void SetPos(float x, float y)
     {

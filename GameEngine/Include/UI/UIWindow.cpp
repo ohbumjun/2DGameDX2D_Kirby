@@ -5,7 +5,8 @@ CUIWindow::CUIWindow() :
 	m_ViewPort(nullptr),
 	m_Scene(nullptr),
 	m_Start(false),
-	m_MoueHovered(false)
+	m_MoueHovered(false),
+	m_CollisionMouseEnable(true)
 
 {
 	SetTypeID<CUIWindow>();
@@ -16,6 +17,9 @@ CUIWindow::~CUIWindow()
 
 bool CUIWindow::CollisionMouse(const Vector2& MousePos)
 {
+	if (!m_CollisionMouseEnable)
+		return false;
+
 	if (m_Pos.x > MousePos.x)
 		return false;
 

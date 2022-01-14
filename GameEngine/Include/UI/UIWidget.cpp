@@ -14,8 +14,8 @@ CUIWidget::CUIWidget() :
 	m_Mesh(nullptr),
 	m_ZOrder(0),
 	m_Size(50.f, 50.f),
-	m_MoueHovered(false)
-
+	m_MoueHovered(false),
+	m_CollisionMouseEnable(true)
 
 {
 	SetTypeID<CUIWidget>();
@@ -38,10 +38,13 @@ void CUIWidget::SetUseTexture(bool Use)
 
 bool CUIWidget::CollisionMouse(const Vector2& MousePos)
 {
-	if (m_Pos.x <= MousePos.x && 
-		MousePos.x <= m_Pos.x + m_Size.x &&
-		m_Pos.y <= MousePos.y && 
-		m_Pos.y + m_Size.y >= MousePos.y)
+	if (!m_CollisionMouseEnable)
+		return false;
+
+	if (m_RenderPos.x <= MousePos.x &&
+		MousePos.x <= m_RenderPos.x + m_Size.x &&
+		m_RenderPos.y <= MousePos.y &&
+		m_RenderPos.y + m_Size.y >= MousePos.y)
 	{
 		m_MoueHovered = true;
 		return true;
@@ -77,6 +80,11 @@ void CUIWidget::PostUpdate(float DeltaTime)
 {
 	if (!m_Start)
 		Start();
+
+	m_RenderPos = m_Pos;
+
+	if (m_Owner)
+		m_RenderPos += m_Owner->GetWindowPos();
 }
 
 void CUIWidget::Render()
@@ -90,7 +98,7 @@ void CUIWidget::Render()
 
 	matScale.Scaling(m_Size.x, m_Size.y, 1.f);
 	matRotate.Rotation(0.f, 0.f, m_Angle);
-	matTranslate.Translation(m_Pos.x, m_Pos.y, 1.f);
+	matTranslate.Translation(m_RenderPos.x, m_RenderPos.y, 1.f);
 
 	CCameraComponent* UICamera = m_Owner->GetViewPort()->GetScene()->GetCameraManager()->GetCurrentCamera();
 

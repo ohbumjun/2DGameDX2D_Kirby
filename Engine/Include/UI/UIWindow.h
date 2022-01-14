@@ -13,6 +13,7 @@ protected :
 	class CScene* m_Scene;
 	class CViewPort* m_ViewPort;
 	int m_ZOrder;
+	bool m_CollisionMouseEnable;
 	Vector2 m_Pos;
 	Vector2 m_Size;
 	bool m_Start;
@@ -60,6 +61,10 @@ public :
 	void SetScene(class CScene* Scene)
 {
 		m_Scene = Scene;
+}
+	void SetCollisionMouseEnable(bool Enable)
+{
+		m_CollisionMouseEnable = Enable;
 }
 public :
 	bool CollisionMouse(const Vector2& MousePos);

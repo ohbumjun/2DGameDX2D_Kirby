@@ -1,6 +1,8 @@
 #pragma once
 #include "UI/UIWindow.h"
+#include "UI/UIText.h"
 #include "UI/UIButton.h"
+
 class CMainWidget :
     public CUIWindow
 {
@@ -10,6 +12,7 @@ protected :
     virtual ~CMainWidget();
 private :
     CSharedPtr<CUIButton> m_Button;
+    CSharedPtr<CUIText> m_Text;
 public :
     virtual void Start() override;
     virtual bool Init() override;
