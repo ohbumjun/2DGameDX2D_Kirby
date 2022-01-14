@@ -12,6 +12,7 @@ protected :
     virtual ~CMainWidget();
 private :
     CSharedPtr<CUIButton> m_Button;
+    CSharedPtr<CUIButton> m_Button1;
     CSharedPtr<CUIText> m_Text;
 public :
     virtual void Start() override;

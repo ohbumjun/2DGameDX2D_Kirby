@@ -19,7 +19,7 @@ enum class TEXT_ALIGN_V
 class CUIText :
 	public CUIWidget
 {
-	friend class CWidgetWindow;
+	friend class CUIWindow;
 
 protected:
 	CUIText();
