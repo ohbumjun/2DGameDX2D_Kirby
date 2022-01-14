@@ -1,0 +1,100 @@
+ < 설치되지 않은 폰트 설치하지 않고 사용하기  >
+ 
+ IDWriteFontCollection1 : 외부 font 를 사용하기 위한 객체
+
+ IDWriteFontFile : FontFileReference 를 얻기 위해 필요한 객체
+ IDWriteFontSetBuilder1 : FontFile을 추가하여 FontSet을 만드는 Builder 객체
+ IDWriteFontSet : FontCollection과 바꿔 먹을 것.
+
+ FontCollection 가 최종적으로 만들어지면
+ 위 3개 객체는 유지되지 않아도 좋다.
+
+ ----------------------------------------------------------------------------------------
+
+ComPtr<IDWriteFontFile> fontFileReference;
+ dwFactory->CreateFontFileReference(L"MyFont.ttf", nullptr, &fontFileReference);
+ 
+ComPtr<IDWriteFontSetBuilder1> fontSetBuilder;
+dwFactory->CreateFontSetBuilder(&fontSetBuilder);
+ 
+fontSetBuilder->AddFontFile(fontFileReference.Get());
+
+ComPtr<IDWriteFontSet> customFontSet;
+fontSetBuilder->CreateFontSet(&customFontSet);
+
+dwFactory->CreateFontCollectionFromFontSet(
+    customFontSet.Get()
+, &m_pdwFontCollection
+);
+
+----------------------------------------------------------------------------------------
+
+< Font의 이름을 얻어오는 코드 >
+ComPtr<IDWriteFontFamily> fontFamily;
+ComPtr<IDWriteLocalizedStrings> localizedFontName;
+TCHAR c_styleFontName[65];
+
+m_pdwFontCollection->GetFontFamily(0, &fontFamily);
+fontFamily->GetFamilyNames(&localizedFontName);
+localizedFontName->GetString(0, c_styleFontName, 65);
+
+----------------------------------------------------------------------------------------
+
+// https://docs.microsoft.com/ko-kr/windows/win32/directwrite/getting-started-with-directwrite
+( 간단한 그리기 )
+"Hello World"
+화면에 간단한 텍스트를 그리려면 4가지가 필요하다
+1) 렌더링할 문자열
+2) IDWriteTextFormat 의 인스턴스
+3) 텍스트를 포함할 영역의 크기
+4) 텍스트를 렌더링할 수 있는 개체
+
+IDWriteTextFormat 개체를 만들기 위해서는
+IDWriteFactory 가 필요하다.
+DWriteCreateFactory 함수 를 통해 만든다.
+
+Direct2D를 사용하여 렌더링을 하기 위해서는
+ID2D1Factory*
+ID2DRenderTarget*
+ID2D1SolidColorBrush*
+에 대한 인터페이스가 필요하다.
+
+ ID2D1SolidColorBrush : Brush 객체 생성
+- RenderTarget 객체를 이용해서 출력을 하려면
+영역을 채우는 개념으로 Brush를 사용해야 한다.
+
+- D2D1CreateFactory 를 통해 ID2D1Factory 를 만들어낸다. ( 다른 Direct2D 리소스를 만들어내는 녀석)
+--- DWriteCreateFactory 를 통해 IDWriteFactory 를 만들어내고
+----- 텍스트 문자열 초기화 하고, 
+------- pDWriteFactory_->CreateTextFormat 을 통해 IDWriteTextFormat* 하나 만들어내고
+---------- IDWriteTextFormat::SetTextAlignment, IDWriteTextFormat::SetParagraphAlignment 을 통해 가로,세로 정렬
+------------ pD2DFactory_->CreateHwndRenderTarget 통해 2DRenderTarget 만들고
+-------------- pRT_->CreateSolidColorBrush 와 같이 RenderTarget 이용해서 SolidColorBrush를 만들어낸다.
+-------------- Render 함수 내에서 RenderTarget BeginDraw( ), EndDraw( ) 사이에 DrawText 함수를 통해 그린다.
+
+( 어러 형식으로 텍스트 그리기)
+IDWriteTextLayout  을 사용할 수 있다.
+IDWriteTextFormat 개체에 지정된 기본 서식 지정 외에도, 특정 텍스트 범위의 서식을 변경할 수 있다
+ ex) 글꼴 패밀리 이름, 크기, 가중치, 취소선 등등
+
+- IDWriteFactory-> CreateTextLayout 을 통해 만들어낸다.
+-- DWRITE _ TEXT _ RANGE 을 선언하고 IDWriteTextLayout::SetFontSize, IDWriteTextLayout::SetFontWeight 등을 통해
+속성을 세팅할 수 있다.
+
+>> Text 출력 비교
+IDWriteTextFormat, IDWriteTextLayout
+- 2가지가 있다. Format을 지정해서 텍스트를 출력하는 방식과
+Layout을 통해 텍스트를 출력하는 방법이 있다.
+
+Format 방식은, IDWriteTextFormat 객체를 사용한다.
+이 객체는 한번 생성할 때 , 지정된 폰트 패밀리, 굵기 , 크기 등의
+값을 지정하고 새로 생성할 때까지 바꿀 수 없다.
+대신에, 문자열을 바꿔도, 얼마든지 사용이 가능하다.
+문자열을 자주 바꾼다면 이 방식을 사용한다.
+
+Layout 방식은, IDWriteTextLayout 객체를 사용해야 한다.
+IDWriteText와 달리
+폰트에 관한 설정은 자유롭게 바꿀 수 있다.
+대신 문자열을 바꾸려면, 객체를 새로 생성해야 한다.
+문자열이 바뀔 일이 없는 메뉴에 사용하기
+적합한 방식이다.

@@ -29,7 +29,7 @@ private:
 	ID2D1Factory* m_2DFactory;
 
 public:
-	ID2D1RenderTarget* Get2DRendeTarget() const
+	ID2D1RenderTarget* Get2DRenderTarget() const
 	{
 		return m_2DTarget;
 	}
