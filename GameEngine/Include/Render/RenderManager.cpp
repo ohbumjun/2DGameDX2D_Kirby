@@ -93,15 +93,23 @@ bool CRenderManager::Init()
 	m_Standard2DCBuffer->Init();
 
 	// 기본 레이어 세팅해두기
-	RenderLayer* DefaultLayer = new RenderLayer;
+	RenderLayer* Layer = new RenderLayer;
 
 	// 모든 Scene Component 들은, 생성시 Default 를 m_LayerName으로 들고 있을 것이다
 	// SceneComponent 입장에서는 PrevRender 에서 m_Render가 true 이면 AddRenderList를 통해 들어온다
 	// Default 라는 이름의 m_LayerName을 가진 SceneComponent 들은, 지금 세팅한 Default Layer 에 들어오게 된다.
-	DefaultLayer->Name          = "Default";
-	DefaultLayer->LayerPriority = 0;
+	Layer->Name          = "Default";
+	Layer->LayerPriority = 0;
 
-	m_RenderLayerList.push_back(DefaultLayer);
+	m_RenderLayerList.push_back(Layer);
+
+	// Screen Widget 들을 위한 Layer 만들기
+	// 왜 이게 필요한 것일까 ?
+	Layer = new RenderLayer;
+	Layer->Name = "ScreenWidgetComponent";
+	Layer->LayerPriority = 1;
+
+	m_RenderLayerList.push_back(Layer);
 
 	m_DepthDisable = FindRenderState("DepthDisable");
 	m_AlphaDisable = FindRenderState("AlphaBlend");

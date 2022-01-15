@@ -175,6 +175,9 @@
     <Filter Include="02. Resource\07. Font">
       <UniqueIdentifier>{f458c728-f882-4255-89bf-9c2916add63d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\01. SceneComponent\04. UI">
+      <UniqueIdentifier>{d4ae9648-f40f-4f46-93f9-f19404b25656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -501,6 +504,9 @@
     <ClInclude Include="UI\UIText.h">
       <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
+    <ClInclude Include="Component\WidgetComponent.h">
+      <Filter>05. Component\01. SceneComponent\04. UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -784,6 +790,9 @@
     </ClCompile>
     <ClCompile Include="UI\UIText.cpp">
       <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\WidgetComponent.cpp">
+      <Filter>05. Component\01. SceneComponent\04. UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

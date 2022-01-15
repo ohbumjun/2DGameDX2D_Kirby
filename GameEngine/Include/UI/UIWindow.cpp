@@ -1,5 +1,8 @@
 #include "UIWindow.h"
 
+#include "../Component/WidgetComponent.h"
+#include "../Scene/Scene.h"
+
 CUIWindow::CUIWindow() :
 	m_ZOrder(0),
 	m_ViewPort(nullptr),
@@ -86,6 +89,12 @@ void CUIWindow::Start()
 	for (; iter != iterEnd; ++iter)
 	{
 		(*iter)->Start();
+	}
+
+	// 만약 WidgetComponent를 통해 만들어졌다면
+	if (m_OwnerComponent)
+	{
+		m_ViewPort = m_OwnerComponent->GetScene()->GetViewPort();
 	}
 }
 
