@@ -6,10 +6,13 @@
 class CUIWindow : public CRef
 {
 	friend class CViewPort;
+	friend class CWidgetComponent;
 protected :
 	CUIWindow();
+	CUIWindow(const CUIWindow& Window);
 	virtual ~CUIWindow();
 protected :
+	class CWidgetComponent* m_OwnerComponent;
 	class CScene* m_Scene;
 	class CViewPort* m_ViewPort;
 	int m_ZOrder;
@@ -21,6 +24,10 @@ protected :
 	bool m_MoueHovered;
 	std::list<CSharedPtr<CUIWidget>> m_WidgetList;
 public :
+	CWidgetComponent* GetWidgetComponent ()
+	{
+		return m_OwnerComponent;
+	}
 	int GetZOrder() const
 {
 		return m_ZOrder;
@@ -74,6 +81,7 @@ public :
 	virtual void Update(float DeltaTime);
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Render();
+	virtual CUIWindow* Clone();
 public :
 	static bool SortWidget(CSharedPtr<CUIWidget>& A, CSharedPtr<CUIWidget>& B)
 {

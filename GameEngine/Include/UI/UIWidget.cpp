@@ -21,6 +21,18 @@ CUIWidget::CUIWidget() :
 	SetTypeID<CUIWidget>();
 }
 
+CUIWidget::CUIWidget(const CUIWidget& Widget)
+{
+	*this = Widget;
+	m_RefCount = 0;
+
+	m_Owner = nullptr;
+	m_MoueHovered = false;
+
+	m_CBuffer = new CWidgetConstantBuffer;
+	m_CBuffer->Init();
+}
+
 CUIWidget::~CUIWidget()
 {
 	SAFE_DELETE(m_CBuffer);
@@ -116,4 +128,9 @@ void CUIWidget::Render()
 
 	m_Mesh->Render();
 
+}
+
+CUIWidget* CUIWidget::Clone()
+{
+	return new CUIWidget(*this);
 }

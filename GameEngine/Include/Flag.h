@@ -165,3 +165,9 @@ enum Button_SoundState {
 	BtnClick,
 	BtnMax
 };
+
+
+enum WidgetComponent_Space {
+	Screen,
+	World
+};

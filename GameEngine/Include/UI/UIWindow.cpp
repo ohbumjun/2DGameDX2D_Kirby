@@ -12,6 +12,24 @@ CUIWindow::CUIWindow() :
 	SetTypeID<CUIWindow>();
 }
 
+CUIWindow::CUIWindow(const CUIWindow& Window)
+{
+	*this = Window;
+	m_OwnerComponent = nullptr;
+
+	auto iter = Window.m_WidgetList.begin();
+	auto iterEnd = Window.m_WidgetList.end();
+
+	m_WidgetList.clear();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		CUIWidget* Widget = (*iter)->Clone();
+		Widget->m_Owner = this;
+		m_WidgetList.push_back(Widget);
+	}
+}
+
 CUIWindow::~CUIWindow()
 {}
 
@@ -136,4 +154,9 @@ void CUIWindow::Render()
 			continue;
 		(*iter)->Render();
 	}
+}
+
+CUIWindow* CUIWindow::Clone()
+{
+	return new CUIWindow(*this);
 }

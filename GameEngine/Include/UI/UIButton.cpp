@@ -174,3 +174,8 @@ void CUIButton::Render()
 
 	CUIWidget::Render();
 }
+
+CUIButton* CUIButton::Clone()
+{
+	return new CUIButton(*this);
+}

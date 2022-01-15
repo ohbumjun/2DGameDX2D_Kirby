@@ -47,6 +47,7 @@ public :
 	virtual void Update(float DeltaTime) override;
 	virtual void PostUpdate(float DeltaTime) override;
 	virtual void Render() override;
+	virtual CUIButton* Clone() override;
 public :
 	template<typename T>
 	void SetClickCallback(T* Obj, void (T::*Func)())

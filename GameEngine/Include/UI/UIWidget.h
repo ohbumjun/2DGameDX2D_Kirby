@@ -11,6 +11,7 @@ class CUIWidget :
     friend class CUIWindow;
 protected :
     CUIWidget();
+    CUIWidget(const CUIWidget& Widget);
     virtual ~CUIWidget();
 protected:
     class CUIWindow* m_Owner;
@@ -99,5 +100,6 @@ public :
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual void Render();
+    virtual CUIWidget* Clone();
 };
 
