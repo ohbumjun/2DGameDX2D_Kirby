@@ -12,7 +12,7 @@ CUIButton::CUIButton() :
 	m_HoverSound(false),
 	m_ClickSound(false)
 {
-	SetTypeID<CUIButton>();
+	SetTypeID<CUIButton>();//
 }
 
 CUIButton::CUIButton(const CUIButton& Button) : CUIWidget(Button)
