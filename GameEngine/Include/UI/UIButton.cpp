@@ -18,6 +18,9 @@ CUIButton::CUIButton() :
 CUIButton::CUIButton(const CUIButton& Button) : CUIWidget(Button)
 {
 	m_State = Button_State::Normal;
+	m_ClickCallback = nullptr;
+	m_HoverSound = false;;
+	m_ClickSound = false;;
 }
 
 CUIButton::~CUIButton()

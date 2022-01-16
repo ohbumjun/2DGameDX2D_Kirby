@@ -250,7 +250,8 @@ void CInput::UpdateMouse(float DeltaTime)
 	if (CEngine::GetInst()->GetEngineSpace() == Engine_Space::Space2D)
 	{
 		CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
-		m_MouseWorldPos += Camera->GetLeftBottom();
+		Vector2 CameraLeftBottom = Camera->GetLeftBottom();
+		m_MouseWorldPos += CameraLeftBottom;
 	}
 
 	// Mouse State Update го╠Б 

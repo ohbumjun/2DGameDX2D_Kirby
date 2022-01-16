@@ -25,6 +25,7 @@ CUIText::CUIText() :
 	m_AlignV(TEXT_ALIGN_V::Middle)
 
 {
+	m_CollisionMouseEnable = false;
 	m_Text = new TCHAR[m_TextCapacity];
 
 	memset(m_Text, 0, sizeof(TCHAR) * m_TextCapacity);
@@ -304,32 +305,42 @@ void CUIText::Render()
 {
 	m_2DTarget->BeginDraw();
 
-	Resolution RS = CDevice::GetInst()->GetResolution();
 
-	D2D1_POINT_2F Point;
+	Resolution	RS = CDevice::GetInst()->GetResolution();
+
+	D2D1_POINT_2F	Point;
 	Point.x = m_RenderPos.x;
-	Point.y = RS.Height - (m_RenderPos.y + m_Size.y);
+	Point.y = RS.Height - m_RenderPos.y - m_Size.y;
 
 	if (m_ShadowEnable)
 	{
-		D2D1_POINT_2F ShadowPoint = Point;
+		D2D1_POINT_2F	ShadowPoint = Point;
 		ShadowPoint.x += m_ShadowOffset.x;
 		ShadowPoint.y += m_ShadowOffset.y;
 
 		if (m_ShadowAlpha)
 			m_ShadowColorBrush->SetOpacity(m_ShadowOpacity);
+
 		else
 			m_ShadowColorBrush->SetOpacity(1.f);
 
-		m_2DTarget->DrawTextLayout(ShadowPoint, m_Layout, m_ShadowColorBrush);
+		m_2DTarget->DrawTextLayout(ShadowPoint, m_Layout, m_ShadowColorBrush,
+			D2D1_DRAW_TEXT_OPTIONS_NONE);
 	}
 
 	if (m_Alpha)
 		m_ColorBrush->SetOpacity(m_Opacity);
+
 	else
 		m_ColorBrush->SetOpacity(1.f);
 
-	m_2DTarget->DrawTextLayout(Point, m_Layout, m_ColorBrush);
+	m_2DTarget->DrawTextLayout(Point, m_Layout, m_ColorBrush,
+		D2D1_DRAW_TEXT_OPTIONS_NONE);
 
 	m_2DTarget->EndDraw();
+}
+
+CUIText* CUIText::Clone()
+{
+	return new CUIText(*this);
 }

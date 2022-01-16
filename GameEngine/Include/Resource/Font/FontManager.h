@@ -41,6 +41,7 @@ public:
 		float Height);
 	IDWriteTextLayout* CreateTextLayout(const TCHAR* Text, const std::string& FontName, float Width,
 		float Height);
+
 	IDWriteFontCollection1* FindFontFile(const std::string& Name);
 	IDWriteTextFormat* FindFont(const std::string& Name);
 };

@@ -23,7 +23,7 @@ class CUIText :
 
 protected:
 	CUIText();
-	CUIText(const CUIText& widget);
+	CUIText(const CUIText& CUIWidget);
 	virtual ~CUIText();
 
 protected:
@@ -63,6 +63,18 @@ public:
 	int GetTextCount()	const
 	{
 		return m_TextCount;
+	}
+
+	virtual void SetSize(const Vector2& Size)
+	{
+		CUIWidget::SetSize(Size);
+		CreateTextLayout();
+	}
+
+	virtual void SetSize(float x, float y)
+	{
+		CUIWidget::SetSize(x, y);
+		CreateTextLayout();
 	}
 
 public:
@@ -135,17 +147,9 @@ public:
 			CreateTextLayout();
 		}
 	}
-public :
-	virtual void SetSize(const Vector2& Size)
-	{
-		m_Size = Size;
-		CreateTextLayout();
-	}
-	virtual void SetSize(float x, float y)
-	{
-		m_Size = Vector2(x, y);
-		CreateTextLayout();
-	}
+
+
+
 public:
 	void SetFont(const std::string& Name);
 	void SetFontSize(float Size);
@@ -177,5 +181,6 @@ public:
 	virtual void Update(float DeltaTime);
 	virtual void PostUpdate(float DeltaTime);
 	virtual void Render();
+	virtual CUIText* Clone();
 };
 

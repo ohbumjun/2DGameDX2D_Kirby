@@ -588,17 +588,15 @@ void CTransform::PostUpdate(float DeltaTime)
 void CTransform::SetTransform()
 {
 	m_CBuffer->SetWorldMatrix(m_matWorld);
-
-	Matrix	matProj;
-
+	
 	// matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
 	// m_CBuffer->SetProjMatrix(matProj);
 
 	// 카메라 메니저의 Camera 행렬 정보를 가져와서 세팅한다
 	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
-	m_CBuffer->SetProjMatrix(Camera->GetProjMatrix());
   	m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
+	m_CBuffer->SetProjMatrix(Camera->GetProjMatrix());
 
 	m_CBuffer->SetPivot(m_Pivot);
 	m_CBuffer->SetMeshSize(m_MeshSize);

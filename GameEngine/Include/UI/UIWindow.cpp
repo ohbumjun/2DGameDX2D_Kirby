@@ -23,8 +23,6 @@ CUIWindow::CUIWindow(const CUIWindow& Window)
 	auto iter = Window.m_WidgetList.begin();
 	auto iterEnd = Window.m_WidgetList.end();
 
-	m_WidgetList.clear();
-
 	for (; iter != iterEnd; ++iter)
 	{
 		CUIWidget* Widget = (*iter)->Clone();

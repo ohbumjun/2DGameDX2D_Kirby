@@ -105,6 +105,10 @@ bool CRenderManager::Init()
 
 	// Screen Widget 들을 위한 Layer 만들기
 	// 왜 이게 필요한 것일까 ?
+	// Screen Space로 세팅된 WidgetComponent 들을 별도로 세팅
+	// World Space 관점에서는 만약 해당 Object 위에 뭐가 나타나게 되면
+	// 해당 widget 들 마저 가리게 되는데
+	// 이러한 것을 방지하기 위해서 이다.
 	Layer = new RenderLayer;
 	Layer->Name = "ScreenWidgetComponent";
 	Layer->LayerPriority = 1;

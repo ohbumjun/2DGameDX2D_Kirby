@@ -24,9 +24,10 @@ CUIWidget::CUIWidget() :
 CUIWidget::CUIWidget(const CUIWidget& Widget)
 {
 	*this = Widget;
-	m_RefCount = 0;
 
 	m_Owner = nullptr;
+	m_RefCount = 0;
+
 	m_MoueHovered = false;
 
 	m_CBuffer = new CWidgetConstantBuffer;
