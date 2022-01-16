@@ -2,6 +2,7 @@
 
 #include "Component/SpriteComponent.h"
 #include "GameObject/GameObject.h"
+#include "Component/WidgetComponent.h"
 
 class CPlayer2D :
 	public CGameObject
@@ -29,6 +30,8 @@ private:
 
 	CSharedPtr<class CColliderBox2D> m_Body;
 	CSharedPtr<class CCameraComponent> m_Camera;
+
+	CSharedPtr<CWidgetComponent> m_SimpleHUDWidget;
 
 	bool  m_SolW;
 	float m_WDistance;

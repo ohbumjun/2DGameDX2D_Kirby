@@ -1,6 +1,6 @@
 #pragma once
-
 #include "SceneComponent.h"
+#include "../Scene/Scene.h"
 #include "../UI/UIWindow.h"
 
 class CWidgetComponent : public CSceneComponent {
@@ -68,6 +68,7 @@ public :
 {
 		T* Window = new T;
 		Window->SetName(Name);
+		Window->m_ViewPort = m_Scene->GetViewPort();
 	if (!Window->Init())
 	{
 		SAFE_DELETE(Window);

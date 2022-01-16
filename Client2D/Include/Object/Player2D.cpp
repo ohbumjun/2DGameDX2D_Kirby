@@ -8,6 +8,7 @@
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
 #include "BulletCamera.h"
+#include "../UI/SimpleHUD.h"
 
 CPlayer2D::CPlayer2D()
 {
@@ -56,9 +57,15 @@ bool CPlayer2D::Init()
 	m_Child3Sprite = CreateComponent<CSpriteComponent>("PlayerChild3Sprite");
 	m_Child4Sprite = CreateComponent<CSpriteComponent>("PlayerChild4Sprite");
 
+	// Collider 
 	m_Body = CreateComponent<CColliderBox2D>("Body");
 	m_Body->SetCollisionProfile("Player");
 
+	// Widget
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+
+	// Camera
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
 	m_Camera->OnViewPortCenter(); // Player 중심 세팅
 	// m_Camera->SetViewPortRatio(0.7f, 0.7f);
@@ -72,21 +79,22 @@ bool CPlayer2D::Init()
 	m_Sprite->AddChild(m_ChildRoot);
 	m_Sprite->AddChild(m_Body);
 	m_Sprite->AddChild(m_Camera);
+	m_Sprite->AddChild(m_SimpleHUDWidget);
+
+	// 반드시 이 위치에서 ( AddChild 이후에 위치 좌표 세팅 )
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
-
 	m_Sprite->CreateAnimationInstance<CPlayerAnimation2D>();
 
 
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
-
 	m_ChildLeftSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
 	                              TEXT("Teemo.jpg"));
 	m_ChildRightSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
 	                               TEXT("Teemo.jpg"));
-
 	m_ChildLeftSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 	m_ChildRightSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 
@@ -104,12 +112,6 @@ bool CPlayer2D::Init()
 
 	m_ChildRightMuzzle->SetRelativePos(0.f, 100.f, 0.f);
 	m_ChildRightMuzzle->SetInheritRotZ(true);
-
-	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
-
-	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
-	// Center 가 형성되게 될 것이다. 
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	m_ChildRightSprite->SetRelativeScale(50.f, 50.f, 1.f);
 	m_ChildRightSprite->SetInheritScale(false);
@@ -154,6 +156,13 @@ bool CPlayer2D::Init()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", KeyState_Down, this, &CPlayer2D::Attack);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", KeyState_Push, this, &CPlayer2D::Attack1);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", KeyState_Down, this, &CPlayer2D::Skill1);
+
+
+	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
+	// Center 가 형성되게 될 것이다. 
+	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
+	m_Sprite->SetRelativePos(100.f, 50.f, 0.f);
+	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	return true;
 }

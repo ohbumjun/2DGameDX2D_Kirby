@@ -72,6 +72,9 @@
     <ClCompile Include="UI\MainWidget.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="UI\SimpleHUD.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -108,6 +111,9 @@
       <Filter>02. Object\04. Test</Filter>
     </ClInclude>
     <ClInclude Include="UI\MainWidget.h">
+      <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\SimpleHUD.h">
       <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>

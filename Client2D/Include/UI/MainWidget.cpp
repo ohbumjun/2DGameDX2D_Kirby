@@ -45,6 +45,7 @@ bool CMainWidget::Init()
 	m_Button1->SetTextureTint(Button_State::Normal, 220, 220, 220, 255);
 	m_Button1->SetTextureTint(Button_State::MouseOn, 255, 255, 255, 255);
 	m_Button1->SetTextureTint(Button_State::Click, 150, 150, 150, 255);
+
 	m_Text = CreateUIWidget<CUIText>("BasicText");
 	m_Text->SetPos(50.f, 200.f);
 	m_Text->SetSize(100.f, 40.f);

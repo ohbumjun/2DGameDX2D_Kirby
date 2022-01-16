@@ -277,6 +277,7 @@ struct WidgetCBuffer {
 	Vector3 Empty;
 };
 
+
 struct CircleInfo {
 	Vector2 Center;
 	float Radius;
@@ -307,3 +308,4 @@ struct PixelInfo {
 		Type(PixelCollision_Type::Color_Confirm)
 	{}
 };
+

@@ -3,7 +3,17 @@
 #include "../Ref.h"
 #include "../Resource/Mesh/Mesh.h"
 #include "../Resource/Shader/Shader.h"
+#include "../Resource/Texture/Texture.h"
 
+struct WidgetImageInfo {
+    CSharedPtr<CTexture> m_Texture;
+    Vector4 m_Tint;
+    std::vector<AnimationFrameData> m_vecFrameData;
+    WidgetImageInfo()
+    {
+        m_Tint = Vector4::White;
+    }
+};
 
 class CUIWidget :
     public CRef

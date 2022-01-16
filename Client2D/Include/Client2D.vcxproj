@@ -169,6 +169,7 @@
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
     <ClCompile Include="UI\MainWidget.cpp" />
+    <ClCompile Include="UI\SimpleHUD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientManager.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\MainScene.h" />
     <ClInclude Include="UI\MainWidget.h" />
+    <ClInclude Include="UI\SimpleHUD.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client2D.rc" />
