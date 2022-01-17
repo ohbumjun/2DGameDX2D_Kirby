@@ -98,7 +98,7 @@ void CUIButton::AddFrameData(Button_State State, const Vector2& StartPos, const 
 	AnimationFrameData FrameData = {};
 	FrameData.Start = StartPos;
 	FrameData.Size = StartPos + Size;
-	m_Info[(int)State].vecFrameData.push_back(FrameData);
+	m_Info[(int)State].m_vecFrameData.push_back(FrameData);
 }
 
 bool CUIButton::Init()
@@ -122,7 +122,7 @@ void CUIButton::Update(float DeltaTime)
 
 	if (m_State != Button_State::Disable)
 	{
-		if (m_MoueHovered)
+		if (m_MouseHovered)
 		{
 			if (!m_HoverSound)
 			{

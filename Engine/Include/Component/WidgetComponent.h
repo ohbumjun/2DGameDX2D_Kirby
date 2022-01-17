@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Scene/Scene.h>
+
 #include "SceneComponent.h"
 #include "../UI/UIWindow.h"
 
@@ -68,6 +70,7 @@ public :
 {
 		T* Window = new T;
 		Window->SetName(Name);
+		Window->m_ViewPort = m_Scene->GetViewPort();
 	if (!Window->Init())
 	{
 		SAFE_DELETE(Window);
@@ -79,6 +82,6 @@ public :
 	}
 	Window->m_OwnerComponent = this;
 	m_WidgetWindow = Window;
-	return m_WidgetWindow;
+	return (T*)m_WidgetWindow;
 }
 };

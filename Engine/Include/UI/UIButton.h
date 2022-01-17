@@ -4,16 +4,6 @@
 #include "../Resource/Texture/Texture.h"
 #include "../Resource/Sound/Sound.h"
 
-struct ButtonStateInfo {
-	CSharedPtr<CTexture> m_Texture;
-	Vector4 m_Tint;
-	std::vector<AnimationFrameData> vecFrameData;
-	ButtonStateInfo() :
-		m_Texture(nullptr)
-	{
-		m_Tint = Vector4::White;
-	}
-};
 
 class CUIButton : public CUIWidget {
 	friend class CUIWindow;
@@ -22,7 +12,7 @@ protected :
 	CUIButton(const CUIButton& Button);
 	virtual ~CUIButton() override;
 private :
-	ButtonStateInfo m_Info[(int)Button_State::Max];
+	WidgetImageInfo m_Info[(int)Button_State::Max];
 	std::function<void()> m_ClickCallback;
 	Button_State m_State;
 	CSharedPtr<CSound> m_ButtonSounds[Button_SoundState::BtnMax];

@@ -507,9 +507,6 @@
     <ClInclude Include="Component\WidgetComponent.h">
       <Filter>05. Component\01. SceneComponent\04. UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Progressbar.h">
-      <Filter>09. UI\02. Widget</Filter>
-    </ClInclude>
     <ClInclude Include="UI\UIImage.h">
       <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
@@ -518,6 +515,9 @@
     </ClInclude>
     <ClInclude Include="Resource\Shader\ProgressBarShader.h">
       <Filter>02. Resource\02. Shader\02. ShaderClass\04. Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIProgressbar.h">
+      <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -806,9 +806,6 @@
     <ClCompile Include="Component\WidgetComponent.cpp">
       <Filter>05. Component\01. SceneComponent\04. UI</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Progressbar.cpp">
-      <Filter>09. UI\02. Widget</Filter>
-    </ClCompile>
     <ClCompile Include="UI\UIImage.cpp">
       <Filter>09. UI\02. Widget</Filter>
     </ClCompile>
@@ -817,6 +814,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\ProgressBarShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\04. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIProgressbar.cpp">
+      <Filter>09. UI\02. Widget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

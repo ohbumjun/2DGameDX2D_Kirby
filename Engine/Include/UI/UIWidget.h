@@ -3,7 +3,17 @@
 #include "../Ref.h"
 #include "../Resource/Mesh/Mesh.h"
 #include "../Resource/Shader/Shader.h"
+#include "../Resource/Texture/Texture.h"
 
+struct WidgetImageInfo {
+    CSharedPtr<CTexture> m_Texture;
+    Vector4 m_Tint;
+    std::vector<AnimationFrameData> m_vecFrameData;
+    WidgetImageInfo()
+    {
+        m_Tint = Vector4::White;
+    }
+};
 
 class CUIWidget :
     public CRef
@@ -25,7 +35,7 @@ protected:
     class CWidgetConstantBuffer* m_CBuffer;
     CSharedPtr<class CShader> m_Shader;
     CSharedPtr<class CMesh> m_Mesh;
-    bool m_MoueHovered;
+    bool m_MouseHovered;
     bool m_CollisionMouseEnable;
 public :
     virtual void Enable(bool bEnable)

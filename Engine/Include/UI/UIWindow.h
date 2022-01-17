@@ -96,7 +96,7 @@ public :
 	for(; iter != iterEnd; ++iter)
 	{
 		if ((*iter)->GetName() == Name)
-			return (T*)(*iter);
+			return (T*)*(*iter);
 	}
 	return nullptr;
 }

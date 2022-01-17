@@ -14,7 +14,7 @@ CUIWidget::CUIWidget() :
 	m_Mesh(nullptr),
 	m_ZOrder(0),
 	m_Size(50.f, 50.f),
-	m_MoueHovered(false),
+	m_MouseHovered(false),
 	m_CollisionMouseEnable(true)
 
 {
@@ -28,7 +28,7 @@ CUIWidget::CUIWidget(const CUIWidget& Widget)
 	m_Owner = nullptr;
 	m_RefCount = 0;
 
-	m_MoueHovered = false;
+	m_MouseHovered = false;
 
 	m_CBuffer = new CWidgetConstantBuffer;
 	m_CBuffer->Init();
@@ -59,10 +59,10 @@ bool CUIWidget::CollisionMouse(const Vector2& MousePos)
 		m_RenderPos.y <= MousePos.y &&
 		m_RenderPos.y + m_Size.y >= MousePos.y)
 	{
-		m_MoueHovered = true;
+		m_MouseHovered = true;
 		return true;
 	}
-	m_MoueHovered = false;
+	m_MouseHovered = false;
 	return false;
 
 }

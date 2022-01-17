@@ -91,7 +91,6 @@ bool CMeshManager::Init()
 		DXGI_FORMAT_R32_UINT);
 
 
-
 	// Sprite Mesh
 	m_mapMesh.insert(std::make_pair("SpriteMesh", SpriteMesh));
 

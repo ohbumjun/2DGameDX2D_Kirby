@@ -272,10 +272,17 @@ struct ColliderCBuffer
 
 struct WidgetCBuffer {
 	Vector4 Tint;
-	Matrix matWVP;
+	Matrix matWP;
 	int UseTexture;
 	Vector3 Empty;
 };
+
+struct ProgressBarCBuffer {
+	float Percent;
+	int Dir;
+	Vector2 Empty;
+};
+
 
 struct CircleInfo {
 	Vector2 Center;
@@ -307,3 +314,4 @@ struct PixelInfo {
 		Type(PixelCollision_Type::Color_Confirm)
 	{}
 };
+

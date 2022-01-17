@@ -43,7 +43,9 @@ CWidgetComponent::CWidgetComponent(const CWidgetComponent& Component) :
 }
 
 CWidgetComponent::~CWidgetComponent()
-{}
+{
+	SAFE_DELETE(m_WidgetWindow);
+}
 
 void CWidgetComponent::Start()
 {

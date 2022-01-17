@@ -35,7 +35,7 @@ protected:
     class CWidgetConstantBuffer* m_CBuffer;
     CSharedPtr<class CShader> m_Shader;
     CSharedPtr<class CMesh> m_Mesh;
-    bool m_MoueHovered;
+    bool m_MouseHovered;
     bool m_CollisionMouseEnable;
 public :
     virtual void Enable(bool bEnable)

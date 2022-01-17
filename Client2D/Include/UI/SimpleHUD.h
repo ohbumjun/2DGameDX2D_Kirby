@@ -2,6 +2,7 @@
 #include "UI\UIWindow.h"
 #include "UI/UIButton.h"
 #include "UI/UIText.h"
+#include "UI/UIProgressbar.h"
 
 class CSimpleHUD :
     public CUIWindow
@@ -15,6 +16,7 @@ protected:
 private :
     CSharedPtr<CUIButton> m_Button;
     CSharedPtr<CUIText> m_NameText;
+    CSharedPtr<CUIProgressBar> m_ProgressBar;
 public :
     void SetText(const TCHAR* Text);
 public :

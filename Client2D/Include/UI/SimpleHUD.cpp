@@ -7,6 +7,7 @@ CSimpleHUD::CSimpleHUD(const CSimpleHUD& window) :
 CUIWindow(window)
 {
 	m_NameText = FindUIWidget<CUIText>("NameText");
+	m_ProgressBar = FindUIWidget<CUIProgressBar>("HPBar");
 }
 
 CSimpleHUD::~CSimpleHUD()
@@ -39,6 +40,10 @@ bool CSimpleHUD::Init()
 	m_NameText->SetZOrder(1);
 	m_NameText->SetColor(1.f, 1.f, 1.f);
 	m_NameText->SetAlignH(TEXT_ALIGN_H::Center);
+
+	m_ProgressBar = CreateUIWidget<CUIProgressBar>("HPBar");
+	m_ProgressBar->SetSize(100.f, 20.f);
+	m_ProgressBar->SetTextureTint(255, 0, 0, 255);
 
 	return true;
 }
