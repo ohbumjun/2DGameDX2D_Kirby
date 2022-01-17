@@ -510,6 +510,9 @@
     <ClInclude Include="UI\Progressbar.h">
       <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
+    <ClInclude Include="UI\UIImage.h">
+      <Filter>09. UI\02. Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -798,6 +801,9 @@
       <Filter>05. Component\01. SceneComponent\04. UI</Filter>
     </ClCompile>
     <ClCompile Include="UI\Progressbar.cpp">
+      <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIImage.cpp">
       <Filter>09. UI\02. Widget</Filter>
     </ClCompile>
   </ItemGroup>
