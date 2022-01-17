@@ -4,5 +4,8 @@
 class CProgressbar :
     public CUIWidget
 {
+    friend class CUIWindow;
+public :
+    CProgressbar();
 };
 
