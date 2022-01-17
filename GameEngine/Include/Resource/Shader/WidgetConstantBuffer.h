@@ -21,7 +21,7 @@ public :
 }
     void SetWP(const Matrix& matWP)
 {
-        m_BufferData.matWVP = matWP;
+        m_BufferData.matWP = matWP;
 }
     void SetUseTexture(bool Use)
 {

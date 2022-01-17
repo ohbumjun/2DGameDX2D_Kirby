@@ -72,6 +72,8 @@ bool CMeshManager::Init()
 
 	CMesh* WidgetMesh = new CStaticMesh;
 
+	// Pos의 경우, y는 위가 1, 아래가 0
+	// UV의 경우, y는 위가 0, 아래가 1
 	VertexUV	WidgetVtx[4] =
 	{
 		VertexUV(Vector3(0.f, 1.f, 0.f), Vector2(0.f, 0.f)),

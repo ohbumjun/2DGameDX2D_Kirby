@@ -272,7 +272,7 @@ struct ColliderCBuffer
 
 struct WidgetCBuffer {
 	Vector4 Tint;
-	Matrix matWVP;
+	Matrix matWP;
 	int UseTexture;
 	Vector3 Empty;
 };

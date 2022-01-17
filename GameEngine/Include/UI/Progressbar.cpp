@@ -86,7 +86,6 @@ bool CProgressbar::Init()
 	if (!CUIWidget::Init())
 		return false;
 
-	m_Shader = m
 }
 
 void CProgressbar::Update(float DeltaTime)

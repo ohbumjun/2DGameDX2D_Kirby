@@ -118,6 +118,7 @@ void CUIWidget::Render()
 	matProj = UICamera->GetProjMatrix();
 	matWorld = matScale * matRotate * matTranslate;
 	matWP = matWorld * matProj;
+	// View 변환은 적용하지 않는 것을 확인할 수 있다.
 	matWP.Transpose();
 
 	m_CBuffer->SetWP(matWP);
