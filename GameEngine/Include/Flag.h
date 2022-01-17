@@ -166,8 +166,14 @@ enum Button_SoundState {
 	BtnMax
 };
 
-
 enum WidgetComponent_Space {
 	Screen,
 	World
+};
+
+enum class ProgressBar_Dir {
+	RightToLeft,
+	LeftToRight,
+	TopToBottom,
+	BottomToTop
 };
