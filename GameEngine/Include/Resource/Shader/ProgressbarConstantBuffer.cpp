@@ -17,7 +17,7 @@ CProgressbarConstantBuffer::~CProgressbarConstantBuffer()
 
 bool CProgressbarConstantBuffer::Init()
 {
-	SetConstantBuffer("ProgressBarCBuffer");
+	SetConstantBuffer("ProgressCBuffer");
 	return true;
 }
 

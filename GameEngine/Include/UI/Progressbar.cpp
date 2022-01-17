@@ -3,12 +3,7 @@
 #include "../Scene/ViewPort.h"
 #include "../Scene/Scene.h"
 
-CProgressbarConstantBuffer* m_ProgressBarCBuffer;
-WidgetImageInfo m_Info;
-std::function<void()> m_MouseOnCallback;
-float m_Percent;
-bool m_StartMouseOn;
-ProgressBar_Dir m_Dir;
+
 
 CProgressbar::CProgressbar() :
 m_Percent(1.f),
@@ -86,6 +81,7 @@ bool CProgressbar::Init()
 	if (!CUIWidget::Init())
 		return false;
 
+	m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader()
 }
 
 void CProgressbar::Update(float DeltaTime)
