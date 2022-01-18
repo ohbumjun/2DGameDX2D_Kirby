@@ -31,6 +31,10 @@ public :
 {
         m_BufferData.UseTexture = Use ? 1 : 0;
 }
+    void SetAnimType(Image_Type Type)
+{
+        m_BufferData.WidgetAnimType = (int)Type;
+}
     void SetStartUV(const Vector2& StartUV)
 {
         m_BufferData.Animation2DStartUV = StartUV;

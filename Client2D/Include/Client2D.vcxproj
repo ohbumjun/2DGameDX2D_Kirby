@@ -169,6 +169,7 @@
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
     <ClCompile Include="UI\MainWidget.cpp" />
+    <ClCompile Include="UI\MouseNormal.cpp" />
     <ClCompile Include="UI\SimpleHUD.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\MainScene.h" />
     <ClInclude Include="UI\MainWidget.h" />
+    <ClInclude Include="UI\MouseNormal.h" />
     <ClInclude Include="UI\SimpleHUD.h" />
   </ItemGroup>
   <ItemGroup>

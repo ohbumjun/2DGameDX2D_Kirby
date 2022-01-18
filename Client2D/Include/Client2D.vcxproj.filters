@@ -34,6 +34,9 @@
     <Filter Include="03. UI">
       <UniqueIdentifier>{2e7a5329-c64c-46fc-b4a2-d4ac06d111f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. UI\01. Mouse">
+      <UniqueIdentifier>{3dd700d4-ab96-46ab-a64b-288ae5257c56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,6 +78,9 @@
     <ClCompile Include="UI\SimpleHUD.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="UI\MouseNormal.cpp">
+      <Filter>03. UI\01. Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="UI\SimpleHUD.h">
       <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MouseNormal.h">
+      <Filter>03. UI\01. Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

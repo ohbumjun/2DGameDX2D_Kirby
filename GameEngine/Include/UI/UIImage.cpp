@@ -141,22 +141,50 @@ void CUIImage::PostUpdate(float DeltaTime)
 
 void CUIImage::Render()
 {
-	// Animation이 있을 때랑 없을 때를 구분해서 세팅한다.
-	if (m_Info.m_Texture)
-		m_Info.m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, 0);
+	int Frame = 0;
 
 	// Animation 이 존재한다면, StartUV, EndUV도 세팅하기
-	if (!m_Info.m_vecFrameData.empty() && m_Info.m_Texture)
+	if (!m_Info.m_vecFrameData.empty())
 	{
-		Vector2 m_AnimStartPos = m_Info.m_vecFrameData[m_Info.m_FrameIndex].Start;
-		Vector2 m_AnimEndPos = m_AnimStartPos + m_Info.m_vecFrameData[m_Info.m_FrameIndex].Size;
 
-		Vector2 StartUV = m_AnimStartPos / Vector2((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
-		Vector2 EndUV = m_AnimEndPos / Vector2((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
+		CTexture* AnimTexture = m_Info.m_Texture;
 
-		m_CBuffer->SetStartUV(StartUV);
-		m_CBuffer->SetEndUV(EndUV);
+		m_CBuffer->SetUseAnimation(true);
+		m_CBuffer->SetAnimType(AnimTexture->GetImageType());
+
+		switch (AnimTexture->GetImageType())
+		{
+		case Image_Type::Atlas:
+		{
+			Vector2 AnimStartPos = m_Info.m_vecFrameData[m_Info.m_FrameIndex].Start;
+			Vector2 AnimEndPos = AnimStartPos + m_Info.m_vecFrameData[m_Info.m_FrameIndex].Size;
+
+			Vector2 StartUV = AnimStartPos / Vector2((float)AnimTexture->GetWidth(), (float)AnimTexture->GetHeight());
+			Vector2 EndUV = AnimEndPos / Vector2((float)AnimTexture->GetWidth(), (float)AnimTexture->GetHeight());
+
+			m_CBuffer->SetStartUV(StartUV);
+			m_CBuffer->SetEndUV(EndUV);
+		}
+		break;
+		case Image_Type::Frame:
+		{
+			// 즉, Atlas 일 때는 FrameIndex가 곧, AnimationFrameData 를 의미하지만
+			// Frame일 때는 Texture를 구성하는 TextureInfo 구조체 하나하나를 말하는 것이다 ( 여러 Image가 모여서
+			// 하나의 Animation 구성 --> 하나의 Image 자체가 하나의 AnimationFrame 개념 )
+			Frame = m_Info.m_FrameIndex;
+			m_CBuffer->SetStartUV(Vector2(0.f, 0.f));
+			m_CBuffer->SetEndUV(Vector2(1.f, 1.f));
+		}
+		break;
+		case Image_Type::Array:
+			break;
+		}
 	}
+	else
+		m_CBuffer->SetUseAnimation(false);
+
+	if (m_Info.m_Texture)
+		m_Info.m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, Frame);
 	
 	m_Tint = m_Info.m_Tint;
 
