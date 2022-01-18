@@ -117,7 +117,7 @@ bool CUIButton::SetTextureFullPath(Button_State State, const std::string& Name, 
 
 	if (m_Owner->GetViewPort())
 	{
-		if (m_Owner->GetViewPort()->GetScene()->GetResource()->LoadTextureFullPath(Name, FullPath))
+		if (!m_Owner->GetViewPort()->GetScene()->GetResource()->LoadTextureFullPath(Name, FullPath))
 			return false;
 		Texture = m_Owner->GetViewPort()->GetScene()->GetResource()->FindTexture(Name);
 	}

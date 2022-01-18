@@ -119,38 +119,37 @@ void CUIImage::Start()
 void CUIImage::Update(float DeltaTime)
 {
 	CUIWidget::Update(DeltaTime);
-
-	// Frame 정보 Update
-	if (!m_Info.m_vecFrameData.empty())
-	{
-		float FrameTime = m_PlayTime / m_Info.m_vecFrameData.size();
-
-		m_AnimTime += DeltaTime;
-		if (m_AnimTime >= FrameTime)
-		{
-			m_FrameIndex = (m_FrameIndex + 1) % (int)m_Info.m_vecFrameData.size();
-			m_AnimTime -= FrameTime;
-		}
-	}
 }
 
 void CUIImage::PostUpdate(float DeltaTime)
 {
 	CUIWidget::PostUpdate(DeltaTime);
+	// Frame 정보 Update
+	if (!m_Info.m_vecFrameData.empty())
+	{
+		float FrameTime = m_Info.m_PlayTime / m_Info.m_vecFrameData.size();
+
+		m_Info.m_AnimTime += DeltaTime * m_Info.m_PlayTime;
+
+		if (m_Info.m_AnimTime >= FrameTime)
+		{
+			m_Info.m_FrameIndex = (m_Info.m_FrameIndex + 1) % (int)m_Info.m_vecFrameData.size();
+			m_Info.m_AnimTime -= FrameTime;
+		}
+	}
 }
 
 void CUIImage::Render()
 {
 	// Animation이 있을 때랑 없을 때를 구분해서 세팅한다.
-
 	if (m_Info.m_Texture)
 		m_Info.m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, 0);
 
 	// Animation 이 존재한다면, StartUV, EndUV도 세팅하기
 	if (!m_Info.m_vecFrameData.empty() && m_Info.m_Texture)
 	{
-		Vector2 m_AnimStartPos = m_Info.m_vecFrameData[m_FrameIndex].Start;
-		Vector2 m_AnimEndPos = m_AnimStartPos + m_Info.m_vecFrameData[m_FrameIndex].Size;
+		Vector2 m_AnimStartPos = m_Info.m_vecFrameData[m_Info.m_FrameIndex].Start;
+		Vector2 m_AnimEndPos = m_AnimStartPos + m_Info.m_vecFrameData[m_Info.m_FrameIndex].Size;
 
 		Vector2 StartUV = m_AnimStartPos / Vector2((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
 		Vector2 EndUV = m_AnimEndPos / Vector2((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());

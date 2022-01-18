@@ -36,8 +36,6 @@ bool CMainWidget::Init()
 	m_Button->SetTextureTint(Button_State::Click, 150, 150, 150, 255);
 
 	m_Button->SetClickCallback<CMainWidget>(this, &CMainWidget::ButtonClick);
-	// m_Button->SetMouseClickSound(m_Scene->GetResource()->FindSound("Fire"));
-	// m_Button->SetMouseHoverSound(m_Scene->GetResource()->FindSound("Fire"));
 
 	m_Button1 = CreateUIWidget<CUIButton>("TextButton");
 	m_Button1->SetPos(50.f, 200.f);
@@ -64,6 +62,7 @@ bool CMainWidget::Init()
 
 	m_TestImage->SetTexture("Image", TEXT("Number.bmp"));
 	m_TestImage->SetPlayTime(2.f);
+
 	CTexture* Texture = m_TestImage->GetWidgetImageInfo().m_Texture;
 	Vector2 StartPos = Vector2(0.f, 0.f);
 	float TextureWidth = (float)Texture->GetWidth();

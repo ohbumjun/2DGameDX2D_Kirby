@@ -286,6 +286,9 @@ bool CTexture::CreateResource(int Index)
 		Info->Image->GetImageCount(), Info->Image->GetMetadata(), &Info->SRV)))
 		return false;
 
+	Info->Width = (unsigned int)Info->Image->GetImages()[0].width;
+	Info->Height = (unsigned int)Info->Image->GetImages()[0].height;
+
 	return true;
 }
 

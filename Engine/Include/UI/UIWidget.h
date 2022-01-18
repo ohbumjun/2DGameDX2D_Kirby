@@ -9,9 +9,18 @@ struct WidgetImageInfo {
     CSharedPtr<CTexture> m_Texture;
     Vector4 m_Tint;
     std::vector<AnimationFrameData> m_vecFrameData;
-    WidgetImageInfo()
+    float m_PlayTime;
+    float m_AnimTime;
+    int m_FrameIndex;
+    float m_PlayScale;
+
+    WidgetImageInfo() :
+        m_FrameIndex(0),
+	    m_AnimTime(0.f),
+	    m_PlayTime(1.f),
+        m_PlayScale(1.f),
+		m_Tint(Vector4::White)
     {
-        m_Tint = Vector4::White;
     }
 };
 
