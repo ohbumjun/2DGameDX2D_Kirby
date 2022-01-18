@@ -185,17 +185,106 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 	return CreateResource(0);
 }
 
+bool CTexture::LoadTexture(const std::string& Name, const std::vector<TCHAR*>& vecFileName, 
+	const std::string& PathName)
+{
+	m_ImageType = Image_Type::Frame;
+
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	size_t Size = vecFileName.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		TCHAR FullPath[MAX_PATH] = {};
+
+		if (Path)
+			lstrcpy(FullPath, Path->Path);
+		lstrcat(FullPath, vecFileName[i]);
+
+		TextureResourceInfo* Info = new TextureResourceInfo;
+		Info->FullPath = FullPath;
+
+		Info->FileName = new TCHAR[MAX_PATH];
+		memset(Info->FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		lstrcpy(Info->FileName, vecFileName[i]);
+
+		Info->PathName = new char[MAX_PATH];
+		memset(Info->PathName, 0, sizeof(char) * MAX_PATH);
+		strcpy_s(Info->PathName, PathName.length() + 1, PathName.c_str());
+
+		// 확장자 구분에 따른 Loading
+
+		char _Ext[_MAX_EXT] = {};
+		char FullPathMultibyte[MAX_PATH] = {};
+
+#ifdef UNICODE
+		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FullPath, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, FullPath, -1, FullPathMultibyte, ConvertLength, 0, 0);
+#else
+		strcpy_s(FullPathMultibyte, FullPath);
+#endif
+
+		_splitpath_s(FullPathMultibyte, nullptr, 0, nullptr, 0, nullptr, 0, _Ext, 0);
+
+		_strupr_s(_Ext);
+
+		ScratchImage* Image = new ScratchImage;
+
+		if (strcmp(_Ext, ".DDS") == 0)
+		{
+			if (FAILED(LoadFromDDSFile(FullPath, DDS_FLAGS_NONE, nullptr, *Image)))
+			{
+				SAFE_DELETE(Info);
+				SAFE_DELETE(Image);
+				return false;
+			}
+		}
+		else if (strcmp(_Ext, ".DDS") == 0)
+		{
+			if (FAILED(LoadFromDDSFile(FullPath, DDS_FLAGS_NONE, nullptr, *Image)))
+			{
+				SAFE_DELETE(Info);
+				SAFE_DELETE(Image);
+				return false;
+			}
+		}
+		else if (strcmp(_Ext, ".TGA") == 0)
+		{
+			if (FAILED(LoadFromTGAFile(FullPath, nullptr, *Image)))
+			{
+				SAFE_DELETE(Info);
+				SAFE_DELETE(Image);
+				return false;
+			}
+		}
+		else
+		{
+			if (FAILED(LoadFromWICFile(FullPath, WIC_FLAGS_NONE, nullptr, *Image)))
+			{
+				SAFE_DELETE(Info);
+				SAFE_DELETE(Image);
+				return false;
+			}
+		}
+
+		Info->Image = Image;
+		m_vecTextureInfo.push_back(Info);
+
+		if (!CreateResource((int)i))
+			return false;
+	}
+
+	return true;
+}
+
 bool CTexture::CreateResource(int Index)
 {
 	TextureResourceInfo* Info = m_vecTextureInfo[Index];
 
 	if (FAILED(CreateShaderResourceView(CDevice::GetInst()->GetDevice(), Info->Image->GetImages(),
-		           Info->Image->GetImageCount(), Info->Image->GetMetadata(),
-		           &Info->SRV)))
+		Info->Image->GetImageCount(), Info->Image->GetMetadata(), &Info->SRV)))
 		return false;
-
-	Info->Width  = static_cast<unsigned>(Info->Image->GetImages()[0].width);
-	Info->Height = static_cast<unsigned>(Info->Image->GetImages()[0].height);
 
 	return true;
 }

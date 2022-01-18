@@ -65,4 +65,18 @@ private:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	DECLARE_SINGLE(CEngine)
+public :
+	template<typename T>
+	T* CreateMouseUIWidget(Mouse_State State, const std::string& Name)
+	{
+		T* MouseWidget = new T;
+		MouseWidget->SetName(Name);
+		if (!MouseWidget->Init())
+		{
+			SAFE_DELETE(MouseWidget);
+			return nullptr;
+		}
+		m_MouseWidget[(int)State] = MouseWidget;
+		return MouseWidget;
+	}
 };

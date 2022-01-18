@@ -121,6 +121,12 @@ bool CResourceManager::LoadTextureFullPath(const std::string& Name, const TCHAR*
 	return m_TextureManager->LoadTextureFullPath(Name, FullPath);
 }
 
+bool CResourceManager::LoadTexture(const std::string& Name, const std::vector<TCHAR*>& vecFileName,
+	const std::string& PathName)
+{
+	return m_TextureManager->LoadTexture(Name, vecFileName, PathName);
+}
+
 CTexture* CResourceManager::FindTexture(const std::string& Name)
 {
 	return m_TextureManager->FindTexture(Name);

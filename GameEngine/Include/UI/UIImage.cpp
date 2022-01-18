@@ -60,6 +60,29 @@ void CUIImage::SetTextureFullPath(const std::string& Name, const TCHAR* FullPath
 		SetUseTexture(true);
 }
 
+bool CUIImage::SetTexture(const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+{
+	CTexture* Texture = nullptr;
+
+	if (m_Owner->GetViewPort())
+	{
+		m_Owner->GetViewPort()->GetScene()->GetResource()->LoadTexture(Name, vecFileName, PathName);
+		Texture = m_Owner->GetViewPort()->GetScene()->GetResource()->FindTexture(Name);
+	}
+	else
+	{
+		CResourceManager::GetInst()->LoadTexture(Name, vecFileName, PathName);
+		Texture = CResourceManager::GetInst()->FindTexture(Name);
+	}
+
+	m_Info.m_Texture = Texture;
+
+	if (m_Info.m_Texture)
+		SetUseTexture(true);
+
+	return true;
+}
+
 void CUIImage::AddAnimationFrameData(const Vector2& StartPos, const Vector2& Size)
 {
 	AnimationFrameData Data = {};
