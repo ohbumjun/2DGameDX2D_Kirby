@@ -274,7 +274,17 @@ struct WidgetCBuffer {
 	Vector4 Tint;
 	Matrix matWP;
 	int UseTexture;
-	Vector3 Empty;
+	int UseAnimation;
+	Vector2 Animation2DStartUV;
+	Vector2 Animation2DEndUV;
+	Vector2 Empty;
+	WidgetCBuffer() :
+		Animation2DStartUV(0.f, 0.f),
+		Animation2DEndUV(1.f, 1.f),
+		UseTexture(0),
+		UseAnimation(0)
+	{
+	}
 };
 
 struct ProgressBarCBuffer {

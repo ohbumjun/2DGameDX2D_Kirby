@@ -15,8 +15,8 @@ CUIWidget::CUIWidget() :
 	m_ZOrder(0),
 	m_Size(50.f, 50.f),
 	m_MouseHovered(false),
-	m_CollisionMouseEnable(true)
-
+	m_CollisionMouseEnable(true),
+	m_Tint(Vector4::White)
 {
 	SetTypeID<CUIWidget>();
 }
@@ -41,12 +41,24 @@ CUIWidget::~CUIWidget()
 
 void CUIWidget::SetShader(const std::string& Name)
 {
-	m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader(Name);
+	if (m_Owner->GetViewPort())
+	{
+		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader(Name);
+	}
+	else
+	{
+		m_Shader = CResourceManager::GetInst()->FindShader(Name);
+	}
 }
 
 void CUIWidget::SetUseTexture(bool Use)
 {
 	m_CBuffer->SetUseTexture(Use);
+}
+
+void CUIWidget::SetUseAnimation(bool Use)
+{
+	m_CBuffer->SetUseAnimation(true);
 }
 
 bool CUIWidget::CollisionMouse(const Vector2& MousePos)
@@ -74,8 +86,18 @@ void CUIWidget::Start()
 
 bool CUIWidget::Init()
 {
-	m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("WidgetShader");
-	m_Mesh = m_Owner->GetViewPort()->GetScene()->GetResource()->FindMesh("WidgetMesh");
+	// GetScene 가 있다는 것은, 특정 Scene에 속하는 Widget 이라는 의미 
+	if (m_Owner->GetViewPort()->GetScene())
+	{
+		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("WidgetShader");
+		m_Mesh = m_Owner->GetViewPort()->GetScene()->GetResource()->FindMesh("WidgetMesh");
+	}
+	// 그렇지 않다는 것은, 특정 Scene에 속하는 Widget이 아니라는 것 ( ex) Mouse Widget -> 모든 Scene에서 동일 )
+	else
+	{
+		m_Shader = CResourceManager::GetInst()->FindShader("WidgetShader");
+		m_Mesh = CResourceManager::GetInst()->FindMesh("WidgetMesh");
+	}
 
 	m_CBuffer = new CWidgetConstantBuffer;
 	m_CBuffer->Init();

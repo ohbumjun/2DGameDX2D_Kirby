@@ -23,9 +23,21 @@ public :
 {
         m_BufferData.matWP = matWP;
 }
+    void SetUseAnimation(bool Use)
+{
+        m_BufferData.UseAnimation = Use ? 1 : 0;
+}
     void SetUseTexture(bool Use)
 {
         m_BufferData.UseTexture = Use ? 1 : 0;
 }
+    void SetStartUV(const Vector2& StartUV)
+{
+        m_BufferData.Animation2DStartUV = StartUV;
+}
+    void SetEndUV(const Vector2& EndUV)
+    {
+        m_BufferData.Animation2DEndUV = EndUV;
+    }
 };
 

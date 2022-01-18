@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameInfo.h"
+#include "UI/UIWindow.h"
 
 class CEngine
 {
@@ -14,7 +15,8 @@ private:
 	bool          m_Start;
 	bool m_Play;
 	Engine_Space m_Space;
-
+	Mouse_State m_MouseState;
+	CSharedPtr<class CUIWindow> m_MouseWidget[(int)Mouse_State::Max];
 public:
 	Engine_Space GetEngineSpace() const
 	{

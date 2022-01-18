@@ -519,6 +519,9 @@
     <ClInclude Include="UI\UIProgressbar.h">
       <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
+    <ClInclude Include="UI\UISlideBar.h">
+      <Filter>09. UI\02. Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -816,6 +819,9 @@
       <Filter>02. Resource\02. Shader\02. ShaderClass\04. Widget</Filter>
     </ClCompile>
     <ClCompile Include="UI\UIProgressbar.cpp">
+      <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UISlideBar.cpp">
       <Filter>09. UI\02. Widget</Filter>
     </ClCompile>
   </ItemGroup>

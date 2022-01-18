@@ -23,6 +23,8 @@ public :
 	void SetMouseClickSound(CSound* Sound);
 	void SetMouseSound(Button_SoundState State, const std::string& GroupName, const std::string& SoundName,
 		bool Loop, const TCHAR* FileName, const std::string& PathName = SOUND_PATH);
+	void SetMouseSound(Button_SoundState State, const std::string& SoundName);
+	void SetMouseSound(Button_SoundState State,CSound* Sound);
 public :
 	void SetTextureTint(Button_State State, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 	bool SetTexture(Button_State State, CTexture* Texture);

@@ -102,6 +102,7 @@ public :
 }
     void SetShader(const std::string& Name);
     void SetUseTexture(bool Use);
+    void SetUseAnimation(bool Use);
 public :
     virtual bool CollisionMouse(const Vector2& MousePos);
 public :

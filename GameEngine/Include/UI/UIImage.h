@@ -11,6 +11,19 @@ protected :
 protected :
     WidgetImageInfo m_Info;
     std::function<void()> m_ClickCallback;
+    float m_PlayTime;
+    float m_AnimTime;
+    int m_FrameIndex;
+public :
+    WidgetImageInfo GetWidgetImageInfo() const
+{
+        return m_Info;
+}
+public :
+    void SetPlayTime(float PlayTime)
+{
+        m_PlayTime = PlayTime;
+}
 public :
     void SetTexture(const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
     void SetTextureFullPath(const std::string& Name, const TCHAR* FullPath);

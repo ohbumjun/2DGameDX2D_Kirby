@@ -44,7 +44,6 @@ CWidgetComponent::CWidgetComponent(const CWidgetComponent& Component) :
 
 CWidgetComponent::~CWidgetComponent()
 {
-	SAFE_DELETE(m_WidgetWindow);
 }
 
 void CWidgetComponent::Start()
@@ -118,6 +117,9 @@ void CWidgetComponent::PrevRender()
 void CWidgetComponent::Render()
 {
 	CSceneComponent::Render();
+
+	if (m_WidgetWindow)
+		m_WidgetWindow->Render();
 }
 
 void CWidgetComponent::PostRender()

@@ -19,27 +19,33 @@ struct MaterialTextureInfo
 	}
 };
 
-
 class CMaterial :
 	public CRef
 {
 	friend class CMaterialManager;
-
 protected:
 	CMaterial();
 	CMaterial(const CMaterial& Material);
 	virtual ~CMaterial() override;
-
 private:
 	class CScene* m_Scene;
-
-
+protected:
+	CSharedPtr<CGraphicShader>       m_Shader;
+	std::vector<MaterialTextureInfo> m_TextureInfo;
+	Vector4                          m_BaseColor;
+	float                            m_Opacity;
+	class CMaterialConstantBuffer*   m_CBuffer;
+	CSharedPtr<class CRenderState>   m_RenderStateArray[static_cast<int>(RenderState_Type::Max)];
+private:
+	void SetConstantBuffer(class CMaterialConstantBuffer* Buffer)
+	{
+		m_CBuffer = Buffer;
+	}
 public:
 	void SetScene(class CScene* Scene)
 	{
 		m_Scene = Scene;
 	}
-
 public:
 	std::string GetTextureName(int Index = 0) const
 	{
@@ -64,20 +70,6 @@ public:
 	TCHAR* GetTextureFileName(int Index = 0) const
 	{
 		return m_TextureInfo[Index].Texture->GetFileName(Index);
-	}
-
-protected:
-	CSharedPtr<CGraphicShader>       m_Shader;
-	std::vector<MaterialTextureInfo> m_TextureInfo;
-	Vector4                          m_BaseColor;
-	float                            m_Opacity;
-	class CMaterialConstantBuffer*   m_CBuffer;
-	CSharedPtr<class CRenderState>   m_RenderStateArray[static_cast<int>(RenderState_Type::Max)];
-
-private:
-	void SetConstantBuffer(class CMaterialConstantBuffer* Buffer)
-	{
-		m_CBuffer = Buffer;
 	}
 
 public:

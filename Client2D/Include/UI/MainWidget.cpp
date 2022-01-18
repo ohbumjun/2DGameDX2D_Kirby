@@ -58,6 +58,29 @@ bool CMainWidget::Init()
 	m_Text->SetShadowEnable(true);
 	m_Text->SetShadowOffset(2.f, 2.f);
 
+	m_TestImage = CreateUIWidget<CUIImage>("Image");
+	m_TestImage->SetPos(400.f, 100.f);
+	m_TestImage->SetSize(200.f, 50.f);
+
+	m_TestImage->SetTexture("Image", TEXT("Number.bmp"));
+	m_TestImage->SetPlayTime(2.f);
+	CTexture* Texture = m_TestImage->GetWidgetImageInfo().m_Texture;
+	Vector2 StartPos = Vector2(0.f, 0.f);
+	float TextureWidth = (float)Texture->GetWidth();
+	float TextureHeight = (float)Texture->GetHeight();
+	Vector2 Size = Vector2(TextureWidth /10.f, (float)TextureHeight);
+
+	for (int i = 0; i < 10; i++)
+	{
+		m_TestImage->AddAnimationFrameData(StartPos, Size);
+		StartPos.x += TextureWidth / 10.f;
+	}
+
+	// SlideBar
+	m_TestSlider = CreateUIWidget<CUISlideBar>("Slider");
+	m_TestSlider->SetPos(400.f, 200.f);
+	m_TestSlider->SetSize(40.f, 100.f);
+
 	return true;
 }
 

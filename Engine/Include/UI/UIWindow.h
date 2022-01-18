@@ -7,6 +7,7 @@ class CUIWindow : public CRef
 {
 	friend class CViewPort;
 	friend class CWidgetComponent;
+	friend class CEngine;
 protected :
 	CUIWindow();
 	CUIWindow(const CUIWindow& Window);

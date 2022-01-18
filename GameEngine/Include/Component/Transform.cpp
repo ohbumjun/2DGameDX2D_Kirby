@@ -187,8 +187,8 @@ void CTransform::InheritWorldRotation(bool Current)
 
 		if (m_InheritRotZ)
 		{
-			// m_WorldRot.z = m_RelativeRot.z + m_Parent->GetWorldRot().z;
-			m_RelativeRot.z = m_WorldRot.z - m_Parent->GetWorldRot().z;
+			m_WorldRot.z = m_RelativeRot.z + m_Parent->GetWorldRot().z;
+			// m_RelativeRot.z = m_WorldRot.z - m_Parent->GetWorldRot().z;
 		}
 
 		if ((m_InheritRotX || m_InheritRotY || m_InheritRotZ) && !Current)

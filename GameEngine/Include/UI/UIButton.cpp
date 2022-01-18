@@ -40,11 +40,47 @@ void CUIButton::SetMouseSound(Button_SoundState State, const std::string& GroupN
 	bool Loop, const TCHAR* FileName,
 	const std::string& PathName)
 {
-	m_Owner->GetViewPort()->GetScene()->GetResource()->LoadSound(GroupName, SoundName,
-		Loop, FileName, PathName);
-	CSound* Sound = m_Owner->GetViewPort()->GetScene()->GetResource()->FindSound(SoundName);
+	CSound* Sound = nullptr;
+
+	// 특정 Scene에 속한 것 
+	if (m_Owner->GetViewPort())
+	{
+		m_Owner->GetViewPort()->GetScene()->GetResource()->LoadSound(GroupName, SoundName,
+			Loop, FileName, PathName);
+		Sound = m_Owner->GetViewPort()->GetScene()->GetResource()->FindSound(SoundName);
+	}
+	else
+	{
+		CResourceManager::GetInst()->LoadSound(GroupName, SoundName,
+			Loop, FileName, PathName);
+		Sound = CResourceManager::GetInst()->FindSound(SoundName);
+	}
+
 	if (!Sound)
 		return;
+
+	m_ButtonSounds[(int)State] = Sound;
+}
+
+void CUIButton::SetMouseSound(Button_SoundState State, const std::string& SoundName)
+{
+	CSound* Sound = nullptr;
+
+	if (m_Owner->GetViewPort())
+	{
+		Sound = m_Owner->GetViewPort()->GetScene()->GetResource()->FindSound(SoundName);
+	}
+	else
+	{
+		Sound = CResourceManager::GetInst()->FindSound(SoundName);
+	}
+
+	if (Sound)
+		m_ButtonSounds[(int)State] = Sound;
+}
+
+void CUIButton::SetMouseSound(Button_SoundState State, CSound* Sound)
+{
 	m_ButtonSounds[(int)State] = Sound;
 }
 
@@ -76,9 +112,21 @@ bool CUIButton::SetTexture(Button_State State, const std::string& Name, const TC
 
 bool CUIButton::SetTextureFullPath(Button_State State, const std::string& Name, const TCHAR* FullPath)
 {
-	if (!CSceneManager::GetInst()->GetScene()->GetResource()->LoadTextureFullPath(Name, FullPath))
-		return false;
-	CTexture* Texture = CSceneManager::GetInst()->GetScene()->GetResource()->FindTexture(Name);
+	CTexture* Texture = nullptr;
+
+	if (m_Owner->GetViewPort())
+	{
+		if (m_Owner->GetViewPort()->GetScene()->GetResource()->LoadTextureFullPath(Name, FullPath))
+			return false;
+		Texture = m_Owner->GetViewPort()->GetScene()->GetResource()->FindTexture(Name);
+	}
+	else
+	{
+		if (!CResourceManager::GetInst()->LoadTextureFullPath(Name, FullPath))
+			return false;
+		Texture = CResourceManager::GetInst()->FindTexture(Name);
+	}
+
 	if (Texture)
 	{
 		m_Info[(int)State].m_Texture = Texture;

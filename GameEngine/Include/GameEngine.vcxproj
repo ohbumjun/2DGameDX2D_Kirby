@@ -272,6 +272,7 @@
     <ClInclude Include="UI\UIButton.h" />
     <ClInclude Include="UI\UIImage.h" />
     <ClInclude Include="UI\UIProgressbar.h" />
+    <ClInclude Include="UI\UISlideBar.h" />
     <ClInclude Include="UI\UIText.h" />
     <ClInclude Include="UI\UIWidget.h" />
     <ClInclude Include="UI\UIWindow.h" />
@@ -373,6 +374,7 @@
     <ClCompile Include="UI\UIButton.cpp" />
     <ClCompile Include="UI\UIImage.cpp" />
     <ClCompile Include="UI\UIProgressbar.cpp" />
+    <ClCompile Include="UI\UISlideBar.cpp" />
     <ClCompile Include="UI\UIText.cpp" />
     <ClCompile Include="UI\UIWidget.cpp" />
     <ClCompile Include="UI\UIWindow.cpp" />

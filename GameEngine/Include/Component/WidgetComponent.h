@@ -10,7 +10,7 @@ protected :
 	CWidgetComponent(const CWidgetComponent& Component);
 	virtual ~CWidgetComponent();
 private :
-	CUIWindow* m_WidgetWindow;
+	CSharedPtr<CUIWindow> m_WidgetWindow;
 	WidgetComponent_Space m_Space;
 public :
 	CUIWindow* GetWidgetWindow() const

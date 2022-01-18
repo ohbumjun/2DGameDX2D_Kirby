@@ -1,8 +1,6 @@
 #pragma once
-
-#include <Scene/Scene.h>
-
 #include "SceneComponent.h"
+#include "../Scene/Scene.h"
 #include "../UI/UIWindow.h"
 
 class CWidgetComponent : public CSceneComponent {
@@ -12,7 +10,7 @@ protected :
 	CWidgetComponent(const CWidgetComponent& Component);
 	virtual ~CWidgetComponent();
 private :
-	CUIWindow* m_WidgetWindow;
+	CSharedPtr<CUIWindow> m_WidgetWindow;
 	WidgetComponent_Space m_Space;
 public :
 	CUIWindow* GetWidgetWindow() const
@@ -82,6 +80,6 @@ public :
 	}
 	Window->m_OwnerComponent = this;
 	m_WidgetWindow = Window;
-	return (T*)m_WidgetWindow;
+	return Window;
 }
 };

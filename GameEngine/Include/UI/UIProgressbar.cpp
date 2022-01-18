@@ -38,14 +38,25 @@ CUIProgressBar::~CUIProgressBar()
 bool CUIProgressBar::SetTexture(const std::string& Name, const TCHAR* FileName,
 	const std::string& PathName)
 {
-	CSceneResource* Resource = m_Owner->GetViewPort()->GetScene()->GetResource();
+	if (m_Owner->GetViewPort())
+	{
+		CSceneResource* Resource = m_Owner->GetViewPort()->GetScene()->GetResource();
 
-	if (!Resource->LoadTexture(Name, FileName, PathName))
-		return false;
+		if (!Resource->LoadTexture(Name, FileName, PathName))
+			return false;
+		
+		m_Info.m_Texture = Resource->FindTexture(Name);
+	}
+	else
+	{
+		if (!CResourceManager::GetInst()->LoadTexture(Name, FileName, PathName))
+			return false;
 
-	m_Info.m_Texture = Resource->FindTexture(Name);
+		m_Info.m_Texture = CResourceManager::GetInst()->FindTexture(Name);
+	}
 
-	SetUseTexture(true);
+	if (m_Info.m_Texture)
+		SetUseTexture(true);
 
 	return true;
 }
@@ -53,14 +64,25 @@ bool CUIProgressBar::SetTexture(const std::string& Name, const TCHAR* FileName,
 bool CUIProgressBar::SetTextureFullPath(const std::string& Name,
 	const TCHAR* FullPath)
 {
-	CSceneResource* Resource = m_Owner->GetViewPort()->GetScene()->GetResource();
+	if (m_Owner->GetViewPort())
+	{
+		CSceneResource* Resource = m_Owner->GetViewPort()->GetScene()->GetResource();
 
-	if (!Resource->LoadTextureFullPath(Name, FullPath))
-		return false;
+		if (!Resource->LoadTextureFullPath(Name, FullPath))
+			return false;
 
-	m_Info.m_Texture = Resource->FindTexture(Name);
+		m_Info.m_Texture = Resource->FindTexture(Name);
+	}
+	else
+	{
+		if (!CResourceManager::GetInst()->LoadTextureFullPath(Name, FullPath))
+			return false;
 
-	SetUseTexture(true);
+		m_Info.m_Texture = CResourceManager::GetInst()->FindTexture(Name);
+	}
+
+	if (m_Info.m_Texture)
+		SetUseTexture(true);
 
 	return true;
 }
@@ -95,8 +117,10 @@ bool CUIProgressBar::Init()
 	if (!CUIWidget::Init())
 		return false;
 
-	m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("ProgressBarShader");
-
+	if (m_Owner->GetViewPort())
+		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("ProgressBarShader");
+	else
+		m_Shader = CResourceManager::GetInst()->FindShader("ProgressBarShader");
 
 	m_ProgressCBuffer = new CProgressbarConstantBuffer;
 

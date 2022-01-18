@@ -88,7 +88,6 @@ bool CPlayer2D::Init()
 	//m_Sprite->SetOpacity(0.5f);
 	m_Sprite->CreateAnimationInstance<CPlayerAnimation2D>();
 
-
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
 	m_ChildLeftSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
