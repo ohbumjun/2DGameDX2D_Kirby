@@ -274,15 +274,16 @@ struct WidgetCBuffer {
 	Vector4 Tint;
 	Matrix matWP;
 	int UseTexture;
-	int UseAnimation;
+	int WidgetAnimType;
 	Vector2 Animation2DStartUV;
 	Vector2 Animation2DEndUV;
-	Vector2 Empty;
+	int WidgetAnimEnable;
+	int Empty;
 	WidgetCBuffer() :
 		Animation2DStartUV(0.f, 0.f),
 		Animation2DEndUV(1.f, 1.f),
 		UseTexture(0),
-		UseAnimation(0)
+		WidgetAnimEnable(0)
 	{
 	}
 };

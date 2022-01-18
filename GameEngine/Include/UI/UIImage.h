@@ -11,9 +11,7 @@ protected :
 protected :
     WidgetImageInfo m_Info;
     std::function<void()> m_ClickCallback;
-    float m_PlayTime;
-    float m_AnimTime;
-    int m_FrameIndex;
+
 public :
     WidgetImageInfo GetWidgetImageInfo() const
 {
@@ -22,7 +20,11 @@ public :
 public :
     void SetPlayTime(float PlayTime)
 {
-        m_PlayTime = PlayTime;
+        m_Info.m_PlayTime = PlayTime;
+}
+    void SetPlayScale(float Scale)
+{
+        m_Info.m_PlayScale = Scale;
 }
 public :
     void SetTexture(const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);

@@ -6,9 +6,7 @@
 #include "../Scene/ViewPort.h"
 
 CUIImage::CUIImage() :
-	m_PlayTime(1.f),
-m_AnimTime(0.f),
-m_FrameIndex(0)
+m_Info{}
 {}
 
 CUIImage::CUIImage(const CUIImage& Widget)

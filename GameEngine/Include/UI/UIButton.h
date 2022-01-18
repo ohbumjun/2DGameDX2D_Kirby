@@ -19,6 +19,14 @@ private :
 	bool m_HoverSound;
 	bool m_ClickSound;
 public :
+	void SetPlayTime(Button_State State, float PlayTime)
+	{
+		m_Info[(int)State].m_PlayTime = PlayTime;
+	}
+	void SetPlayScale(Button_State State, float Scale)
+	{
+		m_Info[(int)State].m_PlayScale = Scale;
+	}
 	void SetMouseHoverSound(CSound* Sound);
 	void SetMouseClickSound(CSound* Sound);
 	void SetMouseSound(Button_SoundState State, const std::string& GroupName, const std::string& SoundName,

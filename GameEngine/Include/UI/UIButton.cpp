@@ -10,7 +10,8 @@ CUIButton::CUIButton() :
 	m_State(Button_State::Normal),
 	m_ButtonSounds{},
 	m_HoverSound(false),
-	m_ClickSound(false)
+	m_ClickSound(false),
+	m_Info { }
 {
 	SetTypeID<CUIButton>();//
 }

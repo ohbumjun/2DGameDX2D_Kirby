@@ -25,7 +25,7 @@ public :
 }
     void SetUseAnimation(bool Use)
 {
-        m_BufferData.UseAnimation = Use ? 1 : 0;
+        m_BufferData.WidgetAnimEnable = Use ? 1 : 0;
 }
     void SetUseTexture(bool Use)
 {
