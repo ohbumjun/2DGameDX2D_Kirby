@@ -219,7 +219,6 @@ Matrix Matrix::StaticRotation(float x, float y, float z)
 	XMMATRIX Z = XMMatrixRotationZ(DegreeToRadian(z));
 
 	return X * Y * Z;
-	return Matrix();
 }
 
 Matrix Matrix::StaticRotationX(float x)

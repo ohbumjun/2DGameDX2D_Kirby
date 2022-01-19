@@ -36,6 +36,7 @@ bool CMouseNormal::Init()
 	}
 
 	m_Image->SetTexture("MouseNormal", vecFileName);
+	m_Image->AddAnimationFrameData(12);
 
 	return true;
 }

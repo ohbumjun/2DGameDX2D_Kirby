@@ -92,6 +92,18 @@ void CUIImage::AddAnimationFrameData(const Vector2& StartPos, const Vector2& Siz
 	SetUseAnimation(true);
 }
 
+void CUIImage::AddAnimationFrameData(int Count)
+{
+	size_t Size = m_Info.m_Texture->GetImageCount();
+	for (size_t i = 0; i < Size; i++)
+	{
+		AnimationFrameData Data = {};
+		Data.Start = Vector2(0.f, 0.f);
+		Data.Size = Vector2((float)m_Info.m_Texture->GetHeight(i), (float)m_Info.m_Texture->GetWidth(i));
+		m_Info.m_vecFrameData.push_back(Data);
+	}
+}
+
 void CUIImage::SetTextureTint(const Vector4& Color)
 {
 	m_Info.m_Tint = Color;

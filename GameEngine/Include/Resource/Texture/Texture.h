@@ -59,6 +59,12 @@ protected:
 	Image_Type                        m_ImageType;
 
 public:
+	TextureResourceInfo* GetTextureResourceInfo(int Index = 0) const
+	{
+		if (m_vecTextureInfo[0])
+			return m_vecTextureInfo[0];
+		return nullptr;
+	}
 	ID3D11ShaderResourceView* GetResource(int Index = 0) const
 	{
 		return m_vecTextureInfo[Index]->SRV;

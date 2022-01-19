@@ -32,6 +32,7 @@ public :
     bool SetTexture(const std::string& Name, const std::vector<TCHAR*>& vecFileName,
         const std::string& PathName = TEXTURE_PATH);
     void AddAnimationFrameData(const Vector2& StartPos, const Vector2& Size);
+    void AddAnimationFrameData(int Count);
     void SetTextureTint(const Vector4& Color);
     void SetTextureTint(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 public :
