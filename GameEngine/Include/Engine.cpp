@@ -20,7 +20,7 @@ CEngine::CEngine() :
 	m_Play(true),
 	m_Space(Engine_Space::Space2D),
 	m_MouseState(Mouse_State::Normal),
-	m_ShowCursor(0)
+	m_ShowCursor(true)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(100);
@@ -99,11 +99,9 @@ bool CEngine::Init(HINSTANCE    hInst, HWND         hWnd,
 	if (!CRenderManager::GetInst()->Init())
 		return false;
 
-
 	// 장면 관리자 초기화
 	if (!CSceneManager::GetInst()->Init())
 		return false;
-
 
 	// 충돌 관리자 초기화
 	if (!CCollisionManager::GetInst()->Init())
@@ -206,7 +204,11 @@ bool CEngine::Update(float DeltaTime)
 				m_ShowCursor = true;
 			}
 		}
-		
+
+		// Mouse Widget의 위치를 조정한다.
+		Vector2 WindowSize = m_MouseWidget[(int)m_MouseState]->GetWindowSize();
+		MousePos.y -= WindowSize.y;
+		m_MouseWidget[(int)m_MouseState]->SetPos(MousePos);
 
 		m_MouseWidget[(int)m_MouseState]->Update(DeltaTime);
 	}

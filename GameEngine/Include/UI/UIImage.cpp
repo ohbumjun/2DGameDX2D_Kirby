@@ -34,7 +34,10 @@ void CUIImage::SetTexture(const std::string& Name, const TCHAR* FileName, const 
 	}
 
 	if (m_Info.m_Texture)
+	{
+		SetSize((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
 		SetUseTexture(true);
+	}
 
 }
 
@@ -55,7 +58,10 @@ void CUIImage::SetTextureFullPath(const std::string& Name, const TCHAR* FullPath
 
 
 	if (m_Info.m_Texture)
+	{
+		SetSize((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
 		SetUseTexture(true);
+	}
 }
 
 bool CUIImage::SetTexture(const std::string& Name, 
@@ -73,12 +79,14 @@ bool CUIImage::SetTexture(const std::string& Name,
 		CResourceManager::GetInst()->LoadTexture(Name, vecFileName, PathName);
 		Texture = CResourceManager::GetInst()->FindTexture(Name);
 	}
-
-	m_Info.m_Texture = Texture;
-
-	if (m_Info.m_Texture)
+	
+	if (Texture)
+	{
+		m_Info.m_Texture = Texture;
+		SetSize((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
 		SetUseTexture(true);
-
+	}
+	
 	return true;
 }
 

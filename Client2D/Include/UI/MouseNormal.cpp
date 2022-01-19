@@ -21,9 +21,6 @@ bool CMouseNormal::Init()
 	if (!CUIWindow::Init())
 		return false;
 
-	// Mouse Image 실제 크기에 맞추었다.
-	SetSize(32.f, 31.f);
-
 	m_Image = CreateUIWidget<CUIImage>("Image");
 
 	std::vector<TCHAR*> vecFileName;
@@ -38,6 +35,11 @@ bool CMouseNormal::Init()
 
 	m_Image->SetTexture("MouseNormal", vecFileName);
 	m_Image->AddAnimationFrameData(13);
+
+	// Mouse Image 실제 크기에 맞추었다.
+	float Width  = (float)m_Image->GetTexture()->GetWidth();
+	float Height = (float)m_Image->GetTexture()->GetHeight();
+	SetSize(Width, Height);
 
 	for (int i = 0; i < 13; i++)
 	{

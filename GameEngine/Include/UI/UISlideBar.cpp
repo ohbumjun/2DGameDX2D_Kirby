@@ -28,8 +28,7 @@ void CUISlideBar::Update(float DeltaTime)
 	// Mouse 의 Move 에 반응시켜 SlideBar를 이동시킨다
 	if (m_MouseHovered)
 	{
-		bool MouseDown = CInput::GetInst()->GetLMouseDown();
-		bool MouseUp = CInput::GetInst()->GetLMouseUp();
+		bool MouseDown = CInput::GetInst()->GetMouseLButtonClick();
 
 		// 지금 누른 것
 		if (MouseDown)
@@ -37,7 +36,8 @@ void CUISlideBar::Update(float DeltaTime)
 			m_MousePush = true;
 			m_Tint = Vector4(1.f, 0.f, 0.f, 1.f);
 		}
-		else if (MouseUp)
+		//else if (MouseUp)
+		else 
 		{
 			m_MousePush = false;
 			m_Tint = Vector4(1.f, 1.f, 1.f, 1.f);

@@ -17,6 +17,10 @@ public :
 {
         return m_Info;
 }
+    class CTexture* GetTexture() const
+    {
+        return m_Info.m_Texture;
+    }
 public :
     void SetPlayTime(float PlayTime)
 {

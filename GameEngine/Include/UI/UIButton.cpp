@@ -93,7 +93,12 @@ void CUIButton::SetTextureTint(Button_State State, unsigned char r, unsigned cha
 bool CUIButton::SetTexture(Button_State State, CTexture* Texture)
 {
 	m_Info[(int)State].m_Texture = Texture;
-	SetUseTexture(true);
+
+	if (m_Info[(int)State].m_Texture)
+	{
+		SetSize((float)m_Info[(int)State].m_Texture->GetWidth(), (float)m_Info[(int)State].m_Texture->GetHeight());
+		SetUseTexture(true);
+	}
 
 	return true;
 }
@@ -131,6 +136,7 @@ bool CUIButton::SetTextureFullPath(Button_State State, const std::string& Name, 
 	if (Texture)
 	{
 		m_Info[(int)State].m_Texture = Texture;
+		SetSize((float)m_Info[(int)State].m_Texture->GetWidth(), (float)m_Info[(int)State].m_Texture->GetHeight());
 		SetUseTexture(true);
 	}
 
@@ -167,7 +173,7 @@ void CUIButton::Update(float DeltaTime)
 {
 	CUIWidget::Update(DeltaTime);
 
-	bool LMouseClick = CInput::GetInst()->IsLMouseClicked();
+	bool LMouseClick = CInput::GetInst()->GetMouseLButtonClick();
 
 	if (m_State != Button_State::Disable)
 	{

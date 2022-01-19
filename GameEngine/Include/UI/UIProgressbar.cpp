@@ -56,7 +56,10 @@ bool CUIProgressBar::SetTexture(const std::string& Name, const TCHAR* FileName,
 	}
 
 	if (m_Info.m_Texture)
+	{
 		SetUseTexture(true);
+		SetSize((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
+	}
 
 	return true;
 }
@@ -82,7 +85,10 @@ bool CUIProgressBar::SetTextureFullPath(const std::string& Name,
 	}
 
 	if (m_Info.m_Texture)
+	{
+		SetSize((float)m_Info.m_Texture->GetWidth(), (float)m_Info.m_Texture->GetHeight());
 		SetUseTexture(true);
+	}
 
 	return true;
 }

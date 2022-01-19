@@ -16,7 +16,6 @@ CColliderPixel::CColliderPixel() :
 	SetTypeID<CColliderPixel>();
 	m_ComponentType = Component_Type::SceneComponent;
 	m_Render = true;
-
 	m_ColliderType = Collider_Type::Pixel;
 }
 
@@ -74,24 +73,32 @@ void CColliderPixel::SetInfoFullPath(const TCHAR* FullPath)
 	if (strcmp(Ext, ".DDS") == 0)
 	{
 		if (FAILED(LoadFromDDSFile(FullPath, DDS_FLAGS_NONE, nullptr, Image)))
+		{
 			return;
+		}
 	}
 
 	else if (strcmp(Ext, ".TGA") == 0)
 	{
 		if (FAILED(LoadFromTGAFile(FullPath, nullptr, Image)))
+		{
 			return;
+		}
 	}
+
 	else
 	{
 		if (FAILED(LoadFromWICFile(FullPath, WIC_FLAGS_NONE, nullptr, Image)))
+		{
 			return;
+		}
 	}
 
-	m_Info.Width = (unsigned)Image.GetImages()[0].width;
-	m_Info.Height = (unsigned)Image.GetImages()[0].height;
+	m_Info.Width = (unsigned int)Image.GetImages()[0].width;
+	m_Info.Height = (unsigned int)Image.GetImages()[0].height;
 
 	m_Info.Pixel = new unsigned char[Image.GetPixelsSize()];
+	memcpy(m_Info.Pixel, Image.GetPixels(), Image.GetPixelsSize());
 
 	// 만약 BMP 라면 뒤집어서 세팅 
 	if (strcmp(Ext, ".BMP") == 0)
@@ -124,8 +131,9 @@ void CColliderPixel::SetInfoFullPath(const TCHAR* FullPath)
 	m_Max.x = m_Info.Box.Max.x;
 	m_Max.y = m_Info.Box.Max.y;
 
-	if (FAILED(CreateShaderResourceView(CDevice::GetInst()->GetDevice(), Image.GetImages(),
-		Image.GetImageCount(), Image.GetMetadata(), &m_Info.SRV)))
+	if (FAILED(CreateShaderResourceView(CDevice::GetInst()->GetDevice(), 
+		Image.GetImages(),Image.GetImageCount(), 
+		Image.GetMetadata(), &m_Info.SRV)))
 	{
 		return;
 	}
