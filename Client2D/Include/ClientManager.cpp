@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "Scene/MainScene.h"
 #include "Scene/SceneManager.h"
+#include "UI/MouseNormal.h"
 
 DEFINITION_SINGLE(CClientManager)
 
@@ -35,6 +36,9 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 	// Sound
 	CResourceManager::GetInst()->CreateChannelGroup("UI");
+
+	// Mouse Á¦ÀÛ
+	CEngine::GetInst()->CreateMouseUIWindow<CMouseNormal>(Mouse_State::Normal, "MouseNormal");
 
 	return true;
 }

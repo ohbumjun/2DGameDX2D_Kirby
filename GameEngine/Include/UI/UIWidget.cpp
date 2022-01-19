@@ -4,6 +4,7 @@
 #include "../Resource/Shader/WidgetConstantBuffer.h"
 #include "../Scene/CameraManager.h"
 #include "../Scene/Scene.h"
+#include "../Scene/SceneManager.h"
 #include "../Scene/ViewPort.h"
 
 CUIWidget::CUIWidget() :
@@ -87,7 +88,7 @@ void CUIWidget::Start()
 bool CUIWidget::Init()
 {
 	// GetScene 가 있다는 것은, 특정 Scene에 속하는 Widget 이라는 의미 
-	if (m_Owner->GetViewPort()->GetScene())
+	if (m_Owner->GetViewPort())
 	{
 		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("WidgetShader");
 		m_Mesh = m_Owner->GetViewPort()->GetScene()->GetResource()->FindMesh("WidgetMesh");
@@ -135,7 +136,11 @@ void CUIWidget::Render()
 	matRotate.Rotation(0.f, 0.f, m_Angle);
 	matTranslate.Translation(m_RenderPos.x, m_RenderPos.y, 1.f);
 
-	CCameraComponent* UICamera = m_Owner->GetViewPort()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	CCameraComponent* UICamera = nullptr;
+	if (m_Owner->GetViewPort())
+		UICamera = m_Owner->GetViewPort()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	else
+		UICamera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
 
 	matProj = UICamera->GetProjMatrix();
 	matWorld = matScale * matRotate * matTranslate;

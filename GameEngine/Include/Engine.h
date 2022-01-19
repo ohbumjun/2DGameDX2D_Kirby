@@ -14,10 +14,15 @@ private:
 	class CTimer* m_Timer;
 	bool          m_Start;
 	bool m_Play;
+	int m_ShowCursor;
 	Engine_Space m_Space;
 	Mouse_State m_MouseState;
 	CSharedPtr<class CUIWindow> m_MouseWidget[(int)Mouse_State::Max];
 public:
+	CUIWindow* GetMouseWidget() const
+	{
+		return m_MouseWidget[(int)m_MouseState];
+	}
 	Engine_Space GetEngineSpace() const
 	{
 		return m_Space;
@@ -67,16 +72,16 @@ private:
 	DECLARE_SINGLE(CEngine)
 public :
 	template<typename T>
-	T* CreateMouseUIWidget(Mouse_State State, const std::string& Name)
+	T* CreateMouseUIWindow(Mouse_State State, const std::string& Name)
 	{
-		T* MouseWidget = new T;
-		MouseWidget->SetName(Name);
-		if (!MouseWidget->Init())
+		T* MouseWindow = new T;
+		MouseWindow->SetName(Name);
+		if (!MouseWindow->Init())
 		{
-			SAFE_DELETE(MouseWidget);
+			SAFE_DELETE(MouseWindow);
 			return nullptr;
 		}
-		m_MouseWidget[(int)State] = MouseWidget;
-		return MouseWidget;
+		m_MouseWidget[(int)State] = MouseWindow;
+		return MouseWindow;
 	}
 };

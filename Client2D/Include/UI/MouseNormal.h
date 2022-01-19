@@ -8,7 +8,7 @@ class CMouseNormal :
 {
     friend class CViewPort;
     friend class CWidgetComponent;
-
+    friend class CEngine;
 protected :
     CMouseNormal();
     CMouseNormal(const CMouseNormal& window);

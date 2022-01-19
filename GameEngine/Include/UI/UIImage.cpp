@@ -58,7 +58,8 @@ void CUIImage::SetTextureFullPath(const std::string& Name, const TCHAR* FullPath
 		SetUseTexture(true);
 }
 
-bool CUIImage::SetTexture(const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+bool CUIImage::SetTexture(const std::string& Name, 
+	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
 {
 	CTexture* Texture = nullptr;
 

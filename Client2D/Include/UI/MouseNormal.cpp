@@ -30,13 +30,19 @@ bool CMouseNormal::Init()
 
 	for (int i = 0; i <= 12; ++i)
 	{
-		TCHAR FilePath[MAX_PATH] = {};
+		TCHAR *FilePath = new TCHAR[MAX_PATH];
+		memset(FilePath, 0, sizeof(TCHAR) * MAX_PATH);
 		wsprintf(FilePath, TEXT("Mouse/Default/%d.png"), i);
 		vecFileName.push_back(FilePath);
 	}
 
 	m_Image->SetTexture("MouseNormal", vecFileName);
-	m_Image->AddAnimationFrameData(12);
+	m_Image->AddAnimationFrameData(13);
+
+	for (int i = 0; i < 13; i++)
+	{
+		SAFE_DELETE(vecFileName[i]);
+	}
 
 	return true;
 }

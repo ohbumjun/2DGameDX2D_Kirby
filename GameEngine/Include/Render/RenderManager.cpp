@@ -1,12 +1,14 @@
 #include "RenderManager.h"
 #include "DepthStencilState.h"
 #include "RenderStateManager.h"
+#include "../Engine.h"
 #include "../Component/SceneComponent.h"
 #include "../GameObject/GameObject.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
 #include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
 #include "../Scene/ViewPort.h"
+#include "../UI/UIWindow.h"
 
 DEFINITION_SINGLE(CRenderManager)
 
@@ -172,10 +174,16 @@ void CRenderManager::Render()
 		}
 	}
 
+	// 각종 Widget 출력 ---
 	// Widget 출력시 Alpha Blending 처리하기
 	m_AlphaDisable->SetState();
 
 	CSceneManager::GetInst()->GetScene()->GetViewPort()->Render();
+
+	// Mouse Widget 도 출력
+	CUIWindow* MouseWidget = CEngine::GetInst()->GetMouseWidget();
+	if (MouseWidget)
+		MouseWidget->Render();
 	
 	m_AlphaDisable->ResetState();
 

@@ -196,7 +196,9 @@ bool CTexture::LoadTexture(const std::string& Name, const std::vector<TCHAR*>& v
 
 	for (size_t i = 0; i < Size; i++)
 	{
-		TCHAR FullPath[MAX_PATH] = {};
+		TCHAR* FullPath = new TCHAR[MAX_PATH];
+
+		memset(FullPath, 0, sizeof(TCHAR) * MAX_PATH);
 
 		if (Path)
 			lstrcpy(FullPath, Path->Path);
@@ -225,7 +227,7 @@ bool CTexture::LoadTexture(const std::string& Name, const std::vector<TCHAR*>& v
 		strcpy_s(FullPathMultibyte, FullPath);
 #endif
 
-		_splitpath_s(FullPathMultibyte, nullptr, 0, nullptr, 0, nullptr, 0, _Ext, 0);
+		_splitpath_s(FullPathMultibyte, nullptr, 0, nullptr, 0, nullptr, 0, _Ext, _MAX_EXT);
 
 		_strupr_s(_Ext);
 

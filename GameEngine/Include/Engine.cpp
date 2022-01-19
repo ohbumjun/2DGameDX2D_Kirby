@@ -19,7 +19,8 @@ CEngine::CEngine() :
 	m_Start(false),
 	m_Play(true),
 	m_Space(Engine_Space::Space2D),
-	m_MouseState(Mouse_State::Normal)
+	m_MouseState(Mouse_State::Normal),
+	m_ShowCursor(0)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(100);
@@ -181,6 +182,35 @@ bool CEngine::Update(float DeltaTime)
 
 	CResourceManager::GetInst()->Update();
 
+	if (m_MouseWidget[(int)m_MouseState])
+	{
+		// 마우스 보임 여부 결정학
+		Vector2 MousePos = CInput::GetInst()->GetMousePos();
+
+		// 마우스가 윈도우창을 벗어났다면, 기본 cursor가 보이게 세팅한다
+		// 그렇지 않고, Window 창 안에 있다면 기본 cursor는 안보이게 하고,
+		// Mouse Widget 만 보이게 세팅한다.
+		if (MousePos.x < 0.f || MousePos.x > m_RS.Width || MousePos.y < 0.f || MousePos.y > m_RS.Height)
+		{
+			if (m_ShowCursor == false)
+			{
+				ShowCursor(true);
+				m_ShowCursor = true;
+			}
+		}
+		else // 범위 안에 있다면
+		{
+			if (m_ShowCursor)
+			{
+				ShowCursor(false);
+				m_ShowCursor = true;
+			}
+		}
+		
+
+		m_MouseWidget[(int)m_MouseState]->Update(DeltaTime);
+	}
+
 	return false;
 }
 
@@ -188,6 +218,11 @@ bool CEngine::PostUpdate(float DeltaTime)
 {
 	if (CSceneManager::GetInst()->PostUpdate(DeltaTime))
 		return true;
+
+	if (m_MouseWidget[(int)m_MouseState])
+	{
+		m_MouseWidget[(int)m_MouseState]->PostUpdate(DeltaTime);
+	}
 
 	return false;
 }

@@ -104,7 +104,7 @@ bool CTextureManager::LoadTexture(const std::string& Name, const std::vector<TCH
 
 	Texture = new CTexture;
 
-	if (Texture->LoadTexture(Name, vecFileName, PathName))
+	if (!Texture->LoadTexture(Name, vecFileName, PathName))
 	{
 		SAFE_DELETE(Texture);
 		return false;
