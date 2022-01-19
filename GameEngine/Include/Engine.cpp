@@ -190,7 +190,7 @@ bool CEngine::Update(float DeltaTime)
 		// Mouse Widget 만 보이게 세팅한다.
 		if (MousePos.x < 0.f || MousePos.x > m_RS.Width || MousePos.y < 0.f || MousePos.y > m_RS.Height)
 		{
-			if (m_ShowCursor == false)
+			if (!m_ShowCursor)
 			{
 				ShowCursor(true);
 				m_ShowCursor = true;
@@ -201,7 +201,7 @@ bool CEngine::Update(float DeltaTime)
 			if (m_ShowCursor)
 			{
 				ShowCursor(false);
-				m_ShowCursor = true;
+				m_ShowCursor = false;
 			}
 		}
 

@@ -112,7 +112,6 @@ void CEditorMenu::CreateNewObject()
 	}
 
 	// Add List To Object List
-
 	Hierarchy->AddObject(m_ObjectNameInput->GetTextUTF8());
 
 }

@@ -14,6 +14,11 @@
 #include "Window/DetailInfoWindow.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
+#include "Component/WidgetComponent.h"
+#include "Component/ColliderBox2D.h"
+#include "Component/ColliderCircle.h"
+#include "Component/ColliderPixel.h"
+#include "Component/CameraComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Object/Player2D.h"
 
@@ -270,6 +275,31 @@ CComponent* CEditorManager::CreateComponent(CGameObject* Object, const size_t Co
 	else if (ComponentTypeID == typeid(CStaticMeshComponent).hash_code())
 	{
 		CComponent* Component =  Object->LoadComponent<CStaticMeshComponent>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CWidgetComponent).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CWidgetComponent>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CColliderBox2D).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CColliderBox2D>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CColliderCircle).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CColliderCircle>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CColliderPixel).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CColliderPixel>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CCameraComponent).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CCameraComponent>();
 		return Component;
 	}
 	return nullptr;
