@@ -22,6 +22,8 @@ private:
 public:
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
+public :
+    void SetPosRotScaleInfo(class CGameObject* Object);
 public:
     void SetPositionXCallback();
     void SetPositionYCallback();

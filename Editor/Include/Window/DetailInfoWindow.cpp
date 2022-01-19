@@ -165,6 +165,24 @@ void CDetailInfoWindow::Update(float DeltaTime)
 	CIMGUIWindow::Update(DeltaTime);
 }
 
+void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
+{
+	Vector3 Pos       = Object->GetWorldPos();
+	m_PosX->SetFloat(Pos.x);
+	m_PosY->SetFloat(Pos.y);
+	m_PosZ->SetFloat(Pos.z);
+
+	Vector3 Rot       = Object->GetWorldRot();
+	m_RotX->SetFloat(Rot.x);
+	m_RotY->SetFloat(Rot.y);
+	m_RotZ->SetFloat(Rot.z);
+
+	Vector3 Scale = Object->GetWorldScale();
+	m_ScaleX->SetFloat(Scale.x);
+	m_ScaleY->SetFloat(Scale.y);
+	m_ScaleZ->SetFloat(Scale.z);
+}
+
 void CDetailInfoWindow::SetPositionXCallback()
 {
 	// 선택한 GameObject + Component가 존재해야 한다.

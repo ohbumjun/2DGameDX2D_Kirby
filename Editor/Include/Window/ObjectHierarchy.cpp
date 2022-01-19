@@ -7,6 +7,8 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Resource/ResourceManager.h"
+#include "../EditorManager.h"
+#include "DetailInfoWindow.h"
 
 CObjectHierarchy::CObjectHierarchy()
 {
@@ -57,7 +59,6 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 {
 	// 선택한 Object 내에 있는 Scene Component 목록을 보여준다
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
-	CSceneComponent* RootComponent = Object->GetRootComponent();
 
 	// 기존 모두 지워주기
 	m_ComponentListBox->Clear();
@@ -76,6 +77,10 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 
 	// 가장 첫번째 Component를 선택한 상태로 세팅한다.
 	m_ComponentListBox->SetSelectIndex(0);
+
+	// Drag Object 들의 x,y,z 정보도 세팅해준다.
+	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
+	DetailWindow->SetPosRotScaleInfo(Object);
 }
 
 void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
