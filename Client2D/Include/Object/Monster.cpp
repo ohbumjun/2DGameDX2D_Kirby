@@ -2,10 +2,9 @@
 #include "Component/SpriteComponent.h"
 #include "Component/WidgetComponent.h"
 #include "Component/ColliderCircle.h"
-#include "UI/UIProgressbar.h"
-#include "UI/UIText.h"
 #include "MonsterAnimation.h"
 #include "Engine.h"
+#include "../UI/SimpleHUD.h"
 
 CMonster::CMonster() :
 	m_HP(15.f)
@@ -47,13 +46,17 @@ bool CMonster::Init()
 		&CMonster::SetNormalMouse);
 
 	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
-	CUIWindow* SimpleHUDWindow = m_SimpleHUDWidget->CreateUIWindow<CUIWindow>("SimpleHUDWindow");
-	m_HpBar = SimpleHUDWindow->CreateUIWidget<CUIProgressBar>("HPBar");
-	m_HpBar->SetPos(0.f, -50.f);
+	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
+
+	// m_HpBar = SimpleHUDWindow->CreateUIWidget<CUIProgressBar>("HPBar");
+	// m_HpBar->SetPos(0.f, -50.f);
 
 	m_Sprite->AddChild(m_ColliderBody);
 	m_Sprite->SetTransparency(true);
 	m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
+
+	m_Sprite->AddChild(m_SimpleHUDWidget);
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
 	m_Sprite->SetRelativePos(500.f, 300.f, 1.f);
