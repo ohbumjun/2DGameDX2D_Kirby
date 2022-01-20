@@ -49,8 +49,17 @@ CEngine::~CEngine()
 	SAFE_DELETE(m_Timer);
 }
 
+void CEngine::SetMouseState(Mouse_State State)
+{
+	if (m_MouseWidget[(int)m_MouseState])
+	{
+		// √ ±‚»≠
+	}
+	m_MouseState = State;
+}
+
 bool CEngine::Init(HINSTANCE    hInst, const TCHAR* Name, unsigned int Width,
-                   unsigned int Height, int         IconID, bool       WindowMode)
+				   unsigned int Height, int         IconID, bool       WindowMode)
 {
 	m_hInst = hInst;
 

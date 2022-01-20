@@ -16,6 +16,6 @@ private :
     CSharedPtr<CUIImage> m_Image;
 public :
     virtual bool Init() override;
-
+    virtual CMouseAttack* Clone() override;
 };
 

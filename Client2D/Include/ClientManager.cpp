@@ -5,6 +5,7 @@
 #include "Scene/MainScene.h"
 #include "Scene/SceneManager.h"
 #include "UI/MouseNormal.h"
+#include "UI/MouseAttack.h"
 
 DEFINITION_SINGLE(CClientManager)
 
@@ -39,6 +40,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 	// Mouse Á¦ÀÛ
 	CEngine::GetInst()->CreateMouseUIWindow<CMouseNormal>(Mouse_State::Normal, "MouseNormal");
+	CEngine::GetInst()->CreateMouseUIWindow<CMouseAttack>(Mouse_State::State1, "MouseNormal");
 
 	return true;
 }

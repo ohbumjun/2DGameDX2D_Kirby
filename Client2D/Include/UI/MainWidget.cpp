@@ -57,8 +57,6 @@ bool CMainWidget::Init()
 	m_Text->SetShadowOffset(2.f, 2.f);
 
 	m_TestImage = CreateUIWidget<CUIImage>("Image");
-	m_TestImage->SetPos(400.f, 100.f);
-	m_TestImage->SetSize(200.f, 50.f);
 
 	m_TestImage->SetTexture("Image", TEXT("Number.bmp"));
 	m_TestImage->SetPlayTime(2.f);
@@ -74,6 +72,9 @@ bool CMainWidget::Init()
 		m_TestImage->AddAnimationFrameData(StartPos, Size);
 		StartPos.x += TextureWidth / 10.f;
 	}
+
+	m_TestImage->SetPos(400.f, 100.f);
+	m_TestImage->SetSize(200.f, 50.f);
 
 	// SlideBar
 	m_TestSlider = CreateUIWidget<CUISlideBar>("Slider");

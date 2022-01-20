@@ -19,5 +19,8 @@ public :
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CMonster* Clone() override;
+public :
+    void SetAttackMouse(const CollisionResult& Result);
+    void SetNormalMouse(const CollisionResult& Result);
 };
 

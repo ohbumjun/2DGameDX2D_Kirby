@@ -167,7 +167,6 @@ void CUIImage::Render()
 	// Animation 이 존재한다면, StartUV, EndUV도 세팅하기
 	if (!m_Info.m_vecFrameData.empty())
 	{
-
 		CTexture* AnimTexture = m_Info.m_Texture;
 
 		m_CBuffer->SetUseAnimation(true);

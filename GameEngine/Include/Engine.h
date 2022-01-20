@@ -45,6 +45,9 @@ public:
 	{
 		return m_Play;
 	}
+public :
+	void SetMouseState(Mouse_State State);
+
 	void SetPlay(bool Play)
 	{
 		m_Play = Play;

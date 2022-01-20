@@ -3,6 +3,7 @@
 #include "Component/ColliderBox2D.h"
 #include "Component/ColliderCircle.h"
 #include "MonsterAnimation.h"
+#include "Engine.h"
 
 CMonster::CMonster() :
 	m_HP(15.f)
@@ -36,6 +37,10 @@ bool CMonster::Init()
 	// m_ColliderBody = CreateComponent<CColliderBox2D>("ColliderBody");
 	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
 	m_ColliderBody->SetCollisionProfile("Monster");
+	m_ColliderBody->AddCollisionMouseCallback(Collision_State::Begin, this,
+		&CMonster::SetAttackMouse);
+	m_ColliderBody->AddCollisionMouseCallback(Collision_State::End, this,
+		&CMonster::SetNormalMouse);
 
 	SetRootComponent(m_Sprite);
 
@@ -65,4 +70,14 @@ void CMonster::PostUpdate(float DeltaTime)
 CMonster* CMonster::Clone()
 {
 	return new CMonster(*this);
+}
+
+void CMonster::SetAttackMouse(const CollisionResult& Result)
+{
+	CEngine::GetInst()->SetMouseState(Mouse_State::State1);
+}
+
+void CMonster::SetNormalMouse(const CollisionResult& Result)
+{
+	CEngine::GetInst()->SetMouseState(Mouse_State::Normal);
 }

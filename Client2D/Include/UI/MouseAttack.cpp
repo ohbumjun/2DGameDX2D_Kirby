@@ -39,3 +39,8 @@ bool CMouseAttack::Init()
 
 	return true;
 }
+
+CMouseAttack* CMouseAttack::Clone()
+{
+	return new CMouseAttack(*this);
+}

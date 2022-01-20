@@ -39,8 +39,8 @@ CColliderComponent::~CColliderComponent()
 	for (; iter != iterEnd; ++iter)
 	{
 		(*iter)->DeletePrevCollision(this);
-		(*iter)->CallCollisionMouseCallback(Collision_State::End);
-		CallCollisionMouseCallback(Collision_State::End);
+		(*iter)->CallCollisionCallback(Collision_State::End);
+		CallCollisionCallback(Collision_State::End);
 	}
 }
 
