@@ -1,6 +1,9 @@
 #include "Bullet.h"
 #include "Component/SpriteComponent.h"
 #include "Component/ColliderCircle.h"
+#include "Component/WidgetComponent.h"
+#include "UI/UINumberWidget.h"
+#include "UI/UIDamageFont.h"
 
 CBullet::CBullet() :
 	m_Distance(600.f)
@@ -63,4 +66,16 @@ CBullet* CBullet::Clone()
 void CBullet::BulletCollision(const CollisionResult& Result)
 {
 	Destroy();
+
+	CColliderComponent* CollisionDest = Result.Dest;
+	CGameObject* Owner = CollisionDest->GetGameObject();
+	CWidgetComponent* ObjectWindow = nullptr;
+	if (Owner)
+	{
+		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+		if (ObjectWindow)
+		{
+			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+		}
+	}
 }

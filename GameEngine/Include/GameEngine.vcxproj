@@ -194,6 +194,7 @@
     <ClInclude Include="fmod_errors.h" />
     <ClInclude Include="fmod_output.h" />
     <ClInclude Include="GameInfo.h" />
+    <ClInclude Include="GameObject\DamageFont.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="Component\WidgetComponent.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="GameObject\DamageFont.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="IMGUIButton.cpp" />

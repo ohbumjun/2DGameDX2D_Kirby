@@ -7,6 +7,7 @@
 
 CUIDamageFont::CUIDamageFont() :
 	m_LifeTime(1.f),
+	// m_LifeTime(10.f),
 	m_DamageNumber(0),
 	m_PhysicsSimulate(false),
 	m_SpeedX(1.f),
@@ -126,6 +127,23 @@ bool CUIDamageFont::Init()
 	else
 		m_Shader = CResourceManager::GetInst()->FindShader("NumberShader");
 
+	std::vector<TCHAR*> vecFileName;
+	for (int i = 0; i < 10; i++)
+	{
+		TCHAR* FileName = new TCHAR[MAX_PATH];
+		memset(FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		wsprintf(FileName, TEXT("Number/1.NoRed0.%d.png"), i);
+		vecFileName.push_back(FileName);
+	}
+
+	SetTexture("Number", vecFileName);
+	AddFrameData(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		SAFE_DELETE_ARRAY(vecFileName[i]);
+	}
+
 	return true;
 }
 
@@ -150,7 +168,7 @@ void CUIDamageFont::Update(float DeltaTime)
 	// 수직 방향 운동
 	if (m_PhysicsSimulate && !m_IsGround)
 	{
-		m_FallTime += DeltaTime;
+		m_FallTime += DeltaTime * 10.f;
 
 		// 이건 공부하기
 		float Velocity = 0.f;
@@ -160,6 +178,7 @@ void CUIDamageFont::Update(float DeltaTime)
 		}
 
 		m_Pos.y = (m_FallStartY + (Velocity - 0.5f * GRAVITY * m_FallTime * m_FallTime));
+		// m_Pos.y = (m_FallStartY + (- 0.5f * GRAVITY * m_FallTime * m_FallTime));
 	}
 
 	m_LifeTime -= DeltaTime;
@@ -174,17 +193,27 @@ void CUIDamageFont::Render()
 {
 	int TempNum = m_DamageNumber;
 
+	std::stack<int> stkNums;
+
 	if (TempNum == 0)
 	{
-		m_vecNumber.push_back(0);
+		stkNums.push(0);
 	}
 	else
 	{
 		while (TempNum > 0)
 		{
-			m_vecNumber.push_back(TempNum % 10);
+			stkNums.push(TempNum % 10);
 			TempNum /= 10;
 		}
+	}
+
+	m_vecNumber.clear();
+
+	while (!stkNums.empty())
+	{
+		m_vecNumber.push_back(stkNums.top());
+		stkNums.pop();
 	}
 
 	int CurrentNum = 0, Frame = 0;

@@ -178,6 +178,9 @@
     <Filter Include="05. Component\01. SceneComponent\04. UI">
       <UniqueIdentifier>{d4ae9648-f40f-4f46-93f9-f19404b25656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\01. DynamicEffect">
+      <UniqueIdentifier>{b454f5c5-646e-42bc-9178-e318a2cb2a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -531,6 +534,9 @@
     <ClInclude Include="UI\UIDamageFont.h">
       <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\DamageFont.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -841,6 +847,9 @@
     </ClCompile>
     <ClCompile Include="UI\UIDamageFont.cpp">
       <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\DamageFont.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

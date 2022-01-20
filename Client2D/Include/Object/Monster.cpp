@@ -7,7 +7,7 @@
 #include "../UI/SimpleHUD.h"
 
 CMonster::CMonster() :
-	m_HP(15.f)
+	m_HP(10.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -23,14 +23,27 @@ CMonster::~CMonster()
 
 void CMonster::Damage(float Damage)
 {
+	// 실제 데미지
 	m_HP -= Damage;
 	if (m_HP < 0.f)
+	{
 		Destroy();
+		return;
+	}
+
+	// Widget HP Bar 조정하기
+	CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+	HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);
+}
+
+void CMonster::SetHPMax(float HPMax)
+{
+	m_HPMax = HPMax;
+	m_HP = HPMax;
 }
 
 bool CMonster::Init()
 {
-
 	if (!CGameObject::Init())
 		return false;
 

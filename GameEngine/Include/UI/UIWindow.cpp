@@ -135,6 +135,7 @@ void CUIWindow::PostUpdate(float DeltaTime)
 			// SAFE_DELETE((*iter));
 			iter = m_WidgetList.erase(iter);
 			iterEnd = m_WidgetList.end();
+			continue;
 		}
 		if (!(*iter)->IsEnable())
 		{

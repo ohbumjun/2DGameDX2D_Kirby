@@ -13,9 +13,11 @@ private :
     CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
     CSharedPtr<class CUIProgressBar> m_HpBar;
     // CSharedPtr<class CColliderComponent> m_ColliderBody;
+    float m_HPMax;
     float m_HP;
 public :
     void Damage(float Damage);
+    void SetHPMax(float HPMax);
 public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime);

@@ -18,13 +18,18 @@ private :
     CSharedPtr<CUIText> m_NameText;
     CSharedPtr<CUIProgressBar> m_ProgressBar;
 public :
+    CUIProgressBar* GetProgressBar() const
+{
+        return m_ProgressBar;
+}
+public :
     void SetText(const TCHAR* Text);
 public :
-    virtual void Start();
-    virtual bool Init();
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
-    virtual void Render();
-    virtual CSimpleHUD* Clone();
+    virtual void Start() override;
+    virtual bool Init() override;
+    virtual void Update(float DeltaTime) override;
+    virtual void PostUpdate(float DeltaTime) override;
+    virtual void Render() override;
+    virtual CSimpleHUD* Clone() override;
 };
 
