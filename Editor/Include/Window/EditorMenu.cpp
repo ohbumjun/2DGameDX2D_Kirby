@@ -233,11 +233,12 @@ void CEditorMenu::LoadScene()
 			ObjectListBox->AddItem(vecObjNames[i]);
 		}
 
+		// 화면에 Scene Edit Object를 만든다
+		CEditorManager::GetInst()->SetSceneEditObject();
+
+
 		// 가장 처음 녀석의 Component 들을 세팅해둔다.
 		Hierarchy->SelectObject(0, vecObjNames[0].c_str());
-
-		// 화면세 Scene Edit Object를 만든다
-		CEditorManager::GetInst()->SetSceneEditObject();
 
 		// 현재 선택된 Component의 위치로 세팅한다.
 		CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();

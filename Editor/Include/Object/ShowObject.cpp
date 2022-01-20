@@ -42,7 +42,7 @@ bool CShowObject::Init()
 
 	m_MeshComponent->SetMesh("FrameRect");
 	m_MeshComponent->GetMaterial()->SetShader("PosMeshShader");
-	m_MeshComponent->SetPivot(0.5f, 0.5f, 0.f);
+	m_MeshComponent->SetPivot(0.001f, 0.001f, 0.f);
 	m_MeshComponent->SetBaseColor(1.f, 1.f, 0.f, 1.f);
 
 	return true;

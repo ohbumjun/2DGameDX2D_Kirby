@@ -3,10 +3,10 @@
 #include "IMGUIListBox.h"
 #include "IMGUILabel.h"
 #include "GameObject/GameObject.h"
+#include "../Object/ShowObject.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
-#include "Resource/ResourceManager.h"
 #include "../EditorManager.h"
 #include "DetailInfoWindow.h"
 
@@ -78,9 +78,18 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 	// 가장 첫번째 Component를 선택한 상태로 세팅한다.
 	m_ComponentListBox->SetSelectIndex(0);
 
-	// Drag Object 들의 x,y,z 정보도 세팅해준다.
+	// Object 의 Pos, Rot, Scale x,y,z 정보도 DetailWindow 측에 세팅해준다.
 	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
 	DetailWindow->SetPosRotScaleInfo(Object);
+
+	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
+	CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();
+
+	Vector2 StartPos = Vector2(Object->GetWorldPos().x, Object->GetWorldPos().y);
+	Vector2 EndPos = Vector2(StartPos.x + Object->GetWorldScale().x, StartPos.y + Object->GetWorldScale().y);
+
+	ShowObject->SetStartPos(StartPos);
+	ShowObject->SetEndPos(EndPos);
 }
 
 void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
