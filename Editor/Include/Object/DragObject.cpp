@@ -28,6 +28,10 @@ void CDragObject::SetEndPos(const Vector2& Pos)
 {
 	m_EndPos = Pos;
 	m_MeshComponent->SetWorldScale(m_EndPos.x - m_StartPos.x, m_EndPos.y - m_StartPos.y, 1.f);
+
+	// DragObject의 경우, 들어오는 EndPos가 화면상 더 아래, 오른쪽 --> y의 경우, StartPos에서 EndPos를 빼줘야 한다.
+	// Vector2 MeshSize = Vector2(m_EndPos.x - m_StartPos.x, m_StartPos.y - m_EndPos.y);
+	// m_MeshComponent->SetMeshSize(m_EndPos.x - m_StartPos.x, m_StartPos.y - m_EndPos.y, 0.f);
 }
 
 bool CDragObject::Init()
@@ -44,7 +48,7 @@ bool CDragObject::Init()
 
 	m_MeshComponent->SetMesh("FrameRect");
 	m_MeshComponent->GetMaterial()->SetShader("PosMeshShader");
-	m_MeshComponent->SetPivot(0.f, 1.f, 0.f);
+	// m_MeshComponent->SetPivot(0.001f, 0.001f, 0.f);
 	m_MeshComponent->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 
 	return true;

@@ -117,6 +117,7 @@ bool CRenderManager::Init()
 
 	m_RenderLayerList.push_back(Layer);
 
+
 	m_DepthDisable = FindRenderState("DepthDisable");
 	m_AlphaDisable = FindRenderState("AlphaBlend");
 

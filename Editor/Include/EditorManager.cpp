@@ -21,6 +21,7 @@
 #include "Component/CameraComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Object/Player2D.h"
+#include "Object/ShowObject.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -48,6 +49,15 @@ void CEditorManager::SetEditMode(EditMode Mode)
 	}
 }
 
+void CEditorManager::SetSceneEditObject()
+{
+	if (!m_SceneEditObj)
+	{
+		m_SceneEditObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CShowObject>("SceneEditObject");
+		m_SceneEditObj->SetWorldScale(0.f, 0.f, 1.f);
+	}
+}
+
 bool CEditorManager::Init(HINSTANCE hInst)
 {
 	if (!CEngine::GetInst()->Init(hInst, TEXT("GameEngine"),
@@ -68,7 +78,11 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	m_ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
 
+	// Sprite 편집할 때
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
+
+	// Scene 편집할 때
+	CRenderManager::GetInst()->CreateLayer("SceneEditLayer", INT_MAX);
 
 	// Mouse
 	CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);

@@ -161,6 +161,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
+    <ClCompile Include="Object\ShowObject.cpp" />
     <ClCompile Include="Object\SpriteEditObject.cpp" />
     <ClCompile Include="Scene\DefaultScene.cpp" />
     <ClCompile Include="Window\DetailInfoWindow.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\Player2D.h" />
+    <ClInclude Include="Object\ShowObject.h" />
     <ClInclude Include="Object\SpriteEditObject.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\DefaultScene.h" />

@@ -13,6 +13,7 @@ class CEditorManager
 private:
 	EditMode           m_EditMode;
 	class CDragObject* m_DragObj;
+	class CShowObject* m_SceneEditObj;
 	class CSpriteEditWindow* m_SpriteWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
@@ -27,6 +28,10 @@ public:
 	class CDragObject* GetDragObject() const
 	{
 		return m_DragObj;
+	}
+	class CShowObject* GetSceneEditObject() const
+	{
+		return m_SceneEditObj;
 	}
 	class CSpriteEditWindow* GetSpriteWindow() const
 	{
@@ -47,11 +52,11 @@ public:
 
 public:
 	void SetEditMode(EditMode Mode);
+	void SetSceneEditObject();
 public:
 	bool Init(HINSTANCE hInst);
 	void CreateDefaultSceneMode();
 	int  Run();
-
 public:
 	void MouseLButtonDown(float DeltaTime);
 	void MouseLButtonPush(float DeltaTime);

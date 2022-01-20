@@ -14,6 +14,7 @@
 #include "Component/StaticMeshComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
+#include "../Object/ShowObject.h"
 
 
 CEditorMenu::CEditorMenu()
@@ -234,5 +235,22 @@ void CEditorMenu::LoadScene()
 
 		// 가장 처음 녀석의 Component 들을 세팅해둔다.
 		Hierarchy->SelectObject(0, vecObjNames[0].c_str());
+
+		// 화면세 Scene Edit Object를 만든다
+		CEditorManager::GetInst()->SetSceneEditObject();
+
+		// 현재 선택된 Component의 위치로 세팅한다.
+		CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();
+
+		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
+		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
+
+		Vector2 StartPos = Vector2(SelectedObject->GetWorldPos().x, SelectedObject->GetWorldPos().y);
+		Vector2 EndPos = Vector2(StartPos.x + SelectedObject->GetWorldScale().x, StartPos.y + SelectedObject->GetWorldScale().y);
+
+		Resolution RS = CEngine::GetInst()->GetResolution();
+
+		ShowObject->SetStartPos(StartPos);
+		ShowObject->SetEndPos(EndPos);
 	}
 }

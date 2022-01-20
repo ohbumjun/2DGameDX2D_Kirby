@@ -79,6 +79,7 @@ public:
 	template <typename T>
 	T* CreateGameObject(const std::string& Name)
 	{
+
 		T* Obj = new T;
 
 		Obj->SetName(Name);
