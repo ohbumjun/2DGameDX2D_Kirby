@@ -152,7 +152,7 @@ void CMainWidget::Update(float DeltaTime)
 {
 	CUIWindow::Update(DeltaTime);
 
-	// Number Widet update
+	// Number Widget update
 	SYSTEMTIME time;
 
 	GetLocalTime(&time);

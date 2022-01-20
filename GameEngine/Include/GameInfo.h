@@ -56,6 +56,7 @@
 
 #pragma comment(lib, "fmod64_vc.lib")
 
+// Path 
 #define	ROOT_PATH		   "Root"
 #define	SHADER_PATH      "Shader"
 #define	TEXTURE_PATH	   "Texture"
@@ -64,10 +65,12 @@
 #define	SCENE_PATH        "Scene"
 #define	SOUND_PATH        "Sound"
 
+// Delete 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
 #define	SAFE_DELETE_ARRAY(p)	if(p)	{ delete[] p; p = nullptr; }
 #define	SAFE_RELEASE(p)	if(p)	{ p->Release(); p = nullptr; }
 
+// SingleTon
 #define	DECLARE_SINGLE(Type)	\
 private:\
 	static Type*	m_Inst;\
@@ -88,6 +91,10 @@ private:\
 
 #define	DEFINITION_SINGLE(Type)	Type* Type::m_Inst = nullptr;
 
+// Definition
+#define GRAVITY 9.8f
+
+// Struct 
 struct Resolution
 {
 	unsigned int Width;

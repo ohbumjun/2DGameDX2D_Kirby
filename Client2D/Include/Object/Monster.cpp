@@ -1,7 +1,9 @@
 #include "Monster.h"
 #include "Component/SpriteComponent.h"
-#include "Component/ColliderBox2D.h"
+#include "Component/WidgetComponent.h"
 #include "Component/ColliderCircle.h"
+#include "UI/UIProgressbar.h"
+#include "UI/UIText.h"
 #include "MonsterAnimation.h"
 #include "Engine.h"
 
@@ -34,6 +36,8 @@ bool CMonster::Init()
 		return false;
 
 	m_Sprite = CreateComponent<CSpriteComponent>("MonsterSprite");
+	SetRootComponent(m_Sprite);
+
 	// m_ColliderBody = CreateComponent<CColliderBox2D>("ColliderBody");
 	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
 	m_ColliderBody->SetCollisionProfile("Monster");
@@ -42,12 +46,13 @@ bool CMonster::Init()
 	m_ColliderBody->AddCollisionMouseCallback(Collision_State::End, this,
 		&CMonster::SetNormalMouse);
 
-	SetRootComponent(m_Sprite);
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	CUIWindow* SimpleHUDWindow = m_SimpleHUDWidget->CreateUIWindow<CUIWindow>("SimpleHUDWindow");
+	m_HpBar = SimpleHUDWindow->CreateUIWidget<CUIProgressBar>("HPBar");
+	m_HpBar->SetPos(0.f, -50.f);
 
 	m_Sprite->AddChild(m_ColliderBody);
-
 	m_Sprite->SetTransparency(true);
-
 	m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
 	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
@@ -81,3 +86,6 @@ void CMonster::SetNormalMouse(const CollisionResult& Result)
 {
 	CEngine::GetInst()->SetMouseState(Mouse_State::Normal);
 }
+
+void CMonster::CreateDamageFont(const CollisionResult& Result)
+{}

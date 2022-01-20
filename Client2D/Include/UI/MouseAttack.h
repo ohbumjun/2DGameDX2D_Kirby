@@ -16,6 +16,7 @@ private :
     CSharedPtr<CUIImage> m_Image;
 public :
     virtual bool Init() override;
+    virtual void PostUpdate(float DeltaTime) override;
     virtual CMouseAttack* Clone() override;
 };
 

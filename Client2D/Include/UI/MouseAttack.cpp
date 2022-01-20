@@ -30,7 +30,7 @@ bool CMouseAttack::Init()
 	float Width = (float)m_Image->GetTexture()->GetWidth();
 	float Height = (float)m_Image->GetTexture()->GetHeight();
 
-	m_Image->SetSize(Width, Height);
+	SetSize(Width, Height);
 
 	for (int i = 0; i < 7; i++)
 	{
@@ -38,6 +38,11 @@ bool CMouseAttack::Init()
 	}
 
 	return true;
+}
+
+void CMouseAttack::PostUpdate(float DeltaTime)
+{
+	CUIWindow::PostUpdate(DeltaTime);
 }
 
 CMouseAttack* CMouseAttack::Clone()

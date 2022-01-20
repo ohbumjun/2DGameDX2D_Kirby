@@ -14,6 +14,7 @@ protected:
 
 private:
 	CSharedPtr<class CSpriteComponent> m_Sprite;
+	CSharedPtr<class CColliderCircle> m_Body;
 	float                              m_Distance;
 
 public:
@@ -21,4 +22,6 @@ public:
 	virtual void     Update(float DeltaTime) override;
 	virtual void     PostUpdate(float DeltaTime) override;
 	virtual CBullet* Clone() override;
+public :
+
 };

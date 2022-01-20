@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "Component/SpriteComponent.h"
+#include "Component/ColliderCircle.h"
 
 CBullet::CBullet() :
 	m_Distance(600.f)
@@ -25,6 +26,9 @@ bool CBullet::Init()
 
 	m_Sprite->SetRelativeScale(50.f, 50.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
+
+	m_Body = CreateComponent<CColliderCircle>("ColliderCircle");
+	m_Sprite->AddChild(m_Body);
 
 	return true;
 }
