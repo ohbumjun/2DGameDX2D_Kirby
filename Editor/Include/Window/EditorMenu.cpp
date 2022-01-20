@@ -220,7 +220,7 @@ void CEditorMenu::LoadScene()
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
 
-		// Scene의 Object 목록을 돌면서, Object Hierarch에 Add 시키기 위해
+		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해
 		// Object 들의 이름을 가져온다
 		std::vector<std::string> vecObjNames;
 		CSceneManager::GetInst()->GetScene()->GatherObjectsNames(vecObjNames);

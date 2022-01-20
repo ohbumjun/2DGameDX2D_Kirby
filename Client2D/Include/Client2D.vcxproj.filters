@@ -81,6 +81,9 @@
     <ClCompile Include="UI\MouseNormal.cpp">
       <Filter>03. UI\01. Mouse</Filter>
     </ClCompile>
+    <ClCompile Include="UI\MouseAttack.cpp">
+      <Filter>03. UI\01. Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -123,6 +126,9 @@
       <Filter>03. UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\MouseNormal.h">
+      <Filter>03. UI\01. Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MouseAttack.h">
       <Filter>03. UI\01. Mouse</Filter>
     </ClInclude>
   </ItemGroup>
