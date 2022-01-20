@@ -84,9 +84,14 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 
 	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
 	CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();
+	
+	Vector3 ObjectPivot = Object->GetPivot();
+	Vector3 ObjectSize = Object->GetWorldScale();
+	Vector3 ObjectPos = Object->GetWorldPos();
+	Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
 
-	Vector2 StartPos = Vector2(Object->GetWorldPos().x, Object->GetWorldPos().y);
-	Vector2 EndPos = Vector2(StartPos.x + Object->GetWorldScale().x, StartPos.y + Object->GetWorldScale().y);
+	Vector2 StartPos = Vector2(Pos.x, Pos.y);
+	Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
 
 	ShowObject->SetStartPos(StartPos);
 	ShowObject->SetEndPos(EndPos);

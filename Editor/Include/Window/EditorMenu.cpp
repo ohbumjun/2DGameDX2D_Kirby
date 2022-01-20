@@ -246,10 +246,13 @@ void CEditorMenu::LoadScene()
 		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
 		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
 
-		Vector2 StartPos = Vector2(SelectedObject->GetWorldPos().x, SelectedObject->GetWorldPos().y);
-		Vector2 EndPos = Vector2(StartPos.x + SelectedObject->GetWorldScale().x, StartPos.y + SelectedObject->GetWorldScale().y);
+		Vector3 ObjectPivot = SelectedObject->GetPivot();
+		Vector3 ObjectSize = SelectedObject->GetWorldScale();
+		Vector3 ObjectPos = SelectedObject->GetWorldPos();
+		Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
 
-		Resolution RS = CEngine::GetInst()->GetResolution();
+		Vector2 StartPos = Vector2(Pos.x, Pos.y);
+		Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
 
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);

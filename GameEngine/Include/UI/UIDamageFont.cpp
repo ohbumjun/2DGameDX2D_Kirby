@@ -171,14 +171,16 @@ void CUIDamageFont::Update(float DeltaTime)
 		m_FallTime += DeltaTime * 10.f;
 
 		// 이건 공부하기
+		// 올라가는 방향은 + 
+		// 내려가는 방향은 - 
 		float Velocity = 0.f;
 		if (m_Jump)
 		{
 			Velocity = m_JumpVelocity * m_FallTime;
 		}
 
+		// 쉽게 말해 , 위로 올라가는 힘 + 아래로 중력이 작용하는 힘 2개를 복합적으로 적용한 과정이다.
 		m_Pos.y = (m_FallStartY + (Velocity - 0.5f * GRAVITY * m_FallTime * m_FallTime));
-		// m_Pos.y = (m_FallStartY + (- 0.5f * GRAVITY * m_FallTime * m_FallTime));
 	}
 
 	m_LifeTime -= DeltaTime;

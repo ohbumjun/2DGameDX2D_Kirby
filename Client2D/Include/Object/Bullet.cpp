@@ -77,7 +77,7 @@ void CBullet::BulletCollision(const CollisionResult& Result)
 		if (Owner->GetTypeID() == typeid(CMonster).hash_code())
 		{
 			CMonster* DestMonster = (CMonster*)Owner;
-			DestMonster->Damage(2.f);
+			// DestMonster->Damage(2.f);
 		}
 
 		// Create Damage Font
