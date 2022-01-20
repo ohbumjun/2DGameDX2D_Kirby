@@ -271,6 +271,7 @@
     <ClInclude Include="SharedPtr.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UI\UIButton.h" />
+    <ClInclude Include="UI\UIDamageFont.h" />
     <ClInclude Include="UI\UIImage.h" />
     <ClInclude Include="UI\UINumberWidget.h" />
     <ClInclude Include="UI\UIProgressbar.h" />
@@ -375,6 +376,7 @@
     <ClCompile Include="Scene\ViewPort.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UI\UIButton.cpp" />
+    <ClCompile Include="UI\UIDamageFont.cpp" />
     <ClCompile Include="UI\UIImage.cpp" />
     <ClCompile Include="UI\UINumberWidget.cpp" />
     <ClCompile Include="UI\UIProgressbar.cpp" />
