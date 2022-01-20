@@ -7,6 +7,7 @@
 class CScene
 {
 	friend class CSceneManager;
+	friend class CEditorMenu;
 
 private:
 	CScene();
@@ -43,8 +44,10 @@ public:
 	{
 		return m_Mode->GetPlayerObject();
 	}
-	CGameObject* FindGameObject(const char* ObjectName) const;
+private :
+	void ClearGameObjects();
 public :
+	CGameObject* FindGameObject(const char* ObjectName) const;
 	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
 public:
 	void Start();

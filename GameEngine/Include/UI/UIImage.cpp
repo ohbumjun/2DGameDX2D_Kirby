@@ -108,7 +108,7 @@ void CUIImage::AddAnimationFrameData(int Count)
 	{
 		AnimationFrameData Data = {};
 		Data.Start = Vector2(0.f, 0.f);
-		Data.Size = Vector2((float)m_Info.m_Texture->GetHeight(i), (float)m_Info.m_Texture->GetWidth(i));
+		Data.Size = Vector2((float)m_Info.m_Texture->GetHeight((int)i), (float)m_Info.m_Texture->GetWidth((int)i));
 		m_Info.m_vecFrameData.push_back(Data);
 	}
 }

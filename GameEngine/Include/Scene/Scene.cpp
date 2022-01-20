@@ -187,6 +187,11 @@ void CScene::LoadFullPath(const char* FullPath)
 	fclose(pFile);
 }
 
+void CScene::ClearGameObjects()
+{
+	m_ObjList.clear();
+}
+
 CGameObject* CScene::FindGameObject(const char* ObjectName) const
 {
 	auto iter = m_ObjList.begin();
@@ -198,6 +203,7 @@ CGameObject* CScene::FindGameObject(const char* ObjectName) const
 	}
 	return nullptr;
 }
+
 
 void CScene::GatherObjectsNames(std::vector<std::string>& vecObjNames)
 {

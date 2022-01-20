@@ -19,6 +19,11 @@ private :
     class CIMGUIButton*      m_SaveSceneButton;
     class CIMGUIButton*      m_LoadSceneButton;
 
+    class CIMGUIButton* m_ClearComponentButton;
+    class CIMGUIButton* m_DeleteComponentButton;
+    class CIMGUIButton* m_ClearObjectButton;
+    class CIMGUIButton* m_DeleteObjectButton;
+
     class CIMGUIButton*      m_PlayButton;
 
 	CreateObject_Type         m_ObjectType;
@@ -26,13 +31,19 @@ private :
 public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
-public :
+private  :
     void CreateNewObject();
     void CreateNewComponent();
     void TogglePlay();
-public :
+private:
     void SaveScene();
     void LoadScene();
+private:
+    void ClearComponent();
+    void DeleteComponent();
+    void ClearObject();
+    void DeleteObject();
+    
 
 };
 

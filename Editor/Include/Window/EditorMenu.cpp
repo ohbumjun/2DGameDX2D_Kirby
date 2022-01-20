@@ -65,8 +65,26 @@ bool CEditorMenu::Init()
 	m_SaveSceneButton->SetClickCallback(this, &CEditorMenu::SaveScene);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+
 	m_LoadSceneButton = AddWidget<CIMGUIButton>("LoadScene", 80.f, 30.f);
 	m_LoadSceneButton->SetClickCallback(this, &CEditorMenu::LoadScene);
+
+	// ========================================================================
+
+	m_ClearComponentButton = AddWidget<CIMGUIButton>("ClearComponent", 80.f, 30.f);
+	m_ClearComponentButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	m_DeleteComponentButton = AddWidget<CIMGUIButton>("DeleteComponent ", 80.f, 30.f);
+	m_DeleteComponentButton->SetClickCallback(this, &CEditorMenu::DeleteComponent);
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	m_ClearObjectButton = AddWidget<CIMGUIButton>("ClearObject", 80.f, 30.f);
+	m_ClearObjectButton->SetClickCallback(this, &CEditorMenu::ClearObject);
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	m_DeleteObjectButton = AddWidget<CIMGUIButton>("DeleteObject ", 80.f, 30.f);
+	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
 
 	// ========================================================================
 
@@ -257,4 +275,32 @@ void CEditorMenu::LoadScene()
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
 	}
+}
+
+void CEditorMenu::ClearComponent()
+{
+}
+
+void CEditorMenu::DeleteComponent()
+{}
+
+void CEditorMenu::ClearObject()
+{
+	// 메세지 박스로 물어본다
+	if (MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Delete All Objects ?"), TEXT("Question"), MB_YESNO) == IDYES)
+	{
+		// 실제 모든 GameObject 를 지운다. 
+		CSceneManager::GetInst()->GetScene()->ClearGameObjects();
+
+		// CObjectHierarchy 에서도 해당 정보들을 지운다.
+		CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+		Hierarchy->GetObjectListBox()->Clear();
+		Hierarchy->GetComponentListBox()->Clear();
+	}
+}
+
+void CEditorMenu::DeleteObject()
+{
+	// 선택된 Object가 존재해야 한다.
 }
