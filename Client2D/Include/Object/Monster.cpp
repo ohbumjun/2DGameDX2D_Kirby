@@ -7,6 +7,7 @@
 #include "../UI/SimpleHUD.h"
 
 CMonster::CMonster() :
+	m_HPMax(10.f),
 	m_HP(10.f)
 {
 	SetTypeID<CMonster>();

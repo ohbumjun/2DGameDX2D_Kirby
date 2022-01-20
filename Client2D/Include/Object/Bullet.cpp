@@ -4,6 +4,7 @@
 #include "Component/WidgetComponent.h"
 #include "UI/UINumberWidget.h"
 #include "UI/UIDamageFont.h"
+#include "Monster.h"
 
 CBullet::CBullet() :
 	m_Distance(600.f)
@@ -72,6 +73,14 @@ void CBullet::BulletCollision(const CollisionResult& Result)
 	CWidgetComponent* ObjectWindow = nullptr;
 	if (Owner)
 	{
+		// HP Bar 달게 하기
+		if (Owner->GetTypeID() == typeid(CMonster).hash_code())
+		{
+			CMonster* DestMonster = (CMonster*)Owner;
+			DestMonster->Damage(2.f);
+		}
+
+		// Create Damage Font
 		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
 		if (ObjectWindow)
 		{
