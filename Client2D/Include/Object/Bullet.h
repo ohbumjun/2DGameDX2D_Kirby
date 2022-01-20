@@ -23,5 +23,5 @@ public:
 	virtual void     PostUpdate(float DeltaTime) override;
 	virtual CBullet* Clone() override;
 public :
-
+	void BulletCollision(const CollisionResult& Result);
 };

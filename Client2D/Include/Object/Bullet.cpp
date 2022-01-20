@@ -29,6 +29,7 @@ bool CBullet::Init()
 
 	m_Body = CreateComponent<CColliderCircle>("ColliderCircle");
 	m_Sprite->AddChild(m_Body);
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CBullet::BulletCollision);
 
 	return true;
 }
@@ -57,4 +58,9 @@ void CBullet::PostUpdate(float DeltaTime)
 CBullet* CBullet::Clone()
 {
 	return new CBullet(*this);
+}
+
+void CBullet::BulletCollision(const CollisionResult& Result)
+{
+	Destroy();
 }
