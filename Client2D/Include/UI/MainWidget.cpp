@@ -81,12 +81,85 @@ bool CMainWidget::Init()
 	m_TestSlider->SetPos(400.f, 200.f);
 	m_TestSlider->SetSize(40.f, 100.f);
 
+	// Number Widget
+
+	std::vector<TCHAR*> vecFileName;
+
+	// Hour 
+	for (int i = 0; i < 10; i++)
+	{
+		TCHAR* FileName = new TCHAR[MAX_PATH];
+		memset(FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		wsprintf(FileName, TEXT("Number/1.NoRed0.%d.png"), i);
+		vecFileName.push_back(FileName);
+	}
+
+	m_Hour = CreateUIWidget<CUINumberWidget>("Hour");
+	m_Hour->SetTexture("Number", vecFileName);
+	m_Hour->AddAnimationFrameData(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		SAFE_DELETE_ARRAY(vecFileName[i]);
+	}
+
+	vecFileName.clear();
+
+	// Minute 
+	for (int i = 0; i < 10; i++)
+	{
+		TCHAR* FileName = new TCHAR[MAX_PATH];
+		memset(FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		wsprintf(FileName, TEXT("Number/1.NoRed0.%d.png"), i);
+		vecFileName.push_back(FileName);
+	}
+
+	m_Minute= CreateUIWidget<CUINumberWidget>("Minute");
+	m_Minute->SetTexture("Number", vecFileName);
+	m_Minute->SetPos(100.f, 0.f);
+	m_Minute->AddAnimationFrameData(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		SAFE_DELETE_ARRAY(vecFileName[i]);
+	}
+
+	vecFileName.clear();
+
+	// Second 
+	for (int i = 0; i < 10; i++)
+	{
+		TCHAR* FileName = new TCHAR[MAX_PATH];
+		memset(FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		wsprintf(FileName, TEXT("Number/1.NoRed0.%d.png"), i);
+		vecFileName.push_back(FileName);
+	}
+
+	m_Second = CreateUIWidget<CUINumberWidget>("Second");
+	m_Second->SetTexture("Number", vecFileName);
+	m_Second->SetPos(200.f, 0.f);
+	m_Second->AddAnimationFrameData(10);
+
+	for (int i = 0; i < 10; i++)
+	{
+		SAFE_DELETE_ARRAY(vecFileName[i]);
+	}
+
 	return true;
 }
 
 void CMainWidget::Update(float DeltaTime)
 {
 	CUIWindow::Update(DeltaTime);
+
+	// Number Widet update
+	SYSTEMTIME time;
+
+	GetLocalTime(&time);
+
+	m_Hour->SetNumber((int)time.wHour);
+	m_Minute->SetNumber((int)time.wMinute);
+	m_Second->SetNumber((int)time.wSecond);
 }
 
 void CMainWidget::PostUpdate(float DeltaTime)

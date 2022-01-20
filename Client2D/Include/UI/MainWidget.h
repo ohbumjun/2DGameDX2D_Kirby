@@ -4,6 +4,7 @@
 #include "UI/UIButton.h"
 #include "UI/UIImage.h"
 #include "UI/UISlideBar.h"
+#include "UI/UINumberWidget.h"
 
 class CMainWidget :
     public CUIWindow
@@ -18,6 +19,10 @@ private :
     CSharedPtr<CUIText> m_Text;
     CSharedPtr<CUIImage> m_TestImage;
     CSharedPtr<CUISlideBar> m_TestSlider;
+
+    CSharedPtr<CUINumberWidget> m_Hour;
+    CSharedPtr<CUINumberWidget> m_Minute;
+    CSharedPtr<CUINumberWidget> m_Second;
 public :
     virtual void Start() override;
     virtual bool Init() override;
