@@ -72,8 +72,10 @@ void CSceneComponent::GetAllSceneComponentsName(std::vector<FindComponentName>& 
 {
 	FindComponentName Name;
 	Name.Name = m_Name;
+	/*
 	if (m_Parent)
 		Name.ParentName = m_Parent->GetName();
+	*/
 	vecNames.push_back(Name);
 
 	for (size_t i = 0; i < m_vecChild.size(); i++)

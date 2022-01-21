@@ -110,7 +110,46 @@ void CGameObject::ClearSceneComponents()
 	{
 		SAFE_RELEASE((* iter));
 	}
+	m_SceneComponentList.clear(); // ?
+}
 
+void CGameObject::DeleteComponent(const std::string& Name)
+{
+	if (!m_RootComponent)
+		return;
+
+	// 만약 Root Component 라면 X
+	if (m_RootComponent->GetName() == Name)
+		return;
+
+	// Root Component를 통해 해당 Component 를 지워준다.
+	bool Delete = m_RootComponent->DeleteChild(Name);
+	if (Delete)
+		return;
+
+	// Root Component 에도 속하지 않을 경우를 대비해서, SceneComponent 전체를 돌면서 Erase를 실행한다
+	auto iter      = m_SceneComponentList.begin();
+	auto iterEnd = m_SceneComponentList.end();
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->DeleteChild(Name))
+		{
+			Delete = true;
+			break;
+		}
+	}
+
+	// 전체 SceneComponent 목록에서 해당 Component 정보를 지워준다
+	iter = m_SceneComponentList.begin();
+	iterEnd = m_SceneComponentList.end();
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->GetName() == Name)
+		{
+			iter = m_SceneComponentList.erase(iter);
+			break;
+		}
+	}
 }
 
 void CGameObject::Start()
@@ -272,7 +311,17 @@ void CGameObject::Load(FILE* pFile)
 
 void CGameObject::GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames)
 {
+	/*
 	if (!m_RootComponent)
 		return;
 	m_RootComponent->GetAllSceneComponentsName(vecNames);
+	*/
+	auto iter = m_SceneComponentList.begin();
+	auto iterEnd = m_SceneComponentList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		(*iter)->GetAllSceneComponentsName(vecNames);
+	}
+
 }

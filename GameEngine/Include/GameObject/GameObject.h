@@ -49,6 +49,7 @@ public:
 protected :
 	virtual void Destroy() override;
 	void ClearSceneComponents();
+	void DeleteComponent(const std::string& Name);
 public:
 	virtual void         Start();
 	virtual bool         Init();
@@ -78,7 +79,7 @@ public:
 		else
 			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
 
-		if (m_RootComponent)
+		if (!m_RootComponent)
 			m_RootComponent = Component;
 
 		return Component;

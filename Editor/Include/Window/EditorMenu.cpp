@@ -174,6 +174,8 @@ void CEditorMenu::CreateNewComponent()
 		break;
 	}
 
+	// Root Component에 Add 시킨다 ?
+
 	// Add Item To Component List Box
 	Hierarchy->GetComponentListBox()->AddItem(m_ComponentNameInput->GetTextMultibyte());
 }
@@ -310,7 +312,31 @@ void CEditorMenu::ClearComponent()
 }
 
 void CEditorMenu::DeleteComponent()
-{}
+{
+	// Object가 선택된 상황이어야 한다.
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	// Component도 세팅된 상태여야 한다.
+	if (Hierarchy->GetComponentListBox()->GetSelectIndex() < 0)
+		return;
+
+	// 메세지 박스로 물어본다
+	if (MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Delete Component?"), TEXT("Question"), MB_YESNO) == IDYES)
+	{
+		// Root Component 일 경우 어떻게 처리할 수 있을까 ?
+		// 우선 Root Component 면 지울 수 없게 세팅해준다.
+
+		// 실제 Object 내의 Scene Component 목록들을 비워준다.
+		CGameObject* SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetObjectListBox()->GetSelectItem().c_str());
+		SelectObject->DeleteComponent(Hierarchy->GetComponentListBox()->GetSelectItem());
+
+		// Hierarchy 에서도 비워준다.
+		CEditorManager::GetInst()->GetObjectHierarchy()->GetComponentListBox()->Clear();
+	}
+}
 
 void CEditorMenu::ClearObject()
 {
