@@ -32,7 +32,7 @@ bool CThread::Init()
 		nullptr, 
 		0, 
 		CThread::ThreadFunction,
-		this,  // 생성된 쓰레드 객체 
+		this,  // 해당 함수에 전달할 인자 
 		0, // 생성과 동시에 일시정지 or 바로 시작 --> 0으로 지정하면 바로 시작 
 		nullptr);
 

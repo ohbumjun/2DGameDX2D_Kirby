@@ -167,11 +167,15 @@
     <ClCompile Include="Object\PixelTest.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
+    <ClCompile Include="Scene\LoadingScene.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
+    <ClCompile Include="Scene\StartScene.cpp" />
+    <ClCompile Include="UI\LoadingWidget.cpp" />
     <ClCompile Include="UI\MainWidget.cpp" />
     <ClCompile Include="UI\MouseAttack.cpp" />
     <ClCompile Include="UI\MouseNormal.cpp" />
     <ClCompile Include="UI\SimpleHUD.cpp" />
+    <ClCompile Include="UI\StartWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientManager.h" />
@@ -184,11 +188,15 @@
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PlayerAnimation2D.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Scene\LoadingScene.h" />
     <ClInclude Include="Scene\MainScene.h" />
+    <ClInclude Include="Scene\StartScene.h" />
+    <ClInclude Include="UI\LoadingWidget.h" />
     <ClInclude Include="UI\MainWidget.h" />
     <ClInclude Include="UI\MouseAttack.h" />
     <ClInclude Include="UI\MouseNormal.h" />
     <ClInclude Include="UI\SimpleHUD.h" />
+    <ClInclude Include="UI\StartWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client2D.rc" />

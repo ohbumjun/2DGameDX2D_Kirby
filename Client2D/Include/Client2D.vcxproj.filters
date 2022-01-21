@@ -84,6 +84,18 @@
     <ClCompile Include="UI\MouseAttack.cpp">
       <Filter>03. UI\01. Mouse</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\StartScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\LoadingScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\LoadingWidget.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\StartWidget.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -130,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="UI\MouseAttack.h">
       <Filter>03. UI\01. Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\StartScene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\LoadingScene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\LoadingWidget.h">
+      <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\StartWidget.h">
+      <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

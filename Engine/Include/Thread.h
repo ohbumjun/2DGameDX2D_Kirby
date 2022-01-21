@@ -3,7 +3,9 @@
 #include "GameInfo.h"
 
 // 유저 모드 : 크리티컬 섹션 + 커널 모드 : 이벤트 동기화 기법
-// <process.h>가 필요하다. 
+// <process.h>가 필요하다.
+
+// Thread Class는 이벤트 기반 동기화 기법만을 적용하는 형태 
 
 class CThread
 {
@@ -16,11 +18,16 @@ private :
 	HANDLE m_StartEvent; // 이벤트 동기화 기법 과정에서 사용될 Event의 핸들값 
 public :
 	bool Init();
-	virtual void Run();
+	virtual void Run() = 0;
 public :
 	// Thread의 상태를 직접 관리해주기 위한 함수 ( 사실 거의 안쓰긴 한다 )
 	void Start();
 	void Pause();
 	void Resume();
+private :
+	void WaitStartEvent();
+	// Thread가 실행할 함수
+	static unsigned int __stdcall ThreadFunction(void* Arg);
+
 };
 
