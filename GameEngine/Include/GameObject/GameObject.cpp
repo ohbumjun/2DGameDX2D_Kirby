@@ -87,15 +87,29 @@ void CGameObject::Destroy()
 
 void CGameObject::ClearSceneComponents()
 {
-	m_RootComponent = nullptr;
-
-	auto iter      = m_SceneComponentList.begin();
+	// SceneComponent 에서 Root Component 정보를 Release 해주고
+	// Root Component를 null로 세팅
+	auto iter = m_SceneComponentList.begin();
 	auto iterEnd = m_SceneComponentList.end();
+
+	for (; iter != iterEnd ;++iter)
+	{
+		if ((*iter)->GetName() == m_RootComponent->GetName())
+		{
+			m_SceneComponentList.erase(iter);
+			m_RootComponent = nullptr;
+			break;
+		}
+	}
+
+	// 그 다음 SceneComponent 목록들을 돌면서 Release 시켜준다.
+	iter = m_SceneComponentList.begin();
+	iterEnd = m_SceneComponentList.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
-		SAFE_DELETE((*iter));
-	} 
+		SAFE_RELEASE((* iter));
+	}
 
 }
 

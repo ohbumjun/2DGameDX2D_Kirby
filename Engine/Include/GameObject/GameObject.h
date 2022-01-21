@@ -23,18 +23,14 @@ public:
 	{
 		return m_Scene;
 	}
-
 public:
 	void SetScene(class CScene* Scene);
-
 protected:
 	CSharedPtr<CSceneComponent>               m_RootComponent;
 	std::list<CSceneComponent*>               m_SceneComponentList;
 	std::vector<CSharedPtr<CObjectComponent>> m_vecObjectComponent;
-
 	CGameObject*                         m_Parent;
 	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
-
 public:
 	void SetRootComponent(CSceneComponent* Component)
 	{

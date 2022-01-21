@@ -249,6 +249,10 @@ void CEditorMenu::LoadScene()
 		size_t NameCount = vecObjNames.size();
 		for (size_t i = 0; i < NameCount; i++)
 		{
+			// Scene Edit Object의 경우는 더해주지 않는다
+			if (vecObjNames[i] == "SceneEditObject")
+				continue;
+
 			ObjectListBox->AddItem(vecObjNames[i]);
 		}
 

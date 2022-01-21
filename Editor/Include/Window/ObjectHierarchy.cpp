@@ -82,6 +82,8 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
 	DetailWindow->SetPosRotScaleInfo(Object);
 
+	CEditorManager::GetInst()->SetSceneEditObject();
+
 	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
 	CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();
 	
