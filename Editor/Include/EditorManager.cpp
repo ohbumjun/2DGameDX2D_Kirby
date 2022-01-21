@@ -45,7 +45,7 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		if (m_DragObj)
 			m_DragObj->Destroy();
 		m_DragObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CDragObject>("DragObject");
-		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);
+		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);//
 	}
 }
 
