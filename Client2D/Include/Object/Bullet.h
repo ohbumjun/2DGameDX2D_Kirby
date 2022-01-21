@@ -24,4 +24,5 @@ public:
 	virtual CBullet* Clone() override;
 public :
 	void BulletCollision(const CollisionResult& Result);
+	void SetCollisionProfile(const std::string& Name);
 };

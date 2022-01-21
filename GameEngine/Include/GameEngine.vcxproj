@@ -270,6 +270,7 @@
     <ClInclude Include="Scene\SceneResource.h" />
     <ClInclude Include="Scene\ViewPort.h" />
     <ClInclude Include="SharedPtr.h" />
+    <ClInclude Include="Thread.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UI\UIButton.h" />
     <ClInclude Include="UI\UIDamageFont.h" />
@@ -376,6 +377,7 @@
     <ClCompile Include="Scene\SceneMode.cpp" />
     <ClCompile Include="Scene\SceneResource.cpp" />
     <ClCompile Include="Scene\ViewPort.cpp" />
+    <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UI\UIButton.cpp" />
     <ClCompile Include="UI\UIDamageFont.cpp" />

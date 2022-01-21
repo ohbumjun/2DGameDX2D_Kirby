@@ -181,6 +181,9 @@
     <Filter Include="04. GameObject\01. DynamicEffect">
       <UniqueIdentifier>{b454f5c5-646e-42bc-9178-e318a2cb2a2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Engine\09. Thread">
+      <UniqueIdentifier>{d5deab46-e5aa-4dbe-afaa-421ed72eb3a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="GameObject\DamageFont.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>01. Engine\09. Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -850,6 +856,9 @@
     </ClCompile>
     <ClCompile Include="GameObject\DamageFont.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>01. Engine\09. Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

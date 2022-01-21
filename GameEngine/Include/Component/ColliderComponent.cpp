@@ -196,7 +196,7 @@ void CColliderComponent::ClearFrame()
 {
 	// 한 프레임이 종료되면, Clear Frame을 호출해서
 	// 새롭게 충돌을 세팅할 수 있게 해준다
-	m_vecSectionIndex.empty(); // 현재 충돌 영역 clear
+	m_vecSectionIndex.clear(); // 현재 충돌 영역 clear
 	m_CurrentCollisionList.clear(); // 현재 충돌한 목록 clear
 	m_CurrentSectionCheck = false; // 현재 충돌 목록에서의 충돌 여부도 false
 }

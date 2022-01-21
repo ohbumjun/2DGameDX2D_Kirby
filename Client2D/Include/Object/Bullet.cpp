@@ -88,3 +88,8 @@ void CBullet::BulletCollision(const CollisionResult& Result)
 		}
 	}
 }
+
+void CBullet::SetCollisionProfile(const std::string& Name)
+{
+	m_Body->SetCollisionProfile(Name);
+}
