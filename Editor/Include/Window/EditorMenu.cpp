@@ -241,6 +241,9 @@ void CEditorMenu::LoadScene()
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
 
+		// 기존 정보를 모두 지워준다.
+
+
 		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해
 		// Object 들의 이름을 가져온다
 		std::vector<std::string> vecObjNames;
@@ -252,8 +255,8 @@ void CEditorMenu::LoadScene()
 		for (size_t i = 0; i < NameCount; i++)
 		{
 			// Scene Edit Object의 경우는 더해주지 않는다
-			if (vecObjNames[i] == "SceneEditObject")
-				continue;
+			// if (vecObjNames[i] == "SceneEditObject")
+			// 	continue;
 
 			ObjectListBox->AddItem(vecObjNames[i]);
 		}

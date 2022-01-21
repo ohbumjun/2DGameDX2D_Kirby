@@ -46,6 +46,7 @@ public:
 	}
 private :
 	void ClearGameObjects();
+	void DeleteGameObject(const std::string& Name);
 public :
 	CGameObject* FindGameObject(const char* ObjectName) const;
 	void GatherObjectsNames(std::vector<std::string>& vecObjNames);

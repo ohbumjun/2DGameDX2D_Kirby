@@ -144,7 +144,12 @@ void CScene::SaveFullPath(const char* FullPath)
 	size_t TypeID = m_Mode->GetTypeID();
 	fwrite(&TypeID, sizeof(size_t), 1, pFile);
 
-	size_t ObjectCount = m_ObjList.size();
+	// SceneEdit Object가 있을 경우, 저장을 하면 안된다.
+	// DeleteGameObject("SceneEditObject");
+
+	size_t SceneEditObjectCount = 1;
+
+	size_t ObjectCount = m_ObjList.size() - SceneEditObjectCount;
 	fwrite(&ObjectCount, sizeof(size_t), 1, pFile);
 
 	auto iter = m_ObjList.begin();
@@ -152,6 +157,8 @@ void CScene::SaveFullPath(const char* FullPath)
 
 	for (;iter != iterEnd; ++iter)
 	{
+		if ((*iter)->GetName() == "SceneEditObject")
+			continue;
 		size_t TypeID = (*iter)->GetTypeID();
 		fwrite(&TypeID, sizeof(size_t), 1, pFile);
 		(*iter)->Save(pFile);
@@ -190,6 +197,22 @@ void CScene::LoadFullPath(const char* FullPath)
 void CScene::ClearGameObjects()
 {
 	m_ObjList.clear();
+}
+
+void CScene::DeleteGameObject(const std::string& Name)
+{
+	auto iter      = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->GetName() == Name)
+		{
+			m_ObjList.erase(iter);
+			break;
+		}
+	}
+
 }
 
 CGameObject* CScene::FindGameObject(const char* ObjectName) const

@@ -336,7 +336,11 @@ void CSceneComponent::Load(FILE* pFile)
 		fread(&TypeID, sizeof(size_t), 1, pFile);
 		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(m_Object, TypeID);
 		Component->Load(pFile);
-		m_vecChild.push_back(dynamic_cast<CSceneComponent*>(Component));
+
+		CSceneComponent* ChildSceneComponent = dynamic_cast<CSceneComponent*>(Component);
+		ChildSceneComponent->m_Parent = this;
+
+		m_vecChild.push_back(ChildSceneComponent);
 	}
 
 	fread(&m_Render, sizeof(bool), 1, pFile);
