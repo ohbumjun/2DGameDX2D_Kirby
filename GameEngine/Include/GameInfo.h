@@ -286,12 +286,13 @@ struct WidgetCBuffer {
 	Vector2 Animation2DStartUV;
 	Vector2 Animation2DEndUV;
 	int WidgetAnimEnable;
-	int Empty;
+	float Opacity;
 	WidgetCBuffer() :
 		Animation2DStartUV(0.f, 0.f),
 		Animation2DEndUV(1.f, 1.f),
 		UseTexture(0),
-		WidgetAnimEnable(0)
+		WidgetAnimEnable(0),
+		Opacity(1.f)
 	{
 	}
 };

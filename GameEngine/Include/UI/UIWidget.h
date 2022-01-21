@@ -41,6 +41,7 @@ protected:
     int m_ZOrder;
     float m_Angle;
     Vector4 m_Tint;
+    float m_Opacity;
     class CWidgetConstantBuffer* m_CBuffer;
     CSharedPtr<class CShader> m_Shader;
     CSharedPtr<class CMesh> m_Mesh;
@@ -77,6 +78,10 @@ public :
 }
 
 public :
+    void SetOpacity(float Opacity)
+{
+        m_Opacity = Opacity;
+}
     virtual void SetSize(const Vector2& Size)
 	{
 		m_Size = Size;

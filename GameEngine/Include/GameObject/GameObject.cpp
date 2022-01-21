@@ -85,6 +85,20 @@ void CGameObject::Destroy()
 
 }
 
+void CGameObject::ClearSceneComponents()
+{
+	m_RootComponent = nullptr;
+
+	auto iter      = m_SceneComponentList.begin();
+	auto iterEnd = m_SceneComponentList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		SAFE_DELETE((*iter));
+	} 
+
+}
+
 void CGameObject::Start()
 {
 	if (m_RootComponent)

@@ -15,6 +15,10 @@ public :
     virtual void UpdateCBuffer() override;
     virtual CWidgetConstantBuffer* Clone();
 public :
+    void SetOpacity(float Opacity)
+{
+        m_BufferData.Opacity = Opacity;
+}
     void SetTint(const Vector4& Color)
 {
         m_BufferData.Tint = Color;

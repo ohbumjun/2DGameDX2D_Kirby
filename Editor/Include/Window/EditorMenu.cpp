@@ -14,6 +14,7 @@
 #include "Component/StaticMeshComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
+
 #include "../Object/ShowObject.h"
 
 
@@ -279,6 +280,29 @@ void CEditorMenu::LoadScene()
 
 void CEditorMenu::ClearComponent()
 {
+	// Object가 선택된 상황이어야 한다.
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	// 만약 Player를 선택했다면 메세지 띄우고 막기 
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetObjectListBox()->GetSelectItem().c_str());
+	if (Object->GetTypeID() == typeid(CPlayer2D).hash_code())
+	{
+		MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Cannot Clear Player Components"), TEXT("Message"), MB_OK);
+		return;
+	}
+
+	// 메세지 박스로 물어본다
+	if (MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Clear Components ?"), TEXT("Question"), MB_YESNO) == IDYES)
+	{
+		// 실제 Object 내의 Scene Component 목록들을 비워준다.
+		Object->ClearSceneComponents();
+
+		// Hierarchy 에서도 비워준다.
+		CEditorManager::GetInst()->GetObjectHierarchy()->GetComponentListBox()->Clear();
+	}
 }
 
 void CEditorMenu::DeleteComponent()

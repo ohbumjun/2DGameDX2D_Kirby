@@ -7,6 +7,8 @@ class CGameObject :
 	public CRef
 {
 	friend class CScene;
+	friend class CEditorMenu;
+	friend class CEditorManager;
 
 protected:
 	CGameObject();
@@ -47,8 +49,10 @@ public:
 		m_SceneComponentList.push_back(Component);
 	}
 	class CComponent* FindComponent(const std::string& Name);
-public :
+
+protected :
 	virtual void Destroy() override;
+	void ClearSceneComponents();
 public:
 	virtual void         Start();
 	virtual bool         Init();

@@ -129,7 +129,8 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 	Info->PathName = new char[MAX_PATH];
 	memset(Info->PathName, 0, sizeof(char) * MAX_PATH);
 
-	//strcpy_s(Info->PathName, PathName.length() + 1, PathName.c_str());
+	// 굳이 필요 없을 수도 있기 때문이다. 
+	// strcpy_s(Info->PathName, PathName.length() + 1, PathName.c_str());
 
 	char Ext[_MAX_EXT] = {};
 
