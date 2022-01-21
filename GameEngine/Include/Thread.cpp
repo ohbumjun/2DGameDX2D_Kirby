@@ -50,7 +50,7 @@ void CThread::Pause()
 	// SuspendThread, ResumeThread는 DWORD 타입(unsigned long) 을 return 한다.
 	// 내부적으로 Suspend Count라는 값을 지니고 있다
 	// Suspend Thread 호출 수만큼, Resume Thread도 호출해야만 한다
-	// 두 함수 호출 횟수가 맞지 않으면, 에러가 발생할 수 있다.
+	// 두 함수 호출 횟수가 맞지 않으면, 데드락이 발생할 수 있다.
 	// 따라서 아래와 같이 do while 세팅을 통해 무조건 Suspend Count가 정상적으로 세팅되게 하는 것이다
 
 	// 내부적으로 저장된 Suspend Count값을 조절하기 위해 해당 변수 세팅
@@ -71,7 +71,7 @@ void CThread::Resume()
 
 	do
 	{
-		Count = ResumeThread(m_Thread);
+		Count = ResumeThread(m_Thread); // Count 값 감소 
 	} while (Count >= 0);
 
 }

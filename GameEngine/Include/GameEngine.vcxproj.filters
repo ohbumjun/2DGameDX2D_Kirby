@@ -543,6 +543,9 @@
     <ClInclude Include="Thread.h">
       <Filter>01. Engine\09. Thread</Filter>
     </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -859,6 +862,9 @@
     </ClCompile>
     <ClCompile Include="Thread.cpp">
       <Filter>01. Engine\09. Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
