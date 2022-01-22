@@ -61,6 +61,7 @@ public:
 	          unsigned int Height, bool WindowMode = true);
 	int  Run();
 	void Logic();
+	void Exit();
 
 private:
 	bool Update(float DeltaTime);

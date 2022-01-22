@@ -182,6 +182,11 @@ void CEngine::Logic()
 	Render(DeltaTime);
 }
 
+void CEngine::Exit()
+{
+	DestroyWindow(m_hWnd);
+}
+
 bool CEngine::Update(float DeltaTime)
 {
 	if (CSceneManager::GetInst()->Update(DeltaTime))

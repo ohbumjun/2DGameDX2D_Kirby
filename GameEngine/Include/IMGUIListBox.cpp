@@ -42,7 +42,10 @@ void CIMGUIListBox::Render()
 			}
 
 			if (m_Select)
+			{
+				// https://stackoverflow.com/questions/61853584/how-can-i-change-text-color-of-my-inputtext-in-imgui-unanswered
 				ImGui::SetItemDefaultFocus();
+			}
 		}
 
 		ImGui::EndListBox();
