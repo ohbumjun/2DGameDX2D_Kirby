@@ -4,7 +4,8 @@
 #include "CameraManager.h"
 #include "ViewPort.h"
 
-CScene::CScene()
+CScene::CScene()  :
+	m_Change(false)
 {
 	m_Mode     = new CSceneMode;
 	m_Resource = new CSceneResource;
@@ -237,4 +238,9 @@ void CScene::GatherObjectsNames(std::vector<std::string>& vecObjNames)
 	{
 		vecObjNames.push_back((*iter)->GetName());
 	}
+}
+
+void CScene::SetAutoChange(bool Change)
+{
+	m_Change = Change;
 }

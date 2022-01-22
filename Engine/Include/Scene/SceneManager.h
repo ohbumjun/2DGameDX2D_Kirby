@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "../Render/RenderManager.h"
 
 class CSceneManager
 {
@@ -36,7 +37,6 @@ public :
 			m_CreateAnimInstanceCallback(Component, AnimInstanceTypeID);
 	}
 
-
 public:
 	CScene* GetScene() const
 	{
@@ -69,6 +69,33 @@ public:
 	bool Init();
 	bool Update(float DeltaTime);
 	bool PostUpdate(float DeltaTime);
+
+public :
+	void CreateNewScene(bool AutoChange = true);
+
+private :
+	bool ChangeScene()
+{
+		if (m_NextScene)
+		{
+			if (m_NextScene->m_Change)
+			{
+				// Scene 정보 변화
+				SAFE_DELETE(m_Scene);
+				m_Scene = m_NextScene;
+				m_NextScene = nullptr;
+
+				// Object 목록 세팅 
+				CRenderManager::GetInst()->SetObjectList(&m_Scene->m_ObjList);
+
+				// Start 함수 호출
+				m_Scene->Start();
+
+				return true;
+			}
+		}
+		return false;
+}
 
 public:
 	template <typename T>

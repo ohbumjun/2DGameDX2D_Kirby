@@ -21,6 +21,7 @@ private:
 	class CSceneCollision* m_Collision;
 	class CViewPort* m_ViewPort;
 	bool                               m_Start;
+	bool m_Change;
 
 public:
 	class CViewPort* GetViewPort() const
@@ -50,6 +51,7 @@ private :
 public :
 	CGameObject* FindGameObject(const char* ObjectName) const;
 	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
+	void SetAutoChange(bool Change);
 public:
 	void Start();
 	void Update(float DeltaTime);

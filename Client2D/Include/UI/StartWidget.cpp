@@ -1,6 +1,8 @@
 #include "StartWidget.h"
 #include "Device.h"
 #include "Engine.h"
+#include "Scene/SceneManager.h"
+#include "../Scene/LoadingScene.h"
 
 CStartWidget::CStartWidget() :
 	m_StartButton(nullptr),
@@ -36,6 +38,7 @@ bool CStartWidget::Init()
 
 	Vector2 StartButtonSize = m_StartButton->GetWindowSize();
 	m_StartButton->SetPos(RS.Width / 2.f - StartButtonSize.x / 2.f, RS.Height / 2.f + StartButtonSize.y);
+	m_StartButton->SetClickCallback(this, &CStartWidget::StartButtonClick);
 
 	m_ExitButton = CreateUIWidget<CUIButton>("ExitButton");
 	m_ExitButton->SetTexture(Button_State::Normal, "ExitButton", TEXT("End.png"));
@@ -70,7 +73,11 @@ CStartWidget* CStartWidget::Clone()
 }
 
 void CStartWidget::StartButtonClick()
-{}
+{
+	CSceneManager::GetInst()->CreateNewScene();
+	CSceneManager::GetInst()->CreateSceneMode<CLoadingScene>(false);
+
+}
 
 void CStartWidget::ExitButtonClick()
 {

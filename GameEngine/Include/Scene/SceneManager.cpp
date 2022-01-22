@@ -33,12 +33,19 @@ bool CSceneManager::Update(float DeltaTime)
 {
 	m_Scene->Update(DeltaTime);
 
-	return false;
+	return ChangeScene();
 }
 
 bool CSceneManager::PostUpdate(float DeltaTime)
 {
 	m_Scene->PostUpdate(DeltaTime);
 
-	return false;
+	return ChangeScene();
+}
+
+void CSceneManager::CreateNewScene(bool AutoChange)
+{
+	m_NextScene = new CScene;
+
+	m_NextScene->SetAutoChange(AutoChange);
 }
