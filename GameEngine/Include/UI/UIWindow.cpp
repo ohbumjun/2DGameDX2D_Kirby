@@ -153,6 +153,10 @@ void CUIWindow::Render()
 	// ZOrdre가 높은 녀석이 위로 오게 해야 한다
 	// 따라서, 뒤에서부터 그린다
 	// 그래야 ZOrder 높은 애가 가장 마지막, 가장 화면 위에 그려지므로
+
+	if (m_WidgetList.size() >= 2)
+		m_WidgetList.sort(CUIWindow::SortWidget);
+
 	auto iter = m_WidgetList.rbegin();
 	auto iterEnd = m_WidgetList.rend();
 
