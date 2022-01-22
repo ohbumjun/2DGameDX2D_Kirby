@@ -546,6 +546,9 @@
     <ClInclude Include="GameObject\DamageFont.h">
       <Filter>09. UI\02. Widget</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadQueue.h">
+      <Filter>01. Engine\09. Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -862,6 +865,9 @@
     </ClCompile>
     <ClCompile Include="GameObject\DamageFont.cpp">
       <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadQueue.cpp">
+      <Filter>01. Engine\09. Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

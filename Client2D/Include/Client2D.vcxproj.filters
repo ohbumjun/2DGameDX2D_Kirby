@@ -96,6 +96,9 @@
     <ClCompile Include="UI\StartWidget.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\LoadingThread.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="UI\StartWidget.h">
       <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\LoadingThread.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
