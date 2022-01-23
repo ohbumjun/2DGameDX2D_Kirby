@@ -60,6 +60,16 @@ public :
 	void SaveFullPath(const char* FullPath);
 	void LoadFullPath(const char* FullPath);
 public:
+	template<typename T>
+	T* CreateSceneModeEmpty()
+	{
+		m_Mode = new T;
+
+		m_Mode->m_Scene = this;
+
+		return (T*)*m_Mode;
+	}
+
 	template <typename T>
 	bool CreateSceneMode()
 	{

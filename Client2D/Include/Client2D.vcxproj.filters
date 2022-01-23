@@ -97,7 +97,7 @@
       <Filter>03. UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\LoadingThread.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>01. SceneMode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,8 +158,11 @@
     <ClInclude Include="UI\StartWidget.h">
       <Filter>03. UI</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\LoadingThread.h">
+    <ClInclude Include="Client.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\LoadingThread.h">
+      <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

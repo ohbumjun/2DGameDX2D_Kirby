@@ -17,5 +17,10 @@ private :
     CSharedPtr<CUIImage> m_Back;
 public :
     virtual bool Init() override;
+public :
+    void SetLoadingPercent(float Percent)
+{
+        m_ProgressBar->SetPercent(Percent);
+}
 };
 

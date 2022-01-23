@@ -96,6 +96,14 @@ private :
 		}
 		return false;
 }
+public :
+	template<typename T>
+	bool CreateSceneModeEmpty(bool Current = true)
+{
+		if (Current)
+			return m_Scene->CreateSceneModeEmpty();
+		return m_NextScene->CreateSceneModeEmpty();
+}
 
 public:
 	template <typename T>

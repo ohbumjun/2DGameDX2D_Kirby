@@ -22,15 +22,30 @@ bool CMainScene::Init()
 
 	CreateAnimationSequence();
 
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.3f);
+
+	Sleep(1000);
+		
 	CreateSound();
 
 	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
 	SetPlayerObject(Player);
 
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.5f);
+
+	Sleep(1000);
+
 	CMonster* Monter = m_Scene->CreateGameObject<CMonster>("Monster");
 
 	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");
+
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.8f);
+
+	Sleep(1000);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 

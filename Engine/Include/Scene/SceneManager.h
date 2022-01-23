@@ -96,8 +96,15 @@ private :
 		}
 		return false;
 }
+public :
+	template<typename T>
+	T* CreateSceneModeEmpty(bool Current = true)
+{
+		if (Current)
+			return m_Scene->CreateSceneModeEmpty<T>();
+		return m_NextScene->CreateSceneModeEmpty<T>();
+}
 
-public:
 	template <typename T>
 	bool CreateSceneMode(bool Current = true)
 	{
@@ -105,6 +112,12 @@ public:
 			return m_Scene->CreateSceneMode<T>();
 
 		return m_NextScene->CreateSceneMode<T>();
+	}
+
+	void ChangeNextScene()
+	{
+		if (m_NextScene)
+			m_NextScene->m_Change = true;
 	}
 
 	DECLARE_SINGLE(CSceneManager)

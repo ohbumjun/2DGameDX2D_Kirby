@@ -18,6 +18,7 @@ public :
 	~CThreadQueue()
 {
 		DeleteCriticalSection(&m_Crt);
+		clear();
 }
 private :
 	int m_Head;
@@ -32,6 +33,8 @@ public :
 		if (empty())
 			assert(false);
 
+		CSync sync(&m_Crt);
+
 		int Head = (m_Head + 1) % m_Capacity;
 
 		return m_Queue[Head];
@@ -41,12 +44,16 @@ public :
 		if (empty())
 			assert(false);
 
+		CSync sync(&m_Crt);
+
 		m_Head = (m_Head + 1) % m_Capacity;
 
 		--m_Size;
 }
 	void push(T Elem)
 {
+		CSync sync(&m_Crt);
+
 		int Tail = (m_Tail + 1) % m_Capacity;
 
 		if (Tail == m_Head)
@@ -60,14 +67,20 @@ public :
 }
 	bool empty()
 {
+		CSync sync(&m_Crt);
+
 		return m_Size == 0;
 }
 	int size()
 {
+		CSync sync(&m_Crt);
+
 		return m_Size;
 }
 	void clear()
 {
+		CSync sync(&m_Crt);
+
 		m_Size  = 0;
 		m_Head = 0;
 		m_Tail    = 0;

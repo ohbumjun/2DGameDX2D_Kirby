@@ -866,9 +866,6 @@
     <ClCompile Include="GameObject\DamageFont.cpp">
       <Filter>09. UI\02. Widget</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadQueue.cpp">
-      <Filter>01. Engine\09. Thread</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\Shader\ShaderInfo.fx">

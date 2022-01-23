@@ -6,7 +6,13 @@ CThread::CThread() :
 {}
 
 CThread::~CThread()
-{}
+{
+	if (m_StartEvent)
+	{
+		CloseHandle(m_StartEvent);
+		m_StartEvent = 0;
+	}
+}
 
 bool CThread::Init()
 {
@@ -67,8 +73,6 @@ unsigned CThread::ThreadFunction(void* Arg)
 {
 	// Thread °´Ã¼ »ý¼º
 	CThread* Thread = (CThread*)Arg;
-
-	Thread->Init();
 
 	Thread->WaitStartEvent();
 

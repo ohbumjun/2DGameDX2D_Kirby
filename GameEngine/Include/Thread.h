@@ -23,4 +23,17 @@ public :
 public :
 	void WaitStartEvent();
 	static unsigned int __stdcall ThreadFunction(void* Arg);
+public :
+	template<typename T>
+	static T* CreateThread(const std::string& Name)
+{
+		T* Thread = new T;
+		Thread->m_Name = Name;
+	if (!Thread->Init())
+	{
+		SAFE_DELETE(Thread);
+		return nullptr;
+	}
+	return Thread;
+}
 };

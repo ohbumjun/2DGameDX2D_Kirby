@@ -380,7 +380,6 @@
     <ClCompile Include="Scene\SceneResource.cpp" />
     <ClCompile Include="Scene\ViewPort.cpp" />
     <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="ThreadQueue.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UI\UIButton.cpp" />
     <ClCompile Include="UI\UIDamageFont.cpp" />
