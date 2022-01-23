@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "../Render/RenderManager.h"
+#include "../Sync.h"
 
 DEFINITION_SINGLE(CSceneManager)
 
@@ -7,12 +8,15 @@ CSceneManager::CSceneManager() :
 	m_Scene(nullptr),
 	m_NextScene(nullptr)
 {
+	InitializeCriticalSection(&m_Crt);
 }
 
 CSceneManager::~CSceneManager()
 {
 	SAFE_DELETE(m_Scene);
 	SAFE_DELETE(m_NextScene);
+
+	DeleteCriticalSection(&m_Crt);
 }
 
 void CSceneManager::Start()
@@ -45,6 +49,8 @@ bool CSceneManager::PostUpdate(float DeltaTime)
 
 void CSceneManager::CreateNewScene(bool AutoChange)
 {
+	CSync sync(&m_Crt);
+
 	m_NextScene = new CScene;
 
 	m_NextScene->SetAutoChange(AutoChange);

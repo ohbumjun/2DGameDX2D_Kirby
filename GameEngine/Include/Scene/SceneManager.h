@@ -9,6 +9,7 @@ private:
 	CScene* m_Scene;
 	CScene* m_NextScene;
 private :
+	CRITICAL_SECTION	m_Crt;
 	std::function<void (CScene* Scene, const size_t SceneModeTypeID)> m_CreateSceneModeCallback;
 	std::function<class CGameObject* (CScene* Scene, const size_t ObjectTypeID)> m_CreateObjectCallback;
 	std::function<class CComponent* (class CGameObject* Object, const size_t ComponentTypeID)> m_CreateComponentCallback;
@@ -100,6 +101,8 @@ public :
 	template<typename T>
 	bool CreateSceneModeEmpty(bool Current = true)
 {
+		CSync sync(&m_Crt);
+
 		if (Current)
 			return m_Scene->CreateSceneModeEmpty();
 		return m_NextScene->CreateSceneModeEmpty();

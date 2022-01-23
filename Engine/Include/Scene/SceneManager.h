@@ -6,6 +6,7 @@
 class CSceneManager
 {
 private:
+	CRITICAL_SECTION m_Crt;
 	CScene* m_Scene;
 	CScene* m_NextScene;
 private :
@@ -100,6 +101,8 @@ public :
 	template<typename T>
 	T* CreateSceneModeEmpty(bool Current = true)
 {
+		CSync sync(&m_Crt);
+
 		if (Current)
 			return m_Scene->CreateSceneModeEmpty<T>();
 		return m_NextScene->CreateSceneModeEmpty<T>();
@@ -116,6 +119,8 @@ public :
 
 	void ChangeNextScene()
 	{
+		CSync sync(&m_Crt);
+
 		if (m_NextScene)
 			m_NextScene->m_Change = true;
 	}
