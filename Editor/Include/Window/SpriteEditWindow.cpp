@@ -261,6 +261,12 @@ bool CSpriteEditWindow::Init()
 	Button = AddWidget<CIMGUIButton>("ToBottom", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToBottom);
 
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(345.f);
+
+	Button = AddWidget<CIMGUIButton>("ToTexture", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectTexture);
+
 	// =============================
 	Label = AddWidget<CIMGUILabel>("DivNum", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
@@ -1357,6 +1363,27 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 	DragObject->SetEndPos(Vector2(FinalEndPos.x, 0.1f));
 }
 
+void CSpriteEditWindow::SetDragObjectTexture()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	// Texture를 가져온다.
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+	DragObject->SetStartPos(Vector2(0.1f, (float)TextureSize.y));
+	DragObject->SetEndPos(Vector2((float)TextureSize.x, 0.1f));
+}
+
 void CSpriteEditWindow::DivideFrameWidthAndAdd()
 {
 	int DivideNumber = m_AddDivideNumberInput->GetValueInt();
@@ -1738,7 +1765,44 @@ void CSpriteEditWindow::MoveOneBlockLeft()
 }
 
 void CSpriteEditWindow::MoveOneBlockUp()
-{}
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
+
+	float FrameWidth = FinalEndPos.x - FinalStartPos.x;
+	FinalStartPos.x -= FrameWidth;
+	FinalEndPos.x -= FrameWidth;
+
+	if (FinalStartPos.x < 0.f)
+	{
+		FinalStartPos.x = 0.f;
+		FinalEndPos.x = FinalStartPos.x + FrameWidth;
+	}
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(FinalEndPos);
+}
 
 void CSpriteEditWindow::MoveOneBlockDown()
 {}

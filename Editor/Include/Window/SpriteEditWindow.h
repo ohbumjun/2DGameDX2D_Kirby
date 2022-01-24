@@ -65,6 +65,7 @@ public :
 	void SetDragObjectToLeftEnd();
 	void SetDragObjectToTop();
 	void SetDragObjectToBottom();
+	void SetDragObjectTexture();
 private :
 	void DivideFrameWidthAndAdd();
 	void DivideFrameHeightAndAdd();
