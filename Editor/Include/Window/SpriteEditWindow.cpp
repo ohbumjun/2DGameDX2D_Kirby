@@ -242,6 +242,23 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToBottom);
 
 	// =============================
+
+	m_DivideNumberInput = AddWidget<CIMGUITextInput>("DivideNumberInput");
+	m_DivideNumberInput->SetSize(80.f, 30.f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	Button = AddWidget<CIMGUIButton>("DivideWidth", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameWidthAndAdd);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(175.f);
+
+	Button = AddWidget<CIMGUIButton>("DivideHeight", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameHeightAndAdd);
+
+	// =============================
 	m_Animation = new CAnimationSequence2DInstance;
 	m_Animation->Init();
 	m_Animation->Stop();
@@ -489,53 +506,18 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 
 	Vector2               FrameStartPos   = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
+	Vector2				  FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(FrameStartPos, FrameEndPos);
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos   = FinalStartEndPos.second;
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
-	const std::string&    AnimationName   = SequenceName;
-
 	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
-	// CAnimationSequence2D* Sequence        = m_Animation->FindAnimationSequence2D(SequenceName)->GetAnimationSequence();
-	CTexture*             SequenceTexture = Sequence->GetTexture();
-
-	// 220 ? --> 300 - 220  = 80
-	// AnimationList 에서 선택한 Sequence2D의 Name으로 Texture 정보를 얻어온다
-	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()),(float)(SequenceTexture->GetHeight()));
-
-	XDiff = SequenceImageSize.x - FrameStartPos.x;
-	YDiff = SequenceImageSize.y - FrameStartPos.y;
-
-	// 범위 조정
-	// 초과 (FrameStartPos.x 가 너무 왼쪽에 위치 ex) -20.f )
-	FrameStartPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameStartPos.x;
-	FrameStartPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameStartPos.y;
-
-	FrameStartPos.x = XDiff >= 0 ? FrameStartPos.x : SequenceImageSize.x - 0.1f;
-	FrameStartPos.y = YDiff >= 0 ? SequenceImageSize.y - FrameStartPos.y : 0;
-
-	Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
-	XDiff               = SequenceImageSize.x - FrameEndPos.x;
-	YDiff               = SequenceImageSize.y - FrameEndPos.y;
-
-	FrameEndPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameEndPos.x;
-	FrameEndPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameEndPos.y;
-
-	FrameEndPos.x       = XDiff > 0 ? FrameEndPos.x : SequenceImageSize.x - 0.1f;
-	FrameEndPos.y       = YDiff > 0 ? SequenceImageSize.y - FrameEndPos.y : 0;
-
-	Vector2 StartPos;
-	Vector2 EndPos;
-
-	// 더 작은 것 선택 
-	StartPos.x = FrameStartPos.x < FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
-	StartPos.y = FrameStartPos.y < FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
-
-	// 더 큰 것 선택 
-	EndPos.x = FrameStartPos.x > FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
-	EndPos.y = FrameStartPos.y > FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
-
-	Vector2 FrameSize = EndPos - StartPos;
+	
+	Vector2 FrameSize = FinalEndPos - FinalStartPos;
 	// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
 	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
-	Sequence->AddFrame(StartPos, EndPos - StartPos);
+	Sequence->AddFrame(FinalStartPos, FrameSize);
 
 	// Frame List Box에 넣어주기 
 	char FrameName[1024] = {};
@@ -548,8 +530,8 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
 
 	// Image, End 세팅 
-	m_SpriteSampled->SetImageStart(StartPos);
-	m_SpriteSampled->SetImageEnd(EndPos);
+	m_SpriteSampled->SetImageStart(FinalStartPos);
+	m_SpriteSampled->SetImageEnd(FinalEndPos);
 
 	// AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
 	m_AnimationFrameList->SetSelectIndex(AnimItemCount);
@@ -1197,13 +1179,21 @@ void CSpriteEditWindow::SetDragObjectToRightEnd()
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
-	CTexture* SequenceTexture = Sequence->GetTexture();
 
+	CTexture* SequenceTexture = Sequence->GetTexture();
 	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
-	// Vector2 DragObjectStartPos = DragObject->GetStartPos();
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos   = DragObject->GetEndPos();
 
-	DragObject->SetEndPos(Vector2(TextureSize.x - 0.1f, DragObjectEndPos.y));
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(Vector2(TextureSize.x - 0.1f, FinalEndPos.y));
 
 }
 
@@ -1217,14 +1207,19 @@ void CSpriteEditWindow::SetDragObjectToLeftEnd()
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
-	CTexture* SequenceTexture = Sequence->GetTexture();
 
+	CTexture* SequenceTexture = Sequence->GetTexture();
 	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	DragObject->SetStartPos(Vector2(0.1f, DragObjectStartPos.y));
-	DragObject->SetEndPos(DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	DragObject->SetStartPos(Vector2(0.1f, FinalStartPos.y));
+	DragObject->SetEndPos(FinalEndPos);
 }
 
 void CSpriteEditWindow::SetDragObjectToTop()
@@ -1237,14 +1232,19 @@ void CSpriteEditWindow::SetDragObjectToTop()
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
-	CTexture* SequenceTexture = Sequence->GetTexture();
 
+	CTexture* SequenceTexture = Sequence->GetTexture();
 	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	DragObject->SetStartPos(Vector2(DragObjectStartPos.x, TextureSize.y - 0.1f));
-	DragObject->SetEndPos(DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	DragObject->SetStartPos(Vector2(FinalStartPos.x, TextureSize.y - 0.1f));
+	DragObject->SetEndPos(FinalEndPos);
 }
 
 void CSpriteEditWindow::SetDragObjectToBottom()
@@ -1257,12 +1257,163 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
-	CTexture* SequenceTexture = Sequence->GetTexture();
 
+	CTexture* SequenceTexture = Sequence->GetTexture();
 	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	DragObject->SetStartPos(DragObjectStartPos);
-	DragObject->SetEndPos(Vector2(DragObjectEndPos.x, 0.1f));
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(Vector2(FinalEndPos.x, 0.1f));
+}
+
+void CSpriteEditWindow::DivideFrameWidthAndAdd()
+{
+	if (m_DivideNumberInput->Empty())
+		return;
+
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	
+	float                 XDiff = -1, YDiff = -1;
+
+	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+
+	Vector2               FrameStartPos = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
+	std::string           SequenceName = m_AnimationList->GetSelectItem();
+
+	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(SequenceName);
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()), (float)(SequenceTexture->GetHeight()));
+
+	XDiff = SequenceImageSize.x - FrameStartPos.x;
+	YDiff = SequenceImageSize.y - FrameStartPos.y;
+
+	// 범위 조정
+	// 초과 (FrameStartPos.x 가 너무 왼쪽에 위치 ex) -20.f )
+	FrameStartPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameStartPos.x;
+	FrameStartPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameStartPos.y;
+
+	FrameStartPos.x = XDiff >= 0 ? FrameStartPos.x : SequenceImageSize.x - 0.1f;
+	FrameStartPos.y = YDiff >= 0 ? SequenceImageSize.y - FrameStartPos.y : 0;
+
+	Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
+	XDiff = SequenceImageSize.x - FrameEndPos.x;
+	YDiff = SequenceImageSize.y - FrameEndPos.y;
+
+	FrameEndPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameEndPos.x;
+	FrameEndPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameEndPos.y;
+
+	FrameEndPos.x = XDiff > 0 ? FrameEndPos.x : SequenceImageSize.x - 0.1f;
+	FrameEndPos.y = YDiff > 0 ? SequenceImageSize.y - FrameEndPos.y : 0;
+
+	Vector2 StartPos;
+	Vector2 EndPos;
+
+	// 더 작은 것 선택 
+	StartPos.x = FrameStartPos.x < FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
+	StartPos.y = FrameStartPos.y < FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+
+	// 더 큰 것 선택 
+	EndPos.x = FrameStartPos.x > FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
+	EndPos.y = FrameStartPos.y > FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+
+	Vector2 FrameSize = EndPos - StartPos;
+	// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
+	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
+	Sequence->AddFrame(StartPos, EndPos - StartPos);
+
+	// Frame List Box에 넣어주기 
+	char FrameName[1024] = {};
+	int  AnimItemCount = m_AnimationFrameList->GetItemCount();
+	sprintf_s(FrameName, "%d", AnimItemCount);
+	m_AnimationFrameList->AddItem(FrameName);
+
+	// Sampled에 Image 세팅해주기 
+	CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
+	m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
+
+	// Image, End 세팅 
+	m_SpriteSampled->SetImageStart(StartPos);
+	m_SpriteSampled->SetImageEnd(EndPos);
+
+	// AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
+	m_AnimationFrameList->SetSelectIndex(AnimItemCount);
+
+	// Animation Instance에 추가하기 
+	// bool Loop    = StringToBool(m_NewSeqAnimationLoop->GetSelectItem());
+	// bool Reverse = StringToBool(m_NewSeqAnimationReverse->GetSelectItem());
+
+	// 위에서 가져온 Animation Sequence 2D를 세팅하면 될 것 같다
+	CAnimationSequence2DData* Animation = m_Animation->GetCurrentAnimation();
+	if (!Animation)
+		return;
+
+	// Animation --> 중복해서 Animation이 들어가게 된다.
+	// Animation->AddFrame(StartPos, EndPos - StartPos);
+
+	// Stop Animation
+	m_Animation->Play();
+
+}
+
+void CSpriteEditWindow::DivideFrameHeightAndAdd()
+{
+	if (m_DivideNumberInput->Empty())
+		return;
+}
+
+std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
+{
+
+	float                 XDiff = -1, YDiff = -1;
+
+	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+	Vector2               FrameStartPos  = FrameStart;
+	Vector2					FrameEndPos = FrameEnd;
+	std::string           SequenceName = m_AnimationList->GetSelectItem();
+	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(SequenceName);
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()), (float)(SequenceTexture->GetHeight()));
+
+	XDiff = SequenceImageSize.x - FrameStartPos.x;
+	YDiff = SequenceImageSize.y - FrameStartPos.y;
+
+	// 범위 조정
+	// 초과 (FrameStartPos.x 가 너무 왼쪽에 위치 ex) -20.f )
+	FrameStartPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameStartPos.x;
+	FrameStartPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameStartPos.y;
+
+	FrameStartPos.x = XDiff >= 0 ? FrameStartPos.x : SequenceImageSize.x - 0.1f;
+	FrameStartPos.y = YDiff >= 0 ? SequenceImageSize.y - FrameStartPos.y : 0;
+
+	// End 
+	XDiff = SequenceImageSize.x - FrameEndPos.x;
+	YDiff = SequenceImageSize.y - FrameEndPos.y;
+
+	FrameEndPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameEndPos.x;
+	FrameEndPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameEndPos.y;
+
+	FrameEndPos.x = XDiff > 0 ? FrameEndPos.x : SequenceImageSize.x - 0.1f;
+	FrameEndPos.y = YDiff > 0 ? SequenceImageSize.y - FrameEndPos.y : 0;
+
+	Vector2 StartPos;
+	Vector2 EndPos;
+
+	// 더 작은 것 선택 
+	StartPos.x = FrameStartPos.x < FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
+	StartPos.y = FrameStartPos.y < FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+
+	// 더 큰 것 선택 
+	EndPos.x = FrameStartPos.x > FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
+	EndPos.y = FrameStartPos.y > FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+
+	return std::make_pair(StartPos, EndPos);
 }

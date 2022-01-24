@@ -26,6 +26,8 @@ private:
 	class CIMGUIComboBox* m_CurSeqAnimationLoop;
 	class CIMGUIComboBox* m_CurSeqAnimationReverse;
 private:
+	class CIMGUITextInput* m_DivideNumberInput;
+private:
 	CSharedPtr<class CSpriteEditObject> m_SpriteObject;
 	class CAnimationSequence2DInstance* m_Animation;
 
@@ -62,4 +64,9 @@ public :
 	void SetDragObjectToLeftEnd();
 	void SetDragObjectToTop();
 	void SetDragObjectToBottom();
+private :
+	void DivideFrameWidthAndAdd();
+	void DivideFrameHeightAndAdd();
+private :
+	std::pair<Vector2, Vector2> GetFinalStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd);
 };
