@@ -1785,19 +1785,21 @@ void CSpriteEditWindow::MoveOneBlockUp()
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	float FrameHeight = FinalEndPos.y - FinalStartPos.y;
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
-	float FrameWidth = FinalEndPos.x - FinalStartPos.x;
-	FinalStartPos.x -= FrameWidth;
-	FinalEndPos.x -= FrameWidth;
+	FinalStartPos.y += FrameHeight;
+	FinalEndPos.y += FrameHeight;
 
-	if (FinalStartPos.x < 0.f)
+	if (FinalStartPos.y >= TextureSize.y - 0.1f)
 	{
-		FinalStartPos.x = 0.f;
-		FinalEndPos.x = FinalStartPos.x + FrameWidth;
+		FinalStartPos.y = TextureSize.y;
+		FinalEndPos.y = FinalStartPos.y - FrameHeight;
 	}
 
 	DragObject->SetStartPos(FinalStartPos);
@@ -1805,7 +1807,46 @@ void CSpriteEditWindow::MoveOneBlockUp()
 }
 
 void CSpriteEditWindow::MoveOneBlockDown()
-{}
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	float FrameHeight = FinalEndPos.y - FinalStartPos.y;
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
+	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
+
+	FinalStartPos.y -= FrameHeight;
+	FinalEndPos.y  -= FrameHeight;
+
+	if (FinalEndPos.y < 0.f)
+	{
+		FinalEndPos.y = 0.f;
+		FinalStartPos.y = FinalEndPos.y + FrameHeight;
+	}
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(FinalEndPos);
+}
 
 std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
 {
