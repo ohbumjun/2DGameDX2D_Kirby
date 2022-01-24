@@ -74,5 +74,5 @@ private:
 	void MultiplyFrameWidth();
 	void MultiplyFrameHeight();
 private :
-	std::pair<Vector2, Vector2> GetFinalStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd);
+	std::pair<Vector2, Vector2> GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd);
 };

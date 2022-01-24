@@ -555,7 +555,7 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	Vector2               FrameStartPos   = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
 	Vector2				  FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(FrameStartPos, FrameEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(FrameStartPos, FrameEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos   = FinalStartEndPos.second;
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
@@ -1236,7 +1236,7 @@ void CSpriteEditWindow::SetDragObjectToRightEnd()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos   = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1267,7 +1267,7 @@ void CSpriteEditWindow::SetDragObjectToLeftEnd()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1297,7 +1297,7 @@ void CSpriteEditWindow::SetDragObjectToTop()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1327,7 +1327,7 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1359,7 +1359,7 @@ void CSpriteEditWindow::DivideFrameWidthAndAdd()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1428,7 +1428,7 @@ void CSpriteEditWindow::DivideFrameHeightAndAdd()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1497,7 +1497,7 @@ void CSpriteEditWindow::DivideFrameWidth()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
@@ -1536,7 +1536,7 @@ void CSpriteEditWindow::DivideFrameHeight()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
@@ -1576,7 +1576,7 @@ void CSpriteEditWindow::MultiplyFrameWidth()
 	Vector2 DragObjectStartPos = DragObject->GetStartPos();
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
@@ -1596,9 +1596,47 @@ void CSpriteEditWindow::MultiplyFrameWidth()
 }
 
 void CSpriteEditWindow::MultiplyFrameHeight()
-{}
+{
+	int MultiNumber = m_DivMultiNumberInput->GetValueInt();
+	if (MultiNumber <= 0)
+		return;
 
-std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	float FrameHeight = FinalEndPos.y - FinalStartPos.y;
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
+	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
+
+	FrameHeight *= (float)MultiNumber;
+
+	float MultipliedHeight = FinalStartPos.y - FrameHeight;
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(Vector2(FinalEndPos.x, MultipliedHeight));
+}
+
+std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
 {
 
 	float                 XDiff = -1, YDiff = -1;
