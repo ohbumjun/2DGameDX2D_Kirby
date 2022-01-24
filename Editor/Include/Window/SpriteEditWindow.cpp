@@ -242,20 +242,28 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToBottom);
 
 	// =============================
-
-	m_DivideNumberInput = AddWidget<CIMGUITextInput>("DivideNumberInput");
-	m_DivideNumberInput->SetSize(80.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("DivNum", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
 
-	Button = AddWidget<CIMGUIButton>("DivideWidth", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameWidthAndAdd);
+	m_DivideNumberInput = AddWidget<CIMGUITextInput>("DivideNumberInput");
+	m_DivideNumberInput->SetSize(80.f, 30.f);
+	m_DivideNumberInput->SetTextType(ImGuiText_Type::Int);
+	m_DivideNumberInput->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(175.f);
 
-	Button = AddWidget<CIMGUIButton>("DivideHeight", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("DivWidth", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameWidthAndAdd);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(260.f);
+
+	Button = AddWidget<CIMGUIButton>("DivHeight", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameHeightAndAdd);
 
 	// =============================
@@ -1175,6 +1183,9 @@ void CSpriteEditWindow::SetDragObjectToRightEnd()
 	if (!DragObject)
 		return;
 
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1203,6 +1214,9 @@ void CSpriteEditWindow::SetDragObjectToLeftEnd()
 	if (!DragObject)
 		return;
 
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1228,6 +1242,9 @@ void CSpriteEditWindow::SetDragObjectToTop()
 {
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
 	// Texture를 가져온다.
@@ -1258,6 +1275,9 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 		return;
 
 	// Texture를 가져온다.
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
@@ -1280,100 +1300,138 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 
 void CSpriteEditWindow::DivideFrameWidthAndAdd()
 {
-	if (m_DivideNumberInput->Empty())
+	int DivideNumber = m_DivideNumberInput->GetValueInt();
+	if (DivideNumber <= 0)
 		return;
 
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
 		return;
 
-	
-	float                 XDiff = -1, YDiff = -1;
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
 
-	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
-
-	Vector2               FrameStartPos = CEditorManager::GetInst()->GetDragObject()->GetStartPos();
-	std::string           SequenceName = m_AnimationList->GetSelectItem();
-
-	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(SequenceName);
 	CTexture* SequenceTexture = Sequence->GetTexture();
-	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()), (float)(SequenceTexture->GetHeight()));
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
 
-	XDiff = SequenceImageSize.x - FrameStartPos.x;
-	YDiff = SequenceImageSize.y - FrameStartPos.y;
+	
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
-	// 범위 조정
-	// 초과 (FrameStartPos.x 가 너무 왼쪽에 위치 ex) -20.f )
-	FrameStartPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameStartPos.x;
-	FrameStartPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameStartPos.y;
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
-	FrameStartPos.x = XDiff >= 0 ? FrameStartPos.x : SequenceImageSize.x - 0.1f;
-	FrameStartPos.y = YDiff >= 0 ? SequenceImageSize.y - FrameStartPos.y : 0;
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
 
-	Vector2 FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
-	XDiff = SequenceImageSize.x - FrameEndPos.x;
-	YDiff = SequenceImageSize.y - FrameEndPos.y;
+	Vector2 FrameStartPos = FinalStartPos;
+	Vector2 InitStartPos = FinalStartPos;
 
-	FrameEndPos.x = XDiff > SequenceImageSize.x ? 0.f : FrameEndPos.x;
-	FrameEndPos.y = YDiff > SequenceImageSize.y ? 0.f : FrameEndPos.y;
+	float PartWidth  = (FinalEndPos.x - FinalStartPos.x) / (float)DivideNumber;
+	float PartHeight = (FinalEndPos.y - FinalStartPos.y);
+	Vector2 PartSize = Vector2(PartWidth, PartHeight);
 
-	FrameEndPos.x = XDiff > 0 ? FrameEndPos.x : SequenceImageSize.x - 0.1f;
-	FrameEndPos.y = YDiff > 0 ? SequenceImageSize.y - FrameEndPos.y : 0;
+	for (int i = 0; i < DivideNumber; i++)
+	{
+		// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기
+		FrameStartPos.x = InitStartPos.x + (i * PartWidth);
 
-	Vector2 StartPos;
-	Vector2 EndPos;
+		Sequence->AddFrame(FrameStartPos, PartSize);
 
-	// 더 작은 것 선택 
-	StartPos.x = FrameStartPos.x < FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
-	StartPos.y = FrameStartPos.y < FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+		// Frame List Box에 넣어주기 
+		char FrameName[1024] = {};
+		int  AnimItemCount = m_AnimationFrameList->GetItemCount();
+		sprintf_s(FrameName, "%d", AnimItemCount);
+		m_AnimationFrameList->AddItem(FrameName);
 
-	// 더 큰 것 선택 
-	EndPos.x = FrameStartPos.x > FrameEndPos.x ? FrameStartPos.x : FrameEndPos.x;
-	EndPos.y = FrameStartPos.y > FrameEndPos.y ? FrameStartPos.y : FrameEndPos.y;
+		// Sampled에 Image 세팅해주기 
+		CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
+		m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
 
-	Vector2 FrameSize = EndPos - StartPos;
-	// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
-	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
-	Sequence->AddFrame(StartPos, EndPos - StartPos);
+		// Image, End 세팅 
+		m_SpriteSampled->SetImageStart(FrameStartPos);
+		m_SpriteSampled->SetImageEnd(FrameStartPos + PartSize);
 
-	// Frame List Box에 넣어주기 
-	char FrameName[1024] = {};
-	int  AnimItemCount = m_AnimationFrameList->GetItemCount();
-	sprintf_s(FrameName, "%d", AnimItemCount);
-	m_AnimationFrameList->AddItem(FrameName);
+		// AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
+		m_AnimationFrameList->SetSelectIndex(AnimItemCount);
 
-	// Sampled에 Image 세팅해주기 
-	CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
-	m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
-
-	// Image, End 세팅 
-	m_SpriteSampled->SetImageStart(StartPos);
-	m_SpriteSampled->SetImageEnd(EndPos);
-
-	// AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
-	m_AnimationFrameList->SetSelectIndex(AnimItemCount);
-
-	// Animation Instance에 추가하기 
-	// bool Loop    = StringToBool(m_NewSeqAnimationLoop->GetSelectItem());
-	// bool Reverse = StringToBool(m_NewSeqAnimationReverse->GetSelectItem());
-
-	// 위에서 가져온 Animation Sequence 2D를 세팅하면 될 것 같다
+	}
+	
+	// Animation은 Play 
 	CAnimationSequence2DData* Animation = m_Animation->GetCurrentAnimation();
 	if (!Animation)
 		return;
 
-	// Animation --> 중복해서 Animation이 들어가게 된다.
-	// Animation->AddFrame(StartPos, EndPos - StartPos);
-
-	// Stop Animation
 	m_Animation->Play();
 
 }
 
 void CSpriteEditWindow::DivideFrameHeightAndAdd()
 {
-	if (m_DivideNumberInput->Empty())
+	int DivideNumber = m_DivideNumberInput->GetValueInt();
+	if (DivideNumber <= 0)
 		return;
+
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	Vector2 FrameStartPos = FinalStartPos;
+	Vector2 InitStartPos = FinalStartPos;
+
+	float PartHeight = (FinalEndPos.y - FinalStartPos.y) / (float)DivideNumber;
+	float PartWidth = (FinalEndPos.x - FinalStartPos.x);
+	Vector2 PartSize = Vector2(PartWidth, PartHeight);
+
+	for (int i = 0; i < DivideNumber; i++)
+	{
+		// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기
+		FrameStartPos.y = InitStartPos.y + (i * PartHeight);
+
+		Sequence->AddFrame(FrameStartPos, PartSize);
+
+		// Frame List Box에 넣어주기 
+		char FrameName[1024] = {};
+		int  AnimItemCount = m_AnimationFrameList->GetItemCount();
+		sprintf_s(FrameName, "%d", AnimItemCount);
+		m_AnimationFrameList->AddItem(FrameName);
+
+		// Sampled에 Image 세팅해주기 
+		CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
+		m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
+
+		// Image, End 세팅 
+		m_SpriteSampled->SetImageStart(FrameStartPos);
+		m_SpriteSampled->SetImageEnd(FrameStartPos + PartSize);
+
+		// AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
+		m_AnimationFrameList->SetSelectIndex(AnimItemCount);
+	}
+
+	// Animation은 Play 
+	CAnimationSequence2DData* Animation = m_Animation->GetCurrentAnimation();
+	if (!Animation)
+		return;
+
+	m_Animation->Play();
 }
 
 std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
