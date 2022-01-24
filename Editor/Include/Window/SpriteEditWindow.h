@@ -60,4 +60,6 @@ public:
 public :
 	void SetDragObjectToRightEnd();
 	void SetDragObjectToLeftEnd();
+	void SetDragObjectToTop();
+	void SetDragObjectToBottom();
 };
