@@ -74,5 +74,10 @@ private:
 	void MultiplyFrameWidth();
 	void MultiplyFrameHeight();
 private :
+	void MoveOneBlockRight();
+	void MoveOneBlockLeft();
+	void MoveOneBlockUp();
+	void MoveOneBlockDown();
+private :
 	std::pair<Vector2, Vector2> GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd);
 };
