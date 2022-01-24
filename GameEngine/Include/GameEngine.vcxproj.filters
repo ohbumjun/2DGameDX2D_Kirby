@@ -184,6 +184,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\04. StructuredBuffer">
+      <UniqueIdentifier>{bfb43ec3-7497-420e-a101-41a997c7cf4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -549,6 +552,9 @@
     <ClInclude Include="ThreadQueue.h">
       <Filter>01. Engine\09. Thread</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\StructuredBuffer.h">
+      <Filter>02. Resource\02. Shader\04. StructuredBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -865,6 +871,9 @@
     </ClCompile>
     <ClCompile Include="GameObject\DamageFont.cpp">
       <Filter>09. UI\02. Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\StructuredBuffer.cpp">
+      <Filter>02. Resource\02. Shader\04. StructuredBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

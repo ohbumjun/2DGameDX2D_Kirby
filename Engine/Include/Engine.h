@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameInfo.h"
+#include "Timer.h"
 #include "UI/UIWindow.h"
 
 class CEngine
@@ -44,6 +45,10 @@ public:
 	bool IsPlay() const
 	{
 		return m_Play;
+	}
+	float GetFPS() const
+	{
+		return m_Timer->GetFPS();
 	}
 public :
 	void SetMouseState(Mouse_State State);

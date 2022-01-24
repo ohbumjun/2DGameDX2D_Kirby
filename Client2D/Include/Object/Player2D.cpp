@@ -71,7 +71,7 @@ bool CPlayer2D::Init()
 	// m_Camera->SetViewPortRatio(0.7f, 0.7f);
 
 	SetRootComponent(m_Sprite);
-	//m_Sprite->GetMaterial()->AddTexture(0, (int)ConstantBuffer_Shader_Type::Pixel, "MainTexture", )
+	//m_Sprite->GetMaterial()->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "MainTexture", )
 	
 	m_Sprite->AddChild(m_ChildLeftSprite);
 	m_Sprite->AddChild(m_ChildRightSprite);
@@ -90,9 +90,9 @@ bool CPlayer2D::Init()
 
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
-	m_ChildLeftSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
+	m_ChildLeftSprite->SetTexture(0, 0, (int)(Buffer_Shader_Type::Pixel), "Teemo",
 	                              TEXT("Teemo.jpg"));
-	m_ChildRightSprite->SetTexture(0, 0, (int)(ConstantBuffer_Shader_Type::Pixel), "Teemo",
+	m_ChildRightSprite->SetTexture(0, 0, (int)(Buffer_Shader_Type::Pixel), "Teemo",
 	                               TEXT("Teemo.jpg"));
 	m_ChildLeftSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 	m_ChildRightSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);

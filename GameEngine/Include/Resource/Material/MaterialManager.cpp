@@ -32,7 +32,7 @@ bool CMaterialManager::Init()
 
 	CTexture* Texture = CResourceManager::GetInst()->FindTexture("EngineTexture");
 
-	Mtrl->AddTexture(0, static_cast<int>(ConstantBuffer_Shader_Type::Pixel), "EngineTexture", Texture);
+	Mtrl->AddTexture(0, static_cast<int>(Buffer_Shader_Type::Pixel), "EngineTexture", Texture);
 
 	return true;
 }

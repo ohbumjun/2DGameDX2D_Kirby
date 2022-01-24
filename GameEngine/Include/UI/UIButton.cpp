@@ -226,7 +226,7 @@ void CUIButton::PostUpdate(float DeltaTime)
 void CUIButton::Render()
 {
 	if (m_Info[(int)m_State].m_Texture)
-		m_Info[(int)m_State].m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, 0);
+		m_Info[(int)m_State].m_Texture->SetShader(0, (int)Buffer_Shader_Type::Pixel, 0);
 
 	m_Tint = m_Info[(int)m_State].m_Tint;
 

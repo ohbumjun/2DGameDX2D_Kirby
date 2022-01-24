@@ -204,7 +204,7 @@ void CUIImage::Render()
 		m_CBuffer->SetUseAnimation(false);
 
 	if (m_Info.m_Texture)
-		m_Info.m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, Frame);
+		m_Info.m_Texture->SetShader(0, (int)Buffer_Shader_Type::Pixel, Frame);
 	
 	m_Tint = m_Info.m_Tint;
 

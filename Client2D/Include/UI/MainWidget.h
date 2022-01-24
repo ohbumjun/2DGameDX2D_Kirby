@@ -19,10 +19,12 @@ private :
     CSharedPtr<CUIText> m_Text;
     CSharedPtr<CUIImage> m_TestImage;
     CSharedPtr<CUISlideBar> m_TestSlider;
-
+private:
     CSharedPtr<CUINumberWidget> m_Hour;
     CSharedPtr<CUINumberWidget> m_Minute;
     CSharedPtr<CUINumberWidget> m_Second;
+private :
+    CSharedPtr<CUIText> m_FPSText;
 public :
     virtual void Start() override;
     virtual bool Init() override;

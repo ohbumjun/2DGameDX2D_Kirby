@@ -394,7 +394,7 @@ void CSpriteEditWindow::LoadTextureButton()
 
 		m_Sprite->SetTextureFullPath(ConvertFileName, FilePath);
 		m_SpriteObject->GetSpriteComponent()->SetTextureFullPath(TextureIndex, 0,
-		                                                         static_cast<int>(ConstantBuffer_Shader_Type::Pixel),
+		                                                         static_cast<int>(Buffer_Shader_Type::Pixel),
 		                                                         ConvertFileName, FilePath);
 
 		CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture(TextureIndex);

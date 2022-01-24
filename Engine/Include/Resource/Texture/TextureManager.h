@@ -46,5 +46,5 @@ public:
 	ID3D11SamplerState* FindSampler(const std::string& Name);
 	void                SetSampler(const std::string& Name, int Register,
 	                               int                ShaderType = static_cast<int>(
-		                               ConstantBuffer_Shader_Type::All));
+		                               Buffer_Shader_Type::All));
 };

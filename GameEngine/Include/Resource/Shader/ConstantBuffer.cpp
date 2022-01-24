@@ -43,22 +43,22 @@ void CConstantBuffer::UpdateBuffer(void* Data)
 
 	CDevice::GetInst()->GetContext()->Unmap(m_Buffer, 0);
 
-	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Vertex))
+	if (m_ConstantBufferShaderType & static_cast<int>(Buffer_Shader_Type::Vertex))
 		CDevice::GetInst()->GetContext()->VSSetConstantBuffers(m_Register, 1, &m_Buffer);
 
-	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Pixel))
+	if (m_ConstantBufferShaderType & static_cast<int>(Buffer_Shader_Type::Pixel))
 		CDevice::GetInst()->GetContext()->PSSetConstantBuffers(m_Register, 1, &m_Buffer);
 
-	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Domain))
+	if (m_ConstantBufferShaderType & static_cast<int>(Buffer_Shader_Type::Domain))
 		CDevice::GetInst()->GetContext()->DSSetConstantBuffers(m_Register, 1, &m_Buffer);
 
-	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Hull))
+	if (m_ConstantBufferShaderType & static_cast<int>(Buffer_Shader_Type::Hull))
 		CDevice::GetInst()->GetContext()->HSSetConstantBuffers(m_Register, 1, &m_Buffer);
 
-	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Geometry))
+	if (m_ConstantBufferShaderType & static_cast<int>(Buffer_Shader_Type::Geometry))
 		CDevice::GetInst()->GetContext()->GSSetConstantBuffers(m_Register, 1, &m_Buffer);
 
-	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Compute))
+	if (m_ConstantBufferShaderType & static_cast<int>(Buffer_Shader_Type::Compute))
 		CDevice::GetInst()->GetContext()->CSSetConstantBuffers(m_Register, 1, &m_Buffer);
 
 }

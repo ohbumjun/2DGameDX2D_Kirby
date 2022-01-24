@@ -20,7 +20,7 @@ enum class Shader_Type
 	Compute
 };
 
-enum class ConstantBuffer_Shader_Type
+enum class Buffer_Shader_Type
 {
 	Vertex = 0x1,
 	Pixel = 0x2,

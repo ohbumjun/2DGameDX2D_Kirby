@@ -163,7 +163,7 @@ void CUIProgressBar::PostUpdate(float DeltaTime)
 void CUIProgressBar::Render()
 {
 	if (m_Info.m_Texture)
-		m_Info.m_Texture->SetShader(0, (int)ConstantBuffer_Shader_Type::Pixel, 0);
+		m_Info.m_Texture->SetShader(0, (int)Buffer_Shader_Type::Pixel, 0);
 
 	m_Tint = m_Info.m_Tint;
 

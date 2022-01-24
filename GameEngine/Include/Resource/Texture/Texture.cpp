@@ -299,22 +299,22 @@ void CTexture::SetShader(int Register, int ShaderType, int Index)
 {
 	if (m_ImageType != Image_Type::Array)
 	{
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Vertex))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Vertex))
 			CDevice::GetInst()->GetContext()->VSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Pixel))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Pixel))
 			CDevice::GetInst()->GetContext()->PSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Domain))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Domain))
 			CDevice::GetInst()->GetContext()->DSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Hull))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Hull))
 			CDevice::GetInst()->GetContext()->HSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Geometry))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Geometry))
 			CDevice::GetInst()->GetContext()->GSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Compute))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Compute))
 			CDevice::GetInst()->GetContext()->CSSetShaderResources(Register, 1, &m_vecTextureInfo[Index]->SRV);
 	}
 
@@ -329,22 +329,22 @@ void CTexture::ResetShader(int Register, int ShaderType, int Index)
 
 	if (m_ImageType != Image_Type::Array)
 	{
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Vertex))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Vertex))
 			CDevice::GetInst()->GetContext()->VSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Pixel))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Pixel))
 			CDevice::GetInst()->GetContext()->PSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Domain))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Domain))
 			CDevice::GetInst()->GetContext()->DSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Hull))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Hull))
 			CDevice::GetInst()->GetContext()->HSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Geometry))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Geometry))
 			CDevice::GetInst()->GetContext()->GSSetShaderResources(Register, 1, &SRV);
 
-		if (ShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Compute))
+		if (ShaderType & static_cast<int>(Buffer_Shader_Type::Compute))
 			CDevice::GetInst()->GetContext()->CSSetShaderResources(Register, 1, &SRV);
 	}
 
