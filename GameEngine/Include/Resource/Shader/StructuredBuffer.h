@@ -26,5 +26,8 @@ public :
 {
 		return m_Buffer;
 }
+public :
+	bool Init(const std::string& Name, unsigned int Size, unsigned int Count,
+		int Register, bool Dynamic = false, int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
 };
 
