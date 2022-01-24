@@ -29,10 +29,10 @@ private :
 public :
 	T& front()
 {
-		CSync sync(&m_Crt);
-
 		if (empty())
 			assert(false);
+
+		CSync sync(&m_Crt);
 
 		int Head = (m_Head + 1) % m_Capacity;
 
@@ -40,10 +40,10 @@ public :
 }
 	void pop()
 {
-		CSync sync(&m_Crt);
-
 		if (empty())
 			assert(false);
+
+		CSync sync(&m_Crt);
 
 		m_Head = (m_Head + 1) % m_Capacity;
 

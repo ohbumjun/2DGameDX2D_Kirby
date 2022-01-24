@@ -103,6 +103,7 @@ bool CShaderManager::CreateConstantBuffer(const std::string& Name, int Size, int
 
 	Buffer->SetName(Name);
 
+	// 각각을 Size와 크기로 구분하는 것이었구먼 
 	if (!Buffer->Init(Size, Register, ConstantBufferShaderType))
 	{
 		SAFE_RELEASE(Buffer);

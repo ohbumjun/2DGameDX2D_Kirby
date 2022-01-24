@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "../Render/RenderManager.h"
+#include "../Sync.h"
 
 class CSceneManager
 {
@@ -77,6 +78,9 @@ public :
 private :
 	bool ChangeScene()
 {
+	// ex) CreateNewScene 하고 있는 동안에는 ChangeScene이 동작하지 않게 한다
+		CSync sync(&m_Crt);
+
 		if (m_NextScene)
 		{
 			if (m_NextScene->m_Change)
@@ -99,16 +103,15 @@ private :
 }
 public :
 	template<typename T>
-	bool CreateSceneModeEmpty(bool Current = true)
+	T* CreateSceneModeEmpty(bool Current = true)
 {
 		CSync sync(&m_Crt);
 
 		if (Current)
-			return m_Scene->CreateSceneModeEmpty();
-		return m_NextScene->CreateSceneModeEmpty();
+			return m_Scene->CreateSceneModeEmpty<T>();
+		return m_NextScene->CreateSceneModeEmpty<T>();
 }
 
-public:
 	template <typename T>
 	bool CreateSceneMode(bool Current = true)
 	{
@@ -117,6 +120,15 @@ public:
 
 		return m_NextScene->CreateSceneMode<T>();
 	}
+
+	template<typename T>
+	bool ChangeNextScene()
+{
+		CSync sync(&m_Crt);
+
+		if (m_NextScene)
+			m_NextScene->SetAutoChange(true);
+}
 
 	DECLARE_SINGLE(CSceneManager)
 };

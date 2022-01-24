@@ -60,4 +60,6 @@ void CConstantBuffer::UpdateBuffer(void* Data)
 
 	if (m_ConstantBufferShaderType & static_cast<int>(ConstantBuffer_Shader_Type::Compute))
 		CDevice::GetInst()->GetContext()->CSSetConstantBuffers(m_Register, 1, &m_Buffer);
+
 }
+

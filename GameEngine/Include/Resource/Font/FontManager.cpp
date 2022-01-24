@@ -115,8 +115,10 @@ bool CFontManager::LoadFont(const std::string& Name, const TCHAR* FontName, int 
 	if (Font)
 		return true;
 
-	if (FAILED(m_WriteFactory->CreateTextFormat(FontName, nullptr, (DWRITE_FONT_WEIGHT)Weight,
-		DWRITE_FONT_STYLE_NORMAL, (DWRITE_FONT_STRETCH)Stretch, FontSize, LocalName, &Font)))
+	if (FAILED(m_WriteFactory->CreateTextFormat(FontName, nullptr, 
+		(DWRITE_FONT_WEIGHT)Weight,
+		DWRITE_FONT_STYLE_NORMAL, (DWRITE_FONT_STRETCH)Stretch, 
+		FontSize, LocalName, &Font)))
 		return false;
 
 	m_mapFont.insert(std::make_pair(Name, Font));

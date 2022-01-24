@@ -2,14 +2,15 @@
 
 #include "Scene.h"
 #include "../Render/RenderManager.h"
+#include "../Sync.h"
 
 class CSceneManager
 {
 private:
-	CRITICAL_SECTION m_Crt;
 	CScene* m_Scene;
 	CScene* m_NextScene;
 private :
+	CRITICAL_SECTION	m_Crt;
 	std::function<void (CScene* Scene, const size_t SceneModeTypeID)> m_CreateSceneModeCallback;
 	std::function<class CGameObject* (CScene* Scene, const size_t ObjectTypeID)> m_CreateObjectCallback;
 	std::function<class CComponent* (class CGameObject* Object, const size_t ComponentTypeID)> m_CreateComponentCallback;
@@ -77,6 +78,9 @@ public :
 private :
 	bool ChangeScene()
 {
+	// ex) CreateNewScene 하고 있는 동안에는 ChangeScene이 동작하지 않게 한다
+		CSync sync(&m_Crt);
+
 		if (m_NextScene)
 		{
 			if (m_NextScene->m_Change)
@@ -118,12 +122,12 @@ public :
 	}
 
 	void ChangeNextScene()
-	{
+{
 		CSync sync(&m_Crt);
 
 		if (m_NextScene)
-			m_NextScene->m_Change = true;
-	}
+			m_NextScene->SetAutoChange(true);
+}
 
 	DECLARE_SINGLE(CSceneManager)
 };

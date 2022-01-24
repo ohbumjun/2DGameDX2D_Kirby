@@ -214,12 +214,22 @@ bool CSpriteEditWindow::Init()
 	m_EndFramePosYInput = AddWidget<CIMGUITextInput>("EndY");
 	m_EndFramePosYInput->SetSize(80.f, 30.f);
 
-	// =================================================
+	// =============================
 
 	Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditFrameButton);
 
-	// =================================================
+	// =============================
+	Button = AddWidget<CIMGUIButton>("RightEnd", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToRightEnd);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	Button = AddWidget<CIMGUIButton>("LeftEnd", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToLeftEnd);
+
+	// =============================
 	m_Animation = new CAnimationSequence2DInstance;
 	m_Animation->Init();
 	m_Animation->Stop();
@@ -1163,4 +1173,44 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 
 	// 클릭시 Animation 멈춰주기
 	m_Animation->Stop();
+}
+
+void CSpriteEditWindow::SetDragObjectToRightEnd()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+	CTexture* SequenceTexture = Sequence->GetTexture();
+
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+	// Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos   = DragObject->GetEndPos();
+
+	DragObject->SetEndPos(Vector2(TextureSize.x - 0.1f, DragObjectEndPos.y));
+
+}
+
+void CSpriteEditWindow::SetDragObjectToLeftEnd()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+	CTexture* SequenceTexture = Sequence->GetTexture();
+
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	DragObject->SetStartPos(Vector2(0.1f, DragObjectStartPos.y));
+	DragObject->SetEndPos(DragObjectEndPos);
 }

@@ -111,8 +111,6 @@ void CTransform::InheritParentRotationPos(bool Current)
 {
 	if (m_Parent)
 	{
-		Matrix matRot;
-
 		Vector3 ParentRot;
 
 		if (m_InheritRotX)
@@ -266,8 +264,8 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 		else
 		{
 			// 굳이 왜 이렇게 바꿔주는 것일까 ?
-			// m_RelativePos = m_WorldPos - m_Parent->GetWorldPos();
-			m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
+			m_RelativePos = m_WorldPos - m_Parent->GetWorldPos();
+			// m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
 		}
 	}
 
@@ -278,6 +276,7 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 
 	for (size_t i = 0; i < Size; ++i)
 	{
+		// m_vecChild[i]->InheritParentRotationWorldPos(false);
 		m_vecChild[i]->InheritParentRotationPos(false);
 	}
 }

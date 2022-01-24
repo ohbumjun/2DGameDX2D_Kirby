@@ -57,4 +57,7 @@ public:
 public:
 	void SelectAnimationSequence(int, const char*);
 	void SelectAnimationFrame(int, const char*);
+public :
+	void SetDragObjectToRightEnd();
+	void SetDragObjectToLeftEnd();
 };
