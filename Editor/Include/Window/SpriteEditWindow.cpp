@@ -1513,7 +1513,44 @@ void CSpriteEditWindow::DivideFrameWidth()
 }
 
 void CSpriteEditWindow::DivideFrameHeight()
-{}
+{
+	int DivideNumber = m_DivMultiNumberInput->GetValueInt();
+	if (DivideNumber <= 0)
+		return;
+
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	float FrameHeight = FinalEndPos.y - FinalStartPos.y;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
+	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
+
+	FrameHeight /= (float)DivideNumber;
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(Vector2(FinalEndPos.x, FinalStartPos.y - FrameHeight));
+}
 
 void CSpriteEditWindow::MultiplyFrameWidth()
 {}
