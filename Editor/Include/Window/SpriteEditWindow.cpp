@@ -249,24 +249,63 @@ bool CSpriteEditWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(90.f);
 
-	m_DivideNumberInput = AddWidget<CIMGUITextInput>("DivideNumberInput");
-	m_DivideNumberInput->SetSize(80.f, 30.f);
-	m_DivideNumberInput->SetTextType(ImGuiText_Type::Int);
-	m_DivideNumberInput->SetHideName(true);
+	m_AddDivideNumberInput = AddWidget<CIMGUITextInput>("AddDivideNumberInput");
+	m_AddDivideNumberInput->SetSize(80.f, 30.f);
+	m_AddDivideNumberInput->SetTextType(ImGuiText_Type::Int);
+	m_AddDivideNumberInput->SetHideName(true);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(175.f);
+
+	Button = AddWidget<CIMGUIButton>("AddDivWidth", 100.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameWidthAndAdd);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(280.f);
+
+	Button = AddWidget<CIMGUIButton>("AddDivHeight", 100.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameHeightAndAdd);
+
+	// =============================
+
+	Label = AddWidget<CIMGUILabel>("Num", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	m_DivMultiNumberInput = AddWidget<CIMGUITextInput>("DivMultiNumberInput");
+	m_DivMultiNumberInput->SetSize(80.f, 30.f);
+	m_DivMultiNumberInput->SetTextType(ImGuiText_Type::Int);
+	m_DivMultiNumberInput->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(175.f);
 
 	Button = AddWidget<CIMGUIButton>("DivWidth", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameWidthAndAdd);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameWidth);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(260.f);
 
 	Button = AddWidget<CIMGUIButton>("DivHeight", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameHeightAndAdd);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DivideFrameHeight);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(345.f);
+
+	Button = AddWidget<CIMGUIButton>("MultiWidth", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MultiplyFrameWidth);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(430.f);
+
+	Button = AddWidget<CIMGUIButton>("MultiHeight", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MultiplyFrameHeight);
 
 	// =============================
+
 	m_Animation = new CAnimationSequence2DInstance;
 	m_Animation->Init();
 	m_Animation->Stop();
@@ -1300,7 +1339,7 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 
 void CSpriteEditWindow::DivideFrameWidthAndAdd()
 {
-	int DivideNumber = m_DivideNumberInput->GetValueInt();
+	int DivideNumber = m_AddDivideNumberInput->GetValueInt();
 	if (DivideNumber <= 0)
 		return;
 
@@ -1369,7 +1408,7 @@ void CSpriteEditWindow::DivideFrameWidthAndAdd()
 
 void CSpriteEditWindow::DivideFrameHeightAndAdd()
 {
-	int DivideNumber = m_DivideNumberInput->GetValueInt();
+	int DivideNumber = m_AddDivideNumberInput->GetValueInt();
 	if (DivideNumber <= 0)
 		return;
 
@@ -1433,6 +1472,54 @@ void CSpriteEditWindow::DivideFrameHeightAndAdd()
 
 	m_Animation->Play();
 }
+
+void CSpriteEditWindow::DivideFrameWidth()
+{
+	int DivideNumber = m_DivMultiNumberInput->GetValueInt();
+	if (DivideNumber <= 0)
+		return;
+
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
+	// Texture를 가져온다.
+	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	if (!Sequence)
+		return;
+
+	CTexture* SequenceTexture = Sequence->GetTexture();
+	Vector2 TextureSize = Vector2((float)SequenceTexture->GetWidth(), (float)SequenceTexture->GetHeight());
+
+	Vector2 DragObjectStartPos = DragObject->GetStartPos();
+	Vector2 DragObjectEndPos = DragObject->GetEndPos();
+
+	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
+	Vector2 FinalStartPos = FinalStartEndPos.first;
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
+	Vector2 FinalEndPos = FinalStartEndPos.second;
+	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
+
+	float FrameWidth = FinalEndPos.x - FinalStartPos.x;
+
+	FrameWidth /= (float)DivideNumber;
+
+	DragObject->SetStartPos(FinalStartPos);
+	DragObject->SetEndPos(Vector2(FinalStartPos.x + FrameWidth, FinalEndPos.y));
+}
+
+void CSpriteEditWindow::DivideFrameHeight()
+{}
+
+void CSpriteEditWindow::MultiplyFrameWidth()
+{}
+
+void CSpriteEditWindow::MultiplyFrameHeight()
+{}
 
 std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
 {
