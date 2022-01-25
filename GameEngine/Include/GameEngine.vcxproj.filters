@@ -187,6 +187,12 @@
     <Filter Include="02. Resource\02. Shader\04. StructuredBuffer">
       <UniqueIdentifier>{bfb43ec3-7497-420e-a101-41a997c7cf4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\03. ConstantBuffer\07. Global">
+      <UniqueIdentifier>{d29e892d-155c-485b-809c-a544c4fad846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Resource\02. Shader\03. ConstantBuffer\08. Particle">
+      <UniqueIdentifier>{f4bc3ee8-995c-45ba-8740-0b591825c06b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -555,6 +561,9 @@
     <ClInclude Include="Resource\Shader\StructuredBuffer.h">
       <Filter>02. Resource\02. Shader\04. StructuredBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\ParticleConstantBuffer.h">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\08. Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -875,6 +884,9 @@
     <ClCompile Include="Resource\Shader\StructuredBuffer.cpp">
       <Filter>02. Resource\02. Shader\04. StructuredBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Shader\ParticleConstantBuffer.cpp">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\08. Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\Shader\ShaderInfo.fx">
@@ -890,6 +902,9 @@
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Shader\Widget.fx">
+      <Filter>02. Resource\02. Shader\01. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\Particle.fx">
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
   </ItemGroup>

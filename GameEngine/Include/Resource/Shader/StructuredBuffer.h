@@ -27,7 +27,16 @@ public :
 		return m_Buffer;
 }
 public :
-	bool Init(const std::string& Name, unsigned int Size, unsigned int Count,
-		int Register, bool Dynamic = false, int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
+	bool Init(const std::string& Name, int Register, int Size, bool Dynamic, int Count,
+		int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
+	void UpdateBuffer(void* Data, int Count);
+	CStructuredBuffer* Clone();
+	void SetShader();
+	void ResetShader();
+	void CopyData(void* Data);// gpu 의 계산 셰이더 결과 내용 읽어오기 
+	void CopyResource(CStructuredBuffer* Buffer); // 자원 복사
+private :
+	// void SetShader(int Register, int StructuredBufferShaderType);
+	// void ResetShader(int Register, int StructuredBufferShaderType);
 };
 
