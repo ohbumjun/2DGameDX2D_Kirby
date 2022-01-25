@@ -357,3 +357,12 @@ struct ParticleCBuffer {
 	float Empty;
 
 };
+
+struct GlobalCBuffer
+{
+	float g_DeltaTime;
+	float g_AccTime;
+	Vector2 g_Resolution;
+	Vector2 g_NoiseResolution;
+	Vector2 g_GlobalEmpty;
+};

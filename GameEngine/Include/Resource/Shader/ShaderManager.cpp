@@ -67,6 +67,9 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("ProgressCBuffer", sizeof(ProgressBarCBuffer), 12,
 		(int)(Buffer_Shader_Type::Graphic));
 
+	CreateConstantBuffer("ParticleCBuffer", sizeof(ParticleCBuffer), 11,
+		(int)(Buffer_Shader_Type::Compute));
+
 	return true;
 }
 

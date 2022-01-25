@@ -564,6 +564,9 @@
     <ClInclude Include="Resource\Shader\ParticleConstantBuffer.h">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\08. Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\GlobalConstantBuffer.h">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\07. Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -886,6 +889,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\ParticleConstantBuffer.cpp">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\08. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\GlobalConstantBuffer.cpp">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\07. Global</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
