@@ -21,6 +21,8 @@ private:
 	CSharedPtr<class CUIWindow> m_MouseWidget[(int)Mouse_State::Max];
 	class CGlobalConstantBuffer* m_GlobalCBuffer;
 	float m_GlobalAccTime;
+	CSharedPtr<class CTexture> m_GlobalNoiseTexture;
+
 public:
 	CUIWindow* GetMouseWidget() const
 	{
