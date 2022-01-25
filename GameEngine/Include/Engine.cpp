@@ -8,6 +8,7 @@
 #include "Resource/ResourceManager.h"
 #include "Scene/SceneManager.h"
 #include "Collision/CollisionManager.h"
+#include "Resource/Shader/GlobalConstantBuffer.h"
 
 DEFINITION_SINGLE(CEngine)
 
@@ -20,7 +21,9 @@ CEngine::CEngine() :
 	m_Play(true),
 	m_Space(Engine_Space::Space2D),
 	m_MouseState(Mouse_State::Normal),
-	m_ShowCursor(true)
+	m_ShowCursor(true),
+	m_GlobalAccTime(0.f),
+	m_GlobalCBuffer(nullptr)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(100);
@@ -47,6 +50,8 @@ CEngine::~CEngine()
 	CDevice::DestroyInst();
 
 	SAFE_DELETE(m_Timer);
+
+	SAFE_DELETE(m_GlobalCBuffer);
 }
 
 void CEngine::SetMouseState(Mouse_State State)
@@ -116,6 +121,15 @@ bool CEngine::Init(HINSTANCE    hInst, HWND         hWnd,
 	if (!CCollisionManager::GetInst()->Init())
 		return false;
 
+	// 상수 버퍼
+	m_GlobalCBuffer = new CGlobalConstantBuffer;
+
+	if (!m_GlobalCBuffer->Init())
+		return false;
+
+	Vector2 RS = Vector2((float)m_RS.Width, (float)m_RS.Height);
+	m_GlobalCBuffer->SetResolution(RS);
+
 	return true;
 }
 
@@ -168,6 +182,13 @@ void CEngine::Logic()
 
 	if (!m_Play)
 		DeltaTime = 0.f;
+
+	m_GlobalAccTime += DeltaTime;
+
+	m_GlobalCBuffer->SetDeltaTime(DeltaTime);
+	m_GlobalCBuffer->SetAccTime(m_GlobalAccTime);
+
+	m_GlobalCBuffer->UpdateCBuffer();
 
 	CInput::GetInst()->Update(DeltaTime);
 

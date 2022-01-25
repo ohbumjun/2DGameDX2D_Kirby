@@ -4,8 +4,7 @@
 class CGlobalConstantBuffer :
     public CConstantBufferBase
 {
-    friend class CShaderManager;
-protected:
+public:
     CGlobalConstantBuffer();
     CGlobalConstantBuffer(const CGlobalConstantBuffer& Buffer);
     virtual ~CGlobalConstantBuffer() override;

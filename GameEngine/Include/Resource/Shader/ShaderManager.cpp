@@ -70,6 +70,9 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("ParticleCBuffer", sizeof(ParticleCBuffer), 11,
 		(int)(Buffer_Shader_Type::Compute));
 
+	CreateConstantBuffer("GlobalCBuffer", sizeof(GlobalCBuffer), 11,
+		(int)(Buffer_Shader_Type::All));
+
 	return true;
 }
 
