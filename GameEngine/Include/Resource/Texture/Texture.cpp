@@ -110,6 +110,7 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 
 	SetName(Name);
 
+	// Full 경로
 	TCHAR* FullPath1 = new TCHAR[MAX_PATH];
 	memset(FullPath1, 0, sizeof(TCHAR) * MAX_PATH);
 
@@ -117,6 +118,40 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 
 	Info->FullPath = FullPath1;
 
+	char* FullPath1Multibyte = new char[MAX_PATH];
+	memset(FullPath1Multibyte, 0, sizeof(char) * MAX_PATH);
+
+#ifdef UNICODE
+
+	int ConvertFullPathLength = WideCharToMultiByte(CP_ACP, 0, FullPath1, -1, nullptr, 0, nullptr, nullptr);
+	WideCharToMultiByte(CP_ACP, 0, FullPath1, -1, FullPath1Multibyte, ConvertFullPathLength, nullptr, nullptr);
+
+#else
+
+	strcpy_s(Ext, _FileExt);
+
+#endif
+
+
+	// PathName
+	char* PathName = new char[MAX_PATH];
+	memset(PathName, 0, sizeof(char) * MAX_PATH);
+
+	int FullPathLength = strlen(FullPath1Multibyte);
+
+	for (int i = FullPathLength - 1; i >= 0; i--)
+	{
+		if (FullPath1Multibyte[i] == '\\')
+		{
+			memset(&FullPath1Multibyte[i + 1], 0, sizeof(char) * (FullPathLength - i - 1));
+			break;
+		}
+	}
+	strcpy_s(PathName, MAX_PATH, FullPath1Multibyte);
+	Info->PathName = PathName;
+
+
+	// FileName + 확장자
 	Info->FileName = new TCHAR[MAX_PATH];
 	memset(Info->FileName, 0, sizeof(TCHAR) * MAX_PATH);
 
@@ -126,11 +161,6 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 
 	lstrcat(Info->FileName, _FileExt);
 
-	Info->PathName = new char[MAX_PATH];
-	memset(Info->PathName, 0, sizeof(char) * MAX_PATH);
-
-	// 굳이 필요 없을 수도 있기 때문이다. 
-	// strcpy_s(Info->PathName, PathName.length() + 1, PathName.c_str());
 
 	char Ext[_MAX_EXT] = {};
 
