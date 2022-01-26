@@ -1,5 +1,4 @@
 #include "ParticleConstantBuffer.h"
-
 #include "ConstantBuffer.h"
 
 CParticleConstantBuffer::CParticleConstantBuffer()

@@ -235,6 +235,8 @@
     <ClInclude Include="Resource\Mesh\MeshManager.h" />
     <ClInclude Include="Resource\Mesh\SpriteMesh.h" />
     <ClInclude Include="Resource\Mesh\StaticMesh.h" />
+    <ClInclude Include="Resource\Particle\Particle.h" />
+    <ClInclude Include="Resource\Particle\ParticleUpdateShader.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Resource\Shader\Animation2DConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\ColliderConstantBuffer.h" />
@@ -350,6 +352,8 @@
     <ClCompile Include="Resource\Mesh\MeshManager.cpp" />
     <ClCompile Include="Resource\Mesh\SpriteMesh.cpp" />
     <ClCompile Include="Resource\Mesh\StaticMesh.cpp" />
+    <ClCompile Include="Resource\Particle\Particle.cpp" />
+    <ClCompile Include="Resource\Particle\ParticleUpdateShader.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Resource\Shader\Animation2DConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\ColliderConstantBuffer.cpp" />
