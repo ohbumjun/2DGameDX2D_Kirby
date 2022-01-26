@@ -20,12 +20,18 @@ void CIMGUIImage::SetTexture(const std::string& Name, const TCHAR* FileName, con
 
 	m_Texture = CResourceManager::GetInst()->FindTexture(Name);
 
+	if (!m_Texture)
+		return;
+
 	SetImageEnd(static_cast<float>(m_Texture->GetWidth()), static_cast<float>(m_Texture->GetHeight()));
 }
 
 void CIMGUIImage::SetTexture(const std::string& Name)
 {
 	m_Texture = CResourceManager::GetInst()->FindTexture(Name);
+
+	if (!m_Texture)
+		return;
 
 	SetImageStart(0.f, 0.f);
 	SetImageEnd(static_cast<float>(m_Texture->GetWidth()), static_cast<float>(m_Texture->GetHeight()));
@@ -37,12 +43,18 @@ void CIMGUIImage::SetTextureFullPath(const std::string& Name, const TCHAR* FullP
 
 	m_Texture = CResourceManager::GetInst()->FindTexture(Name);
 
+	if (!m_Texture)
+		return;
+
 	SetImageEnd(static_cast<float>(m_Texture->GetWidth()), static_cast<float>(m_Texture->GetHeight()));
 }
 
 void CIMGUIImage::SetTexture(CTexture* Texture)
 {
 	m_Texture = Texture;
+
+	if (!m_Texture)
+		return;
 
 	SetImageEnd(static_cast<float>(m_Texture->GetWidth()), static_cast<float>(m_Texture->GetHeight()));
 }

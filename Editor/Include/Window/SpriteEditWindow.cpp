@@ -922,6 +922,14 @@ void CSpriteEditWindow::LoadSequence()
 		// 이름으로 Sequence를 가져오고
 		CAnimationSequence2D* LoadedSequence = Resource->FindAnimationSequence2D(SequenceName);
 
+		// Animation List가 없다면 세팅한다
+		if (!m_Animation)
+		{
+			m_Animation = new CAnimationSequence2DInstance;
+			m_Animation->Init();
+		}
+		m_Animation->AddAnimation(SequenceName, SequenceName);
+
 		// 해당 이름을 m_AnimationList 에 추가해주고
 		m_AnimationList->AddItem(SequenceName);
 
@@ -1141,6 +1149,9 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	// 해당 idx의 Sequence 정보 가져오기
 	// SceneResource가 아니라, 해당 m_Animation로 부터 가져와야 하는 거 아닌가 ?
 	// CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
+
+	if (!m_Animation)
+		return;
 
 	std::string           ChangedSequenceName    = m_AnimationList->GetItem(Index);
 
@@ -1709,6 +1720,9 @@ void CSpriteEditWindow::MoveOneBlockRight()
 	if (!DragObject)
 		return;
 
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1745,6 +1759,9 @@ void CSpriteEditWindow::MoveOneBlockLeft()
 {
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
 	// Texture를 가져온다.
@@ -1784,6 +1801,9 @@ void CSpriteEditWindow::MoveOneBlockUp()
 	if (!DragObject)
 		return;
 
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
+		return;
+
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1821,6 +1841,9 @@ void CSpriteEditWindow::MoveOneBlockDown()
 {
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
+		return;
+
+	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
 	// Texture를 가져온다.
