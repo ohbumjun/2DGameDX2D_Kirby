@@ -65,23 +65,43 @@ bool CSpriteEditWindow::Init()
 
 	// ==============================
 
-	Button = AddWidget<CIMGUIButton>("MvRight", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("MvBlockRight", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockRight);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("MvLeft", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("MvBlockLeft", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockLeft);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("MvUp", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("MvBlockUp", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockUp);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("MvDown", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("MvBlockDown", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockDown);
+
+	// ==============================
+
+	Button = AddWidget<CIMGUIButton>("MvPixRight", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelRight);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("MvPixLeft", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelLeft);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("MvPixUp", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelUp);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("MvPixDown", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelDown);
 
 	// ==============================
 
@@ -1689,9 +1709,6 @@ void CSpriteEditWindow::MoveOneBlockRight()
 	if (!DragObject)
 		return;
 
-	if (!m_Animation || !m_Animation->GetCurrentAnimation())
-		return;
-
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1730,9 +1747,6 @@ void CSpriteEditWindow::MoveOneBlockLeft()
 	if (!DragObject)
 		return;
 
-	if (!m_Animation || !m_Animation->GetCurrentAnimation())
-		return;
-
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1768,9 +1782,6 @@ void CSpriteEditWindow::MoveOneBlockUp()
 {
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
-		return;
-
-	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
 	// Texture를 가져온다.
@@ -1812,9 +1823,6 @@ void CSpriteEditWindow::MoveOneBlockDown()
 	if (!DragObject)
 		return;
 
-	if (!m_Animation || !m_Animation->GetCurrentAnimation())
-		return;
-
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1846,6 +1854,68 @@ void CSpriteEditWindow::MoveOneBlockDown()
 
 	DragObject->SetStartPos(FinalStartPos);
 	DragObject->SetEndPos(FinalEndPos);
+}
+
+void CSpriteEditWindow::MoveOnePixelRight()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	DragObject->AddWorldPos(Vector3(1.f, 0.0f, 0.f));
+	// Start, End Pos도 바꿔준다.
+	Vector2 StartPos = DragObject->GetStartPos();
+	StartPos = Vector2(StartPos.x + 1.f, StartPos.y);
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x + 1.f, EndPos.y);
+	DragObject->SetStartPos(StartPos);
+	DragObject->SetEndPos(EndPos);
+}
+
+void CSpriteEditWindow::MoveOnePixelLeft()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+
+	DragObject->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
+	// Start, End Pos도 바꿔준다.
+	Vector2 StartPos = DragObject->GetStartPos();
+	StartPos = Vector2(StartPos.x - 1.f, StartPos.y);
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x - 1.f, EndPos.y);
+	DragObject->SetStartPos(StartPos);
+	DragObject->SetEndPos(EndPos);
+}
+
+void CSpriteEditWindow::MoveOnePixelUp()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	DragObject->AddWorldPos(Vector3(0.f, 1.f, 0.f));
+
+	// Start, End Pos도 바꿔준다.
+	Vector2 StartPos = DragObject->GetStartPos();
+	StartPos = Vector2(StartPos.x, StartPos.y + 1.f);
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
+	DragObject->SetStartPos(StartPos);
+	DragObject->SetEndPos(EndPos);
+}
+
+void CSpriteEditWindow::MoveOnePixelDown()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	DragObject->AddWorldPos(Vector3(0.f, -1.f, 0.f));
+	// Start, End Pos도 바꿔준다.
+	Vector2 StartPos = DragObject->GetStartPos();
+	StartPos = Vector2(StartPos.x, StartPos.y - 1.f);
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
+	DragObject->SetStartPos(StartPos);
+	DragObject->SetEndPos(EndPos);
 }
 
 std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)

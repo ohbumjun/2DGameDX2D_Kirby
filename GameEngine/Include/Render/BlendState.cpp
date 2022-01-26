@@ -2,7 +2,7 @@
 #include "../Device.h"
 
 CBlendState::CBlendState() :
-	m_SampleMask(0xffffffff),
+	m_SampleMask(0xffffffff), // 32-bit sample coverage. The default value is 0xffffffff.
 	m_PrevSampleMask(0),
 	m_BlendFactor{},
 	m_PrevBlendFactor{}
@@ -20,6 +20,16 @@ void CBlendState::AddBlendInfo(bool           BlendEnable, D3D11_BLEND SrcBlend,
                                UINT8          RenderTargetWriteMask)
 {
 	D3D11_RENDER_TARGET_BLEND_DESC Desc = {};
+
+
+	// 결과 픽셀 : ( Src * SrcBlend ) BlendOp (Dest * DestBlend)
+	/*
+	SrcBlend에 D3D11_BLEND_SRC_ALPHA 를 주고, DestBlend에 D3D11_BLEND_INV_SRC_ALPHA를 주면
+	원본 이미지의 색과 대상 이미지의 색이 혼합되게 됩니다. 흔히 우리가 말하는 알파 블랜딩이지요.
+
+	보통은 SrcBlend에 D3D11_BLEND_ONE 을 주고
+	DestBlend에 D3D11_BLEND_ZERO를 줘서 알파 값에 변동이 없도록 합니다.
+	 */
 
 	Desc.BlendEnable    = BlendEnable; // 픽셀 셰이더의 값과, 렌더 타겟의 값의 블렌드 처리를 할지 안할지를 설정하며, 렌더 타겟마다 설정할 수 있다. 
 	Desc.SrcBlend       = SrcBlend;
@@ -56,20 +66,36 @@ void CBlendState::SetState()
 {
 	CDevice::GetInst()->GetContext()->OMGetBlendState(
 	                                                  (ID3D11BlendState**)&m_PrevState,
-	                                                  m_PrevBlendFactor,
+	                                                  m_PrevBlendFactor, // r,g,b,a 각각에 대한 BlendFactor
 	                                                  &m_PrevSampleMask);
 
 	CDevice::GetInst()->GetContext()->OMSetBlendState(
 	                                                  static_cast<ID3D11BlendState*>(m_State),
 	                                                  // 설정할 ID3D11BlendState 인터페이스 
 	                                                  m_BlendFactor, // r,g,b,a 상수값 
-	                                                  m_SampleMask);
+	                                                  m_SampleMask); // A sample mask determines which samples get updated in all the active render targets
 }
 
+/*
+Blend 의 경우,
+함수와 매개변수를 응용 프로그램이 설정하여
+다양한 종류의 혼합 모드를 구성할 수 있다.
+
+이미 설정된 녀석외에
+새로운 녀석을 계속 세팅해주기 위해서 
+
+ */
 void CBlendState::ResetState()
 {
 	CDevice::GetInst()->GetContext()->OMSetBlendState(static_cast<ID3D11BlendState*>(m_PrevState), m_PrevBlendFactor,
 	                                                  m_PrevSampleMask);
+	/*
+	The reference count of the returned interface will be incremented by one
+	when the blend state is retrieved.
+	Applications must release returned pointer(s) when they are no longer needed,
+	or else there will be a memory leak.
 
+	아래와 같이 SAFE_RELEASE를 해주는 이유
+	 */
 	SAFE_RELEASE(m_PrevState);
 }

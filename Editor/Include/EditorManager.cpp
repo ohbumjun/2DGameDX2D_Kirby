@@ -187,7 +187,7 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 		Vector2 StartPos = m_DragObj->GetStartPos();
 		StartPos = Vector2(StartPos.x + 1.f, StartPos.y);
 		Vector2 EndPos = m_DragObj->GetEndPos();
-		EndPos = Vector2(EndPos.x + 1.f, EndPos.y + 1.f);
+		EndPos = Vector2(EndPos.x + 1.f, EndPos.y);
 		m_DragObj->SetStartPos(StartPos);
 		m_DragObj->SetEndPos(EndPos);
 	}

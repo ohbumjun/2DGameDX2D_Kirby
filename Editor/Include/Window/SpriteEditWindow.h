@@ -79,6 +79,11 @@ private :
 	void MoveOneBlockLeft();
 	void MoveOneBlockUp();
 	void MoveOneBlockDown();
+private:
+	void MoveOnePixelRight();
+	void MoveOnePixelLeft();
+	void MoveOnePixelUp();
+	void MoveOnePixelDown();
 private :
 	std::pair<Vector2, Vector2> GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd);
 };

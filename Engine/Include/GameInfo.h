@@ -336,3 +336,33 @@ struct PixelInfo {
 	{}
 };
 
+struct ParticleCBuffer {
+	unsigned int SpawnCount; // 현재 파티클 생성 수
+	Vector3 StartMin; 
+	Vector3 StartMax;
+	unsigned int  SpawnCountMax;
+	Vector3 ScaleMin;
+	Vector3 ScaleMax;
+	float LifeTimeMin;
+	float LifeTimeMax;
+	Vector4 ColorMin;
+	Vector4 ColorMax;
+	float SpeedMin;
+	float SpeedMax;
+	int Move;
+	int Gravity;
+	Vector3 MoveDir;
+	int Is2D;
+	Vector3 MoveAngle;
+	float Empty;
+
+};
+
+struct GlobalCBuffer
+{
+	float g_DeltaTime;
+	float g_AccTime;
+	Vector2 g_Resolution;
+	Vector2 g_NoiseResolution;
+	Vector2 g_GlobalEmpty;
+};
