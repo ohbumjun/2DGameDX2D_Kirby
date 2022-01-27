@@ -56,7 +56,7 @@ void CParticle::AddStructuredBuffer(const std::string& Name, int Register, int C
 
 	for (size_t i = 0; i < VecSize; i++)
 	{
-		if (m_vecStructuredBuffer[i]->m_Name == Name)
+		if (m_vecStructuredBuffer[i]->GetName() == Name)
 			return;
 	}
 
@@ -82,6 +82,16 @@ void CParticle::ResizeBuffer(const std::string& Name, unsigned Size, unsigned Co
 			m_vecStructuredBuffer[i]->Init(Name, Register, Size, Dynamic, Count, StructuredBufferShaderType);
 			break;
 		}
+	}
+}
+
+void CParticle::CloneStructuredBuffer(std::vector<CStructuredBuffer*>& vecBuffer)
+{
+	size_t Size = m_vecStructuredBuffer.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		vecBuffer.push_back(m_vecStructuredBuffer[i]->Clone());
 	}
 }
 

@@ -30,9 +30,11 @@ private :
 	ParticleInfo m_ParticleInfo;
 	ParticleInfoShared m_ParticleSharedInfo;
 	float m_SpawnTime;
-	// 
 	float m_SpawnTimeMax;
-	
+public :
+	void SetParticle(const std::string& Name);
+	void SetParticle(CParticle* Particle);
+	void SetSpawnTime(float Time);
 public:
 	virtual void             Start() override;
 	virtual bool             Init() override;

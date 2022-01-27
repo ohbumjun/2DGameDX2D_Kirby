@@ -420,3 +420,39 @@ void CSceneResource::SetGroupVolume(const std::string& GroupName, float Volume)
 	CResourceManager::GetInst()->SetGroupVolume(GroupName, Volume); 
 }
 
+bool CSceneResource::CreateParticle(const std::string& Name)
+{
+	CParticle* Particle = FindParticle(Name);
+	if (Particle)
+		return true;
+
+	if (!CResourceManager::GetInst()->CreateParticle(Name))
+	{
+		return false;
+	}
+
+	Particle = CResourceManager::GetInst()->FindParticle(Name);
+	m_mapParticle.insert(std::make_pair(Name, Particle));
+
+	return true;
+}
+
+CParticle* CSceneResource::FindParticle(const std::string& Name)
+{
+	auto iter = m_mapParticle.find(Name);
+
+	if (iter == m_mapParticle.end())
+	{
+		CParticle* Particle = CResourceManager::GetInst()->FindParticle(Name);
+
+		if (!Particle)
+			return nullptr;
+
+		m_mapParticle.insert(std::make_pair(Name, Particle));
+
+		return Particle;
+	}
+
+	return iter->second;
+}
+

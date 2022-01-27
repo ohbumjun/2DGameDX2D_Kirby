@@ -4,8 +4,7 @@
 
 class CStructuredBuffer
 {
-	friend class CParticle;
-protected :
+public :
 	CStructuredBuffer();
 	CStructuredBuffer(const CStructuredBuffer& Buffer);
 	~CStructuredBuffer();
@@ -26,6 +25,10 @@ public :
 	ID3D11Buffer* GetBuffer() const
 {
 		return m_Buffer;
+}
+	std::string GetName() const
+{
+		return m_Name;
 }
 public :
 	bool Init(const std::string& Name, int Register, int Size, bool Dynamic, int Count,

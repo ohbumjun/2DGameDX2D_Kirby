@@ -21,16 +21,33 @@ private :
     class CParticleConstantBuffer* m_ParticleConstantBuffer;
     float m_SpawnTime;
     bool m_Is2D;
+    int   m_SpawnCountMax;
 public :
     bool Init();
 public:
-    void AddStructuredBuffer(const std::string& Name, int Register, int Size, bool Dynamic, int Count,
+    void AddStructuredBuffer(const std::string& Name, int Register, int Size, int Count, 
+        bool Dynamic = false,
         int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
+    void ResizeBuffer(const std::string& Name, unsigned int Size, unsigned int Count,
+        int Register, bool Dynamic = false,
+        int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
+    void CloneStructuredBuffer(std::vector<class CStructuredBuffer*>& vecBuffer);
+public :
+    CParticleUpdateShader* GetParticleUpdateShader() const
+{
+        return m_ParticleUpdateShader;
+}
+    CParticleConstantBuffer* CloneParticleConstantBuffer() const
+{
+        return m_ParticleConstantBuffer;
+}
+public : // 상수 정보 세팅
+    void SetSpawnCountMax(int Count);
     void SetMaterial(class CMaterial* Material)
     {
         m_Material = Material;
     }
-public : // 상수 정보 세팅
+
     void SetSpawnCount(unsigned int Count)
     {
         m_ParticleConstantBuffer->SetSpawnCount(Count);
