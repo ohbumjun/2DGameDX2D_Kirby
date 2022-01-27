@@ -112,6 +112,12 @@ bool CSpriteEditWindow::Init()
 
 	m_SpriteSampled = AddWidget<CIMGUIImage>("SpriteSampled", 200.f, 200.f);
 
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(510.f);
+
+	m_SpriteCurrentFrame = AddWidget<CIMGUIImage>("SpriteCurrentFrame", 200.f, 200.f);
+	m_SpriteCurrentFrame->SetTexture("DefaultUI");
+
 	// ==============================
 
 	CIMGUILabel* Label = AddWidget<CIMGUILabel>("AnimationListName", 200.f, 30.f);
@@ -413,6 +419,7 @@ void CSpriteEditWindow::LoadTextureButton()
 		WideCharToMultiByte(CP_ACP, 0, FileName, -1, ConvertFileName, Length, nullptr, nullptr);
 
 		m_Sprite->SetTextureFullPath(ConvertFileName, FilePath);
+		m_SpriteCurrentFrame->SetTextureFullPath(ConvertFileName, FilePath);
 		m_SpriteObject->GetSpriteComponent()->SetTextureFullPath(TextureIndex, 0,
 		                                                         static_cast<int>(Buffer_Shader_Type::Pixel),
 		                                                         ConvertFileName, FilePath);
@@ -710,6 +717,7 @@ void CSpriteEditWindow::DeleteFrameButton()
 		CEditorManager::GetInst()->GetDragObject()->SetStartPos(StartPos);
 		CEditorManager::GetInst()->GetDragObject()->SetEndPos(EndPos);
 
+
 	}
 
 	// If No Frame Left, Set Default Texture
@@ -971,11 +979,17 @@ void CSpriteEditWindow::LoadSequence()
 
 			// 해당 Frame의 St, End를 반영하여 SampledSprite 에 세팅해두기
 			AnimationFrameData AnimFrame = LoadedSequence->GetFrameData(m_AnimationFrameList->GetSelectIndex());
+
 			Vector2 StartPos = AnimFrame.Start;
 			Vector2 EndPos   = StartPos + AnimFrame.Size;
+
 			m_SpriteSampled->SetTexture(LoadedSequence->GetTexture());
 			m_SpriteSampled->SetImageStart(StartPos);
 			m_SpriteSampled->SetImageEnd(EndPos);
+
+			m_SpriteCurrentFrame->SetTexture(LoadedSequence->GetTexture());
+			m_SpriteCurrentFrame->SetImageStart(StartPos);
+			m_SpriteCurrentFrame->SetImageEnd(EndPos);
 
 			// 해당 Frame의 St, End를 이용하여 DragObject 를 그리기
 			StartPos.y = LoadedSequence->GetTexture()->GetHeight() - StartPos.y;
@@ -1295,8 +1309,9 @@ void CSpriteEditWindow::SetDragObjectToRightEnd()
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	DragObject->SetStartPos(FinalStartPos);
@@ -1325,9 +1340,11 @@ void CSpriteEditWindow::SetDragObjectToLeftEnd()
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	DragObject->SetStartPos(Vector2(0.1f, FinalStartPos.y));
@@ -1356,8 +1373,9 @@ void CSpriteEditWindow::SetDragObjectToTop()
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	DragObject->SetStartPos(Vector2(FinalStartPos.x, TextureSize.y - 0.1f));
@@ -1385,9 +1403,11 @@ void CSpriteEditWindow::SetDragObjectToBottom()
 	Vector2 DragObjectEndPos = DragObject->GetEndPos();
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
+
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	DragObject->SetStartPos(FinalStartPos);
@@ -1578,8 +1598,9 @@ void CSpriteEditWindow::DivideFrameWidth()
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	float FrameWidth = FinalEndPos.x - FinalStartPos.x;
@@ -1657,8 +1678,9 @@ void CSpriteEditWindow::MultiplyFrameWidth()
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	float FrameWidth = FinalEndPos.x - FinalStartPos.x;
@@ -1777,8 +1799,9 @@ void CSpriteEditWindow::MoveOneBlockLeft()
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(DragObjectStartPos, DragObjectEndPos);
 	Vector2 FinalStartPos = FinalStartEndPos.first;
-	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
+
+	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
 
 	float FrameWidth = FinalEndPos.x - FinalStartPos.x;
@@ -1862,6 +1885,7 @@ void CSpriteEditWindow::MoveOneBlockDown()
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos = FinalStartEndPos.second;
 
+
 	float FrameHeight = FinalEndPos.y - FinalStartPos.y;
 	FinalStartPos.y = TextureSize.y - FinalStartPos.y;
 	FinalEndPos.y = TextureSize.y - FinalEndPos.y;
@@ -1892,6 +1916,12 @@ void CSpriteEditWindow::MoveOnePixelRight()
 	EndPos = Vector2(EndPos.x + 1.f, EndPos.y);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
+
+	// m_Sprite UIImage 에도 세팅
+	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
+	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
+	EndPos.y   = (float)Texture->GetHeight() - EndPos.y;
+
 }
 
 void CSpriteEditWindow::MoveOnePixelLeft()
@@ -1908,6 +1938,12 @@ void CSpriteEditWindow::MoveOnePixelLeft()
 	EndPos = Vector2(EndPos.x - 1.f, EndPos.y);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
+
+	// m_Sprite UIImage 에도 세팅
+	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
+	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
+	EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+
 }
 
 void CSpriteEditWindow::MoveOnePixelUp()
@@ -1924,6 +1960,12 @@ void CSpriteEditWindow::MoveOnePixelUp()
 	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
+
+	// m_Sprite UIImage 에도 세팅
+	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
+	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
+	EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+
 }
 
 void CSpriteEditWindow::MoveOnePixelDown()
@@ -1939,11 +1981,26 @@ void CSpriteEditWindow::MoveOnePixelDown()
 	EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
+
+	// m_Sprite UIImage 에도 세팅
+	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
+	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
+	EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+
+}
+
+void CSpriteEditWindow::SetSpriteCurrentFrameImageStart(const float x, const float y)
+{
+	m_SpriteCurrentFrame->SetImageStart(x, y);
+}
+
+void CSpriteEditWindow::SetSpriteCurrentFrameImageEnd(const float x, const float y)
+{
+	m_SpriteCurrentFrame->SetImageEnd(x, y);
 }
 
 std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd)
 {
-
 	float                 XDiff = -1, YDiff = -1;
 
 	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();

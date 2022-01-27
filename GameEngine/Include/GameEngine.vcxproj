@@ -195,7 +195,6 @@
     <ClInclude Include="fmod_errors.h" />
     <ClInclude Include="fmod_output.h" />
     <ClInclude Include="GameInfo.h" />
-    <ClInclude Include="GameObject\DamageFont.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -236,6 +235,7 @@
     <ClInclude Include="Resource\Mesh\SpriteMesh.h" />
     <ClInclude Include="Resource\Mesh\StaticMesh.h" />
     <ClInclude Include="Resource\Particle\Particle.h" />
+    <ClInclude Include="Resource\Particle\ParticleManager.h" />
     <ClInclude Include="Resource\Particle\ParticleUpdateShader.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Resource\Shader\Animation2DConstantBuffer.h" />
@@ -313,7 +313,6 @@
     <ClCompile Include="Component\WidgetComponent.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="GameObject\DamageFont.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="IMGUIButton.cpp" />
@@ -353,6 +352,7 @@
     <ClCompile Include="Resource\Mesh\SpriteMesh.cpp" />
     <ClCompile Include="Resource\Mesh\StaticMesh.cpp" />
     <ClCompile Include="Resource\Particle\Particle.cpp" />
+    <ClCompile Include="Resource\Particle\ParticleManager.cpp" />
     <ClCompile Include="Resource\Particle\ParticleUpdateShader.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Resource\Shader\Animation2DConstantBuffer.cpp" />

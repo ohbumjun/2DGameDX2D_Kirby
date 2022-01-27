@@ -366,3 +366,25 @@ struct GlobalCBuffer
 	Vector2 g_NoiseResolution;
 	Vector2 g_GlobalEmpty;
 };
+
+struct ParticleInfo
+{
+	Vector3 WorldPos;
+	Vector3 Dir;
+	float Speed;
+	float LifeTime;
+	float LifeTimeMax;
+	int Alive;
+	float FallTime;
+	float FallStartY;
+};
+
+struct ParticleInfoShared
+{
+	int SpawnEnable;
+	Vector3 ScaleMin;
+	Vector3 ScaleMax;
+	Vector4 ColorMin;
+	Vector4 ColorMax;
+	int GravityEnable;
+};

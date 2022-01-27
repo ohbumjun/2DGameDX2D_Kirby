@@ -12,6 +12,8 @@ public:
 private:
 	class CIMGUIImage* m_Sprite;
 	class CIMGUIImage* m_SpriteSampled;
+	class CIMGUIImage* m_SpriteCurrentFrame;
+private :
 	class CIMGUIListBox* m_AnimationList;
 	class CIMGUIListBox* m_AnimationFrameList;
 	class CIMGUITextInput* m_AnimInputName;
@@ -31,7 +33,11 @@ private:
 private:
 	CSharedPtr<class CSpriteEditObject> m_SpriteObject;
 	class CAnimationSequence2DInstance* m_Animation;
-
+public :
+	class CSpriteEditObject* GetSpriteEditObject() const
+{
+		return m_SpriteObject;
+}
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
@@ -84,6 +90,9 @@ private:
 	void MoveOnePixelLeft();
 	void MoveOnePixelUp();
 	void MoveOnePixelDown();
+public :
+	void SetSpriteCurrentFrameImageStart(const float x, const float y);
+	void SetSpriteCurrentFrameImageEnd(const float x, const float y);
 private :
 	std::pair<Vector2, Vector2> GetFinalFrameStartEndPos(const Vector2& FrameStart, const Vector2& FrameEnd);
 };

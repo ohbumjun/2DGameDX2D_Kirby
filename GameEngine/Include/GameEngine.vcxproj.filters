@@ -561,9 +561,6 @@
     <ClInclude Include="Sync.h">
       <Filter>01. Engine\09. Thread</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\DamageFont.h">
-      <Filter>09. UI\02. Widget</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadQueue.h">
       <Filter>01. Engine\09. Thread</Filter>
     </ClInclude>
@@ -584,6 +581,9 @@
     </ClInclude>
     <ClInclude Include="Resource\Particle\ParticleUpdateShader.h">
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Particle\ParticleManager.h">
+      <Filter>소스 파일\헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -899,9 +899,6 @@
     <ClCompile Include="Thread.cpp">
       <Filter>01. Engine\09. Thread</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\DamageFont.cpp">
-      <Filter>09. UI\02. Widget</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Shader\StructuredBuffer.cpp">
       <Filter>02. Resource\02. Shader\04. StructuredBuffer</Filter>
     </ClCompile>
@@ -919,6 +916,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Particle\ParticleUpdateShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Particle\ParticleManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

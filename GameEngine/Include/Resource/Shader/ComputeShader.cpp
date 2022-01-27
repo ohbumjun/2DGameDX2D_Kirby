@@ -2,13 +2,17 @@
 #include "../../Device.h"
 #include "../../PathManager.h"
 
-CComputeShader::CComputeShader()
+CComputeShader::CComputeShader() :
+	m_CSBlob(nullptr),
+	m_CSShader(nullptr)
 {
 	m_Type = Shader_Type::Compute;
 }
 
 CComputeShader::~CComputeShader()
 {
+	SAFE_RELEASE(m_CSShader);
+	SAFE_RELEASE(m_CSBlob);
 }
 
 bool CComputeShader::LoadComputeShader(const char* EntryName, const TCHAR* FileName, const std::string& PathName)

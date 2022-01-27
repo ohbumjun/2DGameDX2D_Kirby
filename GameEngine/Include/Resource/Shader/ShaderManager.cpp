@@ -9,6 +9,7 @@
 #include "WidgetShader.h"
 #include "ProgressBarShader.h"
 #include "NumberShader.h"
+#include "../Particle/ParticleUpdateShader.h"
 
 CShaderManager::CShaderManager()
 {
@@ -43,6 +44,9 @@ bool CShaderManager::Init()
 		return false;
 
 	if (!CreateShader<CNumberShader>("NumberShader"))
+		return false;
+
+	if (!CreateShader<CParticleUpdateShader>("ParticleUpdateShader"))
 		return false;
 
 	// =================== 상수버퍼 ===================

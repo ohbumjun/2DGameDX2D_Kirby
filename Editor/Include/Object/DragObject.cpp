@@ -2,6 +2,9 @@
 #include "Component/StaticMeshComponent.h"
 #include "Render/RenderManager.h"
 #include "Resource/Material/Material.h"
+#include "../Window/SpriteEditWindow.h"
+#include "../EditorManager.h"
+#include "SpriteEditObject.h"
 
 CDragObject::CDragObject()
 {
@@ -21,7 +24,15 @@ void CDragObject::SetStartPos(const Vector2& Pos)
 {
 	m_StartPos = Pos;
 	m_MeshComponent->SetWorldPos(m_StartPos.x, m_StartPos.y, 1.f);
-	// m_MeshComponent->SetWorldPos(0.f, 0.f, 1.f);
+
+	CSpriteEditObject* SpriteEditObject = CEditorManager::GetInst()->GetSpriteWindow()->GetSpriteEditObject();
+	if (SpriteEditObject)
+	{
+		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();
+		Vector2 StartPos = m_StartPos;
+		StartPos.y = (float)Texture->GetHeight() - StartPos.y;
+		CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x, StartPos.y);
+	}
 }
 
 void CDragObject::SetEndPos(const Vector2& Pos)
@@ -29,9 +40,14 @@ void CDragObject::SetEndPos(const Vector2& Pos)
 	m_EndPos = Pos;
 	m_MeshComponent->SetWorldScale(m_EndPos.x - m_StartPos.x, m_EndPos.y - m_StartPos.y, 1.f);
 
-	// DragObject의 경우, 들어오는 EndPos가 화면상 더 아래, 오른쪽 --> y의 경우, StartPos에서 EndPos를 빼줘야 한다.
-	// Vector2 MeshSize = Vector2(m_EndPos.x - m_StartPos.x, m_StartPos.y - m_EndPos.y);
-	// m_MeshComponent->SetMeshSize(m_EndPos.x - m_StartPos.x, m_StartPos.y - m_EndPos.y, 0.f);
+	CSpriteEditObject* SpriteEditObject = CEditorManager::GetInst()->GetSpriteWindow()->GetSpriteEditObject();
+	if (SpriteEditObject)
+	{
+		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();
+		Vector2 EndPos = m_EndPos;
+		EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+		CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageEnd(EndPos.x, EndPos.y);
+	}
 }
 
 bool CDragObject::Init()

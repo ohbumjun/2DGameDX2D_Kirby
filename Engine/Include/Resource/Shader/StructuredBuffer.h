@@ -4,7 +4,8 @@
 
 class CStructuredBuffer
 {
-public :
+	friend class CParticle;
+protected :
 	CStructuredBuffer();
 	CStructuredBuffer(const CStructuredBuffer& Buffer);
 	~CStructuredBuffer();
