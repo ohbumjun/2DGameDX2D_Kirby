@@ -31,7 +31,7 @@ void CDragObject::SetStartPos(const Vector2& Pos)
 		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();
 		Vector2 StartPos = m_StartPos;
 		StartPos.y = (float)Texture->GetHeight() - StartPos.y;
-		CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x, StartPos.y);
+		CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x, StartPos.y);//
 	}
 }
 
