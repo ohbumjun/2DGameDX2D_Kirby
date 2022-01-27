@@ -7,6 +7,7 @@
 #include "Texture/TextureManager.h"
 #include "Sound/SoundManager.h"
 #include "Font/FontManager.h"
+#include "Particle/ParticleManager.h"
 
 class CResourceManager
 {
@@ -18,6 +19,7 @@ private:
 	CAnimationManager* m_AnimationManager;
 	CSoundManager*    m_SoundManager;
 	CFontManager*	     m_FontManager;
+	CParticleManager*	     m_ParticleManager;
 
 public:
 	bool Init();

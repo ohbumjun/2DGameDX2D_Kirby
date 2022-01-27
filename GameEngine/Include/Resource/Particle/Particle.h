@@ -5,7 +5,8 @@
 class CParticle :
     public CRef
 {
-public :
+    friend class CParticleManager;
+private :
     CParticle();
     CParticle(const CParticle& Particle);
     virtual ~CParticle() override;

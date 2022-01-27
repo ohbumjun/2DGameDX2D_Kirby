@@ -180,10 +180,6 @@
     <Filter Include="01. Engine\09. Thread">
       <UniqueIdentifier>{d5deab46-e5aa-4dbe-afaa-421ed72eb3a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="02. Resource\02. Shader\04. StructuredBuffer">
       <UniqueIdentifier>{bfb43ec3-7497-420e-a101-41a997c7cf4b}</UniqueIdentifier>
     </Filter>
@@ -202,13 +198,17 @@
     <Filter Include="02. Resource\02. Shader\02. ShaderClass\05. Particle">
       <UniqueIdentifier>{d41c8129-1426-490d-be7e-759e7dba49e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
       <Filter>01. Engine</Filter>
     </ClInclude>
     <ClInclude Include="GameInfo.h">
-      <Filter>소스 파일\헤더 파일</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Device.h">
       <Filter>01. Engine\01. Device</Filter>
@@ -229,7 +229,7 @@
       <Filter>01. Engine\02. Math</Filter>
     </ClInclude>
     <ClInclude Include="Flag.h">
-      <Filter>소스 파일\헤더 파일</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Ref.h">
       <Filter>01. Engine\03. Ref</Filter>
@@ -583,7 +583,7 @@
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Particle\ParticleManager.h">
-      <Filter>소스 파일\헤더 파일</Filter>
+      <Filter>02. Resource\08. Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -918,7 +918,7 @@
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Particle\ParticleManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Resource\08. Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

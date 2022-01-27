@@ -9,7 +9,8 @@ CResourceManager::CResourceManager() :
 	m_TextureManager(nullptr),
 	m_AnimationManager(nullptr),
 	m_SoundManager(nullptr),
-	m_FontManager(nullptr)
+	m_FontManager(nullptr),
+	m_ParticleManager(nullptr)
 {
 }
 
@@ -22,6 +23,7 @@ CResourceManager::~CResourceManager()
 	SAFE_DELETE(m_TextureManager);
 	SAFE_DELETE(m_SoundManager);
 	SAFE_DELETE(m_FontManager);
+	SAFE_DELETE(m_ParticleManager);
 }
 
 bool CResourceManager::Init()
@@ -59,6 +61,11 @@ bool CResourceManager::Init()
 	m_FontManager = new CFontManager;
 
 	if (!m_FontManager->Init())
+		return false;
+
+	m_ParticleManager = new CParticleManager;
+
+	if (!m_ParticleManager->Init())
 		return false;
 	
 
