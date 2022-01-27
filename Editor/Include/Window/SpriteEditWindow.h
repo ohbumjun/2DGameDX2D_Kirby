@@ -90,6 +90,11 @@ private:
 	void MoveOnePixelLeft();
 	void MoveOnePixelUp();
 	void MoveOnePixelDown();
+private:
+	void EnlargeOnePixelRight();
+	void ReduceOnePixelLeft();
+	void ReduceOnePixelUp();
+	void EnlargeOnePixelDown();
 public :
 	void SetSpriteCurrentFrameImageStart(const float x, const float y);
 	void SetSpriteCurrentFrameImageEnd(const float x, const float y);

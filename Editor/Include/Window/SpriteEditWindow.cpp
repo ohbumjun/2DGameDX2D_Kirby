@@ -104,6 +104,25 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelDown);
 
 	// ==============================
+	Button = AddWidget<CIMGUIButton>("BigPixRight", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EnlargeOnePixelRight);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("BigPixLeft", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ReduceOnePixelLeft);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("BigPixUp", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ReduceOnePixelUp);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("BigPixDown", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EnlargeOnePixelDown);
+
+	// ==============================
 
 	m_Sprite = AddWidget<CIMGUIImage>("SpriteOrigin", 200.f, 200.f);
 
@@ -1917,11 +1936,6 @@ void CSpriteEditWindow::MoveOnePixelRight()
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
 
-	// m_Sprite UIImage 에도 세팅
-	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
-	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
-	EndPos.y   = (float)Texture->GetHeight() - EndPos.y;
-
 }
 
 void CSpriteEditWindow::MoveOnePixelLeft()
@@ -1938,11 +1952,7 @@ void CSpriteEditWindow::MoveOnePixelLeft()
 	EndPos = Vector2(EndPos.x - 1.f, EndPos.y);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
-
-	// m_Sprite UIImage 에도 세팅
-	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
-	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
-	EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+	
 
 }
 
@@ -1960,11 +1970,7 @@ void CSpriteEditWindow::MoveOnePixelUp()
 	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
-
-	// m_Sprite UIImage 에도 세팅
-	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
-	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
-	EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+	
 
 }
 
@@ -1981,12 +1987,48 @@ void CSpriteEditWindow::MoveOnePixelDown()
 	EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
 	DragObject->SetStartPos(StartPos);
 	DragObject->SetEndPos(EndPos);
+	
 
-	// m_Sprite UIImage 에도 세팅
-	CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
-	StartPos.y = (float)Texture->GetHeight() - StartPos.y;
-	EndPos.y = (float)Texture->GetHeight() - EndPos.y;
+}
 
+void CSpriteEditWindow::EnlargeOnePixelRight()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x + 1.f, EndPos.y);
+	DragObject->SetEndPos(EndPos);
+}
+
+void CSpriteEditWindow::ReduceOnePixelLeft()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x - 1.f, EndPos.y);
+	DragObject->SetEndPos(EndPos);
+}
+
+void CSpriteEditWindow::ReduceOnePixelUp()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
+	DragObject->SetEndPos(EndPos);
+}
+
+void CSpriteEditWindow::EnlargeOnePixelDown()
+{
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (!DragObject)
+		return;
+	Vector2 EndPos = DragObject->GetEndPos();
+	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
+	DragObject->SetEndPos(EndPos);
 }
 
 void CSpriteEditWindow::SetSpriteCurrentFrameImageStart(const float x, const float y)
