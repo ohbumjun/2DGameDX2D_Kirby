@@ -39,3 +39,14 @@ CParticle* CParticleManager::FindParticle(const std::string& Name)
 
 	return iter->second;
 }
+
+void CParticleManager::ReleaseParticle(const std::string& Name)
+{
+	auto iter = m_mapParticle.find(Name);
+
+	if (iter == m_mapParticle.end())
+		return;
+
+	if (iter->second->GetRefCount() == 1)
+		m_mapParticle.erase(iter);
+}

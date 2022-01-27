@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Ref.h"
 #include "../Shader/ParticleConstantBuffer.h"
+#include "../../Resource/Material/Material.h"
 
 class CParticle :
     public CRef
@@ -20,15 +21,23 @@ private :
     class CParticleConstantBuffer* m_ParticleConstantBuffer;
     float m_SpawnTime;
     bool m_Is2D;
+    int   m_SpawnCountMax;
 public :
     bool Init();
 public:
-    void AddStructuredBuffer(const std::string& Name, int Register, int Size, bool Dynamic, int Count,
+    void AddStructuredBuffer(const std::string& Name, int Register, int Size, int Count, 
+        bool Dynamic = false,
+        int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
+    void ResizeBuffer(const std::string& Name, unsigned int Size, unsigned int Count,
+        int Register, bool Dynamic = false,
         int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);
     void SetMaterial(class CMaterial* Material)
     {
         m_Material = Material;
     }
+public :
+    void SetSpawnCountMax(int Count);
+
 public : // 상수 정보 세팅
     void SetSpawnCount(unsigned int Count)
     {

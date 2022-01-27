@@ -585,6 +585,9 @@
     <ClInclude Include="Resource\Particle\ParticleManager.h">
       <Filter>02. Resource\08. Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Particle\ParticleRenderShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -919,6 +922,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Particle\ParticleManager.cpp">
       <Filter>02. Resource\08. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Particle\ParticleRenderShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

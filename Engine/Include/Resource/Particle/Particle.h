@@ -1,11 +1,13 @@
 #pragma once
 #include "../../Ref.h"
 #include "../Shader/ParticleConstantBuffer.h"
+#include "../../Resource/Material/Material.h"
 
 class CParticle :
     public CRef
 {
-public :
+    friend class CParticleManager;
+private :
     CParticle();
     CParticle(const CParticle& Particle);
     virtual ~CParticle() override;

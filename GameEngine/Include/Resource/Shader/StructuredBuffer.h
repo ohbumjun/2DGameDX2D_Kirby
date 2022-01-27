@@ -27,6 +27,10 @@ public :
 {
 		return m_Buffer;
 }
+	std::string GetName() const
+{
+		return m_Name;
+}
 public :
 	bool Init(const std::string& Name, int Register, int Size, bool Dynamic, int Count,
 		int StructuredBufferShaderType = (int)Buffer_Shader_Type::Compute);

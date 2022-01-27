@@ -7,6 +7,7 @@
 #include "Texture/TextureManager.h"
 #include "Sound/SoundManager.h"
 #include "Font/FontManager.h"
+#include "Particle/ParticleManager.h"
 
 class CResourceManager
 {
@@ -18,6 +19,7 @@ private:
 	CAnimationManager* m_AnimationManager;
 	CSoundManager*    m_SoundManager;
 	CFontManager*	     m_FontManager;
+	CParticleManager*	     m_ParticleManager;
 
 public:
 	bool Init();
@@ -126,6 +128,11 @@ public: // =================== Font =====================
 
 	IDWriteFontCollection1* FindFontFile(const std::string& Name);
 	IDWriteTextFormat* FindFont(const std::string& Name);
+
+public: // =================== Particle =====================
+	bool CreateParticle(const std::string& Name);
+	class CParticle* FindParticle(const std::string& Name);
+	void ReleaseParticle(const std::string& Name);
 
 	DECLARE_SINGLE(CResourceManager);
 };

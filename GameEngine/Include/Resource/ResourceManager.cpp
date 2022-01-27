@@ -364,3 +364,18 @@ IDWriteTextFormat* CResourceManager::FindFont(const std::string& Name)
 {
 	return m_FontManager->FindFont(Name);
 }
+
+bool CResourceManager::CreateParticle(const std::string& Name)
+{
+	return m_ParticleManager->CreateParticle(Name);
+}
+
+CParticle* CResourceManager::FindParticle(const std::string& Name)
+{
+	return m_ParticleManager->FindParticle(Name);
+}
+
+void CResourceManager::ReleaseParticle(const std::string& Name)
+{
+	return m_ParticleManager->ReleaseParticle(Name);
+}

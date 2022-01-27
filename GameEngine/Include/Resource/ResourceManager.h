@@ -129,5 +129,10 @@ public: // =================== Font =====================
 	IDWriteFontCollection1* FindFontFile(const std::string& Name);
 	IDWriteTextFormat* FindFont(const std::string& Name);
 
+public: // =================== Particle =====================
+	bool CreateParticle(const std::string& Name);
+	class CParticle* FindParticle(const std::string& Name);
+	void ReleaseParticle(const std::string& Name);
+
 	DECLARE_SINGLE(CResourceManager);
 };
