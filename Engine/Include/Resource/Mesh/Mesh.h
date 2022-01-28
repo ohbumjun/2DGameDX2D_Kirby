@@ -20,6 +20,8 @@ protected:
 public:
 	virtual bool Init();
 	virtual void Render();
+	virtual void RenderInstancing(int Count); // 구조화 버퍼 이용
+	virtual void RenderInstancing(ID3D11Buffer* InstancingBuffer, unsigned int InstanceSize, int Count); // 추가 정점 버퍼 사용
 
 	// 필요한 정점, 색인 버퍼 추가 기능 
 	virtual bool CreateMesh(void*                    VtxData, int     Size, int Count, D3D11_USAGE Usage,

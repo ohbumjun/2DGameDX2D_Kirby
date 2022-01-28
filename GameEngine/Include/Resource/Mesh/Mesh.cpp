@@ -117,8 +117,78 @@ void CMesh::Render()
 	}
 }
 
+// 구조화 버퍼 사용하기
+void CMesh::RenderInstancing(int Count)
+{
+	size_t Size = m_vecContainer.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		unsigned int Stride = (unsigned int)m_vecContainer[i]->VB.Size;
+		unsigned int Offset = 0;
+
+		CDevice::GetInst()->GetContext()->IASetPrimitiveTopology(m_vecContainer[i]->Primitive);
+		CDevice::GetInst()->GetContext()->IASetVertexBuffers(0, 1, &m_vecContainer[i]->VB.Buffer,
+			&Stride, &Offset);
+
+		size_t IdxCount = m_vecContainer[i]->vecIB.size();
+
+		if (IdxCount > 0)
+		{
+			for (size_t j = 0; j < IdxCount; j++)
+			{
+				CDevice::GetInst()->GetContext()->IASetIndexBuffer(m_vecContainer[i]->vecIB[j].Buffer,
+					m_vecContainer[i]->vecIB[j].Fmt, Offset);
+				CDevice::GetInst()->GetContext()->DrawIndexedInstanced(m_vecContainer[i]->vecIB[j].Count,
+					Count, 0, 0, 0);
+			}
+		}
+		else
+		{
+			CDevice::GetInst()->GetContext()->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, Offset);
+			CDevice::GetInst()->GetContext()->DrawInstanced(m_vecContainer[i]->VB.Count, Count, 0, 0);
+		}
+	}
+}
+
+void CMesh::RenderInstancing(ID3D11Buffer* InstancingBuffer, unsigned InstanceSize, int Count)
+{
+	size_t Size = m_vecContainer.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		unsigned int Stride[2] = { (unsigned int)m_vecContainer[i]->VB.Size, InstanceSize };
+		unsigned int Offset[2] = {};
+
+		ID3D11Buffer* Buffer[2] = { m_vecContainer[i]->VB.Buffer , InstancingBuffer};
+
+		CDevice::GetInst()->GetContext()->IASetPrimitiveTopology(m_vecContainer[i]->Primitive);
+
+		// 정점 버퍼 1개가 아니라, 2개를 넘겨줄 것이다.
+		CDevice::GetInst()->GetContext()->IASetVertexBuffers(0, 2, Buffer,Stride, Offset);
+
+		size_t IdxCount = m_vecContainer[i]->vecIB.size();
+
+		if (IdxCount > 0)
+		{
+			for (size_t j = 0; j < IdxCount; j++)
+			{
+				CDevice::GetInst()->GetContext()->IASetIndexBuffer(m_vecContainer[i]->vecIB[j].Buffer,
+					m_vecContainer[i]->vecIB[j].Fmt, 0);
+				CDevice::GetInst()->GetContext()->DrawIndexedInstanced(m_vecContainer[i]->vecIB[j].Count,
+					Count, 0, 0, 0);
+			}
+		}
+		else
+		{
+			CDevice::GetInst()->GetContext()->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+			CDevice::GetInst()->GetContext()->DrawInstanced(m_vecContainer[i]->VB.Count, Count, 0, 0);
+		}
+	}
+}
+
 bool CMesh::CreateMesh(void* VtxData, int Size, int    Count, D3D11_USAGE    Usage, D3D11_PRIMITIVE_TOPOLOGY Primitive,
-                       void* IdxData, int IdxSize, int IdxCount, D3D11_USAGE IdxUsage, DXGI_FORMAT           Fmt)
+					   void* IdxData, int IdxSize, int IdxCount, D3D11_USAGE IdxUsage, DXGI_FORMAT           Fmt)
 {
 	MeshContainer* Container = new MeshContainer;
 

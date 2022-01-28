@@ -191,6 +191,8 @@ void CParticleComponent::Render()
 	if (m_Material)
 		m_Material->Render();
 
+	// Mesh를 인스턴싱을 이용해서 그린다.
+
 	for (size_t i = 0; i < Size; i++)
 	{
 		m_vecStructruedBuffer[i]->ResetShader(30 + (int)i, (int)Buffer_Shader_Type::Geometry);
