@@ -170,6 +170,27 @@ void CStructuredBuffer::SetShader()
 
 }
 
+void CStructuredBuffer::SetShader(int Register, int ShaderType)
+{
+	if (ShaderType & (int)Buffer_Shader_Type::Vertex)
+		CDevice::GetInst()->GetContext()->VSSetShaderResources(Register, 1, &m_SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Pixel)
+		CDevice::GetInst()->GetContext()->PSSetShaderResources(Register, 1, &m_SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Domain)
+		CDevice::GetInst()->GetContext()->DSSetShaderResources(Register, 1, &m_SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Hull)
+		CDevice::GetInst()->GetContext()->HSSetShaderResources(Register, 1, &m_SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Geometry)
+		CDevice::GetInst()->GetContext()->GSSetShaderResources(Register, 1, &m_SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Compute)
+		CDevice::GetInst()->GetContext()->CSSetShaderResources(Register, 1, &m_SRV);
+}
+
 void CStructuredBuffer::ResetShader()
 {
 	// Shader Resource View 의 경우, 다양한 파이프라인에 동시에 연결 가능
@@ -205,6 +226,29 @@ void CStructuredBuffer::ResetShader()
 		CDevice::GetInst()->GetContext()->CSSetUnorderedAccessViews(m_Register, 1, &UAV, &Count);
 	}
 
+}
+
+void CStructuredBuffer::ResetShader(int Register, int ShaderType)
+{
+	ID3D11ShaderResourceView* SRV = nullptr;
+
+	if (ShaderType & (int)Buffer_Shader_Type::Vertex)
+		CDevice::GetInst()->GetContext()->VSSetShaderResources(Register, 1, &SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Pixel)
+		CDevice::GetInst()->GetContext()->PSSetShaderResources(Register, 1, &SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Domain)
+		CDevice::GetInst()->GetContext()->DSSetShaderResources(Register, 1, &SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Hull)
+		CDevice::GetInst()->GetContext()->HSSetShaderResources(Register, 1, &SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Geometry)
+		CDevice::GetInst()->GetContext()->GSSetShaderResources(Register, 1, &SRV);
+
+	if (ShaderType & (int)Buffer_Shader_Type::Compute)
+		CDevice::GetInst()->GetContext()->CSSetShaderResources(Register, 1, &SRV);
 }
 
 /*

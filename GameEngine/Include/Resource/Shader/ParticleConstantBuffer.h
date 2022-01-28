@@ -15,9 +15,22 @@ public :
     virtual void UpdateCBuffer() override;
     virtual CParticleConstantBuffer* Clone() override;
 public :
-    void SetSpawnCount(unsigned int Count)
+    Vector3 GetStartMin() const
 {
-        m_BufferData.SpawnCount = Count;
+        return m_BufferData.StartMin;
+}
+    Vector3 GetStartMax() const
+    {
+        return m_BufferData.StartMax;
+    }
+public :
+    void SetSpawnCount(int Count)
+{
+        m_BufferData.SpawnCountMax = Count;
+}
+    void SetSpawnEnable(unsigned int Enable)
+{
+        m_BufferData.SpawnEnable = Enable;
 }
     void SetStartMin(const Vector3& StartMin)
     {

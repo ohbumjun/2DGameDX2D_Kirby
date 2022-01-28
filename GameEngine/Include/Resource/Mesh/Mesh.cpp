@@ -107,16 +107,12 @@ void CMesh::Render()
 				                                              m_vecContainer[i]->vecIB[j].Count, 0, 0);
 			}
 		}
-
 		else
 		{
-
-		}
-		{
 			CDevice::GetInst()->GetContext()->IASetIndexBuffer(
-			                                                   nullptr, DXGI_FORMAT_UNKNOWN, 0);
+				nullptr, DXGI_FORMAT_UNKNOWN, 0);
 			CDevice::GetInst()->GetContext()->Draw(
-			                                       m_vecContainer[i]->VB.Count, 0);
+				m_vecContainer[i]->VB.Count, 0);
 		}
 	}
 }

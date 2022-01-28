@@ -1080,7 +1080,7 @@ void CSpriteEditWindow::LoadAnimation()
 		}
 		m_Animation->LoadFullPath(FilePathMultibyte);
 
-		// CurrentAnimation 이 없다면, 아래의 과정을 진행하지 않는다
+		// CurrentAnimation 이 없다면,
 		if (!m_Animation->GetCurrentAnimation())
 			return;
 

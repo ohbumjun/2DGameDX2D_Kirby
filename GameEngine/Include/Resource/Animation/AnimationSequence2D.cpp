@@ -185,11 +185,11 @@ bool CAnimationSequence2D::Load(FILE* pFile)
 			{
 				if (m_Scene)
 				{
-					m_Scene->GetResource()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+					m_Scene->GetResource()->LoadTextureFullPath(TextureName, vecFullPath[0].c_str());
 				}
 				else
 				{
-					CResourceManager::GetInst()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+					CResourceManager::GetInst()->LoadTextureFullPath(TextureName, vecFullPath[0].c_str());
 				}
 			}
 		}
@@ -207,7 +207,8 @@ bool CAnimationSequence2D::Load(FILE* pFile)
 		{
 			m_Texture = CResourceManager::GetInst()->FindTexture(TextureName);
 		}
-
+		if (!m_Texture)
+			return false;
 		m_Texture->SetImageType(ImageType);
 	}
 

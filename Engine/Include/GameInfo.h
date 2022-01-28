@@ -337,7 +337,7 @@ struct PixelInfo {
 };
 
 struct ParticleCBuffer {
-	unsigned int SpawnCount; // 현재 파티클 생성 수
+	unsigned int SpawnEnable; // 현재 파티클 생성 수
 	Vector3 StartMin; 
 	Vector3 StartMax;
 	unsigned int  SpawnCountMax;

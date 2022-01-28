@@ -137,7 +137,7 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 	char* PathName = new char[MAX_PATH];
 	memset(PathName, 0, sizeof(char) * MAX_PATH);
 
-	int FullPathLength = strlen(FullPath1Multibyte);
+	int FullPathLength = (int)strlen(FullPath1Multibyte);
 
 	for (int i = FullPathLength - 1; i >= 0; i--)
 	{

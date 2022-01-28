@@ -3,7 +3,7 @@
 
 CParticleConstantBuffer::CParticleConstantBuffer()
 {
-	m_BufferData.SpawnCount = 100;
+	m_BufferData.SpawnCountMax = 100;
 	m_BufferData.ColorMin = Vector4(1.f, 1.f, 1.f, 1.f);
 	m_BufferData.ColorMax = Vector4(1.f, 1.f, 1.f, 1.f);
 	m_BufferData.LifeTimeMin = 0.5f;

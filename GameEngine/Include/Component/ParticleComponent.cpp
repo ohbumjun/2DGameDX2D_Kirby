@@ -1,12 +1,12 @@
 #include "ParticleComponent.h"
-#include "../Resource/Shader/StructuredBuffer.h"
 #include "../Scene/Scene.h"
+#include "../Scene/SceneResource.h"
 
 CParticleComponent::CParticleComponent() :
-m_SpawnTime(0.f),
-m_SpawnTimeMax(0.1f),
+m_SpawnTimeMax(0.01f),
+m_SpawnTime(0.0f),
 m_ParticleInfo{},
-m_ParticleSharedInfo{},
+m_ParticleInfoShared{},
 m_ParticleConstantBuffer(nullptr)
 {
 	SetTypeID<CParticleComponent>();
@@ -18,27 +18,22 @@ CParticleComponent::CParticleComponent(const CParticleComponent& Component)
 	m_SpawnTime = 0.f;
 	m_SpawnTimeMax = Component.m_SpawnTimeMax;
 
-	// Particle Resource는 공유해서 사용할 것이다.
 	m_Particle = Component.m_Particle;
 
-	size_t BufferCount = m_vecStructuredBuffer.size();
+	size_t Size = Component.m_vecStructruedBuffer.size();
 
-	// 구조화 버퍼는 깊은 복사를 해줘야 한다.
-	// 그전에 먼저 혹시나를 위해 가지고 있는 StructuredBuffer를 모두 지워준다.
-	for (size_t i = 0; i < BufferCount; i++)
+	for (size_t i = 0; i < Size; i++)
 	{
-		SAFE_DELETE(m_vecStructuredBuffer[i]);
+		SAFE_DELETE(m_vecStructruedBuffer[i]);
 	}
 
-	m_vecStructuredBuffer.clear();
+	m_vecStructruedBuffer.clear();
 
 	if (m_Particle)
 	{
-		// Particle Component가 들고 있는 멤버변수는 Particle Resource로부터 만들어낼 것이다.
-		m_Particle->CloneStructuredBuffer(m_vecStructuredBuffer);
+		m_Particle->CloneStructuredBuffer(m_vecStructruedBuffer);
 
-		// Update Shader도 마찬가지
-		m_UpdateShader = m_Particle->GetParticleUpdateShader();
+		m_ParticleUpdateShader = m_Particle->GetParticleUpdateShader();
 
 		SAFE_DELETE(m_ParticleConstantBuffer);
 
@@ -49,15 +44,13 @@ CParticleComponent::CParticleComponent(const CParticleComponent& Component)
 
 CParticleComponent::~CParticleComponent()
 {
-	// 구조화 버퍼 지워주기
-	size_t  Size = m_vecStructuredBuffer.size();
+	size_t Size = m_vecStructruedBuffer.size();
 
 	for (size_t i = 0; i < Size; i++)
 	{
-		SAFE_DELETE(m_vecStructuredBuffer[i]);
+		SAFE_DELETE(m_vecStructruedBuffer[i]);
 	}
 
-	// 상수 버퍼 지워주기
 	SAFE_DELETE(m_ParticleConstantBuffer);
 }
 
@@ -66,11 +59,44 @@ void CParticleComponent::SetParticle(const std::string& Name)
 	SetParticle(m_Scene->GetResource()->FindParticle(Name));
 }
 
-void CParticleComponent::SetParticle(CParticle* Particle)
-{}
+void CParticleComponent::SetParticle(const CParticle* Particle)
+{
+	if (!Particle)
+		return;
+
+	m_Particle = const_cast<CParticle*>(Particle);
+
+	if (m_Particle)
+	{
+		size_t Size = m_vecStructruedBuffer.size();
+
+		for (size_t i = 0; i < Size; i++)
+		{
+			SAFE_DELETE(m_vecStructruedBuffer[i]);
+		}
+
+		m_vecStructruedBuffer.clear();
+
+		m_Particle->CloneStructuredBuffer(m_vecStructruedBuffer);
+
+		SAFE_DELETE(m_ParticleConstantBuffer);
+
+		m_ParticleConstantBuffer = m_Particle->CloneParticleConstantBuffer();
+
+		m_Material = m_Particle->CloneMaterial();
+
+		m_ParticleUpdateShader = m_Particle->GetParticleUpdateShader();
+
+		m_SpawnTimeMax = m_Particle->GetSpawnTime();
+	}
+
+}
 
 void CParticleComponent::SetSpawnTime(float Time)
-{}
+{
+	m_SpawnTimeMax = Time;
+	m_Particle->SetSpawnTime(Time);
+}
 
 void CParticleComponent::Start()
 {
@@ -82,17 +108,66 @@ bool CParticleComponent::Init()
 	if (!CSceneComponent::Init())
 		return false;
 
+	m_Mesh = m_Scene->GetResource()->FindMesh("ParticlePointMesh");
+
+	if (!m_Mesh)
+		return false;
+
 	return true;
 }
 
 void CParticleComponent::Update(float DeltaTime)
 {
 	CSceneComponent::Update(DeltaTime);
+
+	m_SpawnTime += DeltaTime;
+
+	if (m_SpawnTime >= m_SpawnTimeMax)
+	{
+		m_SpawnTime -= m_SpawnTimeMax;
+
+		m_ParticleConstantBuffer->SetSpawnEnable(1);
+	}
+	else
+	{
+		m_ParticleConstantBuffer->SetSpawnEnable(0);
+	}
 }
 
 void CParticleComponent::PostUpdate(float DeltaTime)
 {
 	CSceneComponent::PostUpdate(DeltaTime);
+
+	// 실시간 위치 정보들 같은 거를 구현한다.
+	CParticleConstantBuffer* Buffer = m_Particle->GetParticleConstantBuffer(); // 상대 정보가 저장 ex) -1, 1
+
+	Vector3 StartMin, StartMax;
+
+	StartMin = GetWorldPos() + Buffer->GetStartMin(); 
+	StartMax = GetWorldPos() + Buffer->GetStartMax();
+
+	m_ParticleConstantBuffer->SetStartMin(StartMin); // 절대 위치 정보 저장
+	m_ParticleConstantBuffer->SetStartMax(StartMax);
+
+	m_ParticleConstantBuffer->UpdateCBuffer();
+
+	// Compute Shader --> Update Shader를 동작시킨다.
+
+	size_t Bufferize = m_vecStructruedBuffer.size();
+
+	for (size_t i = 0; i < Bufferize; i++)
+	{
+		m_vecStructruedBuffer[i]->SetShader();
+	}
+
+	int GroupCount = m_Particle->GetSpawnCountMax() / 64 + 1;
+	m_ParticleUpdateShader->Execute(GroupCount, 1, 1);
+
+	// 구조화 버퍼 해제해주기
+	for (size_t i = 0; i < Bufferize; i++)
+	{
+		m_vecStructruedBuffer[i]->ResetShader();
+	}
 }
 
 void CParticleComponent::PrevRender()
@@ -103,11 +178,27 @@ void CParticleComponent::PrevRender()
 void CParticleComponent::Render()
 {
 	CSceneComponent::Render();
-}
 
-void CParticleComponent::CheckCollision()
-{
-	CSceneComponent::CheckCollision();
+	size_t Size = m_vecStructruedBuffer.size();
+
+	// 기하 셰이더가 읽을 수 있는 읽기 전용 구조화 버퍼에 넘겨줄 것이다.
+	for (size_t i = 0; i < Size; i++)
+	{
+		m_vecStructruedBuffer[i]->SetShader(30 + (int)i, (int)Buffer_Shader_Type::Geometry);
+	}
+
+	// Material를 그린다
+	if (m_Material)
+		m_Material->Render();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		m_vecStructruedBuffer[i]->ResetShader(30 + (int)i, (int)Buffer_Shader_Type::Geometry);
+	}
+
+	// Material를 그린다
+	if (m_Material)
+		m_Material->Reset();
 }
 
 void CParticleComponent::PostRender()
@@ -118,4 +209,14 @@ void CParticleComponent::PostRender()
 CParticleComponent* CParticleComponent::Clone()
 {
 	return new CParticleComponent(*this);
+}
+
+void CParticleComponent::Save(FILE* File)
+{
+	CSceneComponent::Save(File);
+}
+
+void CParticleComponent::Load(FILE* File)
+{
+	CSceneComponent::Load(File);
 }

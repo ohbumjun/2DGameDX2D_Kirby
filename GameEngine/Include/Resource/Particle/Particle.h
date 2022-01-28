@@ -37,17 +37,36 @@ public :
 {
         return m_ParticleUpdateShader;
 }
-    CParticleConstantBuffer* CloneParticleConstantBuffer() const
+    CParticleConstantBuffer* GetParticleConstantBuffer() const
 {
         return m_ParticleConstantBuffer;
 }
+    CParticleConstantBuffer* CloneParticleConstantBuffer() const
+{
+        return m_ParticleConstantBuffer->Clone();
+}
+    float GetSpawnTime() const
+{
+        return m_SpawnTime;
+}
+    int GetSpawnCountMax() const
+{
+        return m_SpawnCountMax;
+}
+    CMaterial* CloneMaterial() const
+    {
+        return m_Material;
+    }
 public : // 상수 정보 세팅
     void SetSpawnCountMax(int Count);
+    void SetSpawnTime(float Time)
+    {
+        m_SpawnTime = Time;
+    }
     void SetMaterial(class CMaterial* Material)
     {
         m_Material = Material;
     }
-
     void SetSpawnCount(unsigned int Count)
     {
         m_ParticleConstantBuffer->SetSpawnCount(Count);

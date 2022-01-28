@@ -36,7 +36,9 @@ public :
 	void UpdateBuffer(void* Data, int Count);
 	CStructuredBuffer* Clone();
 	void SetShader();
+	void SetShader(int Register, int ShaderType);
 	void ResetShader();
+	void ResetShader(int Register, int ShaderType);
 	void CopyData(void* Data);// gpu 의 계산 셰이더 결과 내용 읽어오기 
 	void CopyResource(CStructuredBuffer* Buffer); // 자원 복사
 private :
