@@ -31,13 +31,15 @@ void CCameraComponent::CreateProjectionMatrix()
 	switch (m_CameraType)
 	{
 	case Camera_Type::Camera2D :
-		m_matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
+		m_matProj = XMMatrixOrthographicOffCenterLH(0.f, (float)m_RS.Width, 
+			0.f, (float)m_RS.Height, 0.f, 1000.f);
 		break;
 	case Camera_Type::Camera3D:
-		m_matProj = XMMatrixPerspectiveFovLH(DegreeToRadian(m_ViewAngle),(float)(m_RS.Width / m_RS.Height), 0.f, 1000.f);
+		m_matProj = XMMatrixPerspectiveFovLH(DegreeToRadian(m_ViewAngle),(float)(m_RS.Width / m_RS.Height), 0.f, (float)m_Distance);
 		break;
 	case Camera_Type::CameraUI:
-		m_matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
+		m_matProj = XMMatrixOrthographicOffCenterLH(0.f, (float)m_RS.Width,
+			0.f, (float)m_RS.Height, 0.f, 1000.f);
 		break;
 	}
 }
@@ -91,30 +93,4 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 CCameraComponent* CCameraComponent::Clone()
 {
 	return new CCameraComponent(*this);
-}
-
-void CCameraComponent::Save(FILE* pFile)
-{
-	fwrite(&m_CameraType, sizeof(Camera_Type), 1, pFile);
-	fwrite(&m_ViewAngle, sizeof(float), 1, pFile);
-	fwrite(&m_Distance, sizeof(float), 1, pFile);
-	fwrite(&m_Ratio, sizeof(Vector2), 1, pFile);
-	fwrite(&m_matProj, sizeof(Matrix), 1, pFile);
-	fwrite(&m_matView, sizeof(Matrix), 1, pFile);
-	fwrite(&m_RS, sizeof(Resolution), 1, pFile);
-
-	CSceneComponent::Save(pFile);
-}
-
-void CCameraComponent::Load(FILE* pFile)
-{
-	fread(&m_CameraType, sizeof(Camera_Type), 1, pFile);
-	fread(&m_ViewAngle, sizeof(float), 1, pFile);
-	fread(&m_Distance, sizeof(float), 1, pFile);
-	fread(&m_Ratio, sizeof(Vector2), 1, pFile);
-	fread(&m_matProj, sizeof(Matrix), 1, pFile);
-	fread(&m_matView, sizeof(Matrix), 1, pFile);
-	fread(&m_RS, sizeof(Resolution), 1, pFile);
-
-	CSceneComponent::Load(pFile);
 }

@@ -56,7 +56,7 @@ bool CBulletCamera::Init()
 	// 위코드를 실행 시키지 않아도 알아서 잘 돌아간다.
 	// 왜냐면 CColliderBox2D 의 Init 단계에서 이미 Setting하고 형성되기 때문이다.
 
-	m_Camera->OnViewPortCenter();
+	m_Camera->OnViewportCenter();
 
 	m_Sprite->SetRelativeScale(50.f, 50.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);

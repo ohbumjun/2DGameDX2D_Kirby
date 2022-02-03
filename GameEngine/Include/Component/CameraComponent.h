@@ -1,100 +1,112 @@
 #pragma once
 #include "SceneComponent.h"
 class CCameraComponent :
-    public CSceneComponent
+	public CSceneComponent
 {
-    friend class CCameraManager;
-public :
-    CCameraComponent();
-    CCameraComponent(const CCameraComponent& Camera);;
-    virtual ~CCameraComponent() override;
-private :
-    Camera_Type m_CameraType;
-    Resolution m_RS;
-    float m_ViewAngle;
-    float m_Distance;
-    Vector2 m_Ratio;
-    Matrix m_matView;
-    Matrix m_matProj;
-public :
-    Camera_Type GetCameraType() const
-{
-        return m_CameraType;
-}
-    Resolution GetResolution() const
-{
-        return m_RS;
-}
-    Matrix GetProjMatrix() const
-{
-        return m_matProj;
-}
-    Matrix GetViewMatrix() const
-{
-        return m_matView;
-}
-    Vector2 GetLeftBottom() const
-{
-        Vector2 LB;
-        LB.x = GetWorldPos().x;
-        LB.y = GetWorldPos().y;
-        return LB;
-}
-public :
-    void SetCameraType(Camera_Type Type)
-{
-        m_CameraType = Type;
+	friend class CGameObject;
+	friend class CCameraManager;
+
+protected:
+	CCameraComponent();
+	CCameraComponent(const CCameraComponent& com);
+	virtual ~CCameraComponent();
+
+protected:
+	Camera_Type m_CameraType;
+	Matrix      m_matView;
+	Matrix      m_matProj;
+	float		m_ViewAngle;
+	float		m_Distance;
+	Resolution	m_RS;
+	Vector2		m_Ratio;
+
+public:
+	Resolution GetResolution()	const
+	{
+		return m_RS;
+	}
+
+	Camera_Type GetCameraType()	const
+	{
+		return m_CameraType;
+	}
+
+	Matrix GetViewMatrix()	const
+	{
+		return m_matView;
+	}
+
+	Matrix GetProjMatrix()	const
+	{
+		return m_matProj;
+	}
+
+	Vector2 GetLeftBottom()	const
+	{
+		Vector2	LB;
+
+		LB.x = GetWorldPos().x;// - m_Ratio.x * m_RS.Width;
+		LB.y = GetWorldPos().y;// - m_Ratio.y * m_RS.Height;
+
+		return LB;
+	}
+
+public:
+	void SetViewAngle(float Angle)
+	{
+		m_ViewAngle = Angle;
+
+		if (m_CameraType == Camera_Type::Camera3D)
+			CreateProjectionMatrix();
+	}
+
+	void SetDistance(float Distance)
+	{
+		m_Distance = Distance;
+
 		CreateProjectionMatrix();
-}
-    void SetViewAngle(float Angle)
-{
-        m_ViewAngle = Angle;
-        if (m_CameraType == Camera_Type::Camera3D)
-        {
-            CreateProjectionMatrix();
-        }
-}
-    void SetDistance(float Distance)
-{
-        m_Distance = Distance;
-        CreateProjectionMatrix();
-}
-public :
-    // 2D 전용
-    void OnViewPortCenter()
+	}
+
+	void SetCameraType(Camera_Type Type)
+	{
+		m_CameraType = Type;
+
+		CreateProjectionMatrix();
+	}
+
+	// 2D 전용
+	void OnViewportCenter()
 	{
 		if (m_CameraType == Camera_Type::Camera2D)
 		{
-	        float z = GetRelativePos().z;
-	        SetRelativePos(m_RS.Width / -2.f, m_RS.Height / -2.f, 1.f);
+			float	z = GetRelativePos().z;
+			SetRelativePos(m_RS.Width / -2.f, m_RS.Height / -2.f, z);
 
-	        m_Ratio.x = 0.5f;
-	        m_Ratio.y = 0.5f;
+			m_Ratio.x = 0.5f;
+			m_Ratio.y = 0.5f;
 		}
 	}
-    void SetViewPortRatio(float Ratio)
+
+	// 2D 전용
+	void SetViewportRatio(float x, float y)
 	{
-        if (Ratio > 1.f || Ratio < 0.f)
-            Ratio = 0.f;
 		if (m_CameraType == Camera_Type::Camera2D)
 		{
-	        float z = GetRelativePos().z;
-	        SetRelativePos(m_RS.Width * -Ratio, m_RS.Height * -Ratio, z);
+			float	z = GetRelativePos().z;
+			SetRelativePos(m_RS.Width * -x, m_RS.Height * -y, z);
 
-	        m_Ratio.x = 0.5f;
-	        m_Ratio.y = 0.5f;
+			m_Ratio.x = x;
+			m_Ratio.y = y;
 		}
 	}
-public :
-    void CreateProjectionMatrix();
-public :
-    virtual void Start() override;
-    virtual bool Init() override;
-    virtual void PostUpdate(float DeltaTime) override;
-    virtual CCameraComponent* Clone();
-public :
-    virtual void Save(FILE* pFile);
-    virtual void Load(FILE* pFile);
+
+private:
+	void CreateProjectionMatrix();
+
+public:
+	virtual void Start();
+	virtual bool Init();
+	virtual void PostUpdate(float DeltaTime);
+	virtual CCameraComponent* Clone();
 };
-
 

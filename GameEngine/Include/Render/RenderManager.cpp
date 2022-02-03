@@ -69,6 +69,7 @@ void CRenderManager::CreateLayer(const std::string& Name, int Priority)
 	sort(m_RenderLayerList.begin(), m_RenderLayerList.end(), SortLayer);
 }
 
+
 void CRenderManager::SetLayerPriority(const std::string& Name, int Priority)
 {
 	auto iter    = m_RenderLayerList.begin();

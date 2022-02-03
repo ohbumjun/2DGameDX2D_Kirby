@@ -67,7 +67,7 @@ bool CPlayer2D::Init()
 
 	// Camera
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
-	m_Camera->OnViewPortCenter(); // Player 중심 세팅
+	m_Camera->OnViewportCenter(); // Player 중심 세팅
 	// m_Camera->SetViewPortRatio(0.7f, 0.7f);
 
 	SetRootComponent(m_Sprite);

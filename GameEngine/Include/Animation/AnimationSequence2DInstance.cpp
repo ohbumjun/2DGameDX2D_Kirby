@@ -8,7 +8,7 @@
 #include "../Scene/SceneResource.h"
 
 CAnimationSequence2DInstance::CAnimationSequence2DInstance() :
-	m_PlayAnimation(false),
+	m_PlayAnimation(true),
 	m_Owner(nullptr),
 	m_Scene(nullptr)
 {

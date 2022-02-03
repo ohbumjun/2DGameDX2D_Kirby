@@ -432,13 +432,12 @@ const PixelInfo& Info,
 	if (!CollisionBox2DToPoint(SrcResult, DestResult, Info.Box, Point))
 		return false;
 
-	Vector2 NewPointPos = Point - Info.Min;
-	NewPointPos.y = Info.Height - NewPointPos.y;
+	Vector2	LB = Info.Box.Center - Info.Box.Length;
+	Vector2	ConvertPoint = Point - LB;
+	ConvertPoint.y = Info.Height - ConvertPoint.y;
 
-	int Index = (int)((NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4));
+	int Index = (int)ConvertPoint.y * (int)Info.Width * 4 + (int)ConvertPoint.x * 4;
 	bool Collision = false;
-
-
 
 	switch (Info.Type)
 	{
@@ -477,11 +476,6 @@ const PixelInfo& Info,
 		else
 			Collision = false;
 		}
-	}
-	if (Collision)
-	{
-		unsigned char Px = Info.Pixel[Index];
-		unsigned char CL = Info.Color[0];
 	}
 	return Collision;
 }
