@@ -16,7 +16,7 @@ CMaterial::CMaterial() :
 	SetTypeID<CMaterial>();
 }
 
-CMaterial::CMaterial(const CMaterial& Material)
+CMaterial::CMaterial(const CMaterial& Material) :CRef(Material)
 {
 	*this = Material;
 

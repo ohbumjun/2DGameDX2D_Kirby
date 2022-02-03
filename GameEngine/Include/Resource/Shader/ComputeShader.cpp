@@ -26,7 +26,7 @@ bool CComputeShader::LoadComputeShader(const char* EntryName, const TCHAR* FileN
 	Flag |= D3DCOMPILE_DEBUG;
 #endif
 
-	TCHAR *FullPath = new TCHAR[MAX_PATH];
+	TCHAR FullPath[MAX_PATH] = {};
 
 	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
 	if (Path)
@@ -48,7 +48,8 @@ bool CComputeShader::LoadComputeShader(const char* EntryName, const TCHAR* FileN
 	if (FAILED(CDevice::GetInst()->GetDevice()->CreateComputeShader(
 		m_CSBlob->GetBufferPointer(),
 		m_CSBlob->GetBufferSize(),
-		nullptr, &m_CSShader)))
+		nullptr, 
+		&m_CSShader)))
 		return false;
 
 	return true;

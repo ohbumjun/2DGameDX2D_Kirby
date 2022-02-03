@@ -86,7 +86,7 @@ bool CTextureManager::LoadTextureFullPath(const std::string& Name, const TCHAR* 
 
 	if (!Texture->LoadTextureFullPath(Name, FullPath))
 	{
-		SAFE_RELEASE(Texture);
+		SAFE_DELETE(Texture);
 		return false;
 	}
 

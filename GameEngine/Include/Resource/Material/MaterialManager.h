@@ -13,7 +13,7 @@ private:
 
 private:
 	std::unordered_map<std::string, CSharedPtr<CMaterial>> m_mapMaterial;
-	class CMaterialConstantBuffer*                         m_CBuffer;
+	class CMaterialConstantBuffer*                         m_CBuffer; // ¿Ö ÀÌ°É ¾ê°¡ ?
 
 public:
 	bool       Init();

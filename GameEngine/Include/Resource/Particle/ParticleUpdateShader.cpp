@@ -18,7 +18,7 @@ bool CParticleUpdateShader::Init()
 	return true;
 }
 
-void CParticleUpdateShader::SetShader()//
+void CParticleUpdateShader::SetShader()
 {
 	CComputeShader::SetShader();
 }

@@ -18,7 +18,6 @@ protected:
 	bool                                                       m_PlayAnimation;
 	class CSpriteComponent*                                    m_Owner;
 	class CScene*                                              m_Scene;
-	// Shared로 쓰면 안되나 ? --> 깊은 복사를 해야 해서 그런가 ?
 	std::unordered_map<std::string, CAnimationSequence2DData*> m_mapAnimation;
 	CAnimationSequence2DData*                                  m_CurrentAnimation;
 	class CAnimation2DConstantBuffer*                          m_CBuffer;
@@ -65,7 +64,8 @@ public :
 	void ClearAnimationSequence();
 	bool DeleteAnimationSequence(const std::string& Name);
 public:
-	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, float PlayTime = 1.f,
+	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, 
+		float PlayTime = 1.f,
 	                  float              PlayScale                                        = 1.f, bool Reverse = false);
 	void AddAnimation(const TCHAR* FileName, const std::string& PathName, 
 		const std::string& Name, bool Loop = true, float PlayTime = 1.f,

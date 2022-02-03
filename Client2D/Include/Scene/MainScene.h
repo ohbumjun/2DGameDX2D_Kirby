@@ -18,6 +18,7 @@ private:
 	void CreateMaterial();
 	void CreateAnimationSequence();
 	void CreateSound();
+	void CreateParticle();
 public :
 	template<typename T>
 	void SetLoadingFunction(T* Obj, void (T::*Func)(bool, float))
