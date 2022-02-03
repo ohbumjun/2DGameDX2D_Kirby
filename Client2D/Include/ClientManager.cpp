@@ -48,8 +48,8 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 void CClientManager::CreateDefaultSceneMode()
 {
-	CSceneManager::GetInst()->CreateSceneMode<CStartScene>();
-	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
+	// CSceneManager::GetInst()->CreateSceneMode<CStartScene>();
+	CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
 }
 
 int CClientManager::Run()

@@ -207,6 +207,8 @@ void CPlayer2D::Update(float DeltaTime)
 
 void CPlayer2D::PostUpdate(float DeltaTime)
 {
+	Vector2 MouseWorldPos = CInput::GetInst()->GetMouseWorld2DPos();
+	Vector3 PlayerWorldPos = GetWorldPos();
 	CGameObject::PostUpdate(DeltaTime);
 }
 

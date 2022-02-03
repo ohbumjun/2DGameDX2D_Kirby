@@ -124,7 +124,7 @@ void CSceneCollision::CollisionMouse(float DeltaTime)
 		// 2d, 3d일때를 구분해주려고 한다
 		if (CEngine::GetInst()->GetEngineSpace() == Engine_Space::Space2D)
 		{
-			Vector2 MousePos = CInput::GetInst()->GetMousePos();
+			Vector2 MousePos = CInput::GetInst()->GetMouseWorld2DPos();
 
 			MousePos.x -= m_Section->Min.x;
 			MousePos.y -= m_Section->Min.y;
