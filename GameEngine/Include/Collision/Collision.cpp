@@ -424,7 +424,8 @@ bool CCollision::CollisionCircleToPixel(CollisionResult& SrcResult, CollisionRes
 	return Collision;
 }
 
-bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResult& DestResult, const PixelInfo& Info,
+bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResult& DestResult, 
+const PixelInfo& Info,
 	const Vector2& Point)
 {
 	// Box와 Point 충돌 체크
@@ -436,6 +437,8 @@ bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResu
 
 	int Index = (int)((NewPointPos.x * Info.Width * 4) + (NewPointPos.y * 4));
 	bool Collision = false;
+
+
 
 	switch (Info.Type)
 	{
@@ -474,6 +477,11 @@ bool CCollision::CollisionPixelToPoint(CollisionResult& SrcResult, CollisionResu
 		else
 			Collision = false;
 		}
+	}
+	if (Collision)
+	{
+		unsigned char Px = Info.Pixel[Index];
+		unsigned char CL = Info.Color[0];
 	}
 	return Collision;
 }

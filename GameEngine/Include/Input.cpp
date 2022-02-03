@@ -245,7 +245,7 @@ void CInput::UpdateMouse(float DeltaTime)
 	if (CEngine::GetInst()->GetEngineSpace() == Engine_Space::Space2D)
 	{
 		CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
-
+		// Vector2 LB = Camera->GetLeftBottom();
 		m_MouseWorldPos += Camera->GetLeftBottom();
 	}
 }

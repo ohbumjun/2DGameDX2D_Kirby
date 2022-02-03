@@ -91,6 +91,7 @@ public :
     virtual void Start() override;
     virtual bool Init() override;
     virtual void PostUpdate(float DeltaTime) override;
+    virtual CCameraComponent* Clone();
 public :
     virtual void Save(FILE* pFile);
     virtual void Load(FILE* pFile);

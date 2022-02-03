@@ -122,15 +122,6 @@ void CColliderPixel::SetInfoFullPath(const TCHAR* FullPath)
 	m_Info.Box.Length.x = m_Info.Width / 2.f;
 	m_Info.Box.Length.y = m_Info.Height / 2.f;
 
-	m_Info.Box.Min  = m_Info.Box.Center - m_Info.Box.Length;
-	m_Info.Box.Max = m_Info.Box.Center + m_Info.Box.Length;
-
-	m_Min.x = m_Info.Box.Min.x;
-	m_Min.y = m_Info.Box.Min.y;
-
-	m_Max.x = m_Info.Box.Max.x;
-	m_Max.y = m_Info.Box.Max.y;
-
 	if (FAILED(CreateShaderResourceView(CDevice::GetInst()->GetDevice(), 
 		Image.GetImages(),Image.GetImageCount(), 
 		Image.GetMetadata(), &m_Info.SRV)))
@@ -326,9 +317,5 @@ bool CColliderPixel::CollisionMouse(const Vector2& MousePos)
 {
 	CollisionResult result;
 	m_MouseCollision = CCollision::CollisionPixelToPoint(m_MouseResult,  result, m_Info, MousePos);
-	if (m_MouseCollision)
-	{
-		return true;
-	}
 	return m_MouseCollision;
 }

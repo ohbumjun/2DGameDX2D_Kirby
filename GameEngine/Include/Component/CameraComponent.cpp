@@ -88,6 +88,11 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 
 }
 
+CCameraComponent* CCameraComponent::Clone()
+{
+	return new CCameraComponent(*this);
+}
+
 void CCameraComponent::Save(FILE* pFile)
 {
 	fwrite(&m_CameraType, sizeof(Camera_Type), 1, pFile);

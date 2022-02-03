@@ -21,7 +21,7 @@ struct CollisionSectionInfo
 		CountZ(1),
 		SectionSize{ 1000.f, 1000.f, 1.f },
 		SectionTotalSize{ 1000.f, 1000.f, 1.f },
-		Min{ 0.f, 0.f, -0.5f },
+		Min{ -500.f, -500.f, -0.5f },
 		Max{ 500.f, 500.f, 0.5f }
 	{
 		

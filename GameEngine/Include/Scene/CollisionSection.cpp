@@ -117,7 +117,7 @@ CColliderComponent* CCollisionSection::CollisionMouse(bool Is2D, float DeltaTime
 		if (Size > 1)
 		{
 			// y sorting을 해준다 --> y 축 좌표 오름 차순 --> 제일 낮은 애부터 높은 놈으로 --> 제일 낮은 y 좌표애가 가장 나중에 그려지게 해야한다.
-			qsort(&m_vecCollider[0], (size_t)m_vecCollider.size(), sizeof(CColliderComponent*), SortY);
+			qsort(&m_vecCollider[0], Size, sizeof(CColliderComponent*), CCollisionSection::SortY);
 		}
 
 		// y sort 기준 아래에 있는 놈이 앞에 나온다
@@ -142,9 +142,9 @@ int CCollisionSection::SortY(const void* Src, const void* Dest)
 	CColliderComponent* DestComponent = *(CColliderComponent**)Dest;
 
 	if (SrcComponent->GetMin().y < DestComponent->GetMin().y)
-		return 1;
-	else if (SrcComponent->GetMin().y > DestComponent->GetMin().y)
 		return -1;
+	else if (SrcComponent->GetMin().y > DestComponent->GetMin().y)
+		return 1;
 
 	return 0;
 }

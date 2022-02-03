@@ -144,7 +144,8 @@ void CSceneCollision::CollisionMouse(float DeltaTime)
 			if (IndexX != -1 && IndexY != -1)
 			{
 				// 만약 해당 Section의 충돌체 중 하나와 충돌이 일어났다면 해당 충돌체 정보가 return
-				// 그게 아니라면 null return 
+				// 그게 아니라면 null return
+				// y는 행, x는 열
 				CColliderComponent* ColliderMouse = m_Section->vecSection[IndexY * m_Section->CountX + IndexX]->CollisionMouse(true, DeltaTime);
 
 				if (ColliderMouse)
