@@ -230,8 +230,12 @@ void CColliderPixel::PostUpdate(float DeltaTime)
 	m_Info.Min.x = m_Min.x;
 	m_Info.Min.y = m_Min.y;
 
+	m_Info.Box.Min = m_Info.Min;
+
 	m_Info.Max.x = m_Max.x;
 	m_Info.Max.y = m_Max.y;
+
+	m_Info.Box.Max = m_Info.Max;
 }
 
 void CColliderPixel::PrevRender()
