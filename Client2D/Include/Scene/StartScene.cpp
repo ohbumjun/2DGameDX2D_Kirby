@@ -13,7 +13,7 @@ bool CStartScene::Init()
 	if (!CSceneMode::Init())
 		return false;
 
-	// m_StartWidget = m_Scene->GetViewPort()->CreateUIWindow<CStartWidget>("StartWidget");
+	m_StartWidget = m_Scene->GetViewPort()->CreateUIWindow<CStartWidget>("StartWidget");
 
 	return true;
 }

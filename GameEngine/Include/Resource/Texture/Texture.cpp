@@ -150,6 +150,7 @@ bool CTexture::LoadTextureFullPath(const std::string& Name, const TCHAR* FullPat
 	strcpy_s(PathName, MAX_PATH, FullPath1Multibyte);
 	Info->PathName = PathName;
 
+	SAFE_DELETE(FullPath1Multibyte);
 
 	// FileName + È®ÀåÀÚ
 	Info->FileName = new TCHAR[MAX_PATH];
