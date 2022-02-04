@@ -52,7 +52,7 @@ bool CMainScene::Init()
 	// Sleep(1000);
 
 	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
-
+	/*
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 
 	BubbleParticle->SetRelativePos(-100.f, 0.f, 0.f);
@@ -68,6 +68,7 @@ bool CMainScene::Init()
 
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 	BubbleParticle->SetRelativePos(-300.f, 0.f, 0.f);
+	*/
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
@@ -111,28 +112,21 @@ void CMainScene::CreateParticle()
 	CMaterial* ParticleMaterial = m_Scene->GetResource()->FindMaterial("ParticleMaterial");
 
 	BubbleParticle->SetMaterial(ParticleMaterial);
-	BubbleParticle->SetSpawnCountMax(100);
-	BubbleParticle->SetLifeTimeMin(3.f);
-	BubbleParticle->SetLifeTimeMax(5.f);
-
+	BubbleParticle->SetSpawnCountMax(1000);
 	BubbleParticle->SetScaleMin(Vector3(20.f, 20.f, 1.f));
-	BubbleParticle->SetScaleMax(Vector3(80.f, 80.f, 1.f));
-
-	BubbleParticle->SetSpeedMin(200.f);
-	BubbleParticle->SetSpeedMax(500.f);
-
-	BubbleParticle->SetColorMin(Vector4(0.2f, 0.1f, 0.8f, 1.f));
-	BubbleParticle->SetColorMax(Vector4(0.2f, 0.1f, 0.8f, 1.f));
-
-	BubbleParticle->SetStartMin(Vector3(-30.f, -30.f, 0.f));
-	BubbleParticle->SetStartMax(Vector3(30.f, 30.f, 0.f));
-
+	BubbleParticle->SetScaleMax(Vector3(50.f, 50.f, 1.f));
+	BubbleParticle->SetSpeedMin(100.f);
+	BubbleParticle->SetSpeedMax(200.f);
+	BubbleParticle->SetLifeTimeMin(1.f);
+	BubbleParticle->SetLifeTimeMax(8.f);
 	BubbleParticle->SetMoveDir(Vector3(0.f, 1.f, 0.f));
-
-	BubbleParticle->SetMove(true);
+	BubbleParticle->SetStartMin(Vector3(-300.f, -30.f, 0.f));
+	BubbleParticle->SetStartMax(Vector3(300.f, 30.f, 0.f));
+	BubbleParticle->SetColorMin(Vector4(0.4f, 0.4f, 0.1f, 1.f));
+	BubbleParticle->SetColorMax(Vector4(0.9f, 0.8f, 0.8f, 1.f));
+	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, 10.f));
 	BubbleParticle->SetGravity(true);
-	BubbleParticle->SetIs2D(true);
-	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, 30.f));
+	BubbleParticle->SetMove(true);
 
 
 }

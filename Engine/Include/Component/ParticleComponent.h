@@ -21,8 +21,8 @@ public :
 protected :
     CSharedPtr<CParticle> m_Particle;
     CSharedPtr<CMaterial> m_Material;
-    CParticleConstantBuffer* m_ParticleConstantBuffer;
-    std::vector<CStructuredBuffer*> m_vecStructruedBuffer;
+    CParticleConstantBuffer* m_CBuffer;
+    std::vector<CStructuredBuffer*> m_vecStructuredBuffer;
     CSharedPtr<CParticleUpdateShader> m_ParticleUpdateShader;
     ParticleInfo m_ParticleInfo;
     ParticleInfoShared m_ParticleInfoShared;
@@ -32,7 +32,7 @@ private :
     float m_SpawnTimeMax;
 public :
     void SetParticle(const std::string& Name);
-    void SetParticle(const CParticle* Particle);
+    void SetParticle(CParticle* Particle);
     void SetSpawnTime(float Time);
 public:
     virtual void Start();

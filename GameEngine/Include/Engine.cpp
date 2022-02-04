@@ -134,6 +134,8 @@ bool CEngine::Init(HINSTANCE    hInst, HWND         hWnd,
 	CResourceManager::GetInst()->LoadTexture("NoiseTexture", TEXT("noise_01.png"));
 	m_GlobalNoiseTexture = CResourceManager::GetInst()->FindTexture("NoiseTexture");
 	m_GlobalNoiseTexture->SetShader(100, (int)Buffer_Shader_Type::All, 0);
+	m_GlobalCBuffer->SetNoiseResolution(Vector2((float)m_GlobalNoiseTexture->GetWidth(),
+		(float)m_GlobalNoiseTexture->GetHeight()));
 
 	return true;
 }
