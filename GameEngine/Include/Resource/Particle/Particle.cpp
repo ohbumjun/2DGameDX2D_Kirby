@@ -6,7 +6,7 @@
 
 CParticle::CParticle() :
 	m_ParticleConstantBuffer(nullptr),
-	m_SpawnTime(0.f),
+	m_SpawnTime(0.05f),
 	m_Is2D(true),
 	m_SpawnCountMax(100)
 {}

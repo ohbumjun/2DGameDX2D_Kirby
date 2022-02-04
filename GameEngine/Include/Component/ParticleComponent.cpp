@@ -3,8 +3,8 @@
 #include "../Scene/SceneResource.h"
 
 CParticleComponent::CParticleComponent() :
-m_SpawnTimeMax(0.01f),
-m_SpawnTime(0.0f),
+m_SpawnTime(0.f),
+m_SpawnTimeMax(0.05f),
 m_ParticleInfo{},
 m_ParticleInfoShared{},
 m_ParticleConstantBuffer(nullptr)
@@ -148,17 +148,17 @@ void CParticleComponent::PostUpdate(float DeltaTime)
 
 	m_ParticleConstantBuffer->SetStartMin(StartMin); // 절대 위치 정보 저장
 	m_ParticleConstantBuffer->SetStartMax(StartMax);
-
 	m_ParticleConstantBuffer->UpdateCBuffer();
 
-	// Compute Shader --> Update Shader를 동작시킨다.
-
+	// 구조화 버퍼 세팅 
 	size_t Bufferize = m_vecStructruedBuffer.size();
 
 	for (size_t i = 0; i < Bufferize; i++)
 	{
 		m_vecStructruedBuffer[i]->SetShader();
 	}
+
+	// Compute Shader --> Update Shader를 동작시킨다.
 
 	int GroupCount = m_Particle->GetSpawnCountMax() / 64 + 1;
 	m_ParticleUpdateShader->Execute(GroupCount, 1, 1);
