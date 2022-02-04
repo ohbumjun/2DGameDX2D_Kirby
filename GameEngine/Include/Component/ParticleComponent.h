@@ -20,13 +20,14 @@ public :
     virtual ~CParticleComponent();
 protected :
     CSharedPtr<CParticle> m_Particle;
-    CSharedPtr<CMesh> m_Mesh; // Particle은 Mesh가 없다. Particle Component가 가지고 있게 되는 것
     CSharedPtr<CMaterial> m_Material;
     CParticleConstantBuffer* m_ParticleConstantBuffer;
     std::vector<CStructuredBuffer*> m_vecStructruedBuffer;
     CSharedPtr<CParticleUpdateShader> m_ParticleUpdateShader;
     ParticleInfo m_ParticleInfo;
     ParticleInfoShared m_ParticleInfoShared;
+private :
+    CSharedPtr<CMesh> m_Mesh; // Particle은 Mesh가 없다. Particle Component가 가지고 있게 되는 것
     float m_SpawnTime;
     float m_SpawnTimeMax;
 public :

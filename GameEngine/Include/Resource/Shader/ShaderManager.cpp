@@ -75,10 +75,10 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("ProgressCBuffer", sizeof(ProgressBarCBuffer), 12,
 		(int)(Buffer_Shader_Type::Graphic));
 
-	CreateConstantBuffer("ParticleCBuffer", sizeof(ParticleCBuffer), 11,
+	CreateConstantBuffer("ParticleCBuffer", sizeof(ParticleCBuffer), 13,
 		(int)(Buffer_Shader_Type::Compute));
 
-	CreateConstantBuffer("GlobalCBuffer", sizeof(GlobalCBuffer), 11,
+	CreateConstantBuffer("GlobalCBuffer", sizeof(GlobalCBuffer), 3,
 		(int)(Buffer_Shader_Type::All));
 
 	return true;

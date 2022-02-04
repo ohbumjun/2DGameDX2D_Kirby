@@ -55,7 +55,7 @@ public :
 }
     CMaterial* CloneMaterial() const
     {
-        return m_Material;
+        return m_Material->Clone();
     }
 public : // 상수 정보 세팅
     void SetSpawnCountMax(int Count);

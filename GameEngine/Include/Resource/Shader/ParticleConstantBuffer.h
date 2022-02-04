@@ -23,6 +23,10 @@ public :
     {
         return m_BufferData.StartMax;
     }
+    int GetSpawnCountMax() const
+	{
+        return m_BufferData.SpawnCountMax;
+	}
 public :
     void SetSpawnCount(int Count)
 {

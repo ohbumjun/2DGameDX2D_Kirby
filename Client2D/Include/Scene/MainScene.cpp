@@ -51,9 +51,8 @@ bool CMainScene::Init()
 
 	Sleep(1000);
 
-	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
-	BubbleParticle->SetRelativePos(-200.f, 0.f, 0.f);
-
+	// CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	// BubbleParticle->SetRelativePos(-200.f, 0.f, 0.f);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 

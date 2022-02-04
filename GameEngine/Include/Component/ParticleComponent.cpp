@@ -20,7 +20,7 @@ CParticleComponent::CParticleComponent(const CParticleComponent& Component)
 
 	m_Particle = Component.m_Particle;
 
-	size_t Size = Component.m_vecStructruedBuffer.size();
+	size_t Size = m_vecStructruedBuffer.size();
 
 	for (size_t i = 0; i < Size; i++)
 	{
@@ -192,6 +192,8 @@ void CParticleComponent::Render()
 		m_Material->Render();
 
 	// Mesh를 인스턴싱을 이용해서 그린다.
+	int SpawnCount = m_ParticleConstantBuffer->GetSpawnCountMax();
+	m_Mesh->RenderInstancing(SpawnCount);
 
 	for (size_t i = 0; i < Size; i++)
 	{

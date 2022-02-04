@@ -240,7 +240,7 @@ void CPlayer2D::RotationZ(float DeltaTime)
 void CPlayer2D::Attack(float DeltaTime)
 {
 	CBullet* Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
-	Bullet->SetCollisionProfile("MonsterAttack");
+	// Bullet->SetCollisionProfile("MonsterAttack");
 
 	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
 	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
@@ -257,7 +257,7 @@ void CPlayer2D::Attack(float DeltaTime)
 	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
 	Bullet->SetWorldPos(m_ChildRightMuzzle->GetWorldPos());
 	Bullet->SetWorldRotation(GetWorldRot());
-	Bullet->SetCollisionProfile("MonsterAttack");
+	// Bullet->SetCollisionProfile("MonsterAttack");
 
 }
 
@@ -268,18 +268,21 @@ void CPlayer2D::Attack1(float DeltaTime)
 	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
 	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
 	Bullet->SetWorldRotation(GetWorldRot());
+	Bullet->SetCollisionProfile("PlayerAttack");
 
 	Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
 
 	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
 	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
 	Bullet->SetWorldRotation(GetWorldRot() + Vector3(0.f, 0.f, 45.f));
+	Bullet->SetCollisionProfile("PlayerAttack");
 
 	Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
 
 	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
 	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
 	Bullet->SetWorldRotation(GetWorldRot() + Vector3(0.f, 0.f, -45.f));
+	Bullet->SetCollisionProfile("PlayerAttack");
 }
 
 void CPlayer2D::Skill1(float DeltaTime)

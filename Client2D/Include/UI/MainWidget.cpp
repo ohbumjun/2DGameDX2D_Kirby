@@ -85,7 +85,6 @@ bool CMainWidget::Init()
 	m_TestSlider->SetSize(40.f, 100.f);
 
 	// Number Widget
-
 	std::vector<TCHAR*> vecFileName;
 
 	// Hour 

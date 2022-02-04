@@ -71,6 +71,7 @@ void CBullet::BulletCollision(const CollisionResult& Result)
 	CColliderComponent* CollisionDest = Result.Dest;
 	CGameObject* Owner = CollisionDest->GetGameObject();
 	CWidgetComponent* ObjectWindow = nullptr;
+
 	if (Owner)
 	{
 		// HP Bar 달게 하기
