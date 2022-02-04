@@ -80,7 +80,7 @@ bool CStructuredBuffer::Init(const std::string& Name, int Register, int Size, bo
 	else
 	{
 		m_Desc.Usage = D3D11_USAGE_DEFAULT;
-		m_Desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
+		m_Desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 	}
 
 	// 구조 버퍼 생성
@@ -88,7 +88,7 @@ bool CStructuredBuffer::Init(const std::string& Name, int Register, int Size, bo
 		return false;
 
 	// 셰이더 자원 뷰 생성
-	CD3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
 
 	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
 	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
@@ -102,7 +102,7 @@ bool CStructuredBuffer::Init(const std::string& Name, int Register, int Size, bo
 	// gpu 상에서의 읽기, 쓰기를 지원할 것이라면
 	if (!m_Dynamic)
 	{
-		CD3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
+		D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
 
 		UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
 		UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;

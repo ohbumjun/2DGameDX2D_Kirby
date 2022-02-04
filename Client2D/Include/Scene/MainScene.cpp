@@ -51,8 +51,8 @@ bool CMainScene::Init()
 
 	Sleep(1000);
 
-	// CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
-	// BubbleParticle->SetRelativePos(-200.f, 0.f, 0.f);
+	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	BubbleParticle->SetRelativePos(-200.f, 0.f, 0.f);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
@@ -103,7 +103,7 @@ void CMainScene::CreateParticle()
 	Bubble->SetScaleMax(Vector3(50.f, 50.f, 1.f));
 
 	Bubble->SetSpeedMin(100.f);
-	Bubble->SetSpeedMax(500.f);
+	Bubble->SetSpeedMax(200.f);
 
 	Bubble->SetLifeTimeMin(1.f);
 	Bubble->SetLifeTimeMax(2.f);

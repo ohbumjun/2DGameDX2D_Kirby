@@ -21,6 +21,13 @@ CParticle::CParticle(const CParticle& Particle) : CRef(Particle)
 CParticle::~CParticle()
 {
 	SAFE_DELETE(m_ParticleConstantBuffer);
+
+	size_t Size = m_vecStructuredBuffer.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		SAFE_DELETE(m_vecStructuredBuffer[i]);
+	}
 }
 
 bool CParticle::Init()

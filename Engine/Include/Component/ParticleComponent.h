@@ -1,11 +1,11 @@
 #pragma once
 
 #include "SceneComponent.h"
-#include "../../Resource/Particle/Particle.h"
-#include "../../Resource/Mesh/Mesh.h"
-#include "../../Resource/Particle/ParticleUpdateShader.h"
-#include "../../Resource/Shader/ParticleConstantBuffer.h"
-#include "../../Resource/Shader/StructuredBuffer.h"
+#include "../Resource/Particle/Particle.h"
+#include "../Resource/Mesh/Mesh.h"
+#include "../Resource/Particle/ParticleUpdateShader.h"
+#include "../Resource/Shader/ParticleConstantBuffer.h"
+#include "../Resource/Shader/StructuredBuffer.h"
 
 // ParticleComponent의 용도는 무엇일까 ?
 // 이 안에 내가 원하는 Particle Resource를 만들어두고,
