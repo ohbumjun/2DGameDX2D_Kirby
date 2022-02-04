@@ -51,7 +51,7 @@ bool CParticle::Init()
 	AddStructuredBuffer("ParticleInfo", 0, m_SpawnCountMax, sizeof(ParticleInfo));
 
 	// 공용 구조체 버퍼의 경우, 단 1개만을 만들 것이다.
-	AddStructuredBuffer("ParticleInfoShared", 1, 1, sizeof(ParticleInfo));
+	AddStructuredBuffer("ParticleInfoShared", 1, 1, sizeof(ParticleInfoShared));
 
 	return true;
 }
