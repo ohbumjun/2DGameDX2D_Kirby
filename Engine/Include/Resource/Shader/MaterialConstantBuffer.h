@@ -19,6 +19,10 @@ public:
 	virtual CMaterialConstantBuffer* Clone() override;
 
 public:
+	void SetPaperBurnEnable(bool Enable)
+	{
+		m_BufferData.PaperBurnEnable = Enable;
+	}
 	void SetBaseColor(const Vector4& BaseColor)
 	{
 		m_BufferData.BaseColor = BaseColor;

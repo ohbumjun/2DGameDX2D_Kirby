@@ -9,6 +9,7 @@ class CShader :
 
 protected:
 	CShader();
+	CShader(const CShader& Shader);
 	virtual ~CShader() override = 0;
 
 protected:

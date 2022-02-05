@@ -208,6 +208,9 @@
     <Filter Include="02. Resource\02. Shader\02. ShaderClass\06. PaperBurn">
       <UniqueIdentifier>{94b26fca-3c20-4658-86a5-98240f9b8765}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\02. ObjectComponent\01. PaperBurn">
+      <UniqueIdentifier>{ef354132-ba1d-48b4-a0f5-64c941e52f04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -600,6 +603,9 @@
     <ClInclude Include="Resource\Shader\PaperBurnShader.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Component\PaperBurnComponent.h">
+      <Filter>05. Component\02. ObjectComponent\01. PaperBurn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -943,6 +949,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\PaperBurnShader.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\PaperBurnComponent.cpp">
+      <Filter>05. Component\02. ObjectComponent\01. PaperBurn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,7 @@
     <ClInclude Include="Component\ColliderPixel.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\ObjectComponent.h" />
+    <ClInclude Include="Component\PaperBurnComponent.h" />
     <ClInclude Include="Component\ParticleComponent.h" />
     <ClInclude Include="Component\SceneComponent.h" />
     <ClInclude Include="Component\SpriteComponent.h" />
@@ -312,6 +313,7 @@
     <ClCompile Include="Component\ColliderPixel.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\ObjectComponent.cpp" />
+    <ClCompile Include="Component\PaperBurnComponent.cpp" />
     <ClCompile Include="Component\ParticleComponent.cpp" />
     <ClCompile Include="Component\SceneComponent.cpp" />
     <ClCompile Include="Component\SpriteComponent.cpp" />

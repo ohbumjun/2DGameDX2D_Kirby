@@ -206,10 +206,15 @@ struct MaterialCBuffer
 };
 
 struct PaperBurnCBuffer {
-	Vector4 InlineColor;
+	Vector4 InLineColor;
+	Vector4 OutLineColor;
 	Vector4 CenterLineColor;
-	Vector4 OutlineColor;
-	float     PaperBurn;
+	float PaperBurn;
+	int Inverse;
+	float InFilter;
+	float OutFilter;
+	float CenterFilter;
+	Vector3 Empty;
 };
 
 struct FindComponentName
