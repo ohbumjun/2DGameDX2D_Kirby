@@ -30,6 +30,8 @@ bool CBubbleParticle::Init()
 
 	m_Particle->SetParticle("Bubble");
 
+	SetLifeTime(5.f);
+
 	return true;
 }
 

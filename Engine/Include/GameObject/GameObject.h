@@ -31,7 +31,12 @@ protected:
 	std::vector<CSharedPtr<CObjectComponent>> m_vecObjectComponent;
 	CGameObject*                         m_Parent;
 	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
+	float m_LifeTime;
 public:
+	void SetLifeTime(float LifeTime)
+	{
+		m_LifeTime = LifeTime;
+	}
 	void SetRootComponent(CSceneComponent* Component)
 	{
 		m_RootComponent = Component;
