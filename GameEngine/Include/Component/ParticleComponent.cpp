@@ -14,7 +14,7 @@ CParticleComponent::CParticleComponent() :
 	SetTypeID<CParticleComponent>();
 	m_Render = true;
 
-	// m_LayerName = "Particle";
+	m_LayerName = "Particle";
 }
 
 CParticleComponent::CParticleComponent(const CParticleComponent& com) :

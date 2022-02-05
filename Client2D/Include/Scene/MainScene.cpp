@@ -52,6 +52,7 @@ bool CMainScene::Init()
 	// Sleep(1000);
 
 	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	BubbleParticle->SetRelativePos(0.f, 200.f, 0.f);
 	/*
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 
@@ -124,7 +125,7 @@ void CMainScene::CreateParticle()
 	BubbleParticle->SetStartMax(Vector3(300.f, 30.f, 0.f));
 	BubbleParticle->SetColorMin(Vector4(0.4f, 0.4f, 0.1f, 1.f));
 	BubbleParticle->SetColorMax(Vector4(0.9f, 0.8f, 0.8f, 1.f));
-	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, 10.f));
+	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, -100.f));
 	BubbleParticle->SetGravity(true);
 	BubbleParticle->SetMove(true);
 

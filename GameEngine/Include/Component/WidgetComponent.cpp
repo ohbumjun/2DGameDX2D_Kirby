@@ -16,6 +16,8 @@ CWidgetComponent::CWidgetComponent() :
 	SetInheritRotZ(false);
 
 	m_Render = true;
+
+	m_LayerName = "ScreenWidgetComponent";
 }
 
 CWidgetComponent::CWidgetComponent(const CWidgetComponent& Component) :

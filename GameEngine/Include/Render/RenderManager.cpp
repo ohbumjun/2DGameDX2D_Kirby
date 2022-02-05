@@ -118,9 +118,17 @@ bool CRenderManager::Init()
 
 	m_RenderLayerList.push_back(Layer);
 
+	// Particle Layer
+	Layer = new RenderLayer;
+	Layer->Name = "Particle";
+	Layer->LayerPriority = 2;
+
+	m_RenderLayerList.push_back(Layer);
 
 	m_DepthDisable = FindRenderState("DepthDisable");
 	m_AlphaDisable = FindRenderState("AlphaBlend");
+
+	sort(m_RenderLayerList.begin(), m_RenderLayerList.end(), SortLayer);
 
 	return true;
 }
