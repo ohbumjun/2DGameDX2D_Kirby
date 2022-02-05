@@ -201,7 +201,8 @@ struct MaterialCBuffer
 {
 	Vector4 BaseColor;
 	float   Opacity;
-	Vector3 Empty;
+	int      PaperBurnEnable;
+	Vector2 Empty;
 };
 
 struct FindComponentName

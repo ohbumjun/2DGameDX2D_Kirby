@@ -11,15 +11,7 @@ CComputeShader::CComputeShader() :
 
 CComputeShader::CComputeShader(const CComputeShader& Shader)
 {
-	memset(m_EntryName, 0, sizeof(64));
-	strcpy_s(m_EntryName, Shader.m_EntryName);
-
-	memset(m_FileName, 0, sizeof(MAX_PATH));
-	lstrcpy(m_FileName, Shader.m_FileName);
-
-	m_PathName = Shader.m_PathName;
-
-	LoadComputeShader(m_EntryName, m_FileName, m_PathName);
+	LoadComputeShader(Shader.m_EntryName, Shader.m_FileName, Shader.m_PathName);
 }
 
 CComputeShader::~CComputeShader()
