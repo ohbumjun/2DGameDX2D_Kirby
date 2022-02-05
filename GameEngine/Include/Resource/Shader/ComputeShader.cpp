@@ -78,6 +78,7 @@ bool CComputeShader::LoadComputeShader(const char* EntryName, const TCHAR* FileN
 
 void CComputeShader::Execute(unsigned int x, unsigned int y, unsigned int z)
 {
+	//
 	SetShader();
 	CDevice::GetInst()->GetContext()->Dispatch(x, y, z);
 	CDevice::GetInst()->GetContext()->CSSetShader(nullptr, nullptr, 0);
