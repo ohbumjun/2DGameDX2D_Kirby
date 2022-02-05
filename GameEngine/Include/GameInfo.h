@@ -205,6 +205,13 @@ struct MaterialCBuffer
 	Vector2 Empty;
 };
 
+struct PaperBurnCBuffer {
+	Vector4 InlineColor;
+	Vector4 CenterLineColor;
+	Vector4 OutlineColor;
+	float     PaperBurn;
+};
+
 struct FindComponentName
 {
 	std::string Name;

@@ -202,6 +202,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\03. ConstantBuffer\09. PaperBurn">
+      <UniqueIdentifier>{2f654d13-eda4-4eea-bbc3-fcd35eebc47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Resource\02. Shader\02. ShaderClass\06. PaperBurn">
+      <UniqueIdentifier>{94b26fca-3c20-4658-86a5-98240f9b8765}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -588,6 +594,12 @@
     <ClInclude Include="Resource\Particle\ParticleRenderShader.h">
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\PaperBurnConstantBuffer.h">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\09. PaperBurn</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Shader\PaperBurnShader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -925,6 +937,12 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\ComputeShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\PaperBurnConstantBuffer.cpp">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\09. PaperBurn</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\PaperBurnShader.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

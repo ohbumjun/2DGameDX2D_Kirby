@@ -256,6 +256,8 @@
     <ClInclude Include="Resource\Shader\MaterialConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\Mesh2DShader.h" />
     <ClInclude Include="Resource\Shader\NumberShader.h" />
+    <ClInclude Include="Resource\Shader\PaperBurnConstantBuffer.h" />
+    <ClInclude Include="Resource\Shader\PaperBurnShader.h" />
     <ClInclude Include="Resource\Shader\ParticleConstantBuffer.h" />
     <ClInclude Include="Resource\Shader\PosMeshShader.h" />
     <ClInclude Include="Resource\Shader\ProgressbarConstantBuffer.h" />
@@ -374,6 +376,8 @@
     <ClCompile Include="Resource\Shader\MaterialConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\Mesh2DShader.cpp" />
     <ClCompile Include="Resource\Shader\NumberShader.cpp" />
+    <ClCompile Include="Resource\Shader\PaperBurnConstantBuffer.cpp" />
+    <ClCompile Include="Resource\Shader\PaperBurnShader.cpp" />
     <ClCompile Include="Resource\Shader\ParticleConstantBuffer.cpp" />
     <ClCompile Include="Resource\Shader\PosMeshShader.cpp" />
     <ClCompile Include="Resource\Shader\ProgressbarConstantBuffer.cpp" />

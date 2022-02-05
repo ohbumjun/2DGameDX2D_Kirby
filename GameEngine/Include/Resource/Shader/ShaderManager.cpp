@@ -81,6 +81,9 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("GlobalCBuffer", sizeof(GlobalCBuffer), 3,
 		(int)(Buffer_Shader_Type::All));
 
+	CreateConstantBuffer("PaperBurnCBuffer", sizeof(PaperBurnCBuffer), 3,
+		(int)(Buffer_Shader_Type::All));
+
 	return true;
 }
 
