@@ -9,6 +9,19 @@ CComputeShader::CComputeShader() :
 	m_Type = Shader_Type::Compute;
 }
 
+CComputeShader::CComputeShader(const CComputeShader& Shader)
+{
+	memset(m_EntryName, 0, sizeof(64));
+	strcpy_s(m_EntryName, Shader.m_EntryName);
+
+	memset(m_FileName, 0, sizeof(MAX_PATH));
+	lstrcpy(m_FileName, Shader.m_FileName);
+
+	m_PathName = Shader.m_PathName;
+
+	LoadComputeShader(m_EntryName, m_FileName, m_PathName);
+}
+
 CComputeShader::~CComputeShader()
 {
 	SAFE_RELEASE(m_CSShader);
@@ -19,6 +32,14 @@ bool CComputeShader::LoadComputeShader(const char* EntryName, const TCHAR* FileN
 {
 	SAFE_RELEASE(m_CSShader);
 	SAFE_RELEASE(m_CSBlob);
+
+	memset(m_EntryName, 0, sizeof(64));
+	strcpy_s(m_EntryName, EntryName);
+
+	memset(m_FileName, 0, sizeof(MAX_PATH));
+	lstrcpy(m_FileName, FileName);
+
+	m_PathName = PathName;
 
 	unsigned int Flag = 0;
 
@@ -59,6 +80,7 @@ void CComputeShader::Execute(unsigned int x, unsigned int y, unsigned int z)
 {
 	SetShader();
 	CDevice::GetInst()->GetContext()->Dispatch(x, y, z);
+	CDevice::GetInst()->GetContext()->CSSetShader(nullptr, nullptr, 0);
 }
 
 void CComputeShader::SetShader()

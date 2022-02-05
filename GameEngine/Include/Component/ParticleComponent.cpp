@@ -38,7 +38,7 @@ CParticleComponent::CParticleComponent(const CParticleComponent& com) :
 	{
 		m_Particle->CloneStructuredBuffer(m_vecStructuredBuffer);
 
-		m_ParticleUpdateShader = m_Particle->GetUpdateShader();
+		m_ParticleUpdateShader = m_Particle->CloneUpdateShader();
 
 		SAFE_DELETE(m_CBuffer);
 
@@ -79,9 +79,11 @@ void CParticleComponent::SetParticle(CParticle* Particle)
 
 	SAFE_DELETE(m_CBuffer);
 
+	m_vecStructuredBuffer.clear();
+
 	m_Particle->CloneStructuredBuffer(m_vecStructuredBuffer);
 
-	m_ParticleUpdateShader = m_Particle->GetUpdateShader();
+	m_ParticleUpdateShader = m_Particle->CloneUpdateShader();
 
 	m_CBuffer = m_Particle->CloneConstantBuffer();
 
@@ -92,7 +94,9 @@ void CParticleComponent::SetSpawnTime(float Time)
 {
 	m_SpawnTimeMax = Time;
 
-	m_Particle->SetSpawnTime(m_SpawnTimeMax);
+	// 아래 코드는 실행하지 말자. 원본 Particle 정보는 그대로 두자
+	// 왜냐하면, 현재 Particle 자체는 공유하고 있기 때문이다.
+	// m_Particle->SetSpawnTime(m_SpawnTimeMax);
 }
 
 void CParticleComponent::Start()

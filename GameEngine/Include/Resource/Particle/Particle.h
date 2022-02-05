@@ -32,17 +32,18 @@ public:
 	{
 		return m_Material->Clone();
 	}
-
 	CParticleUpdateShader* GetUpdateShader()	const
 	{
 		return m_UpdateShader;
 	}
-
+	CParticleUpdateShader* CloneUpdateShader()	const
+	{
+		return m_UpdateShader->Clone();
+	}
 	CParticleConstantBuffer* CloneConstantBuffer()	const
 	{
 		return m_CBuffer->Clone();
 	}
-
 	float GetSpawnTime()	const
 	{
 		return m_SpawnTime;

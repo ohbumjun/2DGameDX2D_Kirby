@@ -620,9 +620,6 @@
     <ClCompile Include="Resource\Shader\GraphicShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\ComputeShader.cpp">
-      <Filter>02. Resource\02. Shader\02. ShaderClass</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Shader\ColorMeshShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\01. ColorMesh</Filter>
     </ClCompile>
@@ -924,6 +921,9 @@
       <Filter>02. Resource\08. Particle</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Particle\ParticleRenderShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\ComputeShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
     </ClCompile>
   </ItemGroup>

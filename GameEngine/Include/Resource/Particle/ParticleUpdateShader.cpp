@@ -5,7 +5,8 @@ CParticleUpdateShader::CParticleUpdateShader()
 	SetTypeID<CParticleUpdateShader>();
 }
 
-CParticleUpdateShader::CParticleUpdateShader(const CParticleUpdateShader& Shader)
+CParticleUpdateShader::CParticleUpdateShader(const CParticleUpdateShader& Shader) :
+CComputeShader(Shader)
 {}
 
 CParticleUpdateShader::~CParticleUpdateShader()
@@ -21,4 +22,9 @@ bool CParticleUpdateShader::Init()
 void CParticleUpdateShader::SetShader()
 {
 	CComputeShader::SetShader();
+}
+
+CParticleUpdateShader* CParticleUpdateShader::Clone()
+{
+	return new CParticleUpdateShader(*this);
 }
