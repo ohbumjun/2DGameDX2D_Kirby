@@ -65,6 +65,7 @@ bool CPathManager::Init()
 	AddPath(ANIMATION_PATH, TEXT("Animation\\"));
 	AddPath(SCENE_PATH, TEXT("Scene\\"));
 	AddPath(SOUND_PATH, TEXT("Sound\\"));
+	AddPath(SEQUENCE_PATH, TEXT("Sequence\\"));
 
 	// Engine Path ¸¸µé±â  ----------------------------------------------
 	TCHAR EnginePath[MAX_PATH] = {};
@@ -133,6 +134,7 @@ bool CPathManager::Init()
 	AddEnginePath(ENGINE_ANIMATION_PATH, TEXT("Animation\\"));
 	AddEnginePath(ENGINE_SCENE_PATH, TEXT("Scene\\"));
 	AddEnginePath(ENGINE_SOUND_PATH, TEXT("Sound\\"));
+	AddEnginePath(ENGINE_SEQUENCE_PATH, TEXT("Sequence\\"));
 
 	return true;
 }

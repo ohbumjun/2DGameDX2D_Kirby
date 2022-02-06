@@ -507,6 +507,7 @@ void CSpriteEditWindow::SpriteEditButton()
 		// m_Sprite UIImage 에도 세팅
 		CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
 		m_Sprite->SetTexture(Texture);
+		m_SpriteCurrentFrame->SetTexture(Texture);
 	}
 }
 
@@ -965,6 +966,26 @@ void CSpriteEditWindow::SaveSequence()
 		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, FilePathMultibyte, ConvertLength, nullptr, nullptr);
 
 		m_Animation->GetCurrentAnimation()->GetAnimationSequence()->SaveFullPath(FilePathMultibyte);
+
+		// GameEngine의 Bin, Animation Folder 에도 저장한다.
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ENGINE_SEQUENCE_PATH);
+
+		// 파일 이름을 뽑아낸다.
+		char SavedFileName[MAX_PATH] = {};
+		char SavedExt[_MAX_EXT] = {};
+		_splitpath_s(FilePathMultibyte, nullptr, 0, nullptr, 0, SavedFileName, MAX_PATH, SavedExt, _MAX_EXT);
+
+		// 최종 GameEngine 경로를 만든다.
+		char SavedGameEnginePath[MAX_PATH] = {};
+		strcpy_s(SavedGameEnginePath, EngineSequenceFolder->PathMultibyte);
+		strcat_s(SavedGameEnginePath, SavedFileName);
+		strcat_s(SavedGameEnginePath, SavedExt);
+
+		// 현재 저장되는 경로와 다르다면, GameEngine 쪽에도 저장한다.
+		if (strcmp(EngineSequenceFolder->PathMultibyte, FilePathMultibyte) != 0)
+		{
+			m_Animation->GetCurrentAnimation()->GetAnimationSequence()->SaveFullPath(SavedGameEnginePath);
+		}
 	}
 }
 

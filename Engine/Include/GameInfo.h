@@ -65,6 +65,7 @@
 #define	ENGINE_ANIMATION_PATH		"EngineAnimation"
 #define	ENGINE_SCENE_PATH				"EngineScene"
 #define	ENGINE_SOUND_PATH			"EngineSound"
+#define	ENGINE_SEQUENCE_PATH			"EngineSequence"
 
 #define	ROOT_PATH				"Root"
 #define	SHADER_PATH			"Shader"
@@ -73,6 +74,7 @@
 #define	ANIMATION_PATH		"Animation"
 #define	SCENE_PATH				"Scene"
 #define	SOUND_PATH				"Sound"
+#define	SEQUENCE_PATH		"Sequence"
 
 // Delete 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
