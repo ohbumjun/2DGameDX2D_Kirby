@@ -180,6 +180,25 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationFrameButton);
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("SeqName", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	m_NewSequenceName = AddWidget<CIMGUITextInput>("EditSeqName");
+	m_NewSequenceName->SetSize(80.f, 40.f);
+	m_NewSequenceName->SetHideName(true);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(175.f);
+
+	Button = AddWidget<CIMGUIButton>("EditName", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditSequenceName);
+
+
+	// ==============================
 	Label = AddWidget<CIMGUILabel>("NewSeq", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -238,23 +257,30 @@ bool CSpriteEditWindow::Init()
 
 
 	// ==============================
+
+	Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditFrameButton);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
 	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(90.f);
+	Line->SetOffsetX(175.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(175.f);
+	Line->SetOffsetX(260.f);
 
 	Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteFrameButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(260.f);
+	Line->SetOffsetX(345.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearFrameButton);
@@ -278,11 +304,6 @@ bool CSpriteEditWindow::Init()
 
 	m_EndFramePosYInput = AddWidget<CIMGUITextInput>("EndY");
 	m_EndFramePosYInput->SetSize(80.f, 30.f);
-
-	// =============================
-
-	Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditFrameButton);
 
 	// =============================
 	Button = AddWidget<CIMGUIButton>("RightEnd", 80.f, 30.f);
@@ -407,6 +428,31 @@ void CSpriteEditWindow::Update(float DeltaTime)
 		m_SpriteSampled->SetImageStart(FrameData.Start);
 		m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 	}
+}
+
+void CSpriteEditWindow::EditSequenceName()
+{
+	int SelectIndex = m_AnimationList->GetSelectIndex();
+	if (SelectIndex < 0)
+		return;
+
+	const std::string PrevSeqName = m_AnimationList->GetSelectItem();
+	const std::string NewSeqName = m_NewSequenceName->GetTextMultibyte();
+
+	// Scene Resource 내용 수정하기
+	CSceneManager::GetInst()->GetScene()->GetResource()->EditSequence2DName(PrevSeqName, NewSeqName);
+
+	// Animation 객체 내용 수정하기
+	if (m_Animation)
+	{
+		
+	}
+
+	// Animation List 내 바꿔주기
+	m_AnimationList->SetItem(SelectIndex, NewSeqName);
+
+	// m_NewSequenceName 내용 비워주기
+	m_NewSequenceName->Empty();
 }
 
 void CSpriteEditWindow::LoadTextureButton()
@@ -949,19 +995,24 @@ void CSpriteEditWindow::LoadSequence()
 		// 이름으로 Sequence를 가져오고
 		CAnimationSequence2D* LoadedSequence = Resource->FindAnimationSequence2D(SequenceName);
 
-		// Animation List가 없다면 세팅한다
-		if (!m_Animation)
-		{
-			m_Animation = new CAnimationSequence2DInstance;
-			m_Animation->Init();
-		}
-		m_Animation->AddAnimation(SequenceName, SequenceName);
+		// 같은 이름이 이미 존재하면 X
+		if (m_AnimationList->CheckItem(SequenceName))
+			return;
 
 		// 해당 이름을 m_AnimationList 에 추가해주고
 		m_AnimationList->AddItem(SequenceName);
 
 		// 해당 이름을 클릭한 상태로 만들어주고
 		m_AnimationList->SetSelectIndex(m_AnimationList->GetItemCount() - 1);
+
+		// Animation List가 없다면 세팅한다
+		if (!m_Animation)
+		{
+			m_Animation = new CAnimationSequence2DInstance;
+			m_Animation->Init();
+		}
+
+		m_Animation->AddAnimation(SequenceName, SequenceName);
 
 		// 해당 Seq를 Sprite Edit Object로 세팅
 		if (!m_SpriteObject)
@@ -1078,6 +1129,7 @@ void CSpriteEditWindow::LoadAnimation()
 			// 기존 Animation List에 보여지던 , 즉, 현재 Animation에 Added 되었던 모든 Sequence 정보를 지워준다
 			ClearAnimationSequence();
 		}
+
 		m_Animation->LoadFullPath(FilePathMultibyte);
 
 		// CurrentAnimation 이 없다면,

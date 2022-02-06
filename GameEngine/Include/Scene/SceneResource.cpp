@@ -344,8 +344,26 @@ bool CSceneResource::LoadSequence2D(const char* FileName, const std::string& Pat
 	return true;
 }
 
+void CSceneResource::EditSequence2DName(const std::string& PrevName, const std::string& NewName)
+{
+	auto iter = m_mapSequence2D.find(PrevName);
+
+	if (iter == m_mapSequence2D.end())
+		return;
+
+	CAnimationSequence2D* Sequence2D = iter->second;
+	if (!Sequence2D)
+		return;
+
+	CAnimationSequence2D* NewSequence2D = Sequence2D->Clone();
+
+	m_mapSequence2D.erase(iter);
+
+	m_mapSequence2D.insert(std::make_pair(NewName, Sequence2D));
+}
+
 CSound* CSceneResource::LoadSound(const std::string& GroupName, const std::string& SoundName, bool Loop,
-	const TCHAR* FileName, const std::string& PathName)
+								  const TCHAR* FileName, const std::string& PathName)
 {
 	CSound* Sound = FindSound(SoundName);
 	if (Sound)

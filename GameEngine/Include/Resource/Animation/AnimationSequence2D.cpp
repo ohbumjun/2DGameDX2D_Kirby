@@ -10,6 +10,19 @@ CAnimationSequence2D::CAnimationSequence2D() :
 {
 }
 
+CAnimationSequence2D::CAnimationSequence2D(const CAnimationSequence2D& Sequence2D)
+{
+	m_Scene = Sequence2D.m_Scene;
+	m_Texture = Sequence2D.m_Texture;
+
+	size_t Size = Sequence2D.m_vecFrameData.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		m_vecFrameData.push_back(Sequence2D.m_vecFrameData[i]);
+	}
+}
+
 CAnimationSequence2D::~CAnimationSequence2D()
 {
 }
@@ -73,6 +86,11 @@ void CAnimationSequence2D::SetFrame(int Index, const Vector2& StartPos, Vector2&
 {
 	m_vecFrameData[Index].Start = StartPos;
 	m_vecFrameData[Index].Size  = EndPos;
+}
+
+CAnimationSequence2D* CAnimationSequence2D::Clone()
+{
+	return new CAnimationSequence2D(*this);
 }
 
 void CAnimationSequence2D::SaveFullPath(const char* FullPath)

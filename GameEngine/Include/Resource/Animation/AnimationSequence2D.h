@@ -10,6 +10,7 @@ class CAnimationSequence2D :
 
 public:
 	CAnimationSequence2D();
+	CAnimationSequence2D(const CAnimationSequence2D& Sequence2D);
 	virtual ~CAnimationSequence2D() override;
 
 private:
@@ -58,6 +59,7 @@ public:
 	void AddFrame(float StartX, float StartY, float Width, float Height);
 	void SetFrame(int Index, float StartX, float StartY, float Width, float Height);
 	void SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos);
+	CAnimationSequence2D* Clone();
 public :
 	void SaveFullPath(const char* FullPath);
 	void Save(FILE* pFile);

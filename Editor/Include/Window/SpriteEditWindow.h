@@ -17,6 +17,7 @@ private :
 	class CIMGUIListBox* m_AnimationList;
 	class CIMGUIListBox* m_AnimationFrameList;
 	class CIMGUITextInput* m_AnimInputName;
+	class CIMGUITextInput* m_NewSequenceName;
 private:
 	class CIMGUITextInput* m_StartFramePosXInput;
 	class CIMGUITextInput* m_StartFramePosYInput;
@@ -42,6 +43,7 @@ public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
 public:
+	void EditSequenceName();
 	void LoadTextureButton();
 	void SpriteEditButton();
 	void DeleteAnimationSequence();
@@ -53,6 +55,7 @@ public:
 	void EditFrameButton();
 	void PlayAnimationButton();
 	void StopAnimationButton();
+	
 public :
 	void SetNewAnimSequenceLoop(int, const char*);
 	void SetNewAnimSequenceReverse(int, const char*);
