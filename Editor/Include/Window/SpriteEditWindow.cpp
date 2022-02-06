@@ -1154,7 +1154,7 @@ void CSpriteEditWindow::LoadAnimation()
 		m_AnimationList->Clear();
 
 		// Animation Key Name 조정을 한다. (혹시나 이름이 잘못 저장되어 있을 수도 있으므로 )
-		m_Animation->AdjustSequence2DKeyName();
+		m_Animation->AdjustSequence2DKeyName();//
 
 		// AnimList 에 모든 Seq 내용을 추가해준다
 		int Size = m_Animation->GetAnimationCount();
