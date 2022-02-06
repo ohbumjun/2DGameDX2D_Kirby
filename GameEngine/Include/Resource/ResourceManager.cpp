@@ -205,8 +205,13 @@ bool CResourceManager::LoadSequence2D(std::string& SequenceName, const char* Fil
 	return m_AnimationManager->LoadSequence2D(SequenceName, FileName, PathName, Scene);
 }
 
+void CResourceManager::EditSequence2DName(const std::string& PrevName, const std::string& NewName)
+{
+	m_AnimationManager->EditSequence2DName(PrevName, NewName);
+}
+
 CSound* CResourceManager::LoadSound(const std::string& GroupName, const std::string& SoundName, bool Loop,
-	const TCHAR* FileName, const std::string& PathName)
+									const TCHAR* FileName, const std::string& PathName)
 {
 	return m_SoundManager->LoadSound(GroupName, SoundName, Loop, FileName, PathName);
 }

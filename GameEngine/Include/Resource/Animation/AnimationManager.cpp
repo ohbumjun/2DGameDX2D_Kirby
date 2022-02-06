@@ -167,3 +167,21 @@ bool CAnimationManager::LoadSequence2D(std::string& SequenceName, const char* Fi
 	m_mapSequence2D.insert(std::make_pair(SequenceName, Sequence2D));
 	return true;
 }
+
+void CAnimationManager::EditSequence2DName(const std::string& PrevName, const std::string& NewName)
+{
+	auto iter = m_mapSequence2D.find(PrevName);
+
+	if (iter == m_mapSequence2D.end())
+		return;
+
+	CAnimationSequence2D* Sequence2D = iter->second;
+	if (!Sequence2D)
+		return;
+
+	CAnimationSequence2D* NewSequence2D = Sequence2D->Clone();
+
+	m_mapSequence2D.erase(iter);
+
+	m_mapSequence2D.insert(std::make_pair(NewName, Sequence2D));
+}
