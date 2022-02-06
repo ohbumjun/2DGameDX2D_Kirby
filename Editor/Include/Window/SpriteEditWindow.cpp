@@ -1153,10 +1153,15 @@ void CSpriteEditWindow::LoadAnimation()
 		// AnimList 모두를 지워준다
 		m_AnimationList->Clear();
 
+		// Animation Key Name 조정을 한다. (혹시나 이름이 잘못 저장되어 있을 수도 있으므로 )
+		m_Animation->AdjustSequence2DKeyName();
+
 		// AnimList 에 모든 Seq 내용을 추가해준다
 		int Size = m_Animation->GetAnimationCount();
 		std::vector<std::string> vecSeqNames;
+
 		m_Animation->GatherSequenceNames(vecSeqNames);
+
 		for (int i = 0; i < Size; i++)
 		{
 			m_AnimationList->AddItem(vecSeqNames[i]);

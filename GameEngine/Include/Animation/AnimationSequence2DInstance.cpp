@@ -123,6 +123,56 @@ bool CAnimationSequence2DInstance::DeleteAnimationSequence(const std::string& Na
 	return IsDelete;
 }
 
+void CAnimationSequence2DInstance::EditSequence2DName(const std::string& PrevName, const std::string& NewName)
+{
+	auto iter = m_mapAnimation.find(PrevName);
+
+	if (iter == m_mapAnimation.end())
+		return;
+
+	CAnimationSequence2DData* Animation = iter->second;
+
+	// 새로운 내용 복사 생성
+	CAnimationSequence2DData* NewAnimation = new CAnimationSequence2DData;
+
+	NewAnimation->m_Sequence = Animation->m_Sequence;
+	NewAnimation->m_Name = Animation->m_Name;
+	NewAnimation->m_Loop = Animation->m_Loop;
+	NewAnimation->m_PlayTime = Animation->m_PlayTime;
+	NewAnimation->m_PlayScale = Animation->m_PlayScale;
+	NewAnimation->m_Reverse = Animation->m_Reverse;
+	NewAnimation->m_FrameTime = Animation->m_PlayTime / Animation->m_Sequence->GetFrameCount();
+
+	// 기존 것 지우기
+	m_mapAnimation.erase(iter);
+
+	// 새로운 내용 추가
+	m_mapAnimation.insert(std::make_pair(NewName, NewAnimation));
+}
+
+void CAnimationSequence2DInstance::AdjustSequence2DKeyName()
+{
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	std::vector<std::pair<std::string, std::string>> vecDiffName;
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if (iter->first != iter->second->m_Sequence->GetName())
+		{
+			vecDiffName.push_back(std::make_pair(iter->first, iter->second->m_Sequence->GetName()));
+		}
+	}
+
+	size_t Size = vecDiffName.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		EditSequence2DName(vecDiffName[i].first, vecDiffName[i].second);
+	}
+}
+
 void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 												const std::string& AnimationName, bool Loop,
 												float              PlayTime, float     PlayScale, bool Reverse)
@@ -429,6 +479,8 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 	// m_mapAnimation.clear();
 	// m_CurrentAnimation = nullptr;
 
+	std::string TempCurrentAnimationName;
+
 	for (int i = 0; i < MapSize; i++)
 	{
 		// - CAnimationSequence2DData
@@ -452,7 +504,13 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 			CResourceManager::GetInst()->AddSequence2D(Sequence2DData->m_Sequence);
 		}
 		*/
+		if (m_mapAnimation.empty())
+		{
+			m_CurrentAnimation = Sequence2DData;
+		}
+
 		m_mapAnimation.insert(std::make_pair(SequenceData2DNameKey, Sequence2DData));
+
 	}
 
 	// Current Animation Info
@@ -466,7 +524,13 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 		char CurAnimName[MAX_PATH] = {};
 		fread(CurAnimName, sizeof(char), CurAnimNameLength, pFile);
 
-		m_CurrentAnimation = FindAnimationSequence2D(CurAnimName);
+		CAnimationSequence2DData* FoundAnimation = FindAnimationSequence2D(CurAnimName);
+
+		// 이름 자체가 잘못 저장된 것일 수도 있어서 해당 내용이 없을 수도 있다.
+		if (FoundAnimation)
+		{
+			m_CurrentAnimation = FoundAnimation;
+		}
 	}
 
 	fclose(pFile);

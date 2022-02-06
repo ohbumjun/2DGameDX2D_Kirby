@@ -63,6 +63,8 @@ public :
 	void AddSequence2DToScene();
 	void ClearAnimationSequence();
 	bool DeleteAnimationSequence(const std::string& Name);
+	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);
+	void AdjustSequence2DKeyName();
 public:
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, 
 		float PlayTime = 1.f,
