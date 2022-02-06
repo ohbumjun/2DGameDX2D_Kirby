@@ -292,9 +292,14 @@ bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 			if (vecFileName.size() == 1)
 			{
 				if (m_Scene)
-					m_Scene->GetResource()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+				{
+					// m_Scene->GetResource()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+					m_Scene->GetResource()->LoadTextureFullPath(TextureName, vecFullPath[0].c_str());
+				}
 				else
-					CResourceManager::GetInst()->LoadTexture(TextureName, vecFileName[0].c_str(), PathName);
+				{
+					CResourceManager::GetInst()->LoadTextureFullPath(TextureName, vecFullPath[0].c_str());
+				}
 			}
 			break;
 		case Image_Type::Frame:
