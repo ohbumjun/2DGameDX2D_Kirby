@@ -356,6 +356,7 @@ void CSceneResource::EditSequence2DName(const std::string& PrevName, const std::
 		return;
 
 	CAnimationSequence2D* NewSequence2D = Sequence2D->Clone();
+	NewSequence2D->SetName(NewName); // 실제 Sequence의 이름도 바꿔준다.
 
 	m_mapSequence2D.erase(iter);
 

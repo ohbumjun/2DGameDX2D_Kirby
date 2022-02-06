@@ -445,7 +445,7 @@ void CSpriteEditWindow::EditSequenceName()
 	// Animation 객체 내용 수정하기
 	if (m_Animation)
 	{
-		
+		m_Animation->EditSequence2DName(PrevSeqName, NewSeqName);
 	}
 
 	// Animation List 내 바꿔주기
@@ -1154,7 +1154,7 @@ void CSpriteEditWindow::LoadAnimation()
 		m_AnimationList->Clear();
 
 		// Animation Key Name 조정을 한다. (혹시나 이름이 잘못 저장되어 있을 수도 있으므로 )
-		m_Animation->AdjustSequence2DKeyName();//
+		m_Animation->AdjustSequence2DKeyName();
 
 		// AnimList 에 모든 Seq 내용을 추가해준다
 		int Size = m_Animation->GetAnimationCount();
@@ -1180,7 +1180,7 @@ void CSpriteEditWindow::LoadAnimation()
 
 		m_AnimationList->SetSelectIndex(CurAnimIdx);
 
-		// Animatino Frame List를 비워준다.
+		// Animation Frame List를 비워준다.
 		m_AnimationFrameList->Clear();
 
 		int FrameCount = (int)m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetFrameCount();
@@ -1195,6 +1195,7 @@ void CSpriteEditWindow::LoadAnimation()
 
 			// Frame이 존재한다면, SpriteSampled의 Texture를 현재 Current Animation의 Texture로 세팅해준다.
 			m_SpriteSampled->SetTexture(AnimTexture);
+			m_SpriteCurrentFrame->SetTexture(AnimTexture);
 
 			// 첫번째 Frame을 SpriteSampled 의 Image Start, End로 세팅한다.
 			AnimationFrameData FirstFrame = m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(0);
@@ -1203,6 +1204,8 @@ void CSpriteEditWindow::LoadAnimation()
 
 			m_SpriteSampled->SetImageStart(FrameStartPos);
 			m_SpriteSampled->SetImageEnd(FrameEndPos);
+			m_SpriteCurrentFrame->SetImageStart(FrameStartPos);
+			m_SpriteCurrentFrame->SetImageEnd(FrameEndPos);
 
 			// Frame이 존재한다면, 첫번째 Frame을 선택한 상태로 둔다.
 			m_AnimationFrameList->SetSelectIndex(0);
