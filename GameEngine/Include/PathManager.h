@@ -30,6 +30,8 @@ public:
 	bool Init();
 	bool AddPath(const std::string& Name, const TCHAR* Path,
 	             const std::string& BaseName = ROOT_PATH);
+	bool AddEnginePath(const std::string& Name, const TCHAR* Path,
+		const std::string& BaseName = ENGINE_ROOT_PATH);
 	const PathInfo* FindPath(const std::string& Name);
 
 private:

@@ -58,13 +58,21 @@
 #pragma comment(lib, "fmod64_vc.lib")
 
 // Path 
-#define	ROOT_PATH		   "Root"
-#define	SHADER_PATH      "Shader"
-#define	TEXTURE_PATH	   "Texture"
-#define	FONT_PATH		   "Font"
-#define	ANIMATION_PATH "Animation"
-#define	SCENE_PATH        "Scene"
-#define	SOUND_PATH        "Sound"
+#define ENGINE_ROOT_PATH "EngineRoot"
+#define	ENGINE_SHADER_PATH			"EngineShader"
+#define	ENGINE_TEXTURE_PATH			"EngineTexture"
+#define	ENGINE_FONT_PATH				"EngineFont"
+#define	ENGINE_ANIMATION_PATH		"EngineAnimation"
+#define	ENGINE_SCENE_PATH				"EngineScene"
+#define	ENGINE_SOUND_PATH			"EngineSound"
+
+#define	ROOT_PATH				"Root"
+#define	SHADER_PATH			"Shader"
+#define	TEXTURE_PATH			"Texture"
+#define	FONT_PATH				"Font"
+#define	ANIMATION_PATH		"Animation"
+#define	SCENE_PATH				"Scene"
+#define	SOUND_PATH				"Sound"
 
 // Delete 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
