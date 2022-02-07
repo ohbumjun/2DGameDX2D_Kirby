@@ -6,6 +6,7 @@ class CAnimationSequence2D :
 	public CRef
 {
 	friend class CAnimationManager;
+	friend class CSceneResource;
 	friend class CAnimationSequence2DData;
 
 public:

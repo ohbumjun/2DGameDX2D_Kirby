@@ -105,6 +105,8 @@ public :
 		m_Sequence->ClearFrame();
 	}
 
+	void SetSequence2D(CAnimationSequence2D* Sequence2D);
+public :
 	bool Save(FILE* pFile);
 	bool Load(FILE* pFile);
 public:

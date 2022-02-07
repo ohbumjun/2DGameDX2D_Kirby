@@ -161,8 +161,8 @@ void CMaterial::SetTexture(int Index, int Register, int ShaderType, const std::s
 {
 	m_TextureInfo[Index].Register   = Register;
 	m_TextureInfo[Index].Name       = Name;
-	m_TextureInfo[Index].Texture    = Texture;
 	m_TextureInfo[Index].ShaderType = ShaderType;
+	m_TextureInfo[Index].Texture    = Texture;
 }
 
 void CMaterial::SetTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,

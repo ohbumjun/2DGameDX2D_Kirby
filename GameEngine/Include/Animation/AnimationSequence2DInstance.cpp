@@ -174,11 +174,64 @@ void CAnimationSequence2DInstance::AdjustSequence2DKeyName()
 	}
 }
 
+void CAnimationSequence2DInstance::AddAnimation(const std::string& AnimationName, CAnimationSequence2DData* Animation)
+{
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(AnimationName);
+
+	if (Anim)
+		return;
+
+	if (m_mapAnimation.empty())
+	{
+		m_CurrentAnimation = Animation;
+
+		if (m_Owner)
+		{
+			m_Owner->SetTexture(0, 0, (int)Buffer_Shader_Type::Pixel,
+				Animation->GetAnimationSequence()->GetTexture()->GetName(),
+				Animation->GetAnimationSequence()->GetTexture());
+		}
+	}
+
+	m_mapAnimation.insert(std::make_pair(AnimationName, Animation));
+}
+
+void CAnimationSequence2DInstance::AddAnimation(const std::string& AnimationName, 
+	const std::string& SequenceName, CAnimationSequence2D* Sequence2D, bool Loop,
+	float              PlayTime, float     PlayScale, bool Reverse)
+{
+	CAnimationSequence2DData* Animation = FindAnimationSequence2DData(AnimationName);
+
+	if (Animation)
+		return;
+
+	Animation = new CAnimationSequence2DData;
+	Animation->m_Sequence = Sequence2D;
+	Animation->m_SequenceName = SequenceName;
+	Animation->m_Loop = Loop;
+	Animation->m_Reverse = Reverse;
+	Animation->m_PlayTime = PlayTime;
+	Animation->m_PlayScale = PlayScale;
+
+	if (m_mapAnimation.empty())
+	{
+		m_CurrentAnimation = Animation;
+
+		if (m_Owner)
+		{
+			m_Owner->SetTexture(0, 0, (int)Buffer_Shader_Type::Pixel,
+				SequenceName, Sequence2D->GetTexture());
+		}
+	}
+
+	m_mapAnimation.insert(std::make_pair(AnimationName, Animation));
+}
+
 void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 												const std::string& AnimationName, bool Loop,
 												float              PlayTime, float     PlayScale, bool Reverse)
 {
-	CAnimationSequence2DData* Anim = FindAnimationSequence2D(AnimationName);
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(AnimationName);
 
 	if (Anim)
 		return;
@@ -187,12 +240,12 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 
 	if (m_Scene)
 	{
-		Sequence = m_Scene->GetResource()->FindAnimationSequence2D(SequenceName);
+		Sequence = m_Scene->GetResource()->FindAnimationSequence2DData(SequenceName);
 	}
 
 	else
 	{
-		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
+		Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(SequenceName);
 	}
 
 	if (!Sequence)
@@ -227,7 +280,7 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std::string& PathName,
 	const std::string& AnimName, bool Loop, float PlayTime, float PlayScale, bool Reverse)
 {
-	CAnimationSequence2DData* Anim = FindAnimationSequence2D(AnimName);
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(AnimName);
 
 	if (Anim)
 		return;
@@ -242,13 +295,13 @@ void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std
 	{
 		std::string  SequenceName;
 		m_Scene->GetResource()->LoadSequence2D(SequenceName, FileNameMultibyte, PathName);
-		Sequence = m_Scene->GetResource()->FindAnimationSequence2D(SequenceName);
+		Sequence = m_Scene->GetResource()->FindAnimationSequence2DData(SequenceName);
 	}
 	else
 	{
 		std::string  SequenceName;
 		CResourceManager::GetInst()->LoadSequence2D(SequenceName, FileNameMultibyte, PathName);
-		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
+		Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(SequenceName);
 	}
 
 	if (!Sequence)
@@ -277,7 +330,7 @@ void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std
 
 void CAnimationSequence2DInstance::SetPlayTime(const std::string& Name, float PlayTime)
 {
-	CAnimationSequence2DData* Anim = FindAnimationSequence2D(Name);
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(Name);
 
 	if (!Anim)
 		return;
@@ -287,7 +340,7 @@ void CAnimationSequence2DInstance::SetPlayTime(const std::string& Name, float Pl
 
 void CAnimationSequence2DInstance::SetPlayScale(const std::string& Name, float PlayScale)
 {
-	CAnimationSequence2DData* Anim = FindAnimationSequence2D(Name);
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(Name);
 
 	if (!Anim)
 		return;
@@ -297,7 +350,7 @@ void CAnimationSequence2DInstance::SetPlayScale(const std::string& Name, float P
 
 void CAnimationSequence2DInstance::SetReverse(const std::string& Name, bool Reverse)
 {
-	CAnimationSequence2DData* Anim = FindAnimationSequence2D(Name);
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(Name);
 
 	if (!Anim)
 		return;
@@ -307,7 +360,7 @@ void CAnimationSequence2DInstance::SetReverse(const std::string& Name, bool Reve
 
 void CAnimationSequence2DInstance::SetLoop(const std::string& Name, bool Loop)
 {
-	CAnimationSequence2DData* Anim = FindAnimationSequence2D(Name);
+	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(Name);
 
 	if (!Anim)
 		return;
@@ -317,7 +370,7 @@ void CAnimationSequence2DInstance::SetLoop(const std::string& Name, bool Loop)
 
 void CAnimationSequence2DInstance::SetCurrentAnimation(const std::string& Name)
 {
-	m_CurrentAnimation = FindAnimationSequence2D(Name);
+	m_CurrentAnimation = FindAnimationSequence2DData(Name);
 
 	if (!m_CurrentAnimation)
 		return;
@@ -355,7 +408,7 @@ void CAnimationSequence2DInstance::ChangeAnimation(const std::string& Name)
 		m_CurrentAnimation->m_vecNotify[i]->Call = false;
 	}
 
-	m_CurrentAnimation          = FindAnimationSequence2D(Name);
+	m_CurrentAnimation          = FindAnimationSequence2DData(Name);
 	m_CurrentAnimation->m_Frame = 0;
 	m_CurrentAnimation->m_Time  = 0.f;
 
@@ -525,7 +578,7 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 		char CurAnimName[MAX_PATH] = {};
 		fread(CurAnimName, sizeof(char), CurAnimNameLength, pFile);
 
-		CAnimationSequence2DData* FoundAnimation = FindAnimationSequence2D(CurAnimName);
+		CAnimationSequence2DData* FoundAnimation = FindAnimationSequence2DData(CurAnimName);
 
 		// 이름 자체가 잘못 저장된 것일 수도 있어서 해당 내용이 없을 수도 있다.
 		if (FoundAnimation)
@@ -744,11 +797,11 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 
 		if (m_Scene)
 		{
-			Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2D(Data->m_SequenceName);
+			Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2DData(Data->m_SequenceName);
 		}
 		else
 		{
-			Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(Data->m_SequenceName);
+			Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(Data->m_SequenceName);
 		}
 		m_mapAnimation.insert(std::make_pair(Name, Data));
 	}
@@ -764,14 +817,14 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 		char Name[MAX_PATH] = {};
 		fread(Name, sizeof(char), Length, pFile);
 
-		m_CurrentAnimation = FindAnimationSequence2D(Name);
+		m_CurrentAnimation = FindAnimationSequence2DData(Name);
 	}
 
 	if (m_Scene)
 		m_CBuffer = m_Scene->GetResource()->GetAnimation2DCBuffer();
 }
 
-CAnimationSequence2DData* CAnimationSequence2DInstance::FindAnimationSequence2D(const std::string& Name)
+CAnimationSequence2DData* CAnimationSequence2DInstance::FindAnimationSequence2DData(const std::string& Name)
 {
 	auto iter = m_mapAnimation.find(Name);
 

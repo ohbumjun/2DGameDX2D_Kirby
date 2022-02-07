@@ -31,6 +31,7 @@ public:
 	CAnimationSequence2D* FindSequence(const std::string& Name);
 	void                  ReleaseSequence(const std::string& Name);
 	bool AddSequence2D(CAnimationSequence2D* Sequence2D);
+	bool AddSequence2D(const std::string& SequenceName, CTexture* Texture);
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const class CScene* Scene);
 	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName, const class CScene* Scene);
 	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);

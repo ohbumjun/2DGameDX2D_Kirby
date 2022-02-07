@@ -86,10 +86,11 @@ public: // =================== Sequence2D =====================
 	bool CreateAnimationSequence2D(const std::string& Name, const std::string& TextureName,
 	                               const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
 	bool CreateAnimationSequence2D(const std::string& Name, CTexture* Texture);
-	void AddSequence2D(class CAnimationSequence2D* Sequence);
+	auto AddSequence2D(class CAnimationSequence2D* Sequence) -> void;
+	bool AddSequence2D(const std::string& SequenceName, CTexture* Texture);
 	void AddAnimationSequence2DFrame(const std::string& Name, const Vector2& Start, const Vector2& Size);
 	void AddAnimationSequence2DFrame(const std::string& Name, float StartX, float StartY, float Width, float Height);
-	CAnimationSequence2D* FindAnimationSequence2D(const std::string& Name);
+	CAnimationSequence2D* FindAnimationSequence2DData(const std::string& Name);
 	class CAnimation2DConstantBuffer* GetAnimation2DCBuffer() const;
 	// Save Load 
 	bool LoadSequence2DFullPath(const char* FullPath);

@@ -26,6 +26,11 @@ CAnimationSequence2DData::~CAnimationSequence2DData()
 	}
 }
 
+void CAnimationSequence2DData::SetSequence2D(CAnimationSequence2D* Sequence2D)
+{
+	m_Sequence = Sequence2D;
+}
+
 bool CAnimationSequence2DData::Save(FILE* pFile)
 {
 	int NameLength = static_cast<int>(m_Name.length());
@@ -102,7 +107,7 @@ bool CAnimationSequence2DData::Load(FILE* pFile)
 		fread(SeqName, sizeof(char), NameLength, pFile);
 
 		m_SequenceName = Name;
-		m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(m_SequenceName);
+		m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(m_SequenceName);
 
 		if (!m_Sequence)
 		{

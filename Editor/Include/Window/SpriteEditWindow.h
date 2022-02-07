@@ -8,7 +8,8 @@ class CSpriteEditWindow :
 public:
 	CSpriteEditWindow();
 	virtual ~CSpriteEditWindow() override;
-
+private :
+	bool m_Reverse;
 private:
 	class CIMGUIImage* m_Sprite;
 	class CIMGUIImage* m_SpriteSampled;
@@ -42,6 +43,8 @@ public :
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
+	void SetReverseMode();
+	void SetNormalMode();
 public:
 	void EditSequenceName();
 	void LoadTextureButton();

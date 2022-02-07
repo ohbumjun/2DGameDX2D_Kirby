@@ -56,7 +56,7 @@ public :
 	}
 	int GetFrameCount() const
 	{
-		return (int)m_Sequence->GetFrameCount();
+		return m_Sequence->GetFrameCount();
 	}
 
 	AnimationFrameData GetCurrentFrameData() const
@@ -105,6 +105,8 @@ public :
 		m_Sequence->ClearFrame();
 	}
 
+	void SetSequence2D(CAnimationSequence2D* Sequence2D);
+public :
 	bool Save(FILE* pFile);
 	bool Load(FILE* pFile);
 public:

@@ -7,6 +7,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SceneComponent.h"
 #include "Component/SpriteComponent.h"
+#include "Resource/ResourceManager.h"
 
 CSpriteEditObject::CSpriteEditObject() :
 	m_Distance(600.f),
@@ -37,6 +38,22 @@ bool CSpriteEditObject::Init()
 	                           static_cast<float>(DefaultTexture->GetHeight()), 1.f);
 
 	m_Sprite->CreateAnimationInstance<CAnimationSequence2DInstance>();
+
+	if (m_Scene)
+	{
+		
+	}
+	else
+	{
+		CResourceManager::GetInst()->AddSequence2D("FightKirbySequence", DefaultTexture);
+	}
+
+	// todo : 이거 수정해야 한다.
+	m_Sprite->GetAnimationInstance()->AddAnimation("SpriteEditObjAnim", "SpriteEditObjAnim", DefaultTexture);
+
+	// Frame 추가
+	CAnimationSequence2DData* Animation = m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("SpriteEditObjAnim");
+	Animation->AddFrame(Vector2(0.f, 0.f), Vector2((float)DefaultTexture->GetWidth(), (float)DefaultTexture->GetHeight()));
 
 	return true;
 }

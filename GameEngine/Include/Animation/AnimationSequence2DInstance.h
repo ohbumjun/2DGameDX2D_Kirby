@@ -66,6 +66,10 @@ public :
 	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);
 	void AdjustSequence2DKeyName();
 public:
+	void AddAnimation(const std::string& AnimationName, CAnimationSequence2DData* Animation);
+	void AddAnimation(const std::string& AnimationName, const std::string& SequenceName,
+		CAnimationSequence2D* Sequence2D, bool Loop = true, float  PlayTime = 1.f,
+		float PlayScale = 1.f, bool Reverse = false);
 	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, 
 		float PlayTime = 1.f,
 	                  float              PlayScale                                        = 1.f, bool Reverse = false);
@@ -79,6 +83,8 @@ public:
 	void                      SetCurrentAnimation(const std::string& Name);
 	void                      ChangeAnimation(const std::string& Name);
 	bool                      CheckCurrentAnimation(const std::string& Name);
+	CAnimationSequence2DData* FindAnimationSequence2DData(const std::string& Name);
+
 public:
 	virtual void                          Start();
 	virtual bool                          Init();
@@ -92,14 +98,11 @@ public :
 	void Save(FILE* pFile);
 	void Load(FILE* pFile);
 
-private:
-	CAnimationSequence2DData* FindAnimationSequence2D(const std::string& Name);
-
 public:
 	template <typename T>
 	void SetEndFunction(const std::string& Name, T* Obj, void (T::*Func)())
 	{
-		CAnimationSequence2DData* Data = FindAnimationSequence2D(Name);
+		CAnimationSequence2DData* Data = FindAnimationSequence2DData(Name);
 
 		if (!Data)
 			return;
@@ -111,7 +114,7 @@ public:
 	void AddNotify(const std::string& Name, const std::string& NotifyName, int Frame,
 	               T*                 Obj, void (T::*          Func)())
 	{
-		CAnimationSequence2DData* Data = FindAnimationSequence2D(Name);
+		CAnimationSequence2DData* Data = FindAnimationSequence2DData(Name);
 
 		if (!Data)
 			return;

@@ -121,6 +121,20 @@ bool CAnimationManager::AddSequence2D(CAnimationSequence2D* Sequence2D)
 	return true;
 }
 
+bool CAnimationManager::AddSequence2D(const std::string& SequenceName, CTexture* Texture)
+{
+	CAnimationSequence2D* Sequence2D = FindSequence(SequenceName);
+	if (Sequence2D)
+		return true;
+
+	Sequence2D = new  CAnimationSequence2D;
+	Sequence2D->m_Texture = Texture;
+
+	m_mapSequence2D.insert(std::make_pair(SequenceName, Sequence2D));
+
+	return true;
+}
+
 bool CAnimationManager::LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const CScene* Scene)
 {
 	CAnimationSequence2D* Sequence2D = new  CAnimationSequence2D;

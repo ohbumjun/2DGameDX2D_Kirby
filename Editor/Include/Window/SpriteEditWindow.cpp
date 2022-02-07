@@ -21,7 +21,8 @@
 #include "Scene/SceneResource.h"
 
 CSpriteEditWindow::CSpriteEditWindow() :
-	m_SpriteObject(nullptr)
+	m_SpriteObject(nullptr),
+	m_Reverse(false)
 {
 }
 
@@ -42,6 +43,16 @@ bool CSpriteEditWindow::Init()
 
 	Button = AddWidget<CIMGUIButton>("SpriteEdit");
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SpriteEditButton);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("SetReverse");
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetReverseMode);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("SetNormal");
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNormalMode);
 
 	// ==============================
 
@@ -229,7 +240,7 @@ bool CSpriteEditWindow::Init()
 	m_NewSeqAnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNewAnimSequenceReverse);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(310.f);
+	Line->SetOffsetX(335.f);
 
 	Button = AddWidget<CIMGUIButton>("Play", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::PlayAnimationButton);
@@ -257,7 +268,7 @@ bool CSpriteEditWindow::Init()
 	m_CurSeqAnimationReverse->AddItem("False");
 	m_CurSeqAnimationReverse->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCurAnimSequenceReverse);
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(310.f);
+	Line->SetOffsetX(335.f);
 
 	Button = AddWidget<CIMGUIButton>("Stop", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::StopAnimationButton);
@@ -437,6 +448,16 @@ void CSpriteEditWindow::Update(float DeltaTime)
 	}
 }
 
+void CSpriteEditWindow::SetReverseMode()
+{
+	m_Reverse = true;
+}
+
+void CSpriteEditWindow::SetNormalMode()
+{
+	m_Reverse = false;
+}
+
 void CSpriteEditWindow::EditSequenceName()
 {
 	int SelectIndex = m_AnimationList->GetSelectIndex();
@@ -482,6 +503,8 @@ void CSpriteEditWindow::LoadTextureButton()
 
 	if (GetOpenFileName(&OpenFile) != 0) // NonZero --> specifies file name, clicks ok button
 	{
+		SpriteEditButton();
+
 		int   TextureIndex       = 0;
 		TCHAR FileName[MAX_PATH] = {};
 		_wsplitpath_s(FilePath, nullptr, 0, nullptr, 0, FileName, MAX_PATH, nullptr, 0);
@@ -631,7 +654,7 @@ void CSpriteEditWindow::AddAnimationButton()
 	m_Animation->AddAnimation(SequenceName, AnimationName, Loop, 1.f, 1.f, Reverse);
 
 	// Loop, Reverse 내용을 세팅해준다.
-	CAnimationSequence2DData* AddedAnimation = m_Animation->FindAnimationSequence2D(AnimationName);
+	CAnimationSequence2DData* AddedAnimation = m_Animation->FindAnimationSequence2DData(AnimationName);
 	if (m_Animation->GetCurrentAnimation() == AddedAnimation)
 	{
 		Loop = AddedAnimation->IsLoop();
@@ -685,7 +708,7 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos   = FinalStartEndPos.second;
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
-	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
+	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2DData(SequenceName);
 	
 	Vector2 FrameSize = FinalEndPos - FinalStartPos;
 	// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
@@ -741,7 +764,7 @@ void CSpriteEditWindow::DeleteFrameButton()
 
 	// Delete Acual Frame Data
 	CSceneResource*       Resource         = CSceneManager::GetInst()->GetScene()->GetResource();
-	CAnimationSequence2D* Sequence         = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+	CAnimationSequence2D* Sequence         = Resource->FindAnimationSequence2DData(m_AnimationList->GetSelectItem());
 	int                   SelectedFrameIdx = std::stoi(m_AnimationFrameList->GetSelectItem());
 	Sequence->DeleteFrame(SelectedFrameIdx);
 
@@ -832,7 +855,7 @@ void CSpriteEditWindow::ClearFrameButton()
 
 	// Clear Frame of Sequence
 	CSceneResource*       Resource = CSceneManager::GetInst()->GetScene()->GetResource();
-	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2DData(m_AnimationList->GetSelectItem());
 	Sequence->ClearFrame();
 
 	// Animation Sequence2D Data Set Frame To 0
@@ -875,7 +898,7 @@ void CSpriteEditWindow::EditFrameButton()
 		return;
 
 	CSceneResource*       Resource     = CSceneManager::GetInst()->GetScene()->GetResource();
-	CAnimationSequence2D* Sequence     = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+	CAnimationSequence2D* Sequence     = Resource->FindAnimationSequence2DData(m_AnimationList->GetSelectItem());
 	Vector2               SequenceSize = Vector2(static_cast<float>(Sequence->GetTexture()->GetWidth()),
 	                                             static_cast<float>(Sequence->GetTexture()->GetHeight()));
 
@@ -1021,7 +1044,7 @@ void CSpriteEditWindow::LoadSequence()
 
 		// 여기에서 모든 사항들을 UI에 뿌려주기
 		// 이름으로 Sequence를 가져오고
-		CAnimationSequence2D* LoadedSequence = Resource->FindAnimationSequence2D(SequenceName);
+		CAnimationSequence2D* LoadedSequence = Resource->FindAnimationSequence2DData(SequenceName);
 
 		// 같은 이름이 이미 존재하면 X
 		if (m_AnimationList->CheckItem(SequenceName))
@@ -1298,8 +1321,8 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 
 	std::string           ChangedSequenceName    = m_AnimationList->GetItem(Index);
 
-	// CAnimationSequence2D* ChangedSequence        = Resource->FindAnimationSequence2D(ChangedSequenceName);
-	CAnimationSequence2D* ChangedSequence        = m_Animation->FindAnimationSequence2D(ChangedSequenceName)->GetAnimationSequence();
+	// CAnimationSequence2D* ChangedSequence        = Resource->FindAnimationSequence2DData(ChangedSequenceName);
+	CAnimationSequence2D* ChangedSequence        = m_Animation->FindAnimationSequence2DData(ChangedSequenceName)->GetAnimationSequence();
 
 	if (!ChangedSequence)
 		return;
@@ -1383,7 +1406,7 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	// SceneResource가 아니라, 해당 m_Animation 으로부터 찾을 것이다 
 	// CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
-	// CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
+	// CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2DData(SequenceName);
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
 		return;
@@ -2185,7 +2208,7 @@ std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalFrameStartEndPos(const Ve
 	Vector2               FrameStartPos  = FrameStart;
 	Vector2					FrameEndPos = FrameEnd;
 
-	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(SequenceName);
+	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2DData(SequenceName);
 	CTexture* SequenceTexture = Sequence->GetTexture();
 	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()), (float)(SequenceTexture->GetHeight()));
 
