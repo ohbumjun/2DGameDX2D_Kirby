@@ -1330,7 +1330,7 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	// SceneResource가 아니라, 해당 m_Animation로 부터 가져와야 하는 거 아닌가 ?
 	// CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
 
-	if (!m_Animation)
+	if (!m_Animation) //
 		return;
 
 	std::string           ChangedSequenceName    = m_AnimationList->GetItem(Index);
