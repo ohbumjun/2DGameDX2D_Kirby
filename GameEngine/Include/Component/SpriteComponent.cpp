@@ -38,6 +38,23 @@ void CSpriteComponent::SetMaterial(CMaterial* Material)
 	m_Material->SetScene(m_Scene);
 }
 
+void CSpriteComponent::SetAnimationInstance(class CAnimationSequence2DInstance* Instance)
+{
+	if (!Instance)
+		return;
+
+	Instance->SetOwner(this);
+	Instance->SetScene(m_Scene);
+	if (!Instance->Init()) // 상수 버퍼 세팅 
+	{
+		SAFE_DELETE(Instance);
+		return;
+	}
+
+	SAFE_DELETE(m_Animation);
+	m_Animation = Instance;
+}
+
 void CSpriteComponent::SetBaseColor(const Vector4& Color)
 {
 	m_Material->SetBaseColor(Color);

@@ -219,6 +219,25 @@ bool CSpriteEditWindow::Init()
 
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("RevCopyName", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	m_RevCopyTargetInputName = AddWidget<CIMGUITextInput>("RevCopySeqName");
+	m_RevCopyTargetInputName->SetSize(80.f, 40.f);
+	m_RevCopyTargetInputName->SetHideName(true);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(175.f);
+
+	Button = AddWidget<CIMGUIButton>("RevCopy", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditSequenceName);
+
+
+	// ==============================
 	Label = AddWidget<CIMGUILabel>("NewSeq", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -548,6 +567,103 @@ void CSpriteEditWindow::SpriteEditButton()
 		m_Sprite->SetTexture(Texture);
 		m_SpriteCurrentFrame->SetTexture(Texture);
 	}
+}
+
+void CSpriteEditWindow::RevCopySequenceButton()
+{
+	if (!m_Animation)
+		return;
+
+	// Not Selected
+	if (m_AnimationList->GetSelectIndex() < 0)
+		return;
+
+	// Copy Input Name 에 해당하는 Sequence를 불러온다.
+	if (m_RevCopyTargetInputName->Empty())
+		return;
+
+	CSceneResource* SceneResource = CSceneManager::GetInst()->GetScene()->GetResource();
+
+	std::string SrcSequenceName = m_RevCopyTargetInputName->GetTextMultibyte();
+
+	CAnimationSequence2D* SrcSequence = m_Animation->FindAnimationSequence2DData(SrcSequenceName)->GetAnimationSequence();
+
+	// 해당 Sequece가 존재하지 않으면 X
+	if (!SrcSequence)
+		return;
+
+	// 해당 Sequence 의 Frame을 돌면서 그 반대를 Frame으로 추가해준다.
+	std::string DestSequenceName = m_AnimationList->GetSelectItem();
+
+	CAnimationSequence2D* DestSequence = m_Animation->FindAnimationSequence2DData(DestSequenceName)->GetAnimationSequence();
+
+	if (!DestSequence)
+		return;
+
+	size_t SrcFrameCount = SrcSequence->GetFrameCount();
+
+	// 복사할 Frame 이 없다면 return
+	if (SrcFrameCount <= 0)
+		return;
+
+	for (size_t i = 0; i < SrcFrameCount; i++)
+	{
+		AnimationFrameData SrcFrame = SrcSequence->GetFrameData(i);
+
+		// 반대 FrameData로 세팅해준다.
+		Vector2 RevFrameStart = Vector2(SrcFrame.Start.x * -1.f, SrcFrame.Start.y);
+		DestSequence->AddFrame(RevFrameStart, SrcFrame.Size);
+	}
+
+	// Frame 추가가 완료되면
+	// - 첫번째 Frame을 선택된 녀석으로 세팅하고
+	m_AnimationFrameList->SetSelectIndex(0);
+
+	// - 해당 Sequence2D 의 Reverse 정보도, 복사 대상의 반대로 세팅해준다.
+	// - 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
+	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(SrcSequenceName)->IsFrameReverse();
+	bool ChangedRevInfo = SeqFrameReverse ? false : true;
+	DestSequence->SetFrameReverse(ChangedRevInfo);
+
+	if (ChangedRevInfo)
+		SetReverseMode();
+	else
+		SetNormalMode();
+
+	// - DragObject, CurrentSampled로 위치 세팅해주고
+	// DragObject의 Image Pos 세팅
+
+	// Sprite Sample에 해당 첫번째 Frame의 Start, End Pos를 세팅해준다
+	AnimationFrameData NewFrameData = DestSequence->GetFrameData(0);
+	Vector2 NewFrameStartPos = NewFrameData.Start;
+	Vector2 NewFrameEndPos = NewFrameData.Start + NewFrameData.Size;
+
+	NewFrameStartPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameStartPos.y;
+	NewFrameEndPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameEndPos.y;
+
+
+	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	if (m_Reverse)
+	{
+		// DragObject의 Image Pos 세팅
+		Vector2 ReverseStartPos = Vector2(NewFrameStartPos.x * -1.f, NewFrameStartPos.y);
+		Vector2 ReverseEndPos = Vector2(NewFrameEndPos.x * -1.f, NewFrameEndPos.y);
+		DragObject->SetStartPos(ReverseStartPos);
+		DragObject->SetEndPos(ReverseEndPos);
+
+		// m_SpriteSampled Texture 세팅 
+		NewFrameStartPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameStartPos.y;
+		NewFrameEndPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameEndPos.y;
+
+		m_SpriteCurrentFrame->SetImageStart(NewFrameStartPos);
+		m_SpriteCurrentFrame->SetImageEnd(NewFrameEndPos);
+	}
+	else
+	{
+		DragObject->SetStartPos(NewFrameStartPos);
+		DragObject->SetEndPos(NewFrameEndPos);
+	}
+
 }
 
 void CSpriteEditWindow::DeleteAnimationSequence()
@@ -1195,7 +1311,7 @@ void CSpriteEditWindow::SaveAnimation()
 		// 현재 저장되는 경로와 다르다면, GameEngine 쪽에도 저장한다.
 		if (strcmp(EngineSequenceFolder->PathMultibyte, FilePathMultibyte) != 0)
 		{
-			m_Animation->GetCurrentAnimation()->GetAnimationSequence()->SaveFullPath(SavedGameEnginePath);
+			m_Animation->SaveFullPath(SavedGameEnginePath);
 		}
 	}
 }

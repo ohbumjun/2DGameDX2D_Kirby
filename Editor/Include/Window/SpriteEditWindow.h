@@ -18,6 +18,7 @@ private :
 	class CIMGUIListBox* m_AnimationList;
 	class CIMGUIListBox* m_AnimationFrameList;
 	class CIMGUITextInput* m_AnimInputName;
+	class CIMGUITextInput* m_RevCopyTargetInputName;
 	class CIMGUITextInput* m_NewSequenceName;
 private:
 	class CIMGUITextInput* m_StartFramePosXInput;
@@ -53,13 +54,18 @@ public:
 	void EditSequenceName();
 	void LoadTextureButton();
 	void SpriteEditButton();
+	void RevCopySequenceButton();
+public:
 	void DeleteAnimationSequence();
 	void ClearAnimationSequence();
+public :
 	void AddAnimationButton();
 	void AddAnimationFrameButton();
+public :
 	void DeleteFrameButton();
 	void ClearFrameButton();
 	void EditFrameButton();
+public :
 	void PlayAnimationButton();
 	void StopAnimationButton();
 public :

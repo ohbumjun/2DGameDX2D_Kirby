@@ -6,6 +6,8 @@ class CAnimationSequence2DInstance
 {
 	friend class CSpriteComponent;
 	friend class CSpriteEditWindow;
+	friend class CAnimationManager;
+	friend class CSceneCollision;
 
 public:
 	CAnimationSequence2DInstance();

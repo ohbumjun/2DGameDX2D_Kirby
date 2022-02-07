@@ -86,7 +86,10 @@ bool CPlayer2D::Init()
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
-	m_Sprite->CreateAnimationInstance<CPlayerAnimation2D>();
+
+	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(TEXT("Test.anim"));
+	m_Sprite->SetAnimationInstance(AnimationInstance);
+	// m_Sprite->CreateAnimationInstance<CPlayerAnimation2D>();
 
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);

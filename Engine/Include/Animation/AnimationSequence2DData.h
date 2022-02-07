@@ -122,11 +122,8 @@ public :
 
 	void SetFrameReverse(bool Reverse)
 {
-		if (!m_Sequence)
-			return;
 		m_Sequence->SetFrameReverse(Reverse);
 }
-
 	void SetSequence2D(CAnimationSequence2D* Sequence2D);
 	void SetSequenceTexture(class CTexture* Texture);
 public :

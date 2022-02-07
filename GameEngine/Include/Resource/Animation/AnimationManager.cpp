@@ -1,6 +1,8 @@
 #include "AnimationManager.h"
 #include "../Shader/Animation2DConstantBuffer.h"
 #include "../Texture/Texture.h"
+#include "../../Animation/AnimationSequence2DInstance.h"
+#include "../../PathManager.h"
 
 CAnimationManager::CAnimationManager() :
 	m_Animation2DCBuffer(nullptr)
@@ -199,4 +201,31 @@ void CAnimationManager::EditSequence2DName(const std::string& PrevName, const st
 	m_mapSequence2D.erase(iter);
 
 	m_mapSequence2D.insert(std::make_pair(NewName, Sequence2D));
+}
+
+CAnimationSequence2DInstance* CAnimationManager::LoadAnimationSequence2DInstance(const TCHAR* FileName,
+	const std::string& PathName)
+{
+	CAnimationSequence2DInstance* AnimationInstance = new CAnimationSequence2DInstance;
+
+	TCHAR FullPath[MAX_PATH] = {};
+
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	if (Path)
+		lstrcpy(FullPath, Path->Path);
+	lstrcat(FullPath, FileName);
+
+	char FullPathMultibyte[MAX_PATH] = {};
+
+#ifdef UNICODE
+	int CovertLength = WideCharToMultiByte(CP_ACP, 0, FullPath, -1, 0, 0, 0, 0);
+	WideCharToMultiByte(CP_ACP, 0, FullPath, -1, FullPathMultibyte, CovertLength, 0, 0);
+#else
+	strcpy_s(FullPathMultibyte, FullPath);
+#endif
+
+	AnimationInstance->LoadFullPath(FullPathMultibyte);
+
+	return AnimationInstance;
 }

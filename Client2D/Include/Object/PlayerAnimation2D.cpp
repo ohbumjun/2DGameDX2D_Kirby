@@ -19,7 +19,8 @@ bool CPlayerAnimation2D::Init()
 		return false;
 
 	// AddAnimation("PlayerIdle", "Idle");
-	AddAnimation(TEXT("Kirby_RightRun.sqc"), ENGINE_SEQUENCE_PATH,
+	// AddAnimation(TEXT("Kirby_LeftWalk.sqc"), ENGINE_SEQUENCE_PATH,
+	AddAnimation(TEXT("ReverseTest.sqc"), ENGINE_SEQUENCE_PATH,
 		"Idle", true);
 	return true;
 }
