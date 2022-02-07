@@ -11,7 +11,8 @@ CAnimationSequence2DData::CAnimationSequence2DData() :
 	m_PlayTime(0.f),
 	m_PlayScale(1.f),
 	m_Loop(false),
-	m_Reverse(false)
+	m_Reverse(false),
+	m_FrameReverse(false)
 {
 }
 

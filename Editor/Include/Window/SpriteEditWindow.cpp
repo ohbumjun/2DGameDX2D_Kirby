@@ -457,6 +457,7 @@ void CSpriteEditWindow::SetReverseMode()
 void CSpriteEditWindow::SetNormalMode()
 {
 	m_Reverse = false;
+	m_SpriteObject->SetReverse(m_Reverse);
 }
 
 void CSpriteEditWindow::EditSequenceName()
@@ -712,9 +713,21 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2DData(SequenceName);
 	
 	Vector2 FrameSize = FinalEndPos - FinalStartPos;
+
 	// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
-	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로 
-	Sequence->AddFrame(FinalStartPos, FrameSize);
+	// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로
+	// 단, Reverse 모드 여부를 고려해서, Reverse Mode 라면, StartPos와 Size를 조정한다.
+	if (m_Reverse)
+	{
+		Vector2 ReverseStartPos = Vector2(FinalStartPos.x * -1.f, FinalStartPos.y);
+		Vector2 ReverseSize = Vector2(FrameSize.x * -1.f, FrameSize.y);
+		Sequence->AddFrame(ReverseStartPos, ReverseSize);
+	}
+	else
+	{
+		Sequence->AddFrame(FinalStartPos, FrameSize);
+	}
+
 
 	// Frame List Box에 넣어주기 
 	char FrameName[1024] = {};
