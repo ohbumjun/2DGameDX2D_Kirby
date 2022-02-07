@@ -82,10 +82,10 @@ void CAnimationSequence2D::SetFrame(int Index, float StartX, float StartY, float
 	m_vecFrameData[Index].Size  = Vector2(SizeX, SizeY);
 }
 
-void CAnimationSequence2D::SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos)
+void CAnimationSequence2D::SetFrame(int Index, const Vector2& StartPos, const Vector2& Size)
 {
 	m_vecFrameData[Index].Start = StartPos;
-	m_vecFrameData[Index].Size  = EndPos;
+	m_vecFrameData[Index].Size  = Size;
 }
 
 CAnimationSequence2D* CAnimationSequence2D::Clone()

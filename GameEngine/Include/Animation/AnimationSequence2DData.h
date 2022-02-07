@@ -85,6 +85,13 @@ public :
 		m_Sequence->AddFrame(StartX, StartY, SizeX, SizeY);
 	}
 
+	void SetFrameData(const Vector2& StartPos, const Vector2& Size, int Index = 0)
+{
+		if (m_Sequence->GetFrameCount() <= 0)
+			return;
+		m_Sequence->SetFrame(Index, StartPos, Size);
+}
+
 	void SetLoop(bool State)
 {
 		m_Loop = State;

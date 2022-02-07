@@ -59,7 +59,7 @@ public:
 	void AddFrame(const Vector2& StartPos, const Vector2& Size);
 	void AddFrame(float StartX, float StartY, float Width, float Height);
 	void SetFrame(int Index, float StartX, float StartY, float Width, float Height);
-	void SetFrame(int Index, const Vector2& StartPos, Vector2& EndPos);
+	void SetFrame(int Index, const Vector2& StartPos, const Vector2& Size);
 	CAnimationSequence2D* Clone();
 public :
 	void SaveFullPath(const char* FullPath);

@@ -174,6 +174,13 @@ void CAnimationSequence2DInstance::AdjustSequence2DKeyName()
 	}
 }
 
+void CAnimationSequence2DInstance::SetFrameData(const Vector2& StartPos, const Vector2& Size, int Index)
+{
+	if (!m_CurrentAnimation)
+		return;
+	m_CurrentAnimation->SetFrameData(StartPos, Size, Index);
+}
+
 void CAnimationSequence2DInstance::AddAnimation(const std::string& AnimationName, CAnimationSequence2DData* Animation)
 {
 	CAnimationSequence2DData* Anim = FindAnimationSequence2DData(AnimationName);

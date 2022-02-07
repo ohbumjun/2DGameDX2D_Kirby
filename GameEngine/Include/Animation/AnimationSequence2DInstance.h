@@ -66,6 +66,7 @@ public :
 	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);
 	void AdjustSequence2DKeyName();
 public:
+	void SetFrameData(const Vector2& StartPos, const Vector2& Size,int Index = 0);
 	void AddAnimation(const std::string& AnimationName, CAnimationSequence2DData* Animation);
 	void AddAnimation(const std::string& AnimationName, const std::string& SequenceName,
 		CAnimationSequence2D* Sequence2D, bool Loop = true, float  PlayTime = 1.f,
