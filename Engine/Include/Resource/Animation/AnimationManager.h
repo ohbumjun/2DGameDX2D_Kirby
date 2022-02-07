@@ -28,7 +28,7 @@ public:
 	void AddFrame(const std::string& Name, const Vector2& Start, const Vector2& Size);
 	void AddFrame(const std::string& Name, float StartX, float StartY, float Width, float Height);
 
-	CAnimationSequence2D* FindSequence(const std::string& Name);
+	CAnimationSequence2D* FindSequence2D(const std::string& Name);
 	void                  ReleaseSequence(const std::string& Name);
 	bool AddSequence2D(CAnimationSequence2D* Sequence2D);
 	bool AddSequence2D(const std::string& SequenceName, CTexture* Texture);

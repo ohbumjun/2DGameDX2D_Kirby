@@ -6,7 +6,8 @@
 
 CAnimationSequence2D::CAnimationSequence2D() :
 	m_Scene(nullptr),
-	m_vecFrameData{}
+	m_vecFrameData{},
+	m_IsFrameReverse(false)
 {
 }
 
@@ -119,6 +120,9 @@ void CAnimationSequence2D::SaveFullPath(const char* FullPath)
 	{
 		fwrite(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
 	}
+
+	fwrite(&m_IsFrameReverse, sizeof(bool), 1, pFile);
+
 	fclose(pFile);
 }
 
@@ -143,6 +147,9 @@ void CAnimationSequence2D::Save(FILE* pFile)
 	{
 		fwrite(&m_vecFrameData[0], sizeof(AnimationFrameData), FrameCount, pFile);
 	}
+
+	fwrite(&m_IsFrameReverse, sizeof(bool), 1, pFile);
+
 }
 
 
@@ -242,6 +249,10 @@ bool CAnimationSequence2D::Load(FILE* pFile)
 	{
 		m_vecFrameData = {};
 	}
+
+	bool IsFrameReverse = false;
+	fread(&IsFrameReverse, sizeof(bool), 1, pFile);
+	m_IsFrameReverse = IsFrameReverse;
 
 	return true;
 }

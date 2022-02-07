@@ -25,7 +25,7 @@ bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name,
                                                   const std::string& TextureName, const TCHAR* FileName,
                                                   const std::string& PathName)
 {
-	CAnimationSequence2D* Sequence = FindSequence(Name);
+	CAnimationSequence2D* Sequence = FindSequence2D(Name);
 
 	if (Sequence)
 		return true;
@@ -47,7 +47,7 @@ bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name,
 
 bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name, CTexture* Texture)
 {
-	CAnimationSequence2D* Sequence = FindSequence(Name);
+	CAnimationSequence2D* Sequence = FindSequence2D(Name);
 
 	if (Sequence)
 		return true;
@@ -68,7 +68,7 @@ bool CAnimationManager::CreateAnimationSequence2D(const std::string& Name, CText
 
 void CAnimationManager::AddFrame(const std::string& Name, const Vector2& Start, const Vector2& Size)
 {
-	CAnimationSequence2D* Sequence = FindSequence(Name);
+	CAnimationSequence2D* Sequence = FindSequence2D(Name);
 
 	if (!Sequence)
 		return;
@@ -79,7 +79,7 @@ void CAnimationManager::AddFrame(const std::string& Name, const Vector2& Start, 
 void CAnimationManager::AddFrame(const std::string& Name, float  StartX, float StartY,
                                  float              Width, float Height)
 {
-	CAnimationSequence2D* Sequence = FindSequence(Name);
+	CAnimationSequence2D* Sequence = FindSequence2D(Name);
 
 	if (!Sequence)
 		return;
@@ -87,7 +87,7 @@ void CAnimationManager::AddFrame(const std::string& Name, float  StartX, float S
 	Sequence->AddFrame(StartX, StartY, Width, Height);
 }
 
-CAnimationSequence2D* CAnimationManager::FindSequence(const std::string& Name)
+CAnimationSequence2D* CAnimationManager::FindSequence2D(const std::string& Name)
 {
 	auto iter = m_mapSequence2D.find(Name);
 
@@ -110,7 +110,7 @@ void CAnimationManager::ReleaseSequence(const std::string& Name)
 
 bool CAnimationManager::AddSequence2D(CAnimationSequence2D* Sequence2D)
 {
-	CAnimationSequence2D* Anim = FindSequence(Sequence2D->GetName());
+	CAnimationSequence2D* Anim = FindSequence2D(Sequence2D->GetName());
 
 	if (Anim)
 		return true;;
@@ -123,7 +123,7 @@ bool CAnimationManager::AddSequence2D(CAnimationSequence2D* Sequence2D)
 
 bool CAnimationManager::AddSequence2D(const std::string& SequenceName, CTexture* Texture)
 {
-	CAnimationSequence2D* Sequence2D = FindSequence(SequenceName);
+	CAnimationSequence2D* Sequence2D = FindSequence2D(SequenceName);
 	if (Sequence2D)
 		return true;
 
@@ -146,7 +146,7 @@ bool CAnimationManager::LoadSequence2DFullPath(std::string& SequenceName, const 
 	}
 	SequenceName = Sequence2D->GetName();
 
-	if (FindSequence(SequenceName))
+	if (FindSequence2D(SequenceName))
 	{
 		SAFE_RELEASE(Sequence2D);
 		return true;
@@ -170,7 +170,7 @@ bool CAnimationManager::LoadSequence2D(std::string& SequenceName, const char* Fi
 
 	SequenceName = Sequence2D->GetName();
 
-	if (FindSequence(SequenceName))
+	if (FindSequence2D(SequenceName))
 	{
 		SAFE_RELEASE(Sequence2D);
 		return true;

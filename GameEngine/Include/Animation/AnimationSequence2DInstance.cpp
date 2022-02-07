@@ -247,12 +247,12 @@ void CAnimationSequence2DInstance::AddAnimation(const std::string& SequenceName,
 
 	if (m_Scene)
 	{
-		Sequence = m_Scene->GetResource()->FindAnimationSequence2DData(SequenceName);
+		Sequence = m_Scene->GetResource()->FindAnimationSequence2D(SequenceName);
 	}
 
 	else
 	{
-		Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(SequenceName);
+		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
 	}
 
 	if (!Sequence)
@@ -302,13 +302,13 @@ void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std
 	{
 		std::string  SequenceName;
 		m_Scene->GetResource()->LoadSequence2D(SequenceName, FileNameMultibyte, PathName);
-		Sequence = m_Scene->GetResource()->FindAnimationSequence2DData(SequenceName);
+		Sequence = m_Scene->GetResource()->FindAnimationSequence2D(SequenceName);
 	}
 	else
 	{
 		std::string  SequenceName;
 		CResourceManager::GetInst()->LoadSequence2D(SequenceName, FileNameMultibyte, PathName);
-		Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(SequenceName);
+		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
 	}
 
 	if (!Sequence)
@@ -804,11 +804,11 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 
 		if (m_Scene)
 		{
-			Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2DData(Data->m_SequenceName);
+			Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2D(Data->m_SequenceName);
 		}
 		else
 		{
-			Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2DData(Data->m_SequenceName);
+			Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(Data->m_SequenceName);
 		}
 		m_mapAnimation.insert(std::make_pair(Name, Data));
 	}

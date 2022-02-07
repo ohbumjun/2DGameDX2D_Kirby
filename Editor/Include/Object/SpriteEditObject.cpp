@@ -60,12 +60,12 @@ bool CSpriteEditObject::Init()
 	if (m_Scene)
 	{
 		m_Scene->GetResource()->AddSequence2D("FightKirbySequence", DefaultTexture);
-		AddedSequence = m_Scene->GetResource()->FindAnimationSequence2DData("FightKirbySequence");
+		AddedSequence = m_Scene->GetResource()->FindAnimationSequence2D("FightKirbySequence");
 	}
 	else
 	{
 		CResourceManager::GetInst()->AddSequence2D("FightKirbySequence", DefaultTexture);
-		AddedSequence = CResourceManager::GetInst()->FindAnimationSequence2DData("FightKirbySequence");
+		AddedSequence = CResourceManager::GetInst()->FindAnimationSequence2D("FightKirbySequence");
 	}
 
 	// todo : 이거 수정해야 한다.

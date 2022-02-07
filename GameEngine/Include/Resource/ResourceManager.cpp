@@ -168,9 +168,9 @@ void CResourceManager::AddAnimationSequence2DFrame(const std::string& Name, floa
 	m_AnimationManager->AddFrame(Name, StartX, StartY, Width, Height);
 }
 
-CAnimationSequence2D* CResourceManager::FindAnimationSequence2DData(const std::string& Name)
+CAnimationSequence2D* CResourceManager::FindAnimationSequence2D(const std::string& Name)
 {
-	return m_AnimationManager->FindSequence(Name);
+	return m_AnimationManager->FindSequence2D(Name);
 }
 
 void CResourceManager::ReleaseAnimationSequence2D(const std::string& Name)

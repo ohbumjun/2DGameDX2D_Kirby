@@ -18,6 +18,7 @@ private:
 	class CScene*                   m_Scene;
 	CSharedPtr<class CTexture>      m_Texture;
 	std::vector<AnimationFrameData> m_vecFrameData;
+	bool m_IsFrameReverse;
 
 public:
 	void SetScene(class CScene* Scene)
@@ -26,6 +27,10 @@ public:
 	}
 
 public:
+	bool IsFrameReverse() const
+	{
+		return m_IsFrameReverse;
+	}
 	class CTexture* GetTexture() const
 	{
 		return m_Texture;
@@ -42,6 +47,10 @@ public:
 	}
 
 public :
+	void SetFrameReverse(bool Reverse)
+	{
+		m_IsFrameReverse = Reverse;
+	}
 	void ClearFrame()
 	{
 		m_vecFrameData.clear();
