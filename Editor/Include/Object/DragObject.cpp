@@ -31,7 +31,18 @@ void CDragObject::SetStartPos(const Vector2& Pos)
 		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();
 		Vector2 StartPos = m_StartPos;
 		StartPos.y = (float)Texture->GetHeight() - StartPos.y;
-		CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x, StartPos.y);//
+
+		bool ReverseMode = CEditorManager::GetInst()->GetSpriteWindow()->IsReverseMode();
+
+		if (ReverseMode)
+		{
+			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x * -1.f, StartPos.y);
+		}
+		else
+		{
+			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x, StartPos.y);
+		}
+
 	}
 }
 
@@ -46,7 +57,17 @@ void CDragObject::SetEndPos(const Vector2& Pos)
 		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();
 		Vector2 EndPos = m_EndPos;
 		EndPos.y = (float)Texture->GetHeight() - EndPos.y;
-		CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageEnd(EndPos.x, EndPos.y);
+
+		bool ReverseMode = CEditorManager::GetInst()->GetSpriteWindow()->IsReverseMode();
+
+		if (ReverseMode)
+		{
+			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageEnd(EndPos.x * -1.f, EndPos.y);
+		}
+		else
+		{
+			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageEnd(EndPos.x, EndPos.y);
+		}
 	}
 }
 

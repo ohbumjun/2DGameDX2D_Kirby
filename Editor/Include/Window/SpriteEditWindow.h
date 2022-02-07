@@ -40,6 +40,10 @@ public :
 {
 		return m_SpriteObject;
 }
+	bool IsReverseMode() const
+{
+		return m_Reverse;
+}
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
