@@ -29,14 +29,28 @@ CSpriteEditObject::~CSpriteEditObject()
 {
 }
 
+void CSpriteEditObject::SetReverse(bool Reverse)
+{
+	CTexture* CurrentTexture = m_Sprite->GetTexture();
+
+	if (!CurrentTexture)
+		return;
+
+	m_ReverseMode = Reverse;
+
+	if (Reverse)
+		m_Sprite->GetAnimationInstance()->SetFrameData(Vector2(0.f, 0.f), Vector2(-1.f * (float)CurrentTexture->GetWidth(),  (float)CurrentTexture->GetHeight()));
+	else
+		m_Sprite->GetAnimationInstance()->SetFrameData(Vector2(0.f, 0.f), Vector2( (float)CurrentTexture->GetWidth(),  (float)CurrentTexture->GetHeight()));
+}
+
 bool CSpriteEditObject::Init()
 {
 	m_Sprite = CreateComponent<CSpriteComponent>("SpriteEdit");
 
 	SetRootComponent(m_Sprite);
 
-	int       DefaultTextureIdx = 0;
-	CTexture* DefaultTexture    = m_Sprite->GetTexture(DefaultTextureIdx);
+	CTexture* DefaultTexture    = m_Sprite->GetTexture();
 	m_Sprite->SetRelativeScale(static_cast<float>(DefaultTexture->GetWidth()),
 	                           static_cast<float>(DefaultTexture->GetHeight()), 1.f);
 

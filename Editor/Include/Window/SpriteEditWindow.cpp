@@ -451,6 +451,7 @@ void CSpriteEditWindow::Update(float DeltaTime)
 void CSpriteEditWindow::SetReverseMode()
 {
 	m_Reverse = true;
+	m_SpriteObject->SetReverse(m_Reverse);
 }
 
 void CSpriteEditWindow::SetNormalMode()

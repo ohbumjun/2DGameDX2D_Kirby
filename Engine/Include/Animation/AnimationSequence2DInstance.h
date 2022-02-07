@@ -11,7 +11,6 @@ public:
 	CAnimationSequence2DInstance();
 	CAnimationSequence2DInstance(const CAnimationSequence2DInstance& Anim);
 	virtual ~CAnimationSequence2DInstance();
-
 protected:
 	size_t m_TypeID;
 	std::string m_Name;
@@ -21,33 +20,19 @@ protected:
 	std::unordered_map<std::string, CAnimationSequence2DData*> m_mapAnimation;
 	CAnimationSequence2DData*                                  m_CurrentAnimation;
 	class CAnimation2DConstantBuffer*                          m_CBuffer;
-
-public:
-	void SetScene(class CScene* Scene)
-	{
-		m_Scene = Scene;
-	}
-
+public :
 	void Stop()
 	{
 		m_PlayAnimation = false;
 	}
-
 	void Play()
 	{
 		m_PlayAnimation = true;
 	}
-
 	bool IsPlay() const
 	{
 		return m_PlayAnimation == true;
 	}
-
-	void SetOwner(class CSpriteComponent* Owner)
-	{
-		m_Owner = Owner;
-	}
-
 	int GetAnimationCount() const
 	{
 		return static_cast<int>(m_mapAnimation.size());
@@ -56,7 +41,28 @@ public:
 	{
 		return m_TypeID;
 	}
+	bool IsFrameReverse() const
+	{
+		if (!m_CurrentAnimation)
+			return false;
+		return m_CurrentAnimation->IsFrameReverse();
+	}
 	CAnimationSequence2DData* GetCurrentAnimation() const;
+public :
+	void SetScene(class CScene* Scene)
+	{
+		m_Scene = Scene;
+	}
+	void SetOwner(class CSpriteComponent* Owner)
+	{
+		m_Owner = Owner;
+	}
+	void SetFrameReverse(bool Reverse)
+{
+		if (!m_CurrentAnimation)
+			return;
+		m_CurrentAnimation->SetFrameReverse(Reverse);
+}
 public :
 	int GetCurrentAnimationOrder();
 	void GatherSequenceNames(std::vector<std::string>& vecNames);

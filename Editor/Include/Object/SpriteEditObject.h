@@ -18,7 +18,12 @@ private:
 	CSharedPtr<class CSpriteComponent> m_Sprite;
 	float                              m_Distance;
 	class CIMGUIWindow*                m_EditWindow;
+	bool m_ReverseMode;
 public:
+	bool GetReverseMode() const
+	{
+		return m_ReverseMode;
+	}
 	class CSpriteComponent* GetSpriteComponent() const
 	{
 		return m_Sprite;
@@ -36,7 +41,7 @@ public :
 	{
 		m_Sprite->SetTextureWorldScale(Index);
 	}
-
+	void SetReverse(bool Reverse);
 public:
 	virtual bool               Init() override;
 	virtual void               Update(float DeltaTime) override;
