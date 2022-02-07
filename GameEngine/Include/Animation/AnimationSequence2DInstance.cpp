@@ -535,12 +535,9 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 	// -1을 해주는 이유는 CurrentAnimation은 따로 Load하기 위함이다.
 	int SequenceDataKeyNameLength = -1;
 	char SequenceData2DNameKey[MAX_PATH] = {};
-	char AnimName[MAX_PATH] = {};
 
 	// m_mapAnimation.clear();
 	// m_CurrentAnimation = nullptr;
-
-	std::string TempCurrentAnimationName;
 
 	for (int i = 0; i < AnimationSize; i++)
 	{

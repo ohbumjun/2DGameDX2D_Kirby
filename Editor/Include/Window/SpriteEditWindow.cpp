@@ -141,12 +141,14 @@ bool CSpriteEditWindow::Init()
 	Line->SetOffsetX(215.f);
 
 	m_SpriteSampled = AddWidget<CIMGUIImage>("SpriteSampled", 200.f, 200.f);
+	m_SpriteSampled->SetBorderColor(255, 0, 0);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(420.f);
 
 	m_SpriteCurrentFrame = AddWidget<CIMGUIImage>("SpriteCurrentFrame", 200.f, 200.f);
 	m_SpriteCurrentFrame->SetTexture("DefaultUI");
+	m_SpriteCurrentFrame->SetBorderColor(255, 0, 0);
 
 	// ==============================
 
@@ -450,12 +452,16 @@ void CSpriteEditWindow::Update(float DeltaTime)
 
 void CSpriteEditWindow::SetReverseMode()
 {
+	if (!m_SpriteObject)
+		return;
 	m_Reverse = true;
 	m_SpriteObject->SetReverse(m_Reverse);
 }
 
 void CSpriteEditWindow::SetNormalMode()
 {
+	if (!m_SpriteObject)
+		return;
 	m_Reverse = false;
 	m_SpriteObject->SetReverse(m_Reverse);
 }
@@ -1334,7 +1340,6 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	// 해당 idx의 Sequence 정보 가져오기
 	// SceneResource가 아니라, 해당 m_Animation로 부터 가져와야 하는 거 아닌가 ?
 	// CSceneResource*       Resource               = CSceneManager::GetInst()->GetScene()->GetResource();
-
 	if (!m_Animation) //
 		return;
 
@@ -1477,8 +1482,34 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	StartPos += SpriteObject2DPos;
 	EndPos += SpriteObject2DPos;
 
-	DragObject->SetStartPos(StartPos);
-	DragObject->SetEndPos(EndPos);
+	// 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
+	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(SequenceName)->IsFrameReverse();
+	if (SeqFrameReverse)
+		SetReverseMode();
+	else
+		SetNormalMode();
+
+	if (m_Reverse)
+	{
+		// DragObject의 Image Pos 세팅
+		Vector2 ReverseStartPos = Vector2(StartPos.x * -1.f, StartPos.y);
+		Vector2 ReverseEndPos = Vector2(EndPos.x * -1.f, EndPos.y);
+		DragObject->SetStartPos(ReverseStartPos);
+		DragObject->SetEndPos(ReverseEndPos);
+
+		// m_SpriteSampled Texture 세팅 
+		StartPos.y = ImageSize.x - StartPos.y;
+		EndPos.y = ImageSize.y - EndPos.y;
+
+		m_SpriteCurrentFrame->SetImageStart(StartPos);
+		m_SpriteCurrentFrame->SetImageEnd(EndPos);
+	}
+	else
+	{
+		DragObject->SetStartPos(StartPos);
+		DragObject->SetEndPos(StartPos);
+	}
+
 
 	// 클릭시 Animation 멈춰주기
 	m_Animation->Stop();

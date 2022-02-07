@@ -106,6 +106,8 @@ void CAnimationSequence2D::SaveFullPath(const char* FullPath)
 	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
+	fwrite(&m_IsFrameReverse, sizeof(bool), 1, pFile);
+
 	bool TexEnable = false;
 	if (m_Texture)
 		TexEnable = true;
@@ -273,6 +275,8 @@ bool CAnimationSequence2D::LoadFullPath(const char* FullPath)
 	fread(&Length, sizeof(int), 1, pFile);
 	fread(Name, sizeof(char), Length, pFile);
 	m_Name = Name;
+
+	fread(&m_IsFrameReverse, sizeof(bool), 1, pFile);
 
 	bool TexEnable = false;
 	fread(&TexEnable, sizeof(bool), 1, pFile);

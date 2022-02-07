@@ -45,6 +45,8 @@ bool CAnimationSequence2DData::Save(FILE* pFile)
 	fwrite(&NameLength, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), NameLength, pFile);
 
+	// fwrite(&m_FrameReverse, sizeof(bool), 1, pFile);
+
 	bool SequenceEnable = false;
 	if (m_Sequence)
 		SequenceEnable = true;
@@ -83,6 +85,10 @@ bool CAnimationSequence2DData::Load(FILE* pFile)
 	char Name[MAX_PATH] = {};
 	fread(Name, sizeof(char), NameLength, pFile);
 	m_Name = Name;
+
+	bool FrameReverse = false;
+	fwrite(&FrameReverse, sizeof(bool), 1, pFile);
+	m_FrameReverse = FrameReverse;
 
 	bool SequenceEnable = false;
 	if (m_Sequence)
