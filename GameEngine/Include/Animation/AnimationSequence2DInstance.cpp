@@ -420,8 +420,8 @@ class CAnimation2DConstantBuffer*                          m_CBuffer;
 	fwrite(&Length, sizeof(int), 1, pFile);
 	fwrite(m_Name.c_str(), sizeof(char), Length, pFile);
 
-	size_t mapSize = m_mapAnimation.size();
-	fwrite(&mapSize, sizeof(size_t), 1, pFile);
+	size_t AnimationSize = m_mapAnimation.size();
+	fwrite(&AnimationSize, sizeof(size_t), 1, pFile);
 
 	auto iter                       = m_mapAnimation.begin();
 	auto iterEnd                    = m_mapAnimation.end();
@@ -469,8 +469,8 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 	fread(Name, sizeof(char), Length, pFile);
 	m_Name = Name;
 
-	size_t MapSize = -1;
-	fread(&MapSize, sizeof(size_t), 1, pFile);
+	size_t AnimationSize = -1;
+	fread(&AnimationSize, sizeof(size_t), 1, pFile);
 
 	// -1을 해주는 이유는 CurrentAnimation은 따로 Load하기 위함이다.
 	int SequenceDataKeyNameLength = -1;
@@ -482,7 +482,7 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 
 	std::string TempCurrentAnimationName;
 
-	for (int i = 0; i < MapSize; i++)
+	for (int i = 0; i < AnimationSize; i++)
 	{
 		// - CAnimationSequence2DData
 		// Key Name 저장 

@@ -127,12 +127,12 @@ bool CSpriteEditWindow::Init()
 	m_Sprite = AddWidget<CIMGUIImage>("SpriteOrigin", 200.f, 200.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(220.f);
+	Line->SetOffsetX(215.f);
 
 	m_SpriteSampled = AddWidget<CIMGUIImage>("SpriteSampled", 200.f, 200.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(430.f);
+	Line->SetOffsetX(420.f);
 
 	m_SpriteCurrentFrame = AddWidget<CIMGUIImage>("SpriteCurrentFrame", 200.f, 200.f);
 	m_SpriteCurrentFrame->SetTexture("DefaultUI");
@@ -163,7 +163,7 @@ bool CSpriteEditWindow::Init()
 	m_AnimationFrameList->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SelectAnimationFrame);
 
 	// ==============================
-	Label = AddWidget<CIMGUILabel>("AddAnim", 80.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("AnimName", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -181,7 +181,7 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(260.f);
+	Line->SetOffsetX(335.f);
 
 	Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationFrameButton);
@@ -963,7 +963,7 @@ void CSpriteEditWindow::SaveSequence()
 	OpenFile.lpstrFilter     = TEXT("모든파일\0*.*\0.Sequence File\0*.sqc");
 	OpenFile.lpstrFile       = FilePath;
 	OpenFile.nMaxFile        = MAX_PATH;
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(TEXTURE_PATH)->Path;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SEQUENCE_PATH)->Path;
 
 	if (GetSaveFileName(&OpenFile) != 0)
 	{
@@ -1006,7 +1006,7 @@ void CSpriteEditWindow::LoadSequence()
 	OpenFile.lpstrFile = FullPath;
 	OpenFile.nMaxFile = MAX_PATH;
 	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0.Sequence File\0*.sqc");
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(TEXTURE_PATH)->Path;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SEQUENCE_PATH)->Path;
 
 	if (GetOpenFileName(&OpenFile) != 0)
 	{
@@ -1574,6 +1574,10 @@ void CSpriteEditWindow::DivideFrameWidthAndAdd()
 	if (!DragObject)
 		return;
 
+	// Sequence가 선택되지 않았다면 return;
+	if (m_AnimationList->GetSelectIndex() < 0)
+		return;
+
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1643,6 +1647,10 @@ void CSpriteEditWindow::DivideFrameHeightAndAdd()
 	if (!DragObject)
 		return;
 
+	// Sequence가 선택되지 않았다면 return;
+	if (m_AnimationList->GetSelectIndex() < 0)
+		return;
+
 	// Texture를 가져온다.
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
 	if (!Sequence)
@@ -1710,6 +1718,10 @@ void CSpriteEditWindow::DivideFrameWidth()
 	if (!DragObject)
 		return;
 
+	// Sequence가 선택되지 않았다면 return;
+	if (m_AnimationList->GetSelectIndex() < 0)
+		return;
+
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
@@ -1750,6 +1762,10 @@ void CSpriteEditWindow::DivideFrameHeight()
 	if (!DragObject)
 		return;
 
+	// Sequence가 선택되지 않았다면 return;
+	if (m_AnimationList->GetSelectIndex() < 0)
+		return;
+
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 
@@ -1788,6 +1804,10 @@ void CSpriteEditWindow::MultiplyFrameWidth()
 
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
+		return;
+
+	// Sequence가 선택되지 않았다면 return;
+	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
 
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
@@ -1832,6 +1852,10 @@ void CSpriteEditWindow::MultiplyFrameHeight()
 
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (!DragObject)
+		return;
+
+	// Sequence가 선택되지 않았다면 return;
+	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
 
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
@@ -2155,10 +2179,12 @@ std::pair<Vector2, Vector2> CSpriteEditWindow::GetFinalFrameStartEndPos(const Ve
 {
 	float                 XDiff = -1, YDiff = -1;
 
+	std::string           SequenceName = m_AnimationList->GetSelectItem();
 	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();
+
 	Vector2               FrameStartPos  = FrameStart;
 	Vector2					FrameEndPos = FrameEnd;
-	std::string           SequenceName = m_AnimationList->GetSelectItem();
+
 	CAnimationSequence2D* Sequence = Resource->FindAnimationSequence2D(SequenceName);
 	CTexture* SequenceTexture = Sequence->GetTexture();
 	Vector2 SequenceImageSize = Vector2((float)(SequenceTexture->GetWidth()), (float)(SequenceTexture->GetHeight()));
