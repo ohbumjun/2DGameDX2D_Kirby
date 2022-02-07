@@ -741,7 +741,7 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	}
 
 	// 현재 SequenceData 또한 Reverse 여부를 반영한다.
-	Animation->SetFrameReverse(true);
+	Animation->SetFrameReverse(m_Reverse);
 
 	// Frame List Box에 넣어주기 
 	char FrameName[1024] = {};
@@ -1401,6 +1401,14 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	Vector2 NewFrameEndPos   = NewFrameData.Start + NewFrameData.Size;
 	m_AnimationFrameList->SetSelectIndex(0);
 
+
+	// 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
+	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(ChangedSequenceName)->IsFrameReverse();
+	if (SeqFrameReverse)
+		SetReverseMode();
+	else
+		SetNormalMode();
+
 	// m_SpriteSampled Texture 세팅 
 	m_SpriteSampled->SetTexture(ChangedSequenceTexture);
 	m_SpriteSampled->SetImageStart(NewFrameStartPos);
@@ -1411,15 +1419,28 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	NewFrameEndPos.y = ChangedSequenceTexture->GetHeight() - NewFrameEndPos.y;
 
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
-	DragObject->SetStartPos(NewFrameStartPos);
-	DragObject->SetEndPos(NewFrameEndPos);
 
-	// 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
-	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(ChangedSequenceName)->IsFrameReverse();
-	if (SeqFrameReverse)
-		SetReverseMode();
+	if (m_Reverse)
+	{
+		// DragObject의 Image Pos 세팅
+		Vector2 ReverseStartPos = Vector2(NewFrameStartPos.x * -1.f, NewFrameStartPos.y);
+		Vector2 ReverseEndPos   = Vector2(NewFrameEndPos.x * -1.f, NewFrameEndPos.y);
+		DragObject->SetStartPos(ReverseStartPos);
+		DragObject->SetEndPos(ReverseEndPos);
+
+		// m_SpriteSampled Texture 세팅 
+		NewFrameStartPos.y = ChangedSequenceTexture->GetHeight() - NewFrameStartPos.y;
+		NewFrameEndPos.y = ChangedSequenceTexture->GetHeight() - NewFrameEndPos.y;
+
+		m_SpriteCurrentFrame->SetImageStart(NewFrameStartPos);
+		m_SpriteCurrentFrame->SetImageEnd(NewFrameEndPos);
+	}
 	else
-		SetNormalMode();
+	{
+		DragObject->SetStartPos(NewFrameStartPos);
+		DragObject->SetEndPos(NewFrameEndPos);
+	}
+
 }
 
 void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
