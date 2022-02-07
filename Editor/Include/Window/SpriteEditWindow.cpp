@@ -1412,7 +1412,10 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	DragObject->SetStartPos(NewFrameStartPos);
 	DragObject->SetEndPos(NewFrameEndPos);
 
-
+	// 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
+	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(ChangedSequenceName)->IsFrameReverse();
+	if (SeqFrameReverse)
+		SetReverseMode();
 }
 
 void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
