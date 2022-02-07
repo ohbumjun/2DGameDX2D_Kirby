@@ -1,4 +1,7 @@
 #include "SpriteEditObject.h"
+
+#include <Scene/Scene.h>
+
 #include "Engine.h"
 #include "IMGUIImage.h"
 #include "IMGUIWidget.h"
@@ -39,17 +42,20 @@ bool CSpriteEditObject::Init()
 
 	m_Sprite->CreateAnimationInstance<CAnimationSequence2DInstance>();
 
+	CAnimationSequence2D* AddedSequence = nullptr;
 	if (m_Scene)
 	{
-		
+		m_Scene->GetResource()->AddSequence2D("FightKirbySequence", DefaultTexture);
+		AddedSequence = m_Scene->GetResource()->FindAnimationSequence2DData("FightKirbySequence");
 	}
 	else
 	{
 		CResourceManager::GetInst()->AddSequence2D("FightKirbySequence", DefaultTexture);
+		AddedSequence = CResourceManager::GetInst()->FindAnimationSequence2DData("FightKirbySequence");
 	}
 
 	// todo : 이거 수정해야 한다.
-	m_Sprite->GetAnimationInstance()->AddAnimation("SpriteEditObjAnim", "SpriteEditObjAnim", DefaultTexture);
+	m_Sprite->GetAnimationInstance()->AddAnimation("SpriteEditObjAnim", "FightKirbySequence", AddedSequence);
 
 	// Frame 추가
 	CAnimationSequence2DData* Animation = m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("SpriteEditObjAnim");
