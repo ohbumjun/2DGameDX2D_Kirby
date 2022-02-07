@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Animation/AnimationSequence2DInstance.h>
 #include <Component/SpriteComponent.h>
 
 #include "GameObject/GameObject.h"
@@ -33,14 +34,35 @@ public :
 	{
 		m_EditWindow = Window;
 	}
-	void SetTexture(class CTexture* Texture, int Index = 0)
+	void SetMaterialTexture(class CTexture* Texture, int Index = 0)
 	{
 		m_Sprite->SetTexture(Index, Texture);
+	}
+	void SetAnimationNewTexture(class CTexture* Texture)
+	{
+		if (!m_Sprite || !m_Sprite->GetAnimationInstance())
+			return;
+		// Texture 세팅
+		m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetSequenceTexture(Texture);
+		// 기존 FrameData 비워주고
+		m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->ClearSequenceFrame();
+		// 새롭게 FrameData 추가해주기
+		if (m_ReverseMode)
+		{
+			m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->AddFrame(
+				Vector2(0.f, 0.f), Vector2((float)Texture->GetWidth() * -1.f, (float)Texture->GetHeight()));
+		}
+		else
+		{
+			m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->AddFrame(
+				Vector2(0.f, 0.f), Vector2((float)Texture->GetWidth(), (float)Texture->GetHeight()));
+		}
 	}
 	void SetTextureWorldScale(int Index = 0)
 	{
 		m_Sprite->SetTextureWorldScale(Index);
 	}
+
 	void SetReverse(bool Reverse);
 public:
 	virtual bool               Init() override;

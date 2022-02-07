@@ -524,6 +524,7 @@ void CSpriteEditWindow::LoadTextureButton()
 		CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture(TextureIndex);
 		m_SpriteObject->SetWorldScale(static_cast<float>(Texture->GetWidth()), static_cast<float>(Texture->GetHeight()),
 		                              1.f);
+		m_SpriteObject->SetAnimationNewTexture(Texture);
 	}
 }
 
@@ -1087,7 +1088,8 @@ void CSpriteEditWindow::LoadSequence()
 			m_SpriteObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteEditObject>("SpriteEditObject");
 			m_SpriteObject->SetEditWindow(this);
 		}
-		m_SpriteObject->SetTexture(LoadedSequence->GetTexture());
+		m_SpriteObject->SetMaterialTexture(LoadedSequence->GetTexture());
+		m_SpriteObject->SetAnimationNewTexture(LoadedSequence->GetTexture());
 		m_SpriteObject->SetTextureWorldScale();
 
 		// 해당 Seq를 m_Sprite 에 추가하기
@@ -1233,7 +1235,8 @@ void CSpriteEditWindow::LoadAnimation()
 			m_SpriteObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteEditObject>("SpriteEditObject");
 			m_SpriteObject->SetEditWindow(this);
 		}
-		m_SpriteObject->SetTexture(AnimTexture);
+		m_SpriteObject->SetMaterialTexture(AnimTexture);
+		m_SpriteObject->SetAnimationNewTexture(AnimTexture);
 		m_SpriteObject->SetTextureWorldScale();
 
 		// 마찬가지로, Sprite의 Texture로 세팅한다.
@@ -2223,8 +2226,10 @@ void CSpriteEditWindow::ReduceOnePixelUp()
 void CSpriteEditWindow::EnlargeOnePixelDown()
 {
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+
 	if (!DragObject)
 		return;
+
 	Vector2 EndPos = DragObject->GetEndPos();
 	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
 	DragObject->SetEndPos(EndPos);

@@ -59,20 +59,20 @@ bool CSpriteEditObject::Init()
 	CAnimationSequence2D* AddedSequence = nullptr;
 	if (m_Scene)
 	{
-		m_Scene->GetResource()->AddSequence2D("FightKirbySequence", DefaultTexture);
-		AddedSequence = m_Scene->GetResource()->FindAnimationSequence2D("FightKirbySequence");
+		m_Scene->GetResource()->AddSequence2D("EngineTextureSeq", DefaultTexture);
+		AddedSequence = m_Scene->GetResource()->FindAnimationSequence2D("EngineTextureSeq");
 	}
 	else
 	{
-		CResourceManager::GetInst()->AddSequence2D("FightKirbySequence", DefaultTexture);
-		AddedSequence = CResourceManager::GetInst()->FindAnimationSequence2D("FightKirbySequence");
+		CResourceManager::GetInst()->AddSequence2D("EngineTextureSeq", DefaultTexture);
+		AddedSequence = CResourceManager::GetInst()->FindAnimationSequence2D("EngineTextureSeq");
 	}
 
 	// todo : 이거 수정해야 한다.
-	m_Sprite->GetAnimationInstance()->AddAnimation("SpriteEditObjAnim", "FightKirbySequence", AddedSequence);
+	m_Sprite->GetAnimationInstance()->AddAnimation("EngineTextureSeqData", "EngineTextureSeq", AddedSequence);
 
 	// Frame 추가
-	CAnimationSequence2DData* Animation = m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("SpriteEditObjAnim");
+	CAnimationSequence2DData* Animation = m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("EngineTextureSeqData");
 	Animation->AddFrame(Vector2(0.f, 0.f), Vector2((float)DefaultTexture->GetWidth(), (float)DefaultTexture->GetHeight()));
 
 	return true;

@@ -32,6 +32,13 @@ void CAnimationSequence2DData::SetSequence2D(CAnimationSequence2D* Sequence2D)
 	m_Sequence = Sequence2D;
 }
 
+void CAnimationSequence2DData::SetSequenceTexture(CTexture* Texture)
+{
+	if (!m_Sequence)
+		return;
+	m_Sequence->m_Texture = Texture;
+}
+
 bool CAnimationSequence2DData::Save(FILE* pFile)
 {
 	int NameLength = static_cast<int>(m_Name.length());

@@ -56,6 +56,7 @@ void CDragObject::SetEndPos(const Vector2& Pos)
 	{
 		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();
 		Vector2 EndPos = m_EndPos;
+
 		EndPos.y = (float)Texture->GetHeight() - EndPos.y;
 
 		bool ReverseMode = CEditorManager::GetInst()->GetSpriteWindow()->IsReverseMode();

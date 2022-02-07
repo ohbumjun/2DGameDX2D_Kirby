@@ -80,6 +80,10 @@ public :
 	}
 
 public :
+	void ClearSequenceFrame()
+{
+		m_Sequence->ClearFrame();
+}
 	void AddFrame(const Vector2& StartPos, const Vector2& Size)
 	{
 		m_Sequence->AddFrame(StartPos, Size);
@@ -121,8 +125,8 @@ public :
 {
 		m_FrameReverse = Reverse;
 }
-
 	void SetSequence2D(CAnimationSequence2D* Sequence2D);
+	void SetSequenceTexture(class CTexture* Texture);
 public :
 	bool Save(FILE* pFile);
 	bool Load(FILE* pFile);

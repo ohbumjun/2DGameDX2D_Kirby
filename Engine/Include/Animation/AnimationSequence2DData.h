@@ -37,10 +37,11 @@ private:
 	bool                                   m_Reverse;
 	std::function<void()>                  m_EndFunction;
 	std::vector<Animation2DNotify*>        m_vecNotify;
+	bool m_FrameReverse;
 public :
 	bool IsFrameReverse() const
 {
-		return m_Sequence->IsFrameReverse();
+		return m_FrameReverse;
 }
 	bool IsLoop() const
 {
@@ -79,6 +80,10 @@ public :
 	}
 
 public :
+	void ClearSequenceFrame()
+{
+		m_Sequence->ClearFrame();
+}
 	void AddFrame(const Vector2& StartPos, const Vector2& Size)
 	{
 		m_Sequence->AddFrame(StartPos, Size);
@@ -118,10 +123,10 @@ public :
 
 	void SetFrameReverse(bool Reverse)
 {
-		m_Sequence->SetFrameReverse(Reverse);
+		m_FrameReverse = Reverse;
 }
-
 	void SetSequence2D(CAnimationSequence2D* Sequence2D);
+	void SetSequenceTexture(class CTexture* Texture);
 public :
 	bool Save(FILE* pFile);
 	bool Load(FILE* pFile);
