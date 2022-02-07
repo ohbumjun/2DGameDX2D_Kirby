@@ -186,7 +186,6 @@ bool CSpriteEditWindow::Init()
 	Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationFrameButton);
 
-
 	// ==============================
 	Label = AddWidget<CIMGUILabel>("SeqName", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
