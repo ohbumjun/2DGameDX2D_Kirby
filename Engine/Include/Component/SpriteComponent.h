@@ -66,7 +66,7 @@ public:
 	void SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
 	void SetTexture(int                        Index, int Register, int ShaderType, const std::string& Name,
 	                const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
-
+	void SetTextureWorldScale(int Index = 0);
 public:
 	virtual void              Start() override;
 	virtual bool              Init() override;

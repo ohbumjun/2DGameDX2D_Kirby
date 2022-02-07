@@ -32,6 +32,10 @@ public :
 	{
 		m_Sprite->SetTexture(Index, Texture);
 	}
+	void SetTextureWorldScale(int Index = 0)
+	{
+		m_Sprite->SetTextureWorldScale(Index);
+	}
 
 public:
 	virtual bool               Init() override;

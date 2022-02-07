@@ -241,13 +241,13 @@ void CAnimationSequence2DInstance::AddAnimation(const TCHAR* FileName, const std
 	if (m_Scene)
 	{
 		std::string  SequenceName;
-		m_Scene->GetResource()->LoadSequence2D(SequenceName, FileNameMultibyte);
+		m_Scene->GetResource()->LoadSequence2D(SequenceName, FileNameMultibyte, PathName);
 		Sequence = m_Scene->GetResource()->FindAnimationSequence2D(SequenceName);
 	}
 	else
 	{
 		std::string  SequenceName;
-		CResourceManager::GetInst()->LoadSequence2D(SequenceName, FileNameMultibyte);
+		CResourceManager::GetInst()->LoadSequence2D(SequenceName, FileNameMultibyte, PathName);
 		Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(SequenceName);
 	}
 

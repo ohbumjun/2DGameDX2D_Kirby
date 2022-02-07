@@ -18,8 +18,9 @@ bool CPlayerAnimation2D::Init()
 	if (!CAnimationSequence2DInstance::Init())
 		return false;
 
-	AddAnimation("PlayerIdle", "Idle");
-
+	// AddAnimation("PlayerIdle", "Idle");
+	AddAnimation(TEXT("FightKirbyRightIdle.sqc"), ENGINE_SHADER_PATH,
+		"Idle", true);
 	return true;
 }
 

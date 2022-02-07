@@ -127,12 +127,12 @@ bool CSpriteEditWindow::Init()
 	m_Sprite = AddWidget<CIMGUIImage>("SpriteOrigin", 200.f, 200.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(300.f);
+	Line->SetOffsetX(220.f);
 
 	m_SpriteSampled = AddWidget<CIMGUIImage>("SpriteSampled", 200.f, 200.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(510.f);
+	Line->SetOffsetX(430.f);
 
 	m_SpriteCurrentFrame = AddWidget<CIMGUIImage>("SpriteCurrentFrame", 200.f, 200.f);
 	m_SpriteCurrentFrame->SetTexture("DefaultUI");
@@ -145,16 +145,9 @@ bool CSpriteEditWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_AnimInputName = AddWidget<CIMGUITextInput>("AnimNameInput");
-	m_AnimInputName->SetHideName(true);
-	m_AnimInputName->SetSize(80.f, 30.f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-
 	Label = AddWidget<CIMGUILabel>("AnimFrameName", 200.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
-
 
 	// ==============================
 	m_AnimationList = AddWidget<CIMGUIListBox>("AnimationList", 200.f, 300.f);
@@ -164,20 +157,35 @@ bool CSpriteEditWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("AddAnim", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationButton);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-
 	m_AnimationFrameList = AddWidget<CIMGUIListBox>("AnimationFrameList", 200.f, 300.f);
 	m_AnimationFrameList->SetHideName(true);
 	m_AnimationFrameList->SetPageItemCount(6);
 	m_AnimationFrameList->SetSelectCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SelectAnimationFrame);
 
+	// ==============================
+	Label = AddWidget<CIMGUILabel>("AddAnim", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
+	m_AnimInputName = AddWidget<CIMGUITextInput>("AnimNameInput");
+	m_AnimInputName->SetHideName(true);
+	m_AnimInputName->SetSize(80.f, 30.f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(175.f);
+
+	Button = AddWidget<CIMGUIButton>("AddAnim", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationButton);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(260.f);
 
 	Button = AddWidget<CIMGUIButton>("AddFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::AddAnimationFrameButton);
+
 
 	// ==============================
 	Label = AddWidget<CIMGUILabel>("SeqName", 80.f, 30.f);
@@ -1042,6 +1050,7 @@ void CSpriteEditWindow::LoadSequence()
 			m_SpriteObject->SetEditWindow(this);
 		}
 		m_SpriteObject->SetTexture(LoadedSequence->GetTexture());
+		m_SpriteObject->SetTextureWorldScale();
 
 		// 해당 Seq를 m_Sprite 에 추가하기
 		m_Sprite->SetTexture(LoadedSequence->GetTexture());
@@ -1122,6 +1131,26 @@ void CSpriteEditWindow::SaveAnimation()
 		WideCharToMultiByte(CP_ACP, 0, FiilePath, -1, FilePathMultibyte, ConvertLength, nullptr, nullptr);
 
 		m_Animation->SaveFullPath(FilePathMultibyte);
+
+		// GameEngine의 Bin, Animation Folder 에도 저장한다.
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ENGINE_ANIMATION_PATH);
+
+		// 파일 이름을 뽑아낸다.
+		char SavedFileName[MAX_PATH] = {};
+		char SavedExt[_MAX_EXT] = {};
+		_splitpath_s(FilePathMultibyte, nullptr, 0, nullptr, 0, SavedFileName, MAX_PATH, SavedExt, _MAX_EXT);
+
+		// 최종 GameEngine 경로를 만든다.
+		char SavedGameEnginePath[MAX_PATH] = {};
+		strcpy_s(SavedGameEnginePath, EngineSequenceFolder->PathMultibyte);
+		strcat_s(SavedGameEnginePath, SavedFileName);
+		strcat_s(SavedGameEnginePath, SavedExt);
+
+		// 현재 저장되는 경로와 다르다면, GameEngine 쪽에도 저장한다.
+		if (strcmp(EngineSequenceFolder->PathMultibyte, FilePathMultibyte) != 0)
+		{
+			m_Animation->GetCurrentAnimation()->GetAnimationSequence()->SaveFullPath(SavedGameEnginePath);
+		}
 	}
 }
 
@@ -1167,6 +1196,7 @@ void CSpriteEditWindow::LoadAnimation()
 			m_SpriteObject->SetEditWindow(this);
 		}
 		m_SpriteObject->SetTexture(AnimTexture);
+		m_SpriteObject->SetTextureWorldScale();
 
 		// 마찬가지로, Sprite의 Texture로 세팅한다.
 		m_Sprite->SetTexture(AnimTexture);

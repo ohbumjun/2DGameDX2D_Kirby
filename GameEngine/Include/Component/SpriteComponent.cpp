@@ -104,7 +104,7 @@ void CSpriteComponent::SetTexture(int Index, class CTexture* Texture)
 void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const std::string& Name, CTexture* Texture)
 {
 	m_Material->SetTexture(Index, Register, ShaderType, Name, Texture);
-	SetWorldScale((float)m_Material->GetTextureWidth(), (float)m_Material->GetTextureHeight(), 1.f);
+	// SetWorldScale((float)m_Material->GetTextureWidth(), (float)m_Material->GetTextureHeight(), 1.f);
 }
 
 void CSpriteComponent::SetTexture(int                Index, int Register, int ShaderType, const std::string& Name,
@@ -127,6 +127,13 @@ void CSpriteComponent::SetTexture(int Index, int Register, int ShaderType, const
 {
 	m_Material->SetTexture(Index, Register, ShaderType, Name, vecFileName, PathName);
 	SetWorldScale((float)m_Material->GetTextureWidth(), (float)m_Material->GetTextureHeight(), 1.f);
+}
+
+void CSpriteComponent::SetTextureWorldScale(int Index)
+{
+	if (!m_Material->GetTexture(Index))
+		return;
+	SetWorldScale((float)m_Material->GetTextureWidth(Index), (float)m_Material->GetTextureHeight(Index), 1.f);
 }
 
 void CSpriteComponent::Start()
