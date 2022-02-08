@@ -13,7 +13,7 @@ private:
 
 private:
 	std::unordered_map<std::string, CSharedPtr<CMaterial>> m_mapMaterial;
-	class CMaterialConstantBuffer*                         m_CBuffer; // 왜 이걸 얘가 ?
+	class CMaterialConstantBuffer*                         m_CBuffer; // 왜 이걸 얘가 ? --> 그런데, 이거 공유하면 안될 것 같은데...? PaperBurn 공통 적용되버린다.
 
 public:
 	bool       Init();

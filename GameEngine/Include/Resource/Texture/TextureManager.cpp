@@ -21,6 +21,7 @@ bool CTextureManager::Init()
 {
 	// 엔진에서 Texture지정이 안되었을 경우 기본으로 사용되는 Texture를 로딩한다.
 	LoadTexture("EngineTexture", TEXT("teemo.png"));
+	LoadTexture("DefaultBurnTexture", TEXT("DefaultPaperBurn.png"));
 
 	float BorderColor[4] = {};
 

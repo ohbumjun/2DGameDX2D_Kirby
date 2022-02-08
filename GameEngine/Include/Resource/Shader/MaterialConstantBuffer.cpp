@@ -4,6 +4,7 @@
 CMaterialConstantBuffer::CMaterialConstantBuffer() :
 	m_BufferData{}
 {
+	m_BufferData.PaperBurnEnable = false;
 }
 
 CMaterialConstantBuffer::CMaterialConstantBuffer(const CMaterialConstantBuffer& Buffer) :

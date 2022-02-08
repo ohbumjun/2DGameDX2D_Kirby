@@ -39,7 +39,7 @@ CPaperBurnComponent::~CPaperBurnComponent()
 
 void CPaperBurnComponent::StartPaperBurn()
 {
-	if (!m_Material || m_StartPaperBurn)
+	if (!m_Material || !m_StartPaperBurn)
 
 	m_Material->SetPaperBurn(true);
 	m_StartPaperBurn = true;
@@ -48,8 +48,7 @@ void CPaperBurnComponent::StartPaperBurn()
 void CPaperBurnComponent::SetMaterial(CMaterial* Material)
 {
 	m_Material = Material;
-	if (m_Material)
-		m_Material->AddRenderCallback(this, &CPaperBurnComponent::SetShader);
+	m_Material->AddRenderCallback(this, &CPaperBurnComponent::SetShader);
 }
 
 void CPaperBurnComponent::SetInverse(bool Enable)
@@ -144,7 +143,7 @@ void CPaperBurnComponent::Update(float DeltaTime)
 				m_FinishCallback();
 		}
 
-		m_CBuffer->SetFilter(m_Filter);
+ 		m_CBuffer->SetFilter(m_Filter);
 	}
 }
 

@@ -337,7 +337,7 @@ void CSceneCollision::CheckColliderSection()
 	{
 		CColliderComponent* Collider = (*iter);
 
-		if (!Collider->IsActive())
+		if (!Collider->IsEnable())
 			continue;
 
 		Vector3 Min = Collider->GetMin();

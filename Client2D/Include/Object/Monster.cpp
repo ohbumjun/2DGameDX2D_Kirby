@@ -76,7 +76,6 @@ bool CMonster::Init()
 
 	m_PaperBurn = CreateComponent<CPaperBurnComponent>("PaperBurn");
 	m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
-	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);
 
 	m_Sprite->AddChild(m_ColliderBody);
 	m_Sprite->SetTransparency(true);
@@ -122,7 +121,7 @@ void CMonster::CreateDamageFont(const CollisionResult& Result)
 
 void CMonster::OnCollisionBegin(const CollisionResult& Result)
 {
-	--m_HP;
+  	--m_HP;
 	if (m_HP <= 0)
 	{
 		m_PaperBurn->StartPaperBurn();
