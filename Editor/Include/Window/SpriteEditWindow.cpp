@@ -219,7 +219,7 @@ bool CSpriteEditWindow::Init()
 
 
 	// ==============================
-	Label = AddWidget<CIMGUILabel>("RevCopyName", 80.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("RevCpyName", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -234,7 +234,7 @@ bool CSpriteEditWindow::Init()
 	Line->SetOffsetX(175.f);
 
 	Button = AddWidget<CIMGUIButton>("RevCopy", 80.f, 30.f);
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditSequenceName);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::RevCopySequenceButton);
 
 
 	// ==============================
@@ -586,6 +586,9 @@ void CSpriteEditWindow::RevCopySequenceButton()
 
 	std::string SrcSequenceName = m_RevCopyTargetInputName->GetTextMultibyte();
 
+	if (!m_Animation->FindAnimationSequence2DData(SrcSequenceName))
+		return;
+
 	CAnimationSequence2D* SrcSequence = m_Animation->FindAnimationSequence2DData(SrcSequenceName)->GetAnimationSequence();
 
 	// 해당 Sequece가 존재하지 않으면 X
@@ -594,6 +597,13 @@ void CSpriteEditWindow::RevCopySequenceButton()
 
 	// 해당 Sequence 의 Frame을 돌면서 그 반대를 Frame으로 추가해준다.
 	std::string DestSequenceName = m_AnimationList->GetSelectItem();
+
+	// 같은 대상이면 복사를 수행하지 않는다.
+	if (DestSequenceName == SrcSequenceName)
+		return;
+
+	if (!m_Animation->FindAnimationSequence2DData(DestSequenceName))
+		return;
 
 	CAnimationSequence2D* DestSequence = m_Animation->FindAnimationSequence2DData(DestSequenceName)->GetAnimationSequence();
 
@@ -606,19 +616,6 @@ void CSpriteEditWindow::RevCopySequenceButton()
 	if (SrcFrameCount <= 0)
 		return;
 
-	for (size_t i = 0; i < SrcFrameCount; i++)
-	{
-		AnimationFrameData SrcFrame = SrcSequence->GetFrameData(i);
-
-		// 반대 FrameData로 세팅해준다.
-		Vector2 RevFrameStart = Vector2(SrcFrame.Start.x * -1.f, SrcFrame.Start.y);
-		DestSequence->AddFrame(RevFrameStart, SrcFrame.Size);
-	}
-
-	// Frame 추가가 완료되면
-	// - 첫번째 Frame을 선택된 녀석으로 세팅하고
-	m_AnimationFrameList->SetSelectIndex(0);
-
 	// - 해당 Sequence2D 의 Reverse 정보도, 복사 대상의 반대로 세팅해준다.
 	// - 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
 	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(SrcSequenceName)->IsFrameReverse();
@@ -630,31 +627,89 @@ void CSpriteEditWindow::RevCopySequenceButton()
 	else
 		SetNormalMode();
 
+	for (size_t i = 0; i < SrcFrameCount; i++)
+	{
+		AnimationFrameData SrcFrame = SrcSequence->GetFrameData((int)i);
+
+		Vector2 SrcEndPos = SrcFrame.Start + SrcFrame.Size;
+		Vector2 RevFrameStart = {};
+		Vector2 RevFrameSize = {};
+
+		// 반대 FrameData로 세팅해준다.
+		/*
+		if (SrcSequence->IsFrameReverse())
+		{
+			RevFrameStart = Vector2(DestSequence->GetTexture()->GetWidth() + SrcFrame.Start.x, SrcFrame.Start.y);
+			RevFrameSize = Vector2(DestSequence->GetTexture()->GetWidth() + SrcFrame.Size.x * -1.f, SrcFrame.Size.y);
+		}
+		else
+		{
+			RevFrameStart = Vector2(DestSequence->GetTexture()->GetWidth() - SrcFrame.Start.x, SrcFrame.Start.y);
+			RevFrameSize  = Vector2(DestSequence->GetTexture()->GetWidth() - SrcFrame.Size.x * -1.f, SrcFrame.Size.y);
+		}
+		*/
+
+		// 원본이 Reverse 라면,
+		if (SrcSequence->IsFrameReverse())
+		{
+			// SrcStart, End 모두 음수형태일 것이다.
+			// Start의 경우, Texture Width 에서 End를 뺀 값의, 음수를 세팅해줘야 한다.
+			float RevFrameStartX = (DestSequence->GetTexture()->GetWidth() + SrcEndPos.x);
+			// float RevFrameStartX = SrcFrame.Start.x * -1.f;
+			RevFrameStart = Vector2(RevFrameStartX, SrcFrame.Start.y);
+			RevFrameSize = Vector2(SrcFrame.Size.x * -1.f, SrcFrame.Size.y);
+		}
+		else
+		{
+			RevFrameStart = Vector2((DestSequence->GetTexture()->GetWidth() - SrcEndPos.x) * -1.f, SrcFrame.Start.y);
+			RevFrameSize = Vector2(SrcFrame.Size.x * -1.f, SrcFrame.Size.y);
+		}
+		// Frame 추가
+		DestSequence->AddFrame(RevFrameStart, RevFrameSize);
+
+		// AnimationFrameList 추가
+		m_AnimationFrameList->AddItem(std::to_string(m_AnimationFrameList->GetItemCount()));
+	}
+
+	// Frame 추가가 완료되면
+	// - 첫번째 Frame을 선택된 녀석으로 세팅하고
+	m_AnimationFrameList->SetSelectIndex(0);
+
 	// - DragObject, CurrentSampled로 위치 세팅해주고
 	// DragObject의 Image Pos 세팅
-
 	// Sprite Sample에 해당 첫번째 Frame의 Start, End Pos를 세팅해준다
 	AnimationFrameData NewFrameData = DestSequence->GetFrameData(0);
 	Vector2 NewFrameStartPos = NewFrameData.Start;
 	Vector2 NewFrameEndPos = NewFrameData.Start + NewFrameData.Size;
 
+	// WorldPos
 	NewFrameStartPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameStartPos.y;
 	NewFrameEndPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameEndPos.y;
-
 
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 	if (m_Reverse)
 	{
 		// DragObject의 Image Pos 세팅
-		Vector2 ReverseStartPos = Vector2(NewFrameStartPos.x * -1.f, NewFrameStartPos.y);
-		Vector2 ReverseEndPos = Vector2(NewFrameEndPos.x * -1.f, NewFrameEndPos.y);
-		DragObject->SetStartPos(ReverseStartPos);
-		DragObject->SetEndPos(ReverseEndPos);
+		// Vector2 ReverseStartPos = Vector2(NewFrameStartPos.x * -1.f, NewFrameStartPos.y);
+		// Vector2 ReverseEndPos = Vector2(NewFrameEndPos.x * -1.f, NewFrameEndPos.y);
+		// DragObject->SetStartPos(ReverseStartPos);
+		DragObject->SetStartPos(NewFrameStartPos);
+		// DragObject->SetEndPos(ReverseEndPos);
+		DragObject->SetEndPos(NewFrameEndPos);
 
 		// m_SpriteSampled Texture 세팅 
 		NewFrameStartPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameStartPos.y;
 		NewFrameEndPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameEndPos.y;
 
+		// 해당 FramePos 정보로 Animation Frame 만들어서 넣어주기 
+		// Animation Sequence 2D 만들기 --> Sprite Edit Object상에 불러놓은 Texture로
+		// 단, Reverse 모드 여부를 고려해서, Reverse Mode 라면, StartPos와 Size를 조정한다.
+		// Image, End 세팅
+		m_SpriteSampled->SetTexture(DestSequence->GetTexture());
+		m_SpriteSampled->SetImageStart(NewFrameStartPos);
+		m_SpriteSampled->SetImageEnd(NewFrameEndPos);
+
+		m_SpriteCurrentFrame->SetTexture(DestSequence->GetTexture());
 		m_SpriteCurrentFrame->SetImageStart(NewFrameStartPos);
 		m_SpriteCurrentFrame->SetImageEnd(NewFrameEndPos);
 	}
@@ -662,6 +717,14 @@ void CSpriteEditWindow::RevCopySequenceButton()
 	{
 		DragObject->SetStartPos(NewFrameStartPos);
 		DragObject->SetEndPos(NewFrameEndPos);
+
+		// m_SpriteSampled Texture 세팅 
+		NewFrameStartPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameStartPos.y;
+		NewFrameEndPos.y = DestSequence->GetTexture()->GetHeight() - NewFrameEndPos.y;
+
+		m_SpriteSampled->SetTexture(DestSequence->GetTexture());
+		m_SpriteSampled->SetImageStart(NewFrameStartPos);
+		m_SpriteSampled->SetImageEnd(NewFrameEndPos);
 	}
 
 }
@@ -1185,6 +1248,10 @@ void CSpriteEditWindow::LoadSequence()
 		// 이름으로 Sequence를 가져오고
 		CAnimationSequence2D* LoadedSequence = Resource->FindAnimationSequence2D(SequenceName);
 
+		// Sequence의 Texture가 로드 되지 않았다면, return;
+		if (!LoadedSequence->GetTexture())
+			return;
+
 		// 같은 이름이 이미 존재하면 X
 		if (m_AnimationList->CheckItem(SequenceName))
 			return;
@@ -1523,8 +1590,6 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	AnimationFrameData NewFrameData = ChangedSequence->GetFrameData(0);
 	Vector2 NewFrameStartPos = NewFrameData.Start;
 	Vector2 NewFrameEndPos   = NewFrameData.Start + NewFrameData.Size;
-	m_AnimationFrameList->SetSelectIndex(0);
-
 
 	// 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
 	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(ChangedSequenceName)->IsFrameReverse();
@@ -1535,14 +1600,13 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 
 	// m_SpriteSampled Texture 세팅 
 	m_SpriteSampled->SetTexture(ChangedSequenceTexture);
-	m_SpriteSampled->SetImageStart(NewFrameStartPos);
-	m_SpriteSampled->SetImageEnd(NewFrameEndPos);
-
+	
 	// DragObject의 Image Pos 세팅
 	NewFrameStartPos.y = ChangedSequenceTexture->GetHeight() - NewFrameStartPos.y;
 	NewFrameEndPos.y = ChangedSequenceTexture->GetHeight() - NewFrameEndPos.y;
 
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
+	Vector2 TextureSize = Vector2((float)ChangedSequence->GetTexture()->GetWidth(), (float)ChangedSequence->GetTexture()->GetHeight());
 
 	if (m_Reverse)
 	{
@@ -1552,9 +1616,14 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 		DragObject->SetStartPos(ReverseStartPos);
 		DragObject->SetEndPos(ReverseEndPos);
 
-		// m_SpriteSampled Texture 세팅 
-		NewFrameStartPos.y = ChangedSequenceTexture->GetHeight() - NewFrameStartPos.y;
-		NewFrameEndPos.y = ChangedSequenceTexture->GetHeight() - NewFrameEndPos.y;
+		// m_SpriteSampled Texture 세팅
+// StartPos.y = ImageSize.x - StartPos.y;
+		NewFrameStartPos.y = TextureSize.y - NewFrameStartPos.y;
+		// EndPos.y = ImageSize.y - EndPos.y;
+		NewFrameEndPos.y = TextureSize.y - NewFrameEndPos.y;
+
+		m_SpriteSampled->SetImageStart(NewFrameStartPos);
+		m_SpriteSampled->SetImageEnd(NewFrameEndPos);
 
 		m_SpriteCurrentFrame->SetImageStart(NewFrameStartPos);
 		m_SpriteCurrentFrame->SetImageEnd(NewFrameEndPos);
@@ -1563,6 +1632,15 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	{
 		DragObject->SetStartPos(NewFrameStartPos);
 		DragObject->SetEndPos(NewFrameEndPos);
+
+		NewFrameStartPos.y = TextureSize.y - NewFrameStartPos.y;
+		NewFrameEndPos.y = TextureSize.y - NewFrameEndPos.y;
+
+		m_SpriteSampled->SetImageStart(NewFrameStartPos);
+		m_SpriteSampled->SetImageEnd(NewFrameEndPos);
+
+		m_SpriteCurrentFrame->SetImageStart(NewFrameStartPos);
+		m_SpriteCurrentFrame->SetImageEnd(NewFrameEndPos);
 	}
 
 }
@@ -1579,17 +1657,18 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	CTexture*             SequenceTexture = Sequence->GetTexture();
 	AnimationFrameData    FrameData       = Sequence->GetFrameData(Index);
 
+	Vector2 StartPos = FrameData.Start;
+	Vector2 EndPos = FrameData.Start + FrameData.Size;
+
 	// SpriteSampled만 바꿔주기 
-	m_SpriteSampled->SetImageStart(FrameData.Start);
-	m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
+	m_SpriteSampled->SetImageStart(StartPos);
+	m_SpriteSampled->SetImageEnd(EndPos);
 
 	// Drag Object Setting
 	CDragObject* DragObject = CEditorManager::GetInst()->GetDragObject();
 
 	Vector2 ImageSize = Vector2(static_cast<float>(SequenceTexture->GetWidth()),
 	                            static_cast<float>(SequenceTexture->GetHeight()));
-	Vector2 StartPos = FrameData.Start;
-	Vector2 EndPos   = FrameData.Start + FrameData.Size;
 
 	StartPos.y = ImageSize.y - StartPos.y;
 	EndPos.y   = ImageSize.y - EndPos.y;
@@ -1613,8 +1692,10 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 		DragObject->SetStartPos(ReverseStartPos);
 		DragObject->SetEndPos(ReverseEndPos);
 
-		// m_SpriteSampled Texture 세팅 
-		StartPos.y = ImageSize.x - StartPos.y;
+		// m_SpriteSampled Texture 세팅
+		// StartPos.y = ImageSize.x - StartPos.y;
+		StartPos.y = ImageSize.y - StartPos.y;
+		// EndPos.y = ImageSize.y - EndPos.y;
 		EndPos.y = ImageSize.y - EndPos.y;
 
 		m_SpriteCurrentFrame->SetImageStart(StartPos);
@@ -1622,8 +1703,16 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	}
 	else
 	{
-		DragObject->SetStartPos(StartPos);
-		DragObject->SetEndPos(StartPos);
+		if (StartPos.x < 0 && EndPos.x < 0)
+		{
+			DragObject->SetStartPos(Vector2(StartPos.x * -1.f, StartPos.y));
+			DragObject->SetEndPos(Vector2(EndPos.x * -1.f, EndPos.y));
+		}
+		else
+		{
+			DragObject->SetStartPos(StartPos);
+			DragObject->SetEndPos(EndPos);
+		}
 	}
 
 
