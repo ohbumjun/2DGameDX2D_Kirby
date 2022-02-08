@@ -45,6 +45,8 @@ void CPaperBurnComponent::StartPaperBurn()
 void CPaperBurnComponent::SetMaterial(CMaterial* Material)
 {
 	m_Material = Material;
+	if (m_Material)
+		m_Material->AddRenderCallback(this, &CPaperBurnComponent::SetShader);
 }
 
 void CPaperBurnComponent::SetInverse(bool Enable)
