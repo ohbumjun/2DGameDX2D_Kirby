@@ -143,7 +143,7 @@ public :
 		if ((*iter)->Obj == Obj)
 		{
 			SAFE_DELETE((*iter));
-			m_RenderCallbackList.erase(iter);
+			m_RenderCallbackList.erase(iter); //
 			break;
 		}
 	}

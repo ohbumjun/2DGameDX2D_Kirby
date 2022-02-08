@@ -32,6 +32,9 @@ CObjectComponent(Component)
 CPaperBurnComponent::~CPaperBurnComponent()
 {
 	SAFE_DELETE(m_CBuffer);
+
+	if (m_Material)
+		m_Material->DeleteRenderCallback(this);
 }
 
 void CPaperBurnComponent::StartPaperBurn()
