@@ -108,10 +108,13 @@ public:
 			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 
 		else
+		{
 			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
+			if (!m_RootComponent)
+				m_RootComponent = (CSceneComponent*)Component;
+			
+		}
 
-		if (!m_RootComponent)
-			m_RootComponent = Component;
 
 		return Component;
 	}

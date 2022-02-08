@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shader/GraphicShader.h"
+#include "../Shader/MaterialConstantBuffer.h"
 #include "../Texture/Texture.h"
 
 struct MaterialTextureInfo
@@ -19,6 +20,10 @@ struct MaterialTextureInfo
 	}
 };
 
+struct RenderCallback {
+	std::function<void()> Callback;
+	void* Obj;
+};
 
 class CMaterial :
 	public CRef
@@ -73,11 +78,15 @@ protected:
 	float                            m_Opacity;
 	class CMaterialConstantBuffer*   m_CBuffer;
 	CSharedPtr<class CRenderState>   m_RenderStateArray[static_cast<int>(RenderState_Type::Max)];
-
-private:
+	std::list<RenderCallback*> m_RenderCallbackList;
+public:
 	void SetConstantBuffer(class CMaterialConstantBuffer* Buffer)
 	{
 		m_CBuffer = Buffer;
+	}
+	void SetPaperBurn(bool Enable)
+	{
+		m_CBuffer->SetPaperBurn(Enable);
 	}
 
 public:
@@ -106,7 +115,6 @@ public:
 	void SetTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
 	void SetTexture(int                        Index, int Register, int ShaderType, const std::string& Name,
 	                const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
-
 public:
 	void       SetShader(const std::string& Name);
 	void       Render();
@@ -115,4 +123,29 @@ public:
 public :
 	void Save(FILE* pFile);
 	void Load(FILE* pFile);
+public :
+	template<typename T>
+	void AddRenderCallback(T* Obj, void(T::*Func)())
+{
+		RenderCallback* CallbackStruct = new RenderCallback;
+		CallbackStruct->Callback = std::bind(Func, Obj);
+		CallbackStruct->Obj = Obj;
+		m_RenderCallbackList.push_back(CallbackStruct);
+}
+	template<typename T>
+	void DeleteRenderCallback(T* Obj)
+{
+		auto iter = m_RenderCallbackList.begin();
+		auto iterEnd = m_RenderCallbackList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->Obj == Obj)
+		{
+			SAFE_DELETE((*iter));
+			m_RenderCallbackList.erase(iter);
+			break;
+		}
+	}
+}
 };

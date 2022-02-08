@@ -23,10 +23,21 @@ CMaterial::CMaterial(const CMaterial& Material) :CRef(Material)
 	m_RefCount = 0;
 
 	m_Scene = nullptr;
+
+	m_RenderCallbackList.clear();
 }
 
 CMaterial::~CMaterial()
 {
+	auto iter = m_RenderCallbackList.begin();
+	auto iterEnd = m_RenderCallbackList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		SAFE_DELETE((*iter));
+	}
+
+	m_RenderCallbackList.clear();
 }
 
 void CMaterial::SetRenderState(CRenderState* State)
@@ -238,6 +249,14 @@ void CMaterial::Render()
 	{
 		if (m_RenderStateArray[i])
 			m_RenderStateArray[i]->SetState();
+	}
+
+	auto iter = m_RenderCallbackList.begin();
+	auto iterEnd = m_RenderCallbackList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		(*iter)->Callback();
 	}
 
 	size_t Size = m_TextureInfo.size();

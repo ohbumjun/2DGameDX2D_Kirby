@@ -219,7 +219,7 @@ struct PaperBurnCBuffer {
 	Vector4 InLineColor;
 	Vector4 OutLineColor;
 	Vector4 CenterLineColor;
-	float PaperBurn;
+	float Filter;
 	int Inverse;
 	float InFilter;
 	float OutFilter;

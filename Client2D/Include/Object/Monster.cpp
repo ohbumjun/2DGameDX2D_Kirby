@@ -4,11 +4,12 @@
 #include "Component/ColliderCircle.h"
 #include "MonsterAnimation.h"
 #include "Engine.h"
+#include "Component/PaperBurnComponent.h"
 #include "../UI/SimpleHUD.h"
 
 CMonster::CMonster() :
-	m_HPMax(10.f),
-	m_HP(10.f)
+	m_HPMax(5.f),
+	m_HP(5.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -43,6 +44,13 @@ void CMonster::SetHPMax(float HPMax)
 	m_HP = HPMax;
 }
 
+void CMonster::Start()
+{
+	CGameObject::Start();
+
+	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);
+}
+
 bool CMonster::Init()
 {
 	if (!CGameObject::Init())
@@ -55,15 +63,20 @@ bool CMonster::Init()
 	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
 	m_ColliderBody->SetCollisionProfile("Monster");
 	m_ColliderBody->AddCollisionMouseCallback(Collision_State::Begin, this,
-		&CMonster::SetAttackMouse);
+		&CMonster::OnMouseBegin);
 	m_ColliderBody->AddCollisionMouseCallback(Collision_State::End, this,
-		&CMonster::SetNormalMouse);
+		&CMonster::OnMouseEnd);
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
 
 	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
 
 	// m_HpBar = SimpleHUDWindow->CreateUIWidget<CUIProgressBar>("HPBar");
 	// m_HpBar->SetPos(0.f, -50.f);
+
+	m_PaperBurn = CreateComponent<CPaperBurnComponent>("PaperBurn");
+	m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
+	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);
 
 	m_Sprite->AddChild(m_ColliderBody);
 	m_Sprite->SetTransparency(true);
@@ -94,15 +107,30 @@ CMonster* CMonster::Clone()
 	return new CMonster(*this);
 }
 
-void CMonster::SetAttackMouse(const CollisionResult& Result)
+void CMonster::OnMouseBegin(const CollisionResult& Result)
 {
 	CEngine::GetInst()->SetMouseState(Mouse_State::State1);
 }
 
-void CMonster::SetNormalMouse(const CollisionResult& Result)
+void CMonster::OnMouseEnd(const CollisionResult& Result)
 {
 	CEngine::GetInst()->SetMouseState(Mouse_State::Normal);
 }
 
 void CMonster::CreateDamageFont(const CollisionResult& Result)
 {}
+
+void CMonster::OnCollisionBegin(const CollisionResult& Result)
+{
+	--m_HP;
+	if (m_HP <= 0)
+	{
+		m_PaperBurn->StartPaperBurn();
+		m_ColliderBody->Enable(false);
+	}
+}
+
+void CMonster::PaperBurnEnd()
+{
+	Destroy();
+}
