@@ -24,6 +24,8 @@ CMaterial::CMaterial(const CMaterial& Material) :CRef(Material)
 
 	m_Scene = nullptr;
 
+	m_CBuffer = Material.m_CBuffer->Clone();
+
 	m_RenderCallbackList.clear();
 }
 
@@ -36,6 +38,8 @@ CMaterial::~CMaterial()
 	{
 		SAFE_DELETE((*iter));
 	}
+
+	SAFE_DELETE(m_CBuffer);
 
 	m_RenderCallbackList.clear();
 }

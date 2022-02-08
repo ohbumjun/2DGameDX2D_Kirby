@@ -2,6 +2,7 @@
 
 #include "Material.h"
 #include "../../GameInfo.h"
+#include "../Shader/MaterialConstantBuffer.h"
 
 class CMaterialManager
 {

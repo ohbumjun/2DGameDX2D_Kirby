@@ -27,7 +27,6 @@ public:
 	{
 		m_BufferData.BaseColor = BaseColor;
 	}
-
 	void SetOpacity(float Opacity)
 	{
 		m_BufferData.Opacity = Opacity;

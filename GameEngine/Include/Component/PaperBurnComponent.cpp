@@ -39,7 +39,8 @@ CPaperBurnComponent::~CPaperBurnComponent()
 
 void CPaperBurnComponent::StartPaperBurn()
 {
-	if (!m_Material || !m_StartPaperBurn)
+	if (!m_Material || m_StartPaperBurn)
+		return;
 
 	m_Material->SetPaperBurn(true);
 	m_StartPaperBurn = true;
@@ -47,7 +48,7 @@ void CPaperBurnComponent::StartPaperBurn()
 
 void CPaperBurnComponent::SetMaterial(CMaterial* Material)
 {
-	m_Material = Material;
+	m_Material = Material->Clone();
 	m_Material->AddRenderCallback(this, &CPaperBurnComponent::SetShader);
 }
 

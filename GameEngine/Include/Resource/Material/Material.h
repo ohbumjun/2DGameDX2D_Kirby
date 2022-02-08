@@ -82,7 +82,7 @@ protected:
 public:
 	void SetConstantBuffer(class CMaterialConstantBuffer* Buffer)
 	{
-		m_CBuffer = Buffer;
+		m_CBuffer = Buffer->Clone();
 	}
 	void SetPaperBurn(bool Enable)
 	{
