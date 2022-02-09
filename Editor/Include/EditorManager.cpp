@@ -168,6 +168,7 @@ void CEditorManager::KeyBoardUp(float DeltaTime)
 	if (m_CameraObject)
 	{
 		m_CameraObject->AddWorldPos(Vector3(0.f, 1.f, 0.f));
+		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
 
@@ -176,6 +177,7 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 	if (m_CameraObject)
 	{
 		m_CameraObject->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
+		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
 
@@ -184,6 +186,7 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 	if (m_CameraObject)
 	{
 		m_CameraObject->AddWorldPos(Vector3(1.f, 0.f, 0.f));
+		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
 
@@ -192,6 +195,7 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 	if (m_CameraObject)
 	{
 		m_CameraObject->AddWorldPos(Vector3(0.f, -1.f, 0.f));
+		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
 

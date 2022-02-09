@@ -14,6 +14,8 @@ private :
 private :
 	class CIMGUIText* m_IsReverseText;
 	class CIMGUIText* m_IsCandyVersionText;
+	class CIMGUIText* m_CameraPosX;
+	class CIMGUIText* m_CameraPosY;
 private:
 	class CIMGUIImage* m_Sprite;
 	class CIMGUIImage* m_SpriteSampled;
@@ -52,6 +54,8 @@ public :
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
+public :
+	void SetCameraPosText(float PosX, float PosY);
 public :
 	void SetReverseMode();
 	void SetNormalMode();

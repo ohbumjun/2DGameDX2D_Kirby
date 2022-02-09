@@ -60,6 +60,25 @@ bool CSpriteEditWindow::Init()
 	m_IsCandyVersionText->SetText("FALSE");
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("CameraPos", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_CameraPosX = AddWidget<CIMGUIText>("CameraPosX");
+	m_CameraPosX->SetColor(255, 255, 255);
+	m_CameraPosX->SetText("0.0");
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
+
+	m_CameraPosY = AddWidget<CIMGUIText>("CameraPosY");
+	m_CameraPosY->SetColor(255, 255, 255);
+	m_CameraPosY->SetText("0.0");
+
+	// ==============================
 
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
@@ -502,6 +521,16 @@ void CSpriteEditWindow::Update(float DeltaTime)
 		m_SpriteSampled->SetImageStart(FrameData.Start);
 		m_SpriteSampled->SetImageEnd(FrameData.Start + FrameData.Size);
 	}
+}
+
+void CSpriteEditWindow::SetCameraPosText(float PosX, float PosY)
+{
+	char PosTest[128] = {};
+	sprintf_s(PosTest, "%.2f", PosX);
+	m_CameraPosX->SetText(PosTest);
+	
+	sprintf_s(PosTest, "%.2f", PosY);
+	m_CameraPosY->SetText(PosTest);
 }
 
 void CSpriteEditWindow::SetReverseMode()
