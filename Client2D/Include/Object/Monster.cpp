@@ -9,7 +9,10 @@
 
 CMonster::CMonster() :
 	m_HPMax(5.f),
-	m_HP(5.f)
+	m_HP(5.f),
+	m_DeathAccTime(0.f),
+	m_DeathFinishTime(0.f),
+	m_DeathStart(false)
 {
 	SetTypeID<CMonster>();
 }
@@ -22,6 +25,19 @@ CMonster::CMonster(const CMonster& Monster)
 
 CMonster::~CMonster()
 {}
+
+void CMonster::SetAnimationInstance(const TCHAR* FileName)
+{
+	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(FileName);
+	m_Sprite->SetAnimationInstance(AnimationInstance);
+}
+
+void CMonster::SetCurrentAnimation(const std::string& Name)
+{
+	if (!m_Sprite || !m_Sprite->GetAnimationInstance())
+		return;
+	m_Sprite->GetAnimationInstance()->ChangeAnimation(Name);
+}
 
 void CMonster::Damage(float Damage)
 {
@@ -42,6 +58,11 @@ void CMonster::SetHPMax(float HPMax)
 {
 	m_HPMax = HPMax;
 	m_HP = HPMax;
+}
+
+void CMonster::DeathStart()
+{
+	m_DeathStart = true;
 }
 
 void CMonster::Start()
@@ -79,7 +100,11 @@ bool CMonster::Init()
 
 	m_Sprite->AddChild(m_ColliderBody);
 	m_Sprite->SetTransparency(true);
-	m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
+
+	// Animation 
+	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(TEXT("Beam.anim"));
+	m_Sprite->SetAnimationInstance(AnimationInstance);
+	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
 	m_Sprite->AddChild(m_SimpleHUDWidget);
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
@@ -94,6 +119,26 @@ bool CMonster::Init()
 void CMonster::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
+
+	// 죽으면
+	// 1) Animation 바꿔주고
+	// 2) 해당 Animation의 Time 저장하고
+	// 3) Animation Time을 감소시켜서 0이 되면 그때 가서 
+	// 2) Animation 끝날 때까지 기다린 다음 PaperBurn
+
+
+	if (m_DeathStart)
+	{
+		if (m_DeathFinishTime > 0.f)
+		{
+			m_DeathFinishTime -= DeltaTime;
+			if (m_DeathFinishTime < 0.f)
+			{
+				m_PaperBurn->StartPaperBurn();
+				m_DeathStart = false;
+			}
+		}
+	}
 }
 
 void CMonster::PostUpdate(float DeltaTime)
@@ -124,8 +169,10 @@ void CMonster::OnCollisionBegin(const CollisionResult& Result)
   	--m_HP;
 	if (m_HP <= 0)
 	{
-		m_PaperBurn->StartPaperBurn();
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightDeath");
+		m_DeathFinishTime = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetPlayTime();
 		m_ColliderBody->Enable(false);
+		DeathStart();
 	}
 }
 

@@ -513,6 +513,24 @@ class CAnimation2DConstantBuffer*                          m_CBuffer;
 	return true;
 }
 
+bool CAnimationSequence2DInstance::SaveAllSequencesFullPath(const char* FullPath)
+{
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		char SequenceFullPath[MAX_PATH] = {};
+		strcpy_s(SequenceFullPath, FullPath);
+		strcat_s(SequenceFullPath, iter->second->GetAnimationSequence()->GetName().c_str());
+		strcat_s(SequenceFullPath, ".sqc");
+
+		iter->second->GetAnimationSequence()->SaveFullPath(SequenceFullPath);
+	}
+
+	return true;
+}
+
 bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile;

@@ -38,6 +38,10 @@ private:
 	std::function<void()>                  m_EndFunction;
 	std::vector<Animation2DNotify*>        m_vecNotify;
 public :
+	float GetPlayTime() const
+{
+		return m_PlayTime;
+}
 	bool IsFrameReverse() const
 {
 		return m_Sequence->IsFrameReverse();

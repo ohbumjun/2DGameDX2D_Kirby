@@ -17,9 +17,16 @@ private :
     // CSharedPtr<class CColliderComponent> m_ColliderBody;
     float m_HPMax;
     float m_HP;
+    float m_DeathAccTime;
+    float m_DeathFinishTime;
+    bool m_DeathStart;
+public :
+    void SetAnimationInstance(const TCHAR* FileName);
+    void SetCurrentAnimation(const std::string& Name);
 public :
     void Damage(float Damage);
     void SetHPMax(float HPMax);
+    void DeathStart();
 public :
     virtual void Start() override;
     virtual bool Init() override;

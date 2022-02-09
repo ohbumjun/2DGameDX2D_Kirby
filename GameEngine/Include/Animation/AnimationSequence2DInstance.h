@@ -103,6 +103,7 @@ public:
 	virtual CAnimationSequence2DInstance* Clone();
 public :
 	bool                      SaveFullPath(const char* FullPath);
+	bool						SaveAllSequencesFullPath(const char* FullPath);
 	bool						LoadFullPath(const char* FullPath);
 	void Save(FILE* pFile);
 	void Load(FILE* pFile);

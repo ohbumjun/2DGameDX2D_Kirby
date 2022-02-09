@@ -42,7 +42,13 @@ bool CMainScene::Init()
 
 	// Sleep(1000);
 
-	CMonster* Monter = m_Scene->CreateGameObject<CMonster>("Monster");
+	CMonster* Monster = m_Scene->CreateGameObject<CMonster>("Monster");
+	Monster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
+
+	Monster = m_Scene->CreateGameObject<CMonster>("Monster2");
+	Monster->SetWorldPos(Vector3(-100.f, 500.f, 1.));
+	Monster->SetAnimationInstance(TEXT("Normal_YellowBird.anim"));
+	Monster->SetCurrentAnimation("RightIdle");
 
 	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");
 

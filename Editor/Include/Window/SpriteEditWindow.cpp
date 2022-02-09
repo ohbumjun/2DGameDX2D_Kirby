@@ -1462,17 +1462,32 @@ void CSpriteEditWindow::SaveAnimation()
 
 		m_Animation->SaveFullPath(FilePathMultibyte);
 
+
+		/*
+		만약 필요하다면, Animation 안에 있는 모든 seq 들도 저장해야 한다.
+		const PathInfo* SequencesPath = CPathManager::GetInst()->FindPath(SEQUENCE_PATH);
+		m_Animation->SaveAllSequencesFullPath(SequencesPath->PathMultibyte);
+		 
+		1) Seq 앞에 붙일 이름을 세팅
+		ex) FightKirby_RightIdle.sqc
+		
+		2) 그럴려면, 해당 Seq 앞 이름을 입력으로 받아야 한다.
+		그리고 그것이 무엇인지 보여주는 Text도 필요하고
+
+		3) 아래, Candy // Engine 폴더에도 세팅해야 한다.
+		*/
+
 		// GameEngine의 Bin, Animation Folder 에도 저장한다.
-		std::string ExtraFolderName;
+		std::string ExtraAnimationFolderName;
 		if (m_CandyCrushVersion)
-			ExtraFolderName = CANDY_ANIMATION_PATH;
+			ExtraAnimationFolderName = CANDY_ANIMATION_PATH;
 		else
-			ExtraFolderName = ENGINE_ANIMATION_PATH;
+			ExtraAnimationFolderName = ENGINE_ANIMATION_PATH;
 
 		UndoCandyCrushMode();
 
 		// GameEngine의 Bin, Animation Folder 에도 저장한다.
-		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraAnimationFolderName);
 
 		// 파일 이름을 뽑아낸다.
 		char SavedFileName[MAX_PATH] = {};
@@ -1519,6 +1534,7 @@ void CSpriteEditWindow::LoadAnimation()
 			ClearAnimationSequence();
 		}
 
+		// 실제 파일 로딩
 		m_Animation->LoadFullPath(FilePathMultibyte);
 
 		// CurrentAnimation 이 없다면,

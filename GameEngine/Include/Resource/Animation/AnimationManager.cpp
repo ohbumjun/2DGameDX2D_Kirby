@@ -12,6 +12,7 @@ CAnimationManager::CAnimationManager() :
 CAnimationManager::~CAnimationManager()
 {
 	SAFE_DELETE(m_Animation2DCBuffer);
+	m_mapSequence2D.clear();
 }
 
 bool CAnimationManager::Init()
