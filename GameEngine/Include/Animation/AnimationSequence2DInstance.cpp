@@ -48,6 +48,8 @@ CAnimationSequence2DInstance::~CAnimationSequence2DInstance()
 	{
 		SAFE_DELETE(iter->second);
 	}
+
+	m_mapAnimation.clear();
 }
 
 void CAnimationSequence2DInstance::GatherSequenceNames(std::vector<std::string>& vecNames)
@@ -534,7 +536,9 @@ bool CAnimationSequence2DInstance::SaveAllSequencesFullPath(const char* FullPath
 bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile;
+
 	fopen_s(&pFile, FullPath, "rb");
+
 	if (!pFile)
 		return false;
 
@@ -550,14 +554,15 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 	size_t AnimationSize = -1;
 	fread(&AnimationSize, sizeof(size_t), 1, pFile);
 
-	int SequenceDataKeyNameLength = -1;
-	char SequenceData2DNameKey[MAX_PATH] = {};
 
 	// m_mapAnimation.clear();
 	// m_CurrentAnimation = nullptr;
 
 	for (int i = 0; i < AnimationSize; i++)
 	{
+		int SequenceDataKeyNameLength = 0;
+		char SequenceData2DNameKey[MAX_PATH] = {};
+
 		// - CAnimationSequence2DData
 		// Key Name 저장 
 		fread(&SequenceDataKeyNameLength, sizeof(int), 1, pFile);
@@ -565,7 +570,9 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 
 		// CAnimationSequence2DData 를 저장하기 ===============================
 		CAnimationSequence2DData* Sequence2DData = new CAnimationSequence2DData;
-		Sequence2DData->Load(pFile);
+
+		if (!Sequence2DData->Load(pFile))
+			return false;
 
 		// Scene이 있냐 없냐에 따라
 		// Scene Resource, ResourceManager에 해당 Sequence를 추가해주어야 한다
@@ -579,6 +586,14 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 			CResourceManager::GetInst()->AddSequence2D(Sequence2DData->m_Sequence);
 		}
 		*/
+
+		// 중복 추가 방지
+		if (FindAnimationSequence2DData(SequenceData2DNameKey))
+		{
+			SAFE_DELETE(Sequence2DData);
+			continue;
+		}
+
 		if (m_mapAnimation.empty())
 		{
 			m_CurrentAnimation = Sequence2DData;

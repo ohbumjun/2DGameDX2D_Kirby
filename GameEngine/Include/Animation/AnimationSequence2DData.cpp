@@ -120,6 +120,7 @@ bool CAnimationSequence2DData::Load(FILE* pFile)
 		{
 			m_Sequence = new CAnimationSequence2D;
 		}
+
 		m_Sequence->Load(pFile);
 	}
 

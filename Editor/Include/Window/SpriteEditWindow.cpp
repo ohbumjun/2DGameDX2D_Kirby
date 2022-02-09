@@ -1382,6 +1382,9 @@ void CSpriteEditWindow::LoadSequence()
 		m_SpriteObject->SetAnimationNewTexture(LoadedSequence->GetTexture());
 		m_SpriteObject->SetTextureWorldScale();
 
+		// CameraObject 생성하기
+		CEditorManager::GetInst()->CreateCameraObject();
+
 		// 해당 Seq를 m_Sprite 에 추가하기
 		m_Sprite->SetTexture(LoadedSequence->GetTexture());
 
@@ -1550,6 +1553,10 @@ void CSpriteEditWindow::LoadAnimation()
 			m_SpriteObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteEditObject>("SpriteEditObject");
 			m_SpriteObject->SetEditWindow(this);
 		}
+
+		// CameraObject 생성하기
+		CEditorManager::GetInst()->CreateCameraObject();
+
 		m_SpriteObject->SetMaterialTexture(AnimTexture);
 		m_SpriteObject->SetAnimationNewTexture(AnimTexture);
 		m_SpriteObject->SetTextureWorldScale();
@@ -1768,7 +1775,6 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 		m_SpriteCurrentFrame->SetImageStart(NewFrameStartPos);
 		m_SpriteCurrentFrame->SetImageEnd(NewFrameEndPos);
 	}
-
 }
 
 void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
