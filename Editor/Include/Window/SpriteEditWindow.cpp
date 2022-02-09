@@ -740,6 +740,9 @@ void CSpriteEditWindow::RevCopySequenceButton()
 		}
 		*/
 
+		// AnimationFrameList는 비워준다
+		m_AnimationFrameList->Clear();
+
 		// 원본이 Reverse 라면,
 		if (SrcSequence->IsFrameReverse())
 		{
@@ -1381,6 +1384,7 @@ void CSpriteEditWindow::LoadSequence()
 		m_SpriteObject->SetMaterialTexture(LoadedSequence->GetTexture());
 		m_SpriteObject->SetAnimationNewTexture(LoadedSequence->GetTexture());
 		m_SpriteObject->SetTextureWorldScale();
+
 
 		// CameraObject 생성하기
 		CEditorManager::GetInst()->CreateCameraObject();
