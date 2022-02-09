@@ -87,7 +87,7 @@ bool CPlayer2D::Init()
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
 
-	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(TEXT("Test.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(TEXT("Beam.anim"));
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 	// m_Sprite->CreateAnimationInstance<CPlayerAnimation2D>();
 

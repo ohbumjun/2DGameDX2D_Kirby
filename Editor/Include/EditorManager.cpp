@@ -1,4 +1,7 @@
 #include "EditorManager.h"
+
+#include <Scene/CameraManager.h>
+
 #include "Engine.h"
 #include "IMGUIManager.h"
 #include "Input.h"
@@ -147,7 +150,8 @@ void CEditorManager::MouseLButtonDown(float DeltaTime)
 {
 	if (m_DragObj)
 	{
-		m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos());
+		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
+		m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
 	}
 }
 
@@ -155,7 +159,8 @@ void CEditorManager::MouseLButtonPush(float DeltaTime)
 {
 	if (m_DragObj)
 	{
-		m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos());
+		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
+		m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
 	}
 }
 

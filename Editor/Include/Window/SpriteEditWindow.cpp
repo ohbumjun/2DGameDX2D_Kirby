@@ -926,6 +926,7 @@ void CSpriteEditWindow::AddAnimationButton()
 
 	// Text 추가하기 
 	m_AnimationList->AddItem(SequenceName);
+	m_AnimationList->SetSelectIndex(m_AnimationList->GetItemCount() - 1);
 
 	// Animation 내용 추가 
 	bool Loop    = StringToBool(m_NewSeqAnimationLoop->GetSelectItem());
