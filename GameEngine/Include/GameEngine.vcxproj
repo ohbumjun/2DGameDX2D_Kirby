@@ -185,6 +185,7 @@
     <ClInclude Include="Component\SceneComponent.h" />
     <ClInclude Include="Component\SpriteComponent.h" />
     <ClInclude Include="Component\StaticMeshComponent.h" />
+    <ClInclude Include="Component\Tile.h" />
     <ClInclude Include="Component\Transform.h" />
     <ClInclude Include="Component\WidgetComponent.h" />
     <ClInclude Include="Device.h" />
@@ -312,6 +313,7 @@
     <ClCompile Include="Component\ColliderComponent.cpp" />
     <ClCompile Include="Component\ColliderPixel.cpp" />
     <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="Component\Tile.cpp" />
     <ClCompile Include="Component\ObjectComponent.cpp" />
     <ClCompile Include="Component\PaperBurnComponent.cpp" />
     <ClCompile Include="Component\ParticleComponent.cpp" />

@@ -189,3 +189,13 @@ enum class Mouse_State {
 	State7,
 	Max
 };
+
+enum class Tile_Type {
+	Normal,
+	Block
+};
+
+enum class Tile_Shape {
+	Rect,
+	Rhombus
+};

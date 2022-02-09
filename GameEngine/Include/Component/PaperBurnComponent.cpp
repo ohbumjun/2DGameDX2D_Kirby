@@ -1,31 +1,30 @@
+
 #include "PaperBurnComponent.h"
 #include "../Resource/Material/Material.h"
+#include "../Scene/SceneResource.h"
 #include "../Scene/Scene.h"
-
 
 CPaperBurnComponent::CPaperBurnComponent()
 {
 	m_CBuffer = new CPaperBurnConstantBuffer;
+
 	m_CBuffer->Init();
 
-	m_FinishTime = 5.f;
+	m_FinishTime = 2.f;
 
 	m_StartPaperBurn = false;
 
 	m_Filter = 0.f;
 }
 
-CPaperBurnComponent::CPaperBurnComponent(const CPaperBurnComponent& Component) :
-CObjectComponent(Component)
+CPaperBurnComponent::CPaperBurnComponent(const CPaperBurnComponent& com) :
+	CObjectComponent(com)
 {
-	m_CBuffer = Component.m_CBuffer->Clone();
+	m_CBuffer = com.m_CBuffer->Clone();
 
-	m_FinishTime = Component.m_FinishTime;
-
-	m_Material = Component.m_Material;
-
+	m_FinishTime = com.m_FinishTime;
+	m_Material = com.m_Material;
 	m_StartPaperBurn = false;
-
 	m_Filter = 0.f;
 }
 
@@ -48,12 +47,8 @@ void CPaperBurnComponent::StartPaperBurn()
 
 void CPaperBurnComponent::SetMaterial(CMaterial* Material)
 {
-	// 여기서는 Material을 Clone 해서는 안된다.
-	// 사실상 해당 CPaperBurnComponent에 세팅되는 Material은 외부에서 들어온 녀석
-	// 그대로 여야 한다.그래야만, 여기서 적용하는 Filter 값이
-	// 외부 SpriteComponent의 Material 안의 Material 상수 버퍼에
-	// 그대로 적용될 것이기 때문이다.
 	m_Material = Material;
+
 	m_Material->AddRenderCallback(this, &CPaperBurnComponent::SetShader);
 }
 
@@ -80,16 +75,6 @@ void CPaperBurnComponent::SetOutLineColor(float r, float g, float b, float a)
 	m_CBuffer->SetOutLineColor(r, g, b, a);
 }
 
-void CPaperBurnComponent::SetCenterLineColor(const Vector4& Color)
-{
-	m_CBuffer->SetCenterLineColor(Color);
-}
-
-void CPaperBurnComponent::SetCenterLineColor(float r, float g, float b, float a)
-{
-	m_CBuffer->SetCenterLineColor(r, g, b, a);
-}
-
 void CPaperBurnComponent::SetInLineColor(const Vector4& Color)
 {
 	m_CBuffer->SetInLineColor(Color);
@@ -100,14 +85,19 @@ void CPaperBurnComponent::SetInLineColor(float r, float g, float b, float a)
 	m_CBuffer->SetInLineColor(r, g, b, a);
 }
 
+void CPaperBurnComponent::SetCenterLineColor(const Vector4& Color)
+{
+	m_CBuffer->SetCenterLineColor(Color);
+}
+
+void CPaperBurnComponent::SetCenterLineColor(float r, float g, float b, float a)
+{
+	m_CBuffer->SetCenterLineColor(r, g, b, a);
+}
+
 void CPaperBurnComponent::SetInFilter(float Filter)
 {
 	m_CBuffer->SetInFilter(Filter);
-}
-
-void CPaperBurnComponent::SetCenterFilter(float Filter)
-{
-	m_CBuffer->SetCenterFilter(Filter);
 }
 
 void CPaperBurnComponent::SetOutFilter(float Filter)
@@ -115,10 +105,9 @@ void CPaperBurnComponent::SetOutFilter(float Filter)
 	m_CBuffer->SetOutFilter(Filter);
 }
 
-void CPaperBurnComponent::SetShader()
+void CPaperBurnComponent::SetCenterFilter(float Filter)
 {
-	m_CBuffer->UpdateCBuffer();
-	m_BurnTexture->SetShader(101, (int)Buffer_Shader_Type::Pixel, 0);
+	m_CBuffer->SetCenterFilter(Filter);
 }
 
 void CPaperBurnComponent::Start()
@@ -128,7 +117,6 @@ void CPaperBurnComponent::Start()
 
 bool CPaperBurnComponent::Init()
 {
-	// TextureManager 에서 세팅되어 있는 기본 Texture
 	SetBurnTexture("DefaultBurnTexture", TEXT("DefaultPaperBurn.png"));
 
 	return true;
@@ -138,7 +126,6 @@ void CPaperBurnComponent::Update(float DeltaTime)
 {
 	if (m_StartPaperBurn)
 	{
-		// 0 ~ FinishTime 동안, m_Filter 값이 0에서 1 로 증가할 것이다
 		m_Filter += DeltaTime / m_FinishTime;
 
 		if (m_Filter >= 1.f)
@@ -149,7 +136,7 @@ void CPaperBurnComponent::Update(float DeltaTime)
 				m_FinishCallback();
 		}
 
- 		m_CBuffer->SetFilter(m_Filter);
+		m_CBuffer->SetFilter(m_Filter);
 	}
 }
 
@@ -174,3 +161,9 @@ CPaperBurnComponent* CPaperBurnComponent::Clone()
 	return new CPaperBurnComponent(*this);
 }
 
+void CPaperBurnComponent::SetShader()
+{
+	m_CBuffer->UpdateCBuffer();
+
+	m_BurnTexture->SetShader(101, (int)Buffer_Shader_Type::Pixel, 0);
+}

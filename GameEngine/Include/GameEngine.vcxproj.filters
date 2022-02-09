@@ -211,6 +211,9 @@
     <Filter Include="05. Component\02. ObjectComponent\01. PaperBurn">
       <UniqueIdentifier>{ef354132-ba1d-48b4-a0f5-64c941e52f04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\01. SceneComponent\06. TileMap">
+      <UniqueIdentifier>{7d0adbfa-890a-4341-ab2e-953c4cf381c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -600,11 +603,14 @@
     <ClInclude Include="Resource\Shader\PaperBurnConstantBuffer.h">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\09. PaperBurn</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Shader\PaperBurnShader.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Component\PaperBurnComponent.h">
       <Filter>05. Component\02. ObjectComponent\01. PaperBurn</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Shader\PaperBurnShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\06. PaperBurn</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Tile.h">
+      <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -947,11 +953,14 @@
     <ClCompile Include="Resource\Shader\PaperBurnConstantBuffer.cpp">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\09. PaperBurn</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\PaperBurnShader.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Component\PaperBurnComponent.cpp">
       <Filter>05. Component\02. ObjectComponent\01. PaperBurn</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\PaperBurnShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\06. PaperBurn</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Tile.cpp">
+      <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
