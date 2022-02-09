@@ -76,6 +76,10 @@
 #define	SOUND_PATH				"Sound"
 #define	SEQUENCE_PATH		"Sequence"
 
+// Candy Crush¿ë
+#define CANDY_ANIMATION_PATH "CandyAnimation"
+#define CANDY_SEQUENCE_PATH "CandySequence"
+
 // Delete 
 #define	SAFE_DELETE(p)	if(p)	{ delete p; p = nullptr; }
 #define	SAFE_DELETE_ARRAY(p)	if(p)	{ delete[] p; p = nullptr; }

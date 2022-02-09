@@ -269,7 +269,7 @@ void CEditorMenu::LoadScene()
 		Hierarchy->SelectObject(0, vecObjNames[0].c_str());
 
 		// 현재 선택된 Component의 위치로 세팅한다.
-		CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();
+		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 
 		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
 		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());

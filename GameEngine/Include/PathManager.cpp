@@ -136,6 +136,10 @@ bool CPathManager::Init()
 	AddEnginePath(ENGINE_SOUND_PATH, TEXT("Sound\\"));
 	AddEnginePath(ENGINE_SEQUENCE_PATH, TEXT("Sequence\\"));
 
+	// Candy Crush ¿ë
+	AddEnginePath(CANDY_ANIMATION_PATH, TEXT("CandyCrush\\Animation\\"));
+	AddEnginePath(CANDY_SEQUENCE_PATH, TEXT("CandyCrush\\Sequence\\"));
+
 	return true;
 }
 

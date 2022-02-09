@@ -85,7 +85,7 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 	CEditorManager::GetInst()->SetSceneEditObject();
 
 	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
-	CShowObject* ShowObject = CEditorManager::GetInst()->GetSceneEditObject();
+	CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 	
 	Vector3 ObjectPivot = Object->GetPivot();
 	Vector3 ObjectSize = Object->GetWorldScale();

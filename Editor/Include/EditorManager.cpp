@@ -5,6 +5,7 @@
 #include "resource.h"
 #include "Object/DragObject.h"
 #include "Object/SpriteEditObject.h"
+#include "Object/SpriteCameraObject.h"
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
@@ -51,10 +52,20 @@ void CEditorManager::SetEditMode(EditMode Mode)
 
 void CEditorManager::SetSceneEditObject()
 {
-	if (!m_SceneEditObj)
+	if (!m_ShowObj)
 	{
-		m_SceneEditObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CShowObject>("SceneEditObject");
-		m_SceneEditObj->SetWorldScale(0.f, 0.f, 1.f);
+		m_ShowObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CShowObject>("SceneEditObject");
+		m_ShowObj->SetWorldScale(0.f, 0.f, 1.f);
+
+	}
+}
+
+void CEditorManager::CreateCameraObject()
+{
+	if (!m_CameraObject)
+	{
+		m_CameraObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteCameraObject>("CameraObject");
+		m_CameraObject->SetWorldScale(0.f, 0.f, 1.f);
 	}
 }
 
@@ -86,15 +97,19 @@ bool CEditorManager::Init(HINSTANCE hInst)
 
 	// Mouse
 	CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);
-	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Down, this, &CEditorManager::MouseLButtonDown);
-	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Up, this, &CEditorManager::MouseLButtonUp);
-	CInput::GetInst()->SetKeyCallback("MouseLButton", KeyState_Push, this, &CEditorManager::MouseLButtonPush);
+	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Down, this, &CEditorManager::MouseLButtonDown);
+	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Up, this, &CEditorManager::MouseLButtonUp);
+	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Push, this, &CEditorManager::MouseLButtonPush);
 
 	// KeyBoard
-	CInput::GetInst()->CreateKey("Up", VK_UP);
-	CInput::GetInst()->CreateKey("Down", VK_DOWN);
-	CInput::GetInst()->CreateKey("Left", VK_LEFT);
-	CInput::GetInst()->CreateKey("Right", VK_RIGHT);
+	// CInput::GetInst()->CreateKey("Up", VK_UP);
+	// CInput::GetInst()->CreateKey("Down", VK_DOWN);
+	// CInput::GetInst()->CreateKey("Left", VK_LEFT);
+	// CInput::GetInst()->CreateKey("Right", VK_RIGHT);
+	CInput::GetInst()->CreateKey("Up", 'W');
+	CInput::GetInst()->CreateKey("Down", 'S');
+	CInput::GetInst()->CreateKey("Left", 'A');
+	CInput::GetInst()->CreateKey("Right", 'D');
 
 	CInput::GetInst()->CreateKey("UpXSize", VK_RIGHT);
 	CInput::GetInst()->SetCtrlKey("UpXSize", true);
@@ -105,14 +120,15 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("DownYSize", VK_DOWN);
 	CInput::GetInst()->SetCtrlKey("DownYSize", true);
 
-	CInput::GetInst()->SetKeyCallback("Up", KeyState_Down, this, &CEditorManager::KeyBoardUp);
-	CInput::GetInst()->SetKeyCallback("Down", KeyState_Down, this, &CEditorManager::KeyBoardDown);
-	CInput::GetInst()->SetKeyCallback("Left", KeyState_Down, this, &CEditorManager::KeyBoardLeft);
-	CInput::GetInst()->SetKeyCallback("Right", KeyState_Down, this, &CEditorManager::KeyBoardRight);
-	CInput::GetInst()->SetKeyCallback("UpXSize", KeyState_Down, this, &CEditorManager::IncreaseXSize);
-	CInput::GetInst()->SetKeyCallback("DownXSize", KeyState_Down, this, &CEditorManager::DecreaseXSize);
-	CInput::GetInst()->SetKeyCallback("UpYSize", KeyState_Down, this, &CEditorManager::IncreaseYSize);
-	CInput::GetInst()->SetKeyCallback("DownYSize", KeyState_Down, this, &CEditorManager::DecreaseYSize);
+	CInput::GetInst()->SetKeyCallback("Up", Key_State::KeyState_Push, this, &CEditorManager::KeyBoardUp);
+	CInput::GetInst()->SetKeyCallback("Down", Key_State::KeyState_Push, this, &CEditorManager::KeyBoardDown);
+	CInput::GetInst()->SetKeyCallback("Left", Key_State::KeyState_Push, this, &CEditorManager::KeyBoardLeft);
+	CInput::GetInst()->SetKeyCallback("Right", Key_State::KeyState_Push, this, &CEditorManager::KeyBoardRight);
+
+	CInput::GetInst()->SetKeyCallback("UpXSize", Key_State::KeyState_Down, this, &CEditorManager::IncreaseXSize);
+	CInput::GetInst()->SetKeyCallback("DownXSize", Key_State::KeyState_Down, this, &CEditorManager::DecreaseXSize);
+	CInput::GetInst()->SetKeyCallback("UpYSize", Key_State::KeyState_Down, this, &CEditorManager::IncreaseYSize);
+	CInput::GetInst()->SetKeyCallback("DownYSize", Key_State::KeyState_Down, this, &CEditorManager::DecreaseYSize);
 
 	return true;
 }
@@ -149,62 +165,33 @@ void CEditorManager::MouseLButtonUp(float DeltaTime)
 
 void CEditorManager::KeyBoardUp(float DeltaTime)
 {
-	if (m_DragObj)
+	if (m_CameraObject)
 	{
-		m_DragObj->AddWorldPos(Vector3(0.f, 1.f, 0.f));
-
-		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
-		Vector2 StartPos = m_DragObj->GetStartPos();
-		StartPos = Vector2(StartPos.x, StartPos.y + 1.f);
-		Vector2 EndPos   = m_DragObj->GetEndPos();
-		EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
-		m_DragObj->SetStartPos(StartPos);
-		m_DragObj->SetEndPos(EndPos);
+		m_CameraObject->AddWorldPos(Vector3(0.f, 1.f, 0.f));
 	}
 }
 
 void CEditorManager::KeyBoardLeft(float DeltaTime)
 {
-	if (m_DragObj)
+	if (m_CameraObject)
 	{
-		m_DragObj->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
-		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
-		Vector2 StartPos = m_DragObj->GetStartPos();
-		StartPos = Vector2(StartPos.x - 1.f, StartPos.y);
-		Vector2 EndPos = m_DragObj->GetEndPos();
-		EndPos = Vector2(EndPos.x - 1.f, EndPos.y);
-		m_DragObj->SetStartPos(StartPos);
-		m_DragObj->SetEndPos(EndPos);
+		m_CameraObject->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
 	}
 }
 
 void CEditorManager::KeyBoardRight(float DeltaTime)
 {
-	if (m_DragObj)
+	if (m_CameraObject)
 	{
-		m_DragObj->AddWorldPos(Vector3(1.f, 0.0f, 0.f));
-		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
-		Vector2 StartPos = m_DragObj->GetStartPos();
-		StartPos = Vector2(StartPos.x + 1.f, StartPos.y);
-		Vector2 EndPos = m_DragObj->GetEndPos();
-		EndPos = Vector2(EndPos.x + 1.f, EndPos.y);
-		m_DragObj->SetStartPos(StartPos);
-		m_DragObj->SetEndPos(EndPos);
+		m_CameraObject->AddWorldPos(Vector3(1.f, 0.f, 0.f));
 	}
 }
 
 void CEditorManager::KeyBoardDown(float DeltaTime)
 {
-	if (m_DragObj)
+	if (m_CameraObject)
 	{
-		m_DragObj->AddWorldPos(Vector3(0.f, -1.f, 0.f));
-		// Start, End Posµµ ¹Ù²ãÁØ´Ù.
-		Vector2 StartPos = m_DragObj->GetStartPos();
-		StartPos = Vector2(StartPos.x, StartPos.y - 1.f);
-		Vector2 EndPos = m_DragObj->GetEndPos();
-		EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
-		m_DragObj->SetStartPos(StartPos);
-		m_DragObj->SetEndPos(EndPos);
+		m_CameraObject->AddWorldPos(Vector3(0.f, -1.f, 0.f));
 	}
 }
 

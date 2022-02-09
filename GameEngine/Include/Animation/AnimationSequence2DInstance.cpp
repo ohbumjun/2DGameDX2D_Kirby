@@ -532,7 +532,6 @@ bool CAnimationSequence2DInstance::LoadFullPath(const char* FullPath)
 	size_t AnimationSize = -1;
 	fread(&AnimationSize, sizeof(size_t), 1, pFile);
 
-	// -1을 해주는 이유는 CurrentAnimation은 따로 Load하기 위함이다.
 	int SequenceDataKeyNameLength = -1;
 	char SequenceData2DNameKey[MAX_PATH] = {};
 

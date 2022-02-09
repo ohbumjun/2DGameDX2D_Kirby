@@ -22,7 +22,11 @@ private:
 	class CViewPort* m_ViewPort;
 	bool                               m_Start;
 	bool m_Change;
-
+public :
+	void SetPlayerObject(CGameObject* Object)
+{
+		m_Mode->SetPlayerObject(Object);
+}
 public:
 	class CViewPort* GetViewPort() const
 	{

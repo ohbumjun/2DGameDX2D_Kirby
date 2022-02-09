@@ -10,6 +10,10 @@ public:
 	virtual ~CSpriteEditWindow() override;
 private :
 	bool m_Reverse;
+	bool m_CandyCrushVersion;
+private :
+	class CIMGUIText* m_IsReverseText;
+	class CIMGUIText* m_IsCandyVersionText;
 private:
 	class CIMGUIImage* m_Sprite;
 	class CIMGUIImage* m_SpriteSampled;
@@ -48,8 +52,12 @@ public :
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
+public :
 	void SetReverseMode();
 	void SetNormalMode();
+public :
+	void SetCandyCrushMode();
+	void UndoCandyCrushMode();
 public:
 	void EditSequenceName();
 	void LoadTextureButton();

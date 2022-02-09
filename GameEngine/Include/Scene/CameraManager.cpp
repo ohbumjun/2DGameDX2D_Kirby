@@ -4,8 +4,7 @@ CCameraManager::CCameraManager() :
 	m_CurrentCamera(nullptr),
 	m_KeepCamera(nullptr),
 	m_UICamera(nullptr)
-{
-}
+{}
 
 CCameraManager::~CCameraManager()
 {}
@@ -21,8 +20,8 @@ void CCameraManager::Init()
 	m_UICamera = new CCameraComponent;
 	m_UICamera->Init();
 	m_UICamera->SetName("UICamera");
-	m_CurrentCamera->m_Scene = m_Scene;
-	m_CurrentCamera->SetCameraType(Camera_Type::CameraUI);
+	m_UICamera->m_Scene = m_Scene;
+	m_UICamera->SetCameraType(Camera_Type::CameraUI);
 }
 
 void CCameraManager::Start()

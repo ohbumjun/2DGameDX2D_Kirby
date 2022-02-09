@@ -22,7 +22,8 @@
 
 CSpriteEditWindow::CSpriteEditWindow() :
 	m_SpriteObject(nullptr),
-	m_Reverse(false)
+	m_Reverse(false),
+	m_CandyCrushVersion(false)
 {
 }
 
@@ -35,24 +36,58 @@ bool CSpriteEditWindow::Init()
 {
 	CIMGUIWindow::Init();
 	// ==============================
-
-	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture");
-	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
+	CIMGUILabel* Label = AddWidget<CIMGUILabel>("Reverse", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
 
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
 
-	Button = AddWidget<CIMGUIButton>("SpriteEdit");
+	m_IsReverseText = AddWidget<CIMGUIText>("IsReverse");
+	m_IsReverseText->SetColor(255, 0, 0);
+	m_IsReverseText->SetText("FALSE");
+
+	// ==============================
+	Label = AddWidget<CIMGUILabel>("CandyCrush", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_IsCandyVersionText = AddWidget<CIMGUIText>("IsCandyCrush");
+	m_IsCandyVersionText->SetColor(255, 0, 0);
+	m_IsCandyVersionText->SetText("FALSE");
+
+	// ==============================
+
+	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture", 80.f, 80.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("StartEdit", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SpriteEditButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("SetReverse");
+	Button = AddWidget<CIMGUIButton>("SetReverse", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetReverseMode);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("SetNormal");
+	Button = AddWidget<CIMGUIButton>("SetNormal", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNormalMode);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("SetCandy", 80.f, 80.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCandyCrushMode);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	Button = AddWidget<CIMGUIButton>("UndoCandy", 80.f, 80.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::UndoCandyCrushMode);
 
 	// ==============================
 
@@ -120,12 +155,12 @@ bool CSpriteEditWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("BigPixLeft", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("RdPixLeft", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ReduceOnePixelLeft);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	Button = AddWidget<CIMGUIButton>("BigPixUp", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("RdPixUp", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ReduceOnePixelUp);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -152,7 +187,7 @@ bool CSpriteEditWindow::Init()
 
 	// ==============================
 
-	CIMGUILabel* Label = AddWidget<CIMGUILabel>("AnimationListName", 200.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("AnimationListName", 200.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -475,6 +510,10 @@ void CSpriteEditWindow::SetReverseMode()
 		return;
 	m_Reverse = true;
 	m_SpriteObject->SetReverse(m_Reverse);
+
+	// Test 수정
+	m_IsReverseText->SetText("TRUE");
+	m_IsReverseText->SetColor(0, 0, 255);
 }
 
 void CSpriteEditWindow::SetNormalMode()
@@ -483,6 +522,26 @@ void CSpriteEditWindow::SetNormalMode()
 		return;
 	m_Reverse = false;
 	m_SpriteObject->SetReverse(m_Reverse);
+
+	// Test 수정
+	m_IsReverseText->SetText("FALSE");
+	m_IsReverseText->SetColor(255, 0,0);
+}
+
+void CSpriteEditWindow::SetCandyCrushMode()
+{
+	m_CandyCrushVersion = true;
+
+	m_IsCandyVersionText->SetText("TRUE");
+	m_IsCandyVersionText->SetColor(0, 0, 255);
+}
+
+void CSpriteEditWindow::UndoCandyCrushMode()
+{
+	m_CandyCrushVersion = false;
+
+	m_IsCandyVersionText->SetText("FALSE");
+	m_IsCandyVersionText->SetColor(255, 0, 0);
 }
 
 void CSpriteEditWindow::EditSequenceName()
@@ -566,6 +625,9 @@ void CSpriteEditWindow::SpriteEditButton()
 		CTexture* Texture = m_SpriteObject->GetSpriteComponent()->GetTexture();
 		m_Sprite->SetTexture(Texture);
 		m_SpriteCurrentFrame->SetTexture(Texture);
+
+		// Editor Manager 상에서 CameraObject 생성함수 호출 ( 즉, CameraObject 생성하기 )
+		CEditorManager::GetInst()->CreateCameraObject();
 	}
 }
 
@@ -1200,7 +1262,16 @@ void CSpriteEditWindow::SaveSequence()
 		m_Animation->GetCurrentAnimation()->GetAnimationSequence()->SaveFullPath(FilePathMultibyte);
 
 		// GameEngine의 Bin, Animation Folder 에도 저장한다.
-		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ENGINE_SEQUENCE_PATH);
+		std::string ExtraFolderName;
+		if (m_CandyCrushVersion)
+			ExtraFolderName = CANDY_SEQUENCE_PATH;
+		else
+			ExtraFolderName = ENGINE_SEQUENCE_PATH;
+
+		// Candy Crush Version은 딱 한번 세팅되면, 다시 무조건 초기화
+		UndoCandyCrushMode();
+
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
 
 		// 파일 이름을 뽑아낸다.
 		char SavedFileName[MAX_PATH] = {};
@@ -1362,7 +1433,16 @@ void CSpriteEditWindow::SaveAnimation()
 		m_Animation->SaveFullPath(FilePathMultibyte);
 
 		// GameEngine의 Bin, Animation Folder 에도 저장한다.
-		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ENGINE_ANIMATION_PATH);
+		std::string ExtraFolderName;
+		if (m_CandyCrushVersion)
+			ExtraFolderName = CANDY_ANIMATION_PATH;
+		else
+			ExtraFolderName = ENGINE_ANIMATION_PATH;
+
+		UndoCandyCrushMode();
+
+		// GameEngine의 Bin, Animation Folder 에도 저장한다.
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
 
 		// 파일 이름을 뽑아낸다.
 		char SavedFileName[MAX_PATH] = {};
@@ -2455,7 +2535,7 @@ void CSpriteEditWindow::ReduceOnePixelUp()
 	if (!DragObject)
 		return;
 	Vector2 EndPos = DragObject->GetEndPos();
-	EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
+	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
 	DragObject->SetEndPos(EndPos);
 }
 
@@ -2467,7 +2547,7 @@ void CSpriteEditWindow::EnlargeOnePixelDown()
 		return;
 
 	Vector2 EndPos = DragObject->GetEndPos();
-	EndPos = Vector2(EndPos.x, EndPos.y + 1.f);
+	EndPos = Vector2(EndPos.x, EndPos.y - 1.f);
 	DragObject->SetEndPos(EndPos);
 }
 

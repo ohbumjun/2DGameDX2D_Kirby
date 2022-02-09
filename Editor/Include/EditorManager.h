@@ -13,12 +13,12 @@ class CEditorManager
 private:
 	EditMode           m_EditMode;
 	class CDragObject* m_DragObj;
-	class CShowObject* m_SceneEditObj;
+	class CShowObject* m_ShowObj;
 	class CSpriteEditWindow* m_SpriteWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
-
+	class CSpriteCameraObject* m_CameraObject;
 public:
 	EditMode GetEditMode()
 	{
@@ -29,9 +29,9 @@ public:
 	{
 		return m_DragObj;
 	}
-	class CShowObject* GetSceneEditObject() const
+	class CShowObject* GetShowObject() const
 	{
-		return m_SceneEditObj;
+		return m_ShowObj;
 	}
 	class CSpriteEditWindow* GetSpriteWindow() const
 	{
@@ -53,6 +53,7 @@ public:
 public:
 	void SetEditMode(EditMode Mode);
 	void SetSceneEditObject();
+	void CreateCameraObject();
 public:
 	bool Init(HINSTANCE hInst);
 	void CreateDefaultSceneMode();

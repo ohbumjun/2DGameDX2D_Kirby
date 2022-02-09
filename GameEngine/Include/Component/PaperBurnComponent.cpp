@@ -48,7 +48,12 @@ void CPaperBurnComponent::StartPaperBurn()
 
 void CPaperBurnComponent::SetMaterial(CMaterial* Material)
 {
-	m_Material = Material->Clone();
+	// 여기서는 Material을 Clone 해서는 안된다.
+	// 사실상 해당 CPaperBurnComponent에 세팅되는 Material은 외부에서 들어온 녀석
+	// 그대로 여야 한다.그래야만, 여기서 적용하는 Filter 값이
+	// 외부 SpriteComponent의 Material 안의 Material 상수 버퍼에
+	// 그대로 적용될 것이기 때문이다.
+	m_Material = Material;
 	m_Material->AddRenderCallback(this, &CPaperBurnComponent::SetShader);
 }
 

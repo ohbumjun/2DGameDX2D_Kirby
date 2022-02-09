@@ -3,14 +3,13 @@
 #include "../GameInfo.h"
 #include "../Component/CameraComponent.h"
 
-
 class CCameraManager
 {
 	friend class CScene;
 private:
 	CCameraManager();
 	~CCameraManager();
-private :
+private:
 	class CScene* m_Scene;
 private:
 	CSharedPtr<class CCameraComponent> m_CurrentCamera;
@@ -45,3 +44,5 @@ public:
 	void Update(float DeltaTime);
 	void PostUpdate(float DeltaTime);
 };
+
+
