@@ -624,6 +624,9 @@
     <ClInclude Include="Resource\Shader\TileConstantBuffer.h">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\10. Tile</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\TileMapShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\07. Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -979,6 +982,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\TileConstantBuffer.cpp">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\10. Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\TileMapShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\07. Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "../Object/Monster.h"
+#include "../Object/TileMap.h"
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
@@ -79,11 +80,14 @@ bool CMainScene::Init()
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
+	CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
+
 	return true;
 }
 
 void CMainScene::CreateMaterial()
 {
+	// Particle 
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("ParticleMaterial");
 
 	CMaterial* ParticleMaterial = m_Scene->GetResource()->FindMaterial("ParticleMaterial");
@@ -92,6 +96,10 @@ void CMainScene::CreateMaterial()
 
 	ParticleMaterial->SetShader("ParticleRenderShader");
 	ParticleMaterial->SetRenderState("AlphaBlend");
+
+	// TileMap
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("TileMapMaterial");
+	 // CMaterial
 }
 
 void CMainScene::CreateAnimationSequence()

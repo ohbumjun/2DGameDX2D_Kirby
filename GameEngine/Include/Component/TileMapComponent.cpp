@@ -10,14 +10,22 @@ CTileMapComponent::CTileMapComponent()
 	 SetTypeID<CTileMapComponent>();
 	 m_Render = true;
 
+	 m_CountX = 0;
+	 m_CountY = 0;
+	 m_RenderCount = 0;
+
 	 m_LayerName = "Tile";
  }
 
  CTileMapComponent::CTileMapComponent(const CTileMapComponent& com)
  {
 	 m_BackMesh = com.m_BackMesh;
+
 	 if (com.m_BackMaterial)
 		 m_BackMaterial = com.m_BackMaterial->Clone();
+
+	 if (com.m_TileMaterial)
+		 m_TileMaterial = com.m_TileMaterial->Clone();
  }
 
  CTileMapComponent::~CTileMapComponent()
