@@ -84,6 +84,9 @@ bool CShaderManager::Init()
 	CreateConstantBuffer("PaperBurnCBuffer", sizeof(PaperBurnCBuffer), 5,
 		(int)(Buffer_Shader_Type::All));
 
+	CreateConstantBuffer("TileCBuffer", sizeof(TileCBuffer), 6,
+		(int)(Buffer_Shader_Type::All));
+
 	return true;
 }
 

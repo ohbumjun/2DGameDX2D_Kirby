@@ -97,6 +97,11 @@ bool CTile::CheckCurrentAnimation(const std::string& Name)
 	return m_AnimInstance->CheckCurrentAnimation(Name);
 }
 
+void CTile::Start()
+{
+	m_Center = m_Pos + (m_Size / 2.f);
+}
+
 void CTile::Update(float DeltaTime)
 {
 	if (m_AnimInstance)

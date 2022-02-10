@@ -196,6 +196,9 @@ void CSpriteComponent::Render()
 {
 	CSceneComponent::Render();
 
+	if (!m_Material || !m_Mesh)
+		return;
+
 	if (m_Animation)
 	{
 		CRenderManager::GetInst()->GetStandard2DCBuffer()->SetAnimation2DEnable(m_Animation->GetAnimationCount() > 0);

@@ -214,6 +214,12 @@
     <Filter Include="05. Component\01. SceneComponent\06. TileMap">
       <UniqueIdentifier>{7d0adbfa-890a-4341-ab2e-953c4cf381c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Resource\02. Shader\03. ConstantBuffer\10. Tile">
+      <UniqueIdentifier>{789ffdd4-80f0-4da8-983e-c177b3247127}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Resource\02. Shader\02. ShaderClass\07. Tile">
+      <UniqueIdentifier>{10570a49-a900-45e4-a85b-3e55f7bb076b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -615,6 +621,9 @@
     <ClInclude Include="Component\TileMapComponent.h">
       <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\TileConstantBuffer.h">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\10. Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -968,6 +977,9 @@
     <ClCompile Include="Component\TileMapComponent.cpp">
       <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Shader\TileConstantBuffer.cpp">
+      <Filter>02. Resource\02. Shader\03. ConstantBuffer\10. Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\Shader\ShaderInfo.fx">
@@ -986,6 +998,9 @@
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Shader\Particle.fx">
+      <Filter>02. Resource\02. Shader\01. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Shader\TileMap.fx">
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
   </ItemGroup>

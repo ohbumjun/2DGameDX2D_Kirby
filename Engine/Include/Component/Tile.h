@@ -122,6 +122,7 @@ public :
 	bool                      CheckCurrentAnimation(const std::string& Name);
 	CAnimationSequence2DData* FindAnimationSequence2DData(const std::string& Name);
 public :
+	void Start();
 	void Update(float DeltaTime);
 };
 

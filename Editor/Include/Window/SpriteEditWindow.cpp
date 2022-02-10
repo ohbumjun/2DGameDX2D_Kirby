@@ -1550,6 +1550,12 @@ void CSpriteEditWindow::LoadAnimation()
 
 		CTexture* AnimTexture = m_Animation->GetCurrentAnimation()->GetAnimationSequence()->GetTexture();
 
+		if (!AnimTexture)
+		{
+			assert(false);
+			return;
+		}
+
 		// Current Animation이 있다면, 해당 Animation 의 Texture를 SpriteEditObject의 Texture로 세팅한다.
 		// 해당 Seq를 Sprite Edit Object로 세팅
 		if (!m_SpriteObject)

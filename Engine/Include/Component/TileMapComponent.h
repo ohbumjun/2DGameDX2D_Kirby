@@ -15,8 +15,14 @@ protected:
     virtual ~CTileMapComponent();
 
 protected:
+    Tile_Shape m_TileShape;
+    int m_RenderCount;
+    int m_CountX;
+    int m_CountY;
+    Vector3 m_TileSize;
     CSharedPtr<CSpriteMesh> m_BackMesh;
     CSharedPtr<CMaterial> m_BackMaterial;
+    CSharedPtr<CMaterial> m_TileMaterial;
     std::vector<CTile*> m_vecTile;
 
 public:
@@ -26,8 +32,8 @@ public:
     }
 
 public:
-    void SetMaterial(CMaterial* Material);
-
+    void SetBackMaterial(CMaterial* Material);
+    void CreateTile(Tile_Shape Shape, int CountX, int CountY, const Vector3& Size);
 public:
     void SetBackBaseColor(const Vector4& Color);
     void SetBackBaseColor(float r, float g, float b, float a);
