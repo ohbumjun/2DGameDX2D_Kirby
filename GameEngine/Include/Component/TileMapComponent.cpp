@@ -28,6 +28,11 @@ CTileMapComponent::CTileMapComponent()
 	 m_BackMaterial = Material->Clone();
  }
 
+void CTileMapComponent::SetTileMaterial(CMaterial* Material)
+{
+	m_TileMaterial = Material->Clone();
+}
+
 void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, const Vector3& Size)
  {
 	m_CountX = CountX;

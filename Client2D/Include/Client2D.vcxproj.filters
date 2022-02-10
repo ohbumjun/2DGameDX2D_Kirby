@@ -40,6 +40,9 @@
     <Filter Include="02. Object\05. Particle">
       <UniqueIdentifier>{27c24902-7557-4f94-9ecc-bdb01d9d65de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\06. TileMap">
+      <UniqueIdentifier>{d0af0664-a454-4683-8a7a-776d1064825b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Object\BubbleParticle.cpp">
       <Filter>02. Object\05. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\TileMap.cpp">
+      <Filter>02. Object\06. TileMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Object\BubbleParticle.h">
       <Filter>02. Object\05. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\TileMap.h">
+      <Filter>02. Object\06. TileMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

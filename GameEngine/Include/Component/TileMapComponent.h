@@ -34,6 +34,7 @@ public:
 
 public:
     void SetBackMaterial(CMaterial* Material);
+    void SetTileMaterial(CMaterial* Material);
     void CreateTile(Tile_Shape Shape, int CountX, int CountY, const Vector3& Size);
 public:
     void SetBackBaseColor(const Vector4& Color);
