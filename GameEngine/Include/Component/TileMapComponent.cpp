@@ -3,11 +3,14 @@
 #include "../Scene/SceneResource.h"
 #include "../Resource/ResourceManager.h"
 #include "../Resource/Material/Material.h"
+#include "../Resource/Shader/TileConstantBuffer.h"
 
- CTileMapComponent::CTileMapComponent()
+CTileMapComponent::CTileMapComponent()
  {
 	 SetTypeID<CTileMapComponent>();
 	 m_Render = true;
+
+	 m_LayerName = "Tile";
  }
 
  CTileMapComponent::CTileMapComponent(const CTileMapComponent& com)
@@ -88,6 +91,8 @@ void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, con
  		}
 		break;
 	}
+
+	m_CBuffer->SetTileSize(Vector2(m_TileSize.x, m_TileSize.y));
  }
 
 void CTileMapComponent::SetBackBaseColor(const Vector4& Color)

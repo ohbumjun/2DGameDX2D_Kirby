@@ -24,6 +24,7 @@ protected:
     CSharedPtr<CMaterial> m_BackMaterial;
     CSharedPtr<CMaterial> m_TileMaterial;
     std::vector<CTile*> m_vecTile;
+    class CTileConstantBuffer* m_CBuffer;
 
 public:
     CMaterial* GetMaterial()    const
