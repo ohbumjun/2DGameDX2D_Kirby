@@ -11,6 +11,7 @@
 #include "NumberShader.h"
 #include "../Particle/ParticleUpdateShader.h"
 #include "../Particle/ParticleRenderShader.h"
+#include "TileMapShader.h"
 
 CShaderManager::CShaderManager()
 {
@@ -51,6 +52,9 @@ bool CShaderManager::Init()
 		return false;
 
 	if (!CreateShader<CParticleRenderShader>("ParticleRenderShader"))
+		return false;
+
+	if (!CreateShader<CTileMapShader>("TileMapShader"))
 		return false;
 
 	// =================== 상수버퍼 ===================

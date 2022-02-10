@@ -195,6 +195,16 @@ struct TransformCBuffer
 	float   Empty;
 };
 
+struct TileCBuffer
+{
+	Vector2 ImageSize;
+	Vector2 Size;
+	// UV
+	Vector2 Start;
+	Vector2 End;
+	Matrix matWVP;
+};
+
 struct VertexUV
 {
 	Vector3 Pos;
