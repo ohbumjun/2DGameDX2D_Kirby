@@ -28,7 +28,7 @@ bool CTileMap::Init()
 
 	m_TileComponent->CreateTile(Tile_Shape::Rect, 100, 100, Vector3(64.f, 64.f, 0.f));
 
-	CMaterial* Material = m_Scene->GetResource()->FindMaterial("TileMap");
+	CMaterial* Material = m_Scene->GetResource()->FindMaterial("TileMapMaterial");
 	m_TileComponent->SetTileMaterial(Material);
 
 	return true;

@@ -1,5 +1,7 @@
 #include "Tile.h"
 
+#include "TileMapComponent.h"
+
 CTile::CTile() :
 	m_TileShape(Tile_Shape::Rect),
 	m_TileType(Tile_Type::Normal),
@@ -102,8 +104,18 @@ void CTile::Start()
 	m_Center = m_Pos + (m_Size / 2.f);
 }
 
+// Update 함수는 출력을 위한 준비를 하는 함수이다.
 void CTile::Update(float DeltaTime)
 {
 	if (m_AnimInstance)
 		m_AnimInstance->Update(DeltaTime);
+
+	Vector3 WorldPos = m_Owner->GetWorldPos() + m_Pos;
+
+	Matrix matScale, matTranslate;
+
+	matScale.Scaling(m_Size.x, m_Size.y, 1.f);
+	matTranslate.Translation(WorldPos);
+
+	m_matWorld = matScale * matTranslate;
 }

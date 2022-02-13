@@ -16,6 +16,11 @@ private :
 	class CIMGUIText* m_IsCandyVersionText;
 	class CIMGUIText* m_CameraPosX;
 	class CIMGUIText* m_CameraPosY;
+private :
+	class CIMGUIText* m_FrameStartX;
+	class CIMGUIText* m_FrameStartY;
+	class CIMGUIText* m_FrameEndX;
+	class CIMGUIText* m_FrameEndY;
 private:
 	class CIMGUIImage* m_Sprite;
 	class CIMGUIImage* m_SpriteSampled;
@@ -56,6 +61,8 @@ public:
 	virtual void Update(float DeltaTime) override;
 public :
 	void SetCameraPosText(float PosX, float PosY);
+	void SetFrameStartText(float PosX, float PosY);
+	void SetFrameEndText(float PosX, float PosY);
 public :
 	void SetReverseMode();
 	void SetNormalMode();

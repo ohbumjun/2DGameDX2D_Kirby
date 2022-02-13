@@ -4,6 +4,7 @@ class CTileConstantBuffer :
     public CConstantBufferBase
 {
     friend class CShaderManager;
+    friend class CTileMapComponent;
 private :
     CTileConstantBuffer();
     CTileConstantBuffer(const CTileConstantBuffer& Buffer);
@@ -15,13 +16,14 @@ public :
 {
         m_BufferData.ImageSize = ImageSize;
 }
-    void SetTileStartUV(const Vector2& Start);
-    void SetTileEndUV(const Vector2& End);
+    void SetTileImageStart(const Vector2& Start);
+    void SetTileImageEnd(const Vector2& End);
     void SetTileSize(const Vector2& Size);
     void SetTileImageSize(const Vector2& Size);
     void SetMatWVP(const Matrix& matWVP);
 public :
     virtual bool Init() override;
     virtual void UpdateCBuffer() override;
+    virtual CTileConstantBuffer* Clone() override;
 };
 

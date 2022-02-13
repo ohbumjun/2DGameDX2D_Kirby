@@ -99,7 +99,10 @@ void CMainScene::CreateMaterial()
 
 	// TileMap
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("TileMapMaterial");
-	 // CMaterial
+	CMaterial* TileMapMaterial = m_Scene->GetResource()->FindMaterial("TileMapMaterial");
+	TileMapMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "TileMapTexture", TEXT("Floors.png"));
+
+	TileMapMaterial->SetShader("TileMapShader");
 }
 
 void CMainScene::CreateAnimationSequence()

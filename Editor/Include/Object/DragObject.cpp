@@ -37,10 +37,12 @@ void CDragObject::SetStartPos(const Vector2& Pos)
 		if (ReverseMode)
 		{
 			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x * -1.f, StartPos.y);
+			CEditorManager::GetInst()->GetSpriteWindow()->SetFrameStartText(StartPos.x * -1.f, StartPos.y);
 		}
 		else
 		{
 			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageStart(StartPos.x, StartPos.y);
+			CEditorManager::GetInst()->GetSpriteWindow()->SetFrameStartText(StartPos.x, StartPos.y);
 		}
 
 	}
@@ -64,10 +66,12 @@ void CDragObject::SetEndPos(const Vector2& Pos)
 		if (ReverseMode)
 		{
 			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageEnd(EndPos.x * -1.f, EndPos.y);
+			CEditorManager::GetInst()->GetSpriteWindow()->SetFrameEndText(EndPos.x * -1.f, EndPos.y);
 		}
 		else
 		{
 			CEditorManager::GetInst()->GetSpriteWindow()->SetSpriteCurrentFrameImageEnd(EndPos.x, EndPos.y);
+			CEditorManager::GetInst()->GetSpriteWindow()->SetFrameEndText(EndPos.x, EndPos.y);
 		}
 	}
 }

@@ -13,12 +13,12 @@ CTileConstantBuffer::CTileConstantBuffer(const CTileConstantBuffer& Buffer)
 CTileConstantBuffer::~CTileConstantBuffer()
 {}
 
-void CTileConstantBuffer::SetTileStartUV(const Vector2& Start)
+void CTileConstantBuffer::SetTileImageStart(const Vector2& Start)
 {
 	m_BufferData.Start = Start;
 }
 
-void CTileConstantBuffer::SetTileEndUV(const Vector2& End)
+void CTileConstantBuffer::SetTileImageEnd(const Vector2& End)
 {
 	m_BufferData.End = End;
 }
@@ -47,4 +47,9 @@ bool CTileConstantBuffer::Init()
 void CTileConstantBuffer::UpdateCBuffer()
 {
 	m_Buffer->UpdateBuffer(&m_BufferData);
+}
+
+CTileConstantBuffer* CTileConstantBuffer::Clone()
+{
+	return new CTileConstantBuffer(*this);
 }

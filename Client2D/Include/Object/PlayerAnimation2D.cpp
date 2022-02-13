@@ -18,7 +18,7 @@ bool CPlayerAnimation2D::Init()
 	if (!CAnimationSequence2DInstance::Init())
 		return false;
 
-	// AddAnimation("PlayerIdle", "Idle");
+	AddAnimation("PlayerIdle", "Idle");
 	// AddAnimation(TEXT("Kirby_LeftWalk.sqc"), ENGINE_SEQUENCE_PATH,
 	AddAnimation(TEXT("ReverseTest.sqc"), ENGINE_SEQUENCE_PATH,
 		"Idle", true);

@@ -79,6 +79,44 @@ bool CSpriteEditWindow::Init()
 	m_CameraPosY->SetText("0.0");
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("FrameStart", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_FrameStartX = AddWidget<CIMGUIText>("FrameStartX");
+	m_FrameStartX->SetColor(255, 255, 255);
+	m_FrameStartX->SetText("0.0");
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
+
+	m_FrameStartY = AddWidget<CIMGUIText>("FrameStartY");
+	m_FrameStartY->SetColor(255, 255, 255);
+	m_FrameStartY->SetText("0.0");
+
+	// ==============================
+	Label = AddWidget<CIMGUILabel>("FrameEnd", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_FrameEndX = AddWidget<CIMGUIText>("FrameEndX");
+	m_FrameEndX->SetColor(255, 255, 255);
+	m_FrameEndX->SetText("0.0");
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
+
+	m_FrameEndY = AddWidget<CIMGUIText>("FrameEndY");
+	m_FrameEndY->SetColor(255, 255, 255);
+	m_FrameEndY->SetText("0.0");
+
+	// ==============================
 
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
@@ -531,6 +569,26 @@ void CSpriteEditWindow::SetCameraPosText(float PosX, float PosY)
 	
 	sprintf_s(PosTest, "%.2f", PosY);
 	m_CameraPosY->SetText(PosTest);
+}
+
+void CSpriteEditWindow::SetFrameStartText(float PosX, float PosY)
+{
+	char PosTest[128] = {};
+	sprintf_s(PosTest, "%.2f", PosX);
+	m_FrameStartX->SetText(PosTest);
+
+	sprintf_s(PosTest, "%.2f", PosY);
+	m_FrameStartY->SetText(PosTest);
+}
+
+void CSpriteEditWindow::SetFrameEndText(float PosX, float PosY)
+{
+	char PosTest[128] = {};
+	sprintf_s(PosTest, "%.2f", PosX);
+	m_FrameEndX->SetText(PosTest);
+
+	sprintf_s(PosTest, "%.2f", PosY);
+	m_FrameEndY->SetText(PosTest);
 }
 
 void CSpriteEditWindow::SetReverseMode()
@@ -1713,8 +1771,8 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 		m_SpriteSampled->SetTexture("DefaultUI");
 
 		// Update Drag Object Pos
-		CEditorManager::GetInst()->GetDragObject()->SetStartPos(Vector2(0.f, 0.f));
-		CEditorManager::GetInst()->GetDragObject()->SetEndPos(Vector2(0.f, 0.f));
+		// CEditorManager::GetInst()->GetDragObject()->SetStartPos(Vector2(0.f, 0.f));
+		// CEditorManager::GetInst()->GetDragObject()->SetEndPos(Vector2(0.f, 0.f));
 		return;
 	}
 
