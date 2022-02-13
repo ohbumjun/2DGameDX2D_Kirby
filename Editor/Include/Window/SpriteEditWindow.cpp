@@ -989,6 +989,9 @@ void CSpriteEditWindow::AddAnimationButton()
 	m_AnimationList->AddItem(SequenceName);
 	m_AnimationList->SetSelectIndex(m_AnimationList->GetItemCount() - 1);
 
+	// Animation Frame List 비워주기
+	m_AnimationFrameList->Clear();
+
 	// Animation 내용 추가 
 	bool Loop    = StringToBool(m_NewSeqAnimationLoop->GetSelectItem());
 	bool Reverse = StringToBool(m_NewSeqAnimationReverse->GetSelectItem());
