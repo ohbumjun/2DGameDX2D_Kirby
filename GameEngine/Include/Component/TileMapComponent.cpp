@@ -80,7 +80,7 @@ void CTileMapComponent::SetBackMaterial(CMaterial* Material)
 void CTileMapComponent::SetTileMaterial(CMaterial* Material)
 {
 	m_TileMaterial = Material->Clone();
-	m_TileMaterial->SetScene(m_Scene); //
+	m_TileMaterial->SetScene(m_Scene); ////
 	m_CBuffer->SetImageSize(Vector2((float)m_TileMaterial->GetTextureWidth(), (float)m_TileMaterial->GetTextureHeight()));
 }
 
