@@ -3,13 +3,14 @@
 #include "TileMapComponent.h"
 
 CTile::CTile() :
-	m_TileShape(Tile_Shape::Rect),
+	m_Shape(Tile_Shape::Rect),
 	m_TileType(Tile_Type::Normal),
 	m_AnimInstance(nullptr),
 	m_Owner(nullptr),
 	m_IndexX(-1),
 	m_IndexY(-1),
-	m_Index(-1)
+	m_Index(-1),
+	m_Opacity(1.f)
 {
 }
 
@@ -25,8 +26,18 @@ CTile::~CTile()
 	SAFE_DELETE(m_AnimInstance);
 }
 
-void CTile::AddAnimation(const std::string& SequenceName, const std::string& Name, bool Loop,
-	float PlayTime, float PlayScale, bool Reverse)
+void CTile::SetFrameStart(float x, float y)
+{
+	m_FrameStart = Vector2(x, y);
+}
+
+void CTile::SetFrameEnd(float x, float y)
+{
+	m_FrameEnd = Vector2(x, y);
+}
+
+void CTile::AddAnimation(const std::string& SequenceName, const std::string& Name, bool      Loop,
+						 float              PlayTime, float                  PlayScale, bool Reverse)
 {
 	if (!m_AnimInstance)
 		m_AnimInstance = new CAnimationSequence2DInstance;
@@ -108,14 +119,24 @@ void CTile::Start()
 void CTile::Update(float DeltaTime)
 {
 	if (m_AnimInstance)
+	{
+		// Frame Update
 		m_AnimInstance->Update(DeltaTime);
 
-	Vector3 WorldPos = m_Owner->GetWorldPos() + m_Pos;
+		int Frame = m_AnimInstance->GetCurrentAnimation()->GetCurrentFrame();
+
+		m_FrameStart = m_AnimInstance->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(Frame).Start;
+		m_FrameEnd  = m_FrameEnd + m_AnimInstance->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(Frame).Size;
+		
+	}
+
+	Vector3 WorlsPos = m_Owner->GetWorldPos() + m_Pos;
 
 	Matrix matScale, matTranslate;
 
 	matScale.Scaling(m_Size.x, m_Size.y, 1.f);
-	matTranslate.Translation(WorldPos);
+
+	matTranslate.Translation(WorlsPos);
 
 	m_matWorld = matScale * matTranslate;
 }
