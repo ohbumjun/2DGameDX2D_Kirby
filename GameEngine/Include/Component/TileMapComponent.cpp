@@ -86,7 +86,16 @@ void CTileMapComponent::SetTileMaterial(CMaterial* Material)
 
 	m_TileMaterial->SetScene(m_Scene);
 
-	m_CBuffer->SetImageSize(Vector2((float)m_TileMaterial->GetTextureWidth(), (float)m_TileMaterial->GetTextureHeight()));
+	if (!m_TileMaterial->EmptyTexture())
+		m_CBuffer->SetImageSize(Vector2((float)m_TileMaterial->GetTextureWidth(), (float)m_TileMaterial->GetTextureHeight()));
+}
+
+void CTileMapComponent::SetImageSizeToCBuffer()
+{
+	if (!m_TileMaterial || m_TileMaterial->EmptyTexture())
+		return;
+	if (!m_TileMaterial->EmptyTexture())
+		m_CBuffer->SetImageSize(Vector2((float)m_TileMaterial->GetTextureWidth(), (float)m_TileMaterial->GetTextureHeight()));
 }
 
 void CTileMapComponent::SetBackBaseColor(const Vector4& Color)

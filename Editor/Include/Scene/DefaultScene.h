@@ -10,4 +10,6 @@ public:
 
 public:
 	virtual bool Init() override;
+private :
+	void CreateMaterial();
 };

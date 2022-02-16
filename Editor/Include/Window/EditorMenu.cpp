@@ -4,6 +4,7 @@
 #include "IMGUISameLine.h"
 #include "IMGUIButton.h"
 #include "Scene/Scene.h"
+#include "Scene/SceneResource.h"
 #include "Scene/SceneManager.h"
 #include "../EditorManager.h"
 #include "ObjectHierarchy.h"
@@ -212,7 +213,9 @@ void CEditorMenu::CreateNewComponent()
 	break;
 	case CreateComponent_Type::TileMap:
 	{
-		Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
+		CTileMapComponent* TileMapComponent = (CTileMapComponent*)Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
+		CMaterial* TileMapMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileMapMaterial");
+		TileMapComponent->SetTileMaterial(TileMapMaterial);
 	}
 	break;
 

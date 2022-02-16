@@ -39,9 +39,14 @@ public:
     }
 
 public:
-    CMaterial* GetMaterial()    const
+    CMaterial* GetBackMaterial()    const
     {
         return m_BackMaterial;
+    }
+
+    CMaterial* GetTileMaterial()    const
+    {
+        return m_TileMaterial;
     }
 
     Tile_Shape GetTileShape()   const
@@ -67,7 +72,7 @@ public:
 public:
     void SetBackMaterial(CMaterial* Material);
     void SetTileMaterial(CMaterial* Material);
-
+    void SetImageSizeToCBuffer();
 public:
     void SetBackBaseColor(const Vector4& Color);
     void SetBackBaseColor(float r, float g, float b, float a);

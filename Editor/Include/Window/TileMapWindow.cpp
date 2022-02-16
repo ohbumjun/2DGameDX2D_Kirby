@@ -8,6 +8,9 @@
 #include "IMGUIText.h"
 #include "IMGUITextInput.h"
 #include "Component/TileMapComponent.h"
+#include "Scene/SceneManager.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneResource.h"
 
 CTileMapWindow::CTileMapWindow()
 {}
@@ -208,7 +211,18 @@ bool CTileMapWindow::Init()
 	// ==============================
 
 	Button = AddWidget<CIMGUIButton>("SetDefaultFrame", 200.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetDefaultFrame);
 
+	// Default Value 들 세팅
+	m_TileCountX->SetInt(100);
+	m_TileCountY->SetInt(100);
+	m_TileSizeX->SetFloat(160.f);
+	m_TileSizeY->SetFloat(80.f);
+
+	m_TileFrameStartX->SetFloat(160.f);
+	m_TileFrameStartY->SetFloat(80.f);
+	m_TileFrameEndX->SetFloat(320.f);
+	m_TileFrameEndY->SetFloat(160.f);
 
 	return true;
 }
@@ -246,4 +260,51 @@ void CTileMapWindow::CreateTile()
 		return;
 
 	m_TileMap->CreateTile(Shape, CountX, CountY, Vector3(SizeX, SizeY, 1.f));
+
+	// Material 및 Texture 세팅하기
+	CTexture* Texture = nullptr;
+
+	switch(Shape)
+	{
+	case Tile_Shape::Rect :
+		{
+			CSceneManager::GetInst()->GetScene()->GetResource()->LoadTexture("DefaultRectTile",
+				TEXT("Floors.png"));
+
+			Texture = CSceneManager::GetInst()->GetScene()->GetResource()->FindTexture("DefaultRectTile");
+		}
+		break;
+	case Tile_Shape::Rhombus :
+		{
+			CSceneManager::GetInst()->GetScene()->GetResource()->LoadTexture("DefaultRhombusTile",
+				TEXT("Diablos_Lair_Floor_TRS/Diablos_Lair_Floor.png"));
+
+			Texture = CSceneManager::GetInst()->GetScene()->GetResource()->FindTexture("DefaultRhombusTile");
+		}
+		break;
+	}
+
+	CMaterial* Material = m_TileMap->GetTileMaterial();
+
+	if (Material->EmptyTexture())
+		Material->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "TileTexture", Texture);
+	else
+		Material->SetTexture(0, 0, (int)Buffer_Shader_Type::Pixel, "TileTexture", Texture);
+
+	// TileMapComponent 의 상수버퍼에 전체 ImageSize를 지정해주도록 세팅한다.
+	m_TileMap->SetImageSizeToCBuffer();
+}
+
+void CTileMapWindow::SetDefaultFrame()
+{
+	float StartFrameX = m_TileFrameStartX->GetValueFloat();
+	float StartFrameY = m_TileFrameStartY->GetValueFloat();
+
+	float EndFrameX = m_TileFrameEndX->GetValueFloat();
+	float EndFrameY = m_TileFrameEndY->GetValueFloat();
+
+	if (StartFrameX < 0.f || StartFrameY < 0.f || EndFrameX < 0.f || EndFrameY < 0.f)
+		return;
+
+	m_TileMap->SetTileDefaultFrame(StartFrameX, StartFrameY, EndFrameX, EndFrameY);
 }
