@@ -83,7 +83,13 @@ enum class CreateObject_Type
 enum class CreateComponent_Type
 {
 	Sprite,
-	Static
+	Static,
+	Widget,
+	ColliderBox2D,
+	ColliderCircle,
+	ColliderPixel,
+	Camera,
+	TileMap
 };
 
 enum Collision_Channel

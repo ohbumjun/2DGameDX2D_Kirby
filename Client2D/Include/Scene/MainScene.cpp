@@ -98,11 +98,13 @@ void CMainScene::CreateMaterial()
 	ParticleMaterial->SetRenderState("AlphaBlend");
 
 	// TileMap
-	m_Scene->GetResource()->CreateMaterial<CMaterial>("TileMapMaterial");
-	CMaterial* TileMapMaterial = m_Scene->GetResource()->FindMaterial("TileMapMaterial");
-	TileMapMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "TileMapTexture", TEXT("Floors.png"));
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("DiabloTileMap");
+	CMaterial* TileMapMaterial = m_Scene->GetResource()->FindMaterial("DiabloTileMap");
+	TileMapMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "DiabloTile", TEXT("Diablos_Lair_Floor_TRS/Diablos_Lair_Floor.png"));
 
 	TileMapMaterial->SetShader("TileMapShader");
+	TileMapMaterial->SetRenderState("AlphaBlend");
+
 }
 
 void CMainScene::CreateAnimationSequence()

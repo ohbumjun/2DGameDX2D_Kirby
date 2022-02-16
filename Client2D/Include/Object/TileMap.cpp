@@ -23,13 +23,19 @@ bool CTileMap::Init()
 	if (!CGameObject::Init())
 		return false;
 
+	// Tile Component
 	m_TileComponent = CreateComponent<CTileMapComponent>("TileMap");
+
 	SetRootComponent(m_TileComponent);
 
-	m_TileComponent->CreateTile(Tile_Shape::Rect, 100, 100, Vector3(64.f, 64.f, 0.f));
+	// Tile
+	m_TileComponent->CreateTile(Tile_Shape::Rhombus, 100, 100, Vector3(160.f, 80.f, 0.f));
 
-	CMaterial* Material = m_Scene->GetResource()->FindMaterial("TileMapMaterial");
+	CMaterial* Material = m_Scene->GetResource()->FindMaterial("DiabloTileMap");
+
 	m_TileComponent->SetTileMaterial(Material);
+
+	m_TileComponent->SetTileDefaultFrame(160.f, 80.f, 320.f, 160.f);
 
 	return true;
 }

@@ -1,6 +1,7 @@
-#include "Tile.h"
 
+#include "Tile.h"
 #include "TileMapComponent.h"
+#include "../Resource/Animation/AnimationSequence2D.h"
 
 CTile::CTile() :
 	m_Shape(Tile_Shape::Rect),
@@ -26,18 +27,8 @@ CTile::~CTile()
 	SAFE_DELETE(m_AnimInstance);
 }
 
-void CTile::SetFrameStart(float x, float y)
-{
-	m_FrameStart = Vector2(x, y);
-}
-
-void CTile::SetFrameEnd(float x, float y)
-{
-	m_FrameEnd = Vector2(x, y);
-}
-
-void CTile::AddAnimation(const std::string& SequenceName, const std::string& Name, bool      Loop,
-						 float              PlayTime, float                  PlayScale, bool Reverse)
+void CTile::AddAnimation(const std::string& SequenceName, const std::string& Name, bool Loop,
+	float PlayTime, float PlayScale, bool Reverse)
 {
 	if (!m_AnimInstance)
 		m_AnimInstance = new CAnimationSequence2DInstance;
@@ -112,31 +103,36 @@ bool CTile::CheckCurrentAnimation(const std::string& Name)
 
 void CTile::Start()
 {
-	m_Center = m_Pos + (m_Size / 2.f);
+	m_Center = m_Pos + m_Size / 2.f;
 }
 
-// Update 함수는 출력을 위한 준비를 하는 함수이다.
 void CTile::Update(float DeltaTime)
 {
 	if (m_AnimInstance)
 	{
-		// Frame Update
 		m_AnimInstance->Update(DeltaTime);
 
-		int Frame = m_AnimInstance->GetCurrentAnimation()->GetCurrentFrame();
-
+		int	Frame = m_AnimInstance->GetCurrentAnimation()->GetCurrentFrame();
 		m_FrameStart = m_AnimInstance->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(Frame).Start;
-		m_FrameEnd  = m_FrameEnd + m_AnimInstance->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(Frame).Size;
-		
+		m_FrameEnd = m_FrameStart + m_AnimInstance->GetCurrentAnimation()->GetAnimationSequence()->GetFrameData(Frame).Size;
 	}
 
-	Vector3 WorlsPos = m_Owner->GetWorldPos() + m_Pos;
+	Vector3	OwnerPos = m_Owner->GetWorldPos();
 
-	Matrix matScale, matTranslate;
+	Vector3	Pos = OwnerPos + m_Pos;
+
+	Matrix	matScale, matTranslate;
 
 	matScale.Scaling(m_Size.x, m_Size.y, 1.f);
-
-	matTranslate.Translation(WorlsPos);
+	matTranslate.Translation(Pos);
 
 	m_matWorld = matScale * matTranslate;
+}
+
+void CTile::Save(FILE* File)
+{
+}
+
+void CTile::Load(FILE* File)
+{
 }

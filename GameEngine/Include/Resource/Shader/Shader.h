@@ -24,4 +24,4 @@ public:
 public:
 	virtual bool Init() = 0;
 	virtual void SetShader() = 0;
-};
+};;

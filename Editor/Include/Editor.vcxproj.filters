@@ -60,6 +60,9 @@
     <ClCompile Include="Object\SpriteCameraObject.cpp">
       <Filter>03. Object</Filter>
     </ClCompile>
+    <ClCompile Include="Window\TileMapWindow.cpp">
+      <Filter>02. Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="Object\SpriteCameraObject.h">
       <Filter>03. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\TileMapWindow.h">
+      <Filter>02. Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

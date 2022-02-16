@@ -181,6 +181,7 @@
     <ClCompile Include="Window\EditorMenu.cpp" />
     <ClCompile Include="Window\ObjectHierarchy.cpp" />
     <ClCompile Include="Window\SpriteEditWindow.cpp" />
+    <ClCompile Include="Window\TileMapWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Window\EditorMenu.h" />
     <ClInclude Include="Window\ObjectHierarchy.h" />
     <ClInclude Include="Window\SpriteEditWindow.h" />
+    <ClInclude Include="Window\TileMapWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc" />

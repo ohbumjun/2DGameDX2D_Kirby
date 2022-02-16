@@ -12,6 +12,12 @@
 #include "../Object/Player2D.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
+#include "Component/WidgetComponent.h"
+#include "Component/ColliderBox2D.h"
+#include "Component/ColliderCircle.h"
+#include "Component/ColliderPixel.h"
+#include "Component/CameraComponent.h"
+#include "Component/TileMapComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
 
@@ -48,7 +54,13 @@ bool CEditorMenu::Init()
 
 	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("ComponentComboBox", 150.f, 30.f);
 	m_ComponentComboBox->AddItem("SpriteComponent");
-	m_ComponentComboBox->AddItem("StaticComponent");
+	m_ComponentComboBox->AddItem("StaticMeshComponent");
+	m_ComponentComboBox->AddItem("WidgetComponent");
+	m_ComponentComboBox->AddItem("ColliderBox2D");
+	m_ComponentComboBox->AddItem("ColliderCircle");
+	m_ComponentComboBox->AddItem("ColliderPixel");
+	m_ComponentComboBox->AddItem("CameraComponent");
+	m_ComponentComboBox->AddItem("TileMapComponent");
 	m_ComponentComboBox->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -72,6 +84,7 @@ bool CEditorMenu::Init()
 
 	// ========================================================================
 
+	/*
 	m_ClearComponentButton = AddWidget<CIMGUIButton>("ClearComponent", 80.f, 30.f);
 	m_ClearComponentButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -86,6 +99,7 @@ bool CEditorMenu::Init()
 
 	m_DeleteObjectButton = AddWidget<CIMGUIButton>("DeleteObject ", 80.f, 30.f);
 	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
+	*/
 
 	// ========================================================================
 
@@ -172,6 +186,37 @@ void CEditorMenu::CreateNewComponent()
 		Object->CreateComponent<CStaticMeshComponent>(m_ComponentNameInput->GetTextMultibyte());
 		}
 		break;
+	case CreateComponent_Type::Widget:
+	{
+		Object->CreateComponent<CWidgetComponent>(m_ComponentNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateComponent_Type::ColliderBox2D:
+	{
+		Object->CreateComponent<CColliderBox2D>(m_ComponentNameInput->GetTextMultibyte());
+	}
+	case CreateComponent_Type::ColliderCircle:
+	{
+		Object->CreateComponent<CColliderCircle>(m_ComponentNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateComponent_Type::ColliderPixel:
+	{
+		Object->CreateComponent<CColliderPixel>(m_ComponentNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateComponent_Type::Camera:
+	{
+		Object->CreateComponent<CCameraComponent>(m_ComponentNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateComponent_Type::TileMap:
+	{
+		Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
+	}
+	break;
+
+	break;
 	}
 
 	// Root Component에 Add 시킨다 ?

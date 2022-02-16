@@ -16,12 +16,14 @@
 #include "Window/EditorMenu.h"
 #include "Window/ObjectHierarchy.h"
 #include "Window/DetailInfoWindow.h"
+#include "Window/TileMapWindow.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 #include "Component/WidgetComponent.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/ColliderCircle.h"
 #include "Component/ColliderPixel.h"
+#include "Component/TileMapComponent.h"
 #include "Component/CameraComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Object/Player2D.h"
@@ -91,6 +93,7 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	m_EditorMenu        = CIMGUIManager::GetInst()->AddWindow<CEditorMenu>("EditorMenu");
 	m_ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
+	m_TileMapWindow = CIMGUIManager::GetInst()->AddWindow<CTileMapWindow>("TileMapWindow");
 
 	// Sprite 편집할 때
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
@@ -310,6 +313,11 @@ CComponent* CEditorManager::CreateComponent(CGameObject* Object, const size_t Co
 	else if (ComponentTypeID == typeid(CCameraComponent).hash_code())
 	{
 		CComponent* Component = Object->LoadComponent<CCameraComponent>();
+		return Component;
+	}
+	else if (ComponentTypeID == typeid(CTileMapComponent).hash_code())
+	{
+		CComponent* Component = Object->LoadComponent<CTileMapComponent>();
 		return Component;
 	}
 	return nullptr;

@@ -32,7 +32,7 @@ public:
 	template <typename T>
 	T* AddWindow(const std::string& Name)
 	{
-		T* Window = static_cast<T*>(FindIMGUIWindow(Name));
+		T* Window = (T*)(FindIMGUIWindow(Name));
 
 		if (Window)
 			return Window;

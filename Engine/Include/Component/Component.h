@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Ref.h"
-
+;
 class CComponent :
 	public CRef
 {

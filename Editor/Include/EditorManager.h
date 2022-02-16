@@ -15,6 +15,7 @@ private:
 	class CDragObject* m_DragObj;
 	class CShowObject* m_ShowObj;
 	class CSpriteEditWindow* m_SpriteWindow;
+	class CTileMapWindow* m_TileMapWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
@@ -24,7 +25,10 @@ public:
 	{
 		return m_EditMode;
 	}
-
+	class CTileMapWindow* GetTileMapWindow () const
+	{
+		return m_TileMapWindow;
+	}
 	class CDragObject* GetDragObject() const
 	{
 		return m_DragObj;
