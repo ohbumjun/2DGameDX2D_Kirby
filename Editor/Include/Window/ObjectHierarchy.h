@@ -10,6 +10,8 @@ public :
 private :
     class CIMGUIListBox* m_ObjectListBox;
     class CIMGUIListBox* m_ComponentListBox;
+    class CGameObject* m_SelectObject;
+    class CSceneComponent* m_SelectComponent;
 public :
     CIMGUIListBox* GetObjectListBox() const 
 	{

@@ -19,6 +19,13 @@ private :
 	class CIMGUITextInput* m_TileFrameStartY;
 	class CIMGUITextInput* m_TileFrameEndX;
 	class CIMGUITextInput* m_TileFrameEndY;
+private :
+	class CTileMapComponent* m_TileMap;
+public :
+	void SetTileMap (class CTileMapComponent* TileMap)
+{
+		m_TileMap = TileMap;
+}
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;

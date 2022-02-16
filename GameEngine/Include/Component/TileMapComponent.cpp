@@ -785,6 +785,9 @@ void CTileMapComponent::PostUpdate(float DeltaTime)
 
 	m_RenderCount = 0;
 
+	if (m_vecTile.empty())
+		return;
+
 	for (int i = StartY; i <= EndY; ++i)
 	{
 		for (int j = StartX; j <= EndX; ++j)
@@ -831,7 +834,7 @@ void CTileMapComponent::Render()
 		m_BackMaterial->Reset();
 	}
 
-	if (m_TileMaterial)
+	if (m_TileMaterial && !m_vecTile.empty())
 	{
 		m_TileInfoBuffer->SetShader();
 

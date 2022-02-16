@@ -1,4 +1,6 @@
 #include "ObjectHierarchy.h"
+#include "IMGUIManager.h"
+#include "TileMapWindow.h"
 #include "IMGUISameLine.h"
 #include "IMGUIListBox.h"
 #include "IMGUILabel.h"
@@ -9,6 +11,7 @@
 #include "Scene/SceneResource.h"
 #include "../EditorManager.h"
 #include "DetailInfoWindow.h"
+#include "Component/TileMapComponent.h"
 
 CObjectHierarchy::CObjectHierarchy()
 {
@@ -58,14 +61,14 @@ void CObjectHierarchy::AddObject(const char* ObjectName)
 void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 {
 	// 선택한 Object 내에 있는 Scene Component 목록을 보여준다
-	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+	m_SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	// 기존 모두 지워주기
 	m_ComponentListBox->Clear();
 
 	// 가장 먼저 들어온 놈이 Root Component 일 것이다 
 	std::vector<FindComponentName> vecComponentsName;
-	Object->GetAllSceneComponentsName(vecComponentsName);
+	m_SelectObject->GetAllSceneComponentsName(vecComponentsName);
 
 	// 자기 자신을 선택한 상태로 둔다.
 	m_ObjectListBox->SetSelectIndex(Index);
@@ -80,16 +83,16 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 
 	// Object 의 Pos, Rot, Scale x,y,z 정보도 DetailWindow 측에 세팅해준다.
 	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
-	DetailWindow->SetPosRotScaleInfo(Object);
+	DetailWindow->SetPosRotScaleInfo(m_SelectObject);
 
 	CEditorManager::GetInst()->SetSceneEditObject();
 
 	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
 	CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 	
-	Vector3 ObjectPivot = Object->GetPivot();
-	Vector3 ObjectSize = Object->GetWorldScale();
-	Vector3 ObjectPos = Object->GetWorldPos();
+	Vector3 ObjectPivot = m_SelectObject->GetPivot();
+	Vector3 ObjectSize = m_SelectObject->GetWorldScale();
+	Vector3 ObjectPos = m_SelectObject->GetWorldPos();
 	Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
 
 	Vector2 StartPos = Vector2(Pos.x, Pos.y);
@@ -101,4 +104,20 @@ void CObjectHierarchy::SelectObject(int Index, const char* ObjectName)
 
 void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 {
+	if (!m_SelectObject)
+		return;
+
+	m_SelectComponent = (CSceneComponent*)m_SelectObject->FindComponent(ComponentName);
+	// TileMapWindow
+
+	CTileMapWindow* TileMapWindow = (CTileMapWindow*)CIMGUIManager::GetInst()->FindIMGUIWindow("TileMapWindow");
+
+	if (TileMapWindow && m_SelectComponent->CheckType<CTileMapComponent>())
+	{
+		TileMapWindow->SetTileMap((CTileMapComponent*)m_SelectComponent);
+	}
+	else
+	{
+		TileMapWindow->SetTileMap(nullptr);
+	}
 }
