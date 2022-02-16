@@ -37,7 +37,6 @@ public:
     {
         m_EditMode = Mode;
     }
-
 public:
     CMaterial* GetBackMaterial()    const
     {

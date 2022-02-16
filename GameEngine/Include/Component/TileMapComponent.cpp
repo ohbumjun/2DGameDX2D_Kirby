@@ -225,10 +225,19 @@ void CTileMapComponent::SetBackTexture(int Index, int Register, int ShaderType, 
 
 void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, const Vector3& Size)
 {
+	// 기존 Tile 들을 혹시 모르니 지워준다.
+	for (int i = 0; i < m_Count; i++)
+	{
+		SAFE_DELETE(m_vecTile[i]);
+	}
+
+	m_vecTile.clear();
+
 	m_TileShape = Shape;
 	m_CountX = CountX;
 	m_CountY = CountY;
 	m_TileSize = Size;
+	m_Count = m_CountX * m_CountY;
 
 	m_vecTile.resize(m_CountX * m_CountY);
 
@@ -302,7 +311,6 @@ void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, con
 
 	m_CBuffer->SetTileSize(Vector2(m_TileSize.x, m_TileSize.y));
 
-	m_Count = m_CountX * m_CountY;
 
 	SetWorldInfo();
 

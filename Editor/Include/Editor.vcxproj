@@ -184,6 +184,7 @@
     <ClCompile Include="Window\TileMapWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\Player2D.h" />

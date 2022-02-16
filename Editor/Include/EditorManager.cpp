@@ -1,7 +1,5 @@
 #include "EditorManager.h"
-
-#include <Scene/CameraManager.h>
-
+#include "Scene/CameraManager.h"
 #include "Engine.h"
 #include "IMGUIManager.h"
 #include "Input.h"
@@ -33,7 +31,8 @@ DEFINITION_SINGLE(CEditorManager)
 
 CEditorManager::CEditorManager() :
 	m_EditMode(EditMode::Scene),
-	m_DragObj(nullptr)
+	m_DragObj(nullptr),
+	m_CameraMoveSpeed(1000.f)
 {
 }
 
@@ -51,7 +50,20 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		if (m_DragObj)
 			m_DragObj->Destroy();
 		m_DragObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CDragObject>("DragObject");
-		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);//
+		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);
+	}
+	else if (m_EditMode == EditMode::Scene)
+	{
+		if (m_DragObj)
+			m_DragObj->Destroy();
+	}
+	else if (m_EditMode == EditMode::Tile)
+	{
+		if (m_DragObj)
+		{
+			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
 	}
 }
 
@@ -136,6 +148,9 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->SetKeyCallback("UpYSize", Key_State::KeyState_Down, this, &CEditorManager::IncreaseYSize);
 	CInput::GetInst()->SetKeyCallback("DownYSize", Key_State::KeyState_Down, this, &CEditorManager::DecreaseYSize);
 
+	// Camera 생성하기
+	CreateCameraObject();
+
 	return true;
 }
 
@@ -160,6 +175,8 @@ void CEditorManager::MouseLButtonDown(float DeltaTime)
 
 void CEditorManager::MouseLButtonPush(float DeltaTime)
 {
+	m_MousePush = true;
+
 	if (m_DragObj)
 	{
 		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
@@ -175,7 +192,7 @@ void CEditorManager::KeyBoardUp(float DeltaTime)
 {
 	if (m_CameraObject)
 	{
-		m_CameraObject->AddWorldPos(Vector3(0.f, 1.f, 0.f));
+		m_CameraObject->AddWorldPos(Vector3(0.f, m_CameraMoveSpeed * DeltaTime, 0.f));
 		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
@@ -184,7 +201,7 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 {
 	if (m_CameraObject)
 	{
-		m_CameraObject->AddWorldPos(Vector3(-1.f, 0.f, 0.f));
+		m_CameraObject->AddWorldPos(Vector3(-1.f * m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
 		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
@@ -193,7 +210,7 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 {
 	if (m_CameraObject)
 	{
-		m_CameraObject->AddWorldPos(Vector3(1.f, 0.f, 0.f));
+		m_CameraObject->AddWorldPos(Vector3(m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
 		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }
@@ -202,7 +219,7 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 {
 	if (m_CameraObject)
 	{
-		m_CameraObject->AddWorldPos(Vector3(0.f, -1.f, 0.f));
+		m_CameraObject->AddWorldPos(Vector3(0.f, -1.f * m_CameraMoveSpeed * DeltaTime, 0.f));
 		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
 	}
 }

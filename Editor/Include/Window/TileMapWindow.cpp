@@ -11,6 +11,8 @@
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "../EditorManager.h"
+#include "Input.h"
 
 CTileMapWindow::CTileMapWindow()
 {}
@@ -127,7 +129,7 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileType = AddWidget<CIMGUIComboBox>("TileShape", 100.f, 50.f);
+	m_TileType = AddWidget<CIMGUIComboBox>("TileType", 100.f, 50.f);
 	m_TileType->SetHideName(true);
 	m_TileType->AddItem("Normal");
 	m_TileType->AddItem("Wall");
@@ -141,10 +143,11 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileEdit = AddWidget<CIMGUIComboBox>("TileShape", 100.f, 50.f);
+	m_TileEdit = AddWidget<CIMGUIComboBox>("TileEditMode", 100.f, 50.f);
 	m_TileEdit->SetHideName(true);
-	m_TileEdit->AddItem("True");
-	m_TileEdit->AddItem("False");
+	m_TileEdit->AddItem("Type");
+	m_TileEdit->AddItem("Frame");
+	m_TileEdit->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetEditModeCallback);
 
 	// ==============================
 
@@ -230,6 +233,20 @@ bool CTileMapWindow::Init()
 void CTileMapWindow::Update(float DeltaTime)
 {
 	CIMGUIWindow::Update(DeltaTime);
+
+	if (CEditorManager::GetInst()->GetEditMode() == EditMode::Tile && m_TileMap)
+	{
+		m_TileMap->EnableEditMode(true);
+
+		// Mouse¸¦ ´­·¶´Ù¸é 
+		if (CEditorManager::GetInst()->GetMousePush())
+		{
+			Vector2 MouseWorldPos = CInput::GetInst()->GetMouseWorld2DPos();
+
+			CTile* Tile = m_TileMap->GetTile(Vector3(MouseWorldPos.x, MouseWorldPos.y, 0.f));
+
+		}
+	}
 }
 
 void CTileMapWindow::CreateTile()
@@ -312,4 +329,9 @@ void CTileMapWindow::SetDefaultFrame()
 		return;
 
 	m_TileMap->SetTileDefaultFrame(StartFrameX, StartFrameY, EndFrameX, EndFrameY);
+}
+
+void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
+{
+	m_EditMode = (Tile_EditMode)Index;
 }

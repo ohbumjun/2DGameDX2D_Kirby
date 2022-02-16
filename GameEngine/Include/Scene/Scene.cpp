@@ -88,6 +88,7 @@ void CScene::Update(float DeltaTime)
 	}
 
 	m_ViewPort->Update(DeltaTime);
+	m_CameraManager->Update(DeltaTime);
 }
 
 void CScene::PostUpdate(float DeltaTime)
@@ -124,10 +125,12 @@ void CScene::PostUpdate(float DeltaTime)
 		(*iter)->AddCollision();
 	}
 
-	// 포함된 충돌체들을 이용해서 충돌처리를 진행한다
+	// 포함된 충돌체들을 이용해서 충돌처리를 진행한다.
 	m_Collision->Collision(DeltaTime);
 
 	m_ViewPort->PostUpdate(DeltaTime);
+
+	m_CameraManager->PostUpdate(DeltaTime);
 }
 
 void CScene::SaveFullPath(const char* FullPath)

@@ -1,5 +1,6 @@
 #pragma once
 #include "IMGUIWindow.h"
+#include "../Editor.h"
 
 class CTileMapWindow :
     public CIMGUIWindow
@@ -21,10 +22,20 @@ private :
 	class CIMGUITextInput* m_TileFrameEndY;
 private :
 	class CTileMapComponent* m_TileMap;
+	Tile_EditMode m_EditMode;
 public :
+	void SetTileEditMode (Tile_EditMode EditMode)
+	{
+		m_EditMode = EditMode;
+	}
 	void SetTileMap (class CTileMapComponent* TileMap)
-{
+	{
 		m_TileMap = TileMap;
+	}
+public :
+	Tile_EditMode GetTileEditMode () const
+{
+		return m_EditMode;
 }
 public:
 	virtual bool Init() override;
@@ -32,5 +43,6 @@ public:
 private :
 	void CreateTile();
 	void SetDefaultFrame();
+	void SetEditModeCallback(int Index, const char* Name);
 };
 

@@ -5,7 +5,8 @@
 enum class EditMode
 {
 	Scene,
-	Sprite
+	Sprite,
+	Tile
 };
 
 class CEditorManager
@@ -20,7 +21,13 @@ private:
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
 	class CSpriteCameraObject* m_CameraObject;
+	float m_CameraMoveSpeed;
+	bool m_MousePush;
 public:
+	bool GetMousePush() const
+	{
+		return m_MousePush;
+	}
 	EditMode GetEditMode()
 	{
 		return m_EditMode;
