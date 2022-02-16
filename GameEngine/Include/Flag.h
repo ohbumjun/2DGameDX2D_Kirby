@@ -204,5 +204,6 @@ enum class Tile_Type {
 
 enum class Tile_Shape {
 	Rect,
-	Rhombus
+	Rhombus,
+	End
 };

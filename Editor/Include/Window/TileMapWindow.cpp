@@ -7,6 +7,7 @@
 #include "IMGUISameLine.h"
 #include "IMGUIText.h"
 #include "IMGUITextInput.h"
+#include "Component/TileMapComponent.h"
 
 CTileMapWindow::CTileMapWindow()
 {}
@@ -20,11 +21,15 @@ bool CTileMapWindow::Init()
 		return false;
 
 	CIMGUIWindow::Init();
+
 	// ==============================
+
 	CIMGUILabel* Label = AddWidget<CIMGUILabel>("TileMapInfo", 400.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
+
 	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("TileMapShape", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -34,8 +39,9 @@ bool CTileMapWindow::Init()
 
 	m_TileShapeCombo = AddWidget<CIMGUIComboBox>("TileShape", 100.f, 50.f);
 	m_TileShapeCombo->SetHideName(true);
-	m_TileShapeCombo->AddItem("마름모");
 	m_TileShapeCombo->AddItem("사각형");
+	m_TileShapeCombo->AddItem("마름모");
+
 	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("CountX", 100.f, 30.f);
@@ -49,6 +55,7 @@ bool CTileMapWindow::Init()
 	m_TileCountX->SetSize(80.f, 40.f);
 	m_TileCountX->SetInt(100);
 	m_TileCountX->SetHideName(true);
+	m_TileCountX->SetTextType(ImGuiText_Type::Int);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
@@ -64,8 +71,10 @@ bool CTileMapWindow::Init()
 	m_TileCountY->SetSize(80.f, 40.f);
 	m_TileCountY->SetInt(100);
 	m_TileCountY->SetHideName(true);
+	m_TileCountY->SetTextType(ImGuiText_Type::Int);
 
 	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("SizeX", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -77,6 +86,7 @@ bool CTileMapWindow::Init()
 	m_TileSizeX->SetSize(80.f, 40.f);
 	m_TileSizeX->SetInt(100);
 	m_TileSizeX->SetHideName(true);
+	m_TileSizeX->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
@@ -92,15 +102,21 @@ bool CTileMapWindow::Init()
 	m_TileSizeY->SetSize(80.f, 40.f);
 	m_TileSizeY->SetInt(100);
 	m_TileSizeY->SetHideName(true);
+	m_TileSizeY->SetTextType(ImGuiText_Type::Float);
 
 	// ==============================
+
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("CreateTileMap", 200.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::CreateTile);
 
 	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("TileEditInfo", 400.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
+
 	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("TileType", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -112,7 +128,9 @@ bool CTileMapWindow::Init()
 	m_TileType->SetHideName(true);
 	m_TileType->AddItem("Normal");
 	m_TileType->AddItem("Wall");
+
 	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("TileEdit", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -138,6 +156,7 @@ bool CTileMapWindow::Init()
 	m_TileFrameStartX->SetSize(80.f, 40.f);
 	m_TileFrameStartX->SetInt(100);
 	m_TileFrameStartX->SetHideName(true);
+	m_TileFrameStartX->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
@@ -153,8 +172,10 @@ bool CTileMapWindow::Init()
 	m_TileFrameStartY->SetSize(80.f, 40.f);
 	m_TileFrameStartY->SetInt(100);
 	m_TileFrameStartY->SetHideName(true);
+	m_TileFrameStartY->SetTextType(ImGuiText_Type::Float);
 
 	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("FrameEndX", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -162,10 +183,11 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileFrameEndX = AddWidget<CIMGUITextInput>("SizeX");
+	m_TileFrameEndX = AddWidget<CIMGUITextInput>("FrameEndX");
 	m_TileFrameEndX->SetSize(80.f, 40.f);
 	m_TileFrameEndX->SetInt(100);
 	m_TileFrameEndX->SetHideName(true);
+	m_TileFrameEndX->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
@@ -177,12 +199,14 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(320.f);
 
-	m_TileFrameEndY = AddWidget<CIMGUITextInput>("SizeY");
+	m_TileFrameEndY = AddWidget<CIMGUITextInput>("FrameEndY");
 	m_TileFrameEndY->SetSize(80.f, 40.f);
 	m_TileFrameEndY->SetInt(100);
 	m_TileFrameEndY->SetHideName(true);
+	m_TileFrameEndY->SetTextType(ImGuiText_Type::Float);
 
 	// ==============================
+
 	Button = AddWidget<CIMGUIButton>("SetDefaultFrame", 200.f, 30.f);
 
 
@@ -192,4 +216,34 @@ bool CTileMapWindow::Init()
 void CTileMapWindow::Update(float DeltaTime)
 {
 	CIMGUIWindow::Update(DeltaTime);
+}
+
+void CTileMapWindow::CreateTile()
+{
+	// Tile Shape
+	int TileShapeIndex = m_TileShapeCombo->GetSelectIndex();
+
+	if (TileShapeIndex < 0 || TileShapeIndex >= (int)Tile_Shape::End)
+		return;
+
+	Tile_Shape Shape = (Tile_Shape)TileShapeIndex;
+
+	// CountX, CountY
+	int CountX = m_TileCountX->GetValueInt();
+	int CountY = m_TileCountY->GetValueInt();
+
+	if (CountX <= 0 || CountY <= 0)
+		return;
+
+	// Size
+	float SizeX = m_TileSizeX->GetValueFloat();
+	float SizeY = m_TileSizeY->GetValueFloat();
+
+	if (SizeX <= 0 || SizeY <= 0)
+		return;
+
+	if (!m_TileMap)
+		return;
+
+	m_TileMap->CreateTile(Shape, CountX, CountY, Vector3(SizeX, SizeY, 1.f));
 }
