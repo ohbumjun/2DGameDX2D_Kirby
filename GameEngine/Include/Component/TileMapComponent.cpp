@@ -871,6 +871,7 @@ CTileMapComponent* CTileMapComponent::Clone()
 
 void CTileMapComponent::Save(FILE* File)
 {
+	// Back Mesh
 	std::string	MeshName = m_BackMesh->GetName();
 
 	int	Length = (int)MeshName.length();
@@ -878,7 +879,39 @@ void CTileMapComponent::Save(FILE* File)
 	fwrite(&Length, sizeof(int), 1, File);
 	fwrite(MeshName.c_str(), sizeof(char), Length, File);
 
-	m_BackMaterial->Save(File);
+	// BackMaterial
+	bool MaterialEnable = false;
+
+	if (m_BackMaterial)
+		MaterialEnable = true;
+
+	fwrite(&MaterialEnable, sizeof(bool), 1, File);
+
+	if (m_BackMaterial)
+		m_BackMaterial->Save(File);
+
+	// TileMaterial
+	MaterialEnable = false;
+
+	if (m_TileMaterial)
+		MaterialEnable = true;
+
+	fwrite(&MaterialEnable, sizeof(bool), 1, File);
+
+	if (m_TileMaterial)
+		m_TileMaterial->Save(File);
+
+	fwrite(&m_TileShape, sizeof(Tile_Shape), 1, File);
+	fwrite(&m_CountX, sizeof(int), 1, File);
+	fwrite(&m_CountY, sizeof(int), 1, File);
+	fwrite(&m_Count, sizeof(int), 1, File);
+	fwrite(&m_TileSize, sizeof(Vector3), 1, File);
+	fwrite(m_TileColor, sizeof(Vector4), (int)Tile_Type::End, File);
+
+	for (int i = 0; i < m_Count; i++)
+	{
+		m_vecTile[i]->Save(File);
+	}
 
 	CSceneComponent::Save(File);
 }
@@ -893,9 +926,57 @@ void CTileMapComponent::Load(FILE* File)
 	fread(MeshName, sizeof(char), Length, File);
 
 	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(MeshName);
-	m_BackMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
 
-	m_BackMaterial->Load(File);
+	// BackMaterial
+	bool MaterialEnable = false;
+
+	fread(&MaterialEnable, sizeof(bool), 1, File);
+
+	if (MaterialEnable)
+	{
+		m_BackMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+		m_BackMaterial->Load(File);
+	}
+
+	// TileMaterial
+	fread(&MaterialEnable, sizeof(bool), 1, File);
+
+	if (MaterialEnable)
+	{
+		m_TileMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+		m_TileMaterial->Load(File);
+	}
+
+	fread(&m_TileShape, sizeof(Tile_Shape), 1, File);
+	fread(&m_CountX, sizeof(int), 1, File);
+	fread(&m_CountY, sizeof(int), 1, File);
+	fread(&m_Count, sizeof(int), 1, File);
+	fread(&m_TileSize, sizeof(Vector3), 1, File);
+	fread(m_TileColor, sizeof(Vector4), (int)Tile_Type::End, File);
+
+	// 기존 Tile 정보는 모두 지워준다 ( 혹시 남아있을 수도 있으므로 )
+	size_t Size = m_vecTile.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		SAFE_DELETE(m_vecTile[i]);
+	}
+
+	m_vecTile.clear();
+
+	// 구조화 버퍼를 위한 vector 초기화
+	m_vecTileInfo.resize(m_Count);
+
+	for (int i = 0; i < m_Count; i++)
+	{
+		CTile* Tile = new CTile;
+
+		Tile->SetOwner(this);
+
+		Tile->Load(File);
+
+		m_vecTile[i] = Tile;
+	}
 
 	CSceneComponent::Load(File);
 }

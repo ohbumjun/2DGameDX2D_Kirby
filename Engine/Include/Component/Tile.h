@@ -157,6 +157,11 @@ public:
 		m_Size = Vector3(x, y, z);
 	}
 
+	void SetOwner(class CTileMapComponent* Owner)
+	{
+		m_Owner = Owner;
+	}
+public :
 	void AddAnimation(const std::string& SequenceName, const std::string& Name, bool Loop = true, float PlayTime = 1.f,
 		float PlayScale = 1.f, bool Reverse = false);
 	void AddAnimation(const TCHAR* FileName, const std::string& PathName, const std::string& Name, bool Loop = true, float PlayTime = 1.f,

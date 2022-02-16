@@ -131,8 +131,32 @@ void CTile::Update(float DeltaTime)
 
 void CTile::Save(FILE* File)
 {
+	fwrite(&m_Shape, sizeof(Tile_Shape), 1, File);
+	fwrite(&m_TileType, sizeof(Tile_Type), 1, File);
+	fwrite(&m_Pos, sizeof(Vector3), 1, File);
+	fwrite(&m_Size, sizeof(Vector3), 1, File);
+	fwrite(&m_Center, sizeof(Vector3), 1, File);
+
+	fwrite(&m_IndexX, sizeof(int), 1, File);
+	fwrite(&m_IndexY, sizeof(int), 1, File);
+	fwrite(&m_Index, sizeof(int), 1, File);
+	fwrite(&m_FrameStart, sizeof(Vector2), 1, File);
+	fwrite(&m_FrameEnd, sizeof(Vector2), 1, File);
+	fwrite(&m_Opacity, sizeof(float), 1, File);
 }
 
 void CTile::Load(FILE* File)
 {
+	fread(&m_Shape, sizeof(Tile_Shape), 1, File);
+	fread(&m_TileType, sizeof(Tile_Type), 1, File);
+	fread(&m_Pos, sizeof(Vector3), 1, File);
+	fread(&m_Size, sizeof(Vector3), 1, File);
+	fread(&m_Center, sizeof(Vector3), 1, File);
+
+	fread(&m_IndexX, sizeof(int), 1, File);
+	fread(&m_IndexY, sizeof(int), 1, File);
+	fread(&m_Index, sizeof(int), 1, File);
+	fread(&m_FrameStart, sizeof(Vector2), 1, File);
+	fread(&m_FrameEnd, sizeof(Vector2), 1, File);
+	fread(&m_Opacity, sizeof(float), 1, File);
 }

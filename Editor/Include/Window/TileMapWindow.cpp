@@ -234,6 +234,9 @@ void CTileMapWindow::Update(float DeltaTime)
 
 void CTileMapWindow::CreateTile()
 {
+	if (!m_TileMap)
+		return;
+
 	// Tile Shape
 	int TileShapeIndex = m_TileShapeCombo->GetSelectIndex();
 
@@ -256,9 +259,7 @@ void CTileMapWindow::CreateTile()
 	if (SizeX <= 0 || SizeY <= 0)
 		return;
 
-	if (!m_TileMap)
-		return;
-
+	// Tile 생성
 	m_TileMap->CreateTile(Shape, CountX, CountY, Vector3(SizeX, SizeY, 1.f));
 
 	// Material 및 Texture 세팅하기
@@ -293,10 +294,14 @@ void CTileMapWindow::CreateTile()
 
 	// TileMapComponent 의 상수버퍼에 전체 ImageSize를 지정해주도록 세팅한다.
 	m_TileMap->SetImageSizeToCBuffer();
+
 }
 
 void CTileMapWindow::SetDefaultFrame()
 {
+	if (!m_TileMap)
+		return;
+
 	float StartFrameX = m_TileFrameStartX->GetValueFloat();
 	float StartFrameY = m_TileFrameStartY->GetValueFloat();
 
