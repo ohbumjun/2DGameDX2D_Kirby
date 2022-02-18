@@ -4,7 +4,14 @@
 {}
 
  CNavigation::~CNavigation()
-{}
+ {
+	 size_t Size = m_vecNode.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		SAFE_DELETE(m_vecNode[i]);
+	}
+ }
 
  void CNavigation::CreateNavigationNode(CTileMapComponent* TileMap)
  {

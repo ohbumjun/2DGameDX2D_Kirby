@@ -32,7 +32,6 @@ CSpriteComponent::~CSpriteComponent()
 	// 실제 지워주는 것도 ResourceManager 측에서 처리하므로
 	// 각각의 SpriteComponent 마다 해당 처리르 해줄 필요가 없다.....?
 	// 아니다. 각각의 SceneResource 에서만 관리를 해주자... 굳이 ResourceManager 까지 ?
-
 	SAFE_DELETE(m_Animation);
 }
 
@@ -48,16 +47,20 @@ void CSpriteComponent::SetAnimationInstance(class CAnimationSequence2DInstance* 
 	if (!Instance)
 		return;
 
-	Instance->SetOwner(this);
-	Instance->SetScene(m_Scene);
-	if (!Instance->Init()) // 상수 버퍼 세팅 
+	CAnimationSequence2DInstance* CloneInstance = Instance->Clone();
+
+	CloneInstance->SetOwner(this);
+	CloneInstance->SetScene(m_Scene);
+
+	if (!CloneInstance->Init()) // 상수 버퍼 세팅 
 	{
-		SAFE_DELETE(Instance);
+		SAFE_DELETE(CloneInstance);
 		return;
 	}
 
 	SAFE_DELETE(m_Animation);
-	m_Animation = Instance;
+
+	m_Animation = CloneInstance;
 }
 
 void CSpriteComponent::SetBaseColor(const Vector4& Color)
@@ -157,7 +160,6 @@ void CSpriteComponent::SetTextureWorldScale(int Index)
 void CSpriteComponent::Start()
 {
 	CSceneComponent::Start();
-	
 	if (m_Animation)
 		m_Animation->Start();
 }

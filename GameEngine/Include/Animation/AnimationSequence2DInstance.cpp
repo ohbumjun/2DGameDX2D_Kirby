@@ -640,7 +640,7 @@ void CAnimationSequence2DInstance::Start()
 
 bool CAnimationSequence2DInstance::Init()
 {
-	if (m_Scene)
+	if (m_Scene && !m_CBuffer)
 		m_CBuffer = m_Scene->GetResource()->GetAnimation2DCBuffer();
 
 	return true;

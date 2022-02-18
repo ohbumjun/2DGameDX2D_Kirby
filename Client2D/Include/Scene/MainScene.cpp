@@ -48,7 +48,7 @@ bool CMainScene::Init()
 
 	Monster = m_Scene->CreateGameObject<CMonster>("Monster2");
 	Monster->SetWorldPos(Vector3(-100.f, 500.f, 1.));
-	Monster->SetAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
+	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
 	Monster->SetCurrentAnimation("RightIdle");
 
 	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");

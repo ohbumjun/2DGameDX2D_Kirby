@@ -26,7 +26,7 @@ CMonster::CMonster(const CMonster& Monster)
 CMonster::~CMonster()
 {}
 
-void CMonster::SetAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName)
+void CMonster::LoadAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName)
 {
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(Name, FileName, PathName);
 
@@ -36,6 +36,7 @@ void CMonster::SetAnimationInstance(const std::string& Name, const TCHAR* FileNa
 		return;
 	}
 
+	 // Clone 해서 세팅해줘야 한다.
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 }
 
