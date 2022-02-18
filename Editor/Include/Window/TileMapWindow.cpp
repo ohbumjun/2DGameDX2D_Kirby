@@ -245,6 +245,25 @@ void CTileMapWindow::Update(float DeltaTime)
 
 			CTile* Tile = m_TileMap->GetTile(Vector3(MouseWorldPos.x, MouseWorldPos.y, 0.f));
 
+			switch (m_EditMode)
+			{
+			case Tile_EditMode::Type :
+				{
+				int TypeIndex = m_TileType->GetSelectIndex();
+
+				if (TypeIndex < 0 || TypeIndex >= (int)Tile_Type::End)
+					return;
+
+				Tile->SetTileType((Tile_Type)TypeIndex);
+				
+				}
+				break;
+			case Tile_EditMode::Frame:
+			{
+
+			}
+			break;
+			}
 		}
 	}
 }

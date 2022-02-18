@@ -13,6 +13,12 @@ private :
 	HANDLE m_Thread;
 	HANDLE m_StartEvent;
 	std::string m_Name;
+	bool m_Loop;
+public :
+	void SetLoop (bool Enable)
+{
+		m_Loop = Enable;
+}
 public :
 	virtual bool Init();
 	virtual void Run();

@@ -20,6 +20,7 @@ private:
 	std::list<CSharedPtr<CGameObject>> m_ObjList;
 	class CSceneCollision* m_Collision;
 	class CViewPort* m_ViewPort;
+	class CNavigationManager* m_NavManager;
 	bool                               m_Start;
 	bool m_Change;
 public :
@@ -28,6 +29,10 @@ public :
 		m_Mode->SetPlayerObject(Object);
 }
 public:
+	class CNavigationManager* GetNavManager() const
+	{
+		return m_NavManager;
+	}
 	class CViewPort* GetViewPort() const
 	{
 		return m_ViewPort;

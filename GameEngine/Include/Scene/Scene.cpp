@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "ViewPort.h"
+#include "NavigationManager.h"
 
 CScene::CScene()  :
 	m_Change(false)
@@ -12,17 +13,20 @@ CScene::CScene()  :
 	m_Collision = new CSceneCollision;
 	m_CameraManager = new CCameraManager;
 	m_ViewPort = new CViewPort;
+	m_NavManager = new CNavigationManager;
 
 	m_Mode->m_Scene     = this;
 	m_Resource->m_Scene = this;
 	m_Collision->m_Scene = this;
 	m_CameraManager->m_Scene = this;
 	m_ViewPort->m_Scene = this;
+	m_NavManager->m_Scene = this;
 	
 	m_Start = false;
 	m_Collision->Init();
 	m_CameraManager->Init();
 	m_ViewPort->Init();
+	m_NavManager->Init();
 }
 
 CScene::~CScene()
@@ -31,6 +35,7 @@ CScene::~CScene()
 	SAFE_DELETE(m_ViewPort);
 	SAFE_DELETE(m_Resource);
 	SAFE_DELETE(m_Collision);
+	SAFE_DELETE(m_NavManager);
 }
 
 void CScene::Start()
@@ -48,6 +53,7 @@ void CScene::Start()
 	m_Collision->Start();
 	m_CameraManager->Start();
 	m_ViewPort->Start();
+	m_NavManager->Start();
 	m_Start = true;
 
 	// 카메라 Component가 세팅되어 있다면
@@ -89,6 +95,7 @@ void CScene::Update(float DeltaTime)
 
 	m_ViewPort->Update(DeltaTime);
 	m_CameraManager->Update(DeltaTime);
+	m_NavManager->Update(DeltaTime);
 }
 
 void CScene::PostUpdate(float DeltaTime)
