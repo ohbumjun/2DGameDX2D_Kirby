@@ -204,10 +204,16 @@ void CAnimationManager::EditSequence2DName(const std::string& PrevName, const st
 	m_mapSequence2D.insert(std::make_pair(NewName, Sequence2D));
 }
 
-CAnimationSequence2DInstance* CAnimationManager::LoadAnimationSequence2DInstance(const TCHAR* FileName,
+CAnimationSequence2DInstance* CAnimationManager::LoadAnimationInstance(const std::string& Name,
+	const TCHAR* FileName,
 	const std::string& PathName)
 {
-	CAnimationSequence2DInstance* AnimationInstance = new CAnimationSequence2DInstance;
+	CAnimationSequence2DInstance* AnimationInstance = FindAnimationInstance(Name);
+
+	if (AnimationInstance)
+		return AnimationInstance;
+
+	AnimationInstance = new CAnimationSequence2DInstance;
 
 	TCHAR FullPath[MAX_PATH] = {};
 
@@ -228,5 +234,17 @@ CAnimationSequence2DInstance* CAnimationManager::LoadAnimationSequence2DInstance
 
 	AnimationInstance->LoadFullPath(FullPathMultibyte);
 
+	m_mapSequenceInstance.insert(std::make_pair(Name, AnimationInstance));
+
 	return AnimationInstance;
+}
+
+CAnimationSequence2DInstance* CAnimationManager::FindAnimationInstance(const std::string& Name)
+{
+	auto iter = m_mapSequenceInstance.find(Name);
+
+	if (iter == m_mapSequenceInstance.end())
+		return nullptr;
+
+	return iter->second;
 }

@@ -10,6 +10,7 @@
 #include "../Scene/CameraManager.h"
 #include "../Resource/Shader/TileConstantBuffer.h"
 #include "../Resource/Shader/StructuredBuffer.h"
+#include "../Scene/NavigationManager.h"
 
 CTileMapComponent::CTileMapComponent()
 {
@@ -311,8 +312,10 @@ void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, con
 
 	m_CBuffer->SetTileSize(Vector2(m_TileSize.x, m_TileSize.y));
 
-
 	SetWorldInfo();
+
+	// Navigation Manager 에 해당 TileMapComponent 를 Data 로 설정해준다.
+	m_Scene->GetNavManager()->SetNavData(this);
 
 }
 
@@ -985,6 +988,8 @@ void CTileMapComponent::Load(FILE* File)
 
 		m_vecTile[i] = Tile;
 	}
+
+	m_Scene->GetNavManager()->SetNavData(this);
 
 	CSceneComponent::Load(File);
 }

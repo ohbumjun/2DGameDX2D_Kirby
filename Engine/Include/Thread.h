@@ -1,39 +1,47 @@
 #pragma once
 
-
 #include "GameInfo.h"
 
-// 이벤트 기반 only
-
 class CThread {
-protected :
+
+protected:
 	CThread();
 	virtual ~CThread();
+
 private :
-	HANDLE m_Thread;
-	HANDLE m_StartEvent;
 	std::string m_Name;
+	HANDLE m_StartEvent;
+	HANDLE m_Thread;
+protected :
+	bool m_Loop;
 public :
+	void SetLoop (bool Loop)
+{
+		m_Loop = Loop;
+}
+public:
 	virtual bool Init();
 	virtual void Run();
 public :
-	void Resume();
-	void Pause();
 	void Start();
-public :
+	void Pause();
+	void Resume();
+private :
 	void WaitStartEvent();
 	static unsigned int __stdcall ThreadFunction(void* Arg);
 public :
 	template<typename T>
-	static T* CreateThread(const std::string& Name)
+	static T* CreateThread (const std::string& Name)
 {
 		T* Thread = new T;
 		Thread->m_Name = Name;
-	if (!Thread->Init())
-	{
-		SAFE_DELETE(Thread);
-		return nullptr;
-	}
-	return Thread;
+
+		if (!Thread->Init())
+		{
+			SAFE_DELETE(Thread);
+			return nullptr;
+		}
+
+		return Thread;
 }
 };

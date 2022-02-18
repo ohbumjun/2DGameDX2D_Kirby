@@ -12,6 +12,7 @@ private:
 
 private:
 	std::unordered_map<std::string, CSharedPtr<CAnimationSequence2D>> m_mapSequence2D;
+	std::unordered_map<std::string, class CAnimationSequence2DInstance*> m_mapSequenceInstance;
 	class CAnimation2DConstantBuffer*                                 m_Animation2DCBuffer;
 
 public:
@@ -35,6 +36,8 @@ public:
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const class CScene* Scene);
 	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName, const class CScene* Scene);
 	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);
-	class CAnimationSequence2DInstance* LoadAnimationSequence2DInstance(const TCHAR* FileName, 
-		const std::string& PathName = ENGINE_ANIMATION_PATH);
+	class CAnimationSequence2DInstance* LoadAnimationInstance(const std::string& Name, 
+		const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
+	class CAnimationSequence2DInstance* FindAnimationInstance(const std::string& Name);
+	void ReleaseAnimationInstance(const std::string& Name);
 };

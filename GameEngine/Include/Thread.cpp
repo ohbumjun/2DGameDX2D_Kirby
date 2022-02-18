@@ -1,37 +1,15 @@
 #include "Thread.h"
 
-CThread::CThread() :
-	m_Thread(0),
-	m_StartEvent(0),
-	m_Loop(false)
+CThread::CThread()
 {}
 
 CThread::~CThread()
-{
-	if (m_StartEvent)
-	{
-		CloseHandle(m_StartEvent);
-		m_StartEvent = 0;
-	}
-}
+{}
 
 bool CThread::Init()
 {
-	m_StartEvent = CreateEvent(
-		nullptr,
-		FALSE,
-		FALSE,
-		nullptr
-	);
-
-	m_Thread = (HANDLE)_beginthreadex(
-		nullptr,
-		0,
-		CThread::ThreadFunction,
-		this,
-		0,
-		nullptr
-	);
+	m_StartEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+	m_Thread = (HANDLE)_beginthreadex(NULL, 0, &CThread::ThreadFunction, this, 0, nullptr);
 
 	return true;
 }
@@ -39,19 +17,14 @@ bool CThread::Init()
 void CThread::Run()
 {}
 
-void CThread::Resume()
+void CThread::Start()
 {
-	DWORD Count = 0;
-
-	do
-	{
-		Count = ResumeThread(m_Thread);
-	} while (Count >= 0);
+	SetEvent(m_StartEvent);
 }
 
 void CThread::Pause()
 {
-	DWORD Count = 0;
+	DWORD Count;
 
 	do
 	{
@@ -59,10 +32,14 @@ void CThread::Pause()
 	} while (Count <= 0);
 }
 
-void CThread::Start()
+void CThread::Resume()
 {
-	// Signaled 상태로 
-	SetEvent(m_StartEvent);
+	DWORD Count;
+
+	do
+	{
+		Count = SuspendThread(m_Thread);
+	} while (Count <= 0);
 }
 
 void CThread::WaitStartEvent()
@@ -72,7 +49,6 @@ void CThread::WaitStartEvent()
 
 unsigned CThread::ThreadFunction(void* Arg)
 {
-	// Thread 객체 생성
 	CThread* Thread = (CThread*)Arg;
 
 	Thread->WaitStartEvent();

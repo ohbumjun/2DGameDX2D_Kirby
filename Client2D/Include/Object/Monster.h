@@ -7,7 +7,7 @@ class CMonster :
 public :
     CMonster();
     CMonster(const CMonster& Monster);
-    virtual ~CMonster() override;
+    virtual ~CMonster();
 private :
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;

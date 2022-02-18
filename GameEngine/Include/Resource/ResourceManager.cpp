@@ -215,10 +215,15 @@ void CResourceManager::EditSequence2DName(const std::string& PrevName, const std
 	m_AnimationManager->EditSequence2DName(PrevName, NewName);
 }
 
-CAnimationSequence2DInstance* CResourceManager::LoadAnimationSequence2DInstance(const TCHAR* FileName,
+CAnimationSequence2DInstance* CResourceManager::LoadAnimationInstance(const std::string& Name, const TCHAR* FileName,
 	const std::string& PathName)
 {
-	return m_AnimationManager->LoadAnimationSequence2DInstance(FileName, PathName);
+	return m_AnimationManager->LoadAnimationInstance(Name, FileName, PathName);
+}
+
+CAnimationSequence2DInstance* CResourceManager::FindAnimationInstance(const std::string& Name)
+{
+	return m_AnimationManager->FindAnimationInstance(Name);
 }
 
 CSound* CResourceManager::LoadSound(const std::string& GroupName, const std::string& SoundName, bool Loop,
