@@ -28,6 +28,11 @@ CSpriteComponent::CSpriteComponent(const CSpriteComponent& com) :
 
 CSpriteComponent::~CSpriteComponent()
 {
+	// 현재 프로젝트 상에서는, ResourceManager 로부터, Animation 을 Load 한 다음에 불러오는 것이다.
+	// 실제 지워주는 것도 ResourceManager 측에서 처리하므로
+	// 각각의 SpriteComponent 마다 해당 처리르 해줄 필요가 없다.....?
+	// 아니다. 각각의 SceneResource 에서만 관리를 해주자... 굳이 ResourceManager 까지 ?
+
 	SAFE_DELETE(m_Animation);
 }
 
@@ -152,7 +157,7 @@ void CSpriteComponent::SetTextureWorldScale(int Index)
 void CSpriteComponent::Start()
 {
 	CSceneComponent::Start();
-
+	
 	if (m_Animation)
 		m_Animation->Start();
 }

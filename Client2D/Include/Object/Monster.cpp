@@ -26,9 +26,16 @@ CMonster::CMonster(const CMonster& Monster)
 CMonster::~CMonster()
 {}
 
-void CMonster::SetAnimationInstance(const TCHAR* FileName)
+void CMonster::SetAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName)
 {
-	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(FileName);
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(Name, FileName, PathName);
+
+	if (!AnimationInstance)
+	{
+		assert(false);
+		return;
+	}
+
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 }
 
@@ -102,7 +109,7 @@ bool CMonster::Init()
 	m_Sprite->SetTransparency(true);
 
 	// Animation 
-	CAnimationSequence2DInstance* AnimationInstance = CResourceManager::GetInst()->LoadAnimationSequence2DInstance(TEXT("Beam.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Beam", TEXT("Beam.anim"));
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 

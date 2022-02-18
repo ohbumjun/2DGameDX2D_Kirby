@@ -21,7 +21,7 @@ private :
     float m_DeathFinishTime;
     bool m_DeathStart;
 public :
-    void SetAnimationInstance(const TCHAR* FileName);
+    void SetAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
     void SetCurrentAnimation(const std::string& Name);
 public :
     void Damage(float Damage);

@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 
+class CAnimationSequence2DInstance;
 DEFINITION_SINGLE(CResourceManager)
 
 CResourceManager::CResourceManager() :
@@ -215,6 +216,7 @@ void CResourceManager::EditSequence2DName(const std::string& PrevName, const std
 	m_AnimationManager->EditSequence2DName(PrevName, NewName);
 }
 
+/*
 CAnimationSequence2DInstance* CResourceManager::LoadAnimationInstance(const std::string& Name, const TCHAR* FileName,
 	const std::string& PathName)
 {
@@ -225,6 +227,12 @@ CAnimationSequence2DInstance* CResourceManager::FindAnimationInstance(const std:
 {
 	return m_AnimationManager->FindAnimationInstance(Name);
 }
+
+void CResourceManager::RemoveAnimationInstance(const std::string& Name)
+{
+	m_AnimationManager->RemoveAnimationInstance(Name);
+}
+*/
 
 CSound* CResourceManager::LoadSound(const std::string& GroupName, const std::string& SoundName, bool Loop,
 									const TCHAR* FileName, const std::string& PathName)

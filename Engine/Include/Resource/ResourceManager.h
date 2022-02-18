@@ -87,8 +87,12 @@ public: // =================== Sequence2D =====================
 	bool LoadSequence2DFullPath(std::string& SequenceName, const char* FullPath, const class CScene* Scene = nullptr);
 	bool LoadSequence2D(std::string& SequenceName, const char* FileName, const std::string& PathName = TEXTURE_PATH ,const class CScene* Scene = nullptr);
 	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);
-	class CAnimationSequence2DInstance* LoadAnimationSequence2DInstance(const TCHAR* FileName,
-		const std::string& PathName = ENGINE_ANIMATION_PATH);
+	/*
+	class CAnimationSequence2DInstance* LoadAnimationInstance(const std::string& Name,
+		const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
+	class CAnimationSequence2DInstance* FindAnimationInstance(const std::string& Name);
+	void RemoveAnimationInstance(const std::string& Name);
+	*/
 public: // =================== Sound =====================
 	CSound* LoadSound(const std::string& GroupName, const std::string& SoundName,
 		bool Loop, const TCHAR* FileName,

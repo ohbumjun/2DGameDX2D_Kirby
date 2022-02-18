@@ -13,6 +13,20 @@ CAnimationManager::~CAnimationManager()
 {
 	SAFE_DELETE(m_Animation2DCBuffer);
 	m_mapSequence2D.clear();
+
+	/*
+	{
+		auto iter = m_mapSequenceInstance.begin();
+		auto iterEnd = m_mapSequenceInstance.end();
+
+		for (; iter != iterEnd; ++iter)
+		{
+			SAFE_DELETE(iter->second);
+		}
+
+		m_mapSequenceInstance.clear();
+	}
+	*/
 }
 
 bool CAnimationManager::Init()
@@ -204,6 +218,7 @@ void CAnimationManager::EditSequence2DName(const std::string& PrevName, const st
 	m_mapSequence2D.insert(std::make_pair(NewName, Sequence2D));
 }
 
+/*
 CAnimationSequence2DInstance* CAnimationManager::LoadAnimationInstance(const std::string& Name,
 	const TCHAR* FileName,
 	const std::string& PathName)
@@ -248,3 +263,17 @@ CAnimationSequence2DInstance* CAnimationManager::FindAnimationInstance(const std
 
 	return iter->second;
 }
+
+void CAnimationManager::RemoveAnimationInstance(const std::string& Name)
+{
+	auto iter = m_mapSequenceInstance.find(Name);
+
+	if (iter == m_mapSequenceInstance.end())
+		return ;
+
+	// Shared Ptr 이 존재하지 않으므로
+	// 그냥 이것은 바로 ResourceManager 에서 제거한다.
+	m_mapSequenceInstance.erase(iter);
+}
+
+*/

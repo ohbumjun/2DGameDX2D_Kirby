@@ -1,4 +1,6 @@
 #include "SceneResource.h"
+#include "../PathManager.h"
+#include "../Animation/AnimationSequence2DInstance.h"
 
 CSceneResource::CSceneResource()
 {
@@ -73,6 +75,22 @@ CSceneResource::~CSceneResource()
 			iter = m_mapSequence2D.erase(iter);
 
 			CResourceManager::GetInst()->ReleaseAnimationSequence2D(Name);
+		}
+	}
+
+	{
+		auto iter = m_mapSequenceInstance.begin();
+		auto iterEnd = m_mapSequenceInstance.end();
+
+		for (; iter != iterEnd; ++iter)
+		{
+			std::string Name = iter->first;
+
+			// 여기서도 지워준다. Clone 해서 SceneResource 영역으로 저장되기 때문이다.
+			SAFE_DELETE(iter->second);
+
+			// iter = m_mapSequenceInstance.erase(iter);
+			// CResourceManager::GetInst()->RemoveAnimationInstance(Name);
 		}
 	}
 
@@ -358,6 +376,77 @@ bool CSceneResource::LoadSequence2D(const char* FileName, const std::string& Pat
 
 	return true;
 }
+
+CAnimationSequence2DInstance* CSceneResource::LoadAnimationInstance(const std::string& Name, const TCHAR* FileName,
+	const std::string& PathName)
+{
+	CAnimationSequence2DInstance* AnimationInstance = FindAnimationInstance(Name);
+
+	if (AnimationInstance)
+		return AnimationInstance;
+
+	AnimationInstance = new CAnimationSequence2DInstance;
+
+	TCHAR FullPath[MAX_PATH] = {};
+
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	if (Path)
+		lstrcpy(FullPath, Path->Path);
+	lstrcat(FullPath, FileName);
+
+	char FullPathMultibyte[MAX_PATH] = {};
+
+#ifdef UNICODE
+	int CovertLength = WideCharToMultiByte(CP_ACP, 0, FullPath, -1, 0, 0, 0, 0);
+	WideCharToMultiByte(CP_ACP, 0, FullPath, -1, FullPathMultibyte, CovertLength, 0, 0);
+#else
+	strcpy_s(FullPathMultibyte, FullPath);
+#endif
+
+	AnimationInstance->LoadFullPath(FullPathMultibyte);
+
+	m_mapSequenceInstance.insert(std::make_pair(Name, AnimationInstance));
+
+	return AnimationInstance;
+}
+
+CAnimationSequence2DInstance* CSceneResource::FindAnimationInstance(const std::string& Name)
+{
+	auto iter = m_mapSequenceInstance.find(Name);
+
+	if (iter == m_mapSequenceInstance.end())
+		return nullptr;
+	/*
+	if (iter == m_mapSequenceInstance.end())
+	{
+		CAnimationSequence2DInstance* Instance = CResourceManager::GetInst()->FindAnimationInstance(Name);
+
+		if (!Instance)
+			return nullptr;
+
+		m_mapSequenceInstance.insert(std::make_pair(Name, Instance));
+
+		return Instance;
+	}
+	*/
+
+	return iter->second;
+}
+
+/*
+void CSceneResource::RemoveAnimationInstance(const std::string& Name)
+{
+	auto iter = m_mapSequenceInstance.find(Name);
+
+	if (iter == m_mapSequenceInstance.end())
+		return;
+
+	// Shared Ptr 이 존재하지 않으므로
+	// 그냥 이것은 바로 ResourceManager 에서 제거한다.
+	m_mapSequenceInstance.erase(iter);
+}
+*/
 
 void CSceneResource::EditSequence2DName(const std::string& PrevName, const std::string& NewName)
 {
