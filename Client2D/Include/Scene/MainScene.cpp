@@ -10,6 +10,7 @@
 #include "Resource/Particle/Particle.h"
 #include "../Object/BubbleParticle.h"
 #include "../Object/YellowBird.h"
+#include "../Object/BeamMonster.h"
 
 CMainScene::CMainScene()
 {
@@ -43,10 +44,10 @@ bool CMainScene::Init()
 
 	// Sleep(1000); //
 
-	CMonster* Monster = m_Scene->CreateGameObject<CMonster>("Monster");
-	Monster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
+	CBeamMonster* BeamMonster = m_Scene->CreateGameObject<CBeamMonster>("BeamMonster");
+	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
 
-	CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("Monster2");
+	CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("YellowBird");
 	YellowBirdMonster->SetWorldPos(Vector3(-100.f, 500.f, 1.));
 	/*
 	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));

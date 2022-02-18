@@ -1,5 +1,7 @@
 #include "BeamMonster.h"
 
+class CAnimationSequence2DInstance;
+
 CBeamMonster::CBeamMonster()
 {}
 
@@ -18,6 +20,11 @@ bool CBeamMonster::Init()
 {
 	if (!CAbilityMonster::Init())
 		return false;
+
+	LoadAnimationInstance("Beam", TEXT("Beam.anim"));
+	SetCurrentAnimation("RightIdle");
+
+	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
 	return true;
 }
