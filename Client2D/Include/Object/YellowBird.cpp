@@ -19,6 +19,9 @@ bool CYellowBird::Init()
 	if (!CNormalMonster::Init())
 		return false;
 
+	LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
+	SetCurrentAnimation("RightIdle");
+
 	return true;
 }
 

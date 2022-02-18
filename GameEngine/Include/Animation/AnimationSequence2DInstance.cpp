@@ -17,6 +17,8 @@ CAnimationSequence2DInstance::CAnimationSequence2DInstance() :
 
 CAnimationSequence2DInstance::CAnimationSequence2DInstance(const CAnimationSequence2DInstance& Anim)
 {
+	m_PlayAnimation = Anim.m_PlayAnimation;
+
 	auto iter    = Anim.m_mapAnimation.begin();
 	auto iterEnd = Anim.m_mapAnimation.end();
 
