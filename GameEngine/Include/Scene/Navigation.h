@@ -6,7 +6,7 @@ struct NavNode {
 	
 };
 
-class CNavigation //
+class CNavigation ////
 {
 };
 
