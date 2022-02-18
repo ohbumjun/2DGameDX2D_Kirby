@@ -41,7 +41,7 @@ bool CMainScene::Init()
 	if (m_LoadingFunction)
 		m_LoadingFunction(false, 0.5f);
 
-	// Sleep(1000);
+	// Sleep(1000); //
 
 	CMonster* Monster = m_Scene->CreateGameObject<CMonster>("Monster");
 	Monster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
