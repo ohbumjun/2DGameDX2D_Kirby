@@ -43,6 +43,12 @@
     <Filter Include="02. Object\06. TileMap">
       <UniqueIdentifier>{d0af0664-a454-4683-8a7a-776d1064825b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\03. Monster\01. Normal">
+      <UniqueIdentifier>{39b0d679-d798-4c8a-acd6-744bd6791439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\03. Monster\02. Ability">
+      <UniqueIdentifier>{b6880ed0-8190-4ea3-8f49-48b08927433f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,10 +118,16 @@
       <Filter>02. Object\06. TileMap</Filter>
     </ClCompile>
     <ClCompile Include="Object\NormalMonster.cpp">
-      <Filter>02. Object\03. Monster</Filter>
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
     <ClCompile Include="Object\YellowBird.cpp">
-      <Filter>02. Object\03. Monster</Filter>
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\AbilityMonster.cpp">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BeamMonster.cpp">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,10 +201,16 @@
       <Filter>02. Object\06. TileMap</Filter>
     </ClInclude>
     <ClInclude Include="Object\NormalMonster.h">
-      <Filter>02. Object\03. Monster</Filter>
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
     <ClInclude Include="Object\YellowBird.h">
-      <Filter>02. Object\03. Monster</Filter>
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\AbilityMonster.h">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BeamMonster.h">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
