@@ -957,6 +957,7 @@ void CTileMapComponent::Load(FILE* File)
 	if (MaterialEnable)
 	{
 		m_TileMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+
 		m_TileMaterial->Load(File);
 	}
 
@@ -994,14 +995,22 @@ void CTileMapComponent::Load(FILE* File)
 		m_vecTile[i] = Tile;
 	}
 
-	m_Scene->GetNavManager()->SetNavData(this);
-
 	// 상수 버퍼 세팅하기
 	SAFE_DELETE(m_CBuffer);
 	
 	m_CBuffer = new CTileConstantBuffer;
 
 	m_CBuffer->Init();
+
+	// NavManager 에 해당 TileMapComponent 세팅
+	m_Scene->GetNavManager()->SetNavData(this);
+
+	// 상수 버퍼 타일 사이즈 세팅 
+	m_CBuffer->SetTileSize(Vector2(m_TileSize.x, m_TileSize.y));
+
+	// 상수 버퍼 이미지 사이즈 세팅
+	if (!m_TileMaterial->EmptyTexture())
+		m_CBuffer->SetImageSize(Vector2((float)m_TileMaterial->GetTextureWidth(), (float)m_TileMaterial->GetTextureHeight()));
 
 	// 구조화 버퍼 등의 정보 세팅
 	SetWorldInfo();
