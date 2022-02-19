@@ -137,8 +137,8 @@ void CSceneCollision::CollisionMouse(float DeltaTime)
 			IndexX = IndexX < 0 ? -1 : IndexX;
 			IndexY = IndexY < 0 ? -1 : IndexY;
 
-			IndexX = IndexX > m_Section->CountX ? -1 : IndexX;
-			IndexY = IndexY > m_Section->CountY ? -1 : IndexY;
+			IndexX = IndexX >= m_Section->CountX ? -1 : IndexX;
+			IndexY = IndexY >= m_Section->CountY ? -1 : IndexY;
 
 			// 범위를 벗어나지 않았을 때에만 진행
 			if (IndexX != -1 && IndexY != -1)
