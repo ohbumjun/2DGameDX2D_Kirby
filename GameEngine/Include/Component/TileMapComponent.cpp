@@ -468,7 +468,7 @@ int CTileMapComponent::GetTileIndexY(const Vector3& Pos)
 	int	IndexX = (int)RatioX;
 	int	IndexY = (int)RatioY;
 
-	if (IndexX < 0 || IndexX >= m_CountX)
+	if (IndexX < 0 || IndexX > m_CountX)
 		return -1;
 
 	// 정수 부분을 제거하여 소수점 부분만을 남겨준다.
