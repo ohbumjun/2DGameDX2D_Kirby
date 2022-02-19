@@ -49,6 +49,12 @@
     <Filter Include="02. Object\03. Monster\02. Ability">
       <UniqueIdentifier>{b6880ed0-8190-4ea3-8f49-48b08927433f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect">
+      <UniqueIdentifier>{a5a5dbfa-bb5e-4eb8-ab59-3529402a9192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\07. Effect\01. MonsterAttack">
+      <UniqueIdentifier>{11f59ad5-685f-4a21-8cb4-8aea5f26ed97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -128,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="Object\BeamMonster.cpp">
       <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\PurpleBeatle.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\MushRoom.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="Object\BeamMonster.h">
       <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PurpleBeatle.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MushRoom.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

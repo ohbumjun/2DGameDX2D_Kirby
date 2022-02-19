@@ -281,6 +281,7 @@ void CTileMapWindow::Update(float DeltaTime)
 
 	if (CEditorManager::GetInst()->GetEditMode() == EditMode::Tile && m_TileMap)
 	{
+		// 
 		m_TileMap->EnableEditMode(true);
 
 		// Mouse¸¦ ´­·¶´Ù¸é 

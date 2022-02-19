@@ -167,10 +167,12 @@
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
+    <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalMonster.cpp" />
     <ClCompile Include="Object\PixelTest.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
+    <ClCompile Include="Object\PurpleBeatle.cpp" />
     <ClCompile Include="Object\TileMap.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\LoadingScene.cpp" />
@@ -195,10 +197,12 @@
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />
+    <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalMonster.h" />
     <ClInclude Include="Object\PixelTest.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PlayerAnimation2D.h" />
+    <ClInclude Include="Object\PurpleBeatle.h" />
     <ClInclude Include="Object\TileMap.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />

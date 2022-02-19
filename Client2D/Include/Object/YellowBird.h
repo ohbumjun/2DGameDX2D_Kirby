@@ -5,7 +5,6 @@ class CYellowBird :
     public CNormalMonster
 {
     friend class CScene;
-    friend class CEditorManager;
 protected:
     CYellowBird();
     CYellowBird(const CYellowBird& Bird);
