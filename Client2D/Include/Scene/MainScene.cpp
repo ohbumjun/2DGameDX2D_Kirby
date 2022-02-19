@@ -11,6 +11,7 @@
 #include "../Object/BubbleParticle.h"
 #include "../Object/YellowBird.h"
 #include "../Object/BeamMonster.h"
+#include "../Object/PurpleBeatle.h"
 
 CMainScene::CMainScene()
 {
@@ -49,6 +50,9 @@ bool CMainScene::Init()
 
 	CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("YellowBird");
 	YellowBirdMonster->SetWorldPos(Vector3(-100.f, 500.f, 1.));
+
+	CPurpleBeatle* PurpleBeatle = m_Scene->CreateGameObject<CPurpleBeatle>("PurpleBeatle");
+	PurpleBeatle->SetWorldPos(Vector3(-200.f, 500.f, 1.));
 	/*
 	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
 	Monster->SetCurrentAnimation("RightIdle");

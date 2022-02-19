@@ -16,7 +16,7 @@ void CPurpleBeatle::Start()
 
 bool CPurpleBeatle::Init()
 {
-	if (!CGameObject::Init())
+	if (!CNormalMonster::Init())
 		return false;
 
 	LoadAnimationInstance("Normal_PurpleBeatle", TEXT("Normal_PurpleBeatle.anim"));

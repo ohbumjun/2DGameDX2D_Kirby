@@ -168,6 +168,7 @@
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
     <ClCompile Include="Object\MushRoom.cpp" />
+    <ClCompile Include="Object\NormalBear.cpp" />
     <ClCompile Include="Object\NormalMonster.cpp" />
     <ClCompile Include="Object\PixelTest.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />
     <ClInclude Include="Object\MushRoom.h" />
+    <ClInclude Include="Object\NormalBear.h" />
     <ClInclude Include="Object\NormalMonster.h" />
     <ClInclude Include="Object\PixelTest.h" />
     <ClInclude Include="Object\Player2D.h" />

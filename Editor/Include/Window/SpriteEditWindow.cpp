@@ -776,6 +776,9 @@ void CSpriteEditWindow::RevCopySequenceButton()
 	else
 		SetNormalMode();
 
+	// AnimationFrameList는 비워준다
+	m_AnimationFrameList->Clear();
+
 	for (size_t i = 0; i < SrcFrameCount; i++)
 	{
 		AnimationFrameData SrcFrame = SrcSequence->GetFrameData((int)i);
@@ -798,8 +801,6 @@ void CSpriteEditWindow::RevCopySequenceButton()
 		}
 		*/
 
-		// AnimationFrameList는 비워준다
-		m_AnimationFrameList->Clear();
 
 		// 원본이 Reverse 라면,
 		if (SrcSequence->IsFrameReverse())
@@ -1120,7 +1121,7 @@ void CSpriteEditWindow::DeleteFrameButton()
 	if (m_AnimationFrameList->GetSelectIndex() < 0)
 		return;
 
-	// Delete Acual Frame Data
+	// Delete Actual Frame Data
 	CSceneResource*       Resource         = CSceneManager::GetInst()->GetScene()->GetResource();
 	CAnimationSequence2D* Sequence         = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
 	int                   SelectedFrameIdx = std::stoi(m_AnimationFrameList->GetSelectItem());
@@ -1157,7 +1158,9 @@ void CSpriteEditWindow::DeleteFrameButton()
 		m_Animation->GetCurrentAnimation()->SetFrame(0);
 
 		int UpdatedSelectIndex = m_AnimationFrameList->GetSelectIndex();
+
 		AnimationFrameData NFrameData = m_Animation->GetCurrentAnimation()->GetFrameData(UpdatedSelectIndex);
+
 		Vector2 StartPos = NFrameData.Start;
 		Vector2 EndPos   = NFrameData.Start + NFrameData.Size;
 
