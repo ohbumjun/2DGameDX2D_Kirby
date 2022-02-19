@@ -40,6 +40,8 @@ bool CEditorMenu::Init()
 	m_ObjectComboBox = AddWidget<CIMGUIComboBox>("ObjectComboBox", 150.f, 30.f);
 	m_ObjectComboBox->AddItem("GameObject");
 	m_ObjectComboBox->AddItem("Player");
+	m_ObjectComboBox->AddItem("YellowBird");
+	m_ObjectComboBox->AddItem("BeamMonster");
 	m_ObjectComboBox->SetHideName(true);
 
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
@@ -129,7 +131,12 @@ void CEditorMenu::CreateNewObject()
 	// 중복 방지
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 	const std::string NewObjectName = m_ObjectNameInput->GetTextMultibyte();
+
 	if (Hierarchy->GetObjectListBox()->CheckItem(NewObjectName))
+		return;
+
+	// CreateObject_Type enum 의 범위를 벗어나면 X
+	if ((CreateObject_Type)m_ObjectComboBox->GetSelectIndex() >= CreateObject_Type::End)
 		return;
 
 	switch ((CreateObject_Type)m_ObjectComboBox->GetSelectIndex())

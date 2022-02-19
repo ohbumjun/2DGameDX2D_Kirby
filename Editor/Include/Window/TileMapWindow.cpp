@@ -133,6 +133,7 @@ bool CTileMapWindow::Init()
 	m_TileType->SetHideName(true);
 	m_TileType->AddItem("Normal");
 	m_TileType->AddItem("Wall");
+	// m_TileType->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileTypeCallback);
 
 	// ==============================
 
@@ -245,6 +246,9 @@ void CTileMapWindow::Update(float DeltaTime)
 
 			CTile* Tile = m_TileMap->GetTile(Vector3(MouseWorldPos.x, MouseWorldPos.y, 0.f));
 
+			if (!Tile) // 해당 위치에 타일이 존재하지 않는다면 처리 X
+				return;
+
 			switch (m_EditMode)
 			{
 			case Tile_EditMode::Type :
@@ -352,5 +356,10 @@ void CTileMapWindow::SetDefaultFrame()
 
 void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 {
+	// Editor 에 Tile Edit 이라고 세팅하기
+	CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+
+	// TileMapWindow 내에서 Tile 의 어떤 Mode를 수정할지를 세팅
 	m_EditMode = (Tile_EditMode)Index;
 }
+

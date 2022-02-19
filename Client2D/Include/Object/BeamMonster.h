@@ -6,6 +6,7 @@ class CBeamMonster :
     public CAbilityMonster
 {
     friend class CScene;
+    friend class CEditorManager;
 protected:
     CBeamMonster();
     CBeamMonster(const CBeamMonster& Monster);

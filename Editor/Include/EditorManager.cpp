@@ -26,6 +26,8 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Object/Player2D.h"
 #include "Object/ShowObject.h"
+#include "../../Client2D/Include/Object/YellowBird.h"
+#include "../../Client2D/Include/Object/BeamMonster.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -186,6 +188,7 @@ void CEditorManager::MouseLButtonPush(float DeltaTime)
 
 void CEditorManager::MouseLButtonUp(float DeltaTime)
 {
+	m_MousePush = false;
 }
 
 void CEditorManager::KeyBoardUp(float DeltaTime)
@@ -284,9 +287,20 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CPlayer2D).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CPlayer2D>();
-
 		return Obj;
 	}
+	/*
+	else if (GameObjectTypeID == typeid(CYellowBird).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CYellowBird>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBeamMonster>();
+		return Obj;
+	}
+	*/
 	return nullptr;
 }
 

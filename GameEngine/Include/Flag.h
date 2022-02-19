@@ -77,7 +77,8 @@ enum class RenderState_Type
 enum class CreateObject_Type
 {
 	GameObject,
-	Player
+	Player,
+	End
 };
 
 enum class CreateComponent_Type
