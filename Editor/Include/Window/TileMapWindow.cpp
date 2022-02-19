@@ -321,16 +321,16 @@ void CTileMapWindow::Update(float DeltaTime)
 				float TextureWidth  = (float)m_TileMap->GetTileMaterial()->GetTextureWidth();
 				float TextureHeight = (float)m_TileMap->GetTileMaterial()->GetTextureHeight();
 
-				if (FrameStartX > 0 || FrameStartX > TextureWidth)
+				if (FrameStartX < 0 || FrameStartX > TextureWidth)
 					return;
-				if (FrameStartY > 0 || FrameStartY > TextureHeight)
+				if (FrameStartY < 0 || FrameStartY > TextureHeight)
 					return;
-				if (FrameEndX > 0 || FrameEndX > TextureWidth)
+				if (FrameEndX < 0 || FrameEndX > TextureWidth)
 					return;
-				if (FrameEndY > 0 || FrameEndY > TextureHeight)
+				if (FrameEndY < 0 || FrameEndY > TextureHeight)
 					return;
 
-				Tile->SetFrameStart(FrameStartX, FrameEndY);
+				Tile->SetFrameStart(FrameStartX, FrameStartY);
 				Tile->SetFrameEnd(FrameEndX, FrameEndY);
 
 			}
