@@ -12,6 +12,7 @@
 #include "../Object/YellowBird.h"
 #include "../Object/BeamMonster.h"
 #include "../Object/PurpleBeatle.h"
+#include "../Object/NormalBear.h"
 
 CMainScene::CMainScene()
 {
@@ -53,6 +54,10 @@ bool CMainScene::Init()
 
 	CPurpleBeatle* PurpleBeatle = m_Scene->CreateGameObject<CPurpleBeatle>("PurpleBeatle");
 	PurpleBeatle->SetWorldPos(Vector3(-200.f, 500.f, 1.));
+
+	CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
+	NormalBear->SetWorldPos(Vector3(-200.f, 700.f, 1.));
+
 	/*
 	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
 	Monster->SetCurrentAnimation("RightIdle");

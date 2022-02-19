@@ -142,7 +142,7 @@
       <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
     <ClCompile Include="Object\NormalBear.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,7 +234,7 @@
       <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
     <ClInclude Include="Object\NormalBear.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
