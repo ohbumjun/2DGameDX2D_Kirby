@@ -938,6 +938,8 @@ void CTileMapComponent::Load(FILE* File)
 
 	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(MeshName);
 
+	SetMeshSize(1.f, 1.f, 0.f);
+
 	// BackMaterial
 	bool MaterialEnable = false;
 
@@ -978,6 +980,9 @@ void CTileMapComponent::Load(FILE* File)
 	// 구조화 버퍼를 위한 vector 초기화
 	m_vecTileInfo.resize(m_Count);
 
+	// 실제 Tile 들을 배치하기 위한 resize
+	m_vecTile.resize(m_Count);
+
 	for (int i = 0; i < m_Count; i++)
 	{
 		CTile* Tile = new CTile;
@@ -990,6 +995,16 @@ void CTileMapComponent::Load(FILE* File)
 	}
 
 	m_Scene->GetNavManager()->SetNavData(this);
+
+	// 상수 버퍼 세팅하기
+	SAFE_DELETE(m_CBuffer);
+	
+	m_CBuffer = new CTileConstantBuffer;
+
+	m_CBuffer->Init();
+
+	// 구조화 버퍼 등의 정보 세팅
+	SetWorldInfo();
 
 	CSceneComponent::Load(File);
 }

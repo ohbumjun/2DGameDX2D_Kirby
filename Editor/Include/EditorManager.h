@@ -64,7 +64,7 @@ public:
 public:
 	void SetEditMode(EditMode Mode);
 	void SetSceneEditObject();
-	void CreateCameraObject();
+	// void CreateCameraObject();
 public:
 	bool Init(HINSTANCE hInst);
 	void CreateDefaultSceneMode();
@@ -86,10 +86,9 @@ public:
 
 public :
 	void CreateSceneMode(class CScene* Scene, const size_t SceneModeTypeID);
-	class CGameObject* CreateGameObject(class CScene* Scene, const size_t GameObjectTypeID);
 	class CComponent* CreateComponent( class CGameObject* Object, const size_t ComponentTypeID);
 	void CreateAnimationInstance(class CSpriteComponent* Component, const size_t AnimationTypeID);
-	
+	class CGameObject* CreateGameObject(class CScene* Scene, const size_t GameObjectTypeID);
 
 	DECLARE_SINGLE(CEditorManager)
 };

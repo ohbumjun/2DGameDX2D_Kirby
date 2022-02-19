@@ -79,6 +79,7 @@ void CEditorManager::SetSceneEditObject()
 	}
 }
 
+/*
 void CEditorManager::CreateCameraObject()
 {
 	if (!m_CameraObject)
@@ -87,6 +88,7 @@ void CEditorManager::CreateCameraObject()
 		m_CameraObject->SetWorldScale(0.f, 0.f, 1.f);
 	}
 }
+*/
 
 bool CEditorManager::Init(HINSTANCE hInst)
 {
@@ -151,7 +153,7 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->SetKeyCallback("DownYSize", Key_State::KeyState_Down, this, &CEditorManager::DecreaseYSize);
 
 	// Camera 생성하기
-	CreateCameraObject();
+	// CreateCameraObject();
 
 	return true;
 }
@@ -193,37 +195,41 @@ void CEditorManager::MouseLButtonUp(float DeltaTime)
 
 void CEditorManager::KeyBoardUp(float DeltaTime)
 {
-	if (m_CameraObject)
+	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	if (Camera)
 	{
-		m_CameraObject->AddWorldPos(Vector3(0.f, m_CameraMoveSpeed * DeltaTime, 0.f));
-		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
+		Camera->AddWorldPos(Vector3(0.f, m_CameraMoveSpeed * DeltaTime, 0.f));
+		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
 	}
 }
 
 void CEditorManager::KeyBoardLeft(float DeltaTime)
 {
-	if (m_CameraObject)
+	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	if (Camera)
 	{
-		m_CameraObject->AddWorldPos(Vector3(-1.f * m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
-		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
+		Camera->AddWorldPos(Vector3(-1.f * m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
+		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
 	}
 }
 
 void CEditorManager::KeyBoardRight(float DeltaTime)
 {
-	if (m_CameraObject)
+	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	if (Camera)
 	{
-		m_CameraObject->AddWorldPos(Vector3(m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
-		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
+		Camera->AddWorldPos(Vector3(m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
+		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
 	}
 }
 
 void CEditorManager::KeyBoardDown(float DeltaTime)
 {
-	if (m_CameraObject)
+	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	if (Camera)
 	{
-		m_CameraObject->AddWorldPos(Vector3(0.f, -1.f * m_CameraMoveSpeed * DeltaTime, 0.f));
-		m_SpriteWindow->SetCameraPosText(m_CameraObject->GetWorldPos().x, m_CameraObject->GetWorldPos().y);
+		Camera->AddWorldPos(Vector3(0.f, -1.f * m_CameraMoveSpeed * DeltaTime, 0.f));
+		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
 	}
 }
 

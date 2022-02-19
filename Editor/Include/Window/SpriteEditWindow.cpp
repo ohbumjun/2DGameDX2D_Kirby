@@ -714,7 +714,7 @@ void CSpriteEditWindow::SpriteEditButton()
 		m_SpriteCurrentFrame->SetTexture(Texture);
 
 		// Editor Manager 상에서 CameraObject 생성함수 호출 ( 즉, CameraObject 생성하기 )
-		CEditorManager::GetInst()->CreateCameraObject();
+		// CEditorManager::GetInst()->CreateCameraObject();
 	}
 }
 
@@ -1448,7 +1448,7 @@ void CSpriteEditWindow::LoadSequence()
 
 
 		// CameraObject 생성하기
-		CEditorManager::GetInst()->CreateCameraObject();
+		// CEditorManager::GetInst()->CreateCameraObject();
 
 		// 해당 Seq를 m_Sprite 에 추가하기
 		m_Sprite->SetTexture(LoadedSequence->GetTexture());
@@ -1626,7 +1626,7 @@ void CSpriteEditWindow::LoadAnimation()
 		}
 
 		// CameraObject 생성하기
-		CEditorManager::GetInst()->CreateCameraObject();
+		// CEditorManager::GetInst()->CreateCameraObject();
 
 		m_SpriteObject->SetMaterialTexture(AnimTexture);
 		m_SpriteObject->SetAnimationNewTexture(AnimTexture);
