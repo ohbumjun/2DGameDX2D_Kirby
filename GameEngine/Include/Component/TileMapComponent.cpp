@@ -11,6 +11,7 @@
 #include "../Resource/Shader/TileConstantBuffer.h"
 #include "../Resource/Shader/StructuredBuffer.h"
 #include "../Scene/NavigationManager.h"
+#include "../Scene/SceneCollision.h"
 
 CTileMapComponent::CTileMapComponent()
 {
@@ -317,6 +318,39 @@ void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, con
 	// Navigation Manager 에 해당 TileMapComponent 를 Data 로 설정해준다.
 	m_Scene->GetNavManager()->SetNavData(this);
 
+	// TileMap 전체 Size 에 맞춰서 SceneCollision의 전체 CollisionSection도 세팅해준다.
+	// 2D 전용
+	if (CEngine::GetInst()->GetEngineSpace() == Engine_Space::Space2D)
+	{
+		Vector3 ColliderTotalSectionSize = m_Scene->GetCollision()->GetSectionTotalSize();
+		Vector2 TileMapTotalSize = Vector2(m_TileSize.x, m_TileSize.y) * (float)m_Count;
+
+		int ResultSectionSizeX = -1;
+
+		bool SectionSizeXChanged = false;
+
+		if (TileMapTotalSize.x > ColliderTotalSectionSize.x)
+		{
+			ResultSectionSizeX = (int)TileMapTotalSize.x;
+			SectionSizeXChanged = true;
+		}
+
+		int ResultSectionSizeY = -1;
+
+		bool SectionSizeYChanged = false;
+
+		if (TileMapTotalSize.y > ColliderTotalSectionSize.y)
+		{
+			ResultSectionSizeY = (int)TileMapTotalSize.y;
+			SectionSizeYChanged = true;
+		}
+
+		// 만약 Size 재조정이 필요하다면 재조정
+		if (SectionSizeXChanged || SectionSizeYChanged)
+		{
+			m_Scene->GetCollision()->SetSectionTotalSize(Vector3((float)ResultSectionSizeX, (float)ResultSectionSizeY, ColliderTotalSectionSize.z));
+		}
+	}
 }
 
 void CTileMapComponent::SetTileDefaultFrame(const Vector2& Start, const Vector2& End)
@@ -515,7 +549,6 @@ int CTileMapComponent::GetTileIndexY(const Vector3& Pos)
 	// 가운데일 경우
 	else
 		return IndexY * 2;
-
 
 	return -1;
 }

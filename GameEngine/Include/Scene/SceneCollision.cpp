@@ -287,6 +287,18 @@ void CSceneCollision::SetSectionCount(int CountX, int CountY, int CountZ)
 	m_Section->Max = m_Section->Center + m_Section->SectionTotalSize / 2.f;
 }
 
+void CSceneCollision::SetSectionTotalSize(const Vector3& TotalSize)
+{
+	if (!m_Section)
+		m_Section = new CollisionSectionInfo;
+
+	m_Section->SectionTotalSize = TotalSize;
+
+	SetSectionSize(TotalSize / GetSectionCount());
+
+	SetSectionCenter(0.f, 0.f);
+}
+
 // 실제 공간들을 쪼갤 것이다. 
 void CSceneCollision::CreateSection()
 {

@@ -45,11 +45,20 @@ private :
 	CSharedPtr<CColliderComponent> m_MouseCollision;
 	bool m_WidgetCollision;
 public :
+	Vector3 GetSectionTotalSize () const
+{
+		return m_Section->SectionTotalSize;
+}
+	Vector3 GetSectionCount() const
+{
+		return Vector3((float)m_Section->CountX, (float)m_Section->CountY, (float)m_Section->CountZ);
+}
+public :
 	void Start();
 	bool Init();
 	void Collision(float DeltaTime);
 	bool CollisionWidget();
-	void CollisionMouse(float DelatTime);
+	void CollisionMouse(float DeltaTime);
 public :
 	void SetSectionSize(const Vector3& Size);
 	void SetSectionSize(float x, float y, float z = 1.f);
@@ -60,6 +69,7 @@ public :
 	void SetSectionMax(const Vector3& Size);
 	void SetSectionMax(float x, float y, float z = 1.f);
 	void SetSectionCount(int CountX, int CountY, int CountZ = 1);
+	void SetSectionTotalSize(const Vector3& Size);
 	void CreateSection();
 	void Clear();
 	void AddCollider(class CColliderComponent* Collider);
