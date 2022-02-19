@@ -976,10 +976,8 @@ void CTileMapComponent::Load(FILE* File)
 		SAFE_DELETE(m_vecTile[i]);
 	}
 
+	// Tile 비워주고
 	m_vecTile.clear();
-
-	// 구조화 버퍼를 위한 vector 초기화
-	m_vecTileInfo.resize(m_Count);
 
 	// 실제 Tile 들을 배치하기 위한 resize
 	m_vecTile.resize(m_Count);
@@ -1014,6 +1012,9 @@ void CTileMapComponent::Load(FILE* File)
 
 	// 구조화 버퍼 등의 정보 세팅
 	SetWorldInfo();
+
+	// EditMode 라면? 실제 TileMapWindow 에 세팅
+	// CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap(this);
 
 	CSceneComponent::Load(File);
 }

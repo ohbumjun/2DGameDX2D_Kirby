@@ -20,6 +20,26 @@ CTileMapWindow::CTileMapWindow()
 CTileMapWindow::~CTileMapWindow()
 {}
 
+void CTileMapWindow::SetTileMap(CTileMapComponent* TileMap)
+{
+	m_TileMap = TileMap;
+
+	// 해당 TileMap에 사용된 Tile Texture의 Width, Height 를 IMGUIText에 세팅한다.
+	if (!m_TileMap->GetTileMaterial()->EmptyTexture())
+	{
+		float TileTextureWidth = (float)m_TileMap->GetTileMaterial()->GetTextureWidth();
+		float TileTextureHeight = (float)m_TileMap->GetTileMaterial()->GetTextureHeight();
+
+		char TextureWidth[MAX_PATH] = {};
+		sprintf_s(TextureWidth, "%.1f", TileTextureWidth);
+		m_TextureWidth->SetText(TextureWidth);
+
+		char TextureHeight[MAX_PATH] = {};
+		sprintf_s(TextureHeight, "%.1f", TileTextureHeight);
+		m_TextureHeight->SetText(TextureHeight);
+	}
+}
+
 bool CTileMapWindow::Init()
 {
 	if (!CIMGUIWindow::Init())
@@ -129,7 +149,7 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileType = AddWidget<CIMGUIComboBox>("TileType", 100.f, 50.f);
+	m_TileType = AddWidget<CIMGUIComboBox>("TileType", 120.f, 50.f);
 	m_TileType->SetHideName(true);
 	m_TileType->AddItem("Normal");
 	m_TileType->AddItem("Wall");
@@ -144,11 +164,35 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileEdit = AddWidget<CIMGUIComboBox>("TileEditMode", 100.f, 50.f);
+	m_TileEdit = AddWidget<CIMGUIComboBox>("TileEditMode", 120.f, 50.f);
 	m_TileEdit->SetHideName(true);
 	m_TileEdit->AddItem("Type");
 	m_TileEdit->AddItem("Frame");
 	m_TileEdit->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetEditModeCallback);
+	Label = AddWidget<CIMGUILabel>("TextureWidth", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_TextureWidth = AddWidget<CIMGUIText>("TextureWidth");
+	m_TextureWidth->SetSize(80.f, 40.f);
+	m_TextureWidth->SetHideName(true);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Label = AddWidget<CIMGUILabel>("TextureHeight", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(320.f);
+
+	m_TextureHeight = AddWidget<CIMGUIText>("TextureHeight");
+	m_TextureHeight->SetSize(80.f, 40.f);
+	m_TextureHeight->SetHideName(true);
 
 	// ==============================
 
@@ -264,6 +308,30 @@ void CTileMapWindow::Update(float DeltaTime)
 				break;
 			case Tile_EditMode::Frame:
 			{
+				float FrameStartX = m_TileFrameStartX->GetValueFloat();
+				float FrameStartY = m_TileFrameStartY->GetValueFloat();
+
+				float FrameEndX = m_TileFrameEndX->GetValueFloat();
+				float FrameEndY = m_TileFrameEndY->GetValueFloat();
+
+				// 1) 이미지의 가로 세로 길이를 구해서, 범위 제한을 한다.
+				// 2) 또한 실제 Input 에도 해당 내용으로 바꿔서 표시한다. --> 별도의 Text를 마련한다.
+				// 어차피 TileMap 의 경우, 거꾸로 출력할 일이 없다.
+
+				float TextureWidth  = (float)m_TileMap->GetTileMaterial()->GetTextureWidth();
+				float TextureHeight = (float)m_TileMap->GetTileMaterial()->GetTextureHeight();
+
+				if (FrameStartX > 0 || FrameStartX > TextureWidth)
+					return;
+				if (FrameStartY > 0 || FrameStartY > TextureHeight)
+					return;
+				if (FrameEndX > 0 || FrameEndX > TextureWidth)
+					return;
+				if (FrameEndY > 0 || FrameEndY > TextureHeight)
+					return;
+
+				Tile->SetFrameStart(FrameStartX, FrameEndY);
+				Tile->SetFrameEnd(FrameEndX, FrameEndY);
 
 			}
 			break;
@@ -334,6 +402,18 @@ void CTileMapWindow::CreateTile()
 
 	// TileMapComponent 의 상수버퍼에 전체 ImageSize를 지정해주도록 세팅한다.
 	m_TileMap->SetImageSizeToCBuffer();
+
+	// 해당 TileMap에 사용된 Tile Texture의 Width, Height 를 IMGUIText에 세팅한다.
+	float TileTextureWidth  = (float)Material->GetTextureWidth();
+	float TileTextureHeight = (float)Material->GetTextureHeight();
+
+	char TextureWidth[MAX_PATH] = {};
+	sprintf_s(TextureWidth, "%.1f", TileTextureWidth);
+	m_TextureWidth->SetText(TextureWidth);
+
+	char TextureHeight[MAX_PATH] = {};
+	sprintf_s(TextureHeight, "%.1f", TileTextureHeight);
+	m_TextureHeight->SetText(TextureWidth);
 
 }
 

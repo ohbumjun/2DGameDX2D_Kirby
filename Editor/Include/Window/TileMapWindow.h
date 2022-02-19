@@ -21,6 +21,9 @@ private :
 	class CIMGUITextInput* m_TileFrameEndX;
 	class CIMGUITextInput* m_TileFrameEndY;
 private :
+	class CIMGUIText* m_TextureWidth;
+	class CIMGUIText* m_TextureHeight;
+private :
 	class CTileMapComponent* m_TileMap;
 	Tile_EditMode m_EditMode;
 public :
@@ -28,10 +31,7 @@ public :
 	{
 		m_EditMode = EditMode;
 	}
-	void SetTileMap (class CTileMapComponent* TileMap)
-	{
-		m_TileMap = TileMap;
-	}
+	void SetTileMap(class CTileMapComponent* TileMap);
 public :
 	Tile_EditMode GetTileEditMode () const
 {
