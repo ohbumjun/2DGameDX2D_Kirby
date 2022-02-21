@@ -24,6 +24,10 @@ private:
 	bool                               m_Start;
 	bool m_Change;
 public :
+	std::list<CSharedPtr<CGameObject>> GetObjectLists() const
+{
+		return m_ObjList;
+}
 	void SetPlayerObject(CGameObject* Object)
 {
 		m_Mode->SetPlayerObject(Object);

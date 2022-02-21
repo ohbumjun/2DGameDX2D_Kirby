@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
+#include "../Component/TileMapComponent.h"
 
 CGameObject::CGameObject() :
 	m_Scene(nullptr),

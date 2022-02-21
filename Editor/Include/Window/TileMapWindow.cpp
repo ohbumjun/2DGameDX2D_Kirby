@@ -279,6 +279,9 @@ void CTileMapWindow::Update(float DeltaTime)
 {
 	CIMGUIWindow::Update(DeltaTime);
 
+	EditMode CurrentEditMode = CEditorManager::GetInst()->GetEditMode();
+
+
 	if (CEditorManager::GetInst()->GetEditMode() == EditMode::Tile && m_TileMap)
 	{
 		// 

@@ -21,6 +21,7 @@
 #include "Component/TileMapComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
+#include "TileMapWindow.h"
 
 #include "../Object/ShowObject.h"
 
@@ -296,7 +297,23 @@ void CEditorMenu::LoadScene()
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
 
-		// 기존 정보를 모두 지워준다.
+
+		// 1) 만약 해당 Component 가 TileMapComponent 라면, Edit Mode 를 Tile 로 바꿔준다.
+		std::list<CSharedPtr<CGameObject>> ObjLists = CSceneManager::GetInst()->GetScene()->GetObjectLists();
+
+		auto iter = ObjLists.begin();
+		auto iterEnd = ObjLists.end();
+
+		for (; iter != iterEnd; ++iter)
+		{
+			if ((*iter)->GetRootComponent()->CheckType<CTileMapComponent>())
+			{
+				// 1) Edit mode 수정
+				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+				// 2) TileMap Window 에 TileMapComponent 지정하기
+				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)(*iter)->GetRootComponent());
+			}
+		}
 
 
 		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해
@@ -318,7 +335,6 @@ void CEditorMenu::LoadScene()
 
 		// 화면에 Scene Edit Object를 만든다
 		CEditorManager::GetInst()->SetSceneEditObject();
-
 
 		// 가장 처음 녀석의 Component 들을 세팅해둔다.
 		Hierarchy->SelectObject(0, vecObjNames[0].c_str());
