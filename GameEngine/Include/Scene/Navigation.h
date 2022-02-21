@@ -2,7 +2,20 @@
 
 #include "../Component/TileMapComponent.h"
 
+enum class Node_Dir {
+	T,
+	RT,
+	R,
+	RB,
+	B,
+	LB,
+	L,
+	LT,
+	End
+};
+
 struct NavNode {
+	NavNode* Parent;
 	Nav_Node_Type NodeType;
 	Tile_Type TileType;
 	Vector3 Pos;
@@ -16,6 +29,7 @@ struct NavNode {
 	float Total;
 
 	NavNode() :
+	Parent(nullptr),
 	NodeType(Nav_Node_Type::None),
 	TileType(Tile_Type::Normal),
 	IndexX(-1),
@@ -39,9 +53,35 @@ private :
 	int m_CountY;
 	Vector3 m_TileSize;
 	CSharedPtr<CTileMapComponent> m_TileMap;
+	std::vector<NavNode*> m_vecOpen;
+	std::vector<NavNode*> m_vecUseNode;
 public :
 	void CreateNavigationNode(CTileMapComponent* TileMap);
 	bool FindPath(const Vector3& Start, const Vector3& End, std::vector<Vector3>& vecPath);
+private :
+	bool FindNode(NavNode* Node, NavNode* EndNode, const Vector3& End, std::vector<Vector3>& vecPath);
+	NavNode* GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath);
+private :
+	NavNode* GetRectNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeLeft(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
+		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	
+private :
+	static bool SortNode(NavNode* Src, NavNode* Dest);
 };
 
 

@@ -3,6 +3,7 @@
 #include "../Component/TileMapComponent.h"
 
 struct NavNode {
+	NavNode* Parent;
 	Nav_Node_Type NodeType;
 	Tile_Type TileType;
 	Vector3 Pos;
@@ -16,6 +17,7 @@ struct NavNode {
 	float Total;
 
 	NavNode() :
+	Parent(nullptr),
 	NodeType(Nav_Node_Type::None),
 	TileType(Tile_Type::Normal),
 	IndexX(-1),
@@ -39,9 +41,13 @@ private :
 	int m_CountY;
 	Vector3 m_TileSize;
 	CSharedPtr<CTileMapComponent> m_TileMap;
+	std::vector<NavNode*> m_vecOpen;
+	std::vector<NavNode*> m_vecUseNode;
 public :
 	void CreateNavigationNode(CTileMapComponent* TileMap);
 	bool FindPath(const Vector3& Start, const Vector3& End, std::vector<Vector3>& vecPath);
+private :
+	static bool SortNode(NavNode* Src, NavNode* Dest);
 };
 
 
