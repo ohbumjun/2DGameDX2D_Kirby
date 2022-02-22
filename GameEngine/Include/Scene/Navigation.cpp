@@ -16,32 +16,33 @@
 
  void CNavigation::CreateNavigationNode(CTileMapComponent* TileMap)
  {
+	// Component 세팅
 	 m_TileMap = TileMap;
+
+	 m_NodeShape = TileMap->GetTileShape();
 	 m_CountX = TileMap->GetTileCountX();
 	 m_CountY = TileMap->GetTileCountY();
 	 m_TileSize = TileMap->GetTileSize();
 
 	 int Count = m_CountX * m_CountY;
 
-	 m_vecNode.reserve(Count);
-
-	for (int i = 0; i < Count; i++)
+	for (int Index = 0; Index < Count; Index++)
 	{
 		NavNode* Node = new NavNode;
 
-		Node->TileType = TileMap->GetTile(i)->GetTileType();
-		Node->Pos     = TileMap->GetTile(i)->GetPos();
-		Node->Center = TileMap->GetTile(i)->GetCenter();
+		Node->TileType = TileMap->GetTile(Index)->GetTileType();
+		Node->Pos = TileMap->GetTile(Index)->GetPos();
 		Node->Size = m_TileSize;
-		Node->IndexX = TileMap->GetTile(i)->GetIndexX();
-		Node->IndexY = TileMap->GetTile(i)->GetIndexY();
-		Node->Index = TileMap->GetTile(i)->GetIndex();
+		Node->Center = Node->Pos + Node->Size * 0.5f;
+		Node->IndexX = TileMap->GetTile(Index)->GetIndexX();
+		Node->IndexY = TileMap->GetTile(Index)->GetIndexY();
+		Node->Index = TileMap->GetTile(Index)->GetIndex();
 
 		m_vecNode.push_back(Node);
 	}
  }
 
- bool CNavigation::FindPath(const Vector3& Start, const Vector3& End, std::vector<Vector3>& vecPath)
+ bool CNavigation::FindPath(const Vector3& Start, const Vector3& End, std::list<Vector3>& vecPath)
  {
 	 vecPath.clear();
 
@@ -55,77 +56,168 @@
 	 if (EndIndex == -1)
 		 return false;
 
-	// 이전 길찾기 로직을 통해, 사용했던 노드들이 있을 수도 있으므로
-	// 길을 찾기 전에 사용하던 노드들의 데이터를 초기화 해준다
+	// 이전에 사용하던 노드들이 있을 수도 있으므로
+	// 길에 찾기에 사용하던 노드들의 데이터를 초기화 한다.
 	 size_t Size = m_vecUseNode.size();
 
 	for (size_t i = 0; i < Size; i++)
 	{
 		m_vecUseNode[i]->NodeType = Nav_Node_Type::None;
-		m_vecUseNode[i]->Cost = FLT_MAX;
-		m_vecUseNode[i]->Dist = FLT_MAX;
-		m_vecUseNode[i]->Total = FLT_MAX;
+		m_vecUseNode[i]->Cost   = FLT_MAX;
+		m_vecUseNode[i]->Dist    = FLT_MAX;
+		m_vecUseNode[i]->Total   = FLT_MAX;
 		m_vecUseNode[i]->Parent = nullptr;
 	}
 
-	// 시작 노드, 목표 노드 구하기
+	// 시작 노드와 도착 노드
 	NavNode* StartNode = m_vecNode[StartIndex];
-	NavNode* EndNode = m_vecNode[EndIndex];
+	NavNode* EndNode   = m_vecNode[EndIndex];
 
-	// 목표 노드가 혹시나 벽이라면 false
-	if (EndNode->TileType == Tile_Type::Wall)
-		return false;
-
-	// 출발 노드, 끝노드가 동일하다면 도착 처리
-	else if (StartNode == EndNode)
+	// 만약 발견했다면
+	if (StartNode == EndNode)
 	{
 		vecPath.push_back(End);
 		return true;
 	}
 
-	// 시작 노드를 열린 목록에 포힘시킨다.
-	StartNode->NodeType = Nav_Node_Type::Open;
+	// 만약 도착 노드가 Wall 이라면 false
+	if (EndNode->TileType == Tile_Type::Wall)
+		return false;
 
+	// 시작 노드의 정보를 세팅해준다.
+	StartNode->NodeType = Nav_Node_Type::Open;
+	StartNode->Cost = 0.f;
+	StartNode->Dist = StartNode->Pos.Distance(End);
+	StartNode->Total = StartNode->Dist + StartNode->Cost;
+
+	// 열린 목록에 추가해준다.
 	m_vecOpen.push_back(StartNode);
 
-	// 시작 노드를 현재 프레임에서 점검한 노드 목록에 추가해준다.
+	// 사용 목록에 추가해준다.
 	m_vecUseNode.push_back(StartNode);
 
 	while (!m_vecOpen.empty())
 	{
-		NavNode* Node = m_vecOpen.front();
+		// 가장 비용이 작은 Open Node를 꺼내온다.
+		// 다익스트라 개념 !
+		NavNode* CurrentNode = m_vecOpen.back();
 
 		m_vecOpen.pop_back();
 
-		// 해당 목록을 닫힌 목록으로 바꿔준다. --> 방문 처리의 개념
-		Node->NodeType = Nav_Node_Type::Close;
+		// 8 방향의 타일을 검사하여
+		// 코너를 열린 목록에 넣어준다.
+		if (FindNode(CurrentNode, EndNode, End, vecPath))
+			break;
 
-		// 해당 노드를 기준으로 주변 8방향 탐색을 한다.
-
-		// 열린 목록을 정렬한다. --> 비용이 작은 노드가 가장 마지막 노드가 되도록 내림차순으로 정렬한다.
+		// Total 비용을 기준으로 내림차순 정렬한다.
 		if (!m_vecOpen.empty())
 		{
-			std::sort(m_vecUseNode.begin(), m_vecUseNode.end(), SortNode);
+			std::qsort(&m_vecOpen[0], m_vecOpen.size(), sizeof(NavNode), CNavigation::SortNode);
 		}
 	}
-
-	 return false;
  }
 
-bool CNavigation::FindNode(NavNode* Node, NavNode* EndNode,  const Vector3& End, std::vector<Vector3>& vecPath)
+bool CNavigation::FindNode(NavNode* Node, NavNode* EndNode,  const Vector3& End, std::list<Vector3>& vecPath)
  {
-	// 주변 8방향을 돌면서, 코너를 찾는다.
-	 for (int i = 0; i < (int)Node_Dir::End; i++)
-	 {
-		 NavNode* Corner = GetCorner((Node_Dir)i, Node, EndNode, End, vecPath);
+	// 8방향 코너를 탐색한다.
+	for (int Dir = 0; Dir < (int)Node_Dir::End; Dir++)
+	{
+		// 해당 방향으로 코너가 있는지 검사한다.
+		NavNode* Corner = GetCorner((Node_Dir)Dir, Node, EndNode, End);
 
-		 if (!Corner)
-			 continue;
-	 }
+		// 해당 방향으로 코너가 없다면 Skip
+		if (!Corner)
+			continue;
+
+		// 찾아준 노드가 만약 도착노드라면, 경로를 만들어준다.
+		if (Corner == EndNode)
+		{
+			vecPath.push_front(End);
+
+			// EndNode의 부모를 차례대로 list 앞쪽에 추가해준다.
+			NavNode* ParentNode = EndNode->Parent;
+
+			while (ParentNode)
+			{
+				vecPath.push_front(ParentNode->Center);
+
+				ParentNode = ParentNode->Parent;
+			}
+
+			return true; // 도착노드를 찾았음을 표시한다.
+		}
+
+		// 해당 방향으로 코너가 있다면
+
+		// 1) Cost 정보등을 Update 하고
+		float Cost = 0.f;
+
+		if (m_NodeShape == Tile_Shape::Rect)
+		{
+			switch ((Node_Dir)Dir)
+			{
+				case Node_Dir::R :
+				case Node_Dir::L :
+					Cost = Node->Cost + std::abs(Node->Pos.x - Corner->Pos.x);
+					break;
+				case Node_Dir::B:
+				case Node_Dir::T:
+					Cost = Node->Cost + std::abs(Node->Pos.y - Corner->Pos.y);
+					break;
+				case Node_Dir::RT:
+				case Node_Dir::LT:
+				case Node_Dir::RB:
+				case Node_Dir::LB:
+					Cost = Node->Cost + Node->Pos.Distance(Corner->Pos);
+					break;
+			}
+		}
+		// 마름모
+		else
+		{
+			switch ((Node_Dir)Dir)
+			{
+			case Node_Dir::R:
+			case Node_Dir::L:
+				Cost = Node->Cost + std::abs(Node->Pos.x - Corner->Pos.x);
+				break;
+			case Node_Dir::B:
+			case Node_Dir::T:
+				Cost = Node->Cost + std::abs(Node->Pos.y - Corner->Pos.y);
+				break;
+			case Node_Dir::RT:
+			case Node_Dir::LT:
+			case Node_Dir::RB:
+			case Node_Dir::LB:
+				Cost = Node->Cost + Node->Pos.Distance(Corner->Pos);
+				break;
+			}
+		}
+
+		// 2) 열린 목록으로 추가해줄 것이다.
+
+		// 이미 열린 목록에 추가되어 있는 녀석이라면
+		// Cost 정보 Update
+		if (Corner->NodeType == Nav_Node_Type::Open)
+		{
+			if (Corner->Cost > Cost)
+			{
+				Corner->Cost = Cost;
+				Corner->Total = Corner->Cost + Corner->Dist;
+				Corner->Parent = Node;
+			}
+		}
+		else
+		{
+			Corner->Cost = Cost;
+			Corner->Total = Cost + Corner->Dist;
+			Corner->NodeType = Nav_Node_Type::Open;
+			Corner->Parent = Node;
+		}
+	}
  }
 
-NavNode* CNavigation::GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath)
+NavNode* CNavigation::GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End)
  {
 	 switch (m_NodeShape)
 	 {
@@ -641,7 +733,16 @@ const Vector3& End, bool Diagonal)
 }
 
 
-bool CNavigation::SortNode(NavNode* Src, NavNode* Dest)
+int CNavigation::SortNode(const void* Src, const void* Dest)
  {
-	return Src->Total > Dest->Total;
+	NavNode* SrcNode   = (NavNode*)Src;
+	NavNode* DestNode = (NavNode*)Dest;
+
+	// 내림 차순 ?
+
+	if (SrcNode->Total > DestNode->Total)
+		return -1;
+	else if (SrcNode->Total < DestNode->Total)
+		return 1;
+	return 0;
  }

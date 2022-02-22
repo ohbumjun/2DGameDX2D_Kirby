@@ -57,11 +57,9 @@ private :
 	std::vector<NavNode*> m_vecUseNode;
 public :
 	void CreateNavigationNode(CTileMapComponent* TileMap);
-	bool FindPath(const Vector3& Start, const Vector3& End, std::vector<Vector3>& vecPath);
-private :
-	bool FindNode(NavNode* Node, NavNode* EndNode, const Vector3& End, std::vector<Vector3>& vecPath);
-	NavNode* GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath);
+	bool FindPath(const Vector3& Start, const Vector3& End, std::list<Vector3>& vecPath);
+	bool FindNode(NavNode* Node, NavNode* EndNode, const Vector3& End, std::list<Vector3>& vecPath);
+	NavNode* GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End);
 private :
 	NavNode* GetRectNodeTop(NavNode* Node, NavNode* EndNode, 
 		const Vector3& End,bool Diagonal = true);
@@ -81,7 +79,7 @@ private :
 		const Vector3& End,bool Diagonal = true);
 	
 private :
-	static bool SortNode(NavNode* Src, NavNode* Dest);
+	static int SortNode(const void * Src, const void * Dest);
 };
 
 

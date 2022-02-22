@@ -438,14 +438,14 @@ struct ParticleInfoShared
 };
 
 struct NavWorkData {
-	std::function<void(const std::vector<Vector3>&)> Callback;
+	std::function<void(const std::list<Vector3>&)> Callback;
 	Vector3 Start;
 	Vector3 End;
 };
 
 struct NavResultData {
 	// 길이 찾아야 하는 위치를 vector 목록으로 인자 형태로 전달받을 것이다.
-	std::function<void(const std::vector<Vector3>&)> Callback;
+	std::function<void(const std::list<Vector3>&)> Callback;
 	// 거쳐온 경로를 저장할 것이다.
-	std::vector<Vector3> vecPath;
+	std::list<Vector3> vecPath;
 };
