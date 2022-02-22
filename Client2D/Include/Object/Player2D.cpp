@@ -8,6 +8,7 @@
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
 #include "BulletCamera.h"
+#include "Scene/NavigationManager.h"
 #include "../UI/SimpleHUD.h"
 
 CPlayer2D::CPlayer2D()
@@ -160,6 +161,7 @@ bool CPlayer2D::Init()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", KeyState_Down, this, &CPlayer2D::Attack);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", KeyState_Down, this, &CPlayer2D::Attack1);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", KeyState_Down, this, &CPlayer2D::Skill1);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", KeyState_Down, this, &CPlayer2D::MovePointDown);
 
 
 	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
@@ -295,5 +297,25 @@ void CPlayer2D::Skill1(float DeltaTime)
 	CBulletCamera* BulletCamera = m_Scene->CreateGameObject<CBulletCamera>("BulletCamera");
 	BulletCamera->SetWorldPos(m_Muzzle->GetWorldPos());
 	BulletCamera->SetWorldRotation(GetWorldRot());
+}
+
+void CPlayer2D::MovePointDown(float DeltaTime)
+{
+	Vector2 MousePos = CInput::GetInst()->GetMouseWorld2DPos();
+
+	m_Scene->GetNavManager()->FindPath<CPlayer2D>(this, &CPlayer2D::PathResult,
+		GetWorldPos(), Vector3(MousePos.x, MousePos.y, 0.f));
+}
+
+void CPlayer2D::PathResult(const std::list<Vector3>& PathList)
+{
+	if (PathList.empty())
+	{
+		
+	}
+	else
+	{
+		
+	}
 }
 

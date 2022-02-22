@@ -115,6 +115,8 @@
 			std::qsort(&m_vecOpen[0], m_vecOpen.size(), sizeof(NavNode), CNavigation::SortNode);
 		}
 	}
+
+	return !vecPath.empty();
  }
 
 bool CNavigation::FindNode(NavNode* Node, NavNode* EndNode,  const Vector3& End, std::list<Vector3>& vecPath)
