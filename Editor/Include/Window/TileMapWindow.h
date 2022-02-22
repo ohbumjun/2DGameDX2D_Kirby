@@ -44,5 +44,8 @@ private :
 	void CreateTile();
 	void SetDefaultFrame();
 	void SetEditModeCallback(int Index, const char* Name);
+private :
+	void TileMapSaveButton();
+	void TileMapLoadButton();
 };
 

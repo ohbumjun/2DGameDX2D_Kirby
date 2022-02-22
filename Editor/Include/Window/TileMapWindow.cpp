@@ -13,6 +13,7 @@
 #include "Scene/SceneResource.h"
 #include "../EditorManager.h"
 #include "Input.h"
+#include "PathManager.h"
 
 CTileMapWindow::CTileMapWindow()
 {}
@@ -446,4 +447,37 @@ void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 	// TileMapWindow 내에서 Tile 의 어떤 Mode를 수정할지를 세팅
 	m_EditMode = (Tile_EditMode)Index;
 }
+
+void CTileMapWindow::TileMapSaveButton()
+{
+	if (!m_TileMap)
+		return;
+
+	TCHAR FilePath[MAX_PATH] = {};
+
+	OPENFILENAME OpenFile = {};
+
+	OpenFile.lStructSize = sizeof(OPENFILENAME);
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0GameObject File\0*.gobj");
+	OpenFile.lpstrFile = FilePath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+
+	if (GetSaveFileName(&OpenFile) != 0)
+	{
+		char ConvertFullPath[MAX_PATH] = {};
+
+		int Length = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, ConvertFullPath, Length, 0, 0);
+
+		CGameObject* TileMapObject = m_TileMap->GetGameObject();
+
+		TileMapObject->Save(ConvertFullPath);
+	}
+		
+}
+
+void CTileMapWindow::TileMapLoadButton()
+{}
 
