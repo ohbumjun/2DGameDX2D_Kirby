@@ -133,21 +133,21 @@ NavNode* CNavigation::GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, c
 		 switch (Dir)
 		 {
 		 case Node_Dir::T:
-			 return GetRectNodeTop(Node, EndNode, End, vecPath, false);
+			 return GetRectNodeTop(Node, EndNode, End,false);
 		 case Node_Dir::RT:
-			 return GetRectNodeRightTop(Node, EndNode, End, vecPath);
+			 return GetRectNodeRightTop(Node, EndNode, End);
 		 case Node_Dir::R:
-			 return GetRectNodeRight(Node, EndNode, End, vecPath, false);
+			 return GetRectNodeRight(Node, EndNode, End,false);
 		 case Node_Dir::RB:
-			 return GetRectNodeRightBottom(Node, EndNode, End, vecPath);
+			 return GetRectNodeRightBottom(Node, EndNode, End);
 		 case Node_Dir::B:
-			 return GetRectNodeBottom(Node, EndNode, End, vecPath, false);
+			 return GetRectNodeBottom(Node, EndNode, End,false);
 		 case Node_Dir::LB:
-			 return GetRectNodeLeftBottom(Node, EndNode, End, vecPath);
+			 return GetRectNodeLeftBottom(Node, EndNode, End);
 		 case Node_Dir::L:
-			 return GetRectNodeLeft(Node, EndNode, End, vecPath, false);
+			 return GetRectNodeLeft(Node, EndNode, End,false);
 		 case Node_Dir::LT:
-			 return GetRectNodeLeftTop(Node, EndNode, End, vecPath);
+			 return GetRectNodeLeftTop(Node, EndNode, End);
 		 }
 		 break;
 	 case Tile_Shape::Rhombus :
@@ -158,53 +158,488 @@ NavNode* CNavigation::GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, c
 	 }
  }
 
-NavNode* CNavigation::GetRectNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End, std::vector<Vector3>& vecPath,
-	bool Diagonal)
+
+NavNode* CNavigation::GetRectNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
+	bool Digonal)
 {
+	// 위로 이동할때는 노드를 한칸씩 위로 이동을 시키면서 해당 노드의 오른쪽이 막혀있고 오른쪽 위가 뚫려있거나
+	// 왼쪽이 막혀있고 왼쪽 위가 뚫려있으면 해당 노드는 코너가 된다.
+	int	IndexY = Node->IndexY;
+
+	while (true)
+	{
+		++IndexY;
+
+		if (IndexY + 1 >= m_CountY)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + Node->IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = Node->IndexX + 1;
+		int	CornerY = IndexY;
+
+		if (CornerX < m_CountX)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY + 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = Node->IndexX - 1;
+		CornerY = IndexY;
+
+		if (CornerX >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY + 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, 
+	const Vector3& End, bool Diagonal)
 {
+	// 오른쪽 위로 이동할때는 노드를 한칸씩 오른쪽 위로 이동을 시키면서 해당 노드의 왼이 막혀있고 왼쪽 위가 뚫려있거나
+	// 아래쪽이 막혀있고 오른쪽 아래가 뚫려있으면 해당 노드는 코너가 된다.
+	int	IndexY = Node->IndexY;
+	int	IndexX = Node->IndexX;
+
+	while (true)
+	{
+		++IndexY;
+		++IndexX;
+
+		if (IndexY + 1 >= m_CountY || IndexX + 1 >= m_CountX)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = IndexX - 1;
+		int	CornerY = IndexY;
+
+		if (CornerX >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY + 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = IndexX;
+		CornerY = IndexY - 1;
+
+		if (CornerY >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX + 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 오른쪽 위 대각선 체크시 만약 현 노드가 코너가 아니라면 오른쪽 방향과 위쪽 방향을 체크하여
+		// 코너가 있는지를 판단한다.
+		NavNode* FindNode = GetRectNodeTop(CheckNode, EndNode, End);
+
+		// 위쪽 검사중 노드를 찾았다면 현재의 노드를 코너로 체크한다.
+		if (FindNode)
+			return CheckNode;
+
+		FindNode = GetRectNodeRight(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Digonal)
 {
+	// 오른쪽으로 이동할때는 가로가 1씩 증가하며 위가 막혀있고 오른쪽 위는 갈 수 있거나
+	// 아래가 막혀있고 오른쪽 아래는 갈 수 있을 경우 코너가 된다.
+	int	IndexX = Node->IndexX;
+
+	while (true)
+	{
+		++IndexX;
+
+		if (IndexX + 1 >= m_CountX)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[Node->IndexY * m_CountX + IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = IndexX;
+		int	CornerY = Node->IndexY + 1;
+
+		if (CornerY < m_CountY)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX + 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = IndexX;
+		CornerY = Node->IndexY - 1;
+
+		if (CornerY >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX + 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, 
+const Vector3& End, bool Diagonal)
 {
+	// 오른쪽 아래로 이동할때는 노드를 한칸씩 오른쪽 아래로 이동을 시키면서 해당 노드의 왼쪽이 막혀있고 왼쪽 아래가 뚫려있거나
+	// 위쪽이 막혀있고 오른쪽 위가 뚫려있으면 해당 노드는 코너가 된다.
+	int	IndexY = Node->IndexY;
+	int	IndexX = Node->IndexX;
+
+	while (true)
+	{
+		--IndexY;
+		++IndexX;
+
+		if (IndexY - 1 < 0 || IndexX + 1 >= m_CountX)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = IndexX - 1;
+		int	CornerY = IndexY;
+
+		if (CornerX >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY - 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = IndexX;
+		CornerY = IndexY + 1;
+
+		if (CornerY < m_CountY)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX + 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 오른쪽 아래 대각선 체크시 만약 현 노드가 코너가 아니라면 오른쪽 방향과 아래쪽 방향을 체크하여
+		// 코너가 있는지를 판단한다.
+		NavNode* FindNode = GetRectNodeBottom(CheckNode, EndNode, End);
+
+		// 위쪽 검사중 노드를 찾았다면 현재의 노드를 코너로 체크한다.
+		if (FindNode)
+			return CheckNode;
+
+		FindNode = GetRectNodeRight(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeBottom(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Digonal)
 {
+	// 아래로 이동할때는 노드를 한칸씩 아래로 이동을 시키면서 해당 노드의 오른쪽이 막혀있고 오른쪽 아래가 뚫려있거나
+	// 왼쪽이 막혀있고 왼쪽 아래가 뚫려있으면 해당 노드는 코너가 된다.
+	int	IndexY = Node->IndexY;
+
+	while (true)
+	{
+		--IndexY;
+
+		if (IndexY - 1 < 0)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + Node->IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = Node->IndexX + 1;
+		int	CornerY = IndexY;
+
+		if (CornerX < m_CountX)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY - 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = Node->IndexX - 1;
+		CornerY = IndexY;
+
+		if (CornerX >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY - 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, 
+const Vector3& End, bool Diagonal)
 {
+	// 왼쪽 아래로 이동할때는 노드를 한칸씩 왼쪽 아래로 이동을 시키면서 해당 노드의 위쪽이 막혀있고 왼쪽 위가 뚫려있거나
+	// 오른쪽이 막혀있고 오른쪽 아래가 뚫려있으면 해당 노드는 코너가 된다.
+	int	IndexY = Node->IndexY;
+	int	IndexX = Node->IndexX;
+
+	while (true)
+	{
+		--IndexY;
+		--IndexX;
+
+		if (IndexY - 1 < 0 || IndexX - 1 < 0)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = IndexX;
+		int	CornerY = IndexY + 1;
+
+		if (CornerY < m_CountY)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX - 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = IndexX + 1;
+		CornerY = IndexY;
+
+		if (CornerX < m_CountX)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY - 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 왼쪽 아래 대각선 체크시 만약 현 노드가 코너가 아니라면 왼쪽 방향과 아래쪽 방향을 체크하여
+		// 코너가 있는지를 판단한다.
+		NavNode* FindNode = GetRectNodeBottom(CheckNode, EndNode, End);
+
+		// 위쪽 검사중 노드를 찾았다면 현재의 노드를 코너로 체크한다.
+		if (FindNode)
+			return CheckNode;
+
+		FindNode = GetRectNodeLeft(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeLeft(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeLeft(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Digonal)
 {
+	// 왼쪽으로 이동할때는 가로가 1씩 감소하며 위가 막혀있고 왼쪽 위는 갈 수 있거나
+	// 아래가 막혀있고 왼쪽 아래는 갈 수 있을 경우 코너가 된다.
+	int	IndexX = Node->IndexX;
+
+	while (true)
+	{
+		--IndexX;
+
+		if (IndexX - 1 < 0)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[Node->IndexY * m_CountX + IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = IndexX;
+		int	CornerY = Node->IndexY + 1;
+
+		if (CornerY < m_CountY)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX - 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = IndexX;
+		CornerY = Node->IndexY - 1;
+
+		if (CornerY >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX - 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+	}
+
 	return nullptr;
 }
 
-NavNode* CNavigation::GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
-	std::vector<Vector3>& vecPath, bool Diagonal)
+NavNode* CNavigation::GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, 
+const Vector3& End, bool Diagonal)
 {
+	// 왼쪽 위로 이동할때는 노드를 한칸씩 왼쪽 위로 이동을 시키면서 해당 노드의 아래쪽이 막혀있고 왼쪽 아래가 뚫려있거나
+	// 오른쪽이 막혀있고 오른쪽 위가 뚫려있으면 해당 노드는 코너가 된다.
+	int	IndexY = Node->IndexY;
+	int	IndexX = Node->IndexX;
+
+	while (true)
+	{
+		++IndexY;
+		--IndexX;
+
+		if (IndexY + 1 >= m_CountY || IndexX - 1 < 0)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		else if (CheckNode->NodeType == Nav_Node_Type::Close)
+			return nullptr;
+
+		else if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		int	CornerX = IndexX;
+		int	CornerY = IndexY - 1;
+
+		if (CornerY >= 0)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[CornerY * m_CountX + (CornerX - 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		CornerX = IndexX + 1;
+		CornerY = IndexY;
+
+		if (CornerX < m_CountX)
+		{
+			if (m_vecNode[CornerY * m_CountX + CornerX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(CornerY + 1) * m_CountX + CornerX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 왼쪽 위 대각선 체크시 만약 현 노드가 코너가 아니라면 왼쪽 방향과 위쪽 방향을 체크하여
+		// 코너가 있는지를 판단한다.
+		NavNode* FindNode = GetRectNodeTop(CheckNode, EndNode, End);
+
+		// 위쪽 검사중 노드를 찾았다면 현재의 노드를 코너로 체크한다.
+		if (FindNode)
+			return CheckNode;
+
+		FindNode = GetRectNodeLeft(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+	}
+
 	return nullptr;
 }
+
 
 bool CNavigation::SortNode(NavNode* Src, NavNode* Dest)
  {

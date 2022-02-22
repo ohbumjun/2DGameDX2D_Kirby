@@ -63,22 +63,22 @@ private :
 	NavNode* GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End,
 		std::vector<Vector3>& vecPath);
 private :
-	NavNode* GetRectNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeLeft(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
-	NavNode* GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const Vector3& End,
-		std::vector<Vector3>& vecPath, bool Diagonal = true);
+	NavNode* GetRectNodeTop(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeRight(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeBottom(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeLeft(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
+	NavNode* GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, 
+		const Vector3& End,bool Diagonal = true);
 	
 private :
 	static bool SortNode(NavNode* Src, NavNode* Dest);
