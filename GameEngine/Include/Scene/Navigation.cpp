@@ -772,6 +772,92 @@ NavNode* CNavigation::GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const 
 
 NavNode* CNavigation::GetRhombusNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End)
 {
+	int IndexX = Node->IndexX;
+	int IndexY = Node->IndexY;
+
+	while (true)
+	{
+		// 오른쪽 위로 올라갈 것이다.
+		// Y는 무조건 + 1
+		// Y가 홀수 일 때는 X + 1을 해준다.
+		if (IndexY & 1)
+			IndexX += 1;
+
+		IndexY += 2;
+
+		// 범위를 벗어났다면
+		if (IndexX < 0 || IndexY >= m_CountY)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		// 벽이라면
+		if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		// 도착노드를 찾았다면
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		// 왼쪽 아래는 벽, 왼쪽 위는 벽 X
+		int ConvertLeftDownX = IndexX;
+		int ConvertLeftDownY = IndexY - 1;
+
+		int ConvertLeftUpX = IndexX;
+		int ConvertLeftUpY = IndexY + 1;
+
+		// Y가 짝수라면, 왼쪽 아래, 위로 갈 때 X 는 - 1을 해줘야 한다.
+		if ((IndexY & 1) == false)
+		{
+			ConvertLeftDownX -= 1;
+			ConvertLeftUpX -= 1;
+		}
+
+		if (ConvertLeftDownX >= 0 && ConvertLeftDownY >= 0 && ConvertLeftUpY < m_CountY)
+		{
+			if (m_vecNode[ConvertLeftDownY * m_CountY + ConvertLeftDownX]->TileType == Tile_Type::Wall &&
+				m_vecNode[ConvertLeftUpY * m_CountY + ConvertLeftUpX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 오른쪽 아래는 벽, 오른쪽 위는 벽 X
+		int ConvertRightDownX = IndexX;
+		int ConvertRightDownY = IndexY - 1;
+
+		int ConvertRightUpX = IndexX;
+		int ConvertRightUpY = IndexY + 1;
+
+		// Y가 홀수라면, 오른쪽 아래, 위로 갈 때 X는 + 1
+		if (IndexY & 1)
+		{
+			ConvertRightDownX += 1;
+			ConvertRightUpX += 1;
+		}
+
+		if (ConvertRightDownX < m_CountX && ConvertRightDownY >= 0 && ConvertRightUpY < m_CountY)
+		{
+			if (m_vecNode[ConvertRightDownX * m_CountY + ConvertRightDownY]->TileType == Tile_Type::Wall &&
+				m_vecNode[ConvertRightUpX * m_CountY + ConvertRightUpY]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 그래도 못찾았다면
+		// 1) 왼쪽 위
+		NavNode* FindNode = GetRhombusNodeLeftTop(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+
+		// 2) 오른쪽 위 를 탐색한다.
+		FindNode = GetRhombusNodeRightTop(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+	}
 }
 
 NavNode* CNavigation::GetRhombusNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End)
@@ -808,7 +894,7 @@ NavNode* CNavigation::GetRhombusNodeRightTop(NavNode* Node, NavNode* EndNode, co
 		int ConvertY = IndexY + 1;
 
 		// Y가 짝수라면, 왼쪽 아래로 갈 때 X 는 - 1을 해줘야 한다.
-		if ((ConvertY & 1) == false)
+		if ((IndexY & 1) == false)
 			ConvertX -= 1;
 
 		if (ConvertX >= 0 && IndexY + 2 < m_CountY)
@@ -825,7 +911,7 @@ NavNode* CNavigation::GetRhombusNodeRightTop(NavNode* Node, NavNode* EndNode, co
 		ConvertY = IndexY - 1;
 
 		// Y가 홀수라면, 오른쪽 아래로 갈 때 X는 + 1
-		if (ConvertY & 1)
+		if (IndexY & 1)
 			ConvertX += 1;
 
 		if (IndexX + 2 < m_CountX && ConvertY >= 0)
@@ -840,7 +926,93 @@ NavNode* CNavigation::GetRhombusNodeRightTop(NavNode* Node, NavNode* EndNode, co
 }
 
 NavNode* CNavigation::GetRhombusNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End)
-{}
+{
+	int IndexX = Node->IndexX;
+	int IndexY = Node->IndexY;
+
+	while (true)
+	{
+		// 오른쪽 위로 올라갈 것이다.
+		// Y는 무조건 + 1
+		// Y가 홀수 일 때는 X + 1을 해준다.
+		if (IndexY & 1)
+			IndexX += 1;
+
+		IndexY += 2;
+
+		// 범위를 벗어났다면
+		if (IndexX < 0 || IndexY >= m_CountY)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		// 벽이라면
+		if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		// 도착노드를 찾았다면
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		// 왼쪽 아래는 벽, 왼쪽 위는 벽 X
+		int ConvertLeftDownX = IndexX;
+		int ConvertLeftDownY = IndexY - 1;
+
+		int ConvertLeftUpX = IndexX;
+		int ConvertLeftUpY = IndexY + 1;
+
+		// Y가 짝수라면, 왼쪽 아래, 위로 갈 때 X 는 - 1을 해줘야 한다.
+		if ((IndexY & 1) == false)
+		{
+			ConvertLeftDownX -= 1;
+			ConvertLeftUpX -= 1;
+		}
+
+		if (ConvertLeftDownX >= 0 && ConvertLeftDownY >= 0 && ConvertLeftUpY < m_CountY)
+		{
+			if (m_vecNode[ConvertLeftDownY * m_CountY + ConvertLeftDownX]->TileType == Tile_Type::Wall &&
+				m_vecNode[ConvertLeftUpY * m_CountY + ConvertLeftUpX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 오른쪽 아래는 벽, 오른쪽 위는 벽 X
+		int ConvertRightDownX = IndexX;
+		int ConvertRightDownY = IndexY - 1;
+
+		int ConvertRightUpX = IndexX;
+		int ConvertRightUpY = IndexY + 1;
+
+		// Y가 홀수라면, 오른쪽 아래, 위로 갈 때 X는 + 1
+		if (IndexY & 1)
+		{
+			ConvertRightDownX += 1;
+			ConvertRightUpX += 1;
+		}
+
+		if (ConvertRightDownX < m_CountX && ConvertRightDownY >= 0 && ConvertRightUpY < m_CountY)
+		{
+			if (m_vecNode[ConvertRightDownX * m_CountY + ConvertRightDownY]->TileType == Tile_Type::Wall &&
+				m_vecNode[ConvertRightUpX * m_CountY + ConvertRightUpY]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 그래도 못찾았다면
+		// 1) 왼쪽 위
+		NavNode* FindNode = GetRhombusNodeLeftTop(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+
+		// 2) 오른쪽 위 를 탐색한다.
+		FindNode = GetRhombusNodeRightTop(CheckNode, EndNode, End);
+
+		if (FindNode)
+			return CheckNode;
+}
 
 NavNode* CNavigation::GetRhombusNodeRightBottom(NavNode* Node, NavNode* EndNode, const Vector3& End)
 {
@@ -876,7 +1048,7 @@ NavNode* CNavigation::GetRhombusNodeRightBottom(NavNode* Node, NavNode* EndNode,
 		int ConvertY = IndexY - 1;
 
 		// Y가 짝수라면, 왼쪽 아래로 갈 때 X는 - 1을 해줘야 한다.
-		if ((ConvertY & 1) == false)
+		if ((IndexY & 1) == false)
 			ConvertX -= 1;
 
 		if (ConvertX >= 0 && ConvertY - 1 >= 0)
@@ -893,7 +1065,7 @@ NavNode* CNavigation::GetRhombusNodeRightBottom(NavNode* Node, NavNode* EndNode,
 		ConvertY = IndexY + 1;
 
 		// Y가 홀수라면, 오른쪽 위로 갈 때 X는 + 1
-		if (ConvertY & 1)
+		if (IndexY & 1)
 			ConvertX += 1;
 
 		if (ConvertX < m_CountX && IndexY + 2 < m_CountY)
@@ -945,7 +1117,7 @@ NavNode* CNavigation::GetRhombusNodeLeftBottom(NavNode* Node, NavNode* EndNode, 
 		int ConvertY = IndexY;
 
 		// Y가 짝수라면, 왼쪽 위로 갈 때 X는 - 1을 해줘야 한다.
-		if ((ConvertY & 1) == false)
+		if ((IndexY & 1) == false)
 			ConvertX -= 1;
 
 		if (ConvertX >= 0 && ConvertY + 1 < m_CountY)
@@ -962,7 +1134,7 @@ NavNode* CNavigation::GetRhombusNodeLeftBottom(NavNode* Node, NavNode* EndNode, 
 		ConvertY = IndexY - 2;
 
 		// Y가 홀수라면, 오른쪽 아래로 갈 때 X는 + 1
-		if (ConvertY & 1)
+		if (IndexY & 1)
 			ConvertX += 1;
 
 		if (ConvertX >= 0 && ConvertY + 1 < m_CountY)
@@ -1013,7 +1185,7 @@ NavNode* CNavigation::GetRhombusNodeLeftTop(NavNode* Node, NavNode* EndNode, con
 		int ConvertY = IndexY - 1;
 
 		// Y가 짝수라면, 왼쪽 아래로 갈 때 X는 - 1을 해줘야 한다.
-		if ((ConvertY & 1) == false)
+		if ((IndexY & 1) == false)
 			ConvertX -= 1;
 
 		if (ConvertX >= 0 && ConvertY - 1 >= 0)
@@ -1030,7 +1202,7 @@ NavNode* CNavigation::GetRhombusNodeLeftTop(NavNode* Node, NavNode* EndNode, con
 		ConvertY = IndexY + 1;
 
 		// Y가 홀수라면, 오른쪽 위로 갈 때 X는 + 1
-		if (ConvertY & 1)
+		if (IndexY & 1)
 			ConvertX += 1;
 
 		if (ConvertX < m_CountX && IndexY + 2 < m_CountY)
