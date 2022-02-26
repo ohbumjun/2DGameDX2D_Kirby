@@ -24,6 +24,9 @@ private :
 	class CIMGUIText* m_TextureWidth;
 	class CIMGUIText* m_TextureHeight;
 private :
+	class CIMGUIButton* m_TileMapSaveButton;
+	class CIMGUIButton* m_TileMapLoadButton;
+private :
 	class CTileMapComponent* m_TileMap;
 	Tile_EditMode m_EditMode;
 public :

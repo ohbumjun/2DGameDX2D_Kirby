@@ -273,6 +273,17 @@ bool CTileMapWindow::Init()
 	m_TileFrameEndX->SetFloat(320.f);
 	m_TileFrameEndY->SetFloat(160.f);
 
+	// ==============================
+
+	m_TileMapSaveButton = AddWidget<CIMGUIButton>("TileMapSave", 100.f, 30.f);
+	m_TileMapSaveButton->SetClickCallback(this, &CTileMapWindow::TileMapSaveButton);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(110.f);
+
+	m_TileMapLoadButton = AddWidget<CIMGUIButton>("TileMapLoad", 100.f, 30.f);
+	m_TileMapLoadButton->SetClickCallback(this, &CTileMapWindow::TileMapLoadButton);
+
 	return true;
 }
 
@@ -479,5 +490,31 @@ void CTileMapWindow::TileMapSaveButton()
 }
 
 void CTileMapWindow::TileMapLoadButton()
-{}
+{
+	if (!m_TileMap)
+		return;
+
+	TCHAR LoadFilePath[MAX_PATH] = {};
+
+	OPENFILENAME OpenFile = {};
+	OpenFile.lStructSize = sizeof(OPENFILENAME);
+	OpenFile.lpstrFile = LoadFilePath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.GameObject File\0*.gobj");
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+
+	if (GetOpenFileName(&OpenFile) != 0)
+	{
+		char ConvertFullPath[MAX_PATH] = {};
+
+		int Length = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
+
+		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, ConvertFullPath, Length, 0, 0);
+
+		CGameObject* TileMapObject = m_TileMap->GetGameObject();
+
+		TileMapObject->LoadFullPath(ConvertFullPath);
+	}
+}
 
