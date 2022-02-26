@@ -69,6 +69,8 @@ public :
 public :
 	virtual void Save(FILE* pFile);
 	virtual void Load(FILE* pFile);
+	virtual void SaveFullPath(const char* FullPath);
+	virtual void LoadFullPath(const char* FullPath);
 public :
 	void GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames);
 public:

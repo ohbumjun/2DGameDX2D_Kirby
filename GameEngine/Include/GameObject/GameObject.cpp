@@ -321,6 +321,39 @@ void CGameObject::Load(FILE* pFile)
 	}
 }
 
+void CGameObject::SaveFullPath(const char* FullPath)
+{
+	FILE* pFile;
+
+	fopen_s(&pFile, FullPath, "w");
+
+	if (!pFile)
+	{
+		return;
+	}
+
+	Save(pFile);
+
+	fclose(pFile);
+
+}
+
+void CGameObject::LoadFullPath(const char* FullPath)
+{
+	FILE* pFile;
+
+	fopen_s(&pFile, FullPath, "r");
+
+	if (!pFile)
+	{
+		return;
+	}
+
+	Load(pFile);
+
+	fclose(pFile);
+}
+
 void CGameObject::GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames)
 {
 	/*

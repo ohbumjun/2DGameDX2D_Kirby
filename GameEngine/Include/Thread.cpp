@@ -1,59 +1,69 @@
 #include "Thread.h"
 
-CThread::CThread()
+ CThread::CThread() :
+m_Thread(0),
+m_StartEvent(0),
+m_Loop(false)
 {}
 
-CThread::~CThread()
+ CThread::~CThread()
+ {
+	 if (m_StartEvent)
+	 {
+		 CloseHandle(m_StartEvent);
+		 m_StartEvent = 0;
+	 }
+ }
+
+ bool CThread::Init()
+ {
+	 m_StartEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+
+	 m_Thread = (HANDLE)_beginthreadex(nullptr, 0, CThread::ThreadFunction, this, 0, nullptr);
+
+	 return true;
+ }
+
+ void CThread::Run()
 {}
 
-bool CThread::Init()
-{
-	m_StartEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-	m_Thread = (HANDLE)_beginthreadex(NULL, 0, &CThread::ThreadFunction, this, 0, nullptr);
+ void CThread::Start()
+ {
+	 SetEvent(m_StartEvent);
+ }
 
-	return true;
-}
-
-void CThread::Run()
-{}
-
-void CThread::Start()
-{
-	SetEvent(m_StartEvent);
-}
-
-void CThread::Pause()
-{
-	DWORD Count;
+ void CThread::Pause()
+ {
+	 DWORD Count = 0;
 
 	do
 	{
 		Count = SuspendThread(m_Thread);
 	} while (Count <= 0);
-}
+ }
 
-void CThread::Resume()
-{
-	DWORD Count;
+ void CThread::Resume()
+ {
+	 DWORD Count = 0;
 
-	do
-	{
-		Count = SuspendThread(m_Thread);
-	} while (Count <= 0);
-}
+	 do
+	 {
+		 Count = ResumeThread(m_Thread);
+	 } while (Count >= 0);
+ }
 
-void CThread::WaitStartEvent()
-{
-	WaitForSingleObject(m_StartEvent, INFINITE);
-}
+ void CThread::WaitStartEvent()
+ {
+	 WaitForSingleObject(m_StartEvent, INFINITE);
+ }
 
-unsigned CThread::ThreadFunction(void* Arg)
-{
-	CThread* Thread = (CThread*)Arg;
+ unsigned CThread::ThreadFunction(void* Arg)
+ {
+	 CThread* Thread = (CThread*)Arg;
 
-	Thread->WaitStartEvent();
+	 Thread->WaitStartEvent();
 
-	Thread->Run();
+	 Thread->Run();
 
-	return 0;
-}
+	 return 0;
+ }

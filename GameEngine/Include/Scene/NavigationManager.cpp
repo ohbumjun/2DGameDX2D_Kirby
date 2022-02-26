@@ -15,9 +15,9 @@ CNavigationManager::~CNavigationManager()
 	m_vecNavigationThread.clear();
 }
 
-void CNavigationManager::SetNavData(CTileMapComponent* NavData)
+void CNavigationManager::SetNavTileMap(CTileMapComponent* NavTileMap)
 {
-	m_NavData = NavData;
+	m_NavTileMap = NavTileMap;
 
 	if (!m_vecNavigationThread.empty())
 	{
@@ -31,18 +31,19 @@ void CNavigationManager::SetNavData(CTileMapComponent* NavData)
 		m_vecNavigationThread.clear();
 	}
 
-	if (m_NavData)
+	if (m_NavTileMap)
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			char Name[MAX_PATH] = {};
+			char Name[MAX_PATH];
+
 			sprintf_s(Name, "Thread%d", i);
 
 			CNavigationThread* Thread = CThread::CreateThread<CNavigationThread>(Name);
 
 			Thread->m_NavManager = this;
 
-			Thread->CreateNavigationNode(m_NavData);
+			Thread->CreateNavigationNode(m_NavTileMap);
 
 			Thread->Start();
 
@@ -51,27 +52,27 @@ void CNavigationManager::SetNavData(CTileMapComponent* NavData)
 	}
 }
 
-void CNavigationManager::AddNavResult(const NavResultData& NavData)
+void CNavigationManager::AddResultData(NavResultData Result)
 {
-	m_ResultQueue.push(NavData);
+	m_ResultQueue.push(Result);
 }
+
+void CNavigationManager::Start()
+{}
 
 bool CNavigationManager::Init()
 {
 	return true;
 }
 
-void CNavigationManager::Start()
-{}
-
 void CNavigationManager::Update(float DeltaTime)
 {
 	if (!m_ResultQueue.empty())
 	{
-		NavResultData Result = m_ResultQueue.front();
+		NavResultData Data = m_ResultQueue.front();
 
 		m_ResultQueue.pop();
 
-		Result.Callback(Result.vecPath);
+		Data.Callback(Data.vecPath);
 	}
 }

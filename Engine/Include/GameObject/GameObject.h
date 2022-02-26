@@ -76,7 +76,9 @@ public:
 	T* LoadComponent()
 	{
 		T* Component = new T;
+
 		Component->SetScene(m_Scene);
+
 		Component->SetGameObject(this);
 
 		if (Component->GetComponentType() == Component_Type::ObjectComponent)

@@ -10,17 +10,17 @@ protected:
 
 private :
 	std::string m_Name;
-	HANDLE m_StartEvent;
 	HANDLE m_Thread;
-protected :
+	HANDLE m_StartEvent;
+protected:
 	bool m_Loop;
 public :
 	void SetLoop (bool Loop)
 {
 		m_Loop = Loop;
 }
-public:
-	virtual bool Init();
+public :
+	bool Init();
 	virtual void Run();
 public :
 	void Start();
@@ -28,12 +28,14 @@ public :
 	void Resume();
 private :
 	void WaitStartEvent();
+	// 멀티스레드 함수 형태
 	static unsigned int __stdcall ThreadFunction(void* Arg);
 public :
 	template<typename T>
 	static T* CreateThread (const std::string& Name)
 {
 		T* Thread = new T;
+
 		Thread->m_Name = Name;
 
 		if (!Thread->Init())
@@ -45,3 +47,5 @@ public :
 		return Thread;
 }
 };
+
+
