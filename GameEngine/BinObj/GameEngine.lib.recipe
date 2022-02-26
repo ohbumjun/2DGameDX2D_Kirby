@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\Collider.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\ColorMesh.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\Mesh2D.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\Particle.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\TileMap.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\dhsys\Desktop\DX_Project\GameEngine\Bin\Widget.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

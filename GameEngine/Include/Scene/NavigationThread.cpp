@@ -37,7 +37,7 @@ void CNavigationThread::Run()
 
 			NavResultData Result;
 
-			m_Navigation->FindPath(Data.Start, Data.End, Result.vecPath);
+			m_Navigation->FindPath(Data.OwnerComponent->GetWorldPos(), Data.End, Result.vecPath);
 
 			Result.Callback = Data.Callback;
 

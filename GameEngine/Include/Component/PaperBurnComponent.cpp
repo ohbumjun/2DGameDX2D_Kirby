@@ -6,6 +6,8 @@
 
 CPaperBurnComponent::CPaperBurnComponent()
 {
+	SetTypeID<CPaperBurnComponent>();
+
 	m_CBuffer = new CPaperBurnConstantBuffer;
 
 	m_CBuffer->Init();

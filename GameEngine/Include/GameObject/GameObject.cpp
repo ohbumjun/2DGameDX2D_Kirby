@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
+#include "../Component/NavAgent.h"
 #include "../Component/TileMapComponent.h"
 
 CGameObject::CGameObject() :
@@ -149,6 +150,20 @@ void CGameObject::DeleteComponent(const std::string& Name)
 		if ((*iter)->GetName() == Name)
 		{
 			iter = m_SceneComponentList.erase(iter);
+			break;
+		}
+	}
+}
+
+void CGameObject::Move(const Vector3& EndPos)
+{
+	size_t Size = m_vecObjectComponent.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		if (m_vecObjectComponent[i]->CheckType<CNavAgent>())
+		{
+			((CNavAgent*)m_vecObjectComponent[i].Get())->Move(EndPos);
 			break;
 		}
 	}

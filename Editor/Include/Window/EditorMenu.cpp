@@ -88,6 +88,16 @@ bool CEditorMenu::Init()
 
 	// ========================================================================
 
+	m_SaveObjectButton = AddWidget<CIMGUIButton>("SaveObject", 80.f, 30.f);
+	m_SaveObjectButton->SetClickCallback(this, &CEditorMenu::SaveObject);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+
+	m_LoadObjectButton = AddWidget<CIMGUIButton>("LoadObject", 80.f, 30.f);
+	m_LoadObjectButton->SetClickCallback(this, &CEditorMenu::LoadObject);
+
+	// ========================================================================
+
 	/*
 	m_ClearComponentButton = AddWidget<CIMGUIButton>("ClearComponent", 80.f, 30.f);
 	m_ClearComponentButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
@@ -357,6 +367,39 @@ void CEditorMenu::LoadScene()
 		ShowObject->SetEndPos(EndPos);
 	}
 }
+
+void CEditorMenu::SaveObject()
+{
+	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
+	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+		return;
+
+	TCHAR FileFullPath[MAX_PATH] = {};
+	OPENFILENAME OpenFile = {};
+	OpenFile.lStructSize = sizeof(OPENFILENAME);
+	OpenFile.lpstrFile = FileFullPath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.GameObject File\0*.gobj");
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+
+	if (GetSaveFileName(&OpenFile) != 0)
+	{
+		char FilePathMultibyte[MAX_PATH] = {};
+		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, FilePathMultibyte, ConvertLength, 0, 0);
+
+		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
+
+		CGameObject* TargetObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
+
+		TargetObject->SaveFullPath(FilePathMultibyte);
+	}
+}
+
+void CEditorMenu::LoadObject()
+{}
 
 void CEditorMenu::ClearComponent()
 {

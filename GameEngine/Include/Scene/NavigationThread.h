@@ -27,14 +27,17 @@ private :
     virtual void Run() override;
 
 public :
-    template<typename T>
+    template<typename T, typename ComponentType>
     void AddWork (T* Obj, void(T::*Func)(const std::list<Vector3>&),
-        const Vector3& Start, const Vector3& End)
+        ComponentType* OwnerComponent, const Vector3& End)
 {
         NavWorkData Data;
-        Data.Start = Start;
+
+        // Data.Start = Start;
+
+		Data.Callback = std::bind(Func, Obj, std::placeholders::_1);
         Data.End = End;
-        Data.Callback = std::bind(Func, Obj, std::placeholders::_1);
+        Data.OwnerComponent = OwnerComponent;
 
         m_WorkQueue.push(Data);
 }

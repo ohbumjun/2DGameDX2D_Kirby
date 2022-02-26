@@ -55,6 +55,7 @@ protected :
 	virtual void Destroy() override;
 	void ClearSceneComponents();
 	void DeleteComponent(const std::string& Name);
+	void Move(const Vector3& EndPos);
 public:
 	virtual void         Start();
 	virtual bool         Init();

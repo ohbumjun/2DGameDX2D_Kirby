@@ -13,6 +13,7 @@
 
 CPlayer2D::CPlayer2D()
 {
+	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
 	m_WDistance = 0.f;
 	m_Opacity   = 1.f;
@@ -34,6 +35,11 @@ CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	m_Child3Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
 	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
 
+	m_Body = (CColliderBox2D*)FindComponent("Body");
+	m_Camera = (CCameraComponent*)FindComponent("Camera");
+	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
+
+	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	m_Opacity = obj.m_Opacity;
 }
@@ -69,11 +75,11 @@ bool CPlayer2D::Init()
 	// Camera
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
 	m_Camera->OnViewportCenter(); // Player 중심 세팅
-	// m_Camera->SetViewPortRatio(0.7f, 0.7f);
+
+	// NavAgent
+	m_NavAgent = CreateComponent<CNavAgent>("NavAgent");
 
 	SetRootComponent(m_Sprite);
-	//m_Sprite->GetMaterial()->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "MainTexture", )
-	
 	m_Sprite->AddChild(m_ChildLeftSprite);
 	m_Sprite->AddChild(m_ChildRightSprite);
 	m_Sprite->AddChild(m_Muzzle);
@@ -303,19 +309,5 @@ void CPlayer2D::MovePointDown(float DeltaTime)
 {
 	Vector2 MousePos = CInput::GetInst()->GetMouseWorld2DPos();
 
-	m_Scene->GetNavManager()->FindPath<CPlayer2D>(this, &CPlayer2D::PathResult,
-		GetWorldPos(), Vector3(MousePos.x, MousePos.y, 0.f));
+	Move(Vector3(MousePos.x, MousePos.y, 0.f));
 }
-
-void CPlayer2D::PathResult(const std::list<Vector3>& PathList)
-{
-	if (PathList.empty())
-	{
-		
-	}
-	else
-	{
-		
-	}
-}
-

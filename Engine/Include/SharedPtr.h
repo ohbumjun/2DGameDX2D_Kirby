@@ -62,7 +62,7 @@ public:
 		return m_Ptr == Ptr;
 	}
 
-	bool operator ==(const CSharedPtr<T>& Ptr) const//
+	bool operator ==(const CSharedPtr<T>& Ptr) const
 	{
 		return m_Ptr == Ptr.m_Ptr;
 	}
@@ -87,6 +87,10 @@ public:
 		return m_Ptr;
 	}
 	T* operator * () const
+	{
+		return m_Ptr;
+	}
+	T* Get()
 	{
 		return m_Ptr;
 	}

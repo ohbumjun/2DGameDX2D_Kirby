@@ -1,6 +1,8 @@
 #include "NavAgent.h"
 
 #include "../GameObject/GameObject.h"
+#include "../Scene/NavigationManager.h"
+#include "../Scene/Scene.h"
 
 CNavAgent::CNavAgent() :
  m_MoveSpeed(300.f)
@@ -24,6 +26,12 @@ void CNavAgent::SetUpdateComponent(CSceneComponent* UpdateComponent)
 
 bool CNavAgent::Move(const Vector3& EndPos)
 {
+	if (!m_UpdateComponent)
+		return false;
+
+	return m_Scene->GetNavManager()->FindPath<CNavAgent, CSceneComponent>(this,
+		&CNavAgent::PathResult, m_UpdateComponent, EndPos);
+
 	return true;
 }
 

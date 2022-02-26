@@ -18,6 +18,8 @@ private :
 
     class CIMGUIButton*      m_SaveSceneButton;
     class CIMGUIButton*      m_LoadSceneButton;
+    class CIMGUIButton*      m_SaveObjectButton;
+    class CIMGUIButton*      m_LoadObjectButton;
 
     class CIMGUIButton* m_ClearComponentButton;
     class CIMGUIButton* m_DeleteComponentButton;
@@ -38,6 +40,8 @@ private  :
 private:
     void SaveScene();
     void LoadScene();
+    void SaveObject();
+    void LoadObject();
 private:
     void ClearComponent();
     void DeleteComponent();

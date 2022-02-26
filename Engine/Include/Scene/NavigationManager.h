@@ -25,12 +25,12 @@ public :
 	bool Init();
 	void Update(float DeltaTime);
 public :
-	template<typename T>
-	void FindPath (T* Obj, void(T::*Func)(const std::list<Vector3>&),
-		const Vector3& Start, const Vector3& End)
+	template<typename T, typename ComponentType>
+	bool FindPath (T* Obj, void(T::*Func)(const std::list<Vector3>&),
+		ComponentType* OwnerComponent, const Vector3& End)
 {
 		if (m_vecNavigationThread.empty())
-			return;
+			return false;
 
 		int Count = m_vecNavigationThread[0]->GetWorkCount();
 		int WorkIndex = 0;
@@ -46,7 +46,9 @@ public :
 		}
 	}
 
-	m_vecNavigationThread[WorkIndex]->AddWork<T>(Obj, Func, Start, End);
+	m_vecNavigationThread[WorkIndex]->AddWork<T>(Obj, Func, OwnerComponent, End);
+
+	return true;
 }
 };
 
