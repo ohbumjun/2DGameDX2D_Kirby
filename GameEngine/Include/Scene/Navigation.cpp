@@ -717,7 +717,7 @@ NavNode* CNavigation::GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const 
 		IndexY += 1;
 
 		// 범위를 벗어났다면 
-		if (IndexX >= m_CountX || IndexY < 0)
+		if (IndexX < 0 || IndexY >= m_CountY)
 			return nullptr;
 
 		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
@@ -772,12 +772,72 @@ NavNode* CNavigation::GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const 
 
 NavNode* CNavigation::GetRhombusNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End)
 {
-
-	
 }
 
 NavNode* CNavigation::GetRhombusNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End)
-{}
+{
+	int IndexX = Node->IndexX;
+	int IndexY = Node->IndexY;
+
+	while (true)
+	{
+		// 오른쪽 위로 올라갈 것이다.
+		// Y는 무조건 + 1
+		// Y가 홀수 일 때는 X + 1을 해준다.
+		if (IndexY & 1)
+			IndexX += 1;
+
+		IndexY -= 1;
+
+		// 범위를 벗어났다면
+		if (IndexX < 0 || IndexY >= m_CountY)
+			return nullptr;
+
+		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
+
+		// 벽이라면
+		if (CheckNode->TileType == Tile_Type::Wall)
+			return nullptr;
+
+		// 도착노드를 찾았다면
+		if (CheckNode == EndNode)
+			return CheckNode;
+
+		// 왼쪽 위는 벽, 위는 벽 X
+		int ConvertX = IndexX;
+		int ConvertY = IndexY + 1;
+
+		// Y가 짝수라면, 왼쪽 아래로 갈 때 X 는 - 1을 해줘야 한다.
+		if ((ConvertY & 1) == false)
+			ConvertX -= 1;
+
+		if (ConvertX >= 0 && IndexY + 2 < m_CountY)
+		{
+			if (m_vecNode[ConvertY * m_CountY + ConvertX]->TileType == Tile_Type::Wall &&
+				m_vecNode[(IndexY + 2) * m_CountY + IndexX]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+
+		// 오른쪽 아래는 벽, 오른쪽은 벽
+		ConvertX = IndexX;
+		ConvertY = IndexY - 1;
+
+		// Y가 홀수라면, 오른쪽 아래로 갈 때 X는 + 1
+		if (ConvertY & 1)
+			ConvertX += 1;
+
+		if (IndexX + 2 < m_CountX && ConvertY >= 0)
+		{
+			if (m_vecNode[ConvertY * m_CountY + ConvertX]->TileType == Tile_Type::Wall &&
+				m_vecNode[IndexY * m_CountY + (IndexX + 1)]->TileType == Tile_Type::Normal)
+			{
+				return CheckNode;
+			}
+		}
+	}
+}
 
 NavNode* CNavigation::GetRhombusNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End)
 {}
@@ -798,7 +858,7 @@ NavNode* CNavigation::GetRhombusNodeRightBottom(NavNode* Node, NavNode* EndNode,
 		IndexY -= 1;
 
 		// 범위를 벗어났다면
-		if (IndexX < 0 || IndexY >= m_CountY)
+		if (IndexX >= m_CountX || IndexY < 0)
 			return nullptr;
 
 		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
