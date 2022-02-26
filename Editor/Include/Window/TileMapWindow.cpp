@@ -271,7 +271,7 @@ bool CTileMapWindow::Init()
 	m_TileFrameStartX->SetFloat(160.f);
 	m_TileFrameStartY->SetFloat(80.f);
 	m_TileFrameEndX->SetFloat(320.f);
-	m_TileFrameEndY->SetFloat(160.f);
+	m_TileFrameEndY->SetFloat(160.f); //
 
 	// ==============================
 
