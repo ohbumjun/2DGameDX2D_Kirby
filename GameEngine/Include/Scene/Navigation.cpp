@@ -777,12 +777,7 @@ NavNode* CNavigation::GetRhombusNodeTop(NavNode* Node, NavNode* EndNode, const V
 
 	while (true)
 	{
-		// 오른쪽 위로 올라갈 것이다.
-		// Y는 무조건 + 1
-		// Y가 홀수 일 때는 X + 1을 해준다.
-		if (IndexY & 1)
-			IndexX += 1;
-
+		// 위로 올라갈 것이다.
 		IndexY += 2;
 
 		// 범위를 벗어났다면
@@ -932,16 +927,11 @@ NavNode* CNavigation::GetRhombusNodeRight(NavNode* Node, NavNode* EndNode, const
 
 	while (true)
 	{
-		// 오른쪽 위로 올라갈 것이다.
-		// Y는 무조건 + 1
-		// Y가 홀수 일 때는 X + 1을 해준다.
-		if (IndexY & 1)
-			IndexX += 1;
-
-		IndexY += 2;
+		// 오른쪽으로 갈 것이다.
+		IndexX += 1;
 
 		// 범위를 벗어났다면
-		if (IndexX < 0 || IndexY >= m_CountY)
+		if (IndexX >= m_CountX)
 			return nullptr;
 
 		NavNode* CheckNode = m_vecNode[IndexY * m_CountX + IndexX];
@@ -954,55 +944,58 @@ NavNode* CNavigation::GetRhombusNodeRight(NavNode* Node, NavNode* EndNode, const
 		if (CheckNode == EndNode)
 			return CheckNode;
 
-		// 왼쪽 아래는 벽, 왼쪽 위는 벽 X
+		// 왼쪽 아래는 벽, 오른쪽 아래는 벽 X
 		int ConvertLeftDownX = IndexX;
 		int ConvertLeftDownY = IndexY - 1;
 
-		int ConvertLeftUpX = IndexX;
-		int ConvertLeftUpY = IndexY + 1;
+		int ConvertRightDownX = IndexX;
+		int ConvertRightDownY = IndexY - 1;
 
-		// Y가 짝수라면, 왼쪽 아래, 위로 갈 때 X 는 - 1을 해줘야 한다.
+		// Y가 짝수라면,
+		// 왼쪽 아래는 X - 1, 오른쪽 아래는 그대로
 		if ((IndexY & 1) == false)
-		{
 			ConvertLeftDownX -= 1;
-			ConvertLeftUpX -= 1;
-		}
+		//  Y가 홀수라면
+		// 왼쪽 아래는 그대로, 오른쪽 아래는 X + !
+		else
+			ConvertRightDownX += 1;
 
-		if (ConvertLeftDownX >= 0 && ConvertLeftDownY >= 0 && ConvertLeftUpY < m_CountY)
+		if (ConvertLeftDownX >= 0 && ConvertRightDownX < m_CountX && ConvertRightDownY >= 0)
 		{
 			if (m_vecNode[ConvertLeftDownY * m_CountY + ConvertLeftDownX]->TileType == Tile_Type::Wall &&
-				m_vecNode[ConvertLeftUpY * m_CountY + ConvertLeftUpX]->TileType == Tile_Type::Normal)
+				m_vecNode[ConvertRightDownY * m_CountY + ConvertRightDownX]->TileType == Tile_Type::Normal)
 			{
 				return CheckNode;
 			}
 		}
 
-		// 오른쪽 아래는 벽, 오른쪽 위는 벽 X
-		int ConvertRightDownX = IndexX;
-		int ConvertRightDownY = IndexY - 1;
+		// 왼쪽 위는 벽, 오른쪽 위는 벽 X
+		int ConvertLeftUpX = IndexX;
+		int ConvertLeftUpY = IndexY + 1;
 
 		int ConvertRightUpX = IndexX;
 		int ConvertRightUpY = IndexY + 1;
 
 		// Y가 홀수라면, 오른쪽 아래, 위로 갈 때 X는 + 1
-		if (IndexY & 1)
-		{
-			ConvertRightDownX += 1;
+		if ((IndexY & 1) == false)
+			ConvertLeftUpX -= 1;
+		//  Y가 홀수라면
+		// 왼쪽 아래는 그대로, 오른쪽 아래는 X + !
+		else
 			ConvertRightUpX += 1;
-		}
 
-		if (ConvertRightDownX < m_CountX && ConvertRightDownY >= 0 && ConvertRightUpY < m_CountY)
+		if (ConvertLeftUpX >= 0 && ConvertRightUpX < m_CountX && ConvertLeftUpY < m_CountY)
 		{
-			if (m_vecNode[ConvertRightDownX * m_CountY + ConvertRightDownY]->TileType == Tile_Type::Wall &&
-				m_vecNode[ConvertRightUpX * m_CountY + ConvertRightUpY]->TileType == Tile_Type::Normal)
+			if (m_vecNode[ConvertLeftUpY * m_CountY + ConvertLeftUpX]->TileType == Tile_Type::Wall &&
+				m_vecNode[ConvertRightUpY * m_CountY + ConvertRightUpX]->TileType == Tile_Type::Normal)
 			{
 				return CheckNode;
 			}
 		}
 
 		// 그래도 못찾았다면
-		// 1) 왼쪽 위
-		NavNode* FindNode = GetRhombusNodeLeftTop(CheckNode, EndNode, End);
+		// 1) 오른쪽 아래
+		NavNode* FindNode = GetRhombusNodeRightBottom(CheckNode, EndNode, End);
 
 		if (FindNode)
 			return CheckNode;
