@@ -25,6 +25,8 @@ CTileMapComponent::CTileMapComponent()
 	m_LayerName = "Back";
 	m_TileInfoBuffer = nullptr;
 
+	m_DeltaTime = 0.f;
+
 	for (int i = 0; i < (int)Tile_Type::End; ++i)
 	{
 		m_TileColor[i] = Vector4(1.f, 1.f, 1.f, 1.f);
@@ -316,7 +318,7 @@ void CTileMapComponent::CreateTile(Tile_Shape Shape, int CountX, int CountY, con
 	SetWorldInfo();
 
 	// Navigation Manager 에 해당 TileMapComponent 를 Data 로 설정해준다.
-	m_Scene->GetNavManager()->SetNavData(this);
+	m_Scene->GetNavManager()->SetNavTileMap(this);
 
 	// TileMap 전체 Size 에 맞춰서 SceneCollision의 전체 CollisionSection도 세팅해준다.
 	// 2D 전용
@@ -804,11 +806,25 @@ bool CTileMapComponent::Init()
 void CTileMapComponent::Update(float DeltaTime)
 {
 	CSceneComponent::Update(DeltaTime);
+
+	// 실시간으로 Tile Material을 세팅해줄 것이다
+	if (m_TileMaterial)
+	{
+		if (!m_TileMaterial->EmptyTexture())
+			m_CBuffer->SetImageSize(Vector2((float)m_TileMaterial->GetTextureWidth(), (float)m_TileMaterial->GetTextureHeight()));
+	}
 }
 
 void CTileMapComponent::PostUpdate(float DeltaTime)
 {
 	CSceneComponent::PostUpdate(DeltaTime);
+
+	m_DeltaTime = DeltaTime;
+}
+
+void CTileMapComponent::PrevRender()
+{
+	CSceneComponent::PrevRender();
 
 	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
@@ -855,7 +871,7 @@ void CTileMapComponent::PostUpdate(float DeltaTime)
 		{
 			int	Index = i * m_CountX + j;
 
-			m_vecTile[Index]->Update(DeltaTime);
+			m_vecTile[Index]->Update(m_DeltaTime);
 
 			if (m_vecTile[Index]->GetRender())
 			{
@@ -875,11 +891,6 @@ void CTileMapComponent::PostUpdate(float DeltaTime)
 	}
 
 	m_TileInfoBuffer->UpdateBuffer(&m_vecTileInfo[0], m_RenderCount);
-}
-
-void CTileMapComponent::PrevRender()
-{
-	CSceneComponent::PrevRender();
 }
 
 void CTileMapComponent::Render()
@@ -1042,7 +1053,7 @@ void CTileMapComponent::Load(FILE* File)
 	m_CBuffer->Init();
 
 	// NavManager 에 해당 TileMapComponent 세팅
-	m_Scene->GetNavManager()->SetNavData(this);
+	m_Scene->GetNavManager()->SetNavTileMap(this);
 
 	// 상수 버퍼 타일 사이즈 세팅 
 	m_CBuffer->SetTileSize(Vector2(m_TileSize.x, m_TileSize.y));

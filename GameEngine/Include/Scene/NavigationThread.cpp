@@ -41,7 +41,7 @@ void CNavigationThread::Run()
 
 			Result.Callback = Data.Callback;
 
-			m_NavManager->AddNavResult(Result);
+			m_NavManager->AddResultData(Result);
 		}
 	}
 

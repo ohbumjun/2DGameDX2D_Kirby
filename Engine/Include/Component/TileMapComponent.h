@@ -31,6 +31,7 @@ protected:
     Vector3 m_TileSize;
     Vector4 m_TileColor[(int)Tile_Type::End];
     bool    m_EditMode;
+    float m_DeltaTime;
 
 public:
     void EnableEditMode(bool Mode)

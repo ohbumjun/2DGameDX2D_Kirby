@@ -27,17 +27,20 @@ struct NavNode {
 	float Cost;
 	float Dist;
 	float Total;
+	std::list<Node_Dir> SearchDirList;
 
 	NavNode() :
-	Parent(nullptr),
-	NodeType(Nav_Node_Type::None),
-	TileType(Tile_Type::Normal),
-	IndexX(-1),
-	IndexY(-1),
-	Index(-1),
-	Cost(0.f),
-	Dist(0.f),
-	Total(0.f){}
+		Parent(nullptr),
+		NodeType(Nav_Node_Type::None),
+		TileType(Tile_Type::Normal),
+		IndexX(-1),
+		IndexY(-1),
+		Index(-1),
+		Cost(FLT_MAX),
+		Dist(FLT_MAX),
+		Total(FLT_MAX)
+	{
+	}
 };
 
 class CNavigation {
@@ -48,38 +51,41 @@ private :
 	~CNavigation();
 private :
 	Tile_Shape m_NodeShape;
-	std::vector<NavNode*> m_vecNode;
 	int m_CountX;
 	int m_CountY;
+	std::vector<NavNode*> m_vecNode;
 	Vector3 m_TileSize;
 	CSharedPtr<CTileMapComponent> m_TileMap;
 	std::vector<NavNode*> m_vecOpen;
 	std::vector<NavNode*> m_vecUseNode;
 public :
-	void CreateNavigationNode(CTileMapComponent* TileMap);
+	void CreateNavigationNode(class CTileMapComponent* TileMap);
 	bool FindPath(const Vector3& Start, const Vector3& End, std::list<Vector3>& vecPath);
+private :
 	bool FindNode(NavNode* Node, NavNode* EndNode, const Vector3& End, std::list<Vector3>& vecPath);
 	NavNode* GetCorner(Node_Dir Dir, NavNode* Node, NavNode* EndNode, const Vector3& End);
 private :
-	NavNode* GetRectNodeTop(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeRight(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeBottom(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeLeft(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	NavNode* GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, 
-		const Vector3& End,bool Diagonal = true);
-	
+	void AddDir(Node_Dir Dir, NavNode* Node);
 private :
-	static int SortNode(const void * Src, const void * Dest);
-};
+	NavNode* GetRectNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Diagonal = false);
+	NavNode* GetRectNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Diagonal = false);
+	NavNode* GetRectNodeLeft(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Diagonal = false);
+	NavNode* GetRectNodeBottom(NavNode* Node, NavNode* EndNode, const Vector3& End, bool Diagonal = false);
+	NavNode* GetRectNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRectNodeRightBottom(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRectNodeLeftBottom(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRectNodeLeftTop(NavNode* Node, NavNode* EndNode, const Vector3& End);
+private :
+	NavNode* GetRhombusNodeTop(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeRightTop(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeRight(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeRightBottom(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeBottom(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeLeftBottom(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeLeft(NavNode* Node, NavNode* EndNode, const Vector3& End);
+	NavNode* GetRhombusNodeLeftTop(NavNode* Node, NavNode* EndNode, const Vector3& End);
 
+private:
+	static bool SortNode(NavNode* Src, NavNode* Dest);
+};
 

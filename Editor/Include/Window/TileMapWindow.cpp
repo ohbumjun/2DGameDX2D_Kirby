@@ -473,7 +473,7 @@ void CTileMapWindow::TileMapSaveButton()
 
 		CGameObject* TileMapObject = m_TileMap->GetGameObject();
 
-		TileMapObject->Save(ConvertFullPath);
+		TileMapObject->SaveFullPath(ConvertFullPath);
 	}
 		
 }

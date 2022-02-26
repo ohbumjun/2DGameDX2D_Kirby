@@ -12,26 +12,25 @@ class CNavigationManager
 private :
 	CNavigationManager();
 	~CNavigationManager();
-
 private :
 	class CScene* m_Scene;
+	CSharedPtr<class CTileMapComponent> m_NavTileMap;
 	std::vector<CNavigationThread*> m_vecNavigationThread;
-	CSharedPtr<CTileMapComponent> m_NavData;
 	CThreadQueue<NavResultData> m_ResultQueue;
 public :
-	void SetNavData(CTileMapComponent* NavData);
-	void AddNavResult(const NavResultData& NavData);
+	void SetNavTileMap(class CTileMapComponent* NavTileMap);
+	void AddResultData(NavResultData Result);
 public :
-	bool Init();
 	void Start();
+	bool Init();
 	void Update(float DeltaTime);
 public :
 	template<typename T>
-	bool FindPath (T* Obj, void (T::*Func)(const std::list<Vector3>&),
+	void FindPath (T* Obj, void(T::*Func)(const std::list<Vector3>&),
 		const Vector3& Start, const Vector3& End)
 {
 		if (m_vecNavigationThread.empty())
-			return false;
+			return;
 
 		int Count = m_vecNavigationThread[0]->GetWorkCount();
 		int WorkIndex = 0;
@@ -40,7 +39,7 @@ public :
 
 	for (size_t i = 0; i < Size; i++)
 	{
-		if (m_vecNavigationThread[i]->GetWorkCount() < Count)
+		if (Count > m_vecNavigationThread[i]->GetWorkCount())
 		{
 			Count = m_vecNavigationThread[i]->GetWorkCount();
 			WorkIndex = (int)i;

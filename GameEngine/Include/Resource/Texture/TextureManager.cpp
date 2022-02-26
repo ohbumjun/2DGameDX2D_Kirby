@@ -50,7 +50,7 @@ bool CTextureManager::Init()
 	SetSampler("Anisotropic", 2);
 
 	// Base Sampler
-	SetSampler("Anisotropic", 3);
+	SetSampler("Linear", 3);
 
 	return true;
 }
