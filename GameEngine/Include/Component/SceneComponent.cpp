@@ -1,4 +1,4 @@
-#include "SceneComponent.h"
+ï»¿#include "SceneComponent.h"
 #include "../GameObject/GameObject.h"
 #include "../Render/RenderManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
@@ -7,9 +7,8 @@
 CSceneComponent::CSceneComponent()
 {
 	SetTypeID<CSceneComponent>();
-
 	m_ComponentType = Component_Type::SceneComponent;
-	m_Render        = false;
+	m_Render = false;
 
 	m_Transform = new CTransform;
 
@@ -290,9 +289,9 @@ void CSceneComponent::Save(FILE* pFile)
 {
 	CComponent::Save(pFile);
 	/*
-	CSceneComponent*                         m_Parent; --> Load µÇ´Â °úÁ¤¿¡¼­ ¾Ë¾Æ¼­ ¼¼ÆÃµÉ °ÍÀÌ´Ù. 
-	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; --> 
-	bool                                     m_Render; 
+	CSceneComponent*                         m_Parent; --> Load ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½Ì´ï¿½.
+	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; -->
+	bool                                     m_Render;
 	 */
 	int Length = (int)m_LayerName.length();
 	fwrite(&Length, sizeof(int), 1, pFile);
@@ -302,24 +301,13 @@ void CSceneComponent::Save(FILE* pFile)
 
 	int ChildCount = (int)m_vecChild.size();
 	fwrite(&ChildCount, sizeof(int), 1, pFile);
-
 	for (int i = 0; i < ChildCount; i++)
 	{
 		size_t TypeID = m_vecChild[i]->GetTypeID();
 		fwrite(&TypeID, sizeof(size_t), 1, pFile);
-
-		// µð¹ö±ë¿ë
-		/*
-		int Length = m_vecChild[i]->GetName().length();
-
-		fwrite(&Length, sizeof(int), 1, pFile);
-
-		fwrite(m_vecChild[i]->GetName().c_str(), sizeof(char), Length, pFile);
-		*/
-
 		m_vecChild[i]->Save(pFile);
 	}
-	
+
 	fwrite(&m_Render, sizeof(bool), 1, pFile);
 }
 
@@ -327,7 +315,7 @@ void CSceneComponent::Load(FILE* pFile)
 {
 	CComponent::Load(pFile);
 	/*
-	CSceneComponent*                         m_Parent; --> Load µÇ´Â °úÁ¤¿¡¼­ ¾Ë¾Æ¼­ ¼¼ÆÃµÉ °ÍÀÌ´Ù.
+	CSceneComponent*                         m_Parent; --> Load ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½Ì´ï¿½.
 	std::vector<CSharedPtr<CSceneComponent>> m_vecChild; -->
 	 */
 	int Length;
@@ -342,13 +330,10 @@ void CSceneComponent::Load(FILE* pFile)
 	int ChildCount;
 	fread(&ChildCount, sizeof(int), 1, pFile);
 
-	
-
+	size_t TypeID;
 	for (int i = 0; i < ChildCount; i++)
 	{
-		size_t TypeID = {};
 		fread(&TypeID, sizeof(size_t), 1, pFile);
-
 		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(m_Object, TypeID);
 		Component->Load(pFile);
 

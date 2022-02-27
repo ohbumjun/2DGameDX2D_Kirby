@@ -37,10 +37,10 @@ bool CMainScene::Init()
 		
 	CreateSound();
 
-	// CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
+	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
-	CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
-	Player->LoadByFileName("TestPlayer.gobj", SCENE_PATH);
+	// CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
+	// Player->LoadByFileName("TestPlayer.gobj", SCENE_PATH);
 
 
 	SetPlayerObject(Player);
@@ -54,7 +54,7 @@ bool CMainScene::Init()
 	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
 
 	CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("YellowBird");
-	YellowBirdMonster->SetWorldPos(Vector3(-100.f, 500.f, 1.));
+	YellowBirdMonster->SetWorldPos(Vector3(500.f, 500.f, 1.));
 
 	CPurpleBeatle* PurpleBeatle = m_Scene->CreateGameObject<CPurpleBeatle>("PurpleBeatle");
 	PurpleBeatle->SetWorldPos(Vector3(-200.f, 500.f, 1.));
@@ -98,9 +98,9 @@ bool CMainScene::Init()
 
 	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
 
-	CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
+	// CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
 
-	TileMap->LoadByFileName("TileMapRhombus.gobj", SCENE_PATH);
+	// TileMap->LoadByFileName("TileMapRhombus.gobj", SCENE_PATH);
 
 	return true;
 }

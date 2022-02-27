@@ -1,4 +1,4 @@
-#include "Transform.h"
+ï»¿#include "Transform.h"
 #include "../Resource/Shader/TransformConstantBuffer.h"
 #include "CameraComponent.h"
 #include "../Scene/CameraManager.h"
@@ -47,7 +47,7 @@ void CTransform::InheritScale(bool Current)
 
 	m_UpdateScale = true;
 
-	// ÀÚ½ÄÀÌ ÀÖÀ» °æ¿ì ¸ğµÎ °»½ÅÇØÁØ´Ù.
+	// ìì‹ì´ ìˆì„ ê²½ìš° ëª¨ë‘ ê°±ì‹ í•´ì¤€ë‹¤.
 	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
@@ -98,7 +98,7 @@ void CTransform::InheritRotation(bool Current)
 
 	m_UpdateRot = true;
 
-	// ÀÚ½ÄÀÌ ÀÖÀ» °æ¿ì ¸ğµÎ °»½ÅÇØÁØ´Ù.
+	// ìì‹ì´ ìˆì„ ê²½ìš° ëª¨ë‘ ê°±ì‹ í•´ì¤€ë‹¤.
 	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
@@ -144,7 +144,7 @@ void CTransform::InheritParentRotationPos(bool Current)
 
 	m_UpdatePos = true;
 
-	// ÀÚ½ÄÀÌ ÀÖÀ» °æ¿ì ¸ğµÎ °»½ÅÇØÁØ´Ù.
+	// ìì‹ì´ ìˆì„ ê²½ìš° ëª¨ë‘ ê°±ì‹ í•´ì¤€ë‹¤.
 	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
@@ -160,7 +160,7 @@ void CTransform::InheritWorldScale(bool Current)
 
 	m_UpdateScale = true;
 
-	// ÀÚ½ÄÀÌ ÀÖÀ» °æ¿ì ¸ğµÎ °»½ÅÇØÁØ´Ù.
+	// ìì‹ì´ ìˆì„ ê²½ìš° ëª¨ë‘ ê°±ì‹ í•´ì¤€ë‹¤.
 	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
@@ -171,12 +171,12 @@ void CTransform::InheritWorldScale(bool Current)
 
 void CTransform::InheritWorldRotation(bool Current)
 {
-	// ¿©±â·Î µé¾î¿À´Â ¶§´Â SetWorldRotation ÇÔ¼ö¸¦ ½ÇÇàÇÒ ¶§ ÀÌ´Ù. 
+	// ì—¬ê¸°ë¡œ ë“¤ì–´ì˜¤ëŠ” ë•ŒëŠ” SetWorldRotation í•¨ìˆ˜ë¥¼ ì‹¤í–‰í•  ë•Œ ì´ë‹¤. 
 	if (m_Parent)
 	{
-		// ¸¸¾à ºÎ¸ğÀÇ Sprite°¡ 30µµ È¸ÀüÀ» ÇÑ´Ù¸é
-		// Body´Â Relative Á¤º¸°¡ 0ÀÌ¾îµµ
-		// World RotÀº 30µµ°¡ µÇ¾î¾ß ÇÑ´Ù.
+		// ë§Œì•½ ë¶€ëª¨ì˜ Spriteê°€ 30ë„ íšŒì „ì„ í•œë‹¤ë©´
+		// BodyëŠ” Relative ì •ë³´ê°€ 0ì´ì–´ë„
+		// World Rotì€ 30ë„ê°€ ë˜ì–´ì•¼ í•œë‹¤.
 		if (m_InheritRotX)
 			m_WorldRot.x = m_RelativeRot.x + m_Parent->GetWorldRot().x;
 
@@ -218,7 +218,7 @@ void CTransform::InheritWorldRotation(bool Current)
 
 	m_UpdateRot = true;
 
-	// ÀÚ½ÄÀÌ ÀÖÀ» °æ¿ì ¸ğµÎ °»½ÅÇØÁØ´Ù.
+	// ìì‹ì´ ìˆì„ ê²½ìš° ëª¨ë‘ ê°±ì‹ í•´ì¤€ë‹¤.
 	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
@@ -263,7 +263,7 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 		}
 		else
 		{
-			// ±»ÀÌ ¿Ö ÀÌ·¸°Ô ¹Ù²ãÁÖ´Â °ÍÀÏ±î ?
+			// êµ³ì´ ì™œ ì´ë ‡ê²Œ ë°”ê¿”ì£¼ëŠ” ê²ƒì¼ê¹Œ ?
 			m_RelativePos = m_WorldPos - m_Parent->GetWorldPos();
 			// m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
 		}
@@ -271,7 +271,7 @@ void CTransform::InheritParentRotationWorldPos(bool Current)
 
 	m_UpdatePos = true;
 
-	// ÀÚ½ÄÀÌ ÀÖÀ» °æ¿ì ¸ğµÎ °»½ÅÇØÁØ´Ù.
+	// ìì‹ì´ ìˆì„ ê²½ìš° ëª¨ë‘ ê°±ì‹ í•´ì¤€ë‹¤.
 	size_t Size = m_vecChild.size();
 
 	for (size_t i = 0; i < Size; ++i)
@@ -591,7 +591,7 @@ void CTransform::SetTransform()
 	// matProj = XMMatrixOrthographicOffCenterLH(0.f, 1280.f, 0.f, 720.f, 0.f, 1000.f);
 	// m_CBuffer->SetProjMatrix(matProj);
 
-	// Ä«¸Ş¶ó ¸Ş´ÏÀúÀÇ Camera Çà·Ä Á¤º¸¸¦ °¡Á®¿Í¼­ ¼¼ÆÃÇÑ´Ù
+	// ì¹´ë©”ë¼ ë©”ë‹ˆì €ì˜ Camera í–‰ë ¬ ì •ë³´ë¥¼ ê°€ì ¸ì™€ì„œ ì„¸íŒ…í•œë‹¤
 	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
   	m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
@@ -622,11 +622,11 @@ void CTransform::Save(FILE* pFile)
 	class CSceneComponent* m_Owner;
 	CTransform*                     m_Parent;
 	std::vector<CTransform*>        m_vecChild;
-	class CTransformConstantBuffer* m_CBuffer; --> Load ÇÏ´Â °úÁ¤¿¡¼­ ¸¸µé¾îÁö´Â ³à¼®µé ?
+	class CTransformConstantBuffer* m_CBuffer; --> Load í•˜ëŠ” ê³¼ì •ì—ì„œ ë§Œë“¤ì–´ì§€ëŠ” ë…€ì„ë“¤ ?
 	-------------------------------------------------------------------------------------------------
 	bool m_UpdateScale;
 	bool m_UpdateRot;
-	bool m_UpdatePos; --> ±×¶§±×¶§ Update ¸¶´Ù ¹Ù²î´Â ³à¼®µé 
+	bool m_UpdatePos; --> ê·¸ë•Œê·¸ë•Œ Update ë§ˆë‹¤ ë°”ë€ŒëŠ” ë…€ì„ë“¤ 
 	-------------------------------------------------------------------------------------------------
 	*/
 	fwrite(&m_InheritScale, sizeof(bool), 1, pFile);
@@ -652,7 +652,7 @@ void CTransform::Save(FILE* pFile)
 	fwrite(&m_MeshSize, sizeof(Vector3), 1, pFile);
 
 	/*
-	Matrix m_matScale; --> Update ¸¶´Ù, À§¿¡¼­ ÀúÀåµÈ °ªµéÀ» ±Ù°Å·Î °è¼ÓÇØ¼­ »õ·Î ¸¸µé¾î³»´Â º¯¼öµéÀÌ´Ù. 
+	Matrix m_matScale; --> Update ë§ˆë‹¤, ìœ„ì—ì„œ ì €ì¥ëœ ê°’ë“¤ì„ ê·¼ê±°ë¡œ ê³„ì†í•´ì„œ ìƒˆë¡œ ë§Œë“¤ì–´ë‚´ëŠ” ë³€ìˆ˜ë“¤ì´ë‹¤. 
 	Matrix m_matRot;
 	Matrix m_matPos;
 	Matrix m_matWorld;

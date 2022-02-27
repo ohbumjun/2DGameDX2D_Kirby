@@ -293,6 +293,9 @@ void CColliderComponent::Load(FILE* pFile)
 
 	CSceneComponent::Load(pFile);
 
+	/*
+	SAFE_DELETE(m_CBuffer);
+
 	m_CBuffer = new CColliderConstantBuffer;
 
 	m_CBuffer->Init();
@@ -300,5 +303,6 @@ void CColliderComponent::Load(FILE* pFile)
 	m_CBuffer->SetColliderColor(1.f, 1.f, 0.f, 1.f);
 
 	m_Shader = CResourceManager::GetInst()->FindShader("ColliderShader");
+	*/
 
 }

@@ -121,7 +121,7 @@ public:
 				m_RootComponent = (CSceneComponent*)Component;
 		}
 
-		return (T*)Component;
+		return Component;
 	}
 
 	template<typename T>

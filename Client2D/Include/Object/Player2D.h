@@ -39,11 +39,9 @@ private:
 	bool  m_SolW;
 	float m_WDistance;
 	float m_Opacity;
-	// 
-	// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+
 public:
 	virtual bool       Init() override;
-	virtual void		Start() override;
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;

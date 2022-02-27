@@ -1,4 +1,4 @@
-#include "Player2D.h"
+ï»¿#include "Player2D.h"
 #include "Bullet.h"
 #include "BulletTornaido.h"
 #include "Input.h"
@@ -14,21 +14,21 @@
 CPlayer2D::CPlayer2D()
 {
 	SetTypeID<CPlayer2D>();
-	m_SolW      = false;
+	m_SolW = false;
 	m_WDistance = 0.f;
-	m_Opacity   = 1.f;
+	m_Opacity = 1.f;
 }
 
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	CGameObject(obj)
 {
-	m_Sprite           = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
-	m_ChildLeftSprite  = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
+	m_Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
+	m_ChildLeftSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
 	m_ChildRightSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
-	m_ChildLeftMuzzle  = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
+	m_ChildLeftMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
 	m_ChildRightMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
-	m_ChildRoot        = dynamic_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
-	m_Muzzle           = dynamic_cast<CSceneComponent*>(FindComponent("Muzzle"));
+	m_ChildRoot = dynamic_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
+	m_Muzzle = dynamic_cast<CSceneComponent*>(FindComponent("Muzzle"));
 
 	m_Child1Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
 	m_Child2Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
@@ -50,13 +50,13 @@ CPlayer2D::~CPlayer2D()
 
 bool CPlayer2D::Init()
 {
-	m_Sprite           = CreateComponent<CSpriteComponent>("PlayerSprite");
-	m_ChildLeftSprite  = CreateComponent<CSpriteComponent>("PlayerChildLeftSprite");
+	m_Sprite = CreateComponent<CSpriteComponent>("PlayerSprite");
+	m_ChildLeftSprite = CreateComponent<CSpriteComponent>("PlayerChildLeftSprite");
 	m_ChildRightSprite = CreateComponent<CSpriteComponent>("PlayerChildRightSprite");
-	m_ChildRoot        = CreateComponent<CSceneComponent>("PlayerChildRoot");
-	m_Muzzle           = CreateComponent<CSceneComponent>("Muzzle");
+	m_ChildRoot = CreateComponent<CSceneComponent>("PlayerChildRoot");
+	m_Muzzle = CreateComponent<CSceneComponent>("Muzzle");
 
-	m_ChildLeftMuzzle  = CreateComponent<CSceneComponent>("LeftMuzzle");
+	m_ChildLeftMuzzle = CreateComponent<CSceneComponent>("LeftMuzzle");
 	m_ChildRightMuzzle = CreateComponent<CSceneComponent>("RightMuzzle");
 
 	m_Child1Sprite = CreateComponent<CSpriteComponent>("PlayerChild1Sprite");
@@ -74,7 +74,7 @@ bool CPlayer2D::Init()
 
 	// Camera
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
-	m_Camera->OnViewportCenter(); // Player Áß½É ¼¼ÆÃ
+	m_Camera->OnViewportCenter(); // Player ï¿½ß½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	// NavAgent
 	m_NavAgent = CreateComponent<CNavAgent>("NavAgent");
@@ -88,13 +88,13 @@ bool CPlayer2D::Init()
 	m_Sprite->AddChild(m_Camera);
 	m_Sprite->AddChild(m_SimpleHUDWidget);
 
-	// ¹Ýµå½Ã ÀÌ À§Ä¡¿¡¼­ ( AddChild ÀÌÈÄ¿¡ À§Ä¡ ÁÂÇ¥ ¼¼ÆÃ )
+	// ï¿½Ýµï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ( AddChild ï¿½ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ )
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
 
-	CAnimationSequence2DInstance* AnimationInstance =  m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
 
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 
@@ -103,9 +103,9 @@ bool CPlayer2D::Init()
 	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
 	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
 	m_ChildLeftSprite->SetTexture(0, 0, (int)(Buffer_Shader_Type::Pixel), "Teemo",
-	                              TEXT("Teemo.jpg"));
+		TEXT("Teemo.jpg"));
 	m_ChildRightSprite->SetTexture(0, 0, (int)(Buffer_Shader_Type::Pixel), "Teemo",
-	                               TEXT("Teemo.jpg"));
+		TEXT("Teemo.jpg"));
 	m_ChildLeftSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 	m_ChildRightSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
 
@@ -170,8 +170,8 @@ bool CPlayer2D::Init()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", KeyState_Down, this, &CPlayer2D::MovePointDown);
 
 
-	// Pivot °ªÀÌ ¾ø´Ù¸é, ¿ø·¡ÀÇ pos ÀÎ ¿ÞÂÊ ÇÏ´Ü pos ¸¦ Áß½ÉÀ¸·Î
-	// Center °¡ Çü¼ºµÇ°Ô µÉ °ÍÀÌ´Ù. 
+	// Pivot ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ pos ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ pos ï¿½ï¿½ ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// Center ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½. 
 	m_Sprite->SetRelativeScale(100.f, 100.f, 1.f);
 	m_Sprite->SetRelativePos(100.f, 50.f, 0.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
@@ -179,18 +179,12 @@ bool CPlayer2D::Init()
 	return true;
 }
 
-void CPlayer2D::Start()
-{
-	if (m_SimpleHUDWidget)
-		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
-}
-
 void CPlayer2D::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
 	static bool Fire2 = false;
-	
+
 	static bool Hide = false;
 
 	if (GetAsyncKeyState('2') & 0x8000)
@@ -211,7 +205,7 @@ void CPlayer2D::Update(float DeltaTime)
 		Hide = true;
 	}
 
-	// m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
+	m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
 
 	if (Hide)
 	{
@@ -219,7 +213,7 @@ void CPlayer2D::Update(float DeltaTime)
 
 		if (m_Opacity < 0.f)
 			m_Opacity = 0.f;
-		
+
 		m_Sprite->SetOpacity(m_Opacity);
 	}
 }

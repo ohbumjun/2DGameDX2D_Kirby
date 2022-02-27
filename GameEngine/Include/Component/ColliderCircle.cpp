@@ -133,11 +133,13 @@ void CColliderCircle::Save(FILE* pFile)
 
 	fwrite(&m_Info, sizeof(CircleInfo), 1, pFile);
 
+	/*
 	int MeshNameLength = m_Mesh->GetName().length();
 
 	fwrite(&MeshNameLength, sizeof(int), 1, pFile);
 
 	fwrite(m_Mesh->GetName().c_str(), sizeof(char), MeshNameLength, pFile);
+	*/
 }
 
 void CColliderCircle::Load(FILE* pFile)
@@ -146,6 +148,7 @@ void CColliderCircle::Load(FILE* pFile)
 
 	fread(&m_Info, sizeof(CircleInfo), 1, pFile);
 
+	/*
 	SetInheritRotZ(true); // m_Transform->m_InheritRotz를 true로 세팅하는 것
 
 	SetWorldScale(m_Info.Radius * 2.f, m_Info.Radius * 2.f, 1.f);
@@ -159,6 +162,7 @@ void CColliderCircle::Load(FILE* pFile)
 	fread(MeshName, sizeof(char), MeshNameLength, pFile);
 
 	m_Mesh = m_Scene->GetResource()->FindMesh(MeshName);
+	*/
 }
 
 bool CColliderCircle::Collision(CColliderComponent* Dest)

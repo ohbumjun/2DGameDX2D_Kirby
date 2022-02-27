@@ -20,6 +20,7 @@ bool CYellowBird::Init()
 		return false;
 
 	LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
+	// LoadAnimationInstance("Normal_YellowBird", TEXT("Kirby_Fight.anim"));
 	SetCurrentAnimation("RightIdle");
 
 	return true;

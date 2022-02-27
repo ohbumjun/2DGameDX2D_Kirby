@@ -306,6 +306,8 @@ void CColliderPixel::Save(FILE* File)
 
 	fwrite(&m_Info, sizeof(CircleInfo), 1, File);
 
+	/*
+
 	// Mesh
 	int MeshNameLength = m_Mesh->GetName().length();
 
@@ -326,6 +328,8 @@ void CColliderPixel::Save(FILE* File)
 	fwrite(&ShaderNameLength, sizeof(int), 1, File);
 
 	fwrite(m_PixelShader->GetName().c_str(), sizeof(char), ShaderNameLength, File);
+
+	*/
 }
 
 void CColliderPixel::Load(FILE* File)
@@ -333,6 +337,8 @@ void CColliderPixel::Load(FILE* File)
 	CColliderComponent::Load(File);
 
 	fread(&m_Info, sizeof(CircleInfo), 1, File);
+
+	/*
 
 	SetInheritRotZ(true); // m_Transform->m_InheritRotz를 true로 세팅하는 것
 
@@ -366,6 +372,7 @@ void CColliderPixel::Load(FILE* File)
 	fread(ShaderName, sizeof(char), ShaderNameLength, File);
 
 	m_PixelShader = m_Scene->GetResource()->FindShader(ShaderName);
+	*/
 
 }
 

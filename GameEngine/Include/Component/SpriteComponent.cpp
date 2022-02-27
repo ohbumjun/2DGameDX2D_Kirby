@@ -1,4 +1,4 @@
-#include "SpriteComponent.h"
+ï»¿#include "SpriteComponent.h"
 #include "../Animation/AnimationSequence2DInstance.h"
 #include "../Render/RenderManager.h"
 #include "../Resource/Material/Material.h"
@@ -28,10 +28,10 @@ CSpriteComponent::CSpriteComponent(const CSpriteComponent& com) :
 
 CSpriteComponent::~CSpriteComponent()
 {
-	// ÇöÀç ÇÁ·ÎÁ§Æ® »ó¿¡¼­´Â, ResourceManager ·ÎºÎÅÍ, Animation À» Load ÇÑ ´ÙÀ½¿¡ ºÒ·¯¿À´Â °ÍÀÌ´Ù.
-	// ½ÇÁ¦ Áö¿öÁÖ´Â °Íµµ ResourceManager Ãø¿¡¼­ Ã³¸®ÇÏ¹Ç·Î
-	// °¢°¢ÀÇ SpriteComponent ¸¶´Ù ÇØ´ç Ã³¸®¸£ ÇØÁÙ ÇÊ¿ä°¡ ¾ø´Ù.....?
-	// ¾Æ´Ï´Ù. °¢°¢ÀÇ SceneResource ¿¡¼­¸¸ °ü¸®¸¦ ÇØÁÖÀÚ... ±»ÀÌ ResourceManager ±îÁö ?
+	// í˜„ì¬ í”„ë¡œì íŠ¸ ìƒì—ì„œëŠ”, ResourceManager ë¡œë¶€í„°, Animation ì„ Load í•œ ë‹¤ìŒì— ë¶ˆëŸ¬ì˜¤ëŠ” ê²ƒì´ë‹¤.
+	// ì‹¤ì œ ì§€ì›Œì£¼ëŠ” ê²ƒë„ ResourceManager ì¸¡ì—ì„œ ì²˜ë¦¬í•˜ë¯€ë¡œ
+	// ê°ê°ì˜ SpriteComponent ë§ˆë‹¤ í•´ë‹¹ ì²˜ë¦¬ë¥´ í•´ì¤„ í•„ìš”ê°€ ì—†ë‹¤.....?
+	// ì•„ë‹ˆë‹¤. ê°ê°ì˜ SceneResource ì—ì„œë§Œ ê´€ë¦¬ë¥¼ í•´ì£¼ì... êµ³ì´ ResourceManager ê¹Œì§€ ?
 	SAFE_DELETE(m_Animation);
 }
 
@@ -52,7 +52,7 @@ void CSpriteComponent::SetAnimationInstance(class CAnimationSequence2DInstance* 
 	CloneInstance->SetOwner(this);
 	CloneInstance->SetScene(m_Scene);
 
-	if (!CloneInstance->Init()) // »ó¼ö ¹öÆÛ ¼¼ÆÃ 
+	if (!CloneInstance->Init()) // ìƒìˆ˜ ë²„í¼ ì„¸íŒ… 
 	{
 		SAFE_DELETE(CloneInstance);
 		return;
@@ -166,14 +166,14 @@ void CSpriteComponent::Start()
 
 bool CSpriteComponent::Init()
 {
-	// Mesh ¼¼ÆÃ 
+	// Mesh ì„¸íŒ… 
 	m_Mesh = dynamic_cast<CSpriteMesh*>(m_Scene->GetResource()->FindMesh("SpriteMesh"));
 	SetMeshSize(1.f, 1.f, 0.f);
 
 	// Material Setting 
 	SetMaterial(m_Scene->GetResource()->FindMaterial("BaseTexture"));
 
-	// "BaseTexutre"¶ó´Â ÀÌ¸§ÀÇ MaterialÀÌ Áö´Ñ ±âº» Default Texture·Î SpriteComponentÀÇ World Scale ¼¼ÆÃ
+	// "BaseTexutre"ë¼ëŠ” ì´ë¦„ì˜ Materialì´ ì§€ë‹Œ ê¸°ë³¸ Default Textureë¡œ SpriteComponentì˜ World Scale ì„¸íŒ…
 	float Width = (float)m_Material->GetTextureWidth();
 	float Height = (float)m_Material->GetTextureHeight();
 	SetWorldScale(Width, Height, 1.f);
@@ -239,7 +239,7 @@ void CSpriteComponent::Save(FILE* pFile)
 	class CAnimationSequence2DInstance* m_Animation;
 	*/
 
-	// MeshÀÇ °æ¿ì, ÀÌ¸§¸¸ ÀúÀåÇØµÎ°í, ResourceManager ·ÎºÎÅÍ ºÒ·¯¿À´Â ÄÚµå¸¦ ÀÛ¼ºÇÒ °ÍÀÌ´Ù.
+	// Meshì˜ ê²½ìš°, ì´ë¦„ë§Œ ì €ì¥í•´ë‘ê³ , ResourceManager ë¡œë¶€í„° ë¶ˆëŸ¬ì˜¤ëŠ” ì½”ë“œë¥¼ ì‘ì„±í•  ê²ƒì´ë‹¤.
 	std::string Name = m_Mesh->GetName();
 	int Length = (int)Name.length();
 	fwrite(&Length, sizeof(int), 1, pFile);
@@ -260,15 +260,15 @@ void CSpriteComponent::Save(FILE* pFile)
 		m_Animation->Save(pFile);
 	}
 
-	// SceneComponent Save  ¿¡¼­´Â ÀÚ½Ä SceneCompoent ¸ñ·ÏµéÀ» ´Ù ÀúÀåÇÏ´Â ÄÚµå¸¦ °ÅÃÄ¼­ µé¾î°£´Ù
-	// µÇµµ·ÏÀÌ¸é, ÀÚ±âÀÇ °íÀ¯ÀÇ Á¤º¸¸¦ ¸ÕÀú ÀúÀåÇÏ°í
-	// ±× ´ÙÀ½ ÀÚ½Ä ¸ñ·Ï Á¤º¸¸¦ ÀúÀåÇÏ±â À§ÇØ, ÀÇµµÀûÀ¸·Î ¼ø¼­¸¦ ÀÌ·¸°Ô Â§´Ù.
+	// SceneComponent Save  ì—ì„œëŠ” ìì‹ SceneCompoent ëª©ë¡ë“¤ì„ ë‹¤ ì €ì¥í•˜ëŠ” ì½”ë“œë¥¼ ê±°ì³ì„œ ë“¤ì–´ê°„ë‹¤
+	// ë˜ë„ë¡ì´ë©´, ìê¸°ì˜ ê³ ìœ ì˜ ì •ë³´ë¥¼ ë¨¼ì € ì €ì¥í•˜ê³ 
+	// ê·¸ ë‹¤ìŒ ìì‹ ëª©ë¡ ì •ë³´ë¥¼ ì €ì¥í•˜ê¸° ìœ„í•´, ì˜ë„ì ìœ¼ë¡œ ìˆœì„œë¥¼ ì´ë ‡ê²Œ ì§ ë‹¤.
 	CSceneComponent::Save(pFile);
 }
 
 void CSpriteComponent::Load(FILE* pFile)
 {
-	// MeshÀÇ °æ¿ì, ÀÌ¸§¸¸ ÀúÀåÇØµÎ°í, ResourceManager ·ÎºÎÅÍ ºÒ·¯¿À´Â ÄÚµå¸¦ ÀÛ¼ºÇÒ °ÍÀÌ´Ù.
+	// Meshì˜ ê²½ìš°, ì´ë¦„ë§Œ ì €ì¥í•´ë‘ê³ , ResourceManager ë¡œë¶€í„° ë¶ˆëŸ¬ì˜¤ëŠ” ì½”ë“œë¥¼ ì‘ì„±í•  ê²ƒì´ë‹¤.
 	int Length = -1;
 	fread(&Length, sizeof(int), 1, pFile);
 
@@ -291,8 +291,8 @@ void CSpriteComponent::Load(FILE* pFile)
 		m_Animation->Load(pFile);
 	}
 
-	// SceneComponent Save  ¿¡¼­´Â ÀÚ½Ä SceneCompoent ¸ñ·ÏµéÀ» ´Ù ÀúÀåÇÏ´Â ÄÚµå¸¦ °ÅÃÄ¼­ µé¾î°£´Ù
-	// µÇµµ·ÏÀÌ¸é, ÀÚ±âÀÇ °íÀ¯ÀÇ Á¤º¸¸¦ ¸ÕÀú ÀúÀåÇÏ°í
-	// ±× ´ÙÀ½ ÀÚ½Ä ¸ñ·Ï Á¤º¸¸¦ ÀúÀåÇÏ±â À§ÇØ, ÀÇµµÀûÀ¸·Î ¼ø¼­¸¦ ÀÌ·¸°Ô Â§´Ù.
+	// SceneComponent Save  ì—ì„œëŠ” ìì‹ SceneCompoent ëª©ë¡ë“¤ì„ ë‹¤ ì €ì¥í•˜ëŠ” ì½”ë“œë¥¼ ê±°ì³ì„œ ë“¤ì–´ê°„ë‹¤
+	// ë˜ë„ë¡ì´ë©´, ìê¸°ì˜ ê³ ìœ ì˜ ì •ë³´ë¥¼ ë¨¼ì € ì €ì¥í•˜ê³ 
+	// ê·¸ ë‹¤ìŒ ìì‹ ëª©ë¡ ì •ë³´ë¥¼ ì €ì¥í•˜ê¸° ìœ„í•´, ì˜ë„ì ìœ¼ë¡œ ìˆœì„œë¥¼ ì´ë ‡ê²Œ ì§ ë‹¤.
 	CSceneComponent::Load(pFile);
 }

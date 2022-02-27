@@ -21,7 +21,7 @@ bool CBeamMonster::Init()
 	if (!CAbilityMonster::Init())
 		return false;
 
-	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
+	LoadAnimationInstance("Beam", TEXT("Kirby_Fight.anim"));
 	SetCurrentAnimation("RightIdle");
 
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
