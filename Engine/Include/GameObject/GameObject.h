@@ -113,14 +113,15 @@ public:
 
 		if (Component->GetComponentType() == Component_Type::ObjectComponent)
 			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
-
 		else
-			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
+		{
+			m_SceneComponentList.push_back((CSceneComponent*)(Component));
 
-		if (!m_RootComponent)
-			m_RootComponent = (CSceneComponent*)Component;
+			if (!m_RootComponent)
+				m_RootComponent = (CSceneComponent*)Component;
+		}
 
-		return Component;
+		return (T*)Component;
 	}
 
 	template<typename T>

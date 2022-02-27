@@ -1,16 +1,12 @@
 #include "Player2D.h"
-#include "Object/Bullet.h"
-#include "Object/BulletTornaido.h"
-#include "Input.h"
-#include "Object/PlayerAnimation2D.h"
-#include "Resource/Material/Material.h"
 #include "Scene/Scene.h"
+#include "Component/SpriteComponent.h"
+#include "Component/SceneComponent.h"
+#include "Component/NavAgent.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/WidgetComponent.h"
 #include "Component/CameraComponent.h"
-#include "Object/BulletCamera.h"
-#include "Scene/NavigationManager.h"
-#include "UI/SimpleHUD.h"
+
 
 CPlayer2D::CPlayer2D()
 {
@@ -48,8 +44,10 @@ bool CPlayer2D::Init()
 	*/
 
 	m_Sprite = CreateComponent<CSpriteComponent>("PlayerSprite");
+
 	m_ChildLeftSprite = CreateComponent<CSpriteComponent>("PlayerChildLeftSprite");
 	m_ChildRightSprite = CreateComponent<CSpriteComponent>("PlayerChildRightSprite");
+
 	m_ChildRoot = CreateComponent<CSceneComponent>("PlayerChildRoot");
 	m_Muzzle = CreateComponent<CSceneComponent>("Muzzle");
 

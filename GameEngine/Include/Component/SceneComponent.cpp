@@ -7,6 +7,7 @@
 CSceneComponent::CSceneComponent()
 {
 	SetTypeID<CSceneComponent>();
+
 	m_ComponentType = Component_Type::SceneComponent;
 	m_Render        = false;
 
@@ -301,10 +302,21 @@ void CSceneComponent::Save(FILE* pFile)
 
 	int ChildCount = (int)m_vecChild.size();
 	fwrite(&ChildCount, sizeof(int), 1, pFile);
+
 	for (int i = 0; i < ChildCount; i++)
 	{
 		size_t TypeID = m_vecChild[i]->GetTypeID();
 		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+
+		// µð¹ö±ë¿ë
+		/*
+		int Length = m_vecChild[i]->GetName().length();
+
+		fwrite(&Length, sizeof(int), 1, pFile);
+
+		fwrite(m_vecChild[i]->GetName().c_str(), sizeof(char), Length, pFile);
+		*/
+
 		m_vecChild[i]->Save(pFile);
 	}
 	
@@ -330,10 +342,13 @@ void CSceneComponent::Load(FILE* pFile)
 	int ChildCount;
 	fread(&ChildCount, sizeof(int), 1, pFile);
 
-	size_t TypeID;
+	
+
 	for (int i = 0; i < ChildCount; i++)
 	{
+		size_t TypeID = {};
 		fread(&TypeID, sizeof(size_t), 1, pFile);
+
 		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(m_Object, TypeID);
 		Component->Load(pFile);
 

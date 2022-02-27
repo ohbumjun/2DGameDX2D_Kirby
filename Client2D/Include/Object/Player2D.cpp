@@ -211,7 +211,7 @@ void CPlayer2D::Update(float DeltaTime)
 		Hide = true;
 	}
 
-	m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
+	// m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
 
 	if (Hide)
 	{

@@ -52,6 +52,6 @@ public:
 	virtual void        PostRender() = 0;
 	virtual CComponent* Clone() = 0;
 public :
-	void Save(FILE* pFile);
-	void Load(FILE* pFile);
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 };

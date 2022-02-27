@@ -19,21 +19,22 @@ private:
 	CSharedPtr<CSpriteComponent> m_Sprite;
 	CSharedPtr<CSpriteComponent> m_ChildLeftSprite;
 	CSharedPtr<CSpriteComponent> m_ChildRightSprite;
+private :
 	CSharedPtr<CSceneComponent>  m_ChildLeftMuzzle;
 	CSharedPtr<CSceneComponent>  m_ChildRightMuzzle;
 	CSharedPtr<CSceneComponent>  m_ChildRoot;
 	CSharedPtr<CSceneComponent>  m_Muzzle;
-
+private :
 	CSharedPtr<CSpriteComponent> m_Child1Sprite;
 	CSharedPtr<CSpriteComponent> m_Child2Sprite;
 	CSharedPtr<CSpriteComponent> m_Child3Sprite;
 	CSharedPtr<CSpriteComponent> m_Child4Sprite;
-
+private :
 	CSharedPtr<class CColliderBox2D> m_Body;
 	CSharedPtr<class CCameraComponent> m_Camera;
-
+private :
 	CSharedPtr<CWidgetComponent> m_SimpleHUDWidget;
-
+private :
 	CSharedPtr<CNavAgent> m_NavAgent;
 
 	bool  m_SolW;
