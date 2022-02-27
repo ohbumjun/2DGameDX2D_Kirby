@@ -202,8 +202,8 @@ void CPlayer2D::Start()
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	// Root Component Animation 세팅
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
-	m_Sprite->SetAnimationInstance(AnimationInstance);
+	// CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+	// m_Sprite->SetAnimationInstance(AnimationInstance);
 
 	// Widget Component의 Widget 생성
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");

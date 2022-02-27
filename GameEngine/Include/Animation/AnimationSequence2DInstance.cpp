@@ -788,10 +788,11 @@ void CAnimationSequence2DInstance::Save(FILE* pFile)
 	auto iter      = m_mapAnimation.begin();
 	auto iterEnd = m_mapAnimation.end();
 
-	size_t Length = -1;
+	
 	for (;iter != iterEnd; ++iter)
 	{
 		// Key 세팅
+		size_t Length = -1;
 		Length = iter->first.length();
 		fwrite(&Length, sizeof(int), 1, pFile);
 		fwrite(iter->first.c_str(), sizeof(char), Length, pFile);
@@ -808,6 +809,7 @@ void CAnimationSequence2DInstance::Save(FILE* pFile)
 	{
 		// CurrentAnimation의  경우, m_mapAnimation 중 하나,
 		// 독립된 녀석이 아니므로, Name 만 저장해서 ResourceManager 로부터 가져오는 작업을 거칠 것이다
+		size_t Length = -1;
 		Length = (int)m_CurrentAnimation->GetName().length();
 		fwrite(&Length, sizeof(int), 1, pFile);
 		fwrite(m_CurrentAnimation->GetName().c_str(), sizeof(char), Length, pFile);
@@ -821,11 +823,13 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 	int AnimCount = -1;
 	fread(&AnimCount, sizeof(int), 1, pFile);
 
-	int Length = -1;
-	char Name[MAX_PATH] = {};
+
 
 	for (int i = 0; i < AnimCount; i++)
 	{
+		int Length = -1;
+		char Name[MAX_PATH] = {};
+
 		// Key 세팅
 		fread(&Length, sizeof(int), 1, pFile);
 		fread(Name, sizeof(char), Length, pFile);
@@ -833,15 +837,24 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 		CAnimationSequence2DData* Data = new CAnimationSequence2DData;
 		Data->Load(pFile);
 
-		if (m_Scene)
+		if (!Data->m_Sequence)
 		{
-			Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2D(Data->m_SequenceName);
+			if (m_Scene)
+			{
+				Data->m_Sequence = m_Scene->GetResource()->FindAnimationSequence2D(Data->m_SequenceName);
+			}
+			else
+			{
+				Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(Data->m_SequenceName);
+			}
 		}
-		else
-		{
-			Data->m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(Data->m_SequenceName);
-		}
+
+		// 아래 2개 코드는 , Sprite 편집시 에러가 나지 않을까 ?
+		if (!m_CurrentAnimation)
+			m_CurrentAnimation = Data;
+
 		m_mapAnimation.insert(std::make_pair(Name, Data));
+
 	}
 
 	int CurrentAnimEnable = false;
@@ -849,10 +862,12 @@ void CAnimationSequence2DInstance::Load(FILE* pFile)
 
 	if (CurrentAnimEnable)
 	{
+		int Length = -1;
+		char Name[MAX_PATH] = {};
+
 		// CurrentAnimation의  경우, m_mapAnimation 중 하나,
 		// 독립된 녀석이 아니므로, Name 만 저장해서 ResourceManager 로부터 가져오는 작업을 거칠 것이다
 		fread(&Length, sizeof(int), 1, pFile);
-		char Name[MAX_PATH] = {};
 		fread(Name, sizeof(char), Length, pFile);
 
 		m_CurrentAnimation = FindAnimationSequence2DData(Name);

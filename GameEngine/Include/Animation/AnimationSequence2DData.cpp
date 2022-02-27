@@ -114,6 +114,7 @@ bool CAnimationSequence2DData::Load(FILE* pFile)
 		fread(SeqName, sizeof(char), NameLength, pFile);
 
 		m_SequenceName = Name;
+
 		m_Sequence = CResourceManager::GetInst()->FindAnimationSequence2D(m_SequenceName);
 
 		if (!m_Sequence)
