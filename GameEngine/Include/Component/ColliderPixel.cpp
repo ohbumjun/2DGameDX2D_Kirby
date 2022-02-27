@@ -306,30 +306,27 @@ void CColliderPixel::Save(FILE* File)
 
 	fwrite(&m_Info, sizeof(CircleInfo), 1, File);
 
-	/*
-
 	// Mesh
-	int MeshNameLength = m_Mesh->GetName().length();
+	int MeshNameLength = (int)m_Mesh->GetName().length();
 
 	fwrite(&MeshNameLength, sizeof(int), 1, File);
 
 	fwrite(m_Mesh->GetName().c_str(), sizeof(char), MeshNameLength, File);
 
 	// Pixel Mesh
-	MeshNameLength = m_PixelMesh->GetName().length();
+	MeshNameLength = (int)m_PixelMesh->GetName().length();
 
 	fwrite(&MeshNameLength, sizeof(int), 1, File);
 
 	fwrite(m_PixelMesh->GetName().c_str(), sizeof(char), MeshNameLength, File);
 
 	// Pixel Shader
-	int ShaderNameLength = m_PixelShader->GetName().length();
+	int ShaderNameLength = (int)m_PixelShader->GetName().length();
 
 	fwrite(&ShaderNameLength, sizeof(int), 1, File);
 
 	fwrite(m_PixelShader->GetName().c_str(), sizeof(char), ShaderNameLength, File);
 
-	*/
 }
 
 void CColliderPixel::Load(FILE* File)
@@ -338,7 +335,6 @@ void CColliderPixel::Load(FILE* File)
 
 	fread(&m_Info, sizeof(CircleInfo), 1, File);
 
-	/*
 
 	SetInheritRotZ(true); // m_Transform->m_InheritRotz를 true로 세팅하는 것
 
@@ -372,7 +368,6 @@ void CColliderPixel::Load(FILE* File)
 	fread(ShaderName, sizeof(char), ShaderNameLength, File);
 
 	m_PixelShader = m_Scene->GetResource()->FindShader(ShaderName);
-	*/
 
 }
 

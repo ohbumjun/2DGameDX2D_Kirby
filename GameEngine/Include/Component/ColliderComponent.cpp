@@ -281,6 +281,14 @@ void CColliderComponent::Save(FILE* pFile)
 	fwrite(&m_Max, sizeof(Vector3), 1, pFile);
 	fwrite(&m_Min, sizeof(Vector3), 1, pFile);
 
+	int ProfileNameLength = (int)m_Profile->Name.length();
+
+	fwrite(&ProfileNameLength, sizeof(int), 1, pFile);
+
+	char ProfileName[MAX_PATH] = {};
+
+	fwrite(m_Profile->Name.c_str(), sizeof(char), ProfileNameLength, pFile);
+
 	CSceneComponent::Save(pFile);
 }
 
@@ -291,9 +299,21 @@ void CColliderComponent::Load(FILE* pFile)
 	fread(&m_Max, sizeof(Vector3), 1, pFile);
 	fread(&m_Min, sizeof(Vector3), 1, pFile);
 
+	m_CurrentSectionCheck = false;
+	m_MouseCollision = false;
+
+	int ProfileNameLength = -1;
+
+	fread(&ProfileNameLength, sizeof(int), 1, pFile);
+
+	char ProfileName[MAX_PATH] = {};
+
+	fread(ProfileName, sizeof(char), ProfileNameLength, pFile);
+
+	SetCollisionProfile(ProfileName);
+
 	CSceneComponent::Load(pFile);
 
-	/*
 	SAFE_DELETE(m_CBuffer);
 
 	m_CBuffer = new CColliderConstantBuffer;
@@ -303,6 +323,5 @@ void CColliderComponent::Load(FILE* pFile)
 	m_CBuffer->SetColliderColor(1.f, 1.f, 0.f, 1.f);
 
 	m_Shader = CResourceManager::GetInst()->FindShader("ColliderShader");
-	*/
 
 }
