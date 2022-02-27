@@ -292,4 +292,13 @@ void CColliderComponent::Load(FILE* pFile)
 	fread(&m_Min, sizeof(Vector3), 1, pFile);
 
 	CSceneComponent::Load(pFile);
+
+	m_CBuffer = new CColliderConstantBuffer;
+
+	m_CBuffer->Init();
+
+	m_CBuffer->SetColliderColor(1.f, 1.f, 0.f, 1.f);
+
+	m_Shader = CResourceManager::GetInst()->FindShader("ColliderShader");
+
 }
