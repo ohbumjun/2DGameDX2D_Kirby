@@ -425,11 +425,13 @@ void CMaterial::Load(FILE* pFile)
 				{
 					if (m_Scene)
 					{
-						m_Scene->GetResource()->LoadTexture(TexName, vecFileName[0].c_str(), PathName);
+						// m_Scene->GetResource()->LoadTexture(TexName, vecFileName[0].c_str(), PathName);
+						m_Scene->GetResource()->LoadTextureFullPath(TexName, vecFullPath[0].c_str());
 					}
 					else
 					{
-						CResourceManager::GetInst()->LoadTexture(TexName, vecFileName[0].c_str(), PathName);
+						// CResourceManager::GetInst()->LoadTexture(TexName, vecFileName[0].c_str(), PathName);
+						CResourceManager::GetInst()->LoadTextureFullPath(TexName, vecFullPath[0].c_str());
 					}
 				}
 				else

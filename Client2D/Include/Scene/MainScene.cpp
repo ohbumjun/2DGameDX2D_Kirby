@@ -99,6 +99,7 @@ bool CMainScene::Init()
 	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
 
 	CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
+
 	TileMap->LoadByFileName("TileMapRhombus.gobj", SCENE_PATH);
 
 	return true;
