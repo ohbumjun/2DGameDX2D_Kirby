@@ -183,6 +183,24 @@ void CPlayer2D::Start()
 {
 	CGameObject::Start();
 
+	m_Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
+	m_ChildLeftSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
+	m_ChildRightSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
+	m_ChildLeftMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
+	m_ChildRightMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
+	m_ChildRoot = dynamic_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
+	m_Muzzle = dynamic_cast<CSceneComponent*>(FindComponent("Muzzle"));
+
+	m_Child1Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
+	m_Child2Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
+	m_Child3Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
+	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
+
+	m_Body = (CColliderBox2D*)FindComponent("Body");
+	m_Camera = (CCameraComponent*)FindComponent("Camera");
+	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
+	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
+
 	// Widget Component의 Widget 생성
 
 	// Key Input 세팅 

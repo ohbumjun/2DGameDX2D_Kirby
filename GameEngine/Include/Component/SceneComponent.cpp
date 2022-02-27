@@ -78,9 +78,23 @@ void CSceneComponent::GetAllSceneComponentsName(std::vector<FindComponentName>& 
 	*/
 	vecNames.push_back(Name);
 
-	for (size_t i = 0; i < m_vecChild.size(); i++)
+	size_t Size = m_vecChild.size();
+
+	for (size_t i = 0; i < Size; i++)
 	{
 		m_vecChild[i]->GetAllSceneComponentsName(vecNames);
+	}
+}
+
+void CSceneComponent::ReAddTransformChild()
+{
+	size_t Size = m_vecChild.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		m_vecChild[i]->m_Transform->m_Parent = m_Transform;
+
+		m_Transform->m_vecChild.push_back(m_vecChild[i]->m_Transform);
 	}
 }
 
@@ -341,6 +355,10 @@ void CSceneComponent::Load(FILE* pFile)
 		ChildSceneComponent->m_Parent = this;
 
 		m_vecChild.push_back(ChildSceneComponent);
+
+		ChildSceneComponent->m_Transform->m_Parent = m_Transform;
+
+		m_Transform->m_vecChild.push_back(ChildSceneComponent->m_Transform);
 	}
 
 	fread(&m_Render, sizeof(bool), 1, pFile);

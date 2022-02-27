@@ -40,7 +40,7 @@ public :
 public:
 	void SetSceneComponent(class CGameObject* Object);
 	void GetAllSceneComponentsName(std::vector<FindComponentName>& vecNames);
-
+	void ReAddTransformChild();
 public:
 	virtual void SetScene(class CScene* Scene) override;
 	virtual void SetGameObject(class CGameObject* Object) override;
