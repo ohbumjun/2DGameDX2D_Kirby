@@ -67,7 +67,7 @@ public:
 	void PostUpdate(float DeltaTime);
 public :
 	void SaveFullPath(const char* FullPath);
-	void LoadFullPath(const char* FullPath);
+	bool LoadFullPath(const char* FullPath);
 public:
 	template<typename T>
 	T* CreateSceneModeEmpty()

@@ -67,19 +67,25 @@ public :
 	T* CreateUIWindow(const std::string& Name)
 {
 		T* Window = new T;
+
 		Window->SetName(Name);
+
 		Window->m_ViewPort = m_Scene->GetViewPort();
-	if (!Window->Init())
-	{
-		SAFE_DELETE(Window);
-		return nullptr;
-	}
-	if (m_WidgetWindow)
-	{
-		m_WidgetWindow->m_OwnerComponent = nullptr;
-	}
-	Window->m_OwnerComponent = this;
-	m_WidgetWindow = Window;
-	return Window;
+
+		if (!Window->Init())
+		{
+			SAFE_DELETE(Window);
+			return nullptr;
+		}
+		if (m_WidgetWindow)
+		{
+			m_WidgetWindow->m_OwnerComponent = nullptr;
+		}
+
+		Window->m_OwnerComponent = this;
+
+		m_WidgetWindow = Window;
+
+		return Window;
 }
 };

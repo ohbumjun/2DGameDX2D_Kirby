@@ -1,3 +1,4 @@
+
 #include "NavigationThread.h"
 #include "Navigation.h"
 #include "NavigationManager.h"
@@ -13,6 +14,12 @@ CNavigationThread::CNavigationThread()
 
 CNavigationThread::~CNavigationThread()
 {
+	// 아래 2개 줄은 내가 추가한 것 --> 오류가 생길 수도 있다.
+	m_Loop = false;
+
+	if (!m_Loop)
+		SetEvent(m_ExitEvent);
+
 	WaitForSingleObject(m_ExitEvent, INFINITE);
 
 	CloseHandle(m_ExitEvent);
@@ -31,15 +38,14 @@ void CNavigationThread::Run()
 	{
 		if (!m_WorkQueue.empty())
 		{
-			NavWorkData Data = m_WorkQueue.front();
-
+			NavWorkData Work = m_WorkQueue.front();
 			m_WorkQueue.pop();
 
-			NavResultData Result;
+			NavResultData	Result;
 
-			m_Navigation->FindPath(Data.OwnerComponent->GetWorldPos(), Data.End, Result.vecPath);
+			m_Navigation->FindPath(Work.OwnerComponent->GetWorldPos(), Work.End, Result.vecPath);
 
-			Result.Callback = Data.Callback;
+			Result.Callback = Work.Callback;
 
 			m_NavManager->AddResultData(Result);
 		}

@@ -296,7 +296,6 @@ void CTileMapWindow::Update(float DeltaTime)
 
 	if (CEditorManager::GetInst()->GetEditMode() == EditMode::Tile && m_TileMap)
 	{
-		// 
 		m_TileMap->EnableEditMode(true);
 
 		// Mouse를 눌렀다면 
@@ -485,6 +484,27 @@ void CTileMapWindow::TileMapSaveButton()
 		CGameObject* TileMapObject = m_TileMap->GetGameObject();
 
 		TileMapObject->SaveFullPath(ConvertFullPath);
+
+		std::string ExtraFolderName = ENGINE_SCENE_PATH;
+
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
+
+		// 파일 이름을 뽑아낸다.
+		char SavedFileName[MAX_PATH] = {};
+		char SavedExt[_MAX_EXT] = {};
+		_splitpath_s(ConvertFullPath, nullptr, 0, nullptr, 0, SavedFileName, MAX_PATH, SavedExt, _MAX_EXT);
+
+		// 최종 GameEngine 경로를 만든다.
+		char SavedGameEnginePath[MAX_PATH] = {};
+		strcpy_s(SavedGameEnginePath, EngineSequenceFolder->PathMultibyte);
+		strcat_s(SavedGameEnginePath, SavedFileName);
+		strcat_s(SavedGameEnginePath, SavedExt);
+
+		// 현재 저장되는 경로와 다르다면, GameEngine 쪽에도 저장한다.
+		if (strcmp(EngineSequenceFolder->PathMultibyte, ConvertFullPath) != 0)
+		{
+			TileMapObject->SaveFullPath(SavedGameEnginePath);
+		}
 	}
 		
 }

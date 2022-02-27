@@ -56,7 +56,7 @@ protected :
 	void ClearSceneComponents();
 	void DeleteComponent(const std::string& Name);
 	void Move(const Vector3& EndPos);
-public:
+public :
 	virtual void         Start();
 	virtual bool         Init();
 	virtual void         Update(float DeltaTime);
@@ -70,6 +70,8 @@ public :
 public :
 	virtual void Save(FILE* pFile);
 	virtual void Load(FILE* pFile);
+	virtual void SaveByFileName(const char* FileName, const std::string& PathName);
+	virtual void LoadByFileName(const char* FileName, const std::string& PathName);
 	virtual void SaveFullPath(const char* FullPath);
 	virtual void LoadFullPath(const char* FullPath);
 public :
@@ -79,18 +81,18 @@ public:
 	T* LoadComponent()
 	{
 		T* Component = new T;
-
 		Component->SetScene(m_Scene);
-
 		Component->SetGameObject(this);
 
 		if (Component->GetComponentType() == Component_Type::ObjectComponent)
 			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 		else
+		{
 			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
+			if (!m_RootComponent)
+				m_RootComponent = (CSceneComponent*)Component;
+		}
 
-		if (!m_RootComponent)
-			m_RootComponent = Component;
 
 		return Component;
 	}
@@ -110,17 +112,13 @@ public:
 		}
 
 		if (Component->GetComponentType() == Component_Type::ObjectComponent)
-		{
 			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
-		}
-		else
-		{
-			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
-			
-			if (!m_RootComponent)
-				m_RootComponent = (CSceneComponent*)Component;
-		}
 
+		else
+			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
+
+		if (!m_RootComponent)
+			m_RootComponent = (CSceneComponent*)Component;
 
 		return Component;
 	}

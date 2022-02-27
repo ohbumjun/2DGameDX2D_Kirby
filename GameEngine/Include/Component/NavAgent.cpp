@@ -1,11 +1,10 @@
 #include "NavAgent.h"
 
-#include "../GameObject/GameObject.h"
 #include "../Scene/NavigationManager.h"
 #include "../Scene/Scene.h"
 
 CNavAgent::CNavAgent() :
- m_MoveSpeed(300.f)
+	m_MoveSpeed(300.f)
 {
 	SetTypeID<CNavAgent>();
 }
@@ -29,10 +28,8 @@ bool CNavAgent::Move(const Vector3& EndPos)
 	if (!m_UpdateComponent)
 		return false;
 
-	return m_Scene->GetNavManager()->FindPath<CNavAgent, CSceneComponent>(this,
-		&CNavAgent::PathResult, m_UpdateComponent, EndPos);
-
-	return true;
+	return m_Scene->GetNavManager()->FindPath<CNavAgent, CSceneComponent>
+		(this, &CNavAgent::PathResult, m_UpdateComponent, EndPos);
 }
 
 void CNavAgent::Start()
@@ -53,21 +50,20 @@ void CNavAgent::Update(float DeltaTime)
 		if (!m_PathList.empty())
 		{
 			Vector3 TargetPos = m_PathList.front();
-
 			Vector3 Pos = m_UpdateComponent->GetWorldPos();
 
-			float TargetDist = Pos.Distance(TargetPos);
+			float TargetDistance = Pos.Distance(TargetPos);
 
 			Vector3 Dir = TargetPos - Pos;
+
 			Dir.Normalize();
 
 			float Dist = m_MoveSpeed * DeltaTime;
 
-			if (TargetDist <= Dist)
+			if (TargetDistance < Dist)
 			{
+				Dist = TargetDistance;
 				m_PathList.pop_front();
-
-				Dist = TargetDist;
 			}
 
 			m_UpdateComponent->AddWorldPos(Dir * Dist);
@@ -94,6 +90,6 @@ CNavAgent* CNavAgent::Clone()
 
 void CNavAgent::PathResult(const std::list<Vector3>& PathList)
 {
-	m_PathList.clear();
+	m_PathList.empty();
 	m_PathList = PathList;
 }

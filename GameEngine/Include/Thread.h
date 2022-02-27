@@ -2,38 +2,44 @@
 
 #include "GameInfo.h"
 
-class CThread {
-
+class CThread
+{
 protected:
 	CThread();
-	virtual ~CThread();
+	virtual ~CThread() = 0;
 
-private :
-	std::string m_Name;
-	HANDLE m_Thread;
-	HANDLE m_StartEvent;
+private:
+	std::string	m_Name;
+	HANDLE		m_Thread;
+	HANDLE		m_StartEvent;
+
 protected:
-	bool m_Loop;
-public :
-	void SetLoop (bool Loop)
-{
+	bool		m_Loop;
+
+public:
+	void SetLoop(bool Loop)
+	{
 		m_Loop = Loop;
-}
-public :
+	}
+
+public:
 	bool Init();
-	virtual void Run();
-public :
+	virtual void Run() = 0;
+
+public:
 	void Start();
 	void Pause();
 	void Resume();
-private :
+
+private:
 	void WaitStartEvent();
 	// 멀티스레드 함수 형태
 	static unsigned int __stdcall ThreadFunction(void* Arg);
-public :
-	template<typename T>
-	static T* CreateThread (const std::string& Name)
-{
+
+public:
+	template <typename T>
+	static T* CreateThread(const std::string& Name)
+	{
 		T* Thread = new T;
 
 		Thread->m_Name = Name;
@@ -45,7 +51,6 @@ public :
 		}
 
 		return Thread;
-}
+	}
 };
-
 

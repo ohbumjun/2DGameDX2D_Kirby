@@ -3,6 +3,7 @@
 #include "../Scene/Scene.h"
 #include "../Component/NavAgent.h"
 #include "../Component/TileMapComponent.h"
+#include "../PathManager.h"
 
 CGameObject::CGameObject() :
 	m_Scene(nullptr),
@@ -336,11 +337,39 @@ void CGameObject::Load(FILE* pFile)
 	}
 }
 
+void CGameObject::SaveByFileName(const char* FileName, const std::string& PathName)
+{
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	char FullPath[MAX_PATH] = {};
+
+	if (Path)
+		strcpy_s(FullPath, Path->PathMultibyte);
+
+	strcat_s(FullPath, FileName);
+
+	SaveFullPath(FullPath);
+}
+
+void CGameObject::LoadByFileName(const char* FileName, const std::string& PathName)
+{
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	char FullPath[MAX_PATH] = {};
+
+	if (Path)
+		strcpy_s(FullPath, Path->PathMultibyte);
+
+	strcat_s(FullPath, FileName);
+
+	LoadFullPath(FullPath);
+}
+
 void CGameObject::SaveFullPath(const char* FullPath)
 {
 	FILE* pFile;
 
-	fopen_s(&pFile, FullPath, "w");
+	fopen_s(&pFile, FullPath, "wb");
 
 	if (!pFile)
 	{
@@ -357,7 +386,7 @@ void CGameObject::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile;
 
-	fopen_s(&pFile, FullPath, "r");
+	fopen_s(&pFile, FullPath, "rb");
 
 	if (!pFile)
 	{

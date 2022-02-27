@@ -7,7 +7,7 @@ class CNavAgent :
 {
     friend class CGameObject;
 
-protected :
+protected:
     CNavAgent();
     CNavAgent(const CNavAgent& com);
     virtual ~CNavAgent();
@@ -18,7 +18,7 @@ private :
 public :
     void SetUpdateComponent(class CSceneComponent* UpdateComponent);
     bool Move(const Vector3& EndPos);
-    void SetMoveSpeed (float Speed)
+    void SetMoveSpeed(float Speed)
     {
         m_MoveSpeed = Speed;
     }

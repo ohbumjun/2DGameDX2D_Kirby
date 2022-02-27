@@ -305,8 +305,10 @@ void CEditorMenu::LoadScene()
 		char FilePathMultibyte[MAX_PATH] = {};
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
-		CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
+		bool Result = CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
 
+		if (!Result)
+			return;
 
 		// 1) 만약 해당 Component 가 TileMapComponent 라면, Edit Mode 를 Tile 로 바꿔준다.
 		std::list<CSharedPtr<CGameObject>> ObjLists = CSceneManager::GetInst()->GetScene()->GetObjectLists();

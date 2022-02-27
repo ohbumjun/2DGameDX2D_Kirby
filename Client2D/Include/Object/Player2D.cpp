@@ -179,6 +179,12 @@ bool CPlayer2D::Init()
 	return true;
 }
 
+void CPlayer2D::Start()
+{
+	if (m_SimpleHUDWidget)
+		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+}
+
 void CPlayer2D::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);

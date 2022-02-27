@@ -115,6 +115,9 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 	if (TileMapWindow && m_SelectComponent->CheckType<CTileMapComponent>())
 	{
 		TileMapWindow->SetTileMap((CTileMapComponent*)m_SelectComponent);
+
+		// Edit Mode를 Tile Edit 모드로 바꿔준다
+		CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
 	}
 	else
 	{

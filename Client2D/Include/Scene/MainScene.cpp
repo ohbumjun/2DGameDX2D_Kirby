@@ -37,7 +37,11 @@ bool CMainScene::Init()
 		
 	CreateSound();
 
-	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
+	// CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
+
+	CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
+	Player->LoadByFileName("TestPlayer.gobj", SCENE_PATH);
+
 
 	SetPlayerObject(Player);
 
@@ -92,7 +96,10 @@ bool CMainScene::Init()
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
-	CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
+	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
+
+	CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
+	TileMap->LoadByFileName("TileMapRhombus.gobj", SCENE_PATH);
 
 	return true;
 }

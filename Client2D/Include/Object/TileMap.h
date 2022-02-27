@@ -22,7 +22,7 @@ public:
 	virtual void         PostRender();
 	virtual CTileMap* Clone();
 public:
-	virtual void Save(FILE* pFile);
-	virtual void Load(FILE* pFile);
+	virtual void Save(FILE* pFile) override;
+	virtual void Load(FILE* pFile) override;
 };
 

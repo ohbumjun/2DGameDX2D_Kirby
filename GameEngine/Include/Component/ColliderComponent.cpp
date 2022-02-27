@@ -60,6 +60,9 @@ void CColliderComponent::CheckPrevColliderSection()
 	// 해당 충돌체와는 충돌 가능성이 없으므로,
 	// 충돌되었다가, 떨어지는 것으로 판단해준다.
 
+	if (m_PrevCollisionList.empty())
+		return;
+
 	auto iter = m_PrevCollisionList.begin();
 	auto iterEnd = m_PrevCollisionList.end();
 

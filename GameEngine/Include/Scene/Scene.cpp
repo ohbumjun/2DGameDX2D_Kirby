@@ -178,13 +178,13 @@ void CScene::SaveFullPath(const char* FullPath)
 	fclose(pFile);
 }
 
-void CScene::LoadFullPath(const char* FullPath)
+bool CScene::LoadFullPath(const char* FullPath)
 {
 	FILE* pFile = nullptr;
 	fopen_s(&pFile, FullPath, "rb");
 
 	if (!pFile)
-		return;
+		return false;
 
 	m_ObjList.clear();
 
@@ -198,11 +198,18 @@ void CScene::LoadFullPath(const char* FullPath)
 	for (size_t i = 0; i < ObjectCount; i++)
 	{
 		fread(&TypeID, sizeof(size_t), 1, pFile);
+
 		CGameObject* Object = CSceneManager::GetInst()->CallCreateObjectFunc(this, TypeID);
+
+		if (!Object)
+			return false;
+
 		Object->Load(pFile);
 	}
 
 	fclose(pFile);
+
+	return true;
 }
 
 void CScene::ClearGameObjects()

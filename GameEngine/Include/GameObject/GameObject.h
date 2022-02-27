@@ -70,6 +70,8 @@ public :
 public :
 	virtual void Save(FILE* pFile);
 	virtual void Load(FILE* pFile);
+	virtual void SaveByFileName(const char* FileName, const std::string& PathName);
+	virtual void LoadByFileName(const char* FileName, const std::string& PathName);
 	virtual void SaveFullPath(const char* FullPath);
 	virtual void LoadFullPath(const char* FullPath);
 public :
@@ -114,7 +116,7 @@ public:
 			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
 
 		if (!m_RootComponent)
-			m_RootComponent = Component;
+			m_RootComponent = (CSceneComponent*)Component;
 
 		return Component;
 	}

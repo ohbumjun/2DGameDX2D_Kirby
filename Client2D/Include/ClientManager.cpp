@@ -7,6 +7,11 @@
 #include "Scene/SceneManager.h"
 #include "UI/MouseNormal.h"
 #include "UI/MouseAttack.h"
+#include "Object/Player2D.h"
+#include "Object/TileMap.h"
+#include "Component/StaticMeshComponent.h"
+#include "Component/SpriteComponent.h"
+#include "Component/TileMapComponent.h"
 
 DEFINITION_SINGLE(CClientManager)
 
@@ -27,6 +32,10 @@ bool CClientManager::Init(HINSTANCE hInst)
 		CEngine::DestroyInst();
 		return false;
 	}
+
+	CSceneManager::GetInst()->SetCreateSceneModeCallback<CClientManager>(this, &CClientManager::CreateSceneMode);
+	CSceneManager::GetInst()->SetCreateObjectCallback<CClientManager>(this, &CClientManager::CreateObject);
+	CSceneManager::GetInst()->SetCreateComponentCallback<CClientManager>(this, &CClientManager::CreateComponent);
 
 	CInput::GetInst()->CreateKey("MoveUp", 'W');
 	CInput::GetInst()->CreateKey("MoveDown", 'S');
@@ -56,4 +65,63 @@ void CClientManager::CreateDefaultSceneMode()
 int CClientManager::Run()
 {
 	return CEngine::GetInst()->Run();
+}
+
+void CClientManager::CreateSceneMode(CScene* Scene, size_t Type)
+{}
+
+CGameObject* CClientManager::CreateObject(CScene* Scene, size_t Type)
+{
+	if (Type == typeid(CGameObject).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CGameObject>();
+
+		return Obj;
+	}
+	if (Type == typeid(CPlayer2D).hash_code())
+	{
+		CPlayer2D* Obj = Scene->LoadGameObject<CPlayer2D>();
+
+		return Obj;
+	}
+	if (Type == typeid(CTileMap).hash_code())
+	{
+		CTileMap* Obj = Scene->LoadGameObject<CTileMap>();
+
+		return Obj;
+	}
+
+	return nullptr;
+}
+
+CComponent* CClientManager::CreateComponent(CGameObject* Obj, size_t Type)
+{
+	if (Type == typeid(CSceneComponent).hash_code())
+	{
+		CComponent* Component = Obj->LoadComponent<CSceneComponent>();
+
+		return Component;
+	}
+	if (Type == typeid(CStaticMeshComponent).hash_code())
+	{
+		CStaticMeshComponent* Component = Obj->LoadComponent<CStaticMeshComponent>();
+
+		return Component;
+	}
+	if (Type == typeid(CSpriteComponent).hash_code())
+	{
+		CSpriteComponent* Component = Obj->LoadComponent<CSpriteComponent>();
+
+		return Component;
+	}
+	if (Type == typeid(CTileMapComponent).hash_code())
+	{
+		CTileMapComponent* Component = Obj->LoadComponent<CTileMapComponent>();
+
+		Component->EnableEditMode(true);
+
+		return Component;
+	}
+
+	return nullptr;
 }
