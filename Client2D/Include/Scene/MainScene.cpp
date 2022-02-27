@@ -37,10 +37,10 @@ bool CMainScene::Init()
 		
 	CreateSound();
 
-	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
+	// CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
-	// CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
-	// Player->LoadByFileName("TestPlayer.gobj", SCENE_PATH);
+	CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
+	Player->LoadByFileName("TestPlayer.gobj", SCENE_PATH);
 
 
 	SetPlayerObject(Player);

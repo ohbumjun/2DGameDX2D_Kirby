@@ -44,6 +44,32 @@ void CCameraComponent::CreateProjectionMatrix()
 	}
 }
 
+void CCameraComponent::Save(FILE* pFile)
+{
+	CSceneComponent::Save(pFile);
+
+	fwrite(&m_CameraType, sizeof(Camera_Type), 1, pFile);
+	fwrite(&m_matView, sizeof(Matrix), 1, pFile);
+	fwrite(&m_matProj, sizeof(Matrix), 1, pFile);
+	fwrite(&m_ViewAngle, sizeof(float), 1, pFile);
+	fwrite(&m_Distance, sizeof(float), 1, pFile);
+	fwrite(&m_RS, sizeof(Resolution), 1, pFile);
+	fwrite(&m_Ratio, sizeof(Vector2), 1, pFile);
+}
+
+void CCameraComponent::Load(FILE* pFile)
+{
+	CSceneComponent::Load(pFile);
+
+	fread(&m_CameraType, sizeof(Camera_Type), 1, pFile);
+	fread(&m_matView, sizeof(Matrix), 1, pFile);
+	fread(&m_matProj, sizeof(Matrix), 1, pFile);
+	fread(&m_ViewAngle, sizeof(float), 1, pFile);
+	fread(&m_Distance, sizeof(float), 1, pFile);
+	fread(&m_RS, sizeof(Resolution), 1, pFile);
+	fread(&m_Ratio, sizeof(Vector2), 1, pFile);
+}
+
 void CCameraComponent::Start()
 {
 	CSceneComponent::Start();
