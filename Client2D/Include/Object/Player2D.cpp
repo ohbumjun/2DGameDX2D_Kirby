@@ -201,7 +201,12 @@ void CPlayer2D::Start()
 	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
+	// Root Component Animation 세팅
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+	m_Sprite->SetAnimationInstance(AnimationInstance);
+
 	// Widget Component의 Widget 생성
+	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", KeyState_Push, this, &CPlayer2D::MoveUp);
@@ -241,7 +246,7 @@ void CPlayer2D::Update(float DeltaTime)
 		Hide = true;
 	}
 
-	// m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
+	m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
 
 	if (Hide)
 	{
