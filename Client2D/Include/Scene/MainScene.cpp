@@ -48,7 +48,7 @@ bool CMainScene::Init()
 	if (m_LoadingFunction)
 		m_LoadingFunction(false, 0.5f);
 
-	// Sleep(1000); //
+	// Sleep(1000); ////
 
 	CBeamMonster* BeamMonster = m_Scene->CreateGameObject<CBeamMonster>("BeamMonster");
 	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
