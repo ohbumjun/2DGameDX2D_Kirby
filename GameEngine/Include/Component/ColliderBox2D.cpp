@@ -176,13 +176,36 @@ void CColliderBox2D::CheckCollision()
 void CColliderBox2D::Save(FILE* pFile)
 {
 	CColliderComponent::Save(pFile);
+
 	fwrite(&m_Info, sizeof(Box2DInfo), 1, pFile);
+
+	int MeshNameLength = m_Mesh->GetName().length();
+
+	fwrite(&MeshNameLength, sizeof(int), 1, pFile);
+
+	fwrite(m_Mesh->GetName().c_str(), sizeof(char), MeshNameLength, pFile);
 }
 
 void CColliderBox2D::Load(FILE* pFile)
 {
 	CColliderComponent::Load(pFile);
+
 	fread(&m_Info, sizeof(Box2DInfo), 1, pFile);
+
+	SetInheritRotZ(true); // m_Transform->m_InheritRotz를 true로 세팅하는 것
+
+	SetWorldScale(m_Info.Length.x * 2.f, m_Info.Length.y * 2.f, 1.f);
+
+	char MeshName[MAX_PATH] = {};
+
+	int MeshNameLength = -1;
+
+	fread(&MeshNameLength, sizeof(int), 1, pFile);
+
+	fread(MeshName, sizeof(char), MeshNameLength, pFile);
+
+	m_Mesh = m_Scene->GetResource()->FindMesh(MeshName);
+
 }
 
 bool CColliderBox2D::Collision(CColliderComponent* Dest)
