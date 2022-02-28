@@ -12,6 +12,8 @@
 #include "../EditorManager.h"
 #include "DetailInfoWindow.h"
 #include "Component/TileMapComponent.h"
+#include "Component/TileEmptyComponent.h"
+
 
 CObjectHierarchy::CObjectHierarchy()
 {
@@ -112,6 +114,19 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 
 	CTileMapWindow* TileMapWindow = (CTileMapWindow*)CIMGUIManager::GetInst()->FindIMGUIWindow("TileMapWindow");
 
+	if (TileMapWindow && m_SelectComponent->CheckType<CTileEmptyComponent>())
+	{
+		TileMapWindow->SetTileMap((CTileEmptyComponent*)m_SelectComponent);
+
+		// Edit Mode를 Tile Edit 모드로 바꿔준다
+		CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+	}
+	else
+	{
+		TileMapWindow->SetTileMap(nullptr);
+	}
+
+	/*
 	if (TileMapWindow && m_SelectComponent->CheckType<CTileMapComponent>())
 	{
 		TileMapWindow->SetTileMap((CTileMapComponent*)m_SelectComponent);
@@ -123,4 +138,5 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 	{
 		TileMapWindow->SetTileMap(nullptr);
 	}
+	*/
 }

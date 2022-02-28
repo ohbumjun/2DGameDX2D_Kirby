@@ -7,7 +7,7 @@
 #include "IMGUISameLine.h"
 #include "IMGUIText.h"
 #include "IMGUITextInput.h"
-#include "Component/TileMapComponent.h"
+#include "Component/TileEmptyComponent.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
@@ -21,12 +21,13 @@ CTileMapWindow::CTileMapWindow()
 CTileMapWindow::~CTileMapWindow()
 {}
 
-void CTileMapWindow::SetTileMap(CTileMapComponent* TileMap)
+void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 {
-	m_TileMap = TileMap;
+	m_TileMapEmpty = TileMap;
 
 	// 1) Tile
 	// 해당 TileMap에 사용된 Tile Texture의 Width, Height 를 IMGUIText에 세팅한다.
+	/*
 	if (!m_TileMap->GetTileMaterial()->EmptyTexture())
 	{
 		float TileTextureWidth = (float)m_TileMap->GetTileMaterial()->GetTextureWidth();
@@ -55,20 +56,21 @@ void CTileMapWindow::SetTileMap(CTileMapComponent* TileMap)
 				m_TileFrameEndY->GetValueFloat()));
 		}
 	}
+	*/
 
 	// 2) BackMaterial 세팅 
 	std::string BackMaterialName = TileMap->GetBackMaterial()->GetName();
 
 	// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
 	// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
-	m_BackWorldScaleX->SetFloat((float)m_TileMap->GetWorldScale().x);
+	m_BackWorldScaleX->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
 	// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
-	m_BackWorldScaleY->SetFloat((float)m_TileMap->GetWorldScale().y);
+	m_BackWorldScaleY->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
 
-	m_BackImageSprite->SetTexture(m_TileMap->GetBackMaterial()->GetTexture());
+	m_BackImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
 	m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
-	m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
-		(float)m_TileMap->GetBackMaterial()->GetTextureHeight()));
+	m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
+		(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
 }
 
 bool CTileMapWindow::Init()
@@ -86,6 +88,7 @@ bool CTileMapWindow::Init()
 
 	// ==============================
 
+	/*
 	Label = AddWidget<CIMGUILabel>("TileMapShape", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -97,6 +100,7 @@ bool CTileMapWindow::Init()
 	m_TileShapeCombo->SetHideName(true);
 	m_TileShapeCombo->AddItem("사각형");
 	m_TileShapeCombo->AddItem("마름모");
+	*/
 
 	// ==============================
 
@@ -104,7 +108,7 @@ bool CTileMapWindow::Init()
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
-	Line = AddWidget<CIMGUISameLine>("Line");
+	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
 	m_TileCountX = AddWidget<CIMGUITextInput>("TileCountX");
@@ -186,10 +190,12 @@ bool CTileMapWindow::Init()
 	m_TileType->SetHideName(true);
 	m_TileType->AddItem("Normal");
 	m_TileType->AddItem("Wall");
+	m_TileType->AddItem("Ceiling");
+	m_TileType->AddItem("Water");
 	// m_TileType->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileTypeCallback);
 
 	// ==============================
-
+	/*
 	Label = AddWidget<CIMGUILabel>("TileEdit", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -202,6 +208,7 @@ bool CTileMapWindow::Init()
 	m_TileEdit->AddItem("Type");
 	m_TileEdit->AddItem("Frame");
 	m_TileEdit->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetEditModeCallback);
+
 	Label = AddWidget<CIMGUILabel>("TextureWidth", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -226,9 +233,10 @@ bool CTileMapWindow::Init()
 	m_TextureHeight = AddWidget<CIMGUIText>("TextureHeight");
 	m_TextureHeight->SetSize(80.f, 40.f);
 	m_TextureHeight->SetHideName(true);
+	*/
 
 	// ==============================
-
+	/*
 	Label = AddWidget<CIMGUILabel>("FrameStartX", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -288,27 +296,7 @@ bool CTileMapWindow::Init()
 	m_TileFrameEndY->SetInt(100);
 	m_TileFrameEndY->SetHideName(true);
 	m_TileFrameEndY->SetTextType(ImGuiText_Type::Float);
-
-	// ==============================
-
-	Label = AddWidget<CIMGUILabel>("TileSaveLoad", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(120.f);
-
-	m_TileMapSaveButton = AddWidget<CIMGUIButton>("TileSave", 80.f, 30.f);
-	m_TileMapSaveButton->SetClickCallback(this, &CTileMapWindow::TileMapSaveButton);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(210.f);
-
-	m_TileMapLoadButton = AddWidget<CIMGUIButton>("TileLoad", 80.f, 30.f);
-	m_TileMapLoadButton->SetClickCallback(this, &CTileMapWindow::TileMapLoadButton);
-
-	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
-	Label->SetColor(0, 0, 0);
+	*/
 
 	// ==============================
 
@@ -324,14 +312,14 @@ bool CTileMapWindow::Init()
 	Label->SetAlign(0.5f, 0.0f);
 
 	// ==============================
-
+	/*
 	m_TextureImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
 
 	m_TileImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
-
+	*/
 	// ==============================
 
 	Button = AddWidget<CIMGUIButton>("SetDefaultFrame", 200.f, 30.f);
@@ -410,10 +398,12 @@ bool CTileMapWindow::Init()
 	m_TileSizeX->SetFloat(160.f);
 	m_TileSizeY->SetFloat(80.f);
 
+	/*
 	m_TileFrameStartX->SetFloat(160.f);
 	m_TileFrameStartY->SetFloat(80.f);
 	m_TileFrameEndX->SetFloat(320.f);
 	m_TileFrameEndY->SetFloat(160.f);
+	*/
 
 	m_BackWorldScaleX->SetFloat(0.f);
 	m_BackWorldScaleY->SetFloat(0.f);
@@ -428,21 +418,29 @@ void CTileMapWindow::Update(float DeltaTime)
 	EditMode CurrentEditMode = CEditorManager::GetInst()->GetEditMode();
 
 
-	if (CEditorManager::GetInst()->GetEditMode() == EditMode::Tile && m_TileMap)
+	if (CEditorManager::GetInst()->GetEditMode() == EditMode::Tile && m_TileMapEmpty)
 	{
-		m_TileMap->EnableEditMode(true);
+		m_TileMapEmpty->EnableEditMode(true);
 
 		// Mouse를 눌렀다면 
 		if (CEditorManager::GetInst()->GetMousePush())
 		{
 			Vector2 MouseWorldPos = CInput::GetInst()->GetMouseWorld2DPos();
 
-			CTile* Tile = m_TileMap->GetTile(Vector3(MouseWorldPos.x, MouseWorldPos.y, 0.f));
+			CTileEmpty* Tile = m_TileMapEmpty->GetTileEmpty(Vector3(MouseWorldPos.x, MouseWorldPos.y, 0.f));
 
 			if (!Tile) // 해당 위치에 타일이 존재하지 않는다면 처리 X
 				return;
 
-			switch (m_EditMode)
+			int TypeIndex = m_TileType->GetSelectIndex();
+
+			if (TypeIndex < 0 || TypeIndex >= (int)Tile_Type::End)
+				return;
+
+			Tile->SetTileType((Tile_Type)TypeIndex);
+
+			/*
+			switch (m_TileMapEmpty)
 			{
 			case Tile_EditMode::Type :
 				{
@@ -485,22 +483,25 @@ void CTileMapWindow::Update(float DeltaTime)
 			}
 			break;
 			}
+			*/
 		}
 	}
 }
 
 void CTileMapWindow::CreateTile()
 {
-	if (!m_TileMap)
+	if (!m_TileMapEmpty)
 		return;
 
 	// Tile Shape
+	/*
 	int TileShapeIndex = m_TileShapeCombo->GetSelectIndex();
 
 	if (TileShapeIndex < 0 || TileShapeIndex >= (int)Tile_Shape::End)
 		return;
 
 	Tile_Shape Shape = (Tile_Shape)TileShapeIndex;
+	*/
 
 	// CountX, CountY
 	int CountX = m_TileCountX->GetValueInt();
@@ -517,11 +518,13 @@ void CTileMapWindow::CreateTile()
 		return;
 
 	// Tile 생성
-	m_TileMap->CreateTile(Shape, CountX, CountY, Vector3(SizeX, SizeY, 1.f));
+	// m_TileMapEmpty->CreateTile(Shape,CountX, CountY, Vector3(SizeX, SizeY, 1.f));
+	m_TileMapEmpty->CreateTileEmpty(CountX, CountY, Vector3(SizeX, SizeY, 1.f));
 
 	// Material 및 Texture 세팅하기
 	CTexture* Texture = nullptr;
 
+	/*
 	switch(Shape)
 	{
 	case Tile_Shape::Rect :
@@ -541,12 +544,14 @@ void CTileMapWindow::CreateTile()
 		}
 		break;
 	}
+	*/
 
 	// Sprite Image에 세팅하기m_TextureImageSprite;
-	m_TextureImageSprite->SetTexture(Texture);
+	// m_TextureImageSprite->SetTexture(Texture);
 	// class CIMGUIImage* m_TileImageSprite;
 
-	CMaterial* Material = m_TileMap->GetTileMaterial();
+	/*
+	CMaterial* Material = m_TileMapEmpty->GetTileMaterial();
 
 	if (Material->EmptyTexture())
 		Material->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "TileTexture", Texture);
@@ -582,14 +587,16 @@ void CTileMapWindow::CreateTile()
 
 		m_TileMap->SetTileDefaultFrame(StartFrameX, StartFrameY, EndFrameX, EndFrameY);
 	}
+	*/
 
 }
 
 void CTileMapWindow::SetDefaultFrame()
 {
-	if (!m_TileMap)
+	if (!m_TileMapEmpty)
 		return;
 
+	/*
 	float StartFrameX = m_TileFrameStartX->GetValueFloat();
 	float StartFrameY = m_TileFrameStartY->GetValueFloat();
 
@@ -607,6 +614,7 @@ void CTileMapWindow::SetDefaultFrame()
 	m_TileImageSprite->SetImageStart(Vector2(StartFrameX, StartFrameY));
 
 	m_TileImageSprite->SetImageEnd(Vector2(EndFrameX, EndFrameY));
+	*/
 
 }
 
@@ -616,12 +624,13 @@ void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 	CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
 
 	// TileMapWindow 내에서 Tile 의 어떤 Mode를 수정할지를 세팅
-	m_EditMode = (Tile_EditMode)Index;
+	// m_EditMode = (Tile_EditMode)Index;
 }
 
+/*
 void CTileMapWindow::TileMapSaveButton()
 {
-	if (!m_TileMap)
+	if (!m_TileMapEmpty)
 		return;
 
 	TCHAR FilePath[MAX_PATH] = {};
@@ -750,7 +759,7 @@ void CTileMapWindow::BackGroundImageLoadButton()
 		// FullPath 먼저 만들기
 
 		// BackMaterial 이 만들어져 있지 않다면, 만든다.
-		if (!m_TileMap->GetBackMaterial())
+		if (!m_TileMapEmpty->GetBackMaterial())
 		{
 			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
 
@@ -758,34 +767,34 @@ void CTileMapWindow::BackGroundImageLoadButton()
 
 			BackMaterial->SetShader("Mesh2DShader");
 
-			m_TileMap->SetBackMaterial(BackMaterial);
+			m_TileMapEmpty->SetBackMaterial(BackMaterial);
 		}
 
-		if (m_TileMap->GetBackMaterial()->EmptyTexture())
+		if (m_TileMapEmpty->GetBackMaterial()->EmptyTexture())
 		{
-			m_TileMap->GetBackMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+			m_TileMapEmpty->GetBackMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 		else
 		{
-			m_TileMap->GetBackMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+			m_TileMapEmpty->GetBackMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 
-		m_TileMap->SetWorldScale((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
-			(float)m_TileMap->GetBackMaterial()->GetTextureHeight(), 1.f);
+		m_TileMapEmpty->SetWorldScale((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight(), 1.f);
 
-		m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
-		m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
+		m_BackWorldScaleX->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth());
+		m_BackWorldScaleY->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight());
 
-		m_BackImageSprite->SetTexture(m_TileMap->GetBackMaterial()->GetTexture());
+		m_BackImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
 		m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
-			(float)m_TileMap->GetBackMaterial()->GetTextureHeight()));
+		m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
 	}
 }
 
 void CTileMapWindow::SetBackGroundImageScale()
 {
-	if (!m_TileMap)
+	if (!m_TileMapEmpty)
 		return;
 
 	if (!m_BackWorldScaleX->FloatEmpty() && !m_BackWorldScaleY->FloatEmpty())
@@ -793,7 +802,7 @@ void CTileMapWindow::SetBackGroundImageScale()
 		m_BackWorldScaleX->GetValueFloat();
 		m_BackWorldScaleY->GetValueFloat();
 
-		m_TileMap->SetWorldScale(m_BackWorldScaleX->GetValueFloat(), m_BackWorldScaleY->GetValueFloat(), 1.f);
+		m_TileMapEmpty->SetWorldScale(m_BackWorldScaleX->GetValueFloat(), m_BackWorldScaleY->GetValueFloat(), 1.f);
 	}
 }
 

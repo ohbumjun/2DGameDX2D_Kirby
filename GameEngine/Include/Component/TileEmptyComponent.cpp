@@ -493,6 +493,27 @@ CTileEmptyComponent* CTileEmptyComponent::Clone()
 void CTileEmptyComponent::Save(FILE* File)
 {
 	CSceneComponent::Save(File);
+
+	// Back Mesh
+	std::string MeshName = m_BackMesh->GetName();
+
+	int Length = (int)MeshName.length();
+
+	fwrite(&Length, sizeof(int), 1, File);
+	fwrite(MeshName.c_str(), sizeof(int), 1, File);
+
+	// Back Material
+	bool MaterialEnable = false;
+
+	if (m_BackMaterial)
+		MaterialEnable = true;
+
+	fwrite(&MaterialEnable, sizeof(bool), 1, File);
+
+	if (MaterialEnable)
+		m_BackMaterial->Save(File);
+
+
 }
 
 void CTileEmptyComponent::Load(FILE* File)

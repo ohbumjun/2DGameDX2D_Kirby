@@ -19,6 +19,7 @@
 #include "Component/ColliderPixel.h"
 #include "Component/CameraComponent.h"
 #include "Component/TileMapComponent.h"
+#include "Component/TileEmptyComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
 #include "TileMapWindow.h"
@@ -319,6 +320,17 @@ void CEditorMenu::LoadScene()
 
 		for (; iter != iterEnd; ++iter)
 		{
+			if ((*iter)->GetRootComponent()->CheckType<CTileEmptyComponent>())
+			{
+				// 1) Edit mode 수정
+				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+				// 2) TileMap Window 에 TileMapComponent 지정하기
+				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileEmptyComponent*)(*iter)->GetRootComponent());
+			}
+		}
+		/*
+		for (; iter != iterEnd; ++iter)
+		{
 			if ((*iter)->GetRootComponent()->CheckType<CTileMapComponent>())
 			{
 				// 1) Edit mode 수정
@@ -327,6 +339,7 @@ void CEditorMenu::LoadScene()
 				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)(*iter)->GetRootComponent());
 			}
 		}
+		*/
 
 
 		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해
@@ -475,6 +488,16 @@ void CEditorMenu::LoadObject()
 		// 만일 TileMapComponent를 Load 했다면
 		if (LoadedObject->GetRootComponent())
 		{
+			if (LoadedObject->GetRootComponent()->CheckType<CTileEmptyComponent>())
+			{
+				// 1) Edit mode 수정
+				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+
+				// 2) TileMap Window 에 TileMapComponent 지정하기
+				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileEmptyComponent*)LoadedObject->GetRootComponent());
+
+			};
+			/*
 			if (LoadedObject->GetRootComponent()->CheckType<CTileMapComponent>())
 			{
 				// 1) Edit mode 수정
@@ -484,6 +507,7 @@ void CEditorMenu::LoadObject()
 				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)LoadedObject->GetRootComponent());
 
 			};
+			*/
 		}
 
 		// Object Name List에 추가한다
