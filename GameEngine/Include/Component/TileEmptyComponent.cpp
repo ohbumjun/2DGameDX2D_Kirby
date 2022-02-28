@@ -344,7 +344,7 @@ void CTileEmptyComponent::SetWorldInfo()
 {
 	SAFE_DELETE(m_TileInfoBuffer);
 
-	m_TileInfoBuffer = new CStructuredBuffer;
+	m_TileInfoBuffer = new CStructuredBuffer;//
 
 	m_TileInfoBuffer->Init("TileEmptyInfo", 90, sizeof(TileEmptyInfo), true, m_Count, (int)Buffer_Shader_Type::Vertex);
 
