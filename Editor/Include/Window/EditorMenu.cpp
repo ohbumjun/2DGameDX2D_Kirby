@@ -479,8 +479,10 @@ void CEditorMenu::LoadObject()
 			{
 				// 1) Edit mode 수정
 				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+
 				// 2) TileMap Window 에 TileMapComponent 지정하기
 				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)LoadedObject->GetRootComponent());
+
 			};
 		}
 
