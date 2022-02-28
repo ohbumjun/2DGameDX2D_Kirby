@@ -645,6 +645,12 @@
     <ClInclude Include="Component\NavAgent.h">
       <Filter>05. Component\02. ObjectComponent\02. NavAgent</Filter>
     </ClInclude>
+    <ClInclude Include="Component\TileEmpty.h">
+      <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\TileEmptyComponent.h">
+      <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1015,6 +1021,12 @@
     </ClCompile>
     <ClCompile Include="Component\NavAgent.cpp">
       <Filter>05. Component\02. ObjectComponent\02. NavAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\TileEmpty.cpp">
+      <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\TileEmptyComponent.cpp">
+      <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
