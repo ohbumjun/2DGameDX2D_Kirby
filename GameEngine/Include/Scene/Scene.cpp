@@ -230,7 +230,35 @@ void CScene::DeleteGameObject(const std::string& Name)
 			break;
 		}
 	}
+}
 
+void CScene::RemoveDuplicateObject(const std::string& Name)
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+	auto iterFound = iter;
+
+	// 하나를 찾아내고
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->GetName() == Name)
+		{
+			iterFound = ++iter;
+			break;
+		}
+	}
+
+	// 이후 부터를 검사해서 중복 제거
+	for (; iterFound != iterEnd;)
+	{
+		if ((*iterFound)->GetName() == Name)
+		{
+			iterFound = m_ObjList.erase(iterFound);
+			iterEnd = m_ObjList.end();
+			continue;
+		}
+		++iterFound;
+	}
 }
 
 CGameObject* CScene::FindGameObject(const char* ObjectName) const

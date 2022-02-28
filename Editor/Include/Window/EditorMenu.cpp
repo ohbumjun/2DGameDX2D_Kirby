@@ -451,7 +451,7 @@ void CEditorMenu::LoadObject()
 		// 중복 방지 
 		if (Hierarchy->GetObjectListBox()->CheckItem(LoadedObject->GetName()))
 		{
-			SAFE_DELETE(LoadedObject);
+			CSceneManager::GetInst()->GetScene()->RemoveDuplicateObject(LoadedObject->GetName());
 			return;
 		}
 
