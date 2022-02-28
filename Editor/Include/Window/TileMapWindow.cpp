@@ -59,11 +59,11 @@ void CTileMapWindow::SetTileMap(CTileMapComponent* TileMap)
 	// 2) BackMaterial 세팅 
 	std::string BackMaterialName = TileMap->GetBackMaterial()->GetName();
 
-	m_TileMap->SetWorldScale((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
-		(float)m_TileMap->GetBackMaterial()->GetTextureHeight(), 1.f);
-
-	m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
-	m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
+	// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
+	// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
+	m_BackWorldScaleX->SetFloat((float)m_TileMap->GetWorldScale().x);
+	// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
+	m_BackWorldScaleY->SetFloat((float)m_TileMap->GetWorldScale().y);
 
 	m_BackImageSprite->SetTexture(m_TileMap->GetBackMaterial()->GetTexture());
 	m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
