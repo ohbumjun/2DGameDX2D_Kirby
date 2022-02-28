@@ -334,6 +334,30 @@ bool CTileMapWindow::Init()
 
 	// ==============================
 
+	Label = AddWidget<CIMGUILabel>("Back Img", 195.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Label = AddWidget<CIMGUILabel>("Texture Load", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ==============================
+
+	m_TextureImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	m_BackImageLoadButton = AddWidget<CIMGUIButton>("Load BG", 100.f, 30.f);
+	m_BackImageLoadButton->SetClickCallback(this, &CTileMapWindow::BackGroundImageLoadButton);
+
+
+	// ==============================
+
 	Label = AddWidget<CIMGUILabel>("Back Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -359,18 +383,13 @@ bool CTileMapWindow::Init()
 	m_BackWorldScaleY->SetInt(100);
 	m_BackWorldScaleY->SetTextType(ImGuiText_Type::Float);
 
-	// ==============================
-
-	Label = AddWidget<CIMGUILabel>("Texture Load", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(120.f);
+	Line->SetOffsetX(330.f);
 
-	m_BackImageLoadButton = AddWidget<CIMGUIButton>("Load BG", 80.f, 30.f);
-	m_BackImageLoadButton->SetClickCallback(this, &CTileMapWindow::BackGroundImageLoadButton);
+	Button = AddWidget<CIMGUIButton>("Set Scale", 80.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetBackGroundImageScale);
 
+	// ==============================
 
 	// Default Value µé ¼¼ÆÃ
 	m_TileCountX->SetInt(100);
@@ -752,6 +771,17 @@ void CTileMapWindow::BackGroundImageLoadButton()
 	}
 }
 
-void CTileMapWindow::SetBackGroundWorldScale()
-{}
+void CTileMapWindow::SetBackGroundImageScale()
+{
+	if (!m_TileMap)
+		return;
+
+	if (!m_BackWorldScaleX->FloatEmpty() && !m_BackWorldScaleY->FloatEmpty())
+	{
+		m_BackWorldScaleX->GetValueFloat();
+		m_BackWorldScaleY->GetValueFloat();
+
+		m_TileMap->SetWorldScale(m_BackWorldScaleX->GetValueFloat(), m_BackWorldScaleY->GetValueFloat(), 1.f);
+	}
+}
 

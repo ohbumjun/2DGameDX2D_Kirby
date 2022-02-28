@@ -33,6 +33,7 @@ private :
 	// Material을 기본적으로 세팅해두고 --> 불러온 Texture만 바꿔끼는 개념을 사용할 것이다.
 	class CIMGUIButton* m_BackMaterialButton;
 	class CIMGUIButton* m_BackImageLoadButton;
+	class CIMGUIImage* m_BackImageSprite;
 private: // Back Material Size
 	class CIMGUITextInput* m_BackWorldScaleX;
 	class CIMGUITextInput* m_BackWorldScaleY;
@@ -62,6 +63,6 @@ private :
 	void TileMapLoadButton();
 private :
 	void BackGroundImageLoadButton();
-	void SetBackGroundWorldScale();
+	void SetBackGroundImageScale();
 };
 
