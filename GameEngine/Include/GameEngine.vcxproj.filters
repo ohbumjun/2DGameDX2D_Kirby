@@ -1051,6 +1051,9 @@
     <FxCompile Include="..\Bin\Shader\TileMap.fx">
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="TileMapEmpty.fx">
+      <Filter>02. Resource\02. Shader\01. HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Texture\DirectXTex.inl">

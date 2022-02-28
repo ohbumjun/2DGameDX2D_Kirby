@@ -1,6 +1,17 @@
 #include "TileEmptyComponent.h"
 #include "TileEmpty.h"
 #include "../Resource/Shader/StructuredBuffer.h"
+#include "../Scene/Scene.h"
+#include "../Scene/SceneResource.h"
+#include "../Render/RenderManager.h"
+#include "../Resource/Shader/Standard2DConstantBuffer.h"
+#include "../Scene/SceneManager.h"
+#include "CameraComponent.h"
+#include "../Scene/CameraManager.h"
+#include "../Scene/NavigationManager.h"
+#include "../Scene/SceneCollision.h"
+
+class CStaticMesh;
 
 CTileEmptyComponent::CTileEmptyComponent()
 {
@@ -297,7 +308,16 @@ void CTileEmptyComponent::Start()
 
 bool CTileEmptyComponent::Init()
 {
-	return CSceneComponent::Init();
+	if (!CSceneComponent::Init())
+		return false;
+
+	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
+
+	m_TileMesh = m_Scene->GetResource()->FindMesh("Box2D");
+
+	SetMeshSize(1.f, 1.f, 0.f);
+
+	return true;
 }
 
 void CTileEmptyComponent::Update(float DeltaTime)
@@ -327,7 +347,7 @@ void CTileEmptyComponent::PostRender()
 
 CTileEmptyComponent* CTileEmptyComponent::Clone()
 {
-	return CSceneComponent::Clone();
+	return new CTileEmptyComponent(*this);
 }
 
 void CTileEmptyComponent::Save(FILE* File)
@@ -344,7 +364,7 @@ void CTileEmptyComponent::SetWorldInfo()
 {
 	SAFE_DELETE(m_TileInfoBuffer);
 
-	m_TileInfoBuffer = new CStructuredBuffer;//
+	m_TileInfoBuffer = new CStructuredBuffer;
 
 	m_TileInfoBuffer->Init("TileEmptyInfo", 90, sizeof(TileEmptyInfo), true, m_Count, (int)Buffer_Shader_Type::Vertex);
 
