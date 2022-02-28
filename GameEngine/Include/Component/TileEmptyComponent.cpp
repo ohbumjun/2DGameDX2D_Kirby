@@ -260,46 +260,110 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 		}
 	}
 
+	// 그외 정보 세팅
+	SetWorldInfo();
+
 }
 
-void CTileEmptyComponent::SetTileEmptyOpacity(int IndexX, int IndexY, float Opacity)
-{}
-
-void CTileEmptyComponent::SetTileEmptyOpacity(int Index, float Opacity)
-{}
-
-void CTileEmptyComponent::SetTileEmptyOpacity(const Vector3& Pos, float Opacity)
-{}
-
 void CTileEmptyComponent::SetTileEmptyColor(Tile_Type Type, float r, float g, float b, float a)
-{}
+{
+	m_TileEmptyColor[(int)Type] = Vector4(r, g, b, a);
+}
 
 void CTileEmptyComponent::SetTileEmptyColor(Tile_Type Type, const Vector4& Color)
-{}
+{
+	m_TileEmptyColor[(int)Type] = Color;
+}
 
 int CTileEmptyComponent::GetTileEmptyIndexX(const Vector3& Pos)
-{}
+{
+	float	ConvertX = Pos.x - GetWorldPos().x;
+
+	int	IndexX = (int)(ConvertX / m_TileEmptySize.x);
+
+	if (IndexX < 0 || IndexX >= m_CountX)
+		return -1;
+
+	return IndexX;
+}
 
 int CTileEmptyComponent::GetTileEmptyIndexY(const Vector3& Pos)
-{}
+{
+	float ConvertY = Pos.y - GetWorldPos().y;
+
+	int IndexY = (int)(ConvertY / m_TileEmptySize.y);
+
+	if (IndexY < 0 || IndexY >= m_CountX)
+		return -1;
+
+	return IndexY;
+}
 
 int CTileEmptyComponent::GetTileEmptyIndex(const Vector3& Pos)
-{}
+{
+	int	IndexX = GetTileEmptyIndexX(Pos);
+	int	IndexY = GetTileEmptyIndexY(Pos);
+
+	if (IndexX == -1 || IndexY == -1)
+		return -1;
+
+	return IndexY * m_CountX + IndexX;
+}
 
 CTileEmpty* CTileEmptyComponent::GetTileEmpty(const Vector3& Pos)
-{}
+{
+	int Index = GetTileEmptyIndex(Pos);
+
+	if (Index == -1)
+		return nullptr;
+
+	return m_vecTileEmpty[Index];
+}
 
 CTileEmpty* CTileEmptyComponent::GetTileEmpty(int x, int y)
-{}
+{
+	if (x < 0 || x >= m_CountX || y < 0 || y >= m_CountY)
+		return nullptr;
+
+	return m_vecTileEmpty[y * m_CountX + x];
+}
 
 CTileEmpty* CTileEmptyComponent::GetTileEmpty(int Index)
-{}
+{
+	if (Index < 0 || Index >= m_CountX * m_CountY)
+		return nullptr;
+
+	return m_vecTileEmpty[Index];
+}
 
 int CTileEmptyComponent::GetTileEmptyRenderIndexX(const Vector3& Pos)
-{}
+{
+	float ConvertX = Pos.x - GetWorldPos().x;
+
+	int IndexX = (int)(ConvertX / m_TileEmptySize.x);
+
+	if (IndexX < 0)
+		return 0;
+	if (IndexX >= m_CountX)
+		return m_CountX - 1;
+
+	return IndexX;
+}
 
 int CTileEmptyComponent::GetTileEmptyRenderIndexY(const Vector3& Pos)
-{}
+{
+	float ConvertY = Pos.y - GetWorldPos().y;
+
+	int IndexY = (int)(ConvertY / m_TileEmptySize.y);
+
+	if (IndexY < 0)
+		return 0;
+
+	if (IndexY >= m_CountX)
+		return m_CountX - 1;
+
+	return IndexY;
+}
 
 void CTileEmptyComponent::Start()
 {
@@ -311,9 +375,13 @@ bool CTileEmptyComponent::Init()
 	if (!CSceneComponent::Init())
 		return false;
 
+	// Back
 	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
 
+	// Tile
 	m_TileMesh = m_Scene->GetResource()->FindMesh("Box2D");
+
+	m_TileShader = CResourceManager::GetInst()->FindShader("TileMapEmptyShader");
 
 	SetMeshSize(1.f, 1.f, 0.f);
 
@@ -328,16 +396,88 @@ void CTileEmptyComponent::Update(float DeltaTime)
 void CTileEmptyComponent::PostUpdate(float DeltaTime)
 {
 	CSceneComponent::PostUpdate(DeltaTime);
+
+	m_DeltaTime = DeltaTime;
 }
 
 void CTileEmptyComponent::PrevRender()
 {
 	CSceneComponent::PrevRender();
+
+	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
+
+	Resolution RS = Camera->GetResolution();
+
+	Vector3 LB = Camera->GetWorldPos();
+
+	Vector3 RT = LB + Vector3((float)RS.Width, (float)RS.Height, 0.f);
+
+	int StartX, StartY, EndX, EndY;
+
+	StartX = GetTileEmptyRenderIndexX(LB);
+	StartY = GetTileEmptyRenderIndexY(LB);
+
+	EndX = GetTileEmptyRenderIndexX(RT);
+	EndY = GetTileEmptyRenderIndexY(RT);
+
+	Matrix matView, matProj;
+
+	matView = Camera->GetViewMatrix();
+
+	matProj = Camera->GetProjMatrix();
+
+	m_RenderCount = 0;
+
+	if (m_vecTileEmpty.empty())
+		return;
+
+	for (int row = StartY; row <= EndY; row++)
+	{
+		for (int col = StartX; col <= EndX; col++)
+		{
+			int Index = row * m_CountX + col;
+
+			// 해당 Tile의 Rendering 준비를 완료 시키고
+			m_vecTileEmpty[Index]->Update(m_DeltaTime);
+
+			if (m_EditMode)
+			{
+				m_vecTileEmptyInfo[m_RenderCount].TileColor = m_TileEmptyColor[(int)m_vecTileEmpty[Index]->GetTileType()];
+			}
+
+			m_vecTileEmptyInfo[m_RenderCount].matWVP = m_vecTileEmpty[Index]->GetWorldMatrix() * matView * matProj;
+			m_vecTileEmptyInfo[m_RenderCount].matWVP.Transpose();
+
+			++m_RenderCount;
+		}
+	}
+
+	m_TileInfoBuffer->UpdateBuffer(&m_vecTileEmptyInfo[0], m_RenderCount);
 }
 
 void CTileEmptyComponent::Render()
 {
 	CSceneComponent::Render();
+
+	if (m_BackMaterial)
+	{
+		m_BackMaterial->Render();
+
+		m_BackMesh->Render();
+
+		m_BackMaterial->Reset();
+	}
+
+	if (!m_vecTileEmpty.empty())
+	{
+		m_TileInfoBuffer->SetShader();
+
+		m_TileShader->SetShader();
+
+		m_TileMesh->RenderInstancing(m_RenderCount);
+
+		m_TileInfoBuffer->ResetShader();
+	}
 }
 
 void CTileEmptyComponent::PostRender()
@@ -373,6 +513,5 @@ void CTileEmptyComponent::SetWorldInfo()
 	for (int i = 0; i < m_Count; i++)
 	{
 		m_vecTileEmptyInfo[i].TileColor = Vector4(1.f, 1.f, 1.f, 1.f);
-		m_vecTileEmptyInfo[i].Opacity = 1.f;
 	}
 }

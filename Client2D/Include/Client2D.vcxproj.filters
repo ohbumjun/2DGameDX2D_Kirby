@@ -144,6 +144,9 @@
     <ClCompile Include="Object\NormalBear.cpp">
       <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
+    <ClCompile Include="Object\TileMapEmpty.cpp">
+      <Filter>02. Object\06. TileMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="Object\NormalBear.h">
       <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\TileMapEmpty.h">
+      <Filter>02. Object\06. TileMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

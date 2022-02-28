@@ -207,6 +207,11 @@ struct TileCBuffer
 	Matrix matWVP;
 };
 
+struct TileEmptyInfo {
+	Matrix matWVP;
+	Vector4 TileColor;
+};
+
 struct TileInfo
 {
 	Matrix matWVP;

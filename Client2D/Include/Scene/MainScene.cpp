@@ -4,6 +4,7 @@
 #include "Scene/SceneResource.h"
 #include "../Object/Monster.h"
 #include "../Object/TileMap.h"
+#include "../Object/TileMapEmpty.h"
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
@@ -97,10 +98,11 @@ bool CMainScene::Init()
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
 	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
+	// CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
+	// TileMap->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
 
-	CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
 
-	TileMap->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
+	CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
 
 	return true;
 }

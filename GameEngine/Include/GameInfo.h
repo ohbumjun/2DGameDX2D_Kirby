@@ -210,8 +210,6 @@ struct TileCBuffer
 struct TileEmptyInfo {
 	Matrix matWVP;
 	Vector4 TileColor;
-	float Opacity;
-	Vector3 Empty;
 };
 
 struct TileInfo

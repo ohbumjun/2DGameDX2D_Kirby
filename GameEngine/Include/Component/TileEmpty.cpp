@@ -1,4 +1,5 @@
 #include "TileEmpty.h"
+#include "TileEmptyComponent.h"
 
 CTileEmpty::CTileEmpty() :
 	m_TileType(Tile_Type::Normal),

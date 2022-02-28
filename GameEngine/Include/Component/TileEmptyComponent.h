@@ -21,6 +21,7 @@ protected:
     CSharedPtr<CSpriteMesh> m_BackMesh;
     CSharedPtr<CMaterial> m_BackMaterial;
 protected:
+    CSharedPtr<CShader> m_TileShader;
     CSharedPtr<CMesh> m_TileMesh;
     std::vector<CTileEmpty*> m_vecTileEmpty;
     std::vector<TileEmptyInfo> m_vecTileEmptyInfo;
@@ -76,9 +77,7 @@ public:
     void SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
 public :
     void CreateTileEmpty(int CountX, int CountY, const Vector3& Size);
-    void SetTileEmptyOpacity(int IndexX, int IndexY, float Opacity);
-    void SetTileEmptyOpacity(int Index, float Opacity);
-    void SetTileEmptyOpacity(const Vector3& Pos, float Opacity);
+public :
     void SetTileEmptyColor(Tile_Type Type, float r, float g, float b, float a);
     void SetTileEmptyColor(Tile_Type Type, const Vector4& Color);
 public:
