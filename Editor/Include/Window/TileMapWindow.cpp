@@ -274,7 +274,28 @@ bool CTileMapWindow::Init()
 	m_TileFrameEndY->SetInt(100);
 	m_TileFrameEndY->SetHideName(true);
 	m_TileFrameEndY->SetTextType(ImGuiText_Type::Float);
-	
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("TileSaveLoad", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_TileMapSaveButton = AddWidget<CIMGUIButton>("TileSave", 80.f, 30.f);
+	m_TileMapSaveButton->SetClickCallback(this, &CTileMapWindow::TileMapSaveButton);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	m_TileMapLoadButton = AddWidget<CIMGUIButton>("TileLoad", 80.f, 30.f);
+	m_TileMapLoadButton->SetClickCallback(this, &CTileMapWindow::TileMapLoadButton);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+
 	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("TextureImg", 195.f, 30.f);
@@ -297,11 +318,44 @@ bool CTileMapWindow::Init()
 
 	m_TileImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
 
-
 	// ==============================
 
 	Button = AddWidget<CIMGUIButton>("SetDefaultFrame", 200.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetDefaultFrame);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("BackGround Image Info", 400.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Set BackMaterial", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_BackMaterialButton = AddWidget<CIMGUIButton>("Set Mtrl", 80.f, 30.f);
+	m_BackMaterialButton->SetClickCallback(this, &CTileMapWindow::CreateBackMaterial);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Texture Load", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_BackImageLoadButton = AddWidget<CIMGUIButton>("Load BG", 80.f, 30.f);
+	m_BackImageLoadButton->SetClickCallback(this, &CTileMapWindow::TileMapSaveButton);
+
 
 	// Default Value 들 세팅
 	m_TileCountX->SetInt(100);
@@ -313,17 +367,6 @@ bool CTileMapWindow::Init()
 	m_TileFrameStartY->SetFloat(80.f);
 	m_TileFrameEndX->SetFloat(320.f);
 	m_TileFrameEndY->SetFloat(160.f); //
-
-	// ==============================
-
-	m_TileMapSaveButton = AddWidget<CIMGUIButton>("TileMapSave", 100.f, 30.f);
-	m_TileMapSaveButton->SetClickCallback(this, &CTileMapWindow::TileMapSaveButton);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(110.f);
-
-	m_TileMapLoadButton = AddWidget<CIMGUIButton>("TileMapLoad", 100.f, 30.f);
-	m_TileMapLoadButton->SetClickCallback(this, &CTileMapWindow::TileMapLoadButton);
 
 	return true;
 }
@@ -588,6 +631,63 @@ void CTileMapWindow::TileMapLoadButton()
 		CGameObject* TileMapObject = m_TileMap->GetGameObject();
 
 		TileMapObject->LoadFullPath(ConvertFullPath);
+	}
+}
+
+void CTileMapWindow::CreateBackMaterial()
+{
+	// Back Material 이라는 이름이 이미 만들어져 있는지 확인하기
+	if (CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial"))
+		return;
+
+	// Back Material 을 하나 만들고
+	CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
+
+	CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
+
+	BackMaterial->SetShader("Mesh2DShader");
+}
+
+void CTileMapWindow::BackGroundImageLoadButton()
+{
+	TCHAR FilePath[MAX_PATH] = {};
+
+	OPENFILENAME OpenFile = {};
+
+	OpenFile.lStructSize = sizeof(OpenFile);
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0DDSFILE\0*.dds\0TGAFile\0*.tga\0PNGFile\0*.png\0JPGFile\0*jpg\0JPEGFile\0*.jpeg\0BMPFile\0*bmp");
+	OpenFile.lpstrFile = FilePath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(TEXTURE_PATH)->Path;
+
+	if (GetOpenFileName(&OpenFile) != 0)
+	{
+		char FileFullPath[MAX_PATH] = {};
+		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, 0, 0, 0, 0);
+		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, FileFullPath, ConvertLength, 0, 0);
+
+		// FullPath 먼저 만들기
+		CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
+
+		// BackMaterial 이 만들어져 있지 않다면, 만든다.
+		if (!BackMaterial)
+		{
+			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
+
+			CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
+
+			BackMaterial->SetShader("Mesh2DShader");
+		}
+
+		if (BackMaterial->EmptyTexture())
+		{
+			BackMaterial->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, "SampleBack", FilePath);
+		}
+		else
+		{
+			BackMaterial->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, "SampleBack", FilePath);
+		}
 	}
 }
 

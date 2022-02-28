@@ -96,7 +96,7 @@ bool CMainScene::Init()
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
-	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
+	CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
 
 	// CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
 
@@ -124,6 +124,13 @@ void CMainScene::CreateMaterial()
 
 	TileMapMaterial->SetShader("TileMapShader");
 	TileMapMaterial->SetRenderState("AlphaBlend");
+
+	// Back Material
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
+	CMaterial* BackMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
+	BackMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SampleBack", TEXT("LoadingBack.jpg"));
+
+	BackMaterial->SetShader("Mesh2DShader");
 
 }
 

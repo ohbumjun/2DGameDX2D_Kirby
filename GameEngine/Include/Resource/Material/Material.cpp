@@ -138,7 +138,7 @@ void CMaterial::AddTexture(int                Register, int ShaderType, const st
 
 void CMaterial::AddTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath)
 {
-	/*if (!CResourceManager::GetInst()->LoadTexture(Name, FileName, PathName))
+	if (!CResourceManager::GetInst()->LoadTextureFullPath(Name, FullPath))
 		return;
 
 	m_TextureInfo.push_back(MaterialTextureInfo());
@@ -148,7 +148,7 @@ void CMaterial::AddTextureFullPath(int Register, int ShaderType, const std::stri
 	m_TextureInfo[Index].Register = Register;
 	m_TextureInfo[Index].Name = Name;
 	m_TextureInfo[Index].Texture = CResourceManager::GetInst()->FindTexture(Name);
-	m_TextureInfo[Index].ShaderType = ShaderType;*/
+	m_TextureInfo[Index].ShaderType = ShaderType;
 }
 
 void CMaterial::AddTexture(int                        Register, int ShaderType, const std::string& Name,

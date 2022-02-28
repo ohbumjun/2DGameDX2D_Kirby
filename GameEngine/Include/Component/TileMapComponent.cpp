@@ -82,6 +82,10 @@ void CTileMapComponent::SetBackMaterial(CMaterial* Material)
 	m_BackMaterial = Material->Clone();
 
 	m_BackMaterial->SetScene(m_Scene);
+
+	float Width = (float)m_BackMaterial->GetTextureWidth();
+	float Height = (float)m_BackMaterial->GetTextureHeight();
+	SetWorldScale(Width, Height, 1.f);
 }
 
 void CTileMapComponent::SetTileMaterial(CMaterial* Material)
@@ -790,11 +794,15 @@ void CTileMapComponent::Start()
 bool CTileMapComponent::Init()
 {
 	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
-	//SetMaterial(m_Scene->GetResource()->FindMaterial("BaseTexture"));
+
+	// SetBackMaterial(m_Scene->GetResource()->FindMaterial("BaseTexture"));
 
 	SetMeshSize(1.f, 1.f, 0.f);
+
+	// SetWorldScale(100.f, 100.f, 1.f);
+
 	//SetWorldScale((float)m_BackMaterial->GetTextureWidth(),
-	//	(float)m_BackMaterial->GetTextureHeight(), 1.f);
+		//	(float)m_BackMaterial->GetTextureHeight(), 1.f);
 
 	m_CBuffer = new CTileConstantBuffer;
 

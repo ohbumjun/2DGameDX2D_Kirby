@@ -30,6 +30,10 @@ private :
 	class CIMGUIButton* m_TileMapSaveButton;
 	class CIMGUIButton* m_TileMapLoadButton;
 private :
+	// Material을 기본적으로 세팅해두고 --> 불러온 Texture만 바꿔끼는 개념을 사용할 것이다.
+	class CIMGUIButton* m_BackMaterialButton;
+	class CIMGUIButton* m_BackImageLoadButton;
+private :
 	class CTileMapComponent* m_TileMap;
 	Tile_EditMode m_EditMode;
 public :
@@ -53,5 +57,8 @@ private :
 private :
 	void TileMapSaveButton();
 	void TileMapLoadButton();
+private :
+	void CreateBackMaterial();
+	void BackGroundImageLoadButton();
 };
 

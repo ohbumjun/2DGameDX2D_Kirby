@@ -28,14 +28,19 @@ bool CTileMap::Init()
 
 	SetRootComponent(m_TileComponent);
 
-	// Tile
-	m_TileComponent->CreateTile(Tile_Shape::Rhombus, 100, 100, Vector3(160.f, 80.f, 0.f));
+	// Back Material
+	CMaterial* Material = m_Scene->GetResource()->FindMaterial("BackMaterial");
+	m_TileComponent->SetBackMaterial(Material);
 
-	CMaterial* Material = m_Scene->GetResource()->FindMaterial("DiabloTileMap");
+	// Tile
+	m_TileComponent->CreateTile(Tile_Shape::Rhombus, 1, 1, Vector3(160.f, 80.f, 0.f));
+
+	Material = m_Scene->GetResource()->FindMaterial("DiabloTileMap");
 
 	m_TileComponent->SetTileMaterial(Material);
 
 	m_TileComponent->SetTileDefaultFrame(160.f, 80.f, 320.f, 160.f);
+	// Back Material
 
 	return true;
 }
