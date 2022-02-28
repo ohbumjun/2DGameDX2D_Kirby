@@ -96,11 +96,11 @@ bool CMainScene::Init()
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
-	CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
+	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
 
-	// CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
+	CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
 
-	// TileMap->LoadByFileName("TileMapRhombus.gobj", SCENE_PATH);
+	TileMap->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
 
 	return true;
 }
