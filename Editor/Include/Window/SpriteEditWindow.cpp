@@ -147,80 +147,116 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::UndoCandyCrushMode);
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("Seq,Anim", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(95.f);
 
 	Button = AddWidget<CIMGUIButton>("SaveSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SaveSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
 
 	Button = AddWidget<CIMGUIButton>("LoadSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(265.f);
 
 	Button = AddWidget<CIMGUIButton>("SaveAnim", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SaveAnimation);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(350);
 
 	Button = AddWidget<CIMGUIButton>("LoadAnim", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadAnimation);
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("Block Mv", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(95.f);
 
 	Button = AddWidget<CIMGUIButton>("MvBlockRight", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockRight);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
 
 	Button = AddWidget<CIMGUIButton>("MvBlockLeft", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockLeft);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(265.f);
 
 	Button = AddWidget<CIMGUIButton>("MvBlockUp", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockUp);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(350);
 
 	Button = AddWidget<CIMGUIButton>("MvBlockDown", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOneBlockDown);
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("Pixel Mv", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(95.f);
 
 	Button = AddWidget<CIMGUIButton>("MvPixRight", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelRight);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
 
 	Button = AddWidget<CIMGUIButton>("MvPixLeft", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelLeft);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(265.f);
 
 	Button = AddWidget<CIMGUIButton>("MvPixUp", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelUp);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(350.f);
 
 	Button = AddWidget<CIMGUIButton>("MvPixDown", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::MoveOnePixelDown);
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("Pixel Size", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(95.f);
+
 	Button = AddWidget<CIMGUIButton>("BigPixRight", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EnlargeOnePixelRight);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
 
 	Button = AddWidget<CIMGUIButton>("RdPixLeft", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ReduceOnePixelLeft);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(265.f);
 
 	Button = AddWidget<CIMGUIButton>("RdPixUp", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ReduceOnePixelUp);
-
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(350.f);
 
 	Button = AddWidget<CIMGUIButton>("BigPixDown", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EnlargeOnePixelDown);
@@ -388,78 +424,105 @@ bool CSpriteEditWindow::Init()
 
 
 	// ==============================
+	Label = AddWidget<CIMGUILabel>("Frame", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
 
 	Button = AddWidget<CIMGUIButton>("EditFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::EditFrameButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(90.f);
+	Line->SetOffsetX(175.f);
 
 	Button = AddWidget<CIMGUIButton>("DelSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(175.f);
+	Line->SetOffsetX(260.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearSeq", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearAnimationSequence);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(260.f);
+	Line->SetOffsetX(345.f);
 
 	Button = AddWidget<CIMGUIButton>("DelFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::DeleteFrameButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(345.f);
+	Line->SetOffsetX(430.f);
 
 	Button = AddWidget<CIMGUIButton>("ClearFrame", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::ClearFrameButton);
 
 	// =============================
+	Label = AddWidget<CIMGUILabel>("", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
 
 	m_StartFramePosXInput = AddWidget<CIMGUITextInput>("StartX");
 	m_StartFramePosXInput->SetSize(80.f, 30.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(160.f);
+	Line->SetOffsetX(240.f);
 
 	m_StartFramePosYInput = AddWidget<CIMGUITextInput>("StartY");
 	m_StartFramePosYInput->SetSize(80.f, 30.f);
+
+	// =============================
+	Label = AddWidget<CIMGUILabel>("", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
 
 	m_EndFramePosXInput = AddWidget<CIMGUITextInput>("EndX");
 	m_EndFramePosXInput->SetSize(80.f, 30.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(160.f);
+	Line->SetOffsetX(240.f);
 
 	m_EndFramePosYInput = AddWidget<CIMGUITextInput>("EndY");
 	m_EndFramePosYInput->SetSize(80.f, 30.f);
 
 	// =============================
+	Label = AddWidget<CIMGUILabel>("DragObj Pos", 80.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(90.f);
+
 	Button = AddWidget<CIMGUIButton>("RightEnd", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToRightEnd);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(90.f);
+	Line->SetOffsetX(175.f);
 
 	Button = AddWidget<CIMGUIButton>("LeftEnd", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToLeftEnd);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(175.f);
+	Line->SetOffsetX(260.f);
 
 	Button = AddWidget<CIMGUIButton>("ToTop", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToTop);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(260.f);
+	Line->SetOffsetX(345.f);
 
 	Button = AddWidget<CIMGUIButton>("ToBottom", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectToBottom);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(345.f);
+	Line->SetOffsetX(430.f);
 
 	Button = AddWidget<CIMGUIButton>("ToTexture", 80.f, 30.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetDragObjectTexture);

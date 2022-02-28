@@ -98,14 +98,10 @@ bool CEditorMenu::Init()
 
 	// ========================================================================
 
-	/*
 	m_ClearComponentButton = AddWidget<CIMGUIButton>("ClearComponent", 80.f, 30.f);
 	m_ClearComponentButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_DeleteComponentButton = AddWidget<CIMGUIButton>("DeleteComponent ", 80.f, 30.f);
-	m_DeleteComponentButton->SetClickCallback(this, &CEditorMenu::DeleteComponent);
-	Line = AddWidget<CIMGUISameLine>("Line");
 
 	m_ClearObjectButton = AddWidget<CIMGUIButton>("ClearObject", 80.f, 30.f);
 	m_ClearObjectButton->SetClickCallback(this, &CEditorMenu::ClearObject);
@@ -113,6 +109,11 @@ bool CEditorMenu::Init()
 
 	m_DeleteObjectButton = AddWidget<CIMGUIButton>("DeleteObject ", 80.f, 30.f);
 	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
+
+	/*
+	m_DeleteComponentButton = AddWidget<CIMGUIButton>("DeleteComponent ", 80.f, 30.f);
+	m_DeleteComponentButton->SetClickCallback(this, &CEditorMenu::DeleteComponent);
+	Line = AddWidget<CIMGUISameLine>("Line");
 	*/
 
 	// ========================================================================
