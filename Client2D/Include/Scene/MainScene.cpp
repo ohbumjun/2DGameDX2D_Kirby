@@ -40,7 +40,7 @@ bool CMainScene::Init()
 	// CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
 	CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
-	Player->LoadByFileName("TestPlayer.gobj", SCENE_PATH);
+	Player->LoadByFileName("TestPlayer.gobj", OBJECT_PATH);
 
 
 	SetPlayerObject(Player);

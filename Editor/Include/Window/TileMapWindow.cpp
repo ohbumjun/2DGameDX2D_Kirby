@@ -472,7 +472,7 @@ void CTileMapWindow::TileMapSaveButton()
 	OpenFile.lpstrFilter = TEXT("葛电颇老\0*.*\0GameObject File\0*.gobj");
 	OpenFile.lpstrFile = FilePath;
 	OpenFile.nMaxFile = MAX_PATH;
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(OBJECT_PATH)->Path;
 
 	if (GetSaveFileName(&OpenFile) != 0)
 	{
@@ -485,7 +485,7 @@ void CTileMapWindow::TileMapSaveButton()
 
 		TileMapObject->SaveFullPath(ConvertFullPath);
 
-		std::string ExtraFolderName = ENGINE_SCENE_PATH;
+		std::string ExtraFolderName = ENGINE_OBJECT_PATH;
 
 		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
 
@@ -522,7 +522,7 @@ void CTileMapWindow::TileMapLoadButton()
 	OpenFile.nMaxFile = MAX_PATH;
 	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
 	OpenFile.lpstrFilter = TEXT("葛电颇老\0*.*\0*.GameObject File\0*.gobj");
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(OBJECT_PATH)->Path;
 
 	if (GetOpenFileName(&OpenFile) != 0)
 	{

@@ -382,7 +382,7 @@ void CEditorMenu::SaveObject()
 	OpenFile.lStructSize = sizeof(OPENFILENAME);
 	OpenFile.lpstrFile = FileFullPath;
 	OpenFile.nMaxFile = MAX_PATH;
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(OBJECT_PATH)->Path;
 	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.GameObject File\0*.gobj");
 	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
 
@@ -399,7 +399,7 @@ void CEditorMenu::SaveObject()
 		TargetObject->SaveFullPath(FilePathMultibyte);
 
 		// GameEngine 폴더에 저장하기
-		std::string ExtraFolderName = ENGINE_SCENE_PATH;
+		std::string ExtraFolderName = ENGINE_OBJECT_PATH;
 
 		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
 
@@ -436,7 +436,7 @@ void CEditorMenu::LoadObject()
 	OpenFile.nMaxFile = MAX_PATH;
 	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
 	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.GameObject File\0*.gobj");
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(SCENE_PATH)->Path;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(OBJECT_PATH)->Path;
 
 	if (GetOpenFileName(&OpenFile) != 0)
 	{

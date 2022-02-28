@@ -66,6 +66,7 @@ bool CPathManager::Init()
 	AddPath(SCENE_PATH, TEXT("Scene\\"));
 	AddPath(SOUND_PATH, TEXT("Sound\\"));
 	AddPath(SEQUENCE_PATH, TEXT("Sequence\\"));
+	AddPath(OBJECT_PATH, TEXT("Object\\"));
 
 	// Engine Path 만들기  ----------------------------------------------
 	TCHAR EnginePath[MAX_PATH] = {};
@@ -135,6 +136,7 @@ bool CPathManager::Init()
 	AddEnginePath(ENGINE_SCENE_PATH, TEXT("Scene\\"));
 	AddEnginePath(ENGINE_SOUND_PATH, TEXT("Sound\\"));
 	AddEnginePath(ENGINE_SEQUENCE_PATH, TEXT("Sequence\\"));
+	AddEnginePath(ENGINE_OBJECT_PATH, TEXT("Object\\"));
 
 	// Candy Crush 용
 	AddEnginePath(CANDY_ANIMATION_PATH, TEXT("CandyCrush\\Animation\\"));

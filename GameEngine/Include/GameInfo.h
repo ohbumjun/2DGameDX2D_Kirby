@@ -66,6 +66,7 @@
 #define	ENGINE_SCENE_PATH				"EngineScene"
 #define	ENGINE_SOUND_PATH			"EngineSound"
 #define	ENGINE_SEQUENCE_PATH			"EngineSequence"
+#define	ENGINE_OBJECT_PATH			"EngineObject"
 
 #define	ROOT_PATH				"Root"
 #define	SHADER_PATH			"Shader"
@@ -75,6 +76,7 @@
 #define	SCENE_PATH				"Scene"
 #define	SOUND_PATH				"Sound"
 #define	SEQUENCE_PATH		"Sequence"
+#define	OBJECT_PATH		"Object"
 
 // Candy Crush¿ë
 #define CANDY_ANIMATION_PATH "CandyAnimation"
