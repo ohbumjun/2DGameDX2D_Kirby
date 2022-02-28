@@ -20,7 +20,7 @@ private :
 	class CIMGUITextInput* m_TileFrameStartY;
 	class CIMGUITextInput* m_TileFrameEndX;
 	class CIMGUITextInput* m_TileFrameEndY;
-private :
+private : // Sprite
 	class CIMGUIImage* m_TextureImageSprite;
 	class CIMGUIImage* m_TileImageSprite;
 private :
@@ -33,6 +33,9 @@ private :
 	// Material을 기본적으로 세팅해두고 --> 불러온 Texture만 바꿔끼는 개념을 사용할 것이다.
 	class CIMGUIButton* m_BackMaterialButton;
 	class CIMGUIButton* m_BackImageLoadButton;
+private: // Back Material Size
+	class CIMGUITextInput* m_BackWorldScaleX;
+	class CIMGUITextInput* m_BackWorldScaleY;
 private :
 	class CTileMapComponent* m_TileMap;
 	Tile_EditMode m_EditMode;
@@ -58,7 +61,7 @@ private :
 	void TileMapSaveButton();
 	void TileMapLoadButton();
 private :
-	void CreateBackMaterial();
 	void BackGroundImageLoadButton();
+	void SetBackGroundWorldScale();
 };
 

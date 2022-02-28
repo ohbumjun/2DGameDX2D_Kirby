@@ -334,15 +334,30 @@ bool CTileMapWindow::Init()
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Set BackMaterial", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Back Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
+	/*
 	m_BackMaterialButton = AddWidget<CIMGUIButton>("Set Mtrl", 80.f, 30.f);
 	m_BackMaterialButton->SetClickCallback(this, &CTileMapWindow::CreateBackMaterial);
+	*/
+
+	m_BackWorldScaleX = AddWidget<CIMGUITextInput>("X");
+	m_BackWorldScaleX->SetSize(80.f, 40.f);
+	m_BackWorldScaleX->SetInt(100);
+	m_BackWorldScaleX->SetTextType(ImGuiText_Type::Float);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(230.f);
+
+	m_BackWorldScaleY = AddWidget<CIMGUITextInput>("Y");
+	m_BackWorldScaleY->SetSize(80.f, 40.f);
+	m_BackWorldScaleY->SetInt(100);
+	m_BackWorldScaleY->SetTextType(ImGuiText_Type::Float);
 
 	// ==============================
 
@@ -366,7 +381,10 @@ bool CTileMapWindow::Init()
 	m_TileFrameStartX->SetFloat(160.f);
 	m_TileFrameStartY->SetFloat(80.f);
 	m_TileFrameEndX->SetFloat(320.f);
-	m_TileFrameEndY->SetFloat(160.f); //
+	m_TileFrameEndY->SetFloat(160.f);
+
+	m_BackWorldScaleX->SetFloat(0.f);
+	m_BackWorldScaleY->SetFloat(0.f);
 
 	return true;
 }
@@ -649,6 +667,7 @@ void CTileMapWindow::TileMapLoadButton()
 	}
 }
 
+/*
 void CTileMapWindow::CreateBackMaterial()
 {
 	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
@@ -665,6 +684,7 @@ void CTileMapWindow::CreateBackMaterial()
 
 	BackMaterial->SetShader("Mesh2DShader");
 }
+*/
 
 void CTileMapWindow::BackGroundImageLoadButton()
 {
@@ -715,15 +735,23 @@ void CTileMapWindow::BackGroundImageLoadButton()
 
 			m_TileMap->SetWorldScale((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
 				(float)m_TileMap->GetBackMaterial()->GetTextureHeight(), 1.f);
+
+			m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
+			m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
 		}
 		else
 		{
 			m_TileMap->GetBackMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 
-
 			m_TileMap->SetWorldScale((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
 				(float)m_TileMap->GetBackMaterial()->GetTextureHeight(), 1.f);
+
+			m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
+			m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
 		}
 	}
 }
+
+void CTileMapWindow::SetBackGroundWorldScale()
+{}
 
