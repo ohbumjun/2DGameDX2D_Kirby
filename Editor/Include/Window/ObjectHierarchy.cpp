@@ -27,22 +27,22 @@ bool CObjectHierarchy::Init()
 {
 	CIMGUIWindow::Init();
 
-	CIMGUILabel* Label = AddWidget<CIMGUILabel>("ObjectList", 300.f, 30.f);
+	CIMGUILabel* Label = AddWidget<CIMGUILabel>("ObjectList", 200.f, 30.f);
 	Label->SetColor(0, 0, 255);
 
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 
-	Label = AddWidget<CIMGUILabel>("ComponentList", 300.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("ComponentList", 200.f, 30.f);
 	Label->SetColor(0, 0, 255);
 
-	m_ObjectListBox = AddWidget<CIMGUIListBox>("ObjectList", 300.f, 500.f);
+	m_ObjectListBox = AddWidget<CIMGUIListBox>("ObjectList", 200.f, 400.f);
 	m_ObjectListBox->SetHideName(true);
 	m_ObjectListBox->SetPageItemCount(20);
 	m_ObjectListBox->SetSelectCallback(this, &CObjectHierarchy::SelectObject);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_ComponentListBox = AddWidget<CIMGUIListBox>("ComponentList", 300.f, 500.f);
+	m_ComponentListBox = AddWidget<CIMGUIListBox>("ComponentList", 200.f, 400.f);
 	m_ComponentListBox->SetHideName(true);
 	m_ComponentListBox->SetPageItemCount(20);
 	m_ComponentListBox->SetSelectCallback(this, &CObjectHierarchy::SelectComponent);

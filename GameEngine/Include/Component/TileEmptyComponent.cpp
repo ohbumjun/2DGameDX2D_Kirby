@@ -499,7 +499,6 @@ CTileEmptyComponent* CTileEmptyComponent::Clone()
 
 void CTileEmptyComponent::Save(FILE* File)
 {
-	CSceneComponent::Save(File);
 
 	// Back Mesh
 	std::string BackMeshName = m_BackMesh->GetName();
@@ -526,14 +525,14 @@ void CTileEmptyComponent::Save(FILE* File)
 	int TileMeshNameLength = (int)TileMeshName.length();
 
 	fwrite(&TileMeshNameLength, sizeof(int), 1, File);
-	fwrite(TileMeshName.c_str(), sizeof(char), TileMeshNameLength, File);
+	fwrite(m_TileMesh->GetName().c_str(), sizeof(char), TileMeshNameLength, File);
 
 	std::string TileShaderName = m_TileShader->GetName();
 
 	int TileShaderNameLength = (int)TileShaderName.length();
 
-	fwrite(&TileShaderName, sizeof(int), 1, File);
-	fwrite(TileShaderName.c_str(), sizeof(char), TileShaderNameLength, File);
+	fwrite(&TileShaderNameLength, sizeof(int), 1, File);
+	fwrite(m_TileShader->GetName().c_str(), sizeof(char), TileShaderNameLength, File);
 
 	// Tile Empty
 
