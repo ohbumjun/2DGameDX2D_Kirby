@@ -24,6 +24,7 @@
 #include "Component/ParticleComponent.h"
 #include "Component/ColliderPixel.h"
 #include "Component/TileMapComponent.h"
+#include "Component/TileEmptyComponent.h"
 #include "Component/CameraComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Object/Player2D.h"
@@ -371,6 +372,14 @@ CComponent* CEditorManager::CreateComponent(CGameObject* Obj, const size_t Type)
 	if (Type == typeid(CTileMapComponent).hash_code())
 	{
 		CTileMapComponent* Component = Obj->LoadComponent<CTileMapComponent>();
+
+		Component->EnableEditMode(true);
+
+		return Component;
+	}
+	if (Type == typeid(CTileEmptyComponent).hash_code())
+	{
+		CTileEmptyComponent* Component = Obj->LoadComponent<CTileEmptyComponent>();
 
 		Component->EnableEditMode(true);
 

@@ -200,6 +200,8 @@ enum class Mouse_State {
 enum class Tile_Type {
 	Normal,
 	Wall,
+	Ceiling,
+	Water,
 	End
 };
 

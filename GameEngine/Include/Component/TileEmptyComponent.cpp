@@ -375,8 +375,15 @@ bool CTileEmptyComponent::Init()
 	if (!CSceneComponent::Init())
 		return false;
 
-	// Back
+	// Back Mesh
 	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
+
+	// Back Material
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
+
+	m_BackMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
+
+	m_BackMaterial->SetShader("Mesh2DShader");
 
 	// Tile
 	m_TileMesh = m_Scene->GetResource()->FindMesh("Box2D");
@@ -495,12 +502,12 @@ void CTileEmptyComponent::Save(FILE* File)
 	CSceneComponent::Save(File);
 
 	// Back Mesh
-	std::string MeshName = m_BackMesh->GetName();
+	std::string BackMeshName = m_BackMesh->GetName();
 
-	int Length = (int)MeshName.length();
+	int BackMeshNameLength = (int)BackMeshName.length();
 
-	fwrite(&Length, sizeof(int), 1, File);
-	fwrite(MeshName.c_str(), sizeof(int), 1, File);
+	fwrite(&BackMeshNameLength, sizeof(int), 1, File);
+	fwrite(BackMeshName.c_str(), sizeof(char), BackMeshNameLength, File);
 
 	// Back Material
 	bool MaterialEnable = false;
@@ -513,11 +520,115 @@ void CTileEmptyComponent::Save(FILE* File)
 	if (MaterialEnable)
 		m_BackMaterial->Save(File);
 
+	// Tile Mesh, Shader
+	std::string TileMeshName = m_TileMesh->GetName();
 
+	int TileMeshNameLength = (int)TileMeshName.length();
+
+	fwrite(&TileMeshNameLength, sizeof(int), 1, File);
+	fwrite(TileMeshName.c_str(), sizeof(char), TileMeshNameLength, File);
+
+	std::string TileShaderName = m_TileShader->GetName();
+
+	int TileShaderNameLength = (int)TileShaderName.length();
+
+	fwrite(&TileShaderName, sizeof(int), 1, File);
+	fwrite(TileShaderName.c_str(), sizeof(char), TileShaderNameLength, File);
+
+	// Tile Empty
+
+	fwrite(&m_CountX, sizeof(int), 1, File);
+	fwrite(&m_CountY, sizeof(int), 1, File);
+	fwrite(&m_Count, sizeof(int), 1, File);
+	fwrite(&m_TileEmptySize, sizeof(Vector3), 1, File);
+	fwrite(m_TileEmptyColor, sizeof(Vector4), (int)Tile_Type::End, File);
+
+	for (int i = 0; i < m_Count; i++)
+	{
+		m_vecTileEmpty[i]->Save(File);
+	}
+
+	CSceneComponent::Save(File);
 }
 
 void CTileEmptyComponent::Load(FILE* File)
 {
+	// Back Mesh
+	char	BackMeshName[256] = {};
+
+	int	Length = 0;
+
+	fread(&Length, sizeof(int), 1, File);
+	fread(BackMeshName, sizeof(char), Length, File);
+
+	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(BackMeshName);
+
+	// Back Material
+	SetMeshSize(1.f, 1.f, 0.f);
+
+	// BackMaterial
+	bool MaterialEnable = false;
+
+	fread(&MaterialEnable, sizeof(bool), 1, File);
+
+	if (MaterialEnable)
+	{
+		m_BackMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+		m_BackMaterial->Load(File);
+	}
+
+	// Tile Mesh, Shader
+	int TileMeshNameLength = -1;
+
+	char	TileMeshName[256] = {};
+
+	fread(&TileMeshNameLength, sizeof(int), 1, File);
+	fread(TileMeshName, sizeof(char), TileMeshNameLength, File);
+
+	m_TileMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(TileMeshName);
+
+	int TileShaderNameLength = -1;
+
+	char	TileShaderName[256] = {};
+
+	fread(&TileShaderNameLength, sizeof(int), 1, File);
+	fread(TileShaderName, sizeof(char), TileShaderNameLength, File);
+
+	m_TileShader = m_Scene->GetResource()->FindShader(TileShaderName);
+
+	// Tile Empty
+	fread(&m_CountX, sizeof(int), 1, File);
+	fread(&m_CountY, sizeof(int), 1, File);
+	fread(&m_Count, sizeof(int), 1, File);
+	fread(&m_TileEmptySize, sizeof(Vector3), 1, File);
+	fread(m_TileEmptyColor, sizeof(Vector4), (int)Tile_Type::End, File);
+
+	size_t Size = m_vecTileEmpty.size();
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		SAFE_DELETE(m_vecTileEmpty[i]);
+	}
+
+	// Tile 비워주고
+	m_vecTileEmpty.clear();
+
+	// 실제 Tile 들을 배치하기 위한 resize
+	m_vecTileEmpty.resize(m_Count);
+
+	for (int i = 0; i < m_Count; i++)
+	{
+		CTileEmpty* Tile = new CTileEmpty;
+
+		Tile->SetOwner(this);
+
+		Tile->Load(File);
+
+		m_vecTileEmpty[i] = Tile;
+	}
+
+	SetWorldInfo();
+
 	CSceneComponent::Load(File);
 }
 

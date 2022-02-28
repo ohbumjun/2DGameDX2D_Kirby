@@ -90,7 +90,8 @@ enum class CreateComponent_Type
 	ColliderCircle,
 	ColliderPixel,
 	Camera,
-	TileMap
+	// TileMap
+	TileEmpty
 };
 
 enum Collision_Channel
@@ -200,6 +201,8 @@ enum class Mouse_State {
 enum class Tile_Type {
 	Normal,
 	Wall,
+	Ceiling,
+	Water,
 	End
 };
 

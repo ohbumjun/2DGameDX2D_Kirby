@@ -13,6 +13,7 @@
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Component/TileMapComponent.h"
+#include "Component/TileEmptyComponent.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
 #include "Component/ColliderCircle.h"
@@ -109,14 +110,6 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t Type)
 
 CComponent* CClientManager::CreateComponent(CGameObject* Obj, size_t Type)
 {
-	size_t ComponentTypeId1 = typeid(CSceneComponent).hash_code();
-	size_t ComponentTypeId2 = typeid(CStaticMeshComponent).hash_code();
-	size_t ComponentTypeId3 = typeid(CSpriteComponent).hash_code();
-	size_t ComponentTypeId4 = typeid(CColliderBox2D).hash_code();
-	size_t ComponentTypeId5 = typeid(CWidgetComponent).hash_code();
-	size_t ComponentTypeId6 = typeid(CCameraComponent).hash_code();
-	size_t ComponentTypeId7 = typeid(CNavAgent).hash_code();
-	size_t ComponentTypeId8 = typeid(CTileMapComponent).hash_code();
 
 	if (Type == typeid(CSceneComponent).hash_code())
 	{
@@ -175,6 +168,14 @@ CComponent* CClientManager::CreateComponent(CGameObject* Obj, size_t Type)
 	if (Type == typeid(CTileMapComponent).hash_code())
 	{
 		CTileMapComponent* Component = Obj->LoadComponent<CTileMapComponent>();
+
+		Component->EnableEditMode(true);
+
+		return Component;
+	}
+	if (Type == typeid(CTileEmptyComponent).hash_code())
+	{
+		CTileEmptyComponent* Component = Obj->LoadComponent<CTileEmptyComponent>();
 
 		Component->EnableEditMode(true);
 

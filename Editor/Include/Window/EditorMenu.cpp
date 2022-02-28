@@ -65,7 +65,8 @@ bool CEditorMenu::Init()
 	m_ComponentComboBox->AddItem("ColliderCircle");
 	m_ComponentComboBox->AddItem("ColliderPixel");
 	m_ComponentComboBox->AddItem("CameraComponent");
-	m_ComponentComboBox->AddItem("TileMapComponent");
+	m_ComponentComboBox->AddItem("TileEmptyComponent");
+	// m_ComponentComboBox->AddItem("TileMapComponent");
 	m_ComponentComboBox->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -231,11 +232,14 @@ void CEditorMenu::CreateNewComponent()
 		Object->CreateComponent<CCameraComponent>(m_ComponentNameInput->GetTextMultibyte());
 	}
 	break;
-	case CreateComponent_Type::TileMap:
+	case CreateComponent_Type::TileEmpty:
 	{
+		/*
 		CTileMapComponent* TileMapComponent = (CTileMapComponent*)Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
 		CMaterial* TileMapMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileMapMaterial");
 		TileMapComponent->SetTileMaterial(TileMapMaterial);
+		*/
+		Object->CreateComponent<CTileEmptyComponent>(m_ComponentNameInput->GetTextMultibyte());
 	}
 	break;
 

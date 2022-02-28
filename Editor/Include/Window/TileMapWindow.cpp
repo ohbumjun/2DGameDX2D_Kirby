@@ -61,16 +61,20 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	// 2) BackMaterial 세팅 
 	std::string BackMaterialName = TileMap->GetBackMaterial()->GetName();
 
-	// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
-	// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
-	m_BackWorldScaleX->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
-	// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
-	m_BackWorldScaleY->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
+	if (!m_TileMapEmpty->GetBackMaterial()->EmptyTexture())
+	{
+		// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
+		// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
+		m_BackWorldScaleX->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
+		// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
+		m_BackWorldScaleY->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
 
-	m_BackImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
-	m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
-	m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
-		(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
+		m_BackImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
+		m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
+		m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
+	}
+
 }
 
 bool CTileMapWindow::Init()
@@ -192,7 +196,10 @@ bool CTileMapWindow::Init()
 	m_TileType->AddItem("Wall");
 	m_TileType->AddItem("Ceiling");
 	m_TileType->AddItem("Water");
-	// m_TileType->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileTypeCallback);
+	m_TileType->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileTypeCallback);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 
 	// ==============================
 	/*
@@ -299,7 +306,7 @@ bool CTileMapWindow::Init()
 	*/
 
 	// ==============================
-
+	/*
 	Label = AddWidget<CIMGUILabel>("TextureImg", 195.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
@@ -310,6 +317,7 @@ bool CTileMapWindow::Init()
 	Label = AddWidget<CIMGUILabel>("TileImage", 195.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
+	*/
 
 	// ==============================
 	/*
@@ -322,11 +330,13 @@ bool CTileMapWindow::Init()
 	*/
 	// ==============================
 
+	/*
 	Button = AddWidget<CIMGUIButton>("SetDefaultFrame", 200.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetDefaultFrame);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
+	*/
 
 	// ==============================
 
@@ -626,6 +636,9 @@ void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 	// TileMapWindow 내에서 Tile 의 어떤 Mode를 수정할지를 세팅
 	// m_EditMode = (Tile_EditMode)Index;
 }
+
+void CTileMapWindow::SetTileTypeCallback(int Index, const char* Name)
+{}
 
 /*
 void CTileMapWindow::TileMapSaveButton()
