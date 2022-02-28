@@ -39,6 +39,21 @@ void CTileMapWindow::SetTileMap(CTileMapComponent* TileMap)
 		sprintf_s(TextureHeight, "%.1f", TileTextureHeight);
 		m_TextureHeight->SetText(TextureHeight);
 	}
+
+	// Texture Sprite 에 세팅하기
+	m_TextureImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
+
+	// Frame 정보가 있다면, TileImageSprite 도 세팅한다
+	if (!m_TileFrameStartX->FloatEmpty())
+	{
+		m_TileImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
+
+		m_TileImageSprite->SetImageStart(Vector2(m_TileFrameStartX->GetValueFloat(), 
+			m_TileFrameStartY->GetValueFloat()));
+
+		m_TileImageSprite->SetImageEnd(Vector2(m_TileFrameEndX->GetValueFloat(), 
+			m_TileFrameEndY->GetValueFloat()));
+	}
 }
 
 bool CTileMapWindow::Init()
@@ -135,6 +150,8 @@ bool CTileMapWindow::Init()
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("CreateTileMap", 200.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::CreateTile);
 
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("TileEditInfo", 400.f, 30.f);
@@ -225,7 +242,7 @@ bool CTileMapWindow::Init()
 	m_TileFrameStartY->SetInt(100);
 	m_TileFrameStartY->SetHideName(true);
 	m_TileFrameStartY->SetTextType(ImGuiText_Type::Float);
-
+	
 	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("FrameEndX", 100.f, 30.f);
@@ -256,6 +273,29 @@ bool CTileMapWindow::Init()
 	m_TileFrameEndY->SetInt(100);
 	m_TileFrameEndY->SetHideName(true);
 	m_TileFrameEndY->SetTextType(ImGuiText_Type::Float);
+	
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("TextureImg", 195.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Label = AddWidget<CIMGUILabel>("TileImage", 195.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ==============================
+
+	m_TextureImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	m_TileImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
+
 
 	// ==============================
 
@@ -407,6 +447,10 @@ void CTileMapWindow::CreateTile()
 		}
 		break;
 	}
+
+	// Sprite Image에 세팅하기m_TextureImageSprite;
+	m_TextureImageSprite->SetTexture(Texture);
+	// class CIMGUIImage* m_TileImageSprite;
 
 	CMaterial* Material = m_TileMap->GetTileMaterial();
 

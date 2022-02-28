@@ -10,8 +10,8 @@ CIMGUITextInput::CIMGUITextInput() :
 	m_MultiLine(false),
 	m_Flag(0),
 	m_TextType(ImGuiText_Type::String),
-	m_ValueInt(0),
-	m_ValueFloat(0.f)
+	m_ValueInt(INT_MAX),
+	m_ValueFloat(FLT_MAX)
 {
 }
 

@@ -21,6 +21,9 @@ private :
 	class CIMGUITextInput* m_TileFrameEndX;
 	class CIMGUITextInput* m_TileFrameEndY;
 private :
+	class CIMGUIImage* m_TextureImageSprite;
+	class CIMGUIImage* m_TileImageSprite;
+private :
 	class CIMGUIText* m_TextureWidth;
 	class CIMGUIText* m_TextureHeight;
 private :

@@ -139,6 +139,16 @@ public:
 		return strlen(m_Text) == 0;
 	}
 
+	bool FloatEmpty () const
+	{
+		return m_ValueFloat == FLT_MAX;
+	}
+
+	bool IntEmpty() const
+	{
+		return m_ValueInt == INT_MAX;
+	}
+
 public:
 	virtual bool Init() override;
 	virtual void Render() override;
