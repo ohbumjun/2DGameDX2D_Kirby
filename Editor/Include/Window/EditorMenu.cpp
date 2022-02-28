@@ -427,7 +427,6 @@ void CEditorMenu::LoadObject()
 {
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	// todo : 중복 방지 ?
 
 	TCHAR LoadFilePath[MAX_PATH] = {};
 
@@ -441,12 +440,73 @@ void CEditorMenu::LoadObject()
 
 	if (GetOpenFileName(&OpenFile) != 0)
 	{
-		/*
 		char FilePathMultibyte[MAX_PATH] = {};
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<>()
+		CGameObject* LoadedObject = CSceneManager::GetInst()->GetScene()->LoadGameObject<CGameObject>();
+
+		LoadedObject->LoadFullPath(FilePathMultibyte);
+
+		// 중복 방지 
+		if (Hierarchy->GetObjectListBox()->CheckItem(LoadedObject->GetName()))
+		{
+			SAFE_DELETE(LoadedObject);
+			return;
+		}
+
+		// 이미 TileMapComponent에 해당하는 녀석을 Load 해놓은 상태 + 지금 불러온 녀석이 TileMap 용 Object 라면
+		int ObjectNumbers = Hierarchy->GetObjectListBox()->GetItemCount();
+
+		for (int i = 0; i < ObjectNumbers; i++)
+		{
+			std::string ObjectName = Hierarchy->GetObjectListBox()->GetItem(i);
+
+			CGameObject* CheckObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
+
+			if (CheckObject->GetRootComponent()->CheckType<CTileMapComponent>())
+			{
+				SAFE_DELETE(LoadedObject);
+				return;
+			}
+		}
+
+		// 만일 TileMapComponent를 Load 했다면 
+		if (LoadedObject->GetRootComponent()->CheckType<CTileMapComponent>())
+		{
+			// 1) Edit mode 수정
+			CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+			// 2) TileMap Window 에 TileMapComponent 지정하기
+			CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)LoadedObject->GetRootComponent());
+		};
+
+		// Object Name List에 추가한다
+		Hierarchy->GetObjectListBox()->AddItem(LoadedObject->GetName());
+
+		// 화면에 Scene Edit Object를 만든다
+		CEditorManager::GetInst()->SetSceneEditObject();
+
+		// 가장 처음 녀석의 Component 들을 세팅해둔다.
+		Hierarchy->GetObjectListBox()->SetSelectIndex(Hierarchy->GetObjectListBox()->GetItemCount() - 1);
+
+		// 현재 선택된 Component의 위치로 세팅한다.
+		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
+
+		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
+		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
+
+		Vector3 ObjectPivot = SelectedObject->GetPivot();
+		Vector3 ObjectSize = SelectedObject->GetWorldScale();
+		Vector3 ObjectPos = SelectedObject->GetWorldPos();
+		Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
+
+		Vector2 StartPos = Vector2(Pos.x, Pos.y);
+		Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
+
+		ShowObject->SetStartPos(StartPos);
+		ShowObject->SetEndPos(EndPos);
+
+		/*
 
 		// 1) 만약 해당 Component 가 TileMapComponent 라면, Edit Mode 를 Tile 로 바꿔준다.
 		std::list<CSharedPtr<CGameObject>> ObjLists = CSceneManager::GetInst()->GetScene()->GetObjectLists();

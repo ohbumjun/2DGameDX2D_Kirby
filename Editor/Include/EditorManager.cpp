@@ -20,6 +20,8 @@
 #include "Component/WidgetComponent.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/ColliderCircle.h"
+#include "Component/PaperBurnComponent.h"
+#include "Component/ParticleComponent.h"
 #include "Component/ColliderPixel.h"
 #include "Component/TileMapComponent.h"
 #include "Component/CameraComponent.h"
@@ -310,51 +312,86 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	return nullptr;
 }
 
-CComponent* CEditorManager::CreateComponent(CGameObject* Object, const size_t ComponentTypeID)
+CComponent* CEditorManager::CreateComponent(CGameObject* Obj, const size_t Type)
 {
-	if (ComponentTypeID == typeid(CSceneComponent).hash_code())
+	if (Type == typeid(CSceneComponent).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CSceneComponent>();
+		CSceneComponent* Component = Obj->LoadComponent<CSceneComponent>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CSpriteComponent).hash_code())
+	if (Type == typeid(CStaticMeshComponent).hash_code())
 	{
-		CComponent* Component =  Object->LoadComponent<CSpriteComponent>();
+		CStaticMeshComponent* Component = Obj->LoadComponent<CStaticMeshComponent>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CStaticMeshComponent).hash_code())
+	if (Type == typeid(CSpriteComponent).hash_code())
 	{
-		CComponent* Component =  Object->LoadComponent<CStaticMeshComponent>();
+		CSpriteComponent* Component = Obj->LoadComponent<CSpriteComponent>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CWidgetComponent).hash_code())
+	if (Type == typeid(CColliderBox2D).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CWidgetComponent>();
+		CColliderBox2D* Component = Obj->LoadComponent<CColliderBox2D>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CColliderBox2D).hash_code())
+	if (Type == typeid(CColliderCircle).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CColliderBox2D>();
+		CColliderCircle* Component = Obj->LoadComponent<CColliderCircle>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CColliderCircle).hash_code())
+	if (Type == typeid(CColliderPixel).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CColliderCircle>();
+		CColliderPixel* Component = Obj->LoadComponent<CColliderPixel>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CColliderPixel).hash_code())
+	if (Type == typeid(CWidgetComponent).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CColliderPixel>();
+		CWidgetComponent* Component = Obj->LoadComponent<CWidgetComponent>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CCameraComponent).hash_code())
+	if (Type == typeid(CCameraComponent).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CCameraComponent>();
+		CCameraComponent* Component = Obj->LoadComponent<CCameraComponent>();
+
 		return Component;
 	}
-	else if (ComponentTypeID == typeid(CTileMapComponent).hash_code())
+	if (Type == typeid(CNavAgent).hash_code())
 	{
-		CComponent* Component = Object->LoadComponent<CTileMapComponent>();
+		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
+
+		return Component;
+	}
+	if (Type == typeid(CTileMapComponent).hash_code())
+	{
+		CTileMapComponent* Component = Obj->LoadComponent<CTileMapComponent>();
+
+		Component->EnableEditMode(true);
+
+		return Component;
+	}
+	if (Type == typeid(CParticleComponent).hash_code())
+	{
+		CParticleComponent* Component = Obj->LoadComponent<CParticleComponent>();
+
+		return Component;
+	}
+	if (Type == typeid(CPaperBurnComponent).hash_code())
+	{
+		CPaperBurnComponent* Component = Obj->LoadComponent<CPaperBurnComponent>();
+
+		return Component;
+	}
+	if (Type == typeid(CNavAgent).hash_code())
+	{
+		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
+
 		return Component;
 	}
 	return nullptr;
@@ -362,8 +399,12 @@ CComponent* CEditorManager::CreateComponent(CGameObject* Object, const size_t Co
 
 void CEditorManager::CreateAnimationInstance(CSpriteComponent* Component, const size_t AnimationTypeID)
 {
+	/*
 	if (AnimationTypeID == typeid(CAnimationSequence2DInstance).hash_code())
 	{
 		Component->LoadAnimationInstance<CAnimationSequence2DInstance>();
 	}
+	*/
+
+	Component->LoadAnimationInstance<CAnimationSequence2DInstance>();
 }

@@ -317,9 +317,10 @@ void CGameObject::Load(FILE* pFile)
 	bool Root = false;
 	fread(&Root, sizeof(bool), 1, pFile);
 
-	size_t TypeID;
+	
 	if (Root)
 	{
+		size_t TypeID;
 		fread(&TypeID, sizeof(size_t), 1, pFile);
 		CSceneManager::GetInst()->CallCreateComponentFunc(this, TypeID);
 		m_RootComponent->Load(pFile);
@@ -331,6 +332,7 @@ void CGameObject::Load(FILE* pFile)
 
 	for (int i = 0; i < ObjectCount; i++)
 	{
+		size_t TypeID;
 		fread(&TypeID, sizeof(size_t), 1, pFile);
 		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(this, TypeID);
 		Component->Load(pFile);
