@@ -651,6 +651,9 @@
     <ClInclude Include="Component\TileEmptyComponent.h">
       <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\Shader\TileMapEmptyShader.h">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\07. Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1028,6 +1031,9 @@
     <ClCompile Include="Component\TileEmptyComponent.cpp">
       <Filter>05. Component\01. SceneComponent\06. TileMap</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Shader\TileMapEmptyShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass\07. Tile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\Shader\ShaderInfo.fx">
@@ -1051,7 +1057,7 @@
     <FxCompile Include="..\Bin\Shader\TileMap.fx">
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="TileMapEmpty.fx">
+    <FxCompile Include="..\Bin\Shader\TileMapEmpty.fx">
       <Filter>02. Resource\02. Shader\01. HLSL</Filter>
     </FxCompile>
   </ItemGroup>
