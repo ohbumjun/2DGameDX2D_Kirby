@@ -448,6 +448,7 @@ void CEditorMenu::LoadObject()
 
 		LoadedObject->LoadFullPath(FilePathMultibyte);
 
+
 		// 중복 방지 
 		if (Hierarchy->GetObjectListBox()->CheckItem(LoadedObject->GetName()))
 		{
@@ -471,14 +472,17 @@ void CEditorMenu::LoadObject()
 			}
 		}
 
-		// 만일 TileMapComponent를 Load 했다면 
-		if (LoadedObject->GetRootComponent()->CheckType<CTileMapComponent>())
+		// 만일 TileMapComponent를 Load 했다면
+		if (LoadedObject->GetRootComponent())
 		{
-			// 1) Edit mode 수정
-			CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
-			// 2) TileMap Window 에 TileMapComponent 지정하기
-			CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)LoadedObject->GetRootComponent());
-		};
+			if (LoadedObject->GetRootComponent()->CheckType<CTileMapComponent>())
+			{
+				// 1) Edit mode 수정
+				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+				// 2) TileMap Window 에 TileMapComponent 지정하기
+				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)LoadedObject->GetRootComponent());
+			};
+		}
 
 		// Object Name List에 추가한다
 		Hierarchy->GetObjectListBox()->AddItem(LoadedObject->GetName());

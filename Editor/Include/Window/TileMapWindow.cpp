@@ -354,7 +354,7 @@ bool CTileMapWindow::Init()
 	Line->SetOffsetX(120.f);
 
 	m_BackImageLoadButton = AddWidget<CIMGUIButton>("Load BG", 80.f, 30.f);
-	m_BackImageLoadButton->SetClickCallback(this, &CTileMapWindow::TileMapSaveButton);
+	m_BackImageLoadButton->SetClickCallback(this, &CTileMapWindow::BackGroundImageLoadButton);
 
 
 	// Default Value 들 세팅
@@ -518,6 +518,21 @@ void CTileMapWindow::CreateTile()
 	sprintf_s(TextureHeight, "%.1f", TileTextureHeight);
 	m_TextureHeight->SetText(TextureWidth);
 
+	// Default Frame 세팅하기
+	if (!m_TileFrameStartX->FloatEmpty())
+	{
+		float StartFrameX = m_TileFrameStartX->GetValueFloat();
+		float StartFrameY = m_TileFrameStartY->GetValueFloat();
+
+		float EndFrameX = m_TileFrameEndX->GetValueFloat();
+		float EndFrameY = m_TileFrameEndY->GetValueFloat();
+
+		if (StartFrameX < 0.f || StartFrameY < 0.f || EndFrameX < 0.f || EndFrameY < 0.f)
+			return;
+
+		m_TileMap->SetTileDefaultFrame(StartFrameX, StartFrameY, EndFrameX, EndFrameY);
+	}
+
 }
 
 void CTileMapWindow::SetDefaultFrame()
@@ -636,6 +651,9 @@ void CTileMapWindow::TileMapLoadButton()
 
 void CTileMapWindow::CreateBackMaterial()
 {
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
+		return;
+
 	// Back Material 이라는 이름이 이미 만들어져 있는지 확인하기
 	if (CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial"))
 		return;
@@ -650,6 +668,9 @@ void CTileMapWindow::CreateBackMaterial()
 
 void CTileMapWindow::BackGroundImageLoadButton()
 {
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
+		return;
+
 	TCHAR FilePath[MAX_PATH] = {};
 
 	OPENFILENAME OpenFile = {};
@@ -663,30 +684,45 @@ void CTileMapWindow::BackGroundImageLoadButton()
 
 	if (GetOpenFileName(&OpenFile) != 0)
 	{
-		char FileFullPath[MAX_PATH] = {};
-		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, FileFullPath, ConvertLength, 0, 0);
+		// File 이름 뽑아내기
+		TCHAR FileName[MAX_PATH] = {};
+
+		_wsplitpath_s(FilePath, nullptr, 0, nullptr, 0, FileName, MAX_PATH, nullptr, 0);
+
+		char ConvertFileName[MAX_PATH] = {};
+
+		int  Length = WideCharToMultiByte(CP_ACP, 0, FileName, -1, nullptr, 0, nullptr, nullptr);
+
+		WideCharToMultiByte(CP_ACP, 0, FileName, -1, ConvertFileName, Length, nullptr, nullptr);
 
 		// FullPath 먼저 만들기
-		CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
 
 		// BackMaterial 이 만들어져 있지 않다면, 만든다.
-		if (!BackMaterial)
+		if (!m_TileMap->GetBackMaterial())
 		{
 			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
 
 			CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
 
 			BackMaterial->SetShader("Mesh2DShader");
+
+			m_TileMap->SetBackMaterial(BackMaterial);
 		}
 
-		if (BackMaterial->EmptyTexture())
+		if (m_TileMap->GetBackMaterial()->EmptyTexture())
 		{
-			BackMaterial->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, "SampleBack", FilePath);
+			m_TileMap->GetBackMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+
+			m_TileMap->SetWorldScale((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
+				(float)m_TileMap->GetBackMaterial()->GetTextureHeight(), 1.f);
 		}
 		else
 		{
-			BackMaterial->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, "SampleBack", FilePath);
+			m_TileMap->GetBackMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+
+
+			m_TileMap->SetWorldScale((float)m_TileMap->GetBackMaterial()->GetTextureWidth(),
+				(float)m_TileMap->GetBackMaterial()->GetTextureHeight(), 1.f);
 		}
 	}
 }

@@ -83,9 +83,11 @@ void CTileMapComponent::SetBackMaterial(CMaterial* Material)
 
 	m_BackMaterial->SetScene(m_Scene);
 
-	float Width = (float)m_BackMaterial->GetTextureWidth();
-	float Height = (float)m_BackMaterial->GetTextureHeight();
-	SetWorldScale(Width, Height, 1.f);
+	if (!m_BackMaterial->EmptyTexture())
+	{
+		SetWorldScale((float)m_BackMaterial->GetTextureWidth(), 
+			(float)m_BackMaterial->GetTextureHeight(), 1.f);
+	}
 }
 
 void CTileMapComponent::SetTileMaterial(CMaterial* Material)
