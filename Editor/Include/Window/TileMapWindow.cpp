@@ -38,22 +38,23 @@ void CTileMapWindow::SetTileMap(CTileMapComponent* TileMap)
 		char TextureHeight[MAX_PATH] = {};
 		sprintf_s(TextureHeight, "%.1f", TileTextureHeight);
 		m_TextureHeight->SetText(TextureHeight);
+
+		// Texture Sprite 에 세팅하기
+		m_TextureImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
+
+		// Frame 정보가 있다면, TileImageSprite 도 세팅한다
+		if (!m_TileFrameStartX->FloatEmpty())
+		{
+			m_TileImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
+
+			m_TileImageSprite->SetImageStart(Vector2(m_TileFrameStartX->GetValueFloat(), 
+				m_TileFrameStartY->GetValueFloat()));
+
+			m_TileImageSprite->SetImageEnd(Vector2(m_TileFrameEndX->GetValueFloat(), 
+				m_TileFrameEndY->GetValueFloat()));
+		}
 	}
 
-	// Texture Sprite 에 세팅하기
-	m_TextureImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
-
-	// Frame 정보가 있다면, TileImageSprite 도 세팅한다
-	if (!m_TileFrameStartX->FloatEmpty())
-	{
-		m_TileImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
-
-		m_TileImageSprite->SetImageStart(Vector2(m_TileFrameStartX->GetValueFloat(), 
-			m_TileFrameStartY->GetValueFloat()));
-
-		m_TileImageSprite->SetImageEnd(Vector2(m_TileFrameEndX->GetValueFloat(), 
-			m_TileFrameEndY->GetValueFloat()));
-	}
 }
 
 bool CTileMapWindow::Init()
@@ -491,6 +492,14 @@ void CTileMapWindow::SetDefaultFrame()
 		return;
 
 	m_TileMap->SetTileDefaultFrame(StartFrameX, StartFrameY, EndFrameX, EndFrameY);
+
+	// TileImage Sprite 세팅하기
+	m_TileImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
+
+	m_TileImageSprite->SetImageStart(Vector2(StartFrameX, StartFrameY));
+
+	m_TileImageSprite->SetImageEnd(Vector2(EndFrameX, EndFrameY));
+
 }
 
 void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
