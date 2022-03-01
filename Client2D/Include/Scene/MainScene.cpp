@@ -43,7 +43,6 @@ bool CMainScene::Init()
 	CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
 	Player->LoadByFileName("TestPlayer.gobj", OBJECT_PATH);
 
-
 	SetPlayerObject(Player);
 
 	if (m_LoadingFunction)
@@ -51,6 +50,7 @@ bool CMainScene::Init()
 
 	// Sleep(1000); ////
 
+	/*
 	CBeamMonster* BeamMonster = m_Scene->CreateGameObject<CBeamMonster>("BeamMonster");
 	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
 
@@ -62,6 +62,7 @@ bool CMainScene::Init()
 
 	CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
 	NormalBear->SetWorldPos(Vector3(-200.f, 700.f, 1.));
+	*/
 
 	/*
 	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
@@ -76,7 +77,7 @@ bool CMainScene::Init()
 	// Sleep(1000);
 
 	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
-	BubbleParticle->SetRelativePos(0.f, 200.f, 0.f);
+	BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
 	/*
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 
@@ -94,7 +95,6 @@ bool CMainScene::Init()
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 	BubbleParticle->SetRelativePos(-300.f, 0.f, 0.f);
 	*/
-
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
 	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
@@ -105,9 +105,11 @@ bool CMainScene::Init()
 	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
 	TileMapEmpty->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
+	TileMapEmpty->SetEditMode(true);
+	TileMapEmpty->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
 
 	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
-	// SetTileMapEmptyObject(TileMapEmpty);
+	SetTileMapEmptyObject(TileMapEmpty);
 
 	return true;
 }

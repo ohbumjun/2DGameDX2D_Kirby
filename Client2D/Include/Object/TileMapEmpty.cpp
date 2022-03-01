@@ -69,4 +69,6 @@ void CTileMapEmpty::Save(FILE* pFile)
 void CTileMapEmpty::Load(FILE* pFile)
 {
 	CGameObject::Load(pFile);
+
+	m_TileEmptyComponent = (CTileEmptyComponent*)m_RootComponent.Get();
 }

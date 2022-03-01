@@ -13,6 +13,11 @@ private:
 	virtual ~CTileMapEmpty();
 private:
 	CSharedPtr<CTileEmptyComponent> m_TileEmptyComponent;
+public :
+	void SetEditMode(bool Enable)
+{
+		m_TileEmptyComponent->SetEditMode(Enable);
+}
 public:
 	virtual void         Start();
 	virtual bool         Init();

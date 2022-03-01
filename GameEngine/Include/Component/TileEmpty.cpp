@@ -24,11 +24,12 @@ void CTileEmpty::Start()
 
 void CTileEmpty::Update(float DeltaTime)
 {
+	// m_Pos 는 상대적인 Position에 해당한다.
 	m_Center = m_Pos + (m_Size) * 0.5f;
 
 	// Vector3 Pos = m_Center + m_Owner->GetWorldPos();
 	// Vector3 Pos = m_Pos + m_Owner->GetWorldPos();
-	Vector3 Pos = (m_Pos + (m_Size) * 0.5f) + m_Owner->GetWorldPos();
+	Vector3 Pos = m_Center + m_Owner->GetWorldPos();
 
 	Vector3 OwnerPos = m_Owner->GetWorldPos();
 
@@ -39,6 +40,15 @@ void CTileEmpty::Update(float DeltaTime)
 	matTranslate.Translation(Pos);
 
 	m_matWorld = matScale * matTranslate;
+}
+
+const Vector3& CTileEmpty::GetWorldPos() const
+{
+	Vector3 OwnerWorldPos = m_Owner->GetWorldPos();
+	Vector3 FinalCenterPos = m_Center + m_Owner->GetWorldPos();
+	Vector3 FinalPos = m_Pos + m_Owner->GetWorldPos();
+
+	return m_Pos + m_Owner->GetWorldPos();
 }
 
 void CTileEmpty::Save(FILE* File)

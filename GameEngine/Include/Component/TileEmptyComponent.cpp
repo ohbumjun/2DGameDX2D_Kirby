@@ -322,9 +322,9 @@ int CTileEmptyComponent::GetTileEmptyIndexX(const Vector3& Pos)
 	return IndexX;
 }
 
-int CTileEmptyComponent::GetTileEmptyIndexX(float PosX)
+int CTileEmptyComponent::GetTileEmptyIndexX(float WorldPosX)
 {
-	float ConvertX = PosX - GetWorldPos().x;
+	float ConvertX = WorldPosX - GetWorldPos().x;
 
 	int IndexX = (int)(ConvertX / m_TileEmptySize.x);
 
@@ -334,9 +334,9 @@ int CTileEmptyComponent::GetTileEmptyIndexX(float PosX)
 	return IndexX;
 }
 
-int CTileEmptyComponent::GetTileEmptyIndexY(float PosY)
+int CTileEmptyComponent::GetTileEmptyIndexY(float WorldPosY)
 {
-	float ConvertY = PosY - GetWorldPos().y;
+	float ConvertY = WorldPosY - GetWorldPos().y;
 
 	int IndexY = (int)(ConvertY / m_TileEmptySize.y);
 
@@ -383,6 +383,8 @@ CTileEmpty* CTileEmptyComponent::GetTileEmpty(int x, int y)
 {
 	if (x < 0 || x >= m_CountX || y < 0 || y >= m_CountY)
 		return nullptr;
+
+	int ConvertIdx = y * m_CountX + x;
 
 	return m_vecTileEmpty[y * m_CountX + x];
 }

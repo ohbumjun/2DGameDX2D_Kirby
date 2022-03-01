@@ -25,9 +25,9 @@ private:
 	bool m_Change;
 public :
 	std::list<CSharedPtr<CGameObject>> GetObjectLists() const
-{
+	{
 		return m_ObjList;
-}
+	}
 	void SetPlayerObject(CGameObject* Object)
 {
 		m_Mode->SetPlayerObject(Object);
@@ -58,6 +58,14 @@ public:
 	{
 		return m_Mode->GetPlayerObject();
 	}
+	CGameObject* GetTileMapEmptyObject() const
+	{
+		return m_Mode->GetTileMapEmpty();
+	}
+	class CTileEmptyComponent* GetTileEmptyComponent() const
+	{
+		return m_Mode->GetTileEmptyComponent();
+	}
 private :
 	void ClearGameObjects();
 	void DeleteGameObject(const std::string& Name);
@@ -81,7 +89,7 @@ public:
 
 		m_Mode->m_Scene = this;
 
-		return (T*)*m_Mode;
+		return (T*) * m_Mode;
 	}
 
 	template <typename T>

@@ -36,7 +36,10 @@ public:
 	{
 		return m_Pos;
 	}
-	const Matrix& GetWorldMatrix()	const
+
+	const Vector3& GetWorldPos() const;
+
+	const Matrix&  GetWorldMatrix()	const
 	{
 		return m_matWorld;
 	}

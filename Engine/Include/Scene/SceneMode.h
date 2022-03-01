@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Ref.h"
+#include "../GameObject/GameObject.h"
 
 class CSceneMode :
 	public CRef
@@ -28,6 +29,11 @@ public:
 	class CGameObject* GetTileMapEmpty() const
 	{
 		return m_TileMapEmptyObject;
+	}
+
+	class CTileEmptyComponent* GetTileEmptyComponent () const
+	{
+		return (CTileEmptyComponent*)m_TileMapEmptyObject->GetRootComponent();
 	}
 
 public:

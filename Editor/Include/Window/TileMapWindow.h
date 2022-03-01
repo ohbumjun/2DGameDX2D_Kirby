@@ -8,6 +8,11 @@ class CTileMapWindow :
 public:
 	CTileMapWindow();
 	virtual ~CTileMapWindow() override;
+private : // World Info
+	class CIMGUIText* m_WorldSizeX;
+	class CIMGUIText* m_WorldSizeY;
+	class CIMGUITextInput* m_WorldSizeXInput;
+	class CIMGUITextInput* m_WorldSizeYInput;
 private :
 	// class CIMGUIComboBox* m_TileShapeCombo;
 	class CIMGUITextInput*   m_TileCountX;
@@ -16,10 +21,10 @@ private :
 	class CIMGUITextInput*   m_TileSizeY;
 	class CIMGUIComboBox* m_TileType;
 private :
-	class CIMGUITextInput* m_CurrentTileCountX;
-	class CIMGUITextInput* m_CurrentTileCountY;
-	class CIMGUITextInput* m_CurrentTileSizeX;
-	class CIMGUITextInput* m_CurrentTileSizeY;
+	class CIMGUIText* m_CurrentTileCountX;
+	class CIMGUIText* m_CurrentTileCountY;
+	class CIMGUIText* m_CurrentTileSizeX;
+	class CIMGUIText* m_CurrentTileSizeY;
 	/*
 	class CIMGUIComboBox* m_TileEdit;
 	class CIMGUITextInput* m_TileFrameStartX;

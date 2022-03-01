@@ -29,6 +29,11 @@ private :
 	void CheckBottomCollision();
 	void CheckCeilingCollision();
 	void CheckSideCollision();
+public :
+	void SetPhysicsSimulate(bool Physics)
+	{
+		m_PhysicsSimulate = Physics;
+	}
 public:
 	virtual void         Start() override;
 	virtual bool         Init() override;

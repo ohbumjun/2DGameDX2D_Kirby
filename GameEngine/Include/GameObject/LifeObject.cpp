@@ -6,8 +6,10 @@
 
 CLifeObject::CLifeObject():
 	m_MoveSpeed(200.f),
+	// m_PhysicsSimulate(true),
+	// m_IsGround(true),
 	m_PhysicsSimulate(true),
-	m_IsGround(true),
+	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
 	m_Jump(false),
@@ -46,7 +48,8 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 			Velocity = m_JumpVelocity * m_FallTime;
 
 		// 내려간 거리
-		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
+		// m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
+		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * 0.1f;
 
 		// 최대 낙하 속도를 조절한다.
 		if (Velocity - m_FallVelocity < m_FallVelocityMax * -1.f)
@@ -64,7 +67,7 @@ void CLifeObject::CheckBottomCollision()
 {
 	Vector3 m_Pos = GetWorldPos();
 
-	if (m_PhysicsSimulate && m_Pos.y - m_PrevPos.y >= 0.f)
+	if (m_PhysicsSimulate && m_Pos.y - m_PrevPos.y <= 0.f)
 	{
 		CTileEmptyComponent* TileMap =  m_Scene->GetTileEmptyComponent();
 
@@ -90,11 +93,18 @@ void CLifeObject::CheckBottomCollision()
 		// 해당 위치의 Tile을 구해온다.
 		int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
 
-		LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
-		RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
+		Vector3 LB = Vector3(ResultLeft, ResultBottom,0.f);
+		Vector3 RT = LB + Vector3(ResultRight, ResultTop,0.f);
 
-		TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
-		BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
+		// LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
+		LeftIdx = TileMap->GetTileEmptyIndexX(LB);
+		// RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
+		RightIdx = TileMap->GetTileEmptyIndexX(LB);
+
+		// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
+		TopIdx = TileMap->GetTileEmptyIndexX(RT);
+		// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
+		BottomIdx = TileMap->GetTileEmptyIndexX(RT);
 
 		if (LeftIdx < 0)
 			LeftIdx = 0;
@@ -118,8 +128,8 @@ void CLifeObject::CheckBottomCollision()
 				// 이전 위치의 Bottom이, 타일의 Top 보다 클 경우 무시한다
 				// 즉, 내가 점프하는데, 그 위에 Tile이 존재하는 것
 				// 바닥 체크는 내려갈 때만 체크하기 위함이다.
-				if (TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
-					continue;
+				// if (TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
+				//	continue;
 
 				// 못가는 곳이라면. 즉, 바닥에 닿는 다면
 				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall)
@@ -133,8 +143,12 @@ void CLifeObject::CheckBottomCollision()
 					m_Jump = false;
 					// m_JumpAccelAccTime = 0.f;
 
+					Vector3 CurrentPos = m_Pos;
+
+					Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos() +TileSize;
+
 					// 위치 정보 세팅
-					SetWorldPos(TileMap->GetTileEmpty(col, row)->GetPos());
+					SetWorldPos(m_Pos.x, TilePos.y, m_Pos.z);
 
 					break;
 				}
@@ -169,6 +183,8 @@ void CLifeObject::CheckSideCollision()
 void CLifeObject::Start()
 {
 	CGameObject::Start();
+
+	m_FallStartY = GetWorldPos().y;
 }
 
 bool CLifeObject::Init()
@@ -184,11 +200,15 @@ void CLifeObject::Update(float DeltaTime)
 	CGameObject::Update(DeltaTime);
 
 	UpdateWhileOffGround(DeltaTime);
+
+	CheckBottomCollision();
 }
 
 void CLifeObject::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
+
+	m_PrevPos = GetWorldPos();
 }
 
 void CLifeObject::PrevRender()
@@ -205,5 +225,4 @@ void CLifeObject::PostRender()
 {
 	CGameObject::PostRender();
 
-	m_PrevPos = GetWorldPos();
 }
