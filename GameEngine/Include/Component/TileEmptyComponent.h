@@ -16,10 +16,10 @@ protected:
     CTileEmptyComponent();
     CTileEmptyComponent(const CTileEmptyComponent& Component);
     virtual ~CTileEmptyComponent();
-
 protected:
-    CSharedPtr<CSpriteMesh> m_BackMesh;
-    CSharedPtr<CMaterial> m_BackMaterial;
+    CSharedPtr<CSpriteMesh> m_ImageMesh;
+    CSharedPtr<CMaterial> m_TileImageMaterial;
+    CSharedPtr<CMaterial> m_BackGroundMaterial;
 protected:
     CSharedPtr<CShader> m_TileShader;
     CSharedPtr<CMesh> m_TileMesh;
@@ -45,9 +45,13 @@ public:
     {
         return m_TileEmptySize;
     }
-    CMaterial* GetBackMaterial()    const
+    CMaterial* GetTileImageMaterial()    const
     {
-        return m_BackMaterial;
+        return m_TileImageMaterial;
+    }
+    CMaterial* GetBackGroundMaterial()    const
+    {
+        return m_BackGroundMaterial;
     }
     int GetTileCountX() const
     {
@@ -70,24 +74,43 @@ public :
     {
         m_EditMode = Enable;
     }
+public : // BackGround Image
+    void SetBackGroundMaterial(CMaterial* Material);
+    void SetBackGroundBaseColor(const Vector4& Color);
+    void SetBackGroundBaseColor(float r, float g, float b, float a);
+    void SetBackGroundRenderState(class CRenderState* State);
+    void SetBackGroundRenderState(const std::string& Name);
+    void SetBackGroundTransparency(bool Enable);
+    void SetBackGroundOpacity(float Opacity);
+    void AddBackGroundOpacity(float Opacity);
 public:
-    void SetBackMaterial(CMaterial* Material); 
-    void SetBackBaseColor(const Vector4& Color);
-    void SetBackBaseColor(float r, float g, float b, float a);
-    void SetBackRenderState(class CRenderState* State);
-    void SetBackRenderState(const std::string& Name);
-    void SetBackTransparency(bool Enable);
-    void SetBackOpacity(float Opacity);
-    void AddBackOpacity(float Opacity);
+    void AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+    void AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
+    void AddBackGroundTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+    void AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+    void SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+    void SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
+    void SetBackGroundTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+    void SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+
+public: // Tile Image
+    void SetTileImageMaterial(CMaterial* Material); 
+    void SetTileImageBaseColor(const Vector4& Color);
+    void SetTileImageBaseColor(float r, float g, float b, float a);
+    void SetTileImageRenderState(class CRenderState* State);
+    void SetTileImageRenderState(const std::string& Name);
+    void SetTileImageTransparency(bool Enable);
+    void SetTileImageOpacity(float Opacity);
+    void AddTileImageOpacity(float Opacity);
 public:
-    void AddBackTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void AddBackTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void AddBackTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void AddBackTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
-    void SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void SetBackTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+    void AddTileImageTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+    void AddTileImageTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
+    void AddTileImageTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+    void AddTileImageTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
+    void SetTileImageTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
+    void SetTileImageTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
+    void SetTileImageTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
+    void SetTileImageTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
 public :
     void CreateTileEmpty(int CountX, int CountY, const Vector3& Size);
 public :

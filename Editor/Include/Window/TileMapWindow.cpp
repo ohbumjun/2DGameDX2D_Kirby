@@ -311,6 +311,8 @@ bool CTileMapWindow::Init()
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 	
 	// ==============================
 
@@ -509,6 +511,19 @@ bool CTileMapWindow::Init()
 	// Tile Base Input 세팅
 	m_TileBaseScaleXInput->SetFloat(0.f);
 	m_TileBaseScaleYInput->SetFloat(0.f);
+
+	// BackGround Image Info 세팅 
+	char BackSizeX[MAX_PATH] = {};
+	sprintf_s(BackSizeX, "%.1f", 0.f);
+	m_BackImgScaleX->SetText(BackSizeX);
+
+	char BackSizeY[MAX_PATH] = {};
+	sprintf_s(BackSizeY, "%.1f", 80.f);
+	m_BackImgScaleY->SetText(BackSizeY);
+
+	// Tile Base Input 세팅
+	m_BaseImgScaleXInput->SetFloat(0.f);
+	m_BaseImgScaleYInput->SetFloat(0.f);
 
 	return true;
 }

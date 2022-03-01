@@ -39,10 +39,10 @@ CTileEmptyComponent::CTileEmptyComponent()
 
 CTileEmptyComponent::CTileEmptyComponent(const CTileEmptyComponent& Component)
 {
-	m_BackMesh = Component.m_BackMesh;
+	m_ImageMesh = Component.m_ImageMesh;
 
-	if (Component.m_BackMaterial)
-		m_BackMaterial = Component.m_BackMaterial->Clone();
+	if (Component.m_TileImageMaterial)
+		m_TileImageMaterial = Component.m_TileImageMaterial->Clone();
 
 	if (Component.m_TileInfoBuffer)
 		m_TileInfoBuffer = Component.m_TileInfoBuffer->Clone();
@@ -74,144 +74,287 @@ CTileEmptyComponent::~CTileEmptyComponent()
 	m_vecTileEmpty.clear();
 }
 
-void CTileEmptyComponent::SetBackMaterial(CMaterial* Material)
+void CTileEmptyComponent::SetBackGroundMaterial(CMaterial* Material)
 {
-	m_BackMaterial = Material->Clone();
+	m_BackGroundMaterial = Material->Clone();
 
-	m_BackMaterial->SetScene(m_Scene);
+	m_BackGroundMaterial->SetScene(m_Scene);
 
-	if (!m_BackMaterial->EmptyTexture())
+	/*
+	if (!m_TileImageMaterial->EmptyTexture())
 	{
-		SetWorldScale((float)m_BackMaterial->GetTextureWidth(),
-			(float)m_BackMaterial->GetTextureHeight(), 1.f);
+		SetWorldScale((float)m_TileImageMaterial->GetTextureWidth(),
+			(float)m_TileImageMaterial->GetTextureHeight(), 1.f);
 	}
+	*/
 }
 
-void CTileEmptyComponent::SetBackBaseColor(const Vector4& Color)
+void CTileEmptyComponent::SetBackGroundBaseColor(const Vector4& Color)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetBaseColor(Color);
+	m_BackGroundMaterial->SetBaseColor(Color);
 }
 
-void CTileEmptyComponent::SetBackBaseColor(float r, float g, float b, float a)
+void CTileEmptyComponent::SetBackGroundBaseColor(float r, float g, float b, float a)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetBaseColor(r, g, b, a);
+	m_BackGroundMaterial->SetBaseColor(r, g, b, a);
 }
 
-void CTileEmptyComponent::SetBackRenderState(CRenderState* State)
+void CTileEmptyComponent::SetBackGroundRenderState(CRenderState* State)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetRenderState(State);
+	m_BackGroundMaterial->SetRenderState(State);
 }
 
-void CTileEmptyComponent::SetBackRenderState(const std::string& Name)
+void CTileEmptyComponent::SetBackGroundRenderState(const std::string& Name)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetRenderState(Name);
+	m_BackGroundMaterial->SetRenderState(Name);
 }
 
-void CTileEmptyComponent::SetBackTransparency(bool Enable)
+void CTileEmptyComponent::SetBackGroundTransparency(bool Enable)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetTransparency(Enable);
+	m_BackGroundMaterial->SetTransparency(Enable);
 }
 
-void CTileEmptyComponent::SetBackOpacity(float Opacity)
+void CTileEmptyComponent::SetBackGroundOpacity(float Opacity)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetOpacity(Opacity);
+	m_BackGroundMaterial->SetOpacity(Opacity);
 }
 
-void CTileEmptyComponent::AddBackOpacity(float Opacity)
+void CTileEmptyComponent::AddBackGroundOpacity(float Opacity)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->AddOpacity(Opacity);
+	m_BackGroundMaterial->AddOpacity(Opacity);
 }
 
-void CTileEmptyComponent::AddBackTexture(int Register, int ShaderType, const std::string& Name, CTexture* Texture)
+void CTileEmptyComponent::AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, CTexture* Texture)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->AddTexture(Register, ShaderType, Name, Texture);
+	m_BackGroundMaterial->AddTexture(Register, ShaderType, Name, Texture);
 }
 
-void CTileEmptyComponent::AddBackTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
-	const std::string& PathName)
-{
-	if (!m_BackMaterial)
-		return;
-
-	m_BackMaterial->AddTexture(Register, ShaderType, Name, FileName, PathName);
-}
-
-void CTileEmptyComponent::AddBackTextureFullPath(int Register, int ShaderType, const std::string& Name,
-	const TCHAR* FullPath)
-{
-	if (!m_BackMaterial)
-		return;
-
-	m_BackMaterial->AddTextureFullPath(Register, ShaderType, Name, FullPath);
-}
-
-void CTileEmptyComponent::AddBackTexture(int Register, int ShaderType, const std::string& Name,
-	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
-{
-	if (!m_BackMaterial)
-		return;
-
-	m_BackMaterial->AddTexture(Register, ShaderType, Name, vecFileName, PathName);
-}
-
-void CTileEmptyComponent::SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name,
-	CTexture* Texture)
-{
-	if (!m_BackMaterial)
-		return;
-
-	m_BackMaterial->SetTexture(Index, Register, ShaderType, Name, Texture);
-}
-
-void CTileEmptyComponent::SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name,
+void CTileEmptyComponent::AddBackGroundTexture(int Register, int ShaderType, const std::string& Name,
 	const TCHAR* FileName, const std::string& PathName)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetTexture(Index, Register, ShaderType, Name, FileName, PathName);
+	m_BackGroundMaterial->AddTexture(Register, ShaderType, Name, FileName, PathName);
 }
 
-void CTileEmptyComponent::SetBackTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name,
+void CTileEmptyComponent::AddBackGroundTextureFullPath(int Register, int ShaderType, const std::string& Name,
 	const TCHAR* FullPath)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetTextureFullPath(Index, Register, ShaderType, Name, FullPath);
+	m_BackGroundMaterial->AddTextureFullPath(Register, ShaderType, Name, FullPath);
 }
 
-void CTileEmptyComponent::SetBackTexture(int Index, int Register, int ShaderType, const std::string& Name,
+void CTileEmptyComponent::AddBackGroundTexture(int Register, int ShaderType, const std::string& Name,
 	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
 {
-	if (!m_BackMaterial)
+	if (!m_BackGroundMaterial)
 		return;
 
-	m_BackMaterial->SetTexture(Index, Register, ShaderType, Name, vecFileName, PathName);
+	m_BackGroundMaterial->AddTexture(Register, ShaderType, Name, vecFileName, PathName);
+}
+
+void CTileEmptyComponent::SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name,
+	CTexture* Texture)
+{
+	if (!m_BackGroundMaterial)
+		return;
+
+	m_BackGroundMaterial->SetTexture(Index, Register, ShaderType, Name, Texture);
+}
+
+void CTileEmptyComponent::SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name,
+	const TCHAR* FileName, const std::string& PathName)
+{
+	if (!m_BackGroundMaterial)
+		return;
+
+	m_BackGroundMaterial->SetTexture(Index, Register, ShaderType, Name, FileName, PathName);
+}
+
+void CTileEmptyComponent::SetBackGroundTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name,
+	const TCHAR* FullPath)
+{
+	if (!m_BackGroundMaterial)
+		return;
+
+	m_BackGroundMaterial->SetTextureFullPath(Index, Register, ShaderType, Name, FullPath);
+}
+
+void CTileEmptyComponent::SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name,
+	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+{
+	if (!m_BackGroundMaterial)
+		return;
+
+	m_BackGroundMaterial->SetTexture(Index, Register, ShaderType, Name, vecFileName, PathName);
+}
+
+void CTileEmptyComponent::SetTileImageMaterial(CMaterial* Material)
+{
+	m_TileImageMaterial = Material->Clone();
+
+	m_TileImageMaterial->SetScene(m_Scene);
+	/*
+	if (!m_TileImageMaterial->EmptyTexture())
+	{
+		SetWorldScale((float)m_TileImageMaterial->GetTextureWidth(),
+			(float)m_TileImageMaterial->GetTextureHeight(), 1.f);
+	}
+	*/
+}
+
+void CTileEmptyComponent::SetTileImageBaseColor(const Vector4& Color)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetBaseColor(Color);
+}
+
+void CTileEmptyComponent::SetTileImageBaseColor(float r, float g, float b, float a)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetBaseColor(r, g, b, a);
+}
+
+void CTileEmptyComponent::SetTileImageRenderState(CRenderState* State)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetRenderState(State);
+}
+
+void CTileEmptyComponent::SetTileImageRenderState(const std::string& Name)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetRenderState(Name);
+}
+
+void CTileEmptyComponent::SetTileImageTransparency(bool Enable)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetTransparency(Enable);
+}
+
+void CTileEmptyComponent::SetTileImageOpacity(float Opacity)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetOpacity(Opacity);
+}
+
+void CTileEmptyComponent::AddTileImageOpacity(float Opacity)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->AddOpacity(Opacity);
+}
+
+void CTileEmptyComponent::AddTileImageTexture(int Register, int ShaderType, const std::string& Name, CTexture* Texture)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->AddTexture(Register, ShaderType, Name, Texture);
+}
+
+void CTileEmptyComponent::AddTileImageTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName,
+	const std::string& PathName)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->AddTexture(Register, ShaderType, Name, FileName, PathName);
+}
+
+void CTileEmptyComponent::AddTileImageTextureFullPath(int Register, int ShaderType, const std::string& Name,
+	const TCHAR* FullPath)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->AddTextureFullPath(Register, ShaderType, Name, FullPath);
+}
+
+void CTileEmptyComponent::AddTileImageTexture(int Register, int ShaderType, const std::string& Name,
+	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->AddTexture(Register, ShaderType, Name, vecFileName, PathName);
+}
+
+void CTileEmptyComponent::SetTileImageTexture(int Index, int Register, int ShaderType, const std::string& Name,
+	CTexture* Texture)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetTexture(Index, Register, ShaderType, Name, Texture);
+}
+
+void CTileEmptyComponent::SetTileImageTexture(int Index, int Register, int ShaderType, const std::string& Name,
+	const TCHAR* FileName, const std::string& PathName)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetTexture(Index, Register, ShaderType, Name, FileName, PathName);
+}
+
+void CTileEmptyComponent::SetTileImageTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name,
+	const TCHAR* FullPath)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetTextureFullPath(Index, Register, ShaderType, Name, FullPath);
+}
+
+void CTileEmptyComponent::SetTileImageTexture(int Index, int Register, int ShaderType, const std::string& Name,
+	const std::vector<TCHAR*>& vecFileName, const std::string& PathName)
+{
+	if (!m_TileImageMaterial)
+		return;
+
+	m_TileImageMaterial->SetTexture(Index, Register, ShaderType, Name, vecFileName, PathName);
 }
 
 void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3& Size)
@@ -437,14 +580,14 @@ bool CTileEmptyComponent::Init()
 		return false;
 
 	// Back Mesh
-	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
+	m_ImageMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
 
 	// Back Material
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
 
-	m_BackMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
+	m_TileImageMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
 
-	m_BackMaterial->SetShader("Mesh2DShader");
+	m_TileImageMaterial->SetShader("Mesh2DShader");
 
 	// Tile
 	m_TileMesh = m_Scene->GetResource()->FindMesh("Box2D");
@@ -530,13 +673,13 @@ void CTileEmptyComponent::Render()
 {
 	CSceneComponent::Render();
 
-	if (m_BackMaterial)
+	if (m_TileImageMaterial)
 	{
-		m_BackMaterial->Render();
+		m_TileImageMaterial->Render();
 
-		m_BackMesh->Render();
+		m_ImageMesh->Render();
 
-		m_BackMaterial->Reset();
+		m_TileImageMaterial->Reset();
 	}
 
 	if (!m_vecTileEmpty.empty())
@@ -565,7 +708,7 @@ void CTileEmptyComponent::Save(FILE* File)
 {
 
 	// Back Mesh
-	std::string BackMeshName = m_BackMesh->GetName();
+	std::string BackMeshName = m_ImageMesh->GetName();
 
 	int BackMeshNameLength = (int)BackMeshName.length();
 
@@ -575,13 +718,13 @@ void CTileEmptyComponent::Save(FILE* File)
 	// Back Material
 	bool MaterialEnable = false;
 
-	if (m_BackMaterial)
+	if (m_TileImageMaterial)
 		MaterialEnable = true;
 
 	fwrite(&MaterialEnable, sizeof(bool), 1, File);
 
 	if (MaterialEnable)
-		m_BackMaterial->Save(File);
+		m_TileImageMaterial->Save(File);
 
 	// Tile Mesh, Shader
 	std::string TileMeshName = m_TileMesh->GetName();
@@ -624,7 +767,7 @@ void CTileEmptyComponent::Load(FILE* File)
 	fread(&Length, sizeof(int), 1, File);
 	fread(BackMeshName, sizeof(char), Length, File);
 
-	m_BackMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(BackMeshName);
+	m_ImageMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(BackMeshName);
 
 	// Back Material
 	SetMeshSize(1.f, 1.f, 0.f);
@@ -636,8 +779,8 @@ void CTileEmptyComponent::Load(FILE* File)
 
 	if (MaterialEnable)
 	{
-		m_BackMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
-		m_BackMaterial->Load(File);
+		m_TileImageMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+		m_TileImageMaterial->Load(File);
 	}
 
 	// Tile Mesh, Shader
