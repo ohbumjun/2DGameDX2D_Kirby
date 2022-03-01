@@ -106,6 +106,9 @@ bool CMainScene::Init()
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
 	TileMapEmpty->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
 
+	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
+	// SetTileMapEmptyObject(TileMapEmpty);
+
 	return true;
 }
 

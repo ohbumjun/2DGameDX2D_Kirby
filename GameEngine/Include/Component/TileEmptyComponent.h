@@ -96,7 +96,9 @@ public :
     void SetTileDefaultSize(float x, float y);
 public:
     int GetTileEmptyIndexX(const Vector3& Pos);
+    int GetTileEmptyIndexX(float PosX);
     int GetTileEmptyIndexY(const Vector3& Pos);
+    int GetTileEmptyIndexY(float PosY);
     int GetTileEmptyIndex(const Vector3& Pos);
     CTileEmpty* GetTileEmpty(const Vector3& Pos);
     CTileEmpty* GetTileEmpty(int x, int y);

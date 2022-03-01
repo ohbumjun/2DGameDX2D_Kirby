@@ -26,6 +26,9 @@ protected:
 	float m_JumpAccelAccTime;
 private :
 	void UpdateWhileOffGround(float DeltaTime);
+	void CheckBottomCollision();
+	void CheckCeilingCollision();
+	void CheckSideCollision();
 public:
 	virtual void         Start() override;
 	virtual bool         Init() override;
@@ -34,6 +37,5 @@ public:
 	virtual void         PrevRender() override;
 	virtual void         Render() override;
 	virtual void         PostRender() override;
-	virtual CLifeObject* Clone() override;
 };
 

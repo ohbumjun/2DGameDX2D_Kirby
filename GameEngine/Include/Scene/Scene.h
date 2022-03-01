@@ -54,6 +54,14 @@ public:
 	{
 		return m_Mode->GetPlayerObject();
 	}
+	CGameObject* GetTileMapEmptyObject() const
+	{
+		return m_Mode->GetTileMapEmpty();
+	}
+	class CTileEmptyComponent* GetTileEmptyComponent() const
+	{
+		return m_Mode->GetTileEmptyComponent();
+	}
 private :
 	void ClearGameObjects();
 	void DeleteGameObject(const std::string& Name);

@@ -17,6 +17,11 @@ void CSceneMode::SetPlayerObject(CGameObject* Obj)
 	m_PlayerObject = Obj;
 }
 
+void CSceneMode::SetTileMapEmptyObject(CGameObject* Obj)
+{
+	m_TileMapEmptyObject = Obj;
+}
+
 void CSceneMode::Start()
 {
 }
