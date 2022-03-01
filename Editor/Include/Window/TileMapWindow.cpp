@@ -83,13 +83,13 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	{
 		// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
 		// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
-		m_BackWorldScaleX->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
+		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
 		// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
-		m_BackWorldScaleY->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
+		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
 
-		m_BackImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
-		m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
+		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
+		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
+		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
 			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
 
 	}
@@ -154,35 +154,17 @@ bool CTileMapWindow::Init()
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("TileMapInfo", 400.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Tile Info", 400.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	// ==============================
-
-	/*
-	Label = AddWidget<CIMGUILabel>("TileMapShape", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(120.f);
-
-	m_TileShapeCombo = AddWidget<CIMGUIComboBox>("TileShape", 100.f, 50.f);
-	m_TileShapeCombo->SetHideName(true);
-	m_TileShapeCombo->AddItem("사각형");
-	m_TileShapeCombo->AddItem("마름모");
-	*/
-	// ==============================
-
-
-	/*
-	m_BackMaterialButton = AddWidget<CIMGUIButton>("Set Mtrl", 80.f, 30.f);
-	m_BackMaterialButton->SetClickCallback(this, &CTileMapWindow::CreateBackMaterial);
-	*/
+	
 
 	Label = AddWidget<CIMGUILabel>("Current Count", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
@@ -296,14 +278,17 @@ bool CTileMapWindow::Init()
 	Line->SetOffsetX(210.f);
 
 	Button = AddWidget<CIMGUIButton>("ResizeTileMapToBack", 200.f, 30.f);
-	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileMapSizeToBackGroundImage);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileMapSizeToTileBaseImage);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("TileEditInfo", 400.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Tile Base Info", 400.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -326,147 +311,92 @@ bool CTileMapWindow::Init()
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
-
-	// ==============================
-	/*
-	Label = AddWidget<CIMGUILabel>("TileEdit", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(120.f);
-
-	m_TileEdit = AddWidget<CIMGUIComboBox>("TileEditMode", 120.f, 50.f);
-	m_TileEdit->SetHideName(true);
-	m_TileEdit->AddItem("Type");
-	m_TileEdit->AddItem("Frame");
-	m_TileEdit->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetEditModeCallback);
-
-	Label = AddWidget<CIMGUILabel>("TextureWidth", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(120.f);
-
-	m_TextureWidth = AddWidget<CIMGUIText>("TextureWidth");
-	m_TextureWidth->SetSize(80.f, 40.f);
-	m_TextureWidth->SetHideName(true);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(210.f);
-
-	Label = AddWidget<CIMGUILabel>("TextureHeight", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(320.f);
-
-	m_TextureHeight = AddWidget<CIMGUIText>("TextureHeight");
-	m_TextureHeight->SetSize(80.f, 40.f);
-	m_TextureHeight->SetHideName(true);
-	*/
-
-	// ==============================
-	/*
-	Label = AddWidget<CIMGUILabel>("FrameStartX", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(120.f);
-
-	m_TileFrameStartX = AddWidget<CIMGUITextInput>("FrameStartX");
-	m_TileFrameStartX->SetSize(80.f, 40.f);
-	m_TileFrameStartX->SetInt(100);
-	m_TileFrameStartX->SetHideName(true);
-	m_TileFrameStartX->SetTextType(ImGuiText_Type::Float);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(210.f);
-
-	Label = AddWidget<CIMGUILabel>("FrameStartY", 100.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(320.f);
-
-	m_TileFrameStartY = AddWidget<CIMGUITextInput>("FrameStartY");
-	m_TileFrameStartY->SetSize(80.f, 40.f);
-	m_TileFrameStartY->SetInt(100);
-	m_TileFrameStartY->SetHideName(true);
-	m_TileFrameStartY->SetTextType(ImGuiText_Type::Float);
 	
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("FrameEndX", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Tile Image Info", 400.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Tile Img", 195.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Label = AddWidget<CIMGUILabel>("Tile Img Load", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ==============================
+
+	m_TileBaseImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	m_TileImageLoadButton = AddWidget<CIMGUIButton>("Load Tile Img", 100.f, 30.f);
+	m_TileImageLoadButton->SetClickCallback(this, &CTileMapWindow::TileBaseImageLoadButton);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Current Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileFrameEndX = AddWidget<CIMGUITextInput>("FrameEndX");
-	m_TileFrameEndX->SetSize(80.f, 40.f);
-	m_TileFrameEndX->SetInt(100);
-	m_TileFrameEndX->SetHideName(true);
-	m_TileFrameEndX->SetTextType(ImGuiText_Type::Float);
+	m_TileBaseScaleX = AddWidget<CIMGUIText>("X");
+	m_TileBaseScaleX->SetSize(80.f, 40.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(210.f);
+	Line->SetOffsetX(230.f);
 
-	Label = AddWidget<CIMGUILabel>("FrameEndY", 100.f, 30.f);
+	m_TileBaseScaleY = AddWidget<CIMGUIText>("X");
+	m_TileBaseScaleY->SetSize(80.f, 40.f);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Set Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(320.f);
+	Line->SetOffsetX(120.f);
 
-	m_TileFrameEndY = AddWidget<CIMGUITextInput>("FrameEndY");
-	m_TileFrameEndY->SetSize(80.f, 40.f);
-	m_TileFrameEndY->SetInt(100);
-	m_TileFrameEndY->SetHideName(true);
-	m_TileFrameEndY->SetTextType(ImGuiText_Type::Float);
-	*/
-
-	// ==============================
-	/*
-	Label = AddWidget<CIMGUILabel>("TextureImg", 195.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
+	m_TileBaseScaleXInput = AddWidget<CIMGUITextInput>("X");
+	m_TileBaseScaleXInput->SetSize(80.f, 40.f);
+	m_TileBaseScaleXInput->SetInt(100);
+	m_TileBaseScaleXInput->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(210.f);
+	Line->SetOffsetX(230.f);
 
-	Label = AddWidget<CIMGUILabel>("TileImage", 195.f, 30.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-	*/
-
-	// ==============================
-	/*
-	m_TextureImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
+	m_TileBaseScaleYInput = AddWidget<CIMGUITextInput>("Y");
+	m_TileBaseScaleYInput->SetSize(80.f, 40.f);
+	m_TileBaseScaleYInput->SetInt(100);
+	m_TileBaseScaleYInput->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(210.f);
+	Line->SetOffsetX(330.f);
 
-	m_TileImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
-	*/
-	// ==============================
-
-	/*
-	Button = AddWidget<CIMGUIButton>("SetDefaultFrame", 200.f, 30.f);
-	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetDefaultFrame);
+	Button = AddWidget<CIMGUIButton>("Set Scale", 80.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileBaseImageScale);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
-	*/
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 
 	// ==============================
+	// todo : 여기서 시작 
 
-	Label = AddWidget<CIMGUILabel>("BackGround Image Info", 400.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Back Image Info", 400.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -479,46 +409,59 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
 
-	Label = AddWidget<CIMGUILabel>("Texture Load", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Back Img Load", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	// ==============================
 
-	m_BackImageSprite = AddWidget<CIMGUIImage>("Edit Tile Image", 195.f, 195.f);
+	m_BackGroundImageSprite = AddWidget<CIMGUIImage>("BackGround Image", 195.f, 195.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
 
-	m_BackImageLoadButton = AddWidget<CIMGUIButton>("Load BG", 100.f, 30.f);
-	m_BackImageLoadButton->SetClickCallback(this, &CTileMapWindow::BackGroundImageLoadButton);
+	m_BackGroundImageLoadButton = AddWidget<CIMGUIButton>("Load Back Img", 100.f, 30.f);
+	m_BackGroundImageLoadButton->SetClickCallback(this, &CTileMapWindow::BackGroundImageLoadButton);
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Back Scale", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Current Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	/*
-	m_BackMaterialButton = AddWidget<CIMGUIButton>("Set Mtrl", 80.f, 30.f);
-	m_BackMaterialButton->SetClickCallback(this, &CTileMapWindow::CreateBackMaterial);
-	*/
-
-	m_BackWorldScaleX = AddWidget<CIMGUITextInput>("X");
-	m_BackWorldScaleX->SetSize(80.f, 40.f);
-	m_BackWorldScaleX->SetInt(100);
-	m_BackWorldScaleX->SetTextType(ImGuiText_Type::Float);
+	m_BackImgScaleX = AddWidget<CIMGUIText>("X");
+	m_BackImgScaleX->SetSize(80.f, 40.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
 
-	m_BackWorldScaleY = AddWidget<CIMGUITextInput>("Y");
-	m_BackWorldScaleY->SetSize(80.f, 40.f);
-	m_BackWorldScaleY->SetInt(100);
-	m_BackWorldScaleY->SetTextType(ImGuiText_Type::Float);
+	m_BackImgScaleY = AddWidget<CIMGUIText>("X");
+	m_BackImgScaleY->SetSize(80.f, 40.f);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Set Scale", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_BaseImgScaleXInput = AddWidget<CIMGUITextInput>("X");
+	m_BaseImgScaleXInput->SetSize(80.f, 40.f);
+	m_BaseImgScaleXInput->SetInt(100);
+	m_BaseImgScaleXInput->SetTextType(ImGuiText_Type::Float);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(230.f);
+
+	m_BaseImgScaleYInput = AddWidget<CIMGUITextInput>("Y");
+	m_BaseImgScaleYInput->SetSize(80.f, 40.f);
+	m_BaseImgScaleYInput->SetInt(100);
+	m_BaseImgScaleYInput->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(330.f);
@@ -526,7 +469,10 @@ bool CTileMapWindow::Init()
 	Button = AddWidget<CIMGUIButton>("Set Scale", 80.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetBackGroundImageScale);
 
-	// ==============================
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+
+	// =============================================
 
 	// Default Value 들 세팅
 	m_TileCountX->SetInt(100);
@@ -534,6 +480,7 @@ bool CTileMapWindow::Init()
 	m_TileSizeX->SetFloat(160.f);
 	m_TileSizeY->SetFloat(80.f);
 
+	// Tile Count Info Display
 	char CurrentCountX[MAX_PATH] = {};
 	sprintf_s(CurrentCountX, "%.1d", 100);
 	m_CurrentTileCountX->SetText(CurrentCountX);
@@ -550,15 +497,18 @@ bool CTileMapWindow::Init()
 	sprintf_s(CurrentSizeY, "%.1f", 80.f);
 	m_CurrentTileSizeY->SetText(CurrentSizeY);
 
-	/*
-	m_TileFrameStartX->SetFloat(160.f);
-	m_TileFrameStartY->SetFloat(80.f);
-	m_TileFrameEndX->SetFloat(320.f);
-	m_TileFrameEndY->SetFloat(160.f);
-	*/
+	// Tile Base Info Display
+	char TileBaseSizeX[MAX_PATH] = {};
+	sprintf_s(TileBaseSizeX, "%.1f", 0.f);
+	m_TileBaseScaleX->SetText(TileBaseSizeX);
 
-	m_BackWorldScaleX->SetFloat(0.f);
-	m_BackWorldScaleY->SetFloat(0.f);
+	char TileBaseSizeY[MAX_PATH] = {};
+	sprintf_s(TileBaseSizeY, "%.1f", 80.f);
+	m_TileBaseScaleY->SetText(TileBaseSizeY);
+
+	// Tile Base Input 세팅
+	m_TileBaseScaleXInput->SetFloat(0.f);
+	m_TileBaseScaleYInput->SetFloat(0.f);
 
 	return true;
 }
@@ -590,52 +540,6 @@ void CTileMapWindow::Update(float DeltaTime)
 				return;
 
 			Tile->SetTileType((Tile_Type)TypeIndex);
-
-			/*
-			switch (m_TileMapEmpty)
-			{
-			case Tile_EditMode::Type :
-				{
-				int TypeIndex = m_TileType->GetSelectIndex();
-
-				if (TypeIndex < 0 || TypeIndex >= (int)Tile_Type::End)
-					return;
-
-				Tile->SetTileType((Tile_Type)TypeIndex);
-				
-				}
-				break;
-			case Tile_EditMode::Frame:
-			{
-				float FrameStartX = m_TileFrameStartX->GetValueFloat();
-				float FrameStartY = m_TileFrameStartY->GetValueFloat();
-
-				float FrameEndX = m_TileFrameEndX->GetValueFloat();
-				float FrameEndY = m_TileFrameEndY->GetValueFloat();
-
-				// 1) 이미지의 가로 세로 길이를 구해서, 범위 제한을 한다.
-				// 2) 또한 실제 Input 에도 해당 내용으로 바꿔서 표시한다. --> 별도의 Text를 마련한다.
-				// 어차피 TileMap 의 경우, 거꾸로 출력할 일이 없다.
-
-				float TextureWidth  = (float)m_TileMap->GetTileMaterial()->GetTextureWidth();
-				float TextureHeight = (float)m_TileMap->GetTileMaterial()->GetTextureHeight();
-
-				if (FrameStartX < 0 || FrameStartX > TextureWidth)
-					return;
-				if (FrameStartY < 0 || FrameStartY > TextureHeight)
-					return;
-				if (FrameEndX < 0 || FrameEndX > TextureWidth)
-					return;
-				if (FrameEndY < 0 || FrameEndY > TextureHeight)
-					return;
-
-				Tile->SetFrameStart(FrameStartX, FrameStartY);
-				Tile->SetFrameEnd(FrameEndX, FrameEndY);
-
-			}
-			break;
-			}
-			*/
 		}
 	}
 }
@@ -644,16 +548,6 @@ void CTileMapWindow::CreateTile()
 {
 	if (!m_TileMapEmpty)
 		return;
-
-	// Tile Shape
-	/*
-	int TileShapeIndex = m_TileShapeCombo->GetSelectIndex();
-
-	if (TileShapeIndex < 0 || TileShapeIndex >= (int)Tile_Shape::End)
-		return;
-
-	Tile_Shape Shape = (Tile_Shape)TileShapeIndex;
-	*/
 
 	// CountX, CountY
 	int CountX = m_TileCountX->GetValueInt();
@@ -799,7 +693,7 @@ void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 void CTileMapWindow::SetTileTypeCallback(int Index, const char* Name)
 {}
 
-void CTileMapWindow::SetTileMapSizeToBackGroundImage()
+void CTileMapWindow::SetTileMapSizeToTileBaseImage()
 {
 	if (!m_TileMapEmpty)
 		return;
@@ -826,87 +720,6 @@ void CTileMapWindow::SetTileMapSizeToBackGroundImage()
 }
 
 /*
-void CTileMapWindow::TileMapSaveButton()
-{
-	if (!m_TileMapEmpty)
-		return;
-
-	TCHAR FilePath[MAX_PATH] = {};
-
-	OPENFILENAME OpenFile = {};
-
-	OpenFile.lStructSize = sizeof(OPENFILENAME);
-	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
-	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0GameObject File\0*.gobj");
-	OpenFile.lpstrFile = FilePath;
-	OpenFile.nMaxFile = MAX_PATH;
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(OBJECT_PATH)->Path;
-
-	if (GetSaveFileName(&OpenFile) != 0)
-	{
-		char ConvertFullPath[MAX_PATH] = {};
-
-		int Length = WideCharToMultiByte(CP_ACP, 0, FilePath, -1, 0, 0, 0, 0);
-		WideCharToMultiByte(CP_ACP, 0, FilePath, -1, ConvertFullPath, Length, 0, 0);
-
-		CGameObject* TileMapObject = m_TileMap->GetGameObject();
-
-		TileMapObject->SaveFullPath(ConvertFullPath);
-
-		std::string ExtraFolderName = ENGINE_OBJECT_PATH;
-
-		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
-
-		// 파일 이름을 뽑아낸다.
-		char SavedFileName[MAX_PATH] = {};
-		char SavedExt[_MAX_EXT] = {};
-		_splitpath_s(ConvertFullPath, nullptr, 0, nullptr, 0, SavedFileName, MAX_PATH, SavedExt, _MAX_EXT);
-
-		// 최종 GameEngine 경로를 만든다.
-		char SavedGameEnginePath[MAX_PATH] = {};
-		strcpy_s(SavedGameEnginePath, EngineSequenceFolder->PathMultibyte);
-		strcat_s(SavedGameEnginePath, SavedFileName);
-		strcat_s(SavedGameEnginePath, SavedExt);
-
-		// 현재 저장되는 경로와 다르다면, GameEngine 쪽에도 저장한다.
-		if (strcmp(EngineSequenceFolder->PathMultibyte, ConvertFullPath) != 0)
-		{
-			TileMapObject->SaveFullPath(SavedGameEnginePath);
-		}
-	}
-		
-}
-
-void CTileMapWindow::TileMapLoadButton()
-{
-	if (!m_TileMap)
-		return;
-
-	TCHAR LoadFilePath[MAX_PATH] = {};
-
-	OPENFILENAME OpenFile = {};
-	OpenFile.lStructSize = sizeof(OPENFILENAME);
-	OpenFile.lpstrFile = LoadFilePath;
-	OpenFile.nMaxFile = MAX_PATH;
-	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
-	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0*.GameObject File\0*.gobj");
-	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(OBJECT_PATH)->Path;
-
-	if (GetOpenFileName(&OpenFile) != 0)
-	{
-		char ConvertFullPath[MAX_PATH] = {};
-
-		int Length = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
-
-		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, ConvertFullPath, Length, 0, 0);
-
-		CGameObject* TileMapObject = m_TileMap->GetGameObject();
-
-		TileMapObject->LoadFullPath(ConvertFullPath);
-	}
-}
-
-/*
 void CTileMapWindow::CreateBackMaterial()
 {
 	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
@@ -925,7 +738,7 @@ void CTileMapWindow::CreateBackMaterial()
 }
 */
 
-void CTileMapWindow::BackGroundImageLoadButton()
+void CTileMapWindow::TileBaseImageLoadButton()
 {
 	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
 		return;
@@ -980,24 +793,30 @@ void CTileMapWindow::BackGroundImageLoadButton()
 		m_TileMapEmpty->SetWorldScale((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
 			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight(), 1.f);
 
-		m_BackWorldScaleX->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth());
-		m_BackWorldScaleY->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight());
+		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth());
+		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight());
 
-		m_BackImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
-		m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
+		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
+		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
+		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
 			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
 	}
 }
 
-void CTileMapWindow::SetBackGroundImageScale()
+void CTileMapWindow::SetTileBaseImageScale()
 {
 	if (!m_TileMapEmpty)
 		return;
 
-	if (!m_BackWorldScaleX->FloatEmpty() && !m_BackWorldScaleY->FloatEmpty())
+	if (!m_TileBaseScaleXInput->FloatEmpty() && !m_TileBaseScaleYInput->FloatEmpty())
 	{
-		m_TileMapEmpty->SetWorldScale(m_BackWorldScaleX->GetValueFloat(), m_BackWorldScaleY->GetValueFloat(), 1.f);
+		m_TileMapEmpty->SetWorldScale(m_TileBaseScaleXInput->GetValueFloat(), m_TileBaseScaleYInput->GetValueFloat(), 1.f);
 	}
 }
+
+void CTileMapWindow::BackGroundImageLoadButton()
+{}
+
+void CTileMapWindow::SetBackGroundImageScale()
+{}
 

@@ -8,45 +8,38 @@ class CTileMapWindow :
 public:
 	CTileMapWindow();
 	virtual ~CTileMapWindow() override;
-private : // World Info
+private : // todo : World Info
 	class CIMGUIText* m_WorldSizeX;
 	class CIMGUIText* m_WorldSizeY;
 	class CIMGUITextInput* m_WorldSizeXInput;
 	class CIMGUITextInput* m_WorldSizeYInput;
-private :
+private : // todo : Tile Info
 	// class CIMGUIComboBox* m_TileShapeCombo;
 	class CIMGUITextInput*   m_TileCountX;
 	class CIMGUITextInput*   m_TileCountY;
 	class CIMGUITextInput*   m_TileSizeX;
 	class CIMGUITextInput*   m_TileSizeY;
 	class CIMGUIComboBox* m_TileType;
-private :
+private : 
 	class CIMGUIText* m_CurrentTileCountX;
 	class CIMGUIText* m_CurrentTileCountY;
 	class CIMGUIText* m_CurrentTileSizeX;
 	class CIMGUIText* m_CurrentTileSizeY;
-	/*
-	class CIMGUIComboBox* m_TileEdit;
-	class CIMGUITextInput* m_TileFrameStartX;
-	class CIMGUITextInput* m_TileFrameStartY;
-	class CIMGUITextInput* m_TileFrameEndX;
-	class CIMGUITextInput* m_TileFrameEndY;
-	*/
-private : // Sprite
-	// class CIMGUIImage* m_TextureImageSprite;
-	// class CIMGUIImage* m_TileImageSprite;
-
-private :
-	// class CIMGUIButton* m_TileMapSaveButton; --> 그냥 SaveObject, Load Object 를 통해 진행한다.
-	// class CIMGUIButton* m_TileMapLoadButton;
-private :
+private : // todo :  Tile Base Info
 	// Material을 기본적으로 세팅해두고 --> 불러온 Texture만 바꿔끼는 개념을 사용할 것이다.
-	class CIMGUIButton* m_BackMaterialButton;
-	class CIMGUIButton* m_BackImageLoadButton;
-	class CIMGUIImage* m_BackImageSprite;
-private: // Back Material Size
-	class CIMGUITextInput* m_BackWorldScaleX;
-	class CIMGUITextInput* m_BackWorldScaleY;
+	class CIMGUIButton* m_TileImageLoadButton;
+	class CIMGUIImage* m_TileBaseImageSprite;
+	class CIMGUIText* m_TileBaseScaleX;
+	class CIMGUIText* m_TileBaseScaleY;
+	class CIMGUITextInput* m_TileBaseScaleXInput;
+	class CIMGUITextInput* m_TileBaseScaleYInput;
+private: // todo :  BackGround Info
+	class CIMGUIButton* m_BackGroundImageLoadButton;
+	class CIMGUIImage* m_BackGroundImageSprite;
+	class CIMGUIText* m_BackImgScaleX;
+	class CIMGUIText* m_BackImgScaleY;
+	class CIMGUITextInput* m_BaseImgScaleXInput;
+	class CIMGUITextInput* m_BaseImgScaleYInput;
 private :
 	// class CTileMapComponent* m_TileMap;
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.
@@ -75,10 +68,10 @@ private :
 	void SetEditModeCallback(int Index, const char* Name);
 	void SetTileTypeCallback(int Index, const char* Name);
 private :
-	void SetTileMapSizeToBackGroundImage();
-	// void TileMapSaveButton();
-	// void TileMapLoadButton();
+	void SetTileMapSizeToTileBaseImage();
 private :
+	void TileBaseImageLoadButton();
+	void SetTileBaseImageScale();
 	void BackGroundImageLoadButton();
 	void SetBackGroundImageScale();
 
