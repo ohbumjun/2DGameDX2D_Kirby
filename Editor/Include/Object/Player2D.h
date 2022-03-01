@@ -1,12 +1,12 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "GameObject\LifeObject.h"
 #include "Component/SpriteComponent.h"
 #include "Component/SceneComponent.h"
 #include "Component/WidgetComponent.h"
 #include "Component/NavAgent.h"
 
 class CPlayer2D :
-    public CGameObject
+    public CLifeObject
 {
 	friend class CScene;
 

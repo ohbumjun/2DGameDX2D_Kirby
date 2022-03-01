@@ -226,6 +226,9 @@
     <Filter Include="05. Component\02. ObjectComponent\02. NavAgent">
       <UniqueIdentifier>{8e4e4032-293a-4eb1-8bab-32058c51049e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\02. LifeObject">
+      <UniqueIdentifier>{e86e3901-34b2-463a-8976-9406ac54bfbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -654,6 +657,9 @@
     <ClInclude Include="Resource\Shader\TileMapEmptyShader.h">
       <Filter>02. Resource\02. Shader\02. ShaderClass\07. Tile</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\LifeObject.h">
+      <Filter>04. GameObject\02. LifeObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1033,6 +1039,9 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\TileMapEmptyShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\07. Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\LifeObject.cpp">
+      <Filter>04. GameObject\02. LifeObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

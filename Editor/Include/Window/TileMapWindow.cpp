@@ -25,6 +25,7 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 {
 	m_TileMapEmpty = TileMap;
 
+
 	m_CurrentTileCountX->SetInt(m_TileMapEmpty->GetTileCountX());
 	m_CurrentTileCountY->SetInt(m_TileMapEmpty->GetTileCountY());
 
@@ -79,6 +80,7 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 		m_BackImageSprite->SetImageStart(Vector2(0.f, 0.f));
 		m_BackImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
 			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
+
 	}
 
 }
@@ -911,9 +913,6 @@ void CTileMapWindow::SetBackGroundImageScale()
 
 	if (!m_BackWorldScaleX->FloatEmpty() && !m_BackWorldScaleY->FloatEmpty())
 	{
-		m_BackWorldScaleX->GetValueFloat();
-		m_BackWorldScaleY->GetValueFloat();
-
 		m_TileMapEmpty->SetWorldScale(m_BackWorldScaleX->GetValueFloat(), m_BackWorldScaleY->GetValueFloat(), 1.f);
 	}
 }

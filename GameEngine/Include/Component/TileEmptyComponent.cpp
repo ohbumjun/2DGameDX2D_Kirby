@@ -31,7 +31,7 @@ CTileEmptyComponent::CTileEmptyComponent()
 	}
 
 	m_TileEmptyColor[(int)Tile_Type::Wall] = Vector4(1.f, 0.f, 0.f, 1.f);
-	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 1.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 0.f, 1.f);
 	m_TileEmptyColor[(int)Tile_Type::Water] = Vector4(0.f, 0.f, 1.f, 1.f);
 
 	m_EditMode = false;
@@ -53,7 +53,7 @@ CTileEmptyComponent::CTileEmptyComponent(const CTileEmptyComponent& Component)
 	}
 
 	m_TileEmptyColor[(int)Tile_Type::Wall] = Vector4(1.f, 0.f, 0.f, 1.f);
-	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 1.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 0.f, 1.f);
 	m_TileEmptyColor[(int)Tile_Type::Water] = Vector4(0.f, 0.f, 1.f, 1.f);
 
 
@@ -473,27 +473,27 @@ void CTileEmptyComponent::PrevRender()
 	if (m_vecTileEmpty.empty())
 		return;
 
-	for (int row = StartY; row <= EndY; row++)
+	if (m_EditMode)
 	{
-		for (int col = StartX; col <= EndX; col++)
+		for (int row = StartY; row <= EndY; row++)
 		{
-			int Index = row * m_CountX + col;
-
-			if (Index >= m_Count)
-				continue;
-
-			// 해당 Tile의 Rendering 준비를 완료 시키고
-			m_vecTileEmpty[Index]->Update(m_DeltaTime);
-
-			if (m_EditMode)
+			for (int col = StartX; col <= EndX; col++)
 			{
+				int Index = row * m_CountX + col;
+
+				if (Index >= m_Count)
+					continue;
+
+				// 해당 Tile의 Rendering 준비를 완료 시키고
+				m_vecTileEmpty[Index]->Update(m_DeltaTime);
+
 				m_vecTileEmptyInfo[m_RenderCount].TileColor = m_TileEmptyColor[(int)m_vecTileEmpty[Index]->GetTileType()];
+
+				m_vecTileEmptyInfo[m_RenderCount].matWVP = m_vecTileEmpty[Index]->GetWorldMatrix() * matView * matProj;
+				m_vecTileEmptyInfo[m_RenderCount].matWVP.Transpose();
+
+				++m_RenderCount;
 			}
-
-			m_vecTileEmptyInfo[m_RenderCount].matWVP = m_vecTileEmpty[Index]->GetWorldMatrix() * matView * matProj;
-			m_vecTileEmptyInfo[m_RenderCount].matWVP.Transpose();
-
-			++m_RenderCount;
 		}
 	}
 
@@ -665,6 +665,8 @@ void CTileEmptyComponent::Load(FILE* File)
 	}
 
 	SetWorldInfo();
+
+	m_EditMode = false;
 
 	CSceneComponent::Load(File);
 }

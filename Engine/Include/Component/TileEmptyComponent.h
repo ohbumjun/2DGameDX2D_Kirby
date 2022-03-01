@@ -65,6 +65,11 @@ public:
     {
         return m_TileEmptySize;
     }
+public :
+    void SetEditMode (bool Enable)
+    {
+        m_EditMode = Enable;
+    }
 public:
     void SetBackMaterial(CMaterial* Material); 
     void SetBackBaseColor(const Vector4& Color);

@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "GameObject\LifeObject.h"
 
 class CMonster :
-    public CGameObject
+    public CLifeObject
 {
 public :
     CMonster();

@@ -20,7 +20,7 @@ CPlayer2D::CPlayer2D()
 }
 
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
-	CGameObject(obj)
+	CLifeObject(obj)
 {
 	m_Sprite           = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
 	m_ChildLeftSprite  = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));

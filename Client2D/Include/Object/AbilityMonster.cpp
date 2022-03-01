@@ -3,7 +3,7 @@
 CAbilityMonster::CAbilityMonster()
 {}
 
-CAbilityMonster::CAbilityMonster(const CAbilityMonster& Monster)
+CAbilityMonster::CAbilityMonster(const CAbilityMonster& Monster) : CMonster(Monster)
 {}
 
 CAbilityMonster::~CAbilityMonster()

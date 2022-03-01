@@ -3,7 +3,7 @@
 CNormalMonster::CNormalMonster()
 {}
 
-CNormalMonster::CNormalMonster(const CNormalMonster& Monster)
+CNormalMonster::CNormalMonster(const CNormalMonster& Monster) : CMonster(Monster)
 {}
 
 CNormalMonster::~CNormalMonster()

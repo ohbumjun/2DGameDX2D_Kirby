@@ -13,7 +13,7 @@ CPlayer2D::CPlayer2D()
 	SetTypeID<CPlayer2D>();
 }
 
-CPlayer2D::CPlayer2D(const CPlayer2D& Obj) : CGameObject(Obj)
+CPlayer2D::CPlayer2D(const CPlayer2D& Obj) : CLifeObject(Obj)
 {
 	m_Sprite = (CSpriteComponent*)FindComponent("PlayerSprite");
 }

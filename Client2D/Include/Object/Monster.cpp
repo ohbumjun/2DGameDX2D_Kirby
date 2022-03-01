@@ -17,7 +17,7 @@ CMonster::CMonster() :
 	SetTypeID<CMonster>();
 }
 
-CMonster::CMonster(const CMonster& Monster)
+CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)
 {
 	m_Sprite = (CSpriteComponent*)const_cast<CMonster&>(Monster).FindComponent("MonsterSprite");
 	m_ColliderBody = (CColliderCircle*)const_cast<CMonster&>(Monster).FindComponent("ColliderBody");
