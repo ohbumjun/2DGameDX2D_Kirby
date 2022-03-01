@@ -181,7 +181,7 @@ bool CPlayer2D::Init()
 
 void CPlayer2D::Start()
 {
-	CGameObject::Start();
+	CLifeObject::Start();
 
 	m_Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
 	m_ChildLeftSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
@@ -222,7 +222,7 @@ void CPlayer2D::Start()
 
 void CPlayer2D::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CLifeObject::Update(DeltaTime);
 
 	static bool Fire2 = false;
 	
@@ -263,7 +263,7 @@ void CPlayer2D::PostUpdate(float DeltaTime)
 {
 	Vector2 MouseWorldPos = CInput::GetInst()->GetMouseWorld2DPos();
 	Vector3 PlayerWorldPos = GetWorldPos();
-	CGameObject::PostUpdate(DeltaTime);
+	CLifeObject::PostUpdate(DeltaTime);
 }
 
 CPlayer2D* CPlayer2D::Clone()

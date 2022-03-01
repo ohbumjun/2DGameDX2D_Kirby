@@ -6,7 +6,26 @@ class CLifeObject :
 protected:
 	CLifeObject();
 	CLifeObject(const CLifeObject& obj);
-	virtual ~CLifeObject() override;
+	virtual ~CLifeObject() override = 0;
+protected:
+	Vector3		m_PrevPos;
+	float m_MoveSpeed;
+	float m_FallVelocityMax;
+	float m_FallVelocity;
+	bool m_PhysicsSimulate;
+	float m_GravityAccel;
+	bool m_IsGround;
+	float m_FallTime;
+	float m_FallStartY;
+	float m_FloorCheck;
+	float m_SideWallCheck;
+protected:
+	bool m_Jump;
+	float m_JumpVelocity;
+	float m_JumpAccel;
+	float m_JumpAccelAccTime;
+private :
+	void UpdateWhileOffGround(float DeltaTime);
 public:
 	virtual void         Start() override;
 	virtual bool         Init() override;

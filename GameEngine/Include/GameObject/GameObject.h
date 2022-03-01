@@ -31,6 +31,7 @@ protected:
 	std::vector<CSharedPtr<CObjectComponent>> m_vecObjectComponent;
 	CGameObject*                         m_Parent;
 	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
+protected:
 	float m_LifeTime;
 public:
 	void SetLifeTime(float LifeTime)

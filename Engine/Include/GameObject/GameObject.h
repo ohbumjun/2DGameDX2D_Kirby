@@ -31,6 +31,7 @@ protected:
 	std::vector<CSharedPtr<CObjectComponent>> m_vecObjectComponent;
 	CGameObject*                         m_Parent;
 	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
+protected:
 	float m_LifeTime;
 public:
 	void SetLifeTime(float LifeTime)
@@ -115,11 +116,12 @@ public:
 			m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 		else
 		{
-			m_SceneComponentList.push_back((CSceneComponent*)(Component));
+			m_SceneComponentList.push_back(dynamic_cast<CSceneComponent*>(Component));
 
 			if (!m_RootComponent)
 				m_RootComponent = (CSceneComponent*)Component;
 		}
+			
 
 		return Component;
 	}

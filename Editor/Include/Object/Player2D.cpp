@@ -25,7 +25,7 @@ CPlayer2D::~CPlayer2D()
 
 bool CPlayer2D::Init()
 {
-	if (!CGameObject::Init())
+	if (!CLifeObject::Init())
 		return false;
 
 	/*
@@ -181,12 +181,12 @@ bool CPlayer2D::Init()
 
 void CPlayer2D::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CLifeObject::Update(DeltaTime);
 }
 
 void CPlayer2D::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CLifeObject::PostUpdate(DeltaTime);
 	
 }
 CPlayer2D* CPlayer2D::Clone()
@@ -196,7 +196,7 @@ CPlayer2D* CPlayer2D::Clone()
 
 void CPlayer2D::Start()
 {
-	CGameObject::Start();
+	CLifeObject::Start();
 
 	// Editor 측 Player2D 함수들
 	// CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", KeyState_Push, this, &CPlayer2D::MoveUp);
@@ -207,11 +207,11 @@ void CPlayer2D::Start()
 
 void CPlayer2D::Save(FILE* pFile)
 {
-	CGameObject::Save(pFile);
+	CLifeObject::Save(pFile);
 }
 
 void CPlayer2D::Load(FILE* pFile)
 {
-	CGameObject::Load(pFile);
+	CLifeObject::Load(pFile);
 	m_Sprite = (CSpriteComponent*)FindComponent("PlayerSprite");
 }

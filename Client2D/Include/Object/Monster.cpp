@@ -75,14 +75,14 @@ void CMonster::DeathStart()
 
 void CMonster::Start()
 {
-	CGameObject::Start();
+	CLifeObject::Start();
 
 	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);
 }
 
 bool CMonster::Init()
 {
-	if (!CGameObject::Init())
+	if (!CLifeObject::Init())
 		return false;
 
 	m_Sprite = CreateComponent<CSpriteComponent>("MonsterSprite");
@@ -126,7 +126,7 @@ bool CMonster::Init()
 
 void CMonster::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CLifeObject::Update(DeltaTime);
 
 	// Á×À¸¸é
 	// 1) Animation ¹Ù²ãÁÖ°í
@@ -151,7 +151,7 @@ void CMonster::Update(float DeltaTime)
 
 void CMonster::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CLifeObject::PostUpdate(DeltaTime);
 }
 
 CMonster* CMonster::Clone()
