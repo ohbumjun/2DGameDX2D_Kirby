@@ -41,6 +41,10 @@ public:
         m_EditMode = Mode;
     }
 public:
+    Vector3 GetTileEmptySize () const
+    {
+        return m_TileEmptySize;
+    }
     CMaterial* GetBackMaterial()    const
     {
         return m_BackMaterial;

@@ -289,7 +289,7 @@ void CTileEmptyComponent::SetTileDefaultSize(float x, float y)
 
 	for (int i = 0; i < m_Count; i++)
 	{
-		m_vecTileEmpty[i]->m_Size = Vector3(x, y, 1.f);
+		m_vecTileEmpty[i]->m_Size = m_TileEmptySize;
 	}
 
 	Vector3 Pos = {};
@@ -303,9 +303,7 @@ void CTileEmptyComponent::SetTileDefaultSize(float x, float y)
 		{
 			Pos.x = col * m_TileEmptySize.x;
 
-			int Index = row * m_CountY + col;
-
-			m_vecTileEmpty[Index]->SetSize(m_TileEmptySize);
+			int Index = row * m_CountX + col;
 
 			m_vecTileEmpty[Index]->SetPos(Pos);
 		}

@@ -25,6 +25,12 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 {
 	m_TileMapEmpty = TileMap;
 
+	m_CurrentTileCountX->SetInt(m_TileMapEmpty->GetTileCountX());
+	m_CurrentTileCountY->SetInt(m_TileMapEmpty->GetTileCountY());
+
+	m_CurrentTileSizeX->SetFloat(m_TileMapEmpty->GetTileEmptySize().x);
+	m_CurrentTileSizeY->SetFloat(m_TileMapEmpty->GetTileEmptySize().y);
+
 	// 1) Tile
 	// 해당 TileMap에 사용된 Tile Texture의 Width, Height 를 IMGUIText에 세팅한다.
 	/*
@@ -122,7 +128,7 @@ bool CTileMapWindow::Init()
 	m_CurrentTileCountX = AddWidget<CIMGUITextInput>("X");
 	m_CurrentTileCountX->SetSize(80.f, 40.f);
 	m_CurrentTileCountX->SetInt(100);
-	m_CurrentTileCountX->SetTextType(ImGuiText_Type::Float);
+	m_CurrentTileCountX->SetTextType(ImGuiText_Type::Int);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
@@ -130,7 +136,7 @@ bool CTileMapWindow::Init()
 	m_CurrentTileCountY = AddWidget<CIMGUITextInput>("Y");
 	m_CurrentTileCountY->SetSize(80.f, 40.f);
 	m_CurrentTileCountY->SetInt(100);
-	m_CurrentTileCountY->SetTextType(ImGuiText_Type::Float);
+	m_CurrentTileCountY->SetTextType(ImGuiText_Type::Int);
 
 	// ==============================
 
@@ -143,7 +149,7 @@ bool CTileMapWindow::Init()
 
 	m_CurrentTileSizeX = AddWidget<CIMGUITextInput>("X");
 	m_CurrentTileSizeX->SetSize(80.f, 40.f);
-	m_CurrentTileSizeX->SetInt(100);
+	m_CurrentTileSizeX->SetFloat(100);
 	m_CurrentTileSizeX->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -151,7 +157,7 @@ bool CTileMapWindow::Init()
 
 	m_CurrentTileSizeY = AddWidget<CIMGUITextInput>("Y");
 	m_CurrentTileSizeY->SetSize(80.f, 40.f);
-	m_CurrentTileSizeY->SetInt(100);
+	m_CurrentTileSizeY->SetFloat(100);
 	m_CurrentTileSizeY->SetTextType(ImGuiText_Type::Float);
 
 	// ==============================
@@ -465,6 +471,7 @@ bool CTileMapWindow::Init()
 
 	m_CurrentTileCountX->SetInt(100);
 	m_CurrentTileCountY->SetInt(100);
+
 	m_CurrentTileSizeX->SetFloat(160.f);
 	m_CurrentTileSizeY->SetFloat(80.f);
 
