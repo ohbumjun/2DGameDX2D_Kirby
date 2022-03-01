@@ -65,10 +65,12 @@ private :
 	void SetEditModeCallback(int Index, const char* Name);
 	void SetTileTypeCallback(int Index, const char* Name);
 private :
+	void SetTileMapSizeToBackGroundImage();
 	// void TileMapSaveButton();
 	// void TileMapLoadButton();
 private :
 	void BackGroundImageLoadButton();
 	void SetBackGroundImageScale();
+
 };
 

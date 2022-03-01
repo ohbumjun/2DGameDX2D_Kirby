@@ -173,8 +173,15 @@ bool CTileMapWindow::Init()
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("CreateTileMap", 200.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::CreateTile);
 
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Button = AddWidget<CIMGUIButton>("ResizeTileMapToBack", 200.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileMapSizeToBackGroundImage);
+
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
+
 	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("TileEditInfo", 400.f, 30.f);
@@ -639,6 +646,22 @@ void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 
 void CTileMapWindow::SetTileTypeCallback(int Index, const char* Name)
 {}
+
+void CTileMapWindow::SetTileMapSizeToBackGroundImage()
+{
+	if (!m_TileMapEmpty)
+		return;
+
+	if (!m_TileMapEmpty->GetBackMaterial() || m_TileMapEmpty->GetTileCount() == 0)
+		return;
+
+	Vector2 BackGroundSize = Vector2(m_TileMapEmpty->GetWorldScale().x, m_TileMapEmpty->GetWorldScale().y);
+
+	float TileSizeX = BackGroundSize.x /(float) m_TileMapEmpty->GetTileCountX();
+	float TileSizeY = BackGroundSize.y /(float) m_TileMapEmpty->GetTileCountY();
+
+	m_TileMapEmpty->SetTileDefaultSize(TileSizeX, TileSizeY);
+}
 
 /*
 void CTileMapWindow::TileMapSaveButton()

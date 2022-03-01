@@ -53,6 +53,10 @@ public:
     {
         return m_CountY;
     }
+    int GetTileCount() const
+    {
+        return m_Count;
+    }
     const Vector3& GetTileEmtpySize()    const
     {
         return m_TileEmptySize;
@@ -80,6 +84,7 @@ public :
 public :
     void SetTileEmptyColor(Tile_Type Type, float r, float g, float b, float a);
     void SetTileEmptyColor(Tile_Type Type, const Vector4& Color);
+    void SetTileDefaultSize(float x, float y);
 public:
     int GetTileEmptyIndexX(const Vector3& Pos);
     int GetTileEmptyIndexY(const Vector3& Pos);

@@ -243,7 +243,7 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 	}
 
 	// Tile 위치 세팅
-	Vector3 Pos = {};
+	Vector3 Pos = Vector3(0.f, 0.f, 1.f);
 
 	for (int row = 0; row < m_CountY; row++)
 	{
@@ -254,7 +254,7 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 		{
 			Pos.x = col * m_TileEmptySize.x;
 
-			int Index = row * m_CountY + col;
+			int Index = row * m_CountX + col;
 
 			m_vecTileEmpty[Index]->SetPos(Pos);
 		}
@@ -273,6 +273,33 @@ void CTileEmptyComponent::SetTileEmptyColor(Tile_Type Type, float r, float g, fl
 void CTileEmptyComponent::SetTileEmptyColor(Tile_Type Type, const Vector4& Color)
 {
 	m_TileEmptyColor[(int)Type] = Color;
+}
+
+void CTileEmptyComponent::SetTileDefaultSize(float x, float y)
+{
+	m_TileEmptySize = Vector3(x, y, 1.f);
+
+	for (int i = 0; i < m_Count; i++)
+	{
+		m_vecTileEmpty[i]->m_Size = Vector3(x, y, 1.f);
+	}
+
+	Vector3 Pos = {};
+
+	for (int row = 0; row < m_CountY; row++)
+	{
+		Pos.x = 0.f;
+		Pos.y = row * m_TileEmptySize.y;
+
+		for (int col = 0; col < m_CountX; col++)
+		{
+			Pos.x = col * m_TileEmptySize.x;
+
+			int Index = row * m_CountY + col;
+
+			m_vecTileEmpty[Index]->SetPos(Pos);
+		}
+	}
 }
 
 int CTileEmptyComponent::GetTileEmptyIndexX(const Vector3& Pos)
@@ -390,7 +417,7 @@ bool CTileEmptyComponent::Init()
 
 	m_TileShader = CResourceManager::GetInst()->FindShader("TileMapEmptyShader");
 
-	SetMeshSize(1.f, 1.f, 0.f);
+	// SetMeshSize(1.f, 1.f, 0.f);
 
 	return true;
 }

@@ -24,7 +24,11 @@ void CTileEmpty::Start()
 
 void CTileEmpty::Update(float DeltaTime)
 {
-	Vector3 Pos = m_Pos + m_Owner->GetWorldPos();
+	m_Center = m_Pos + (m_Size) / 2.f;
+
+	Vector3 Pos = m_Center + m_Owner->GetWorldPos();
+
+	Vector3 OwnerPos = m_Owner->GetWorldPos();
 
 	Matrix matScale, matTranslate;
 
