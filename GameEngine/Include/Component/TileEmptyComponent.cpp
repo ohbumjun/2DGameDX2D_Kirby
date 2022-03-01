@@ -31,6 +31,8 @@ CTileEmptyComponent::CTileEmptyComponent()
 	}
 
 	m_TileEmptyColor[(int)Tile_Type::Wall] = Vector4(1.f, 0.f, 0.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 1.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Water] = Vector4(0.f, 0.f, 1.f, 1.f);
 
 	m_EditMode = false;
 }
@@ -49,6 +51,11 @@ CTileEmptyComponent::CTileEmptyComponent(const CTileEmptyComponent& Component)
 	{
 		m_TileEmptyColor[i] = Component.m_TileEmptyColor[i];
 	}
+
+	m_TileEmptyColor[(int)Tile_Type::Wall] = Vector4(1.f, 0.f, 0.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 1.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Water] = Vector4(0.f, 0.f, 1.f, 1.f);
+
 
 	m_EditMode = Component.m_EditMode;
 }
@@ -219,6 +226,7 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 
 	m_CountX = CountX;
 	m_CountY = CountY;
+
 	m_TileEmptySize = Size;
 	m_Count = m_CountX * m_CountY;
 
@@ -236,7 +244,7 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 
 			Tile->SetIndex(col, row, Index);
 
-			Tile->SetSize(m_TileEmptySize);
+			Tile->SetSize(Size);
 
 			m_vecTileEmpty[Index] = Tile;
 		}
@@ -297,6 +305,8 @@ void CTileEmptyComponent::SetTileDefaultSize(float x, float y)
 
 			int Index = row * m_CountY + col;
 
+			m_vecTileEmpty[Index]->SetSize(m_TileEmptySize);
+
 			m_vecTileEmpty[Index]->SetPos(Pos);
 		}
 	}
@@ -320,7 +330,7 @@ int CTileEmptyComponent::GetTileEmptyIndexY(const Vector3& Pos)
 
 	int IndexY = (int)(ConvertY / m_TileEmptySize.y);
 
-	if (IndexY < 0 || IndexY >= m_CountX)
+	if (IndexY < 0 || IndexY >= m_CountY)
 		return -1;
 
 	return IndexY;
@@ -470,6 +480,9 @@ void CTileEmptyComponent::PrevRender()
 		for (int col = StartX; col <= EndX; col++)
 		{
 			int Index = row * m_CountX + col;
+
+			if (Index >= m_Count)
+				continue;
 
 			// 해당 Tile의 Rendering 준비를 완료 시키고
 			m_vecTileEmpty[Index]->Update(m_DeltaTime);

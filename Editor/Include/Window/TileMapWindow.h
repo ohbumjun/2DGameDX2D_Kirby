@@ -15,6 +15,11 @@ private :
 	class CIMGUITextInput*   m_TileSizeX;
 	class CIMGUITextInput*   m_TileSizeY;
 	class CIMGUIComboBox* m_TileType;
+private :
+	class CIMGUITextInput* m_CurrentTileCountX;
+	class CIMGUITextInput* m_CurrentTileCountY;
+	class CIMGUITextInput* m_CurrentTileSizeX;
+	class CIMGUITextInput* m_CurrentTileSizeY;
 	/*
 	class CIMGUIComboBox* m_TileEdit;
 	class CIMGUITextInput* m_TileFrameStartX;
