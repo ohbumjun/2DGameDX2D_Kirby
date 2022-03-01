@@ -111,7 +111,7 @@ bool CTileMapWindow::Init()
 	m_TileShapeCombo->AddItem("사각형");
 	m_TileShapeCombo->AddItem("마름모");
 	*/
-
+	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("Current Count", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
@@ -125,17 +125,19 @@ bool CTileMapWindow::Init()
 	m_BackMaterialButton->SetClickCallback(this, &CTileMapWindow::CreateBackMaterial);
 	*/
 
-	m_CurrentTileCountX = AddWidget<CIMGUITextInput>("X");
+	m_CurrentTileCountX = AddWidget<CIMGUITextInput>("CurCountX");
 	m_CurrentTileCountX->SetSize(80.f, 40.f);
 	m_CurrentTileCountX->SetInt(100);
+	m_CurrentTileCountX->SetHideName(true);
 	m_CurrentTileCountX->SetTextType(ImGuiText_Type::Int);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
 
-	m_CurrentTileCountY = AddWidget<CIMGUITextInput>("Y");
+	m_CurrentTileCountY = AddWidget<CIMGUITextInput>("CurCountY");
 	m_CurrentTileCountY->SetSize(80.f, 40.f);
 	m_CurrentTileCountY->SetInt(100);
+	m_CurrentTileCountY->SetHideName(true);
 	m_CurrentTileCountY->SetTextType(ImGuiText_Type::Int);
 
 	// ==============================
@@ -147,18 +149,23 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_CurrentTileSizeX = AddWidget<CIMGUITextInput>("X");
+	m_CurrentTileSizeX = AddWidget<CIMGUITextInput>("CurSizeX");
 	m_CurrentTileSizeX->SetSize(80.f, 40.f);
 	m_CurrentTileSizeX->SetFloat(100);
+	m_CurrentTileSizeX->SetHideName(true);
 	m_CurrentTileSizeX->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
 
-	m_CurrentTileSizeY = AddWidget<CIMGUITextInput>("Y");
+	m_CurrentTileSizeY = AddWidget<CIMGUITextInput>("CurSizeY");
 	m_CurrentTileSizeY->SetSize(80.f, 40.f);
 	m_CurrentTileSizeY->SetFloat(100);
+	m_CurrentTileSizeY->SetHideName(true);
 	m_CurrentTileSizeY->SetTextType(ImGuiText_Type::Float);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
 
 	// ==============================
 
