@@ -1,8 +1,10 @@
 #include "EditorMenu.h"
 #include "IMGUITextInput.h"
+#include "IMGUIText.h"
 #include "IMGUIComboBox.h"
 #include "IMGUISameLine.h"
 #include "IMGUIButton.h"
+#include "IMGUILabel.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Scene/SceneManager.h"
@@ -42,86 +44,162 @@ CEditorMenu::~CEditorMenu()
 bool CEditorMenu::Init()
 {
 	CIMGUIWindow::Init();
+	
+	// ========================================================================
 
-	m_ObjectComboBox = AddWidget<CIMGUIComboBox>("ObjectComboBox", 150.f, 30.f);
+	CIMGUILabel* Label = AddWidget<CIMGUILabel>("Edit Mode", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(115.f);
+
+	m_EditMenuComboBox = AddWidget<CIMGUIComboBox>("Edit Mode", 100.f, 30.f);
+	m_EditMenuComboBox->AddItem("Sprite");
+	m_EditMenuComboBox->AddItem("Scene");
+	m_EditMenuComboBox->AddItem("TileMap");
+	m_EditMenuComboBox->AddItem("BackGround");
+	m_EditMenuComboBox->AddItem("Line");
+	m_EditMenuComboBox->SetHideName(true);
+
+	// ========================================================================
+
+	Label = AddWidget<CIMGUILabel>("Current Mode", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(115.f);
+
+	m_CurrentEditMenu = AddWidget<CIMGUIText>("Edit Mode Text");
+	m_CurrentEditMenu->SetColor(255, 255, 255);
+	m_CurrentEditMenu->SetText("- - - ");
+
+	Label = AddWidget<CIMGUILabel>("", 100.f, 30.f);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ========================================================================
+
+	Label = AddWidget<CIMGUILabel>("Scene", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(115.f);
+
+	m_SaveSceneButton = AddWidget<CIMGUIButton>("SaveScene", 100.f, 30.f);
+	m_SaveSceneButton->SetClickCallback(this, &CEditorMenu::SaveScene);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(220.f);
+
+	m_LoadSceneButton = AddWidget<CIMGUIButton>("LoadScene", 100.f, 30.f);
+	m_LoadSceneButton->SetClickCallback(this, &CEditorMenu::LoadScene);
+
+	Label = AddWidget<CIMGUILabel>("", 100.f, 30.f);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ================================================
+
+	Label = AddWidget<CIMGUILabel>("Object", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(115.f);
+
+	m_ObjectButton = AddWidget<CIMGUIButton>("CreateObj", 100.f, 30.f);
+	m_ObjectButton->SetClickCallback(this, &CEditorMenu::CreateNewObject);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(220.f);
+
+	m_ObjectComboBox = AddWidget<CIMGUIComboBox>("Select", 100.f, 30.f);
 	m_ObjectComboBox->AddItem("GameObject");
 	m_ObjectComboBox->AddItem("Player");
 	m_ObjectComboBox->AddItem("YellowBird");
 	m_ObjectComboBox->AddItem("BeamMonster");
-	m_ObjectComboBox->AddItem("TileEmptyObject");
+	m_ObjectComboBox->AddItem("TileEmpty");
 	m_ObjectComboBox->AddItem("BackGround");
 	m_ObjectComboBox->SetHideName(true);
 
-	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(325.f);
 
-	m_ObjectNameInput = AddWidget<CIMGUITextInput>("ObjectName", 80.f, 30.f);
+	m_ObjectNameInput = AddWidget<CIMGUITextInput>("Name", 100.f, 30.f);
+
+	// ================================================
+	Label = AddWidget<CIMGUILabel>("", 100.f, 30.f);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(115.f);
 
-	m_ObjectButton = AddWidget<CIMGUIButton>("CreateObject", 120.f, 30.f);
-	m_ObjectButton->SetClickCallback(this, &CEditorMenu::CreateNewObject);
+	m_SaveObjectButton = AddWidget<CIMGUIButton>("SaveObject", 100.f, 30.f);
+	m_SaveObjectButton->SetClickCallback(this, &CEditorMenu::SaveObject);
 
-	// ========================================================================
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(220.f);
 
-	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("ComponentComboBox", 150.f, 30.f);
-	m_ComponentComboBox->AddItem("SpriteComponent");
-	m_ComponentComboBox->AddItem("StaticMeshComponent");
-	m_ComponentComboBox->AddItem("WidgetComponent");
+	m_LoadObjectButton = AddWidget<CIMGUIButton>("LoadObject", 100.f, 30.f);
+	m_LoadObjectButton->SetClickCallback(this, &CEditorMenu::LoadObject);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(325.f);
+
+	m_ClearObjectButton = AddWidget<CIMGUIButton>("ClearObject", 100.f, 30.f);
+	m_ClearObjectButton->SetClickCallback(this, &CEditorMenu::ClearObject);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(430.f);
+
+	m_DeleteObjectButton = AddWidget<CIMGUIButton>("DeleteObject ", 100.f, 30.f);
+	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
+
+	Label = AddWidget<CIMGUILabel>("", 100.f, 30.f);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ================================================
+
+	Label = AddWidget<CIMGUILabel>("Component", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(115.f);
+
+	m_ComponentButton = AddWidget<CIMGUIButton>("CreateComp", 100.f, 30.f);
+	m_ComponentButton->SetClickCallback(this, &CEditorMenu::CreateNewComponent);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(220.f);
+
+	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("Select", 100.f, 30.f);
+	m_ComponentComboBox->AddItem("Sprite");
+	m_ComponentComboBox->AddItem("StaticMesh");
+	m_ComponentComboBox->AddItem("Widget");
 	m_ComponentComboBox->AddItem("ColliderBox2D");
 	m_ComponentComboBox->AddItem("ColliderCircle");
 	m_ComponentComboBox->AddItem("ColliderPixel");
-	m_ComponentComboBox->AddItem("CameraComponent");
-	m_ComponentComboBox->AddItem("TileEmptyComponent");
-	m_ComponentComboBox->AddItem("BackGroundComponent");
+	m_ComponentComboBox->AddItem("Camera");
+	m_ComponentComboBox->AddItem("TileEmpty");
+	m_ComponentComboBox->AddItem("BackGround");
 	// m_ComponentComboBox->AddItem("TileMapComponent");
 	m_ComponentComboBox->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(325.f);
 
-	m_ComponentNameInput = AddWidget<CIMGUITextInput>("ComponentName", 80.f, 30.f);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-
-	m_ComponentButton = AddWidget<CIMGUIButton>("CreateComponent", 120.f, 30.f);
-	m_ComponentButton->SetClickCallback(this, &CEditorMenu::CreateNewComponent);
+	m_ComponentNameInput = AddWidget<CIMGUITextInput>("ComponentName", 100.f, 30.f);
 
 	// ========================================================================
-
-	m_SaveSceneButton = AddWidget<CIMGUIButton>("SaveScene", 80.f, 30.f);
-	m_SaveSceneButton->SetClickCallback(this, &CEditorMenu::SaveScene);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-
-	m_LoadSceneButton = AddWidget<CIMGUIButton>("LoadScene", 80.f, 30.f);
-	m_LoadSceneButton->SetClickCallback(this, &CEditorMenu::LoadScene);
-
-	// ========================================================================
-
-	m_SaveObjectButton = AddWidget<CIMGUIButton>("SaveObject", 80.f, 30.f);
-	m_SaveObjectButton->SetClickCallback(this, &CEditorMenu::SaveObject);
-
-	Line = AddWidget<CIMGUISameLine>("Line");
-
-	m_LoadObjectButton = AddWidget<CIMGUIButton>("LoadObject", 80.f, 30.f);
-	m_LoadObjectButton->SetClickCallback(this, &CEditorMenu::LoadObject);
-
-	// ========================================================================
-
+	/*
 	m_ClearComponentButton = AddWidget<CIMGUIButton>("ClearComponent", 80.f, 30.f);
 	m_ClearComponentButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
-	Line = AddWidget<CIMGUISameLine>("Line");
-
-
-	m_ClearObjectButton = AddWidget<CIMGUIButton>("ClearObject", 80.f, 30.f);
-	m_ClearObjectButton->SetClickCallback(this, &CEditorMenu::ClearObject);
-	Line = AddWidget<CIMGUISameLine>("Line");
-
-	m_DeleteObjectButton = AddWidget<CIMGUIButton>("DeleteObject ", 80.f, 30.f);
-	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
-
-	/*
-	m_DeleteComponentButton = AddWidget<CIMGUIButton>("DeleteComponent ", 80.f, 30.f);
-	m_DeleteComponentButton->SetClickCallback(this, &CEditorMenu::DeleteComponent);
 	Line = AddWidget<CIMGUISameLine>("Line");
 	*/
 

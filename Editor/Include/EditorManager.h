@@ -4,10 +4,11 @@
 
 enum class EditMode
 {
-	Scene,
 	Sprite,
+	Scene,
 	Tile,
-	Back
+	Back,
+	Line
 };
 
 class CEditorManager

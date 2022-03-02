@@ -16,6 +16,9 @@ private :
     class CIMGUITextInput*  m_ComponentNameInput;
     class CIMGUIButton*      m_ComponentButton;
 
+    class CIMGUIComboBox* m_EditMenuComboBox;
+    class CIMGUIText*           m_CurrentEditMenu;
+
     class CIMGUIButton*      m_SaveSceneButton;
     class CIMGUIButton*      m_LoadSceneButton;
     class CIMGUIButton*      m_SaveObjectButton;
