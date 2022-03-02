@@ -209,7 +209,7 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 
 	// Camera 를 화면 가운데 오게 세팅한다.
 	// CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->OnViewportCenter();
-	CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->SetViewportRatio(0.2f, 0.2f);
+	// CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->SetViewportRatio(0.2f, 0.2f);
 
 	return true;
 }
@@ -289,16 +289,12 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
-		// 
-
-		/*
-		if (CameraOriginPos.x - RS.Width * 0.5f < 0.f)
+		if (CameraOriginPos.x  < 0.f)
 		{
-			CameraOriginPos.x = RS.Width * 0.5f;
+			CameraOriginPos.x = 0.f;
 
 			Camera->SetWorldPos(CameraOriginPos);
 		}
-		*/
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
@@ -316,18 +312,16 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 	{
 		Camera->AddWorldPos(Vector3(m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
 
-		/*
-		Vector3 CameraPos = Camera->GetWorldPos();
+		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
-		if (CameraPos.x + RS.Width * 0.5f > WorldRS.x)
+		if (CameraOriginPos.x + RS.Width > WorldRS.x)
 		{
-			CameraPos.x = WorldRS.x -  RS.Width * 0.5f;
+			CameraOriginPos.x = WorldRS.x -  RS.Width;
 
-			Camera->SetWorldPos(Vector3(CameraPos.x, CameraPos.y, CameraPos.z));
+			Camera->SetWorldPos(CameraOriginPos);
 		}
-		*/
 
-		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
+		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
 }
 
@@ -343,18 +337,16 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 	{
 		Camera->AddWorldPos(Vector3(0.f, -1.f * m_CameraMoveSpeed * DeltaTime, 0.f));
 
-		/*
-		Vector3 CameraPos = Camera->GetWorldPos();
+		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
-		if (CameraPos.y - RS.Height * 0.5f  < 0.f)
+		if (CameraOriginPos.y < 0.f)
 		{
-			CameraPos.y = RS.Height * 0.5f;
+			CameraOriginPos.y = 0.5f;
 
-			Camera->SetWorldPos(Vector3(CameraPos.x, CameraPos.y, CameraPos.z));
+			Camera->SetWorldPos(CameraOriginPos);
 		}
-		*/
 
-		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
+		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
 }
 

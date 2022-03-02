@@ -90,21 +90,16 @@ public:
 	// 2D Àü¿ë
 	void SetViewportRatio(float x, float y)
 	{
-		if (x >= 1.f)
-			x = 1.f;
-		if (y >= 1.f)
-			y = 1.f;
-
 		if (m_CameraType == Camera_Type::Camera2D)
 		{
 			float	z = GetRelativePos().z;
+
 			SetRelativePos(m_RS.Width * -x, m_RS.Height * -y, z);
 
 			m_Ratio.x = x;
 			m_Ratio.y = y;
 		}
 	}
-
 private:
 	void CreateProjectionMatrix();
 public :
