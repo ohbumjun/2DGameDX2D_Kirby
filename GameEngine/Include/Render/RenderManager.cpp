@@ -102,7 +102,7 @@ bool CRenderManager::Init()
 	// SceneComponent 입장에서는 PrevRender 에서 m_Render가 true 이면 AddRenderList를 통해 들어온다
 	// Default 라는 이름의 m_LayerName을 가진 SceneComponent 들은, 지금 세팅한 Default Layer 에 들어오게 된다.
 	Layer->Name          = "Default";
-	Layer->LayerPriority = 1;
+	Layer->LayerPriority = 2;
 	m_RenderLayerList.push_back(Layer);
 
 	// Screen Widget 들을 위한 Layer 만들기
@@ -113,15 +113,20 @@ bool CRenderManager::Init()
 	// 이러한 것을 방지하기 위해서 이다.
 	Layer = new RenderLayer;
 	Layer->Name = "ScreenWidgetComponent";
-	Layer->LayerPriority = 2;
+	Layer->LayerPriority = 3;
 	m_RenderLayerList.push_back(Layer);
 
 	// Particle Layer
 	Layer = new RenderLayer;
 	Layer->Name = "Particle";
-	Layer->LayerPriority = 3;
+	Layer->LayerPriority = 4;
 	m_RenderLayerList.push_back(Layer);
 
+	// Tile Layer --> 가장 뒤쪽에 그릴 것이다.
+	Layer = new RenderLayer;
+	Layer->Name = "Tile";
+	Layer->LayerPriority = 1;
+	m_RenderLayerList.push_back(Layer);
 
 	// Back Layer --> 가장 뒤쪽에 그릴 것이다.
 	Layer = new RenderLayer;

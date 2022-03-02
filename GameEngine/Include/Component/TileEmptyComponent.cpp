@@ -44,6 +44,9 @@ CTileEmptyComponent::CTileEmptyComponent(const CTileEmptyComponent& Component)
 	if (Component.m_TileImageMaterial)
 		m_TileImageMaterial = Component.m_TileImageMaterial->Clone();
 
+	if (Component.m_BackGroundMaterial)
+		m_BackGroundMaterial = Component.m_BackGroundMaterial->Clone();
+
 	if (Component.m_TileInfoBuffer)
 		m_TileInfoBuffer = Component.m_TileInfoBuffer->Clone();
 
@@ -582,19 +585,28 @@ bool CTileEmptyComponent::Init()
 	// Back Mesh
 	m_ImageMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh("SpriteMesh");
 
+	SetMeshSize(1.f, 1.f, 0.f);
+
+	// TileBase Material
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("TileBaseMaterial");
+
+	m_TileImageMaterial = m_Scene->GetResource()->FindMaterial("TileBaseMaterial");
+
+	m_TileImageMaterial->SetShader("Mesh2DShader");
+
 	// Back Material
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
 
-	m_TileImageMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
+	m_BackGroundMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
 
-	m_TileImageMaterial->SetShader("Mesh2DShader");
+	m_BackGroundMaterial->SetShader("Mesh2DShader");
 
 	// Tile
 	m_TileMesh = m_Scene->GetResource()->FindMesh("Box2D");
 
 	m_TileShader = CResourceManager::GetInst()->FindShader("TileMapEmptyShader");
 
-	// SetMeshSize(1.f, 1.f, 0.f);
+	SetWorldScale(100.f, 100.f, 1.f);
 
 	return true;
 }
@@ -673,6 +685,17 @@ void CTileEmptyComponent::Render()
 {
 	CSceneComponent::Render();
 
+	// 배경 먼저 띄우고
+	if (m_BackGroundMaterial)
+	{
+		m_BackGroundMaterial->Render();
+
+		m_ImageMesh->Render();
+
+		m_BackGroundMaterial->Reset();
+	}
+
+	// Tile Image 그리고
 	if (m_TileImageMaterial)
 	{
 		m_TileImageMaterial->Render();
@@ -716,14 +739,25 @@ void CTileEmptyComponent::Save(FILE* File)
 	fwrite(BackMeshName.c_str(), sizeof(char), BackMeshNameLength, File);
 
 	// Back Material
-	bool MaterialEnable = false;
+	bool BackMaterialEnable = false;
+
+	if (m_BackGroundMaterial)
+		BackMaterialEnable = true;
+
+	fwrite(&BackMaterialEnable, sizeof(bool), 1, File);
+
+	if (BackMaterialEnable)
+		m_BackGroundMaterial->Save(File);
+
+	// Tile Base Material
+	bool TileBaseMaterialEnable = false;
 
 	if (m_TileImageMaterial)
-		MaterialEnable = true;
+		TileBaseMaterialEnable = true;
 
-	fwrite(&MaterialEnable, sizeof(bool), 1, File);
+	fwrite(&TileBaseMaterialEnable, sizeof(bool), 1, File);
 
-	if (MaterialEnable)
+	if (TileBaseMaterialEnable)
 		m_TileImageMaterial->Save(File);
 
 	// Tile Mesh, Shader
@@ -769,15 +803,25 @@ void CTileEmptyComponent::Load(FILE* File)
 
 	m_ImageMesh = (CSpriteMesh*)m_Scene->GetResource()->FindMesh(BackMeshName);
 
-	// Back Material
 	SetMeshSize(1.f, 1.f, 0.f);
 
-	// BackMaterial
-	bool MaterialEnable = false;
+	// Back Material
+	bool BackMaterialEnable = false;
 
-	fread(&MaterialEnable, sizeof(bool), 1, File);
+	fread(&BackMaterialEnable, sizeof(bool), 1, File);
 
-	if (MaterialEnable)
+	if (BackMaterialEnable)
+	{
+		m_BackGroundMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+		m_BackGroundMaterial->Load(File);
+	}
+
+	// Tile Base Material
+	bool TileBaseMaterialEnable = false;
+
+	fread(&TileBaseMaterialEnable, sizeof(bool), 1, File);
+
+	if (TileBaseMaterialEnable)
 	{
 		m_TileImageMaterial = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
 		m_TileImageMaterial->Load(File);

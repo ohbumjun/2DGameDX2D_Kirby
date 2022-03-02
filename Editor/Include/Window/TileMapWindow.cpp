@@ -77,20 +77,20 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	*/
 
 	// 2) BackMaterial 세팅 
-	std::string BackMaterialName = TileMap->GetBackMaterial()->GetName();
+	std::string BackMaterialName = TileMap->GetTileImageMaterial()->GetName();
 
-	if (!m_TileMapEmpty->GetBackMaterial()->EmptyTexture())
+	if (!m_TileMapEmpty->GetTileImageMaterial()->EmptyTexture())
 	{
 		// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
-		// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureWidth());
+		// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetTileImageMaterial()->GetTextureWidth());
 		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
-		// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetBackMaterial()->GetTextureHeight());
+		// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetTileImageMaterial()->GetTextureHeight());
 		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
 
-		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
+		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetTileImageMaterial()->GetTexture());
 		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
-			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
+		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight()));
 
 	}
 
@@ -713,7 +713,7 @@ void CTileMapWindow::SetTileMapSizeToTileBaseImage()
 	if (!m_TileMapEmpty)
 		return;
 
-	if (!m_TileMapEmpty->GetBackMaterial() || m_TileMapEmpty->GetTileCount() == 0)
+	if (!m_TileMapEmpty->GetTileImageMaterial() || m_TileMapEmpty->GetTileCount() == 0)
 		return;
 
 	Vector2 BackGroundSize = Vector2(m_TileMapEmpty->GetWorldScale().x, m_TileMapEmpty->GetWorldScale().y);
@@ -785,36 +785,44 @@ void CTileMapWindow::TileBaseImageLoadButton()
 		// FullPath 먼저 만들기
 
 		// BackMaterial 이 만들어져 있지 않다면, 만든다.
-		if (!m_TileMapEmpty->GetBackMaterial())
+		if (!m_TileMapEmpty->GetTileImageMaterial())
 		{
-			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
+			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("TileBaseMaterial");
 
-			CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
+			CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileBaseMaterial");
 
 			BackMaterial->SetShader("Mesh2DShader");
 
-			m_TileMapEmpty->SetBackMaterial(BackMaterial);
+			m_TileMapEmpty->SetTileImageMaterial(BackMaterial);
 		}
 
-		if (m_TileMapEmpty->GetBackMaterial()->EmptyTexture())
+		if (m_TileMapEmpty->GetTileImageMaterial()->EmptyTexture())
 		{
-			m_TileMapEmpty->GetBackMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+			m_TileMapEmpty->GetTileImageMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 		else
 		{
-			m_TileMapEmpty->GetBackMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+			m_TileMapEmpty->GetTileImageMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 
-		m_TileMapEmpty->SetWorldScale((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
-			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight(), 1.f);
+		m_TileMapEmpty->SetWorldScale((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight(), 1.f);
 
-		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth());
-		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight());
+		char TileImgWidth[MAX_PATH] = {};
+		sprintf_s(TileImgWidth, "%1.f", (float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth());
+		m_TileBaseScaleX->SetText(TileImgWidth);
 
-		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetBackMaterial()->GetTexture());
+		char TileImgHeight[MAX_PATH] = {};
+		sprintf_s(TileImgHeight, "%1.f", (float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight());
+		m_TileBaseScaleX->SetText(TileImgHeight);
+
+		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth());
+		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight());
+
+		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetTileImageMaterial()->GetTexture());
 		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackMaterial()->GetTextureWidth(),
-			(float)m_TileMapEmpty->GetBackMaterial()->GetTextureHeight()));
+		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight()));
 	}
 }
 
@@ -825,12 +833,84 @@ void CTileMapWindow::SetTileBaseImageScale()
 
 	if (!m_TileBaseScaleXInput->FloatEmpty() && !m_TileBaseScaleYInput->FloatEmpty())
 	{
-		m_TileMapEmpty->SetWorldScale(m_TileBaseScaleXInput->GetValueFloat(), m_TileBaseScaleYInput->GetValueFloat(), 1.f);
+		// m_TileMapEmpty->SetWorldScale(m_TileBaseScaleXInput->GetValueFloat(), m_TileBaseScaleYInput->GetValueFloat(), 1.f);
 	}
 }
 
 void CTileMapWindow::BackGroundImageLoadButton()
-{}
+{
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
+		return;
+
+	TCHAR FilePath[MAX_PATH] = {};
+
+	OPENFILENAME OpenFile = {};
+
+	OpenFile.lStructSize = sizeof(OpenFile);
+	OpenFile.hwndOwner = CEngine::GetInst()->GetWindowHandle();
+	OpenFile.lpstrFilter = TEXT("모든파일\0*.*\0DDSFILE\0*.dds\0TGAFile\0*.tga\0PNGFile\0*.png\0JPGFile\0*jpg\0JPEGFile\0*.jpeg\0BMPFile\0*bmp");
+	OpenFile.lpstrFile = FilePath;
+	OpenFile.nMaxFile = MAX_PATH;
+	OpenFile.lpstrInitialDir = CPathManager::GetInst()->FindPath(TEXTURE_PATH)->Path;
+
+	if (GetOpenFileName(&OpenFile) != 0)
+	{
+		// File 이름 뽑아내기
+		TCHAR FileName[MAX_PATH] = {};
+
+		_wsplitpath_s(FilePath, nullptr, 0, nullptr, 0, FileName, MAX_PATH, nullptr, 0);
+
+		char ConvertFileName[MAX_PATH] = {};
+
+		int  Length = WideCharToMultiByte(CP_ACP, 0, FileName, -1, nullptr, 0, nullptr, nullptr);
+
+		WideCharToMultiByte(CP_ACP, 0, FileName, -1, ConvertFileName, Length, nullptr, nullptr);
+
+		// FullPath 먼저 만들기
+
+		// BackMaterial 이 만들어져 있지 않다면, 만든다.
+		if (!m_TileMapEmpty->GetBackGroundMaterial())
+		{
+			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
+
+			CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
+
+			BackMaterial->SetShader("Mesh2DShader");
+
+			m_TileMapEmpty->SetBackGroundMaterial(BackMaterial);
+		}
+
+		if (m_TileMapEmpty->GetBackGroundMaterial()->EmptyTexture())
+		{
+			m_TileMapEmpty->GetBackGroundMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+		}
+		else
+		{
+			m_TileMapEmpty->GetBackGroundMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+		}
+
+		/*
+		m_TileMapEmpty->SetWorldScale((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight(), 1.f);
+		*/
+
+		char BackImgWidth[MAX_PATH] = {};
+		sprintf_s(BackImgWidth, "%1.f", (float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureWidth());
+		m_TileBaseScaleX->SetText(BackImgWidth);
+
+		char BackImgHeight[MAX_PATH] = {};
+		sprintf_s(BackImgHeight, "%1.f", (float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureHeight());
+		m_TileBaseScaleX->SetText(BackImgHeight);
+
+		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureWidth());
+		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureHeight());
+
+		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetBackGroundMaterial()->GetTexture());
+		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
+		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureWidth(),
+			(float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureHeight()));
+	}
+}
 
 void CTileMapWindow::SetBackGroundImageScale()
 {}

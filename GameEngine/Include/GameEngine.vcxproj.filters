@@ -229,6 +229,9 @@
     <Filter Include="04. GameObject\02. LifeObject">
       <UniqueIdentifier>{e86e3901-34b2-463a-8976-9406ac54bfbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\01. SceneComponent\07. BackGround">
+      <UniqueIdentifier>{30b469c0-5ded-442f-a882-b0b049a271fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -660,6 +663,9 @@
     <ClInclude Include="GameObject\LifeObject.h">
       <Filter>04. GameObject\02. LifeObject</Filter>
     </ClInclude>
+    <ClInclude Include="Component\BackGroundComponent.h">
+      <Filter>05. Component\01. SceneComponent\07. BackGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1042,6 +1048,9 @@
     </ClCompile>
     <ClCompile Include="GameObject\LifeObject.cpp">
       <Filter>04. GameObject\02. LifeObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\BackGroundComponent.cpp">
+      <Filter>05. Component\01. SceneComponent\07. BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
