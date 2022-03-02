@@ -51,17 +51,34 @@ void CEditorManager::SetEditMode(EditMode Mode)
 {
 	m_EditMode = Mode;
 
+	// + Combo Box 상태에 대해 Callback 함수도 지정해줘야 한다.
+
+	char EditModeText[MAX_PATH] = {};
+
 	if (m_EditMode == EditMode::Sprite)
 	{
 		if (m_DragObj)
 			m_DragObj->Destroy();
+
 		m_DragObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CDragObject>("DragObject");
 		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);
+
+		sprintf_s(EditModeText, "%s", "Sprite");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
 	}
 	else if (m_EditMode == EditMode::Scene)
 	{
 		if (m_DragObj)
 			m_DragObj->Destroy();
+
+		sprintf_s(EditModeText, "%s", "Scene");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
 	}
 	else if (m_EditMode == EditMode::Tile)
 	{
@@ -70,6 +87,40 @@ void CEditorManager::SetEditMode(EditMode Mode)
 			m_DragObj->Destroy();
 			m_DragObj = nullptr;
 		}
+
+		sprintf_s(EditModeText, "%s", "Tile");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
+	}
+	else if (m_EditMode == EditMode::Back)
+	{
+		if (m_DragObj)
+		{
+			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
+
+		sprintf_s(EditModeText, "%s", "Back");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
+	}
+	else if (m_EditMode == EditMode::Line)
+	{
+		if (m_DragObj)
+		{
+			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
+
+		sprintf_s(EditModeText, "%s", "Sprite");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
 	}
 }
 
@@ -157,8 +208,8 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->SetKeyCallback("UpYSize", Key_State::KeyState_Down, this, &CEditorManager::IncreaseYSize);
 	CInput::GetInst()->SetKeyCallback("DownYSize", Key_State::KeyState_Down, this, &CEditorManager::DecreaseYSize);
 
-	// Camera 생성하기
-	// CreateCameraObject();
+	// Camera 를 화면 가운데 오게 세팅한다.
+	CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->OnViewportCenter();
 
 	return true;
 }
@@ -201,29 +252,81 @@ void CEditorManager::MouseLButtonUp(float DeltaTime)
 void CEditorManager::KeyBoardUp(float DeltaTime)
 {
 	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+
+	Vector2 WorldRS = CSceneManager::GetInst()->GetScene()->GetWorldResolution();
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
 	if (Camera)
 	{
 		Camera->AddWorldPos(Vector3(0.f, m_CameraMoveSpeed * DeltaTime, 0.f));
-		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
+
+		Vector3 CameraOriginPos = Camera->GetWorldPos();
+
+
+		if (CameraOriginPos.y + RS.Height * 0.5f >= WorldRS.y)
+		{
+			CameraOriginPos.y = WorldRS.y - (RS.Height * 0.5f);
+
+			Camera->SetWorldPos(CameraOriginPos);
+		}
+
+		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
 }
 
 void CEditorManager::KeyBoardLeft(float DeltaTime)
 {
 	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+
+	Vector2 WorldRS = CSceneManager::GetInst()->GetScene()->GetWorldResolution();
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
 	if (Camera)
 	{
 		Camera->AddWorldPos(Vector3(-1.f * m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
-		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
+
+		Vector3 CameraOriginPos = Camera->GetWorldPos();
+
+		// 
+
+		/*
+		if (CameraOriginPos.x - RS.Width * 0.5f < 0.f)
+		{
+			CameraOriginPos.x = RS.Width * 0.5f;
+
+			Camera->SetWorldPos(CameraOriginPos);
+		}
+		*/
+
+		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
 }
 
 void CEditorManager::KeyBoardRight(float DeltaTime)
 {
 	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+
+	Vector2 WorldRS = CSceneManager::GetInst()->GetScene()->GetWorldResolution();
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
 	if (Camera)
 	{
 		Camera->AddWorldPos(Vector3(m_CameraMoveSpeed * DeltaTime, 0.f, 0.f));
+
+		/*
+		Vector3 CameraPos = Camera->GetWorldPos();
+
+		if (CameraPos.x + RS.Width * 0.5f > WorldRS.x)
+		{
+			CameraPos.x = WorldRS.x -  RS.Width * 0.5f;
+
+			Camera->SetWorldPos(Vector3(CameraPos.x, CameraPos.y, CameraPos.z));
+		}
+		*/
+
 		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
 	}
 }
@@ -231,9 +334,26 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 void CEditorManager::KeyBoardDown(float DeltaTime)
 {
 	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+
+	Vector2 WorldRS = CSceneManager::GetInst()->GetScene()->GetWorldResolution();
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
 	if (Camera)
 	{
 		Camera->AddWorldPos(Vector3(0.f, -1.f * m_CameraMoveSpeed * DeltaTime, 0.f));
+
+		/*
+		Vector3 CameraPos = Camera->GetWorldPos();
+
+		if (CameraPos.y - RS.Height * 0.5f  < 0.f)
+		{
+			CameraPos.y = RS.Height * 0.5f;
+
+			Camera->SetWorldPos(Vector3(CameraPos.x, CameraPos.y, CameraPos.z));
+		}
+		*/
+
 		m_SpriteWindow->SetCameraPosText(Camera->GetWorldPos().x, Camera->GetWorldPos().y);
 	}
 }

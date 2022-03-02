@@ -36,6 +36,8 @@ private :
 public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
+public :
+    void SetEditModeText(const char* Text);
 private  :
     void CreateNewObject();
     void CreateNewComponent();
@@ -50,7 +52,8 @@ private:
     void DeleteComponent();
     void ClearObject();
     void DeleteObject();
-    
+private :
+    void SelectEditModeCallback(int, const char*);
 
 };
 

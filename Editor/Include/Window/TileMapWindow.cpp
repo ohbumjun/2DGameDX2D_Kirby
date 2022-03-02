@@ -348,7 +348,7 @@ bool CTileMapWindow::Init()
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Set Scale", 80.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Set Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -369,17 +369,22 @@ bool CTileMapWindow::Init()
 	m_TileBaseScaleYInput->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(330.f);
+	Line->SetOffsetX(325.f);
 
-	Button = AddWidget<CIMGUIButton>("Set Scale", 80.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("Set Img Scale", 85.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileBaseImageScale);
 
-	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	// =============================================
+	Label = AddWidget<CIMGUILabel>("", 0, 0.f);
 	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
 
-	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
-	Label->SetColor(0, 0, 0);
-	
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(325.f);
+
+	Button = AddWidget<CIMGUIButton>("Set RS Scale", 85.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileBaseImageResolutionScale);
+
 	// =============================================
 
 	// Default Value 들 세팅
@@ -503,9 +508,6 @@ void CTileMapWindow::SetEditModeCallback(int Index, const char* Name)
 {
 	// Editor 에 Tile Edit 이라고 세팅하기
 	CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
-
-	// TileMapWindow 내에서 Tile 의 어떤 Mode를 수정할지를 세팅
-	// m_EditMode = (Tile_EditMode)Index;
 }
 
 void CTileMapWindow::SetTileTypeCallback(int Index, const char* Name)
@@ -625,5 +627,21 @@ void CTileMapWindow::SetTileBaseImageScale()
 	if (!m_TileBaseScaleXInput->FloatEmpty() && !m_TileBaseScaleYInput->FloatEmpty())
 	{
 		m_TileMapEmpty->SetWorldScale(m_TileBaseScaleXInput->GetValueFloat(), m_TileBaseScaleYInput->GetValueFloat(), 1.f);
+	}
+}
+
+void CTileMapWindow::SetTileBaseImageResolutionScale()
+{
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	if (!m_TileMapEmpty)
+		return;
+
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
+		return;
+
+	if (!m_TileBaseScaleXInput->FloatEmpty() && !m_TileBaseScaleYInput->FloatEmpty())
+	{
+		m_TileMapEmpty->SetWorldScale((float)RS.Width, (float)RS.Height, 1.f);
 	}
 }

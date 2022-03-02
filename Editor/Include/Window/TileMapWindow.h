@@ -72,4 +72,5 @@ private:
 private:
 	void TileBaseImageLoadButton();
 	void SetTileBaseImageScale();
+	void SetTileBaseImageResolutionScale();
 };

@@ -23,16 +23,26 @@ private:
 	class CNavigationManager* m_NavManager;
 	bool                               m_Start;
 	bool m_Change;
+private :
+	Vector2 m_WorldResolution;
 public :
-	std::list<CSharedPtr<CGameObject>> GetObjectLists() const
-	{
-		return m_ObjList;
-	}
+	void SetWorldResolution (float Width, float Height)
+{
+		m_WorldResolution = Vector2(Width, Height);
+}
 	void SetPlayerObject(CGameObject* Object)
 {
 		m_Mode->SetPlayerObject(Object);
 }
 public:
+	Vector2 GetWorldResolution() const
+	{
+		return m_WorldResolution;
+	}
+	std::list<CSharedPtr<CGameObject>> GetObjectLists() const
+	{
+		return m_ObjList;
+	}
 	class CNavigationManager* GetNavManager() const
 	{
 		return m_NavManager;
@@ -89,7 +99,7 @@ public:
 
 		m_Mode->m_Scene = this;
 
-		return (T*) * m_Mode;
+		return (T*)*m_Mode;
 	}
 
 	template <typename T>

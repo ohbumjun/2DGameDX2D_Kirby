@@ -61,6 +61,7 @@ bool CEditorMenu::Init()
 	m_EditMenuComboBox->AddItem("BackGround");
 	m_EditMenuComboBox->AddItem("Line");
 	m_EditMenuComboBox->SetHideName(true);
+	m_EditMenuComboBox->SetSelectCallback<CEditorMenu>(this, &CEditorMenu::SelectEditModeCallback);
 
 	// ========================================================================
 
@@ -74,6 +75,7 @@ bool CEditorMenu::Init()
 	m_CurrentEditMenu = AddWidget<CIMGUIText>("Edit Mode Text");
 	m_CurrentEditMenu->SetColor(255, 255, 255);
 	m_CurrentEditMenu->SetText("- - - ");
+	m_CurrentEditMenu->SetSize(150.f, 80.f);
 
 	Label = AddWidget<CIMGUILabel>("", 100.f, 30.f);
 	Label->SetColor(0, 0, 0);
@@ -116,7 +118,7 @@ bool CEditorMenu::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(220.f);
 
-	m_ObjectComboBox = AddWidget<CIMGUIComboBox>("Select", 100.f, 30.f);
+	m_ObjectComboBox = AddWidget<CIMGUIComboBox>("SelectObj", 100.f, 30.f);
 	m_ObjectComboBox->AddItem("GameObject");
 	m_ObjectComboBox->AddItem("Player");
 	m_ObjectComboBox->AddItem("YellowBird");
@@ -178,7 +180,7 @@ bool CEditorMenu::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(220.f);
 
-	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("Select", 100.f, 30.f);
+	m_ComponentComboBox = AddWidget<CIMGUIComboBox>("SelectComp", 100.f, 30.f);
 	m_ComponentComboBox->AddItem("Sprite");
 	m_ComponentComboBox->AddItem("StaticMesh");
 	m_ComponentComboBox->AddItem("Widget");
@@ -215,6 +217,11 @@ bool CEditorMenu::Init()
 void CEditorMenu::Update(float DeltaTime)
 {
 	CIMGUIWindow::Update(DeltaTime);
+}
+
+void CEditorMenu::SetEditModeText(const char* Text)
+{
+	m_CurrentEditMenu->SetText(Text);
 }
 
 void CEditorMenu::CreateNewObject()
@@ -780,4 +787,11 @@ void CEditorMenu::ClearObject()
 void CEditorMenu::DeleteObject()
 {
 	// 선택된 Object가 존재해야 한다.
+}
+
+void CEditorMenu::SelectEditModeCallback(int Index, const char* EditModeText)
+{
+	m_CurrentEditMenu->SetText(EditModeText);
+
+	CEditorManager::GetInst()->SetEditMode((EditMode)Index);
 }

@@ -27,6 +27,10 @@ CScene::CScene()  :
 	m_CameraManager->Init();
 	m_ViewPort->Init();
 	m_NavManager->Init();
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	m_WorldResolution = Vector2(RS.Width, RS.Height);
 }
 
 CScene::~CScene()
@@ -158,6 +162,8 @@ void CScene::SaveFullPath(const char* FullPath)
 	// SceneEdit Object가 있을 경우, 저장을 하면 안된다.
 	// DeleteGameObject("SceneEditObject");
 
+	fwrite(&m_WorldResolution, sizeof(Vector2), 1, pFile);
+
 	size_t SceneEditObjectCount = 1;
 
 	size_t ObjectCount = m_ObjList.size() - SceneEditObjectCount;
@@ -191,6 +197,8 @@ bool CScene::LoadFullPath(const char* FullPath)
 	size_t TypeID;
 	fread(&TypeID, sizeof(size_t), 1, pFile);
 	CSceneManager::GetInst()->CallCreateSceneModeFunc(this, TypeID);
+
+	fread(&m_WorldResolution, sizeof(Vector2), 1, pFile);
 
 	size_t ObjectCount;
 	fread(&ObjectCount, sizeof(size_t), 1, pFile);
