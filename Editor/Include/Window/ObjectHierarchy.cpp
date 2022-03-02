@@ -123,13 +123,8 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 		// Edit Mode를 Tile Edit 모드로 바꿔준다
 		CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
 	}
-	else
-	{
-		TileMapWindow->SetTileMap(nullptr);
-	}
-
 	// BackGround Component 라면
-	if (TileMapWindow && m_SelectComponent->CheckType<CBackGroundComponent>())
+	else if (TileMapWindow && m_SelectComponent->CheckType<CBackGroundComponent>())
 	{
 		TileMapWindow->SetBackGround((CBackGroundComponent*)m_SelectComponent);
 

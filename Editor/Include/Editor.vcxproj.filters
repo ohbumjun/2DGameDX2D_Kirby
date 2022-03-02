@@ -63,6 +63,9 @@
     <ClCompile Include="Window\TileMapWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
+    <ClCompile Include="Window\BackGroundWindow.cpp">
+      <Filter>02. Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\BackGroundWindow.h">
+      <Filter>02. Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

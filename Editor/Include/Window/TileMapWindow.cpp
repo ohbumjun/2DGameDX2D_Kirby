@@ -24,6 +24,9 @@ CTileMapWindow::~CTileMapWindow()
 
 void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 {
+	if (m_TileMapEmpty)
+		return;
+
 	m_TileMapEmpty = TileMap;
 
 	// 전체 World Scale 정보도 세팅해야 하는가 ?
@@ -82,9 +85,13 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 
 void CTileMapWindow::SetBackGround(CBackGroundComponent* BackGround)
 {
+	if (m_BackGround)
+		return;
 
 	// 2) BackMaterial 세팅 
 	std::string BackMaterialName = BackGround->GetBackGroundMaterial()->GetName();
+
+	m_BackGround = BackGround;
 
 	if (!m_BackGround->GetBackGroundMaterial()->EmptyTexture())
 	{
@@ -749,24 +756,6 @@ void CTileMapWindow::SetTileMapSizeToTileBaseImage()
 	m_TileMapEmpty->SetTileDefaultSize(TileSizeX, TileSizeY);
 }
 
-/*
-void CTileMapWindow::CreateBackMaterial()
-{
-	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
-		return;
-
-	// Back Material 이라는 이름이 이미 만들어져 있는지 확인하기
-	if (CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial"))
-		return;
-
-	// Back Material 을 하나 만들고
-	CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
-
-	CMaterial* BackMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("BackMaterial");
-
-	BackMaterial->SetShader("Mesh2DShader");
-}
-*/
 
 void CTileMapWindow::TileBaseImageLoadButton()
 {
@@ -848,7 +837,7 @@ void CTileMapWindow::SetTileBaseImageScale()
 
 	if (!m_TileBaseScaleXInput->FloatEmpty() && !m_TileBaseScaleYInput->FloatEmpty())
 	{
-		// m_TileMapEmpty->SetWorldScale(m_TileBaseScaleXInput->GetValueFloat(), m_TileBaseScaleYInput->GetValueFloat(), 1.f);
+		m_TileMapEmpty->SetWorldScale(m_TileBaseScaleXInput->GetValueFloat(), m_TileBaseScaleYInput->GetValueFloat(), 1.f);
 	}
 }
 
@@ -881,7 +870,8 @@ void CTileMapWindow::BackGroundImageLoadButton()
 
 		WideCharToMultiByte(CP_ACP, 0, FileName, -1, ConvertFileName, Length, nullptr, nullptr);
 
-		// FullPath 먼저 만들기
+		if (!m_BackGround)
+			return;
 
 		// BackMaterial 이 만들어져 있지 않다면, 만든다.
 		if (!m_BackGround->GetBackGroundMaterial())
@@ -904,25 +894,20 @@ void CTileMapWindow::BackGroundImageLoadButton()
 			m_BackGround->GetBackGroundMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 
-		/*
-		m_TileMapEmpty->SetWorldScale((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth(),
-			(float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight(), 1.f);
-		*/
+		m_BackGround->SetWorldScale((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth(),
+			(float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight(), 1.f);
 
 		char BackImgWidth[MAX_PATH] = {};
 		sprintf_s(BackImgWidth, "%1.f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
-		m_TileBaseScaleX->SetText(BackImgWidth);
+		m_BackImgScaleX->SetText(BackImgWidth);
 
 		char BackImgHeight[MAX_PATH] = {};
 		sprintf_s(BackImgHeight, "%1.f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
-		m_TileBaseScaleX->SetText(BackImgHeight);
+		m_BackImgScaleY->SetText(BackImgHeight);
 
-		m_TileBaseScaleXInput->SetFloat((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
-		m_TileBaseScaleYInput->SetFloat((float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
-
-		m_TileBaseImageSprite->SetTexture(m_BackGround->GetBackGroundMaterial()->GetTexture());
-		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth(),
+		m_BackGroundImageSprite->SetTexture(m_BackGround->GetBackGroundMaterial()->GetTexture());
+		m_BackGroundImageSprite->SetImageStart(Vector2(0.f, 0.f));
+		m_BackGroundImageSprite->SetImageEnd(Vector2((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth(),
 			(float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight()));
 	}
 }
