@@ -25,7 +25,7 @@ public:
 		m_EditMode = EditMode;
 	}
 	*/
-	void SetBackGround(class CBackGroundComponent* TileMap);
+	void SetBackGround(class CBackGroundComponent* BackGround);
 public:
 	/*
 	Tile_EditMode GetTileEditMode () const

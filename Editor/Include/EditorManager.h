@@ -6,7 +6,8 @@ enum class EditMode
 {
 	Scene,
 	Sprite,
-	Tile
+	Tile,
+	Back
 };
 
 class CEditorManager
@@ -17,6 +18,7 @@ private:
 	class CShowObject* m_ShowObj;
 	class CSpriteEditWindow* m_SpriteWindow;
 	class CTileMapWindow* m_TileMapWindow;
+	class CBackGroundWindow* m_BackGroundWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
@@ -35,6 +37,10 @@ public:
 	class CTileMapWindow* GetTileMapWindow () const
 	{
 		return m_TileMapWindow;
+	}
+	class CBackGroundWindow* GetBackGroundWindow() const
+	{
+		return m_BackGroundWindow;
 	}
 	class CDragObject* GetDragObject() const
 	{

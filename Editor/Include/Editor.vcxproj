@@ -171,11 +171,12 @@
   <ItemGroup>
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\ShowObject.cpp" />
-    <ClCompile Include="Object\SpriteCameraObject.cpp" />
     <ClCompile Include="Object\SpriteEditObject.cpp" />
+    <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Scene\DefaultScene.cpp" />
     <ClCompile Include="Window\BackGroundWindow.cpp" />
     <ClCompile Include="Window\DetailInfoWindow.cpp" />
@@ -187,11 +188,12 @@
   <ItemGroup>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
+    <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\ShowObject.h" />
-    <ClInclude Include="Object\SpriteCameraObject.h" />
     <ClInclude Include="Object\SpriteEditObject.h" />
+    <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\DefaultScene.h" />
     <ClInclude Include="Window\BackGroundWindow.h" />

@@ -1,4 +1,6 @@
 #include "ObjectHierarchy.h"
+
+#include "BackGroundWindow.h"
 #include "IMGUIManager.h"
 #include "TileMapWindow.h"
 #include "IMGUISameLine.h"
@@ -114,6 +116,8 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 
 	CTileMapWindow* TileMapWindow = (CTileMapWindow*)CIMGUIManager::GetInst()->FindIMGUIWindow("TileMapWindow");
 
+	CBackGroundWindow* BackGroundWindow = (CBackGroundWindow*)CIMGUIManager::GetInst()->FindIMGUIWindow("BackGroundWindow");
+
 	// Tile Map Component 라면 
 	if (TileMapWindow && m_SelectComponent->CheckType<CTileEmptyComponent>())
 	{
@@ -124,15 +128,17 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 		CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
 	}
 	// BackGround Component 라면
-	else if (TileMapWindow && m_SelectComponent->CheckType<CBackGroundComponent>())
+	else if (BackGroundWindow && m_SelectComponent->CheckType<CBackGroundComponent>())
 	{
-		TileMapWindow->SetBackGround((CBackGroundComponent*)m_SelectComponent);
+		BackGroundWindow->SetBackGround((CBackGroundComponent*)m_SelectComponent);
 
 		// Edit Mode를 Tile Edit 모드로 바꿔준다
-		CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+		CEditorManager::GetInst()->SetEditMode(EditMode::Back);
 	}
+	/*
 	else
 	{
 		TileMapWindow->SetTileMap(nullptr);
 	}
+	*/
 }

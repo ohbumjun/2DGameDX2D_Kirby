@@ -55,6 +55,9 @@
     <Filter Include="02. Object\07. Effect\01. MonsterAttack">
       <UniqueIdentifier>{11f59ad5-685f-4a21-8cb4-8aea5f26ed97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\08. BackGround">
+      <UniqueIdentifier>{f3dc3208-3b18-49b7-816f-f42e69b00458}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="Object\TileMapEmpty.cpp">
       <Filter>02. Object\06. TileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround.cpp">
+      <Filter>02. Object\08. BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Object\TileMapEmpty.h">
       <Filter>02. Object\06. TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround.h">
+      <Filter>02. Object\08. BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

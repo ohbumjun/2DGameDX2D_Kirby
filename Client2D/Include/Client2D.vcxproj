@@ -160,6 +160,7 @@
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
+    <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\BubbleParticle.cpp" />
     <ClCompile Include="Object\Bullet.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
+    <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\BubbleParticle.h" />
     <ClInclude Include="Object\Bullet.h" />

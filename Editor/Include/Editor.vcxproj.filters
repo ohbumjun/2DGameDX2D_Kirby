@@ -22,6 +22,21 @@
     <Filter Include="03. Object">
       <UniqueIdentifier>{27c81deb-1d5e-4351-8db7-befa39ac91f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\01. Editor">
+      <UniqueIdentifier>{4b068fc2-6011-4ce4-957d-ec5cbc96e78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object\02. Player">
+      <UniqueIdentifier>{e7114839-ad9d-42e1-8c20-7cd91535098d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object\03. Monster">
+      <UniqueIdentifier>{d83ef226-08d0-43dd-a686-5092764c0a4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object\04. BackGround">
+      <UniqueIdentifier>{c5749698-3d5b-4252-8fc6-131fc430bee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object\05. TileMap">
+      <UniqueIdentifier>{7a4ea3fd-8593-497c-8417-5f59d7e5fe55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,14 +45,8 @@
     <ClCompile Include="EditorManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Object\SpriteEditObject.cpp">
-      <Filter>03. Object</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\DefaultScene.cpp">
       <Filter>01. Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\DragObject.cpp">
-      <Filter>03. Object</Filter>
     </ClCompile>
     <ClCompile Include="Window\EditorMenu.cpp">
       <Filter>02. Editor</Filter>
@@ -54,17 +63,26 @@
     <ClCompile Include="Window\SpriteEditWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Object\ShowObject.cpp">
-      <Filter>03. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\SpriteCameraObject.cpp">
-      <Filter>03. Object</Filter>
-    </ClCompile>
     <ClCompile Include="Window\TileMapWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
     <ClCompile Include="Window\BackGroundWindow.cpp">
       <Filter>02. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\DragObject.cpp">
+      <Filter>03. Object\01. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\SpriteEditObject.cpp">
+      <Filter>03. Object\01. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\ShowObject.cpp">
+      <Filter>03. Object\01. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BackGround.cpp">
+      <Filter>03. Object\04. BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\TileMapEmpty.cpp">
+      <Filter>03. Object\05. TileMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,12 +94,6 @@
     </ClInclude>
     <ClInclude Include="Scene\DefaultScene.h">
       <Filter>01. Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\SpriteEditObject.h">
-      <Filter>03. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\DragObject.h">
-      <Filter>03. Object</Filter>
     </ClInclude>
     <ClInclude Include="Window\EditorMenu.h">
       <Filter>02. Editor</Filter>
@@ -98,12 +110,6 @@
     <ClInclude Include="Window\SpriteEditWindow.h">
       <Filter>02. Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Object\ShowObject.h">
-      <Filter>03. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\SpriteCameraObject.h">
-      <Filter>03. Object</Filter>
-    </ClInclude>
     <ClInclude Include="Window\TileMapWindow.h">
       <Filter>02. Editor</Filter>
     </ClInclude>
@@ -112,6 +118,21 @@
     </ClInclude>
     <ClInclude Include="Window\BackGroundWindow.h">
       <Filter>02. Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\DragObject.h">
+      <Filter>03. Object\01. Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SpriteEditObject.h">
+      <Filter>03. Object\01. Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\ShowObject.h">
+      <Filter>03. Object\01. Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BackGround.h">
+      <Filter>03. Object\04. BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\TileMapEmpty.h">
+      <Filter>03. Object\05. TileMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

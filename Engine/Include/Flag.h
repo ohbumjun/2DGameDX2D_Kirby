@@ -78,6 +78,10 @@ enum class CreateObject_Type
 {
 	GameObject,
 	Player,
+	YellowBird,
+	BeamMonster,
+	TileEmptyObject,
+	BackGround,
 	End
 };
 

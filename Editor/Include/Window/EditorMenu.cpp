@@ -10,7 +10,10 @@
 #include "ObjectHierarchy.h"
 #include "IMGUIListBox.h"
 #include "../Object/SpriteEditObject.h"
+// Object
 #include "../Object/Player2D.h"
+#include "../Object/ShowObject.h"
+// Component
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 #include "Component/WidgetComponent.h"
@@ -24,7 +27,6 @@
 #include "PathManager.h"
 #include "Engine.h"
 #include "TileMapWindow.h"
-#include "../Object/ShowObject.h"
 
 
 CEditorMenu::CEditorMenu()
@@ -44,6 +46,8 @@ bool CEditorMenu::Init()
 	m_ObjectComboBox->AddItem("Player");
 	m_ObjectComboBox->AddItem("YellowBird");
 	m_ObjectComboBox->AddItem("BeamMonster");
+	m_ObjectComboBox->AddItem("TileEmptyObject");
+	m_ObjectComboBox->AddItem("BackGround");
 	m_ObjectComboBox->SetHideName(true);
 
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
@@ -164,6 +168,26 @@ void CEditorMenu::CreateNewObject()
 	case CreateObject_Type::Player :
 		{
 		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::YellowBird:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::BeamMonster:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::TileEmptyObject:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::BackGround:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
 	}

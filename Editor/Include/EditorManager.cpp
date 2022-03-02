@@ -15,6 +15,7 @@
 #include "Window/ObjectHierarchy.h"
 #include "Window/DetailInfoWindow.h"
 #include "Window/TileMapWindow.h"
+#include "Window/BackGroundWindow.h"
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 #include "Component/WidgetComponent.h"
@@ -114,6 +115,7 @@ bool CEditorManager::Init(HINSTANCE hInst)
 	m_ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
 	m_TileMapWindow = CIMGUIManager::GetInst()->AddWindow<CTileMapWindow>("TileMapWindow");
+	m_BackGroundWindow = CIMGUIManager::GetInst()->AddWindow<CBackGroundWindow>("BackGroundWindow");
 
 	// Sprite 편집할 때
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
