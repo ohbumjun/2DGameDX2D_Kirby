@@ -25,7 +25,7 @@ bool CTileMapEmpty::Init()
 	m_TileEmptyComponent = CreateComponent<CTileEmptyComponent>("TileEmpty");
 
 	// Tile
-	m_TileEmptyComponent->CreateTileEmpty(10, 10, Vector3(50.f, 50.f, 0.f));
+	// m_TileEmptyComponent->CreateTileEmpty(10, 10, Vector3(50.f, 50.f, 0.f));
 
 
 	return true;

@@ -165,7 +165,7 @@ void CBackGroundWindow::SetEditModeCallback(int Index, const char* Name)
 
 void CBackGroundWindow::BackGroundImageLoadButton()
 {
-	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Back)
 		return;
 
 	TCHAR FilePath[MAX_PATH] = {};

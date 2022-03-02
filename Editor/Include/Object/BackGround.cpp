@@ -19,6 +19,9 @@ bool CBackGround::Init()
 	if (!CGameObject::Init())
 		return false;
 
+	m_BackGroundComponent = CreateComponent<CBackGroundComponent>("BackGround");
+
+
 	return true;
 }
 
@@ -60,4 +63,6 @@ void CBackGround::Save(FILE* pFile)
 void CBackGround::Load(FILE* pFile)
 {
 	CGameObject::Load(pFile);
+
+	m_BackGroundComponent = (CBackGroundComponent*)m_RootComponent.Get();
 }

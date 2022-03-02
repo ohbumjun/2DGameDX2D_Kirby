@@ -22,10 +22,7 @@ protected:
 protected:
     float m_DeltaTime;
 public:
-    void EnableEditMode(bool Mode)
-    {
-        m_EditMode = Mode;
-    }
+
     CMaterial* GetBackGroundMaterial()    const
     {
         return m_BackGroundMaterial;

@@ -13,6 +13,8 @@
 // Object
 #include "../Object/Player2D.h"
 #include "../Object/ShowObject.h"
+#include "../Object/TileMapEmpty.h"
+#include "../Object/BackGround.h"
 // Component
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
@@ -170,24 +172,14 @@ void CEditorMenu::CreateNewObject()
 		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
-	case CreateObject_Type::YellowBird:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-	case CreateObject_Type::BeamMonster:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
 	case CreateObject_Type::TileEmptyObject:
 		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
 	case CreateObject_Type::BackGround:
 		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
 	}
@@ -234,48 +226,45 @@ void CEditorMenu::CreateNewComponent()
 		}
 		break;
 	case CreateComponent_Type::Widget:
-	{
-		Object->CreateComponent<CWidgetComponent>(m_ComponentNameInput->GetTextMultibyte());
-	}
-	break;
+		{
+			Object->CreateComponent<CWidgetComponent>(m_ComponentNameInput->GetTextMultibyte());
+		}
+		break;
 	case CreateComponent_Type::ColliderBox2D:
-	{
-		Object->CreateComponent<CColliderBox2D>(m_ComponentNameInput->GetTextMultibyte());
-	}
+		{
+			Object->CreateComponent<CColliderBox2D>(m_ComponentNameInput->GetTextMultibyte());
+		}
+		break;
 	case CreateComponent_Type::ColliderCircle:
-	{
-		Object->CreateComponent<CColliderCircle>(m_ComponentNameInput->GetTextMultibyte());
-	}
-	break;
+		{
+			Object->CreateComponent<CColliderCircle>(m_ComponentNameInput->GetTextMultibyte());
+		}
+		break;
 	case CreateComponent_Type::ColliderPixel:
-	{
-		Object->CreateComponent<CColliderPixel>(m_ComponentNameInput->GetTextMultibyte());
-	}
-	break;
+		{
+			Object->CreateComponent<CColliderPixel>(m_ComponentNameInput->GetTextMultibyte());
+		}
+		break;
 	case CreateComponent_Type::Camera:
-	{
-		Object->CreateComponent<CCameraComponent>(m_ComponentNameInput->GetTextMultibyte());
-	}
-	break;
+		{
+			Object->CreateComponent<CCameraComponent>(m_ComponentNameInput->GetTextMultibyte());
+		}
+		break;
 	case CreateComponent_Type::TileEmpty:
-	{
-		/*
-		CTileMapComponent* TileMapComponent = (CTileMapComponent*)Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
-		CMaterial* TileMapMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileMapMaterial");
-		TileMapComponent->SetTileMaterial(TileMapMaterial);
-		*/
-		Object->CreateComponent<CTileEmptyComponent>(m_ComponentNameInput->GetTextMultibyte());
-	}
+		{
+			/*
+			CTileMapComponent* TileMapComponent = (CTileMapComponent*)Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
+			CMaterial* TileMapMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileMapMaterial");
+			TileMapComponent->SetTileMaterial(TileMapMaterial);
+			*/
+			Object->CreateComponent<CTileEmptyComponent>(m_ComponentNameInput->GetTextMultibyte());
+		}
 	break;
 	case CreateComponent_Type::BackGround :
-	{
-		/*
-		CTileMapComponent* TileMapComponent = (CTileMapComponent*)Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
-		CMaterial* TileMapMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileMapMaterial");
-		TileMapComponent->SetTileMaterial(TileMapMaterial);
-		*/
-		Object->CreateComponent<CBackGroundComponent>(m_ComponentNameInput->GetTextMultibyte());
-	}
+		{
+			Object->CreateComponent<CBackGroundComponent>(m_ComponentNameInput->GetTextMultibyte());
+		}
+		break;
 	}
 
 	// Root Component에 Add 시킨다 ?

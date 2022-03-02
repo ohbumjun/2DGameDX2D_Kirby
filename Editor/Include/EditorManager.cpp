@@ -6,7 +6,6 @@
 #include "resource.h"
 #include "Object/DragObject.h"
 #include "Object/SpriteEditObject.h"
-#include "Object/SpriteCameraObject.h"
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
