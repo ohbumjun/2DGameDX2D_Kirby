@@ -145,7 +145,7 @@ void CEditorManager::CreateCameraObject()
 }
 */
 
-bool CEditorManager::Init(HINSTANCE hInst)
+bool CEditorManager::Init(HINSTANCE hInst)//
 {
 	if (!CEngine::GetInst()->Init(hInst, TEXT("GameEngine"),
 	                              1280, 720, IDI_ICON1))
