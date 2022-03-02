@@ -21,7 +21,7 @@ CTileEmptyComponent::CTileEmptyComponent()
 	m_CountX = 0;
 	m_CountY = 0;
 	m_RenderCount = 0;
-	m_LayerName = "Back";
+	m_LayerName = "Tile";
 
 	m_DeltaTime = 0.f;
 

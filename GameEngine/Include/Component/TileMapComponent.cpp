@@ -22,7 +22,7 @@ CTileMapComponent::CTileMapComponent()
 	m_CountY = 0;
 	m_RenderCount = 0;
 	m_TileShape = Tile_Shape::Rect;
-	m_LayerName = "Back";
+	m_LayerName = "Tile";
 	m_TileInfoBuffer = nullptr;
 
 	m_DeltaTime = 0.f;
