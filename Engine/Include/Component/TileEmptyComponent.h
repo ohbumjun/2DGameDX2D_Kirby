@@ -19,7 +19,6 @@ protected:
 protected:
     CSharedPtr<CSpriteMesh> m_ImageMesh;
     CSharedPtr<CMaterial> m_TileImageMaterial;
-    CSharedPtr<CMaterial> m_BackGroundMaterial;
 protected:
     CSharedPtr<CShader> m_TileShader;
     CSharedPtr<CMesh> m_TileMesh;
@@ -49,10 +48,6 @@ public:
     {
         return m_TileImageMaterial;
     }
-    CMaterial* GetBackGroundMaterial()    const
-    {
-        return m_BackGroundMaterial;
-    }
     int GetTileCountX() const
     {
         return m_CountX;
@@ -74,25 +69,6 @@ public :
     {
         m_EditMode = Enable;
     }
-public : // BackGround Image
-    void SetBackGroundMaterial(CMaterial* Material);
-    void SetBackGroundBaseColor(const Vector4& Color);
-    void SetBackGroundBaseColor(float r, float g, float b, float a);
-    void SetBackGroundRenderState(class CRenderState* State);
-    void SetBackGroundRenderState(const std::string& Name);
-    void SetBackGroundTransparency(bool Enable);
-    void SetBackGroundOpacity(float Opacity);
-    void AddBackGroundOpacity(float Opacity);
-public:
-    void AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void AddBackGroundTextureFullPath(int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void AddBackGroundTexture(int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
-    void SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name, class CTexture* Texture);
-    void SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FileName, const std::string& PathName = TEXTURE_PATH);
-    void SetBackGroundTextureFullPath(int Index, int Register, int ShaderType, const std::string& Name, const TCHAR* FullPath);
-    void SetBackGroundTexture(int Index, int Register, int ShaderType, const std::string& Name, const std::vector<TCHAR*>& vecFileName, const std::string& PathName = TEXTURE_PATH);
-
 public: // Tile Image
     void SetTileImageMaterial(CMaterial* Material); 
     void SetTileImageBaseColor(const Vector4& Color);

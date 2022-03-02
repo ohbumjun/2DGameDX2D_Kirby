@@ -20,10 +20,10 @@
 #include "Component/CameraComponent.h"
 #include "Component/TileMapComponent.h"
 #include "Component/TileEmptyComponent.h"
+#include "Component/BackGroundComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
 #include "TileMapWindow.h"
-
 #include "../Object/ShowObject.h"
 
 
@@ -66,6 +66,7 @@ bool CEditorMenu::Init()
 	m_ComponentComboBox->AddItem("ColliderPixel");
 	m_ComponentComboBox->AddItem("CameraComponent");
 	m_ComponentComboBox->AddItem("TileEmptyComponent");
+	m_ComponentComboBox->AddItem("BackGroundComponent");
 	// m_ComponentComboBox->AddItem("TileMapComponent");
 	m_ComponentComboBox->SetHideName(true);
 
@@ -242,8 +243,15 @@ void CEditorMenu::CreateNewComponent()
 		Object->CreateComponent<CTileEmptyComponent>(m_ComponentNameInput->GetTextMultibyte());
 	}
 	break;
-
-	break;
+	case CreateComponent_Type::BackGround :
+	{
+		/*
+		CTileMapComponent* TileMapComponent = (CTileMapComponent*)Object->CreateComponent<CTileMapComponent>(m_ComponentNameInput->GetTextMultibyte());
+		CMaterial* TileMapMaterial = CSceneManager::GetInst()->GetScene()->GetResource()->FindMaterial("TileMapMaterial");
+		TileMapComponent->SetTileMaterial(TileMapMaterial);
+		*/
+		Object->CreateComponent<CBackGroundComponent>(m_ComponentNameInput->GetTextMultibyte());
+	}
 	}
 
 	// Root Component에 Add 시킨다 ?

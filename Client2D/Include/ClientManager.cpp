@@ -13,6 +13,7 @@
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Component/TileMapComponent.h"
+#include "Component/BackGroundComponent.h"
 #include "Component/TileEmptyComponent.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
@@ -194,6 +195,12 @@ CComponent* CClientManager::CreateComponent(CGameObject* Obj, size_t Type)
 		return Component;
 	}
 	if (Type == typeid(CNavAgent).hash_code())
+	{
+		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
+
+		return Component;
+	}
+	if (Type == typeid(CBackGroundComponent).hash_code())
 	{
 		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
 

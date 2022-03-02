@@ -38,12 +38,13 @@ private: // todo :  BackGround Info
 	class CIMGUIImage* m_BackGroundImageSprite;
 	class CIMGUIText* m_BackImgScaleX;
 	class CIMGUIText* m_BackImgScaleY;
-	class CIMGUITextInput* m_BaseImgScaleXInput;
-	class CIMGUITextInput* m_BaseImgScaleYInput;
+	class CIMGUIText* m_BaseImgScrollRatio;
+	class CIMGUITextInput* m_BaseImgScrollRatioInput;
 private :
 	// class CTileMapComponent* m_TileMap;
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.
 	class CTileEmptyComponent* m_TileMapEmpty;
+	class CBackGroundComponent* m_BackGround;
 public :
 	/*
 	void SetTileEditMode (Tile_EditMode EditMode)
@@ -52,6 +53,7 @@ public :
 	}
 	*/
 	void SetTileMap(class CTileEmptyComponent* TileMap);
+	void SetBackGround(class CBackGroundComponent* TileMap);
 public :
 	/*
 	Tile_EditMode GetTileEditMode () const
@@ -72,8 +74,9 @@ private :
 private :
 	void TileBaseImageLoadButton();
 	void SetTileBaseImageScale();
+private :
 	void BackGroundImageLoadButton();
-	void SetBackGroundImageScale();
+	void SetBackGroundScrollRatio();
 
 };
 

@@ -24,6 +24,7 @@
 #include "Component/ParticleComponent.h"
 #include "Component/ColliderPixel.h"
 #include "Component/TileMapComponent.h"
+#include "Component/BackGroundComponent.h"
 #include "Component/TileEmptyComponent.h"
 #include "Component/CameraComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -398,6 +399,12 @@ CComponent* CEditorManager::CreateComponent(CGameObject* Obj, const size_t Type)
 		return Component;
 	}
 	if (Type == typeid(CNavAgent).hash_code())
+	{
+		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
+
+		return Component;
+	}
+	if (Type == typeid(CBackGroundComponent).hash_code())
 	{
 		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
 

@@ -8,6 +8,7 @@
 #include "IMGUIText.h"
 #include "IMGUITextInput.h"
 #include "Component/TileEmptyComponent.h"
+#include "Component/BackGroundComponent.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
@@ -76,24 +77,37 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	}
 	*/
 
+
+}
+
+void CTileMapWindow::SetBackGround(CBackGroundComponent* BackGround)
+{
+
 	// 2) BackMaterial 세팅 
-	std::string BackMaterialName = TileMap->GetTileImageMaterial()->GetName();
+	std::string BackMaterialName = BackGround->GetBackGroundMaterial()->GetName();
 
-	if (!m_TileMapEmpty->GetTileImageMaterial()->EmptyTexture())
+	if (!m_BackGround->GetBackGroundMaterial()->EmptyTexture())
 	{
-		// 여기서는 크기를 Texture의 크기가 아니라, 저장된 World Scale 크기로 세팅한다.
-		// m_BackWorldScaleX->SetFloat((float)m_TileMap->GetTileImageMaterial()->GetTextureWidth());
-		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetWorldScale().x);
-		// m_BackWorldScaleY->SetFloat((float)m_TileMap->GetTileImageMaterial()->GetTextureHeight());
-		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetWorldScale().y);
+		char TextureWidth[MAX_PATH] = {};
+		sprintf_s(TextureWidth, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
+		m_BackImgScaleX->SetText(TextureWidth);
 
-		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetTileImageMaterial()->GetTexture());
-		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureWidth(),
-			(float)m_TileMapEmpty->GetTileImageMaterial()->GetTextureHeight()));
+		char TextureHeight[MAX_PATH] = {};
+		sprintf_s(TextureHeight, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
+		m_BackImgScaleY->SetText(TextureHeight);
+
+		char ScrollRatio[MAX_PATH] = {};
+		sprintf_s(ScrollRatio, "%.1f", 100.f);
+		m_BaseImgScrollRatio->SetText(ScrollRatio);
+
+		m_BaseImgScrollRatioInput->SetFloat(100.f);
+
+		m_BackGroundImageSprite->SetTexture(m_BackGround->GetBackGroundMaterial()->GetTexture());
+		m_BackGroundImageSprite->SetImageStart(Vector2(0.f, 0.f));
+		m_BackGroundImageSprite->SetImageEnd(Vector2((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth(),
+			(float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight()));
 
 	}
-
 }
 
 bool CTileMapWindow::Init()
@@ -363,7 +377,7 @@ bool CTileMapWindow::Init()
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Set Scale", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Set Scale", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -434,45 +448,47 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_BackImgScaleX = AddWidget<CIMGUIText>("X");
+	m_BackImgScaleX = AddWidget<CIMGUIText>("Back X");
 	m_BackImgScaleX->SetSize(80.f, 40.f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
 
-	m_BackImgScaleY = AddWidget<CIMGUIText>("X");
+	m_BackImgScaleY = AddWidget<CIMGUIText>("Back X");
 	m_BackImgScaleY->SetSize(80.f, 40.f);
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Set Scale", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Current Ratio", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_BaseImgScaleXInput = AddWidget<CIMGUITextInput>("X");
-	m_BaseImgScaleXInput->SetSize(80.f, 40.f);
-	m_BaseImgScaleXInput->SetInt(100);
-	m_BaseImgScaleXInput->SetTextType(ImGuiText_Type::Float);
+	m_BaseImgScrollRatio = AddWidget<CIMGUIText>("ScrollRatio");
+	m_BaseImgScrollRatio->SetSize(80.f, 40.f);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Set Ratio", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(230.f);
+	Line->SetOffsetX(120.f);
 
-	m_BaseImgScaleYInput = AddWidget<CIMGUITextInput>("Y");
-	m_BaseImgScaleYInput->SetSize(80.f, 40.f);
-	m_BaseImgScaleYInput->SetInt(100);
-	m_BaseImgScaleYInput->SetTextType(ImGuiText_Type::Float);
+	m_BaseImgScrollRatioInput = AddWidget<CIMGUITextInput>("Scroll Ratio Input");
+	m_BaseImgScrollRatioInput->SetSize(80.f, 40.f);
+	m_BaseImgScrollRatioInput->SetInt(100);
+	m_BaseImgScrollRatioInput->SetHideName(true);
+	m_BaseImgScrollRatioInput->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(330.f);
+	Line->SetOffsetX(210.f);
 
-	Button = AddWidget<CIMGUIButton>("Set Scale", 80.f, 30.f);
-	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetBackGroundImageScale);
-
-	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
-	Label->SetColor(0, 0, 0);
+	Button = AddWidget<CIMGUIButton>("Change", 100.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetBackGroundScrollRatio);
 
 	// =============================================
 
@@ -518,12 +534,11 @@ bool CTileMapWindow::Init()
 	m_BackImgScaleX->SetText(BackSizeX);
 
 	char BackSizeY[MAX_PATH] = {};
-	sprintf_s(BackSizeY, "%.1f", 80.f);
+	sprintf_s(BackSizeY, "%.1f", 00.f);
 	m_BackImgScaleY->SetText(BackSizeY);
 
-	// Tile Base Input 세팅
-	m_BaseImgScaleXInput->SetFloat(0.f);
-	m_BaseImgScaleYInput->SetFloat(0.f);
+	// Scroll Ratio 세팅
+	m_BaseImgScrollRatioInput->SetFloat(0.f);
 
 	return true;
 }
@@ -869,7 +884,7 @@ void CTileMapWindow::BackGroundImageLoadButton()
 		// FullPath 먼저 만들기
 
 		// BackMaterial 이 만들어져 있지 않다면, 만든다.
-		if (!m_TileMapEmpty->GetBackGroundMaterial())
+		if (!m_BackGround->GetBackGroundMaterial())
 		{
 			CSceneManager::GetInst()->GetScene()->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
 
@@ -877,16 +892,16 @@ void CTileMapWindow::BackGroundImageLoadButton()
 
 			BackMaterial->SetShader("Mesh2DShader");
 
-			m_TileMapEmpty->SetBackGroundMaterial(BackMaterial);
+			m_BackGround->SetBackGroundMaterial(BackMaterial);
 		}
 
-		if (m_TileMapEmpty->GetBackGroundMaterial()->EmptyTexture())
+		if (m_BackGround->GetBackGroundMaterial()->EmptyTexture())
 		{
-			m_TileMapEmpty->GetBackGroundMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+			m_BackGround->GetBackGroundMaterial()->AddTextureFullPath(0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 		else
 		{
-			m_TileMapEmpty->GetBackGroundMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
+			m_BackGround->GetBackGroundMaterial()->SetTextureFullPath(0, 0, (int)Buffer_Shader_Type::Pixel, ConvertFileName, FilePath);
 		}
 
 		/*
@@ -895,23 +910,23 @@ void CTileMapWindow::BackGroundImageLoadButton()
 		*/
 
 		char BackImgWidth[MAX_PATH] = {};
-		sprintf_s(BackImgWidth, "%1.f", (float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureWidth());
+		sprintf_s(BackImgWidth, "%1.f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
 		m_TileBaseScaleX->SetText(BackImgWidth);
 
 		char BackImgHeight[MAX_PATH] = {};
-		sprintf_s(BackImgHeight, "%1.f", (float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureHeight());
+		sprintf_s(BackImgHeight, "%1.f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
 		m_TileBaseScaleX->SetText(BackImgHeight);
 
-		m_TileBaseScaleXInput->SetFloat((float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureWidth());
-		m_TileBaseScaleYInput->SetFloat((float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureHeight());
+		m_TileBaseScaleXInput->SetFloat((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
+		m_TileBaseScaleYInput->SetFloat((float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
 
-		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetBackGroundMaterial()->GetTexture());
+		m_TileBaseImageSprite->SetTexture(m_BackGround->GetBackGroundMaterial()->GetTexture());
 		m_TileBaseImageSprite->SetImageStart(Vector2(0.f, 0.f));
-		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureWidth(),
-			(float)m_TileMapEmpty->GetBackGroundMaterial()->GetTextureHeight()));
+		m_TileBaseImageSprite->SetImageEnd(Vector2((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth(),
+			(float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight()));
 	}
 }
 
-void CTileMapWindow::SetBackGroundImageScale()
+void CTileMapWindow::SetBackGroundScrollRatio()
 {}
 

@@ -91,7 +91,8 @@ enum class CreateComponent_Type
 	ColliderPixel,
 	Camera,
 	// TileMap
-	TileEmpty
+	TileEmpty,
+	BackGround,
 };
 
 enum Collision_Channel
