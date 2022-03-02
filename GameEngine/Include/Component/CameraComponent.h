@@ -93,13 +93,13 @@ public:
 		if (m_CameraType == Camera_Type::Camera2D)
 		{
 			float	z = GetRelativePos().z;
+
 			SetRelativePos(m_RS.Width * -x, m_RS.Height * -y, z);
 
 			m_Ratio.x = x;
 			m_Ratio.y = y;
 		}
 	}
-
 private:
 	void CreateProjectionMatrix();
 public :

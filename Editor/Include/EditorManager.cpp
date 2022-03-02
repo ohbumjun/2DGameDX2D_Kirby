@@ -130,7 +130,6 @@ void CEditorManager::SetSceneEditObject()
 	{
 		m_ShowObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CShowObject>("SceneEditObject");
 		m_ShowObj->SetWorldScale(0.f, 0.f, 1.f);
-
 	}
 }
 
@@ -209,7 +208,8 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	CInput::GetInst()->SetKeyCallback("DownYSize", Key_State::KeyState_Down, this, &CEditorManager::DecreaseYSize);
 
 	// Camera 를 화면 가운데 오게 세팅한다.
-	CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->OnViewportCenter();
+	// CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->OnViewportCenter();
+	CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->SetViewportRatio(0.2f, 0.2f);
 
 	return true;
 }

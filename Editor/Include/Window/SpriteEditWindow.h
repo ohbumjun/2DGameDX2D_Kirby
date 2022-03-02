@@ -63,6 +63,7 @@ public :
 	void SetCameraPosText(float PosX, float PosY);
 	void SetFrameStartText(float PosX, float PosY);
 	void SetFrameEndText(float PosX, float PosY);
+	void SetCameraPosToOrigin();
 public :
 	void SetReverseMode();
 	void SetNormalMode();

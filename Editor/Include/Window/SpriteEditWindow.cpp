@@ -1,4 +1,7 @@
 #include "SpriteEditWindow.h"
+
+#include <Scene/CameraManager.h>
+
 #include "Device.h"
 #include "Engine.h"
 #include "IMGUIButton.h"
@@ -78,6 +81,12 @@ bool CSpriteEditWindow::Init()
 	m_CameraPosY->SetColor(255, 255, 255);
 	m_CameraPosY->SetText("0.0");
 
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(240.f);
+
+	CIMGUIButton* Button = AddWidget<CIMGUIButton>("SetOrigin", 80.f, 30.f);
+	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCameraPosToOrigin);
+
 	// ==============================
 	Label = AddWidget<CIMGUILabel>("FrameStart", 80.f, 30.f);
 	Label->SetColor(0, 0, 255);
@@ -118,7 +127,7 @@ bool CSpriteEditWindow::Init()
 
 	// ==============================
 
-	CIMGUIButton* Button = AddWidget<CIMGUIButton>("LoadTexture", 80.f, 80.f);
+	Button = AddWidget<CIMGUIButton>("LoadTexture", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -652,6 +661,17 @@ void CSpriteEditWindow::SetFrameEndText(float PosX, float PosY)
 
 	sprintf_s(PosTest, "%.2f", PosY);
 	m_FrameEndY->SetText(PosTest);
+}
+
+void CSpriteEditWindow::SetCameraPosToOrigin()
+{
+	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	Vector3 CameraPos = Camera->GetWorldPos();
+
+	Camera->SetWorldPos(0.f, 0.f, CameraPos.z);
+
+	m_CameraPosX->SetText(std::to_string(0.f).c_str());
+	m_CameraPosY->SetText(std::to_string(0.f).c_str());
 }
 
 void CSpriteEditWindow::SetReverseMode()
