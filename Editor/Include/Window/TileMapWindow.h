@@ -63,6 +63,8 @@ public:
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
+private :
+	void SetWorldScale();
 private:
 	void CreateTile();
 	void SetEditModeCallback(int Index, const char* Name);

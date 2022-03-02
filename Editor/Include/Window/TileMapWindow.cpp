@@ -115,7 +115,7 @@ bool CTileMapWindow::Init()
 	
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Set W Scale", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Set World Scale", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -123,24 +123,23 @@ bool CTileMapWindow::Init()
 	Line->SetOffsetX(120.f);
 
 	m_WorldSizeXInput = AddWidget<CIMGUITextInput>("WX");
-	m_WorldSizeXInput->SetSize(80.f, 40.f);
+	m_WorldSizeXInput->SetSize(60.f, 40.f);
 	m_WorldSizeXInput->SetFloat(100);
 	m_WorldSizeXInput->SetTextType(ImGuiText_Type::Float);
 
-
 	Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(230.f);
+	Line->SetOffsetX(210.f);
 
 	m_WorldSizeYInput = AddWidget<CIMGUITextInput>("WY");
-	m_WorldSizeYInput->SetSize(80.f, 40.f);
+	m_WorldSizeYInput->SetSize(60.f, 40.f);
 	m_WorldSizeYInput->SetFloat(100);
 	m_WorldSizeYInput->SetTextType(ImGuiText_Type::Float);
 
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(310.f);
 
-	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
-	Label->SetColor(0, 0, 0);
-	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
-	Label->SetColor(0, 0, 0);
+	CIMGUIButton* Button = AddWidget<CIMGUIButton>("Set W Scale", 100.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetWorldScale);
 
 	// ==============================
 
@@ -149,7 +148,6 @@ bool CTileMapWindow::Init()
 	Label->SetAlign(0.5f, 0.0f);
 
 	// ==============================
-	
 
 	Label = AddWidget<CIMGUILabel>("Current Count", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
@@ -256,7 +254,7 @@ bool CTileMapWindow::Init()
 
 	// ==============================
 
-	CIMGUIButton* Button = AddWidget<CIMGUIButton>("CreateTileMap", 200.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("CreateTileMap", 200.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::CreateTile);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -387,6 +385,18 @@ bool CTileMapWindow::Init()
 
 	// =============================================
 
+	Vector2 WorldResolution = CSceneManager::GetInst()->GetScene()->GetWorldResolution();
+
+	char SizeX[MAX_PATH] = {};
+	sprintf_s(SizeX, "%.f", WorldResolution.x);
+	m_WorldSizeX->SetText(SizeX);
+	m_WorldSizeXInput->SetFloat(WorldResolution.x);
+
+	char SizeY[MAX_PATH] = {};
+	sprintf_s(SizeY, "%.f", WorldResolution.y);
+	m_WorldSizeY->SetText(SizeY);
+	m_WorldSizeYInput->SetFloat(WorldResolution.y);
+
 	// Default Value µé ¼¼ÆÃ
 	m_TileCountX->SetInt(100);
 	m_TileCountY->SetInt(100);
@@ -455,6 +465,22 @@ void CTileMapWindow::Update(float DeltaTime)
 			Tile->SetTileType((Tile_Type)TypeIndex);
 		}
 	}
+}
+
+void CTileMapWindow::SetWorldScale()
+{
+	if (m_WorldSizeXInput->FloatEmpty() || m_WorldSizeYInput->FloatEmpty())
+		return;
+
+	CSceneManager::GetInst()->GetScene()->SetWorldResolution(m_WorldSizeXInput->GetValueFloat(), m_WorldSizeYInput->GetValueFloat());
+
+	char SizeX [MAX_PATH] = {};
+	sprintf_s(SizeX, "%.f", m_WorldSizeXInput->GetValueFloat());
+	m_WorldSizeX->SetText(SizeX);
+
+	char SizeY[MAX_PATH] = {};
+	sprintf_s(SizeY, "%.f", m_WorldSizeYInput->GetValueFloat());
+	m_WorldSizeY->SetText(SizeY);
 }
 
 void CTileMapWindow::CreateTile()
