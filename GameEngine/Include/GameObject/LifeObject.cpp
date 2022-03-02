@@ -6,9 +6,9 @@
 
 CLifeObject::CLifeObject():
 	m_MoveSpeed(200.f),
-	// m_PhysicsSimulate(true),
+	m_PhysicsSimulate(false),
 	// m_IsGround(true),
-	m_PhysicsSimulate(true),
+	// m_PhysicsSimulate(true),
 	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),

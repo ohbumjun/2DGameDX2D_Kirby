@@ -5,7 +5,9 @@ CBackGround::CBackGround()
 {}
 
 CBackGround::CBackGround(const CBackGround& Map)
-{}
+{
+	m_BackGroundComponent = (CBackGroundComponent*)FindComponent("BackGround");
+}
 
 CBackGround::~CBackGround()
 {}

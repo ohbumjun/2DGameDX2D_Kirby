@@ -14,6 +14,7 @@
 #include "../Object/BeamMonster.h"
 #include "../Object/PurpleBeatle.h"
 #include "../Object/NormalBear.h"
+#include "../Object/BackGround.h"
 
 CMainScene::CMainScene()
 {
@@ -97,10 +98,6 @@ bool CMainScene::Init()
 	*/
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
-	// CTileMap* TileMap = m_Scene->CreateGameObject<CTileMap>("TileMapObject");
-	// CTileMap* TileMap = m_Scene->LoadGameObject<CTileMap>();
-	// TileMap->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
-
 
 	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
@@ -110,6 +107,10 @@ bool CMainScene::Init()
 
 	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
 	SetTileMapEmptyObject(TileMapEmpty);
+
+	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
+	BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
+	// BackGround->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
 
 	return true;
 }

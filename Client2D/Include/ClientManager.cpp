@@ -202,7 +202,7 @@ CComponent* CClientManager::CreateComponent(CGameObject* Obj, size_t Type)
 	}
 	if (Type == typeid(CBackGroundComponent).hash_code())
 	{
-		CNavAgent* Component = Obj->LoadComponent<CNavAgent>();
+		CBackGroundComponent* Component = Obj->LoadComponent<CBackGroundComponent>();
 
 		return Component;
 	}

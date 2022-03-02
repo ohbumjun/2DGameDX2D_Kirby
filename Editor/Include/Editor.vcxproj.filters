@@ -57,9 +57,6 @@
     <ClCompile Include="Window\DetailInfoWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player2D.cpp">
-      <Filter>03. Object</Filter>
-    </ClCompile>
     <ClCompile Include="Window\SpriteEditWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
@@ -84,6 +81,9 @@
     <ClCompile Include="Object\TileMapEmpty.cpp">
       <Filter>03. Object\05. TileMap</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Player2D.cpp">
+      <Filter>03. Object\02. Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -103,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="Window\DetailInfoWindow.h">
       <Filter>02. Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Player2D.h">
-      <Filter>03. Object</Filter>
     </ClInclude>
     <ClInclude Include="Window\SpriteEditWindow.h">
       <Filter>02. Editor</Filter>
@@ -133,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Object\TileMapEmpty.h">
       <Filter>03. Object\05. TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Player2D.h">
+      <Filter>03. Object\02. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
