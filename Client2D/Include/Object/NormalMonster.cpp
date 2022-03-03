@@ -36,3 +36,14 @@ CNormalMonster* CNormalMonster::Clone()
 {
 	return new CNormalMonster(*this);
 }
+
+void CNormalMonster::Save(FILE* pFile)
+{
+	CMonster::Save(pFile);
+}
+
+void CNormalMonster::Load(FILE* pFile)
+{
+	CMonster::Load(pFile);
+
+}

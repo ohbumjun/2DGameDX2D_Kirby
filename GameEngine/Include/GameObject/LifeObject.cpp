@@ -67,6 +67,11 @@ void CLifeObject::CheckBottomCollision()
 {
 	Vector3 m_Pos = GetWorldPos();
 
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+		return;
+
 	if (m_PhysicsSimulate && m_Pos.y - m_PrevPos.y <= 0.f)
 	{
 		CTileEmptyComponent* TileMap =  m_Scene->GetTileEmptyComponent();
@@ -180,6 +185,11 @@ void CLifeObject::CheckCeilingCollision()
 
 void CLifeObject::CheckSideCollision()
 {
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+		return;
+
 	Vector3 m_Pos = GetWorldPos();
 
 	float DirX = m_Pos.x - m_PrevPos.x;
@@ -189,8 +199,6 @@ void CLifeObject::CheckSideCollision()
 	if (DirX != 0 && m_SideWallCheck)
 	{
 		// 이전 위치, 현재 위치 까지의 이동 범위 안의 모든 Tile 들을 고려할 것이다
-
-		CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
 		Vector3 WorldScale = GetWorldScale();
 		Vector3 Pivot = GetPivot();

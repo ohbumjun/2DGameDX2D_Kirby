@@ -33,6 +33,8 @@ public:
 
 	class CTileEmptyComponent* GetTileEmptyComponent () const
 	{
+		if (!m_TileMapEmptyObject)
+			return nullptr;
 		return (CTileEmptyComponent*)m_TileMapEmptyObject->GetRootComponent();
 	}
 

@@ -66,19 +66,19 @@ bool CMainScene::Init()
 
 	// Sleep(1000); ////
 
-	/*
 	CBeamMonster* BeamMonster = m_Scene->CreateGameObject<CBeamMonster>("BeamMonster");
 	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
 
-	CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("YellowBird");
+	// CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("YellowBird");
+	CYellowBird* YellowBirdMonster = m_Scene->LoadGameObject<CYellowBird>();
+	YellowBirdMonster->LoadByFileName("TestYellowBird.gobj", OBJECT_PATH);
 	YellowBirdMonster->SetWorldPos(Vector3(500.f, 500.f, 1.));
 
 	CPurpleBeatle* PurpleBeatle = m_Scene->CreateGameObject<CPurpleBeatle>("PurpleBeatle");
-	PurpleBeatle->SetWorldPos(Vector3(-200.f, 500.f, 1.));
+	PurpleBeatle->SetWorldPos(Vector3(1200.f, 500.f, 1.));
 
 	CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
-	NormalBear->SetWorldPos(Vector3(-200.f, 700.f, 1.));
-	*/
+	NormalBear->SetWorldPos(Vector3(1000.f, 700.f, 1.));
 
 	/*
 	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));

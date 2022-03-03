@@ -17,6 +17,9 @@
 #include "../Object/ShowObject.h"
 #include "../Object/TileMapEmpty.h"
 #include "../Object/BackGround.h"
+#include "../Object/YellowBird.h"
+#include "../Object/PurpleBeatle.h"
+#include "../Object/NormalBear.h"
 // Component
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
@@ -124,7 +127,8 @@ bool CEditorMenu::Init()
 	m_ObjectComboBox->AddItem("GameObject");
 	m_ObjectComboBox->AddItem("Player");
 	m_ObjectComboBox->AddItem("YellowBird");
-	m_ObjectComboBox->AddItem("BeamMonster");
+	m_ObjectComboBox->AddItem("PurpleBeatles");
+	m_ObjectComboBox->AddItem("NormalMonster");
 	m_ObjectComboBox->AddItem("TileEmpty");
 	m_ObjectComboBox->AddItem("BackGround");
 	m_ObjectComboBox->SetHideName(true);
@@ -257,6 +261,21 @@ void CEditorMenu::CreateNewObject()
 	case CreateObject_Type::Player :
 		{
 		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::YellowBird:
+		{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::PurpleBeatle:
+		{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::NormalBear:
+		{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
 	case CreateObject_Type::TileEmptyObject:

@@ -30,8 +30,8 @@ public :
 public :
     virtual void Start() override;
     virtual bool Init() override;
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
+    virtual void Update(float DeltaTime)override;
+    virtual void PostUpdate(float DeltaTime)override;
     virtual CMonster* Clone() override;
 public :
     void OnMouseBegin(const CollisionResult& Result);
@@ -40,6 +40,9 @@ public :
     void OnCollisionBegin(const CollisionResult& Result);
 private :
     void PaperBurnEnd();
+public :
+    virtual void Save(FILE* pFile)override;
+    virtual void Load(FILE* pFile)override;
 };
 
 

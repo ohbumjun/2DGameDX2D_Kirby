@@ -79,7 +79,8 @@ enum class CreateObject_Type
 	GameObject,
 	Player,
 	YellowBird,
-	BeamMonster,
+	PurpleBeatle,
+	NormalBear,
 	TileEmptyObject,
 	BackGround,
 	End

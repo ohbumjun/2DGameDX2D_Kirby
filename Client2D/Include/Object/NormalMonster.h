@@ -12,8 +12,10 @@ protected :
 public :
     virtual void Start() override;
     virtual bool Init() override;
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
+    virtual void Update(float DeltaTime)override;
+    virtual void PostUpdate(float DeltaTime)override;
     virtual CNormalMonster* Clone() override;
+    virtual void Save(FILE* pFile)override;
+    virtual void Load(FILE* pFile)override;
 };
 

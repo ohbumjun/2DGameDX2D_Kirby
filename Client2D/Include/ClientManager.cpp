@@ -58,7 +58,8 @@ bool CClientManager::Init(HINSTANCE hInst)
 	// CInput::GetInst()->CreateKey("RotationZ", 'D');
 	CInput::GetInst()->CreateKey("MoveRight", 'D');
 	CInput::GetInst()->CreateKey("MoveLeft", 'A');
-	CInput::GetInst()->CreateKey("Attack", VK_SPACE);
+	// CInput::GetInst()->CreateKey("Attack", VK_SPACE);
+	CInput::GetInst()->CreateKey("Jump", VK_SPACE);
 	CInput::GetInst()->CreateKey("Attack1", VK_LBUTTON);
 	CInput::GetInst()->CreateKey("Skill1", '1');
 	CInput::GetInst()->CreateKey("MovePoint", VK_RBUTTON);

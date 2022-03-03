@@ -37,6 +37,12 @@
     <Filter Include="03. Object\05. TileMap">
       <UniqueIdentifier>{7a4ea3fd-8593-497c-8417-5f59d7e5fe55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\03. Monster\01. Normal">
+      <UniqueIdentifier>{f697f82c-a1b4-4e8d-8c18-6ec5d301008d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object\03. Monster\02. Ability">
+      <UniqueIdentifier>{8dafc3f8-ae05-483e-b7af-770229397076}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +89,21 @@
     </ClCompile>
     <ClCompile Include="Object\Player2D.cpp">
       <Filter>03. Object\02. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Monster.cpp">
+      <Filter>03. Object\03. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\YellowBird.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\PurpleBeatle.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\NormalBear.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\NormalMonster.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +154,21 @@
     </ClInclude>
     <ClInclude Include="Object\Player2D.h">
       <Filter>03. Object\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Monster.h">
+      <Filter>03. Object\03. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\NormalBear.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PurpleBeatle.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\YellowBird.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\NormalMonster.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

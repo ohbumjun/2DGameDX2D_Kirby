@@ -77,7 +77,32 @@ void CMonster::Start()
 {
 	CLifeObject::Start();
 
+	m_Sprite = (CSpriteComponent*)FindComponent("MonsterSprite");
+
+	// Collider 
+	m_ColliderBody = (CColliderCircle*)FindComponent("ColliderBody");
+	m_ColliderBody->AddCollisionMouseCallback(Collision_State::Begin, this,
+		&CMonster::OnMouseBegin);
+	m_ColliderBody->AddCollisionMouseCallback(Collision_State::End, this,
+		&CMonster::OnMouseEnd);
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
+
+	// PaperBurn
+	m_PaperBurn = (CPaperBurnComponent*)FindComponent("PaperBurn");
 	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);
+	m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
+
+	// UIWindow
+	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
+	if (!m_SimpleHUDWidget)
+	{
+		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	}
+	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
+	m_Sprite->AddChild(m_SimpleHUDWidget);
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+
+
 }
 
 bool CMonster::Init()
@@ -187,4 +212,26 @@ void CMonster::OnCollisionBegin(const CollisionResult& Result)
 void CMonster::PaperBurnEnd()
 {
 	Destroy();
+}
+
+void CMonster::Save(FILE* pFile)
+{
+	CLifeObject::Save(pFile);
+
+	fwrite(&m_HPMax, sizeof(float), 1, pFile);
+	fwrite(&m_HP, sizeof(float), 1, pFile);
+	fwrite(&m_DeathAccTime, sizeof(float), 1, pFile);
+	fwrite(&m_DeathFinishTime, sizeof(float), 1, pFile);
+	fwrite(&m_DeathStart, sizeof(bool), 1, pFile);
+}
+
+void CMonster::Load(FILE* pFile)
+{
+	CLifeObject::Load(pFile);
+
+	fread(&m_HPMax, sizeof(float), 1, pFile);
+	fread(&m_HP, sizeof(float), 1, pFile);
+	fread(&m_DeathAccTime, sizeof(float), 1, pFile);
+	fread(&m_DeathFinishTime, sizeof(float), 1, pFile);
+	fread(&m_DeathStart, sizeof(bool), 1, pFile);
 }

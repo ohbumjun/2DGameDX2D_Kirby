@@ -99,7 +99,7 @@ public:
 
 		m_Mode->m_Scene = this;
 
-		return m_Mode;
+		return (T*)*m_Mode;
 	}
 
 	template <typename T>
