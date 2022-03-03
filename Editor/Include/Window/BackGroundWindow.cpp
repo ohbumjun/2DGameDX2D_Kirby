@@ -31,6 +31,7 @@ void CBackGroundWindow::SetBackGround(CBackGroundComponent* BackGround)
 
 	if (!m_BackGround->GetBackGroundMaterial()->EmptyTexture())
 	{
+		// Texture 크기 정보 세팅 
 		char TextureWidth[MAX_PATH] = {};
 		sprintf_s(TextureWidth, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
 		m_BackImgScaleX->SetText(TextureWidth);
@@ -39,16 +40,19 @@ void CBackGroundWindow::SetBackGround(CBackGroundComponent* BackGround)
 		sprintf_s(TextureHeight, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
 		m_BackImgScaleY->SetText(TextureHeight);
 
-		char ScrollRatio[MAX_PATH] = {};
-		sprintf_s(ScrollRatio, "%.1f", 100.f);
-		m_BaseImgScrollRatio->SetText(ScrollRatio);
-
-		m_BaseImgScrollRatioInput->SetFloat(100.f);
-
+		// Texture 정보 세팅
 		m_BackGroundImageSprite->SetTexture(m_BackGround->GetBackGroundMaterial()->GetTexture());
 		m_BackGroundImageSprite->SetImageStart(Vector2(0.f, 0.f));
 		m_BackGroundImageSprite->SetImageEnd(Vector2((float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth(),
 			(float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight()));
+
+		// Scroll Ratio 정보 세팅
+		char ScrollRatio[MAX_PATH] = {};
+		float CurrentRatio = m_BackGround->GetScrollRatio();
+		sprintf_s(ScrollRatio, "%.1f", m_BackGround->GetScrollRatio());
+		m_BaseImgScrollRatio->SetText(ScrollRatio);
+
+		m_BaseImgScrollRatioInput->SetFloat(CurrentRatio);
 
 	}
 }
@@ -239,7 +243,24 @@ void CBackGroundWindow::SetBackGroundScrollRatio()
 	if (m_BaseImgScrollRatioInput->FloatEmpty())
 		return;
 
+	if (!m_BackGround)
+		return;
+
+	// Text 세팅
 	char Ratio[MAX_PATH] = {};
-	sprintf_s(Ratio, "%1.f", m_BaseImgScrollRatioInput->GetValueFloat());
+
+	float InputRatio = m_BaseImgScrollRatioInput->GetValueFloat();
+
+	if (InputRatio > 1.f)
+		InputRatio = 1.f;
+
+	if (InputRatio < 0.f)
+		InputRatio = 0.f;
+
+	sprintf_s(Ratio, "%.1f", InputRatio);
+
 	m_BaseImgScrollRatio->SetText(Ratio);
+
+	// 실제 Scroll Ratio 정보 세팅
+	m_BackGround->SetScrollRatio(InputRatio);
 }

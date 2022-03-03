@@ -108,9 +108,9 @@ bool CMainScene::Init()
 	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
 	SetTileMapEmptyObject(TileMapEmpty);
 
-	// CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
-	// BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
-	// BackGround->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
+	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
+	BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
+	BackGround->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
 
 	return true;
 }

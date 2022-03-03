@@ -22,8 +22,7 @@ CBackGroundComponent::CBackGroundComponent()
 	m_DeltaTime = 0.f;
 
 	m_EditMode = false;
-
-	SetScrollRatio(0.5f);
+	
 }
 
 CBackGroundComponent::CBackGroundComponent(const CBackGroundComponent& Component)
@@ -210,8 +209,6 @@ bool CBackGroundComponent::Init()
 void CBackGroundComponent::Update(float DeltaTime)
 {
 	CSceneComponent::Update(DeltaTime);
-
-	SetScrollRatio(0.5f);
 }
 
 void CBackGroundComponent::PostUpdate(float DeltaTime)

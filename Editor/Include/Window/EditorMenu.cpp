@@ -30,7 +30,9 @@
 #include "Component/BackGroundComponent.h"
 #include "PathManager.h"
 #include "Engine.h"
+// Window 
 #include "TileMapWindow.h"
+#include "BackGroundWindow.h"
 
 
 CEditorMenu::CEditorMenu()
@@ -595,9 +597,9 @@ void CEditorMenu::LoadObject()
 			}
 		}
 
-		// 만일 TileMapComponent를 Load 했다면
 		if (LoadedObject->GetRootComponent())
 		{
+			// 1) 만일 TileMapComponent를 Load 했다면
 			if (LoadedObject->GetRootComponent()->CheckType<CTileEmptyComponent>())
 			{
 				// 1) Edit mode 수정
@@ -610,19 +612,19 @@ void CEditorMenu::LoadObject()
 
 				// 3) TileMap 에서의 Edit Mode를 true로 세팅
 				TileComponent->SetEditMode(true);
-
 			};
-			/*
-			if (LoadedObject->GetRootComponent()->CheckType<CTileMapComponent>())
+
+			// 2) 만일 BackGround Component 를 Load 했다면
+			if (LoadedObject->GetRootComponent()->CheckType<CBackGroundComponent>())
 			{
 				// 1) Edit mode 수정
-				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+				CEditorManager::GetInst()->SetEditMode(EditMode::Back);
 
-				// 2) TileMap Window 에 TileMapComponent 지정하기
-				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)LoadedObject->GetRootComponent());
+				// 2) BackGround Window 에 BackGroundComponent 지정하기
+				CEditorManager::GetInst()->GetBackGroundWindow()->SetBackGround((CBackGroundComponent*)LoadedObject->GetRootComponent());
 
 			};
-			*/
+			
 		}
 
 		// Object Name List에 추가한다
