@@ -35,6 +35,21 @@ bool CMainScene::Init()
 	if (m_LoadingFunction)
 		m_LoadingFunction(false, 0.3f);
 
+
+	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
+	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
+	TileMapEmpty->LoadByFileName("TileMapText.gobj", OBJECT_PATH);
+	TileMapEmpty->SetEditMode(true);
+
+	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
+	SetTileMapEmptyObject(TileMapEmpty);
+
+	// TileMap의 크기를 World Scale로 세팅한다
+	m_Scene->SetWorldResolution(TileMapEmpty->GetWorldScale().x, TileMapEmpty->GetWorldScale().y);
+
+	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
+	BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
+
 	// Sleep(1000);
 		
 	CreateSound();
@@ -98,19 +113,6 @@ bool CMainScene::Init()
 	*/
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
-
-	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
-	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
-	TileMapEmpty->LoadByFileName("TileMapText.gobj", OBJECT_PATH);
-	TileMapEmpty->SetEditMode(true);
-	// TileMapEmpty->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
-
-	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
-	SetTileMapEmptyObject(TileMapEmpty);
-
-	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
-	BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
-	// BackGround->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
 
 	return true;
 }

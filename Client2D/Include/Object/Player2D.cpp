@@ -266,14 +266,39 @@ void CPlayer2D::Update(float DeltaTime)
 
 void CPlayer2D::PostUpdate(float DeltaTime)
 {
-	Vector2 MouseWorldPos = CInput::GetInst()->GetMouseWorld2DPos();
-	Vector3 PlayerWorldPos = GetWorldPos();
 	CLifeObject::PostUpdate(DeltaTime);
+
+	CheckOutsideWorldResolution();
 }
 
 CPlayer2D* CPlayer2D::Clone()
 {
 	return new CPlayer2D(*this);
+}
+
+void CPlayer2D::CheckOutsideWorldResolution()
+{
+	// todo : Up
+	Vector3 OriginalPos = GetWorldPos();
+	Vector3 WorldScale = GetWorldScale();
+	Vector3 Pivot = GetPivot();
+
+	Vector2 WorldResolution = m_Scene->GetWorldResolution();
+
+	if (OriginalPos.y + WorldScale.y * Pivot.y >= WorldResolution.y)
+		OriginalPos.y = WorldResolution.y - WorldScale.y * Pivot.y - 0.001f;
+
+	// todo : Down ( 나중에 )
+
+	// Left
+	if (OriginalPos.x - WorldScale.x * Pivot.x < 0.f)
+		OriginalPos.x = WorldScale.x * Pivot.x + 0.001f;
+
+	// Right
+	if (OriginalPos.x + WorldScale.x * Pivot.x >= WorldResolution.x)
+		OriginalPos.x = WorldResolution.x - WorldScale.x * Pivot.x - 0.001f;
+
+	SetWorldPos(OriginalPos);
 }
 
 void CPlayer2D::MoveUp(float DeltaTime)
@@ -283,7 +308,7 @@ void CPlayer2D::MoveUp(float DeltaTime)
 
 void CPlayer2D::MoveDown(float DeltaTime)
 {
-	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime * -1.f);
 }
 
 void CPlayer2D::MoveLeft(float DeltaTime)

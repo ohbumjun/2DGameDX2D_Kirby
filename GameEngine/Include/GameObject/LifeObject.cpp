@@ -1,4 +1,4 @@
-#include "LifeObject.h"
+ï»¿#include "LifeObject.h"
 
 #include "../Component/TileEmptyComponent.h"
 #include "../Scene/Scene.h"
@@ -8,8 +8,8 @@ CLifeObject::CLifeObject():
 	m_MoveSpeed(200.f),
 	// m_IsGround(true),
 	// m_PhysicsSimulate(true),
-	m_PhysicsSimulate(true),
-	m_IsGround(false),
+	m_PhysicsSimulate(false),
+	m_IsGround(true),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
 	m_Jump(false),
@@ -38,20 +38,20 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 {
 	if (!m_IsGround && m_PhysicsSimulate)
 	{
-		// ¶³¾îÁö´Â ½Ã°£ ´©Àû 
+		// ë–¨ì–´ì§€ëŠ” ì‹œê°„ ëˆ„ì  
 		m_FallTime += DeltaTime * m_GravityAccel;
 
 		float Velocity = 0.f;
 
-		// Á¡ÇÁÇÑ »óÅÂ¶ó¸é, ÃÊ±â Á¡ÇÁ ¼Óµµ * ½Ã°£ --> À§·Î ¿Ã¶ó°£ °Å¸®¸¦ ¼¼ÆÃÇÏ´Â °Í 
+		// ì í”„í•œ ìƒíƒœë¼ë©´, ì´ˆê¸° ì í”„ ì†ë„ * ì‹œê°„ --> ìœ„ë¡œ ì˜¬ë¼ê°„ ê±°ë¦¬ë¥¼ ì„¸íŒ…í•˜ëŠ” ê²ƒ 
 		if (m_Jump)
 			Velocity = m_JumpVelocity * m_FallTime;
 
-		// ³»·Á°£ °Å¸®
+		// ë‚´ë ¤ê°„ ê±°ë¦¬
 		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
 		// m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * 0.01f;
 
-		// ÃÖ´ë ³«ÇÏ ¼Óµµ¸¦ Á¶ÀıÇÑ´Ù.
+		// ìµœëŒ€ ë‚™í•˜ ì†ë„ë¥¼ ì¡°ì ˆí•œë‹¤.
 		if (Velocity - m_FallVelocity < m_FallVelocityMax * -1.f)
 		{
 			m_FallVelocity = Velocity + m_FallVelocityMax;
@@ -90,7 +90,7 @@ void CLifeObject::CheckBottomCollision()
 		float ResultTop      = CurBottom > PrevBottom ? CurBottom : PrevBottom;
 		float ResultBottom = CurBottom < PrevBottom ? CurBottom : PrevBottom;
 
-		// ÇØ´ç À§Ä¡ÀÇ TileÀ» ±¸ÇØ¿Â´Ù.
+		// í•´ë‹¹ ìœ„ì¹˜ì˜ Tileì„ êµ¬í•´ì˜¨ë‹¤.
 		int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
 
 		Vector3 LB = Vector3(ResultLeft, ResultBottom,0.f);
@@ -120,24 +120,24 @@ void CLifeObject::CheckBottomCollision()
 
 		bool Check = false;
 
-		// ¾Æ·¡¿¡¼­ À§·Î ¹İº¹ÇÑ´Ù
+		// ì•„ë˜ì—ì„œ ìœ„ë¡œ ë°˜ë³µí•œë‹¤
 		for (int row = BottomIdx; row <= TopIdx; row++)
 		{
 			for (int col = LeftIdx; col <= RightIdx; col++)
 			{
-				// ÀÌÀü À§Ä¡ÀÇ BottomÀÌ, Å¸ÀÏÀÇ Top º¸´Ù Å¬ °æ¿ì ¹«½ÃÇÑ´Ù
-				// Áï, ³»°¡ Á¡ÇÁÇÏ´Âµ¥, ±× À§¿¡ TileÀÌ Á¸ÀçÇÏ´Â °Í
-				// ¹Ù´Ú Ã¼Å©´Â ³»·Á°¥ ¶§¸¸ Ã¼Å©ÇÏ±â À§ÇÔÀÌ´Ù.
+				// ì´ì „ ìœ„ì¹˜ì˜ Bottomì´, íƒ€ì¼ì˜ Top ë³´ë‹¤ í´ ê²½ìš° ë¬´ì‹œí•œë‹¤
+				// ì¦‰, ë‚´ê°€ ì í”„í•˜ëŠ”ë°, ê·¸ ìœ„ì— Tileì´ ì¡´ì¬í•˜ëŠ” ê²ƒ
+				// ë°”ë‹¥ ì²´í¬ëŠ” ë‚´ë ¤ê°ˆ ë•Œë§Œ ì²´í¬í•˜ê¸° ìœ„í•¨ì´ë‹¤.
 				// if (TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
 				//	continue;
 
-				// ¸ø°¡´Â °÷ÀÌ¶ó¸é. Áï, ¹Ù´Ú¿¡ ´ê´Â ´Ù¸é
+				// ëª»ê°€ëŠ” ê³³ì´ë¼ë©´. ì¦‰, ë°”ë‹¥ì— ë‹¿ëŠ” ë‹¤ë©´
 				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall)
 				{
-					// ¶¥¿¡ ´êÀ½
+					// ë•…ì— ë‹¿ìŒ
 					Check = true;
 
-					// ¶¥¿¡ ´êÀ½À¸·Î½á ÃÊ±âÈ­ ÇØÁà¾ß ÇÒ º¯¼öµé
+					// ë•…ì— ë‹¿ìŒìœ¼ë¡œì¨ ì´ˆê¸°í™” í•´ì¤˜ì•¼ í•  ë³€ìˆ˜ë“¤
 					m_FallTime = 0.f;
 					m_IsGround = true;
 					m_Jump = false;
@@ -147,7 +147,7 @@ void CLifeObject::CheckBottomCollision()
 
 					Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos() +TileSize;
 
-					// À§Ä¡ Á¤º¸ ¼¼ÆÃ
+					// ìœ„ì¹˜ ì •ë³´ ì„¸íŒ…
 					float NewPosY = TilePos.y + Pivot.y * WorldScale.y;
 					SetWorldPos(m_Pos.x, NewPosY, m_Pos.z);
 
@@ -159,11 +159,11 @@ void CLifeObject::CheckBottomCollision()
 				break;
 		}
 
-		// ¸¸¾à ¹Ù´Ú¿¡ ´êÁö ¾Ê¾Ò´Ù¸é
+		// ë§Œì•½ ë°”ë‹¥ì— ë‹¿ì§€ ì•Šì•˜ë‹¤ë©´
 		if (!Check)
 		{
-			// ±×·±µ¥ m_IsGround´Â true ¶ó¸é
-			// ÀÌÁ¦ ¸· ´Ù½Ã ¶³¾îÁö±â ½ÃÀÛÇÏ´Â °ÍÀÌ´Ù
+			// ê·¸ëŸ°ë° m_IsGroundëŠ” true ë¼ë©´
+			// ì´ì œ ë§‰ ë‹¤ì‹œ ë–¨ì–´ì§€ê¸° ì‹œì‘í•˜ëŠ” ê²ƒì´ë‹¤
 			if (m_IsGround)
 			{
 				m_FallTime = 0.f;
@@ -188,7 +188,7 @@ void CLifeObject::CheckSideCollision()
 
 	if (DirX != 0 && m_SideWallCheck)
 	{
-		// ÀÌÀü À§Ä¡, ÇöÀç À§Ä¡ ±îÁöÀÇ ÀÌµ¿ ¹üÀ§ ¾ÈÀÇ ¸ğµç Tile µéÀ» °í·ÁÇÒ °ÍÀÌ´Ù
+		// ì´ì „ ìœ„ì¹˜, í˜„ì¬ ìœ„ì¹˜ ê¹Œì§€ì˜ ì´ë™ ë²”ìœ„ ì•ˆì˜ ëª¨ë“  Tile ë“¤ì„ ê³ ë ¤í•  ê²ƒì´ë‹¤
 
 		CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
@@ -206,7 +206,7 @@ void CLifeObject::CheckSideCollision()
 
 		Vector3 ResultLB, ResultRT;
 
-		// ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÇÒ ¶§ --> ¿ŞÂÊÅ¸ÀÏ¿¡¼­ ¿À¸¥ÂÊ Å¸ÀÏ ¼ø¼­´ë·Î Á¶»çÇÏ±â
+		// ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™í•  ë•Œ --> ì™¼ìª½íƒ€ì¼ì—ì„œ ì˜¤ë¥¸ìª½ íƒ€ì¼ ìˆœì„œëŒ€ë¡œ ì¡°ì‚¬í•˜ê¸°
 		if (DirX >  0.f)
 		{
 			int Index = -1;
@@ -224,7 +224,7 @@ void CLifeObject::CheckSideCollision()
 			RTIndexX = TileMap->GetTileEmptyIndexX(Vector3(ResultRT.x, ResultRT.y, m_Pos.z));
 			RTIndexY = TileMap->GetTileEmptyIndexY(Vector3(ResultRT.x, ResultRT.y, m_Pos.z));
 
-			// ¹üÀ§ °í·ÁÇÏ±â
+			// ë²”ìœ„ ê³ ë ¤í•˜ê¸°
 			LBIndexX = LBIndexX < 0 ? 0 : LBIndexX;
 			LBIndexY = LBIndexY < 0 ? 0 : LBIndexY;
 
@@ -237,7 +237,7 @@ void CLifeObject::CheckSideCollision()
 				{
 					Index = row * TileMap->GetTileCountX() + col;
 
-					// ¿¹¿Ü Ã³¸®
+					// ì˜ˆì™¸ ì²˜ë¦¬
 					/*
 					if (TileMap->GetTile(Index)->GetTileOption() !=
 						ETileOption::Wall ||
@@ -249,19 +249,19 @@ void CLifeObject::CheckSideCollision()
 
 					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
 
-					// Object °¡ Tile À§¿¡ °ÅÀÇ ºÙ¾îÀÖÀ» °æ¿ì¿¡´Â,
-					// Ãæµ¹ Ã³¸®¸¦ ÇÏÁö ¾ÊÀ» °ÍÀÌ´Ù
+					// Object ê°€ Tile ìœ„ì— ê±°ì˜ ë¶™ì–´ìˆì„ ê²½ìš°ì—ëŠ”,
+					// ì¶©ëŒ ì²˜ë¦¬ë¥¼ í•˜ì§€ ì•Šì„ ê²ƒì´ë‹¤
 					if (TilePos.y - 0.001f <= CurLB.y && CurLB.y <= TilePos.y + 0.001f)
 						continue;
 
-					// ÇöÀç ÄÚµå »ó¿¡¼­´Â
-					// Side Collision ¸ÕÀú , Bottom Collision
-					// ¸¸¾à ³Ê¹« ±íÀÌ ÆÄ°íµç´Ù¸é, Side Collision ¹«½ÃÇÏ°í, Áß·Â Àû¿ë¿¡ µû¸¥
-					// À§·Î ¹Ğ¾î³»±â ¸¸À» Àû¿ëÇÒ ¿¹Á¤ÀÌ´Ù
+					// í˜„ì¬ ì½”ë“œ ìƒì—ì„œëŠ”
+					// Side Collision ë¨¼ì € , Bottom Collision
+					// ë§Œì•½ ë„ˆë¬´ ê¹Šì´ íŒŒê³ ë“ ë‹¤ë©´, Side Collision ë¬´ì‹œí•˜ê³ , ì¤‘ë ¥ ì ìš©ì— ë”°ë¥¸
+					// ìœ„ë¡œ ë°€ì–´ë‚´ê¸° ë§Œì„ ì ìš©í•  ì˜ˆì •ì´ë‹¤
 					if (CurRT.x - TilePos.x > 8.f)
 						continue;
 
-					// ·ºÆ® Ãæµ¹
+					// ë ‰íŠ¸ ì¶©ëŒ
 					if (CurLB.x <= TilePos.x + TileSize.x  &&
 						CurRT.x >= TilePos.x &&
 						CurLB.y <= TilePos.y + TileSize.y &&
@@ -270,14 +270,14 @@ void CLifeObject::CheckSideCollision()
 					{
 						SideCollision = true;
 
-						// ÇöÀç ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ Áß --> ¿ŞÂÊÀ¸·Î ¹Ğ¾î³¾ °ÍÀÌ´Ù
+						// í˜„ì¬ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ --> ì™¼ìª½ìœ¼ë¡œ ë°€ì–´ë‚¼ ê²ƒì´ë‹¤
 						float MoveX = TilePos.x - CurRT.x - 0.01f;
 
 						m_Pos.x += MoveX;
 
 						SetWorldPos(m_Pos);
 
-						// break ¹®ÀÌ ÇÊ¿äÇÑ°¡ ?
+						// break ë¬¸ì´ í•„ìš”í•œê°€ ?
 						break;
 					}
 				}
@@ -285,7 +285,7 @@ void CLifeObject::CheckSideCollision()
 					break;
 			}
 		}
-		// ¸¸¾à ¿ŞÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ¶ó¸é 
+		// ë§Œì•½ ì™¼ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë¼ë©´ 
 		else
 		{
 			int Index = -1;
@@ -303,7 +303,7 @@ void CLifeObject::CheckSideCollision()
 			RTIndexX = TileMap->GetTileEmptyIndexX(Vector3(ResultRT.x, ResultRT.y, m_Pos.z));
 			RTIndexY = TileMap->GetTileEmptyIndexY(Vector3(ResultRT.x, ResultRT.y, m_Pos.z));
 
-			// ¹üÀ§ °í·ÁÇÏ±â
+			// ë²”ìœ„ ê³ ë ¤í•˜ê¸°
 			LBIndexX = LBIndexX < 0 ? 0 : LBIndexX;
 			LBIndexY = LBIndexY < 0 ? 0 : LBIndexY;
 
@@ -316,18 +316,18 @@ void CLifeObject::CheckSideCollision()
 				{
 					Index = row * TileMap->GetTileCountX() + col;
 
-					// Wall ÀÌ ¾Æ´Ï¶ó¸é Pass
+					// Wall ì´ ì•„ë‹ˆë¼ë©´ Pass
 					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall)
 						continue;
 
 					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
 
-					// ¸¶Âù°¡Áö·Î, ¹Ù´Ú¿¡ ºÙ¾îÀÖ´Ù¸é Ã¼Å©ÇÏÁö ¾Ê´Â´Ù.
+					// ë§ˆì°¬ê°€ì§€ë¡œ, ë°”ë‹¥ì— ë¶™ì–´ìˆë‹¤ë©´ ì²´í¬í•˜ì§€ ì•ŠëŠ”ë‹¤.
 					if (TilePos.y - 0.001f <= CurLB.y && CurLB.y <= TilePos.y + 0.001f)
 						continue;
 
-					// ³Ê¹« ±íÀÌ ÆÄ°íµé¸é Side Collision Àº ¹«½ÃÇÏ°í, Áß·Â Àû¿ë¿¡ µû¸¥
-					// À§·Î ¹Ğ¾î³»±â ¸¸À» Àû¿ëÇÒ ¿¹Á¤ÀÌ´Ù.
+					// ë„ˆë¬´ ê¹Šì´ íŒŒê³ ë“¤ë©´ Side Collision ì€ ë¬´ì‹œí•˜ê³ , ì¤‘ë ¥ ì ìš©ì— ë”°ë¥¸
+					// ìœ„ë¡œ ë°€ì–´ë‚´ê¸° ë§Œì„ ì ìš©í•  ì˜ˆì •ì´ë‹¤.
 					if (TilePos.x + TileSize.x - CurLB.x > 8.f)
 						continue;
 
@@ -359,6 +359,10 @@ void CLifeObject::Start()
 	CGameObject::Start();
 
 	m_FallStartY = GetWorldPos().y;
+
+	m_PrevPos.y = GetWorldPos().y;
+
+	m_PhysicsSimulate = true;
 }
 
 bool CLifeObject::Init()
@@ -373,12 +377,12 @@ void CLifeObject::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	// 1) Áß·Â Àû¿ë ÀÌÀü¿¡ Side Collision ¸ÕÀú Àû¿ëÇØ¾ß ÇÑ´Ù.
+	// 1) ì¤‘ë ¥ ì ìš© ì´ì „ì— Side Collision ë¨¼ì € ì ìš©í•´ì•¼ í•œë‹¤.
 	CheckSideCollision();
 
-	UpdateWhileOffGround(DeltaTime);
+	// CheckBottomCollision();
 
-	CheckBottomCollision();
+	UpdateWhileOffGround(DeltaTime);
 }
 
 void CLifeObject::PostUpdate(float DeltaTime)

@@ -1,5 +1,6 @@
 #include "CameraComponent.h"
 #include "../Engine.h"
+#include "../Scene/Scene.h"
 
 CCameraComponent::CCameraComponent()
 {
@@ -115,6 +116,35 @@ bool CCameraComponent::Init()
 	m_RS = CEngine::GetInst()->GetResolution();
 
 	return true;
+}
+
+void CCameraComponent::Update(float DeltaTime)
+{
+	CSceneComponent::Update(DeltaTime);
+
+	// Limit Area
+	Vector2 WorldRS = m_Scene->GetWorldResolution();
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	Vector3 CameraOriginPos = GetWorldPos();
+
+	// Up
+	if (CameraOriginPos.y + RS.Height * 0.5f >= WorldRS.y)
+	{
+		CameraOriginPos.y = WorldRS.y - (RS.Height * 0.5f);
+
+		SetWorldPos(CameraOriginPos);
+	}
+	else if (CameraOriginPos.y < 0.f)
+	{
+		CameraOriginPos.y = 0.0f;
+
+		SetWorldPos(CameraOriginPos);
+	}
+
+	// Down
+
 }
 
 void CCameraComponent::PostUpdate(float DeltaTime)
