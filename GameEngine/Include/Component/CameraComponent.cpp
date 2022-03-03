@@ -26,6 +26,36 @@ CCameraComponent::CCameraComponent(const CCameraComponent& Camera)
 CCameraComponent::~CCameraComponent()
 {}
 
+Matrix CCameraComponent::GetRatioViewMatrix(float ScrollRatio)
+{
+	Matrix matView = m_matView;
+
+	// View Transform 진행하기
+	// basis를 세팅하기 위해, 단위 행렬로 만들어준다.
+	matView.Identity();
+
+	// 각 Row를 행으로 하는 행렬 작성
+	for (int i = 0; i < AXIS_MAX; i++)
+	{
+		Vector3 Axis = GetWorldAxis((AXIS)i);
+		memcpy(&matView[i][0], &Axis, sizeof(Vector3));
+	}
+
+	// Transpose 시켜주기
+	matView.Transpose();
+
+	// 이동행렬 까지 적용 = 마지막 행 작성 == 각 축과 현재 위치의 내적 형태
+	Vector3 Pos = GetWorldPos() * ScrollRatio * -1.f;
+
+	for (int i = 0; i < AXIS_MAX; i++)
+	{
+		Vector3 Axis = GetWorldAxis((AXIS)i);
+		matView[3][i] = Pos.Dot(Axis);
+	}
+
+	return matView;
+}
+
 void CCameraComponent::CreateProjectionMatrix()
 {
 	switch (m_CameraType)

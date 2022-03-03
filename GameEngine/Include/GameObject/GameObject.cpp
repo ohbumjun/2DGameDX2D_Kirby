@@ -323,6 +323,7 @@ void CGameObject::Load(FILE* pFile)
 		size_t TypeID;
 		fread(&TypeID, sizeof(size_t), 1, pFile);
 		CSceneManager::GetInst()->CallCreateComponentFunc(this, TypeID);
+		
 		m_RootComponent->Load(pFile);
 		// m_RootComponent->ReAddTransformChild();
 	}

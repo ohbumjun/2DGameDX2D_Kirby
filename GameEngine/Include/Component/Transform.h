@@ -21,6 +21,9 @@ private:
 	std::vector<CTransform*>        m_vecChild;
 	class CTransformConstantBuffer* m_CBuffer;
 
+private :
+	float m_ScrollRatio;
+
 private:
 	bool m_InheritScale;
 	bool m_InheritRotX;

@@ -51,6 +51,8 @@ public:
 		return LB;
 	}
 
+	Matrix GetRatioViewMatrix(float ScrollRatio);
+
 public:
 	void SetViewAngle(float Angle)
 	{

@@ -20,6 +20,11 @@ protected:
 	CSceneComponent*                         m_Parent;
 	std::vector<CSharedPtr<CSceneComponent>> m_vecChild;
 	bool                                     m_Render;
+protected :
+	CTransform* GetTrasform () const
+{
+		return m_Transform;
+}
 public :
 	std::string GetLayerName() const
 	{
@@ -36,6 +41,10 @@ public :
 	{
 		m_LayerName = Name;
 	}
+	void SetScrollRatio (float Ratio)
+{
+		m_Transform->m_ScrollRatio = Ratio;
+}
 
 public:
 	void SetSceneComponent(class CGameObject* Object);
@@ -44,7 +53,6 @@ public:
 public:
 	virtual void SetScene(class CScene* Scene) override;
 	virtual void SetGameObject(class CGameObject* Object) override;
-
 public:
 	void             AddChild(CSceneComponent* Child);
 	bool             DeleteChild(CSceneComponent* Child);

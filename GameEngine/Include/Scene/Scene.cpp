@@ -30,7 +30,7 @@ CScene::CScene()  :
 
 	Resolution RS = CEngine::GetInst()->GetResolution();
 
-	m_WorldResolution = Vector2(RS.Width, RS.Height);
+	m_WorldResolution = Vector2((float)RS.Width, (float)RS.Height);
 }
 
 CScene::~CScene()

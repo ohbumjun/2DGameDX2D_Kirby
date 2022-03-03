@@ -168,6 +168,9 @@ void CBackGroundWindow::BackGroundImageLoadButton()
 	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Back)
 		return;
 
+	if (!m_BackGround)
+		return;
+
 	TCHAR FilePath[MAX_PATH] = {};
 
 	OPENFILENAME OpenFile = {};
@@ -191,9 +194,6 @@ void CBackGroundWindow::BackGroundImageLoadButton()
 		int  Length = WideCharToMultiByte(CP_ACP, 0, FileName, -1, nullptr, 0, nullptr, nullptr);
 
 		WideCharToMultiByte(CP_ACP, 0, FileName, -1, ConvertFileName, Length, nullptr, nullptr);
-
-		if (!m_BackGround)
-			return;
 
 		// BackMaterial 이 만들어져 있지 않다면, 만든다.
 		if (!m_BackGround->GetBackGroundMaterial())

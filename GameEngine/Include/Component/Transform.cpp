@@ -19,7 +19,8 @@ CTransform::CTransform() :
 	m_InheritParentRotationPosZ(true),
 	m_UpdateScale(true),
 	m_UpdateRot(true),
-	m_UpdatePos(true)
+	m_UpdatePos(true),
+	m_ScrollRatio(1.f)
 {
 	for (int i = 0; i < AXIS_MAX; ++i)
 	{
@@ -578,7 +579,9 @@ void CTransform::PostUpdate(float DeltaTime)
 		m_matRot.Rotation(m_WorldRot);
 
 	if (m_UpdatePos)
+	{
 		m_matPos.Translation(m_WorldPos);
+	}
 
 	if (m_UpdateScale || m_UpdateRot || m_UpdatePos)
 		m_matWorld = m_matScale * m_matRot * m_matPos;
@@ -594,7 +597,9 @@ void CTransform::SetTransform()
 	// 카메라 메니저의 Camera 행렬 정보를 가져와서 세팅한다
 	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
 
-  	m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
+	m_CBuffer->SetViewMatrix(Camera->GetRatioViewMatrix(m_ScrollRatio));
+  	// m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
+
 	m_CBuffer->SetProjMatrix(Camera->GetProjMatrix());
 
 	m_CBuffer->SetPivot(m_Pivot);
