@@ -65,6 +65,8 @@ bool CEditorMenu::Init()
 	m_EditMenuComboBox->AddItem("TileMap");
 	m_EditMenuComboBox->AddItem("BackGround");
 	m_EditMenuComboBox->AddItem("Line");
+	m_EditMenuComboBox->AddItem("ObjCreate");
+	m_EditMenuComboBox->AddItem("ObjEdit");
 	m_EditMenuComboBox->SetHideName(true);
 	m_EditMenuComboBox->SetSelectCallback<CEditorMenu>(this, &CEditorMenu::SelectEditModeCallback);
 
@@ -291,7 +293,7 @@ void CEditorMenu::CreateNewObject()
 	}
 
 	// Add List To Object List
-	Hierarchy->AddObject(m_ObjectNameInput->GetTextUTF8());
+	Hierarchy->AddCreatedObject(m_ObjectNameInput->GetTextUTF8());
 
 }
 
@@ -312,7 +314,7 @@ void CEditorMenu::CreateNewComponent()
 
 	// 중복 방지
 	const std::string NewComponentName = m_ComponentNameInput->GetTextMultibyte();
-	if (Hierarchy->GetComponentListBox()->CheckItem(NewComponentName))
+	if (Hierarchy->GetCreatedComponentListBox()->CheckItem(NewComponentName))
 		return;
 
 	// 해당 Object 의 Component 목록에 추가
@@ -376,7 +378,7 @@ void CEditorMenu::CreateNewComponent()
 	// Root Component에 Add 시킨다 ?
 
 	// Add Item To Component List Box
-	Hierarchy->GetComponentListBox()->AddItem(m_ComponentNameInput->GetTextMultibyte());
+	Hierarchy->GetCreatedComponentListBox()->AddItem(m_ComponentNameInput->GetTextMultibyte());
 }
 
 void CEditorMenu::TogglePlay()
@@ -761,7 +763,7 @@ void CEditorMenu::ClearComponent()
 		Object->ClearSceneComponents();
 
 		// Hierarchy 에서도 비워준다.
-		CEditorManager::GetInst()->GetObjectHierarchy()->GetComponentListBox()->Clear();
+		CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedComponentListBox()->Clear();
 	}
 }
 
@@ -774,7 +776,7 @@ void CEditorMenu::DeleteComponent()
 		return;
 
 	// Component도 세팅된 상태여야 한다.
-	if (Hierarchy->GetComponentListBox()->GetSelectIndex() < 0)
+	if (Hierarchy->GetCreatedComponentListBox()->GetSelectIndex() < 0)
 		return;
 
 	// 메세지 박스로 물어본다
@@ -785,10 +787,10 @@ void CEditorMenu::DeleteComponent()
 
 		// 실제 Object 내의 Scene Component 목록들을 비워준다.
 		CGameObject* SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetObjectListBox()->GetSelectItem().c_str());
-		SelectObject->DeleteComponent(Hierarchy->GetComponentListBox()->GetSelectItem());
+		SelectObject->DeleteComponent(Hierarchy->GetCreatedComponentListBox()->GetSelectItem());
 
 		// Hierarchy 에서도 비워준다.
-		CEditorManager::GetInst()->GetObjectHierarchy()->GetComponentListBox()->Clear();
+		CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedComponentListBox()->Clear();
 	}
 }
 
@@ -804,7 +806,7 @@ void CEditorMenu::ClearObject()
 		CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
 		Hierarchy->GetObjectListBox()->Clear();
-		Hierarchy->GetComponentListBox()->Clear();
+		Hierarchy->GetCreatedComponentListBox()->Clear();
 	}
 }
 

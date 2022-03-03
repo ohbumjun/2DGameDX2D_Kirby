@@ -1,5 +1,6 @@
 #pragma once
 #include "IMGUIWindow.h"
+#include "IMGUIListBox.h"
 
 class CObjectHierarchy :
     public CIMGUIWindow
@@ -19,16 +20,28 @@ private :
 private :
     std::unordered_map<std::string, std::vector<std::string>> m_mapVecObject;
 public :
-    CIMGUIListBox* GetObjectListBox() const 
+    CIMGUIListBox* GetObjectListBox() const
+    {
+        return m_ObjectList;
+    }
+    bool IsSpecificObjectSelected () const
+{
+        return m_SpecificObjectList->GetSelectIndex() != -1;
+}
+    CIMGUIListBox* GetSpecificObjectListBox() const
+    {
+        return m_SpecificObjectList;
+    }
+    CIMGUIListBox* GetCreatedObjectListBox() const 
 	{
 		return m_CreatedObjectListBox;
 	}
-    CIMGUIListBox* GetComponentListBox() const
+    CIMGUIListBox* GetCreatedComponentListBox() const
     {
         return m_CreatedComponentListBox;
     }
 public :
-    void AddObject(const char* ObjectName);
+    void AddCreatedObject(const char* ObjectName);
     void SelectCreatedObject(int Index, const char* ObjectName);
     void SelectCreatedComponent(int Index, const char* ComponentName);
 private :

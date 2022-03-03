@@ -1,20 +1,26 @@
 #include "EditorManager.h"
-#include "Scene/CameraManager.h"
 #include "Engine.h"
-#include "IMGUIManager.h"
 #include "Input.h"
 #include "resource.h"
+// IMGUI
+#include "IMGUIManager.h"
+#include "IMGUIListBox.h"
+// Scene
+#include "Animation/AnimationSequence2DInstance.h"
 #include "Object/DragObject.h"
 #include "Object/SpriteEditObject.h"
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
+#include "Scene/CameraManager.h"
+// Window
 #include "Window/SpriteEditWindow.h"
 #include "Window/EditorMenu.h"
 #include "Window/ObjectHierarchy.h"
 #include "Window/DetailInfoWindow.h"
 #include "Window/TileMapWindow.h"
 #include "Window/BackGroundWindow.h"
+// Component 
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
 #include "Component/WidgetComponent.h"
@@ -27,11 +33,12 @@
 #include "Component/BackGroundComponent.h"
 #include "Component/TileEmptyComponent.h"
 #include "Component/CameraComponent.h"
-#include "Animation/AnimationSequence2DInstance.h"
+// Object
 #include "Object/Player2D.h"
 #include "Object/ShowObject.h"
-#include "../../Client2D/Include/Object/YellowBird.h"
-#include "../../Client2D/Include/Object/BeamMonster.h"
+#include "Object/YellowBird.h"
+#include "Object/PurpleBeatle.h"
+#include "Object/NormalBear.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -122,6 +129,34 @@ void CEditorManager::SetEditMode(EditMode Mode)
 
 		m_EditorMenu->SetEditModeText(EditModeText);
 	}
+	else if (m_EditMode == EditMode::CharacterCreate)
+	{
+		if (m_DragObj)
+		{
+			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
+
+		sprintf_s(EditModeText, "%s", "CharacterCreate");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
+	}
+	else if (m_EditMode == EditMode::CharacterEdit)
+	{
+		if (m_DragObj)
+		{
+			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
+
+		sprintf_s(EditModeText, "%s", "CharacterEdit");
+
+		_strupr_s(EditModeText);
+
+		m_EditorMenu->SetEditModeText(EditModeText);
+	}
 }
 
 void CEditorManager::SetSceneEditObject()
@@ -177,6 +212,11 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Down, this, &CEditorManager::MouseLButtonDown);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Up, this, &CEditorManager::MouseLButtonUp);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Push, this, &CEditorManager::MouseLButtonPush);
+
+	CInput::GetInst()->CreateKey("MouseRButton", VK_RBUTTON);
+	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Down, this, &CEditorManager::MouseRButtonDown);
+	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Push, this, &CEditorManager::MouseRButtonPush);
+
 
 	// KeyBoard
 	// CInput::GetInst()->CreateKey("Up", VK_UP);
@@ -249,6 +289,72 @@ void CEditorManager::MouseLButtonUp(float DeltaTime)
 	m_MousePush = false;
 }
 
+void CEditorManager::MouseRButtonDown(float DeltaTime)
+{
+	// Edit Mode가 Object Create 일 때만 작동하도록 한다.
+	if (m_EditMode != EditMode::CharacterCreate)
+		return;
+
+	if (m_ObjectHierarchy->IsSpecificObjectSelected() == false)
+		return;
+
+	// Object Hierarchy 의 m_SpecificObjectList 에서 선택된 Object 의 이름을 가져온다.
+	std::string SelectMonsterName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
+
+	// 지금까지 만들어진 Object 개수
+
+	std::string NewMonsterName = SelectMonsterName + GetRandomString();
+
+	if (strcmp("NormalBear", SelectMonsterName.c_str()) == 0)
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
+	}
+
+
+	// Add List To Object List
+	// Hierarchy->AddCreatedObject(m_ObjectNameInput->GetTextUTF8());
+
+
+	/*
+	case CreateObject_Type::Player:
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateObject_Type::YellowBird:
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(m_ObjectNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateObject_Type::PurpleBeatle:
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(m_ObjectNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateObject_Type::NormalBear:
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(m_ObjectNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateObject_Type::TileEmptyObject:
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
+	}
+	break;
+	case CreateObject_Type::BackGround:
+	{
+		CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
+	}
+	break;
+	}
+	*/
+
+
+}
+
+void CEditorManager::MouseRButtonPush(float DeltaTime)
+{}
+
 void CEditorManager::KeyBoardUp(float DeltaTime)
 {
 	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
@@ -262,16 +368,6 @@ void CEditorManager::KeyBoardUp(float DeltaTime)
 		Camera->AddWorldPos(Vector3(0.f, m_CameraMoveSpeed * DeltaTime, 0.f));
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
-
-		/*
-		if (CameraOriginPos.y + RS.Height * 0.5f >= WorldRS.y)
-		{
-			CameraOriginPos.y = WorldRS.y - (RS.Height * 0.5f);
-
-			Camera->SetWorldPos(CameraOriginPos);
-		}
-		*/
-		
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
@@ -291,15 +387,6 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
-		/*
-		if (CameraOriginPos.x  < 0.f)
-		{
-			CameraOriginPos.x = 0.f;
-
-			Camera->SetWorldPos(CameraOriginPos);
-		}
-		*/
-
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
 }
@@ -318,15 +405,6 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
-		/*
-		if (CameraOriginPos.x + RS.Width > WorldRS.x)
-		{
-			CameraOriginPos.x = WorldRS.x -  RS.Width;
-
-			Camera->SetWorldPos(CameraOriginPos);
-		}
-		*/
-
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
 }
@@ -344,15 +422,6 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 		Camera->AddWorldPos(Vector3(0.f, -1.f * m_CameraMoveSpeed * DeltaTime, 0.f));
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
-
-		/*
-		if (CameraOriginPos.y < 0.f)
-		{
-			CameraOriginPos.y = 0.5f;
-
-			Camera->SetWorldPos(CameraOriginPos);
-		}
-		*/
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}

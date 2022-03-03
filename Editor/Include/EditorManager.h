@@ -8,7 +8,9 @@ enum class EditMode
 	Scene,
 	Tile,
 	Back,
-	Line
+	Line,
+	CharacterCreate,
+	CharacterEdit
 };
 
 class CEditorManager
@@ -80,6 +82,9 @@ public:
 	void MouseLButtonDown(float DeltaTime);
 	void MouseLButtonPush(float DeltaTime);
 	void MouseLButtonUp(float DeltaTime);
+
+	void MouseRButtonDown(float DeltaTime);
+	void MouseRButtonPush(float DeltaTime);
 
 	void KeyBoardUp(float DeltaTime);
 	void KeyBoardLeft(float DeltaTime);

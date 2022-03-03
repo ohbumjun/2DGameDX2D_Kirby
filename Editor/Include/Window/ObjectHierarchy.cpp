@@ -1,10 +1,8 @@
 #include "ObjectHierarchy.h"
-
 #include "BackGroundWindow.h"
 #include "IMGUIManager.h"
 #include "TileMapWindow.h"
 #include "IMGUISameLine.h"
-#include "IMGUIListBox.h"
 #include "IMGUILabel.h"
 #include "GameObject/GameObject.h"
 #include "../Object/ShowObject.h"
@@ -79,9 +77,9 @@ bool CObjectHierarchy::Init()
 	// ========================================================================
 
 	// m_mapVecObject 세팅
-	std::vector<std::string>  NormalMonsters = { "NormalBear", "PurpleBeatles", "YellowBird" };
+	std::vector<std::string>  vecNormalMonsters = { "NormalBear", "PurpleBeatles", "YellowBird" };
 
-	m_mapVecObject.insert(std::make_pair("NormalMonster", NormalMonsters));
+	m_mapVecObject.insert(std::make_pair("NormalMonster", vecNormalMonsters));
 
 	// m_mapVecObject 의 Key 들을 m_ObjectList 에 추가
 	for (const auto & kv : m_mapVecObject)
@@ -90,11 +88,12 @@ bool CObjectHierarchy::Init()
 	}
 
 	// Normal Monster 를 m_ObjectList 에서 선택된 상태로 두기
+	m_ObjectList->SetSelectIndex(0);
 
 	// m_SpecificObjectList 에 Normal Monster 들 종류 나열 하기
-	for (const auto& Monsters : m_mapVecObject["Normal"])
+	for (size_t i = 0; i < vecNormalMonsters.size(); i++)
 	{
-		m_SpecificObjectList->AddItem(Monsters);
+		m_SpecificObjectList->AddItem(vecNormalMonsters[i]);
 	}
 
 	return true;
@@ -105,7 +104,7 @@ void CObjectHierarchy::Update(float DeltaTime)
 	CIMGUIWindow::Update(DeltaTime);
 }
 
-void CObjectHierarchy::AddObject(const char* ObjectName)
+void CObjectHierarchy::AddCreatedObject(const char* ObjectName)
 {
 	m_CreatedObjectListBox->AddItem(ObjectName);
 }
@@ -156,50 +155,19 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 
 void CObjectHierarchy::SeeObjectList(int Index, const char* ObjectName)
 {
-	// 선택한 Object 내에 있는 Scene Component 목록을 보여준다
-	m_SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+	m_SpecificObjectList->Clear();
 
-	// 기존 모두 지워주기
-	m_CreatedComponentListBox->Clear();
-
-	// 가장 먼저 들어온 놈이 Root Component 일 것이다 
-	std::vector<FindComponentName> vecComponentsName;
-	m_SelectObject->GetAllSceneComponentsName(vecComponentsName);
-
-	// 자기 자신을 선택한 상태로 둔다.
-	m_CreatedObjectListBox->SetSelectIndex(Index);
-
-	for (size_t i = 0; i < vecComponentsName.size(); i++)
+	std::vector<std::string> vecObjectLists = m_mapVecObject[ObjectName];
+	for (size_t i = 0; i < vecObjectLists.size(); i++)
 	{
-		m_CreatedComponentListBox->AddItem(vecComponentsName[i].Name);
+		m_SpecificObjectList->AddItem(vecObjectLists[i]);
 	}
-
-	// 가장 첫번째 Component를 선택한 상태로 세팅한다.
-	m_CreatedComponentListBox->SetSelectIndex(0);
-
-	// Object 의 Pos, Rot, Scale x,y,z 정보도 DetailWindow 측에 세팅해준다.
-	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
-	DetailWindow->SetPosRotScaleInfo(m_SelectObject);
-
-	CEditorManager::GetInst()->SetSceneEditObject();
-
-	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
-	CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
-
-	Vector3 ObjectPivot = m_SelectObject->GetPivot();
-	Vector3 ObjectSize = m_SelectObject->GetWorldScale();
-	Vector3 ObjectPos = m_SelectObject->GetWorldPos();
-	Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
-
-	Vector2 StartPos = Vector2(Pos.x, Pos.y);
-	Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
-
-	ShowObject->SetStartPos(StartPos);
-	ShowObject->SetEndPos(EndPos);
 }
 
 void CObjectHierarchy::SeeSpecificObjectList(int Index, const char* ComponentName)
-{}
+{
+	// 여기서는 화면에 
+}
 
 void CObjectHierarchy::SelectCreatedComponent(int Index, const char* ComponentName)
 {
