@@ -263,13 +263,15 @@ void CEditorManager::KeyBoardUp(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
-
+		/*
 		if (CameraOriginPos.y + RS.Height * 0.5f >= WorldRS.y)
 		{
 			CameraOriginPos.y = WorldRS.y - (RS.Height * 0.5f);
 
 			Camera->SetWorldPos(CameraOriginPos);
 		}
+		*/
+		
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
@@ -289,12 +291,14 @@ void CEditorManager::KeyBoardLeft(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
+		/*
 		if (CameraOriginPos.x  < 0.f)
 		{
 			CameraOriginPos.x = 0.f;
 
 			Camera->SetWorldPos(CameraOriginPos);
 		}
+		*/
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
@@ -314,12 +318,14 @@ void CEditorManager::KeyBoardRight(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
+		/*
 		if (CameraOriginPos.x + RS.Width > WorldRS.x)
 		{
 			CameraOriginPos.x = WorldRS.x -  RS.Width;
 
 			Camera->SetWorldPos(CameraOriginPos);
 		}
+		*/
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}
@@ -339,12 +345,14 @@ void CEditorManager::KeyBoardDown(float DeltaTime)
 
 		Vector3 CameraOriginPos = Camera->GetWorldPos();
 
+		/*
 		if (CameraOriginPos.y < 0.f)
 		{
 			CameraOriginPos.y = 0.5f;
 
 			Camera->SetWorldPos(CameraOriginPos);
 		}
+		*/
 
 		m_SpriteWindow->SetCameraPosText(CameraOriginPos.x, CameraOriginPos.y);
 	}

@@ -612,6 +612,10 @@ void CEditorMenu::LoadObject()
 
 				// 3) TileMap 에서의 Edit Mode를 true로 세팅
 				TileComponent->SetEditMode(true);
+
+				// 4) World Resolution 세팅
+				Vector3 TileSize = TileComponent->GetWorldScale();
+				CSceneManager::GetInst()->GetScene()->SetWorldResolution(TileSize.x, TileSize.y);
 			};
 
 			// 2) 만일 BackGround Component 를 Load 했다면
@@ -622,7 +626,6 @@ void CEditorMenu::LoadObject()
 
 				// 2) BackGround Window 에 BackGroundComponent 지정하기
 				CEditorManager::GetInst()->GetBackGroundWindow()->SetBackGround((CBackGroundComponent*)LoadedObject->GetRootComponent());
-
 			};
 			
 		}

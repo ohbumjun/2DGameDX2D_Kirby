@@ -126,6 +126,10 @@ void CObjectHierarchy::SelectComponent(int Index, const char* ComponentName)
 
 		// Edit Mode를 Tile Edit 모드로 바꿔준다
 		CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
+
+		// 4) World Resolution 세팅
+		Vector3 TileSize = m_SelectComponent->GetWorldScale();
+		CSceneManager::GetInst()->GetScene()->SetWorldResolution(TileSize.x, TileSize.y);
 	}
 	// BackGround Component 라면
 	else if (BackGroundWindow && m_SelectComponent->CheckType<CBackGroundComponent>())

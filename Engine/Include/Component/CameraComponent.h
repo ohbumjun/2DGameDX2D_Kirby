@@ -15,10 +15,12 @@ protected:
 	Camera_Type m_CameraType;
 	Matrix      m_matView;
 	Matrix      m_matProj;
-	float		m_ViewAngle;
-	float		m_Distance;
+	float			m_ViewAngle;
+	float			m_Distance;
 	Resolution	m_RS;
 	Vector2		m_Ratio;
+	Vector3     m_PrevRelativePos;
+	Vector3     m_PrevWorldPos;
 
 public:
 	Resolution GetResolution()	const

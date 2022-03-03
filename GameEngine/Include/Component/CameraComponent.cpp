@@ -2,7 +2,7 @@
 #include "../Engine.h"
 #include "../Scene/Scene.h"
 
-CCameraComponent::CCameraComponent()
+CCameraComponent::CCameraComponent() 
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -129,21 +129,99 @@ void CCameraComponent::Update(float DeltaTime)
 
 	Vector3 CameraOriginPos = GetWorldPos();
 
+	bool OutOfArea = false;
+
 	// Up
-	if (CameraOriginPos.y + RS.Height * 0.5f >= WorldRS.y)
+	if (CameraOriginPos.y + RS.Height >= WorldRS.y)
 	{
-		CameraOriginPos.y = WorldRS.y - (RS.Height * 0.5f);
+		CameraOriginPos.y = WorldRS.y - RS.Height - 0.001f;
 
 		SetWorldPos(CameraOriginPos);
-	}
-	else if (CameraOriginPos.y < 0.f)
-	{
-		CameraOriginPos.y = 0.0f;
 
-		SetWorldPos(CameraOriginPos);
+		OutOfArea = true;
 	}
 
 	// Down
+	if (CameraOriginPos.y < 0.f)
+	{
+		CameraOriginPos.y = 0.001f;
+
+		SetWorldPos(CameraOriginPos);
+
+		OutOfArea = true;
+	}
+
+	// Right
+	if (CameraOriginPos.x + RS.Width > WorldRS.x)
+	{
+		CameraOriginPos.x = WorldRS.x - RS.Width - 0.001f;
+
+		SetWorldPos(CameraOriginPos);
+
+		OutOfArea = true;
+	}
+
+	// Left
+	if (CameraOriginPos.x < 0.f)
+	{
+		CameraOriginPos.x = 0.001f;
+
+		SetWorldPos(CameraOriginPos);
+
+		OutOfArea = true;
+	}
+
+
+	if (!OutOfArea && m_Parent)
+	{
+		// 자기 범위에 도달할 때까지 여기서 기다리게 해야 한다 .. ?
+		Resolution RS = CEngine::GetInst()->GetResolution();
+
+		Vector3 CurRelativePos = GetRelativePos();
+		Vector3 CurWorldPos = GetWorldPos();
+
+		float PossibleWidthMax = (float)RS.Width - (m_Parent->GetWorldScale().x * 0.5f);
+		float PossibleWidthMin  = (m_Parent->GetWorldScale().x * 0.5f);
+
+		float PossibleHeightMax = (float)RS.Height - (m_Parent->GetWorldScale().y * 0.5f);
+		float PossibleHeightMin = (m_Parent->GetWorldScale().y * 0.5f);
+
+		float WorldPosDiff = m_PrevWorldPos.Distance(CurWorldPos);
+
+		Vector3 NewRelativePos = CurRelativePos;
+
+		// 오른쪽 경계에 걸리면 RelativeX 는 더 - 가 된다.
+		// 오른쪽 경계에 막혔던 상황 --> 이전보다 왼쪽으로 온 상황
+		// 왼쪽으로 온 만큼, 기존 RelativeX 값에 + 해준다.
+		if (CurRelativePos.x < m_RS.Width * m_Ratio.x * -1.f)
+		{
+			NewRelativePos.x = m_PrevRelativePos.x + WorldPosDiff;
+		}
+		// 왼쪽 경계에 걸리면 ReleativeX 는 더 + 가 된다 ( 덜 - 가 된다. )
+		// 왼쪽 경계에 막혔던 상황 --> 이전보다 오른쪽으로 온 상황
+		// 오른쪽으로 온만큼 기존 RelativeX 값에 - 해준다.
+		else if (CurRelativePos.x > m_RS.Width * m_Ratio.x * -1.f)
+		{
+			NewRelativePos.x = m_PrevRelativePos.x - WorldPosDiff;
+		}
+
+		// 위쪽 경계에 걸리면, ReleativeY는 더 - 가 된다
+		// 위쪽 경계에 막혔던 상황 --> 이전보다 아래로 온 상황
+		// 아래로 온 만큼, 기존 RelativeY 값에 + 해준다.
+		if (CurRelativePos.y < m_RS.Height * m_Ratio.y * -1.f)
+		{
+			NewRelativePos.y = m_PrevRelativePos.y + WorldPosDiff;
+		}
+		// 아래쪽 경계에 걸리면 RelativeY 는 더 + 가 된다 ( 덜 + 가 된다. )
+		// 아래쪽 경계에 막혔던 상황 --> 이전보다 위로 온 상황
+		// 위로 온 만큼, 기존 RelativeY 값에 - 해준다.
+		else if (CurRelativePos.y > m_RS.Height * m_Ratio.y * -1.f)
+		{
+			NewRelativePos.y = m_PrevRelativePos.y - WorldPosDiff;
+		}
+		
+		SetRelativePos(NewRelativePos);
+	}
 
 }
 
@@ -174,6 +252,8 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 		m_matView[3][i] = Pos.Dot(Axis);
 	}
 
+	m_PrevRelativePos = GetRelativePos();
+	m_PrevWorldPos    = GetWorldPos();
 }
 
 CCameraComponent* CCameraComponent::Clone()
