@@ -6,9 +6,9 @@
 
 CLifeObject::CLifeObject():
 	m_MoveSpeed(200.f),
-	m_PhysicsSimulate(false),
 	// m_IsGround(true),
 	// m_PhysicsSimulate(true),
+	m_PhysicsSimulate(true),
 	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
@@ -48,8 +48,8 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 			Velocity = m_JumpVelocity * m_FallTime;
 
 		// 내려간 거리
-		// m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
-		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * 0.1f;
+		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
+		// m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * 0.01f;
 
 		// 최대 낙하 속도를 조절한다.
 		if (Velocity - m_FallVelocity < m_FallVelocityMax * -1.f)
@@ -94,17 +94,17 @@ void CLifeObject::CheckBottomCollision()
 		int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
 
 		Vector3 LB = Vector3(ResultLeft, ResultBottom,0.f);
-		Vector3 RT = LB + Vector3(ResultRight, ResultTop,0.f);
+		Vector3 RT = Vector3(ResultRight, ResultTop,0.f);
 
 		// LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
 		LeftIdx = TileMap->GetTileEmptyIndexX(LB);
 		// RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
-		RightIdx = TileMap->GetTileEmptyIndexX(LB);
+		RightIdx = TileMap->GetTileEmptyIndexX(RT);
 
 		// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
-		TopIdx = TileMap->GetTileEmptyIndexX(RT);
+		TopIdx = TileMap->GetTileEmptyIndexY(RT);
 		// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
-		BottomIdx = TileMap->GetTileEmptyIndexX(RT);
+		BottomIdx = TileMap->GetTileEmptyIndexY(LB);
 
 		if (LeftIdx < 0)
 			LeftIdx = 0;
@@ -148,7 +148,8 @@ void CLifeObject::CheckBottomCollision()
 					Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos() +TileSize;
 
 					// 위치 정보 세팅
-					SetWorldPos(m_Pos.x, TilePos.y, m_Pos.z);
+					float NewPosY = TilePos.y + Pivot.y * WorldScale.y;
+					SetWorldPos(m_Pos.x, NewPosY, m_Pos.z);
 
 					break;
 				}
