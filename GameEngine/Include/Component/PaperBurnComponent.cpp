@@ -163,6 +163,119 @@ CPaperBurnComponent* CPaperBurnComponent::Clone()
 	return new CPaperBurnComponent(*this);
 }
 
+void CPaperBurnComponent::Save(FILE* pFile)
+{
+	CObjectComponent::Save(pFile);
+
+	m_Material->Save(pFile);
+
+	bool BurnTexEnable = false;
+	if (m_BurnTexture)
+		BurnTexEnable = true;
+
+	fwrite(&BurnTexEnable, sizeof(bool), 1, pFile);
+
+	if (m_BurnTexture)
+		m_BurnTexture->Save(pFile);
+
+}
+
+void CPaperBurnComponent::Load(FILE* pFile)
+{
+	CObjectComponent::Load(pFile);
+
+	// Material
+	m_Material = m_Scene->GetResource()->CreateMaterialEmpty<CMaterial>();
+	m_Material->Load(pFile);
+
+	// Texture
+	bool BurnTexEnable = false;
+
+	fread(&BurnTexEnable, sizeof(bool), 1, pFile);
+
+	if (BurnTexEnable)
+	{
+		int TextureNameLength = -1;
+		char TextureName[MAX_PATH] = {};
+		fread(&TextureNameLength, sizeof(int), 1, pFile);
+		fread(TextureName, sizeof(char), TextureNameLength, pFile);
+
+		Image_Type ImageType = Image_Type::Atlas;
+		fread(&ImageType, sizeof(Image_Type), 1, pFile);
+
+		int InfoCount = -1;
+		fread(&InfoCount, sizeof(int), 1, pFile);
+
+		std::vector<std::wstring> vecFullPath;
+		std::vector<std::wstring> vecFileName;
+		std::string PathName;
+
+		for (int i = 0; i < InfoCount; i++)
+		{
+			int PathLength = -1;
+			TCHAR FullPath[MAX_PATH] = {};
+			fread(&PathLength, sizeof(int), 1, pFile);
+			fread(FullPath, sizeof(TCHAR), PathLength, pFile);
+			vecFullPath.push_back(FullPath);
+
+			char Path[MAX_PATH] = {};
+			fread(&PathLength, sizeof(int), 1, pFile);
+			fread(Path, sizeof(char), PathLength, pFile);
+			PathName = Path;
+
+			TCHAR FileName[MAX_PATH] = {};
+			fread(&PathLength, sizeof(int), 1, pFile);
+			fread(FileName, sizeof(TCHAR), PathLength, pFile);
+			vecFileName.push_back(FileName);
+		}
+
+		switch (ImageType)
+		{
+		case Image_Type::Atlas:
+		{
+			if (vecFileName.size() == 1)
+			{
+				if (m_Scene)
+				{
+					m_Scene->GetResource()->LoadTextureFullPath(TextureName, vecFullPath[0].c_str());
+				}
+				else
+				{
+					CResourceManager::GetInst()->LoadTextureFullPath(TextureName, vecFullPath[0].c_str());
+				}
+			}
+		}
+		break;
+		case Image_Type::Frame:
+			break;
+		case Image_Type::Array:
+			break;
+		}
+		if (m_Scene)
+		{
+			m_BurnTexture = m_Scene->GetResource()->FindTexture(TextureName);
+		}
+		else
+		{
+			m_BurnTexture = CResourceManager::GetInst()->FindTexture(TextureName);
+		}
+
+		if (!m_BurnTexture)
+			return ;
+
+		m_BurnTexture->SetImageType(ImageType);
+	}
+
+	// CBuffer
+	SAFE_DELETE(m_CBuffer);
+
+	m_CBuffer = new CPaperBurnConstantBuffer;
+
+	m_CBuffer->Init();
+
+
+}
+
 void CPaperBurnComponent::SetShader()
 {
 	m_CBuffer->UpdateCBuffer();

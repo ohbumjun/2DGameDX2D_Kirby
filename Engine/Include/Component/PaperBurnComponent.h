@@ -53,7 +53,8 @@ public:
 	virtual void Render();
 	virtual void PostRender();
 	virtual CPaperBurnComponent* Clone();
-
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 public:
 	void SetShader();
 
