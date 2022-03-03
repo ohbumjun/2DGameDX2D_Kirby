@@ -33,13 +33,6 @@ private: // todo :  Tile Base Info
 	class CIMGUIText* m_TileBaseScaleY;
 	class CIMGUITextInput* m_TileBaseScaleXInput;
 	class CIMGUITextInput* m_TileBaseScaleYInput;
-private: // todo :  BackGround Info
-	class CIMGUIButton* m_BackGroundImageLoadButton;
-	class CIMGUIImage* m_BackGroundImageSprite;
-	class CIMGUIText* m_BackImgScaleX;
-	class CIMGUIText* m_BackImgScaleY;
-	class CIMGUIText* m_BaseImgScrollRatio;
-	class CIMGUITextInput* m_BaseImgScrollRatioInput;
 private:
 	// class CTileMapComponent* m_TileMap;
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.

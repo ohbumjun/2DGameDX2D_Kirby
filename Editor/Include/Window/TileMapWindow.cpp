@@ -47,38 +47,47 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	sprintf_s(CurrentSizeY, "%.1f", m_TileMapEmpty->GetTileEmptySize().y);
 	m_CurrentTileSizeY->SetText(CurrentSizeY);
 
-	// 1) Tile
-	// 해당 TileMap에 사용된 Tile Texture의 Width, Height 를 IMGUIText에 세팅한다.
-	/*
-	if (!m_TileMap->GetTileMaterial()->EmptyTexture())
+	// 1) Tile Map Image 정보 세팅
+	if (!m_TileMapEmpty->GetTileImageMaterial()->EmptyTexture())
 	{
-		float TileTextureWidth = (float)m_TileMap->GetTileMaterial()->GetTextureWidth();
-		float TileTextureHeight = (float)m_TileMap->GetTileMaterial()->GetTextureHeight();
+		char ImageWorldWidth[MAX_PATH] = {};
+		sprintf_s(ImageWorldWidth, "%.1f", m_TileMapEmpty->GetWorldScale().x);
+		m_TileBaseScaleX->SetText(ImageWorldWidth);
 
-		char TextureWidth[MAX_PATH] = {};
-		sprintf_s(TextureWidth, "%.1f", TileTextureWidth);
-		m_TextureWidth->SetText(TextureWidth);
+		m_TileBaseScaleXInput->SetFloat(m_TileMapEmpty->GetWorldScale().x);
 
-		char TextureHeight[MAX_PATH] = {};
-		sprintf_s(TextureHeight, "%.1f", TileTextureHeight);
-		m_TextureHeight->SetText(TextureHeight);
+		char ImageWorldHeight[MAX_PATH] = {};
+		sprintf_s(ImageWorldHeight, "%.1f", m_TileMapEmpty->GetWorldScale().y);
+		m_TileBaseScaleY->SetText(ImageWorldHeight);
+
+		m_TileBaseScaleYInput->SetFloat(m_TileMapEmpty->GetWorldScale().y);
 
 		// Texture Sprite 에 세팅하기
-		m_TextureImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
-
-		// Frame 정보가 있다면, TileImageSprite 도 세팅한다
-		if (!m_TileFrameStartX->FloatEmpty())
-		{
-			m_TileImageSprite->SetTexture(m_TileMap->GetTileMaterial()->GetTexture());
-
-			m_TileImageSprite->SetImageStart(Vector2(m_TileFrameStartX->GetValueFloat(), 
-				m_TileFrameStartY->GetValueFloat()));
-
-			m_TileImageSprite->SetImageEnd(Vector2(m_TileFrameEndX->GetValueFloat(), 
-				m_TileFrameEndY->GetValueFloat()));
-		}
+		m_TileBaseImageSprite->SetTexture(m_TileMapEmpty->GetTileImageMaterial()->GetTexture());
 	}
-	*/
+
+	// 2) Tile 정보 세팅
+	// -- Tile Count
+	char TileCountX[MAX_PATH] = {};
+	sprintf_s(TileCountX, "%.1d", m_TileMapEmpty->GetTileCountX());
+	m_CurrentTileCountX->SetText(TileCountX);
+	m_TileCountX->SetInt(m_TileMapEmpty->GetTileCountX());
+
+	char TileCountY[MAX_PATH] = {};
+	sprintf_s(TileCountY, "%.1d", m_TileMapEmpty->GetTileCountY());
+	m_CurrentTileCountY->SetText(TileCountY);
+	m_TileCountY->SetInt(m_TileMapEmpty->GetTileCountY());
+
+	// -- Tile  Size
+	char TileSizeX[MAX_PATH] = {};
+	sprintf_s(TileSizeX, "%.1f", m_TileMapEmpty->GetTileEmptySize().x);
+	m_CurrentTileSizeX->SetText(TileSizeX);
+	m_TileSizeX->SetFloat(m_TileMapEmpty->GetTileEmptySize().x);
+
+	char TileSizeY[MAX_PATH] = {};
+	sprintf_s(TileSizeY, "%.1f", m_TileMapEmpty->GetTileEmptySize().y);
+	m_CurrentTileSizeY->SetText(TileSizeY);
+	m_TileSizeY->SetFloat(m_TileMapEmpty->GetTileEmptySize().y);
 }
 
 bool CTileMapWindow::Init()

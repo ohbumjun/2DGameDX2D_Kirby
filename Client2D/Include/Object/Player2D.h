@@ -51,8 +51,11 @@ public:
 private:
 	void MoveUp(float DeltaTime);
 	void MoveDown(float DeltaTime);
+	void MoveLeft(float DeltaTime);
+	void MoveRight(float DeltaTime);
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
+private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);
 	void Skill1(float DeltaTime);
