@@ -59,14 +59,14 @@ bool CEditorMenu::Init()
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(115.f);
 
-	m_EditMenuComboBox = AddWidget<CIMGUIComboBox>("Edit Mode", 100.f, 30.f);
+	m_EditMenuComboBox = AddWidget<CIMGUIComboBox>("Edit Mode", 120.f, 30.f);
 	m_EditMenuComboBox->AddItem("Sprite");
 	m_EditMenuComboBox->AddItem("Scene");
 	m_EditMenuComboBox->AddItem("TileMap");
 	m_EditMenuComboBox->AddItem("BackGround");
 	m_EditMenuComboBox->AddItem("Line");
-	m_EditMenuComboBox->AddItem("ObjCreate");
-	m_EditMenuComboBox->AddItem("ObjEdit");
+	m_EditMenuComboBox->AddItem("CharacterCreate");
+	m_EditMenuComboBox->AddItem("CharacterEdit");
 	m_EditMenuComboBox->SetHideName(true);
 	m_EditMenuComboBox->SetSelectCallback<CEditorMenu>(this, &CEditorMenu::SelectEditModeCallback);
 

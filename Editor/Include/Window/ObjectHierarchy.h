@@ -48,6 +48,8 @@ private :
     void SeeObjectList(int Index, const char* ObjectName);
     void SeeSpecificObjectList(int Index, const char* ComponentName);
 public :
+    bool CheckDuplicateObject(const std::string& ObjName);
+public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
 };

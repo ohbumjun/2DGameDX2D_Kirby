@@ -301,19 +301,30 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 	// Object Hierarchy 의 m_SpecificObjectList 에서 선택된 Object 의 이름을 가져온다.
 	std::string SelectMonsterName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
 
-	// 지금까지 만들어진 Object 개수
-
+	// 생성될 Monster 이름을 Random 하게 만든다.
 	std::string NewMonsterName = SelectMonsterName + GetRandomString();
+
+	// 혹시나 이미 만들어진 이름이라면 X
+	if (m_ObjectHierarchy->CheckDuplicateObject(NewMonsterName))
+		return;
+
+	CGameObject* CreatedObject = nullptr;
 
 	if (strcmp("NormalBear", SelectMonsterName.c_str()) == 0)
 	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
+		CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
 	}
 
+	if (!CreatedObject)
+		return;
 
-	// Add List To Object List
-	// Hierarchy->AddCreatedObject(m_ObjectNameInput->GetTextUTF8());
+	// 현재 마우스 위치에 만들기
+	Vector2 Mouse2DPos = CInput::GetInst()->GetMouseWorld2DPos();
 
+	CreatedObject->SetWorldPos(Mouse2DPos.x, Mouse2DPos.y, 1.f);
+
+	// Object Hierarchy 목록에 추가하기
+	m_ObjectHierarchy->AddCreatedObject(NewMonsterName.c_str());
 
 	/*
 	case CreateObject_Type::Player:

@@ -169,6 +169,11 @@ void CObjectHierarchy::SeeSpecificObjectList(int Index, const char* ComponentNam
 	// 여기서는 화면에 
 }
 
+bool CObjectHierarchy::CheckDuplicateObject(const std::string& ObjName)
+{
+	return m_CreatedObjectListBox->CheckItem(ObjName);
+}
+
 void CObjectHierarchy::SelectCreatedComponent(int Index, const char* ComponentName)
 {
 	if (!m_SelectObject)
