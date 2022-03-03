@@ -656,6 +656,8 @@ void CTransform::Save(FILE* pFile)
 	fwrite(&m_Pivot, sizeof(Vector3), 1, pFile);
 	fwrite(&m_MeshSize, sizeof(Vector3), 1, pFile);
 
+	fwrite(&m_ScrollRatio, sizeof(float), 1, pFile);
+
 	/*
 	Matrix m_matScale; --> Update 마다, 위에서 저장된 값들을 근거로 계속해서 새로 만들어내는 변수들이다. 
 	Matrix m_matRot;
@@ -687,4 +689,6 @@ void CTransform::Load(FILE* pFile)
 
 	fread(&m_Pivot, sizeof(Vector3), 1, pFile);
 	fread(&m_MeshSize, sizeof(Vector3), 1, pFile);
+
+	fread(&m_ScrollRatio, sizeof(float), 1, pFile);
 }

@@ -101,15 +101,15 @@ bool CMainScene::Init()
 
 	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
-	TileMapEmpty->LoadByFileName("TileMapRhombus.gobj", OBJECT_PATH);
+	TileMapEmpty->LoadByFileName("TileMapText.gobj", OBJECT_PATH);
 	TileMapEmpty->SetEditMode(true);
 	TileMapEmpty->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
 
 	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
 	SetTileMapEmptyObject(TileMapEmpty);
 
-	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
-	BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
+	// CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
+	// BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
 	// BackGround->SetWorldPos(Vector3(100.f * -1.f, 800.f * -1.f, 0.f));
 
 	return true;
