@@ -35,6 +35,10 @@ public :
 		m_Mode->SetPlayerObject(Object);
 }
 public:
+	bool IsEditMode () const
+	{
+		return m_Mode->IsEditMode();
+	}
 	Vector2 GetWorldResolution() const
 	{
 		return m_WorldResolution;

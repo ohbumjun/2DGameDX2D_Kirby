@@ -335,6 +335,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(NewMonsterName);
 		}
+		else if (strcmp(g_PurpleBeatlesName.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -353,20 +357,6 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
-		case CreateObject_Type::YellowBird:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-		case CreateObject_Type::PurpleBeatle:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-		case CreateObject_Type::NormalBear:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(m_ObjectNameInput->GetTextMultibyte());
-		}
 		break;
 		case CreateObject_Type::TileEmptyObject:
 		{

@@ -3,7 +3,8 @@
 
 CSceneMode::CSceneMode() :
 m_Scene(nullptr),
-m_PlayerObject(nullptr)
+m_PlayerObject(nullptr),
+m_IsEditMode(false)
 {
 	SetTypeID<CSceneMode>();
 }

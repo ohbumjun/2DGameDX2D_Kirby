@@ -37,6 +37,10 @@ CLifeObject::~CLifeObject()
 
 void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 {
+	// Edit Mode 라면 떨어지는 효과를 적용하지 않는다
+	if (m_Scene->IsEditMode())
+		return;
+
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
 	if (m_PhysicApplyDelayTime >= 0.f)
 	{

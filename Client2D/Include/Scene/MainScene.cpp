@@ -74,7 +74,8 @@ bool CMainScene::Init()
 	YellowBirdMonster->LoadByFileName("TestYellowBird.gobj", OBJECT_PATH);
 	YellowBirdMonster->SetWorldPos(Vector3(500.f, 500.f, 1.));
 
-	CPurpleBeatle* PurpleBeatle = m_Scene->CreateGameObject<CPurpleBeatle>("PurpleBeatle");
+	CPurpleBeatle* PurpleBeatle = m_Scene->LoadGameObject<CPurpleBeatle>();
+	PurpleBeatle->LoadByFileName("TestPurpleBeatles.gobj", OBJECT_PATH);
 	PurpleBeatle->SetWorldPos(Vector3(1200.f, 500.f, 1.));
 
 	// CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
@@ -114,6 +115,8 @@ bool CMainScene::Init()
 	BubbleParticle->SetRelativePos(-300.f, 0.f, 0.f);
 	*/
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
+
+	// 모든 Object List를 돌면서 EditMode를 true로 만들어준다.
 
 
 	return true;

@@ -16,11 +16,17 @@ protected:
 	class CScene*                 m_Scene;
 	CSharedPtr<class CGameObject> m_PlayerObject;
 	CSharedPtr<class CGameObject> m_TileMapEmptyObject;
+protected:
+	bool m_IsEditMode;
 
 public:
 	void SetPlayerObject(class CGameObject* Obj);
 	void SetTileMapEmptyObject(class CGameObject* Obj);
-
+public :
+	bool IsEditMode () const
+{
+		return m_IsEditMode;
+}
 	class CGameObject* GetPlayerObject() const
 	{
 		return m_PlayerObject;
