@@ -39,8 +39,31 @@ private:
 	bool  m_SolW;
 	float m_WDistance;
 	float m_Opacity;
-	// 
-	// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+private :
+	// 전체 움직임 속도 ( 레버 + 대쉬 )
+	float m_MoveVelocity;
+	float m_MoveVelocityMax;
+
+	bool m_IsLeverMoving;
+	float m_LeverMoveAccel;
+	float m_LeverVelocity;
+	float m_LeverMaxMoveVelocity;
+
+	bool m_IsButtonMoving;
+	float m_ButtonMoveAccel;
+	float m_ButtonVelocity;
+	float m_ButtonMaxMoveVelocity;
+
+	bool m_RightMove;
+	float m_ToLeftWhenRightMove;
+	bool m_RightMovePush;
+
+	bool m_LeftMove;
+	bool m_ToRightWhenLeftMove;
+	bool m_LeftMovePush;
+
+	bool m_TriangleJump;
+
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -54,6 +77,19 @@ private:
 	void MoveDown(float DeltaTime);
 	void MoveLeft(float DeltaTime);
 	void MoveRight(float DeltaTime);
+private :
+	void MoveLeftW(float DeltaTime);
+	void MoveDashLeft(float DeltaTime);
+	void MoveRightW(float DeltaTime);
+	void MoveDashRight(float DeltaTime);
+	void LeftLeverMoveEnd(float DeltaTime);
+	void RightLeverMoveEnd(float DeltaTime);
+	void LeftDashMoveEnd(float DeltaTime);
+	void RightDashMoveEnd(float DeltaTime);
+private :
+	void PlayerMoveUpdate(float DeltaTime);
+	void ResetMoveInfo();
+private :
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
 private :

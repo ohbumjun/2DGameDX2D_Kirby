@@ -58,7 +58,19 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 		// 점프한 상태라면, 초기 점프 속도 * 시간 --> 위로 올라간 거리를 세팅하는 것 
 		if (m_Jump)
+		{
 			Velocity = m_JumpVelocity * m_FallTime;
+
+			// 만약 점프 중에 화면 밖으로 벗어난다면 Velocity는 별도로 처리해야 한다.
+			float ObjectHeadPosY = GetWorldPos().y + GetWorldScale().y;
+
+			float WorldResolutionY = m_Scene->GetWorldResolution().y;
+
+			if (WorldResolutionY - ObjectHeadPosY < 1.f)
+			{
+				// Velocity = 0.f;
+			}
+		}
 
 		// 내려간 거리
 		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;

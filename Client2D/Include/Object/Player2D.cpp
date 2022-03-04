@@ -14,12 +14,31 @@
 #include "Scene/NavigationManager.h"
 #include "../UI/SimpleHUD.h"
 
-CPlayer2D::CPlayer2D()
+CPlayer2D::CPlayer2D():
+m_MoveVelocity(0.f),
+m_LeverMoveAccel(1.f),
+m_LeverVelocity(0.f),
+m_LeverMaxMoveVelocity(250.f),
+m_ButtonMoveAccel(1.5f),
+m_ButtonVelocity(0.f),
+m_ButtonMaxMoveVelocity(200.f),
+m_RightMove(false),
+m_ToLeftWhenRightMove(false),
+m_RightMovePush(false),
+m_LeftMove(false),
+m_ToRightWhenLeftMove(false),
+m_LeftMovePush(false),
+m_IsLeverMoving(false),
+m_IsButtonMoving(false),
+m_TriangleJump(false)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
 	m_WDistance = 0.f;
 	m_Opacity   = 1.f;
+
+	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_ButtonMaxMoveVelocity;
+	 
 }
 
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
@@ -329,6 +348,102 @@ void CPlayer2D::MoveLeft(float DeltaTime)
 void CPlayer2D::MoveRight(float DeltaTime)
 {
 	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * 300.f * DeltaTime);
+}
+
+void CPlayer2D::MoveLeftW(float DeltaTime)
+{}
+
+void CPlayer2D::MoveDashLeft(float DeltaTime)
+{}
+
+void CPlayer2D::MoveRightW(float DeltaTime)
+{}
+
+void CPlayer2D::MoveDashRight(float DeltaTime)
+{}
+
+void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
+{
+	m_LeftMovePush = false;
+
+	ResetMoveInfo();
+}
+
+void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
+{}
+
+void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
+{
+}
+
+void CPlayer2D::RightDashMoveEnd(float DeltaTime)
+{}
+
+void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
+{
+	// 레버 움직임 --> 현재 움직이지 않고 있는 상황이라면, 자연 감속을 시켜줘야 한다.
+	// 최대 움직임을 제한해줘야 한다.
+	if (m_MoveVelocity >= m_MoveVelocityMax)
+	{
+		m_MoveVelocity = m_MoveVelocityMax;
+	}
+
+	// 레버를 누르고 있지 않다면, 레버 속도를 감속 시킨다.
+	if (!m_IsLeverMoving)
+	{
+		m_LeverVelocity -= m_LeverMoveAccel * 0.5f;
+
+		if (m_LeverVelocity <= 0.f)
+			m_LeverVelocity = 0.f;
+	}
+
+	// 대쉬를 진행하고 있지 않다면, 대쉬 속도도 감속 시킨다.
+	if (!m_IsButtonMoving)
+	{
+		m_ButtonVelocity -= m_ButtonMoveAccel * 0.5f;
+
+		if (m_ButtonVelocity <= 0.f)
+			m_ButtonVelocity = 0.f;
+	}
+
+	// 전체 속도 감속을 진행한다.
+	if (!m_IsLeverMoving && !m_IsButtonMoving && m_MoveVelocity > 0.f)
+	{
+		// 감속
+		m_MoveVelocity = m_LeverVelocity + m_ButtonVelocity;
+
+		// 이동을 멈추면 -> 오른쪽 , 왼쪽 이동 표시를 취소해준다.
+		if (m_MoveVelocity <= 0.1f)
+		{
+			if (m_RightMove)
+			{
+				m_RightMove = false;
+				m_ToRightWhenLeftMove = false;
+			}
+			if (m_LeftMove)
+			{
+				m_LeftMove = false;
+				m_ToLeftWhenRightMove = false;
+			}
+
+			m_MoveVelocity = 0.f;
+		}
+
+		// 감속 중임에도 이동은 시켜줘야 한다.
+		if (m_RightMove)
+			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+		if (m_LeftMove)
+			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+
+	}
+}
+
+void CPlayer2D::ResetMoveInfo()
+{
+	m_IsButtonMoving = false;
+	m_IsLeverMoving = false;
+	m_ToRightWhenLeftMove = false;
+	m_ToLeftWhenRightMove = false;
 }
 
 void CPlayer2D::RotationZInv(float DeltaTime) //
