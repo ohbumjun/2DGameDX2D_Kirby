@@ -19,9 +19,9 @@ m_MoveVelocity(0.f),
 m_LeverMoveAccel(1.f),
 m_LeverVelocity(0.f),
 m_LeverMaxMoveVelocity(250.f),
-m_ButtonMoveAccel(1.5f),
-m_ButtonVelocity(0.f),
-m_ButtonMaxMoveVelocity(200.f),
+m_DashMoveAccel(1.5f),
+m_DashVelocity(0.f),
+m_DashMaxMoveVelocity(200.f),
 m_RightMove(false),
 m_ToLeftWhenRightMove(false),
 m_RightMovePush(false),
@@ -29,7 +29,7 @@ m_LeftMove(false),
 m_ToRightWhenLeftMove(false),
 m_LeftMovePush(false),
 m_IsLeverMoving(false),
-m_IsButtonMoving(false),
+m_IsDashMoving(false),
 m_TriangleJump(false)
 {
 	SetTypeID<CPlayer2D>();
@@ -37,7 +37,7 @@ m_TriangleJump(false)
 	m_WDistance = 0.f;
 	m_Opacity   = 1.f;
 
-	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_ButtonMaxMoveVelocity;
+	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
 	 
 }
 
@@ -387,6 +387,34 @@ void CPlayer2D::MoveLeftW(float DeltaTime)
 		m_ToLeftWhenRightMove = false;
 	}
 
+	// 레버 움직임 속도를 계산한다
+	CalculateLeverMoveSpeed(DeltaTime);
+
+	// 만약 Dash를 누르고 있지 않다면
+	// 즉, 여기 함수에 들어오고 있다는 것은, 레버 움직임만을 수행하고
+	// 대시 움직임은 수행하지 않는다는 것이다
+	if (m_DashVelocity > 0.f)
+	{
+		m_DashVelocity -= m_DashMoveAccel * 1.5f;
+
+		if (m_DashVelocity < 0.f)
+			m_DashVelocity = 0.f;
+	}
+
+	// 레버 움직임 속도가 바뀌었으니, 전체 움직임 속도를 계산한다
+	CalculateTotalMoveSpeed(DeltaTime);
+
+	// 실제 움직임을 수행한다
+	if (m_RightMove)
+	{
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+	}
+	else 
+	{
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+	}
+
+	// todo : 여기서 Animation 변환 처리를 해준다.
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
@@ -460,6 +488,40 @@ float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
 	return m_LeverVelocity;
 }
 
+float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
+{}
+
+float CPlayer2D::CalculateTotalMoveSpeed(float DeltaTime)
+{
+	m_MoveVelocity = m_LeverVelocity + m_DashVelocity;
+
+	// 최대 치 조절
+	if (m_MoveVelocity > m_MoveVelocityMax)
+		m_MoveVelocity = m_MoveVelocityMax;
+
+	// 최소 치 조절
+	if (m_MoveVelocity <= 0.1f)
+	{
+		// 기존 오른쪽, 왼쪽 이동 표시 상태를 해제해준다.
+		if (m_RightMove)
+		{
+			m_RightMove = false;
+			m_ToRightWhenLeftMove = false;
+		}
+		if (m_LeftMove)
+		{
+			m_LeftMove = false;
+			m_ToLeftWhenRightMove = false;
+		}
+
+		m_MoveVelocity = 0.f;
+		m_LeverVelocity = 0.f;
+		m_DashVelocity = 0.f;
+	}
+
+	return m_MoveVelocity;
+}
+
 void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 {
 	// 레버 움직임 --> 현재 움직이지 않고 있는 상황이라면, 자연 감속을 시켜줘야 한다.
@@ -479,19 +541,19 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	}
 
 	// 대쉬를 진행하고 있지 않다면, 대쉬 속도도 감속 시킨다.
-	if (!m_IsButtonMoving)
+	if (!m_IsDashMoving)
 	{
-		m_ButtonVelocity -= m_ButtonMoveAccel * 0.5f;
+		m_DashVelocity -= m_DashMoveAccel * 0.5f;
 
-		if (m_ButtonVelocity <= 0.f)
-			m_ButtonVelocity = 0.f;
+		if (m_DashVelocity <= 0.f)
+			m_DashVelocity = 0.f;
 	}
 
 	// 전체 속도 감속을 진행한다.
-	if (!m_IsLeverMoving && !m_IsButtonMoving && m_MoveVelocity > 0.f)
+	if (!m_IsLeverMoving && !m_IsDashMoving && m_MoveVelocity > 0.f)
 	{
 		// 감속
-		m_MoveVelocity = m_LeverVelocity + m_ButtonVelocity;
+		m_MoveVelocity = m_LeverVelocity + m_DashVelocity;
 
 		// 이동을 멈추면 -> 오른쪽 , 왼쪽 이동 표시를 취소해준다.
 		if (m_MoveVelocity <= 0.1f)
@@ -521,7 +583,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 
 void CPlayer2D::ResetMoveInfo()
 {
-	m_IsButtonMoving = false;
+	m_IsDashMoving = false;
 	m_IsLeverMoving = false;
 	m_ToRightWhenLeftMove = false;
 	m_ToLeftWhenRightMove = false;

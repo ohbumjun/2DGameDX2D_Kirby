@@ -49,10 +49,10 @@ private :
 	float m_LeverVelocity;
 	float m_LeverMaxMoveVelocity;
 
-	bool m_IsButtonMoving;
-	float m_ButtonMoveAccel;
-	float m_ButtonVelocity;
-	float m_ButtonMaxMoveVelocity;
+	bool m_IsDashMoving;
+	float m_DashMoveAccel;
+	float m_DashVelocity;
+	float m_DashMaxMoveVelocity;
 
 	bool m_RightMove;
 	float m_ToLeftWhenRightMove;
@@ -88,6 +88,8 @@ private :
 	void RightDashMoveEnd(float DeltaTime);
 private :
 	float CalculateLeverMoveSpeed(float DeltaTime);
+	float CalculateDashMoveSpeed(float DeltaTime);
+	float CalculateTotalMoveSpeed(float DeltaTime);
 	void PlayerMoveUpdate(float DeltaTime);
 	void ResetMoveInfo();
 private :
