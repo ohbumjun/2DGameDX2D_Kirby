@@ -138,7 +138,7 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 
 	// Object 의 Pos, Rot, Scale x,y,z 정보도 DetailWindow 측에 세팅해준다.
 	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
-	DetailWindow->SetPosRotScaleInfo(m_SelectObject);
+	DetailWindow->SetClickedObjectInfo(m_SelectObject->GetRootComponent());
 
 	CEditorManager::GetInst()->SetSceneEditObject();
 
@@ -155,6 +155,7 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 
 	ShowObject->SetStartPos(StartPos);
 	ShowObject->SetEndPos(EndPos);
+	
 }
 
 void CObjectHierarchy::SeeObjectList(int Index, const char* ObjectName)
