@@ -12,7 +12,7 @@ private :
 	// 모든 충돌체들은 실질적으로 이 영역에 속한 충돌체들을 들고 있어야 한다.
 	std::vector<class CColliderComponent*> m_vecCollider;
 	Vector3 m_SectionSize;
-	Vector3 m_SectionTotatlSize; // 자기가 속한 SceneCollision의 전체 크기에 대한 정보를 지니고 있게 한다
+	Vector3 m_SectionTotalSize; // 자기가 속한 SceneCollision의 전체 크기에 대한 정보를 지니고 있게 한다
 	Vector3 m_Min;
 	Vector3 m_Max;
 	int m_IndexX; // SceneCollision 상의 Idx

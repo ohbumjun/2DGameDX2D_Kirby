@@ -22,10 +22,11 @@ CSceneComponent(com)
 	m_MouseCollision = false;
 	m_CurrentSectionCheck = false;
 	m_Render = com.m_Render;
-
 	// Profile 정보는 공유해서 사용할 것이다. 
 	m_Profile = com.m_Profile;
 	m_CBuffer = com.m_CBuffer->Clone();
+	m_Mesh = com.m_Mesh;
+	m_Shader = com.m_Shader;
 }
 
 CColliderComponent::~CColliderComponent()
@@ -81,6 +82,7 @@ void CColliderComponent::CheckPrevColliderSection()
 		for (size_t i = 0; i < Size; i++)
 		{
 			size_t DestSize = (*iter)->m_vecSectionIndex.size();
+
 			for (size_t j = 0; j < DestSize; j++)
 			{
 				// 자신이 속한 충돌체와, 이전 충돌 목록에 속한 충돌체의 충돌 영역이 같다면
@@ -91,6 +93,7 @@ void CColliderComponent::CheckPrevColliderSection()
 					break;
 				}
 			}
+
 			if (Check)
 				break;
 		}
@@ -104,8 +107,8 @@ void CColliderComponent::CheckPrevColliderSection()
 
 			// 서로 이전 충돌 목록에서 제거해주기
 			(*iter)->DeletePrevCollision(this);
-			DeletePrevCollision(*iter);
 
+			iter = m_PrevCollisionList.erase(iter);
 			iterEnd = m_PrevCollisionList.end();
 			continue;
 		}
@@ -123,7 +126,7 @@ void CColliderComponent::DeletePrevCollision(CColliderComponent* Collider)
 	auto iter = m_PrevCollisionList.begin();
 	auto iterEnd = m_PrevCollisionList.end();
 
-	for (; iter != iterEnd;)
+	for (; iter != iterEnd;++iter)
 	{
 		if ((*iter) == Collider)
 		{

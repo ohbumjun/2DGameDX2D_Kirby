@@ -179,6 +179,7 @@ bool CColliderCircle::Collision(CColliderComponent* Dest)
 
 bool CColliderCircle::CollisionMouse(const Vector2& MousePos)
 {
-	m_MouseCollision = CCollision::CollisionCircleToPoint(m_Info, MousePos);
+	CollisionResult DestResult;
+	m_MouseCollision = CCollision::CollisionCircleToPoint(m_Result, DestResult, m_Info, MousePos);
 	return m_MouseCollision;
 }
