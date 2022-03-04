@@ -63,5 +63,5 @@ public:
 public:
 	class CRenderState* FindRenderState(const std::string& Name);
 	static bool         SortLayer(RenderLayer* Src, RenderLayer* End);
-	DECLARE_SINGLE(CRenderManager)
+	DECLARE_SINGLE(CRenderManager) //
 };
