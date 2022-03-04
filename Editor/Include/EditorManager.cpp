@@ -164,7 +164,7 @@ void CEditorManager::SetSceneEditObject()
 {
 	if (!m_ShowObj)
 	{
-		m_ShowObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CShowObject>("SceneEditObject");
+		m_ShowObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CShowObject>(OBJECTNAME_SHOWOBJECT);
 		m_ShowObj->SetWorldScale(0.f, 0.f, 1.f);
 	}
 }
@@ -191,7 +191,7 @@ void CEditorManager::SetSceneEditObjectPos(CGameObject* Object)
 	ShowObject->SetEndPos(EndPos);
 
 	// Camera 도 해당 위치에 세팅한다.
-	CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->SetWorldPos(ObjectPos);
+	// CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->SetWorldPos(ObjectPos);
 }
 
 
@@ -217,6 +217,9 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
 	m_TileMapWindow = CIMGUIManager::GetInst()->AddWindow<CTileMapWindow>("TileMapWindow");
 	m_BackGroundWindow = CIMGUIManager::GetInst()->AddWindow<CBackGroundWindow>("BackGroundWindow");
+
+	// SceneMode 에 중력 적용 X 를 세팅한다.
+	CSceneManager::GetInst()->GetScene()->SetIsEditMode(true);
 
 	// Sprite 편집할 때
 	CRenderManager::GetInst()->CreateLayer("DragLayer", INT_MAX);
@@ -554,18 +557,22 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Obj = Scene->LoadGameObject<CPlayer2D>();
 		return Obj;
 	}
-	/*
 	else if (GameObjectTypeID == typeid(CYellowBird).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CYellowBird>();
 		return Obj;
 	}
-	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
+	else if (GameObjectTypeID == typeid(CPurpleBeatle).hash_code())
 	{
-		CGameObject* Obj = Scene->LoadGameObject<CBeamMonster>();
+		CGameObject* Obj = Scene->LoadGameObject<CPurpleBeatle>();
 		return Obj;
 	}
-	*/
+	else if (GameObjectTypeID == typeid(CNormalBear).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CNormalBear>();
+		return Obj;
+	}
+	
 	return nullptr;
 }
 

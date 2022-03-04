@@ -49,7 +49,6 @@ private:
     void LoadObject();
 private:
     void ClearComponent();
-    void DeleteComponent();
     void ClearObject();
     void DeleteObject();
 private :

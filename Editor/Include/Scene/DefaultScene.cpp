@@ -5,6 +5,8 @@
 CDefaultScene::CDefaultScene()
 {
 	SetTypeID<CDefaultScene>();
+
+	m_IsEditMode = true;
 }
 
 CDefaultScene::~CDefaultScene()
@@ -14,8 +16,6 @@ CDefaultScene::~CDefaultScene()
 bool CDefaultScene::Init()
 {
 	CreateMaterial();
-
-	m_IsEditMode = true;
 
 	m_Scene->GetResource()->LoadSequence2D("PlayerIdle.sqc");
 	// m_Scene->GetResource()->LoadSequence2D("TestNew.sqc");

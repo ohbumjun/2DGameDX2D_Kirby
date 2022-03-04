@@ -78,6 +78,9 @@
 #define	SEQUENCE_PATH		"Sequence"
 #define	OBJECT_PATH		"Object"
 
+// Object Name
+#define OBJECTNAME_SHOWOBJECT "SceneEditObject"
+
 // Candy Crush¿ë
 #define CANDY_ANIMATION_PATH "CandyAnimation"
 #define CANDY_SEQUENCE_PATH "CandySequence"

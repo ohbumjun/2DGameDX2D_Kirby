@@ -23,6 +23,11 @@ public:
 	void SetPlayerObject(class CGameObject* Obj);
 	void SetTileMapEmptyObject(class CGameObject* Obj);
 public :
+	void SetIsEditMode (bool Enable)
+{
+		m_IsEditMode = Enable;
+}
+public :
 	bool IsEditMode () const
 {
 		return m_IsEditMode;

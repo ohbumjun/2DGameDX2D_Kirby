@@ -167,7 +167,7 @@ bool CEditorMenu::Init()
 	Line->SetOffsetX(430.f);
 
 	m_DeleteObjectButton = AddWidget<CIMGUIButton>("DeleteObject ", 100.f, 30.f);
-	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::ClearComponent);
+	m_DeleteObjectButton->SetClickCallback(this, &CEditorMenu::DeleteObject);
 
 	Label = AddWidget<CIMGUILabel>("", 100.f, 30.f);
 	Label->SetColor(0, 0, 0);
@@ -393,7 +393,8 @@ void CEditorMenu::TogglePlay()
 void CEditorMenu::SaveScene()
 {
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
-	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
+
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->IsEmpty())
 		return;
 
 	TCHAR FileFullPath[MAX_PATH] = {};
@@ -412,6 +413,29 @@ void CEditorMenu::SaveScene()
 		WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 
 		CSceneManager::GetInst()->GetScene()->SaveFullPath(FilePathMultibyte);
+
+		// GameEngine 폴더에도 저장해야 한다.
+			// GameEngine 폴더에 저장하기
+		std::string ExtraFolderName = ENGINE_SCENE_PATH;
+
+		const PathInfo* EngineSequenceFolder = CPathManager::GetInst()->FindPath(ExtraFolderName);
+
+		// 파일 이름을 뽑아낸다.
+		char SavedFileName[MAX_PATH] = {};
+		char SavedExt[_MAX_EXT] = {};
+		_splitpath_s(FilePathMultibyte, nullptr, 0, nullptr, 0, SavedFileName, MAX_PATH, SavedExt, _MAX_EXT);
+
+		// 최종 GameEngine 경로를 만든다.
+		char SavedGameEnginePath[MAX_PATH] = {};
+		strcpy_s(SavedGameEnginePath, EngineSequenceFolder->PathMultibyte);
+		strcat_s(SavedGameEnginePath, SavedFileName);
+		strcat_s(SavedGameEnginePath, SavedExt);
+
+		// 현재 저장되는 경로와 다르다면, GameEngine 쪽에도 저장한다.
+		if (strcmp(EngineSequenceFolder->PathMultibyte, FilePathMultibyte) != 0)
+		{
+			CSceneManager::GetInst()->GetScene()->SaveFullPath(SavedGameEnginePath);
+		}
 	}
 }
 
@@ -420,6 +444,7 @@ void CEditorMenu::LoadScene()
 	// 기존에 작업중인 사항이 있다면, 즉, ObjectHierarchy에 GameObject, Sprite 목록이 남아있다면
 	// Message Box 띄우고 return;
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
+
 	if (Hierarchy->GetCreatedObjectListBox()->GetItemCount() > 0)
 	{
 		MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Complete Current Work"), TEXT("Data Might Be Lost"), 0);
@@ -440,10 +465,13 @@ void CEditorMenu::LoadScene()
 		char FilePathMultibyte[MAX_PATH] = {};
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, LoadFilePath, -1, FilePathMultibyte, ConvertLength, 0, 0);
+
 		bool Result = CSceneManager::GetInst()->GetScene()->LoadFullPath(FilePathMultibyte);
 
 		if (!Result)
 			return;
+
+		CSceneManager::GetInst()->GetScene()->SetIsEditMode(true);
 
 		// 1) 만약 해당 Component 가 TileMapComponent 라면, Edit Mode 를 Tile 로 바꿔준다.
 		std::list<CSharedPtr<CGameObject>> ObjLists = CSceneManager::GetInst()->GetScene()->GetObjectLists();
@@ -461,18 +489,6 @@ void CEditorMenu::LoadScene()
 				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileEmptyComponent*)(*iter)->GetRootComponent());
 			}
 		}
-		/*
-		for (; iter != iterEnd; ++iter)
-		{
-			if ((*iter)->GetRootComponent()->CheckType<CTileMapComponent>())
-			{
-				// 1) Edit mode 수정
-				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
-				// 2) TileMap Window 에 TileMapComponent 지정하기
-				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)(*iter)->GetRootComponent());
-			}
-		}
-		*/
 
 
 		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해
@@ -767,6 +783,7 @@ void CEditorMenu::ClearComponent()
 	}
 }
 
+/*
 void CEditorMenu::DeleteComponent()
 {
 	// Object가 선택된 상황이어야 한다.
@@ -793,6 +810,7 @@ void CEditorMenu::DeleteComponent()
 		CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedComponentListBox()->Clear();
 	}
 }
+*/
 
 void CEditorMenu::ClearObject()
 {
@@ -812,7 +830,43 @@ void CEditorMenu::ClearObject()
 
 void CEditorMenu::DeleteObject()
 {
+	CIMGUIListBox* CreatedObjListBox = CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedObjectListBox();
+	CIMGUIListBox* CreatedComponentListBox = CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedComponentListBox();
+
 	// 선택된 Object가 존재해야 한다.
+	if (CreatedObjListBox->GetSelectIndex() < 0)
+		return;
+
+	// Scene 의 ObjList 에서도 지워야 하고
+	std::string SelectObjectName = CreatedObjListBox->GetSelectItem();
+	int SelectIndex = CreatedObjListBox->GetSelectIndex();
+
+	CSceneManager::GetInst()->GetScene()->DeleteGameObject(SelectObjectName);
+
+	// 현재 List Box 내 이름 목록에서도 지워야 한다.
+	CreatedObjListBox->DeleteItem(SelectIndex);
+	CreatedComponentListBox->Clear();
+
+	// 첫번째 목록을 선택 목록으로 둔다.
+	if (CreatedObjListBox->IsEmpty() == false)
+	{
+		CreatedObjListBox->SetSelectIndex(0);
+		
+		CGameObject* NewSelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(CreatedObjListBox->GetSelectItem().c_str());
+
+		std::vector<FindComponentName> ComponentNameList = {};
+		NewSelectedObject->GetAllSceneComponentsName(ComponentNameList);
+
+		size_t Size = ComponentNameList.size();
+
+		for (size_t i = 0; i < Size; i++)
+		{
+			CreatedComponentListBox->AddItem(ComponentNameList[i].Name);
+		}
+	}
+
+
+	// 단, idx 에 따라 다르게 세팅해야 한다.
 }
 
 void CEditorMenu::SelectEditModeCallback(int Index, const char* EditModeText)

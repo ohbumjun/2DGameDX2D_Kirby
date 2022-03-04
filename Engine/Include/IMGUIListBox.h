@@ -21,6 +21,10 @@ protected:
 	std::function<void(int, const char*)> m_SelectCallback;
 
 public:
+	bool IsEmpty () const
+	{
+		return (int)m_vecItem.size() == 0;
+	}
 	const std::string& GetItem(int Index)
 	{
 		return m_vecItem[Index];

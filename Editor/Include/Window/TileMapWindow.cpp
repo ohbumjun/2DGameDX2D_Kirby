@@ -583,6 +583,9 @@ void CTileMapWindow::TileBaseImageLoadButton()
 	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
 		return;
 
+	if (!m_TileMapEmpty)
+		return;
+
 	TCHAR FilePath[MAX_PATH] = {};
 
 	OPENFILENAME OpenFile = {};

@@ -1,7 +1,9 @@
 #include "YellowBird.h"
 
 CYellowBird::CYellowBird()
-{}
+{
+	SetTypeID<CYellowBird>();
+}
 
 CYellowBird::~CYellowBird()
 {}

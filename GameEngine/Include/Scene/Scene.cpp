@@ -164,13 +164,24 @@ void CScene::SaveFullPath(const char* FullPath)
 
 	fwrite(&m_WorldResolution, sizeof(Vector2), 1, pFile);
 
-	size_t SceneEditObjectCount = 1;
-
-	size_t ObjectCount = m_ObjList.size() - SceneEditObjectCount;
-	fwrite(&ObjectCount, sizeof(size_t), 1, pFile);
+	size_t ObjectCount = m_ObjList.size();
 
 	auto iter = m_ObjList.begin();
 	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		// if ((*iter)->CheckType<CShowObject>())
+		if ((*iter)->GetName() == OBJECTNAME_SHOWOBJECT)
+		{
+			ObjectCount -= 1;
+			break;
+		}
+	}
+
+	fwrite(&ObjectCount, sizeof(size_t), 1, pFile);
+
+	iter = m_ObjList.begin();
 
 	for (;iter != iterEnd; ++iter)
 	{

@@ -35,6 +35,10 @@ public :
 		m_Mode->SetPlayerObject(Object);
 }
 public:
+	void SetIsEditMode (bool Enable)
+	{
+		m_Mode->SetIsEditMode(Enable);
+	}
 	bool IsEditMode () const
 	{
 		return m_Mode->IsEditMode();
