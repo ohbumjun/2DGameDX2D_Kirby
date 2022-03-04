@@ -1,17 +1,24 @@
 #include "DetailInfoWindow.h"
+// IMGUI
 #include "IMGUILabel.h"
 #include "IMGUIImage.h"
 #include "IMGUIComboBox.h"
 #include "IMGUIText.h"
 #include "IMGUISameLine.h"
 #include "IMGUITextInput.h"
+#include "../EditorManager.h"
+#include "IMGUIListBox.h"
 #include "ObjectHierarchy.h"
+// Object
 #include "GameObject/GameObject.h"
+#include "GameObject/LifeObject.h"
+// Scene
 #include "Scene/SceneResource.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
-#include "../EditorManager.h"
-#include "IMGUIListBox.h"
+
+#include "Animation/AnimationSequence2DInstance.h"
+#include "Component/SpriteComponent.h"
 
 CDetailInfoWindow::CDetailInfoWindow()
 {
@@ -31,34 +38,20 @@ bool CDetailInfoWindow::Init()
 	Label->SetAlign(0.5f, 0.0f);
 
 	m_CharacterSprite = AddWidget<CIMGUIImage>("SpriteOrigin", 150.f, 150.f);
-
-	// ===============================================
-
-	Label = AddWidget<CIMGUILabel>("Name", 80.f, 20.f);
-	Label->SetColor(0, 0, 255);
-	Label->SetAlign(0.5f, 0.0f);
-
-	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(100.f);
-
-	m_CharacterName = AddWidget<CIMGUIText>("Name");
-	m_CharacterName->SetColor(255, 255, 255);
-	m_CharacterName->SetText("- - - ");
-	m_CharacterName->SetSize(150.f, 80.f);
-
+	
 	// ===============================================
 
 	Label = AddWidget<CIMGUILabel>("Animation", 80.f, 20.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
-	Line = AddWidget<CIMGUISameLine>("Line");
+	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(100.f);
 
-	m_CharCurrentAnimation = AddWidget<CIMGUIText>("AnimName");
-	m_CharCurrentAnimation->SetColor(255, 255, 255);
-	m_CharCurrentAnimation->SetText("- - - ");
-	m_CharCurrentAnimation->SetSize(150.f, 80.f);
+	m_CharacterCurrentAnimation = AddWidget<CIMGUIText>("AnimName");
+	m_CharacterCurrentAnimation->SetColor(255, 255, 255);
+	m_CharacterCurrentAnimation->SetText("- - - ");
+	m_CharacterCurrentAnimation->SetSize(150.f, 80.f);
 
 	// ===============================================
 
@@ -80,7 +73,7 @@ bool CDetailInfoWindow::Init()
 	m_SetAnimationComboBox->AddItem("CharacterEdit");
 	*/
 	m_SetAnimationComboBox->SetHideName(true);
-	m_SetAnimationComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetCurrentAnimation);
+	m_SetAnimationComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetCurrentAnimationCallback);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
@@ -91,6 +84,20 @@ bool CDetailInfoWindow::Init()
 	Label = AddWidget<CIMGUILabel>("Detail Info", 400.f, 20.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
+
+	// ===============================================
+	Label = AddWidget<CIMGUILabel>("Name", 80.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_CharacterName = AddWidget<CIMGUIText>("Name");
+	m_CharacterName->SetColor(255, 255, 255);
+	m_CharacterName->SetText("- - - ");
+	m_CharacterName->SetSize(150.f, 80.f);
+
 
 	// ===============================================
 	Label = AddWidget<CIMGUILabel>("IsGround", 80.f, 20.f);
@@ -115,7 +122,7 @@ bool CDetailInfoWindow::Init()
 
 	m_IsGroundComboBox = AddWidget<CIMGUIComboBox>("Is Ground", 100.f, 30.f);
 	m_IsGroundComboBox->SetHideName(true);
-	m_IsGroundComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetIsGround);
+	m_IsGroundComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetIsGroundCallback);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
@@ -286,10 +293,52 @@ void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
 	m_ScaleZ->SetFloat(Scale.z);
 }
 
-void CDetailInfoWindow::SetCurrentAnimation(int Index, const char* Animation)
+void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
+{
+	// 이름 
+	SetDetailInfoName(Component->GetName());
+
+	// Animation 이름 
+	CSpriteComponent* SelectedRootComponent = (CSpriteComponent*)Component;
+	SetCurrentAnimationName(SelectedRootComponent->GetAnimationInstance()->GetCurrentAnimation()->GetName());
+
+	// Is Ground 여부
+	CLifeObject* OwnerObject = (CLifeObject*)(Component->GetGameObject());
+	SetIsGroundInfo(OwnerObject->IsGround());
+
+	// Transform 정보
+	SetTransformInfo(Component);
+}
+
+void CDetailInfoWindow::SetCurrentAnimationCallback(int Index, const char* Animation)
 {}
 
-void CDetailInfoWindow::SetIsGround(int Index, const char* Animation)
+void CDetailInfoWindow::SetDetailInfoName(const std::string& Name)
+{
+	m_CharacterName->SetText(Name.c_str());
+}
+
+void CDetailInfoWindow::SetIsGroundInfo(bool Enable)
+{
+	char IsGroundText[MAX_PATH] = {};
+
+	if (Enable)
+		sprintf_s(IsGroundText, "%s", "TRUE");
+	else
+		sprintf_s(IsGroundText, "%s", "FALSE");
+
+	m_IsGroundText->SetText(IsGroundText);
+}
+
+void CDetailInfoWindow::SetCurrentAnimationName(const std::string& Name)
+{
+	m_CharacterCurrentAnimation->SetText(Name.c_str());
+}
+
+void CDetailInfoWindow::SetIsGroundCallback(int Index, const char* Animation)
+{}
+
+void CDetailInfoWindow::SetTransformInfo(CSceneComponent* Component)
 {}
 
 void CDetailInfoWindow::SetPositionXCallback()

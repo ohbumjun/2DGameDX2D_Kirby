@@ -31,6 +31,11 @@ private :
 	void CheckCeilingCollision();
 	void CheckSideCollision();
 public :
+	bool IsGround () const
+{
+		return m_IsGround;
+}
+public :
 	void SetPhysicsSimulate(bool Physics)
 	{
 		m_PhysicsSimulate = Physics;

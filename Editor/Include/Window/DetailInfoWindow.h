@@ -10,10 +10,10 @@ public:
 private : // Image 정보
     class CIMGUIImage* m_CharacterSprite;
 private :
-    class CIMGUIText* m_CharacterName;
-    class CIMGUIText* m_CharCurrentAnimation;
+    class CIMGUIText* m_CharacterCurrentAnimation;
     class CIMGUIComboBox* m_SetAnimationComboBox;
 private : // Detail Info
+    class CIMGUIText*           m_CharacterName;
     class CIMGUIText*           m_IsGroundText;
     class CIMGUIComboBox* m_IsGroundComboBox;
 private: // Transform 정보
@@ -33,14 +33,23 @@ public:
     virtual void Update(float DeltaTime) override;
 public :
     void SetPosRotScaleInfo(class CGameObject* Object);
-private:
-    // Set Current Animation
-    void SetCurrentAnimation(int Index, const char* Animation);
+public:
+    // Set Clicked Object Info
+    void SetClickedObjectInfo(CSceneComponent* Component);
+private :
+    // Animation
+    void SetCurrentAnimationCallback(int Index, const char* Animation);
 
     // Detail
-    void SetIsGround(int Index, const char* Animation);
+    void SetDetailInfoName(const std::string& Name);
+    void SetIsGroundInfo(bool Enable);
+    void SetCurrentAnimationName(const std::string& Name);
+
+    void SetIsGroundCallback(int Index, const char* Animation);
 
     // Transform
+    void SetTransformInfo(CSceneComponent* Component);
+
     void SetPositionXCallback();
     void SetPositionYCallback();
     void SetPositionZCallback();

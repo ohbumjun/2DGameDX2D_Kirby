@@ -45,6 +45,10 @@ private :
 	CSharedPtr<CColliderComponent> m_MouseCollision;
 	bool m_WidgetCollision;
 public :
+	CColliderComponent* GetMouseCollision () const
+{
+		return m_MouseCollision;
+}
 	Vector3 GetSectionTotalSize () const
 {
 		return m_Section->SectionTotalSize;

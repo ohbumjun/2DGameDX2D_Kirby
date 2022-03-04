@@ -12,6 +12,7 @@
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
+#include "Scene/SceneCollision.h"
 #include "Scene/CameraManager.h"
 // Window
 #include "Window/SpriteEditWindow.h"
@@ -291,80 +292,110 @@ void CEditorManager::MouseLButtonUp(float DeltaTime)
 
 void CEditorManager::MouseRButtonDown(float DeltaTime)
 {
-	// Edit Mode가 Object Create 일 때만 작동하도록 한다.
-	if (m_EditMode != EditMode::CharacterCreate)
-		return;
-
-	if (m_ObjectHierarchy->IsSpecificObjectSelected() == false)
-		return;
-
-	// Object Hierarchy 의 m_SpecificObjectList 에서 선택된 Object 의 이름을 가져온다.
-	std::string SelectMonsterName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
-
-	// 생성될 Monster 이름을 Random 하게 만든다.
-	std::string NewMonsterName = SelectMonsterName + GetRandomString();
-
-	// 혹시나 이미 만들어진 이름이라면 X
-	if (m_ObjectHierarchy->CheckDuplicateObject(NewMonsterName))
-		return;
-
-	CGameObject* CreatedObject = nullptr;
-
-	if (strcmp(g_NormalBearName.c_str(), SelectMonsterName.c_str()) == 0)
+	// Edit Mode가 Object Create 일 때는 해당 위치에 Object Create
+	if (m_EditMode == EditMode::CharacterCreate)
 	{
-		CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
-	}
 
-	if (!CreatedObject)
-		return;
+		if (m_ObjectHierarchy->IsSpecificObjectSelected() == false)
+			return;
 
-	// 현재 마우스 위치에 만들기
-	Vector2 Mouse2DPos = CInput::GetInst()->GetMouseWorld2DPos();
+		// Object Hierarchy 의 m_SpecificObjectList 에서 선택된 Object 의 이름을 가져온다.
+		std::string SelectMonsterName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
 
-	CreatedObject->SetWorldPos(Mouse2DPos.x, Mouse2DPos.y, 1.f);
+		// 생성될 Monster 이름을 Random 하게 만든다.
+		std::string NewMonsterName = SelectMonsterName + GetRandomString();
 
-	// Object Hierarchy 목록에 추가하기
-	m_ObjectHierarchy->AddCreatedObject(NewMonsterName.c_str());
+		// 혹시나 이미 만들어진 이름이라면 X
+		if (m_ObjectHierarchy->CheckDuplicateObject(NewMonsterName))
+			return;
 
-	/*
-	case CreateObject_Type::Player:
+		CGameObject* CreatedObject = nullptr;
+
+		if (strcmp(g_NormalBearName.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
+		}
+
+		if (!CreatedObject)
+			return;
+
+		// 현재 마우스 위치에 만들기
+		Vector2 Mouse2DPos = CInput::GetInst()->GetMouseWorld2DPos();
+
+		CreatedObject->SetWorldPos(Mouse2DPos.x, Mouse2DPos.y, 1.f);
+
+		// Object Hierarchy 목록에 추가하기
+		m_ObjectHierarchy->AddCreatedObject(NewMonsterName.c_str());
+
+		/*
+		case CreateObject_Type::Player:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+		case CreateObject_Type::YellowBird:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+		case CreateObject_Type::PurpleBeatle:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+		case CreateObject_Type::NormalBear:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+		case CreateObject_Type::TileEmptyObject:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+		case CreateObject_Type::BackGround:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+		}
+		*/
+	}
+	else if (m_EditMode == EditMode::CharacterEdit)
 	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
+		// 1) 그냥 클릭 시 해당 GameObject 의 정보를 Detail Info 에 세팅해둔다.
+		CColliderComponent* ClickedComponent = CSceneManager::GetInst()->GetScene()->GetCollision()->GetMouseCollision();
+		CGameObject* ClickedObject = CSceneManager::GetInst()->GetScene()->GetCollision()->GetMouseCollision()->GetGameObject();
+
+		if (!ClickedObject)
+			return;
+
+		// 1) Detail 정보 세팅 
+		m_DetailInfoWindow->SetClickedObjectInfo(ClickedComponent);
+
+
+		// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
+		// m_DetailInfoWindow
+
+
+		// 3) Push 일 때는 Drage 기능
 	}
-	break;
-	case CreateObject_Type::YellowBird:
-	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(m_ObjectNameInput->GetTextMultibyte());
-	}
-	break;
-	case CreateObject_Type::PurpleBeatle:
-	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(m_ObjectNameInput->GetTextMultibyte());
-	}
-	break;
-	case CreateObject_Type::NormalBear:
-	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(m_ObjectNameInput->GetTextMultibyte());
-	}
-	break;
-	case CreateObject_Type::TileEmptyObject:
-	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
-	}
-	break;
-	case CreateObject_Type::BackGround:
-	{
-		CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
-	}
-	break;
-	}
-	*/
 
 
 }
 
 void CEditorManager::MouseRButtonPush(float DeltaTime)
-{}
+{
+	if (m_EditMode == EditMode::CharacterEdit)
+	{
+	// 1) 그냥 클릭 시 해당 GameObject 의 정보를 Detail Info 에 세팅해둔다.
+
+
+	// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
+
+	// 3) Push 일 때는 Drage 기능
+	}
+}
 
 void CEditorManager::KeyBoardUp(float DeltaTime)
 {
