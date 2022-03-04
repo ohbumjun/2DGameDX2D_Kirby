@@ -353,6 +353,9 @@ void CDetailInfoWindow::SetCurrentAnimationCallback(int Index, const char* Anima
 	m_CharacterSprite->SetImageStart(SelectFrame.Start);
 	m_CharacterSprite->SetImageEnd(SelectFrame.Start + SelectFrame.Size);
 
+	// Animation Name Text º¯È­
+	SetCurrentAnimationName(SelectedRootComponent->GetAnimationInstance()->GetCurrentAnimation()->GetName());
+
 }
 
 void CDetailInfoWindow::SetDetailInfoName(const std::string& Name)

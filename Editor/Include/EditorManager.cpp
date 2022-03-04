@@ -169,16 +169,32 @@ void CEditorManager::SetSceneEditObject()
 	}
 }
 
-/*
-void CEditorManager::CreateCameraObject()
+void CEditorManager::SetSceneEditObjectPos(CGameObject* Object)
 {
-	if (!m_CameraObject)
+	if (!CEditorManager::GetInst()->GetShowObject())
 	{
-		m_CameraObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSpriteCameraObject>("CameraObject");
-		m_CameraObject->SetWorldScale(0.f, 0.f, 1.f);
+		CEditorManager::GetInst()->SetSceneEditObject();
 	}
+
+	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
+	CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
+
+	Vector3 ObjectPivot = Object->GetPivot();
+	Vector3 ObjectSize = Object->GetWorldScale();
+	Vector3 ObjectPos = Object->GetWorldPos();
+	Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
+
+	Vector2 StartPos = Vector2(Pos.x, Pos.y);
+	Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
+
+	ShowObject->SetStartPos(StartPos);
+	ShowObject->SetEndPos(EndPos);
+
+	// Camera 도 해당 위치에 세팅한다.
+	CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->SetWorldPos(ObjectPos);
 }
-*/
+
+
 
 bool CEditorManager::Init(HINSTANCE hInst)//
 {
@@ -381,6 +397,9 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 
 		// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
 		// m_DetailInfoWindow
+
+		SetSceneEditObjectPos(ClickedObject);
+
 
 
 		// 3) Push 일 때는 Drage 기능

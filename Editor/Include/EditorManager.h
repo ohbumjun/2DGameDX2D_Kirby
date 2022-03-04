@@ -73,6 +73,7 @@ public:
 public:
 	void SetEditMode(EditMode Mode);
 	void SetSceneEditObject();
+	void SetSceneEditObjectPos(class CGameObject* Object);
 	// void CreateCameraObject();
 public:
 	bool Init(HINSTANCE hInst);
