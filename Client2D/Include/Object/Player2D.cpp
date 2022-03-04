@@ -489,7 +489,48 @@ float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
 }
 
 float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
-{}
+{
+	// 공중에 떠있다면 Dash Move 는 진행하지 않는다
+	if (!m_IsGround)
+		return m_LeverVelocity;
+
+	// 오른쪽으로 이동 중이라면
+	if (m_RightMove)
+	{
+		// 계속 오른쪽으로 이동 중이라면
+		if (!m_ToLeftWhenRightMove)
+		{
+			m_DashVelocity += m_DashMoveAccel;
+		}
+		else
+		{
+			m_DashVelocity -= m_DashMoveAccel * 1.5f;
+		}
+	}
+	// 왼쪽으로 이동 중이라면
+	else if (m_LeftMove)
+	{
+		// 계속 왼쪽으로 이동 중이라면
+		if (!m_ToRightWhenLeftMove)
+		{
+			m_DashVelocity += m_DashMoveAccel;
+		}
+		else
+		{
+			m_DashVelocity -= m_DashMoveAccel * 1.5f;
+		}
+	}
+
+	// 최대 치 조절
+	if (m_DashVelocity >= m_DashMaxMoveVelocity)
+	{
+		m_DashVelocity = m_DashMaxMoveVelocity;
+	}
+
+	// 최소 치 조절
+	if (m_DashVelocity < 0.f)
+		m_DashVelocity = 0.f;
+}
 
 float CPlayer2D::CalculateTotalMoveSpeed(float DeltaTime)
 {
