@@ -26,8 +26,10 @@ private:
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
 	class CSpriteCameraObject* m_CameraObject;
+private :
 	float m_CameraMoveSpeed;
 	bool m_MousePush;
+	Vector2 m_Prev2DMouseWorldPos;
 public:
 	bool GetMousePush() const
 	{

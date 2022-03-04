@@ -198,6 +198,7 @@ void CInput::Update(float DeltaTime)
 
 	// 키보드 키 입력처리를 한다.
 	UpdateKeyInfo(DeltaTime);
+
 }
 
 void CInput::ReadDirectInputKeyboard()

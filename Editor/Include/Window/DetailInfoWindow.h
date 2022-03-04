@@ -37,6 +37,8 @@ public :
 public:
     // Set Clicked Object Info
     void SetClickedObjectInfo(CSceneComponent* Component);
+    // Transform
+    void SetTransformInfo(CSceneComponent* Component);
 private :
     // Animation
     void SetCurrentAnimationCallback(int Index, const char* Animation);
@@ -48,8 +50,6 @@ private :
 
     void SetIsGroundCallback(int Index, const char* Animation);
 
-    // Transform
-    void SetTransformInfo(CSceneComponent* Component);
 
     void SetPositionXCallback();
     void SetPositionYCallback();

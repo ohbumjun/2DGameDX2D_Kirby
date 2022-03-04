@@ -396,28 +396,33 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 
 
 		// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
-		// m_DetailInfoWindow
-
 		SetSceneEditObjectPos(ClickedObject);
-
-
-
-		// 3) Push 일 때는 Drage 기능
 	}
-
-
 }
 
 void CEditorManager::MouseRButtonPush(float DeltaTime)
 {
 	if (m_EditMode == EditMode::CharacterEdit)
 	{
-	// 1) 그냥 클릭 시 해당 GameObject 의 정보를 Detail Info 에 세팅해둔다.
+		// Drag 기능을 구현할 것이다.
+		CColliderComponent* ClickedComponent = CSceneManager::GetInst()->GetScene()->GetCollision()->GetMouseCollision();
 
+		if (!ClickedComponent)
+			return;
 
-	// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
+		CGameObject* ClickedObject = ClickedComponent->GetGameObject();
 
-	// 3) Push 일 때는 Drage 기능
+		if (!ClickedObject)
+			return;
+
+		Vector2 MouseMove  = CInput::GetInst()->GetMouseMove();
+
+		// Click한 녀석 WorldPos 이동
+		ClickedObject->AddWorldPos(Vector3(MouseMove.x, MouseMove.y, 0.f));
+
+		SetSceneEditObjectPos(ClickedObject);
+
+		m_DetailInfoWindow->SetTransformInfo(ClickedObject->GetRootComponent());
 	}
 }
 
