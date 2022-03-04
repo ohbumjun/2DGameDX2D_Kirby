@@ -59,7 +59,7 @@ bool CEditorMenu::Init()
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(115.f);
 
-	m_EditMenuComboBox = AddWidget<CIMGUIComboBox>("Edit Mode", 120.f, 30.f);
+	m_EditMenuComboBox = AddWidget<CIMGUIComboBox>("Edit Mode", 150.f, 30.f);
 	m_EditMenuComboBox->AddItem("Sprite");
 	m_EditMenuComboBox->AddItem("Scene");
 	m_EditMenuComboBox->AddItem("TileMap");

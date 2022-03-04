@@ -10,6 +10,7 @@ public:
 private : // Image Á¤º¸
     class CIMGUIImage* m_CharacterSprite;
 private :
+    CSharedPtr<class CSceneComponent> m_ClickedComponent;
     class CIMGUIText* m_CharacterCurrentAnimation;
     class CIMGUIComboBox* m_SetAnimationComboBox;
 private : // Detail Info

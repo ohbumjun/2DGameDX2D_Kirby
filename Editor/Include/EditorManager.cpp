@@ -365,7 +365,11 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 	{
 		// 1) 그냥 클릭 시 해당 GameObject 의 정보를 Detail Info 에 세팅해둔다.
 		CColliderComponent* ClickedComponent = CSceneManager::GetInst()->GetScene()->GetCollision()->GetMouseCollision();
-		CGameObject* ClickedObject = CSceneManager::GetInst()->GetScene()->GetCollision()->GetMouseCollision()->GetGameObject();
+
+		if (!ClickedComponent)
+			return;
+
+		CGameObject* ClickedObject = ClickedComponent->GetGameObject();
 
 		if (!ClickedObject)
 			return;

@@ -36,6 +36,10 @@ public :
 		return m_IsGround;
 }
 public :
+	void SetIsGround (bool Enable)
+{
+		m_IsGround = Enable;
+}
 	void SetPhysicsSimulate(bool Physics)
 	{
 		m_PhysicsSimulate = Physics;

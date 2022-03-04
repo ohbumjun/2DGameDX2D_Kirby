@@ -19,6 +19,7 @@
 
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
+#include "Component/SceneComponent.h"
 
 CDetailInfoWindow::CDetailInfoWindow()
 {
@@ -121,6 +122,8 @@ bool CDetailInfoWindow::Init()
 	Line->SetOffsetX(100.f);
 
 	m_IsGroundComboBox = AddWidget<CIMGUIComboBox>("Is Ground", 100.f, 30.f);
+	m_IsGroundComboBox->AddItem("TRUE");
+	m_IsGroundComboBox->AddItem("FALSE");
 	m_IsGroundComboBox->SetHideName(true);
 	m_IsGroundComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetIsGroundCallback);
 
@@ -295,14 +298,16 @@ void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
 
 void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
 {
+	m_ClickedComponent = Component;
+
 	// Sprite 정보 세팅하기
 	CSpriteComponent* SelectedRootComponent = (CSpriteComponent*)Component;
 
+	AnimationFrameData SelectFrame = SelectedRootComponent->GetAnimationInstance()->GetCurrentAnimation()->GetFrameData(0);
+
 	m_CharacterSprite->SetTexture(SelectedRootComponent->GetMaterial()->GetTexture());
-	m_CharacterSprite->SetImageStart(Vector2(0.f, 0.f));
-	m_CharacterSprite->SetImageEnd(Vector2(
-		(float)SelectedRootComponent->GetMaterial()->GetTexture()->GetWidth(),
-		(float)SelectedRootComponent->GetMaterial()->GetTexture()->GetHeight()));
+	m_CharacterSprite->SetImageStart(SelectFrame.Start);
+	m_CharacterSprite->SetImageEnd( SelectFrame.Start + SelectFrame.Size);
 
 	// Object 이름 
 	SetDetailInfoName(Component->GetGameObject()->GetName());
@@ -315,6 +320,15 @@ void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
 	std::vector<std::string> AnimNames;
 	SelectedRootComponent->GetAnimationInstance()->GatherAnimationNames(AnimNames);
 
+	m_SetAnimationComboBox->Clear();
+
+	size_t AnimSize = AnimNames.size();
+
+	for (size_t i = 0; i < AnimSize; i++)
+	{
+		m_SetAnimationComboBox->AddItem(AnimNames[i]);
+	}
+
 	// Is Ground 여부
 	CLifeObject* OwnerObject = (CLifeObject*)(Component->GetGameObject());
 	SetIsGroundInfo(OwnerObject->IsGround());
@@ -324,7 +338,22 @@ void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
 }
 
 void CDetailInfoWindow::SetCurrentAnimationCallback(int Index, const char* Animation)
-{}
+{
+	if (!m_ClickedComponent)
+		return;
+
+	// 실제 Animation Change 
+	CSpriteComponent* SelectedRootComponent = (CSpriteComponent*)m_ClickedComponent.Get();
+
+	SelectedRootComponent->GetAnimationInstance()->SetCurrentAnimation(Animation);
+
+	// Sprite 에 반영
+	AnimationFrameData SelectFrame = SelectedRootComponent->GetAnimationInstance()->GetCurrentAnimation()->GetFrameData(0);
+	m_CharacterSprite->SetTexture(SelectedRootComponent->GetMaterial()->GetTexture());
+	m_CharacterSprite->SetImageStart(SelectFrame.Start);
+	m_CharacterSprite->SetImageEnd(SelectFrame.Start + SelectFrame.Size);
+
+}
 
 void CDetailInfoWindow::SetDetailInfoName(const std::string& Name)
 {
@@ -349,7 +378,29 @@ void CDetailInfoWindow::SetCurrentAnimationName(const std::string& Name)
 }
 
 void CDetailInfoWindow::SetIsGroundCallback(int Index, const char* Animation)
-{}
+{
+	if (!m_ClickedComponent)
+		return;
+
+	CLifeObject* OwnerObject = (CLifeObject*)(m_ClickedComponent->GetGameObject());
+
+	if (!OwnerObject)
+		return;
+
+	if (strcmp(Animation, "TRUE") == 0)
+	{
+		// 실제 정보 세팅
+		OwnerObject->SetIsGround(true);
+
+		// 실제 Text 세팅 
+		SetIsGroundInfo(true);
+	}
+	else
+	{
+		OwnerObject->SetIsGround(false);
+		SetIsGroundInfo(false);
+	}
+}
 
 void CDetailInfoWindow::SetTransformInfo(CSceneComponent* Component)
 {
