@@ -246,7 +246,7 @@ void CEditorMenu::CreateNewObject()
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 	const std::string NewObjectName = m_ObjectNameInput->GetTextMultibyte();
 
-	if (Hierarchy->GetObjectListBox()->CheckItem(NewObjectName))
+	if (Hierarchy->GetCreatedObjectListBox()->CheckItem(NewObjectName))
 		return;
 
 	// CreateObject_Type enum 의 범위를 벗어나면 X
@@ -309,7 +309,7 @@ void CEditorMenu::CreateNewComponent()
 
 	// Object 가 ObjectHierarcy 에서 선택되어 있어야 한다
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	// 중복 방지
@@ -318,7 +318,7 @@ void CEditorMenu::CreateNewComponent()
 		return;
 
 	// 해당 Object 의 Component 목록에 추가
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	switch ((CreateComponent_Type)m_ComponentComboBox->GetSelectIndex())
@@ -393,7 +393,7 @@ void CEditorMenu::TogglePlay()
 void CEditorMenu::SaveScene()
 {
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	TCHAR FileFullPath[MAX_PATH] = {};
@@ -420,7 +420,7 @@ void CEditorMenu::LoadScene()
 	// 기존에 작업중인 사항이 있다면, 즉, ObjectHierarchy에 GameObject, Sprite 목록이 남아있다면
 	// Message Box 띄우고 return;
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
-	if (Hierarchy->GetObjectListBox()->GetItemCount() > 0)
+	if (Hierarchy->GetCreatedObjectListBox()->GetItemCount() > 0)
 	{
 		MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Complete Current Work"), TEXT("Data Might Be Lost"), 0);
 		return;
@@ -480,7 +480,7 @@ void CEditorMenu::LoadScene()
 		std::vector<std::string> vecObjNames;
 		CSceneManager::GetInst()->GetScene()->GatherObjectsNames(vecObjNames);
 
-		CIMGUIListBox* ObjectListBox = Hierarchy->GetObjectListBox();
+		CIMGUIListBox* ObjectListBox = Hierarchy->GetCreatedObjectListBox();
 
 		size_t NameCount = vecObjNames.size();
 		for (size_t i = 0; i < NameCount; i++)
@@ -501,7 +501,7 @@ void CEditorMenu::LoadScene()
 		// 현재 선택된 Component의 위치로 세팅한다.
 		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 
-		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
+		std::string ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem();
 		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
 
 		Vector3 ObjectPivot = SelectedObject->GetPivot();
@@ -521,7 +521,7 @@ void CEditorMenu::SaveObject()
 {
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	TCHAR FileFullPath[MAX_PATH] = {};
@@ -539,7 +539,7 @@ void CEditorMenu::SaveObject()
 		int ConvertLength = WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, 0, 0, 0, 0);
 		WideCharToMultiByte(CP_ACP, 0, FileFullPath, -1, FilePathMultibyte, ConvertLength, 0, 0);
 
-		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
+		std::string ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem();
 
 		CGameObject* TargetObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
 
@@ -596,18 +596,18 @@ void CEditorMenu::LoadObject()
 
 
 		// 중복 방지 
-		if (Hierarchy->GetObjectListBox()->CheckItem(LoadedObject->GetName()))
+		if (Hierarchy->GetCreatedObjectListBox()->CheckItem(LoadedObject->GetName()))
 		{
 			CSceneManager::GetInst()->GetScene()->RemoveDuplicateObject(LoadedObject->GetName());
 			return;
 		}
 
 		// 이미 TileMapComponent에 해당하는 녀석을 Load 해놓은 상태 + 지금 불러온 녀석이 TileMap 용 Object 라면
-		int ObjectNumbers = Hierarchy->GetObjectListBox()->GetItemCount();
+		int ObjectNumbers = Hierarchy->GetCreatedObjectListBox()->GetItemCount();
 
 		for (int i = 0; i < ObjectNumbers; i++)
 		{
-			std::string ObjectName = Hierarchy->GetObjectListBox()->GetItem(i);
+			std::string ObjectName = Hierarchy->GetCreatedObjectListBox()->GetItem(i);
 
 			CGameObject* CheckObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
 
@@ -652,18 +652,18 @@ void CEditorMenu::LoadObject()
 		}
 
 		// Object Name List에 추가한다
-		Hierarchy->GetObjectListBox()->AddItem(LoadedObject->GetName());
+		Hierarchy->GetCreatedObjectListBox()->AddItem(LoadedObject->GetName());
 
 		// 화면에 Scene Edit Object를 만든다
 		CEditorManager::GetInst()->SetSceneEditObject();
 
 		// 가장 처음 녀석의 Component 들을 세팅해둔다.
-		Hierarchy->GetObjectListBox()->SetSelectIndex(Hierarchy->GetObjectListBox()->GetItemCount() - 1);
+		Hierarchy->GetCreatedObjectListBox()->SetSelectIndex(Hierarchy->GetCreatedObjectListBox()->GetItemCount() - 1);
 
 		// 현재 선택된 Component의 위치로 세팅한다.
 		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 
-		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
+		std::string ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem();
 		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
 
 		Vector3 ObjectPivot = SelectedObject->GetPivot();
@@ -745,11 +745,11 @@ void CEditorMenu::ClearComponent()
 	// Object가 선택된 상황이어야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	// 만약 Player를 선택했다면 메세지 띄우고 막기 
-	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetObjectListBox()->GetSelectItem().c_str());
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str());
 	if (Object->GetTypeID() == typeid(CPlayer2D).hash_code())
 	{
 		MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("Cannot Clear Player Components"), TEXT("Message"), MB_OK);
@@ -772,7 +772,7 @@ void CEditorMenu::DeleteComponent()
 	// Object가 선택된 상황이어야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
 	// Component도 세팅된 상태여야 한다.
@@ -786,7 +786,7 @@ void CEditorMenu::DeleteComponent()
 		// 우선 Root Component 면 지울 수 없게 세팅해준다.
 
 		// 실제 Object 내의 Scene Component 목록들을 비워준다.
-		CGameObject* SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetObjectListBox()->GetSelectItem().c_str());
+		CGameObject* SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str());
 		SelectObject->DeleteComponent(Hierarchy->GetCreatedComponentListBox()->GetSelectItem());
 
 		// Hierarchy 에서도 비워준다.
@@ -805,7 +805,7 @@ void CEditorMenu::ClearObject()
 		// CObjectHierarchy 에서도 해당 정보들을 지운다.
 		CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-		Hierarchy->GetObjectListBox()->Clear();
+		Hierarchy->GetCreatedObjectListBox()->Clear();
 		Hierarchy->GetCreatedComponentListBox()->Clear();
 	}
 }

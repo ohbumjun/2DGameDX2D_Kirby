@@ -429,10 +429,10 @@ void CDetailInfoWindow::SetPositionXCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < -1)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < -1)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -449,10 +449,10 @@ void CDetailInfoWindow::SetPositionYCallback()
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
 	// Object 선택 X
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < -1)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < -1)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	// 해당 이름으로 된 Object가 없다면 
@@ -469,10 +469,10 @@ void CDetailInfoWindow::SetPositionZCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -489,10 +489,10 @@ void CDetailInfoWindow::SetRotationXCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -506,10 +506,10 @@ void CDetailInfoWindow::SetRotationYCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -523,10 +523,10 @@ void CDetailInfoWindow::SetRotationZCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -540,10 +540,10 @@ void CDetailInfoWindow::SetScalingXCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -557,10 +557,10 @@ void CDetailInfoWindow::SetScalingYCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)
@@ -574,10 +574,10 @@ void CDetailInfoWindow::SetScalingZCallback()
 	// 선택한 GameObject + Component가 존재해야 한다.
 	CObjectHierarchy* Hierarchy = CEditorManager::GetInst()->GetObjectHierarchy();
 
-	if (!Hierarchy || Hierarchy->GetObjectListBox()->GetSelectIndex() < 0)
+	if (!Hierarchy || Hierarchy->GetCreatedObjectListBox()->GetSelectIndex() < 0)
 		return;
 
-	const char* ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem().c_str();
+	const char* ObjectName = Hierarchy->GetCreatedObjectListBox()->GetSelectItem().c_str();
 	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
 
 	if (!Object)

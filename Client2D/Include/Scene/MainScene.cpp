@@ -77,7 +77,9 @@ bool CMainScene::Init()
 	CPurpleBeatle* PurpleBeatle = m_Scene->CreateGameObject<CPurpleBeatle>("PurpleBeatle");
 	PurpleBeatle->SetWorldPos(Vector3(1200.f, 500.f, 1.));
 
-	CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
+	// CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
+	CNormalBear* NormalBear = m_Scene->LoadGameObject<CNormalBear>();
+	NormalBear->LoadByFileName("TestBear.gobj", OBJECT_PATH);
 	NormalBear->SetWorldPos(Vector3(1000.f, 700.f, 1.));
 
 	/*

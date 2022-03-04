@@ -20,7 +20,7 @@ private :
 private :
     std::unordered_map<std::string, std::vector<std::string>> m_mapVecObject;
 public :
-    CIMGUIListBox* GetObjectListBox() const
+    CIMGUIListBox* GetCandidateObjectListBox() const
     {
         return m_ObjectList;
     }
