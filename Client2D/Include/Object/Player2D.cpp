@@ -231,6 +231,7 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", KeyState_Down, this, &CPlayer2D::Attack1);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", KeyState_Down, this, &CPlayer2D::Skill1);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", KeyState_Down, this, &CPlayer2D::MovePointDown);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Jump", KeyState_Down, this, &CPlayer2D::Jump);
 
 }
 
@@ -338,6 +339,18 @@ void CPlayer2D::RotationZInv(float DeltaTime) //
 void CPlayer2D::RotationZ(float DeltaTime)
 {
 	m_Sprite->AddRelativeRotationZ(-180.f * DeltaTime);
+}
+
+void CPlayer2D:: Jump(float DeltaTime)
+{
+	if (!m_Jump)
+	{
+		m_Jump = true;
+		m_IsGround = false;
+
+		m_FallTime = 0.f;
+		m_FallStartY = GetWorldPos().y;
+	}
 }
 
 void CPlayer2D::Attack(float DeltaTime)

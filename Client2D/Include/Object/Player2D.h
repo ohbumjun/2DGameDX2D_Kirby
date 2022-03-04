@@ -57,6 +57,8 @@ private:
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
 private :
+	void Jump(float DeltaTime);
+private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);
 	void Skill1(float DeltaTime);
