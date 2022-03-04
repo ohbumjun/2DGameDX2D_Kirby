@@ -50,6 +50,10 @@ bool CObjectHierarchy::Init()
 	m_CreatedComponentListBox->SetPageItemCount(20);
 	m_CreatedComponentListBox->SetSelectCallback(this, &CObjectHierarchy::SelectCreatedComponent);
 
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+
 	// ========================================================================
 
 	Label = AddWidget<CIMGUILabel>("ObjectList", 200.f, 30.f);
@@ -77,9 +81,9 @@ bool CObjectHierarchy::Init()
 	// ========================================================================
 
 	// m_mapVecObject 세팅
-	std::vector<std::string>  vecNormalMonsters = { "NormalBear", "PurpleBeatles", "YellowBird" };
+	std::vector<std::string>  vecNormalMonsters = { g_NormalBearName, g_PurpleBeatlesName, g_YellowBirdName };
 
-	m_mapVecObject.insert(std::make_pair("NormalMonster", vecNormalMonsters));
+	m_mapVecObject.insert(std::make_pair(g_NormalBearName, vecNormalMonsters));
 
 	// m_mapVecObject 의 Key 들을 m_ObjectList 에 추가
 	for (const auto & kv : m_mapVecObject)

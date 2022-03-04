@@ -39,7 +39,7 @@ bool CMainScene::Init()
 	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
 	TileMapEmpty->LoadByFileName("TileMapText.gobj", OBJECT_PATH);
-	TileMapEmpty->SetEditMode(true);
+	TileMapEmpty->SetEditMode(false);
 
 	// Scene에 해당 TileMapEmpty를 멤버 변수로도 세팅해둔다.
 	SetTileMapEmptyObject(TileMapEmpty);

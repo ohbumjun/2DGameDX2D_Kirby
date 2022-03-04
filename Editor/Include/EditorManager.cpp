@@ -310,7 +310,7 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 
 	CGameObject* CreatedObject = nullptr;
 
-	if (strcmp("NormalBear", SelectMonsterName.c_str()) == 0)
+	if (strcmp(g_NormalBearName.c_str(), SelectMonsterName.c_str()) == 0)
 	{
 		CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
 	}

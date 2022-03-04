@@ -66,6 +66,9 @@ void CColliderComponent::CheckPrevColliderSection()
 	auto iter = m_PrevCollisionList.begin();
 	auto iterEnd = m_PrevCollisionList.end();
 
+	if ((*iter) == nullptr)
+		return;
+
 	// 모든 이전 충돌 목록들을 돌면서
 	// 자신이 속한 모든 충돌 영역과, 이전 충돌체가 속한 모든 충돌 영역들을 비교한다
 	size_t Size = m_vecSectionIndex.size();

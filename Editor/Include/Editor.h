@@ -1,10 +1,14 @@
 #pragma once
 
+// define ¹®
+const std::string g_NormalBearName = "NormalBear";
+const std::string g_PurpleBeatlesName = "PurpleBeatles";
+const std::string g_YellowBirdName = "YellowBird";
+
 enum class Tile_EditMode {
 	Type,
 	Frame
 };
-
 
 static std::string GetRandomString()
 {

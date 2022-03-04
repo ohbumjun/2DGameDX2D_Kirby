@@ -7,7 +7,16 @@ class CDetailInfoWindow :
 public:
     CDetailInfoWindow();
     ~CDetailInfoWindow();
-private:
+private : // Image 정보
+    class CIMGUIImage* m_CharacterSprite;
+private :
+    class CIMGUIText* m_CharacterName;
+    class CIMGUIText* m_CharCurrentAnimation;
+    class CIMGUIComboBox* m_SetAnimationComboBox;
+private : // Detail Info
+    class CIMGUIText*           m_IsGroundText;
+    class CIMGUIComboBox* m_IsGroundComboBox;
+private: // Transform 정보
     class CIMGUITextInput* m_PosX;
     class CIMGUITextInput* m_PosY;
     class CIMGUITextInput* m_PosZ;
@@ -24,7 +33,14 @@ public:
     virtual void Update(float DeltaTime) override;
 public :
     void SetPosRotScaleInfo(class CGameObject* Object);
-public:
+private:
+    // Set Current Animation
+    void SetCurrentAnimation(int Index, const char* Animation);
+
+    // Detail
+    void SetIsGround(int Index, const char* Animation);
+
+    // Transform
     void SetPositionXCallback();
     void SetPositionYCallback();
     void SetPositionZCallback();

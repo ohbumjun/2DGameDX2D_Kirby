@@ -19,6 +19,7 @@ protected:
 	float m_FallStartY;
 	float m_FloorCheck;
 	float m_SideWallCheck;
+	float m_PhysicApplyDelayTime;
 protected:
 	bool m_Jump;
 	float m_JumpVelocity;

@@ -1,5 +1,8 @@
 #include "DetailInfoWindow.h"
 #include "IMGUILabel.h"
+#include "IMGUIImage.h"
+#include "IMGUIComboBox.h"
+#include "IMGUIText.h"
 #include "IMGUISameLine.h"
 #include "IMGUITextInput.h"
 #include "ObjectHierarchy.h"
@@ -23,11 +26,111 @@ bool CDetailInfoWindow::Init()
 	CIMGUIWindow::Init();
 
 	// ===============================================
-	CIMGUILabel* Label = AddWidget<CIMGUILabel>("Pos", 40.f, 20.f);
+	CIMGUILabel* Label = AddWidget<CIMGUILabel>("Animation", 400.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	m_CharacterSprite = AddWidget<CIMGUIImage>("SpriteOrigin", 150.f, 150.f);
+
+	// ===============================================
+
+	Label = AddWidget<CIMGUILabel>("Name", 80.f, 20.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_CharacterName = AddWidget<CIMGUIText>("Name");
+	m_CharacterName->SetColor(255, 255, 255);
+	m_CharacterName->SetText("- - - ");
+	m_CharacterName->SetSize(150.f, 80.f);
+
+	// ===============================================
+
+	Label = AddWidget<CIMGUILabel>("Animation", 80.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_CharCurrentAnimation = AddWidget<CIMGUIText>("AnimName");
+	m_CharCurrentAnimation->SetColor(255, 255, 255);
+	m_CharCurrentAnimation->SetText("- - - ");
+	m_CharCurrentAnimation->SetSize(150.f, 80.f);
+
+	// ===============================================
+
+	Label = AddWidget<CIMGUILabel>("Set Anim", 80.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_SetAnimationComboBox = AddWidget<CIMGUIComboBox>("Set Anim", 100.f, 30.f);
+	/*
+	m_SetAnimationComboBox->AddItem("Sprite");
+	m_SetAnimationComboBox->AddItem("Scene");
+	m_SetAnimationComboBox->AddItem("TileMap");
+	m_SetAnimationComboBox->AddItem("BackGround");
+	m_SetAnimationComboBox->AddItem("Line");
+	m_SetAnimationComboBox->AddItem("CharacterCreate");
+	m_SetAnimationComboBox->AddItem("CharacterEdit");
+	*/
+	m_SetAnimationComboBox->SetHideName(true);
+	m_SetAnimationComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetCurrentAnimation);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
+
+
+	// ===============================================
+	Label = AddWidget<CIMGUILabel>("Detail Info", 400.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ===============================================
+	Label = AddWidget<CIMGUILabel>("IsGround", 80.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_IsGroundText = AddWidget<CIMGUIText>("AnimName");
+	m_IsGroundText->SetColor(255, 255, 255);
+	m_IsGroundText->SetText("- - - ");
+	m_IsGroundText->SetSize(150.f, 80.f);
+
+	// ===============================================
+	Label = AddWidget<CIMGUILabel>("Set Ground", 80.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_IsGroundComboBox = AddWidget<CIMGUIComboBox>("Is Ground", 100.f, 30.f);
+	m_IsGroundComboBox->SetHideName(true);
+	m_IsGroundComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetIsGround);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ===============================================
+	Label = AddWidget<CIMGUILabel>("Transform", 400.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Label = AddWidget<CIMGUILabel>("Pos", 40.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
 
 	Label = AddWidget<CIMGUILabel>("X", 20.f, 20.f);
 	Label->SetColor(0, 0, 255);
@@ -37,7 +140,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_PosX = AddWidget<CIMGUITextInput>("PosX", 80.f, 30.f);
+	m_PosX = AddWidget<CIMGUITextInput>("PosX", 60.f, 30.f);
 	m_PosX->SetHideName(true);
 	m_PosX->SetCallback(this, &CDetailInfoWindow::SetPositionXCallback);
 	m_PosX->SetTextType(ImGuiText_Type::Float);
@@ -50,7 +153,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_PosY = AddWidget<CIMGUITextInput>("PosY", 80.f, 30.f);
+	m_PosY = AddWidget<CIMGUITextInput>("PosY", 60.f, 30.f);
 	m_PosY->SetHideName(true);
 	m_PosY->SetCallback(this, &CDetailInfoWindow::SetPositionYCallback);
 	m_PosY->SetTextType(ImGuiText_Type::Float);
@@ -63,7 +166,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_PosZ = AddWidget<CIMGUITextInput>("PosZ", 80.f, 30.f);
+	m_PosZ = AddWidget<CIMGUITextInput>("PosZ", 60.f, 30.f);
 	m_PosZ->SetHideName(true);
 	m_PosZ->SetCallback(this, &CDetailInfoWindow::SetPositionZCallback);
 	m_PosZ->SetTextType(ImGuiText_Type::Float);
@@ -81,7 +184,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_RotX = AddWidget<CIMGUITextInput>("RotX", 80.f, 30.f);
+	m_RotX = AddWidget<CIMGUITextInput>("RotX", 60.f, 30.f);
 	m_RotX->SetHideName(true);
 	m_RotX->SetCallback(this, &CDetailInfoWindow::SetRotationXCallback);
 	m_RotX->SetTextType(ImGuiText_Type::Float);
@@ -94,7 +197,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_RotY = AddWidget<CIMGUITextInput>("RotY", 80.f, 30.f);
+	m_RotY = AddWidget<CIMGUITextInput>("RotY", 60.f, 30.f);
 	m_RotY->SetHideName(true);
 	m_RotY->SetCallback(this, &CDetailInfoWindow::SetRotationYCallback);
 	m_RotY->SetTextType(ImGuiText_Type::Float);
@@ -107,7 +210,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_RotZ = AddWidget<CIMGUITextInput>("RotZ", 80.f, 30.f);
+	m_RotZ = AddWidget<CIMGUITextInput>("RotZ", 60.f, 30.f);
 	m_RotZ->SetHideName(true);
 	m_RotZ->SetCallback(this, &CDetailInfoWindow::SetRotationZCallback);
 	m_RotZ->SetTextType(ImGuiText_Type::Float);
@@ -126,7 +229,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_ScaleX = AddWidget<CIMGUITextInput>("ScaleX", 80.f, 30.f);
+	m_ScaleX = AddWidget<CIMGUITextInput>("ScaleX", 60.f, 30.f);
 	m_ScaleX->SetHideName(true);
 	m_ScaleX->SetCallback(this, &CDetailInfoWindow::SetScalingXCallback);
 	m_ScaleX->SetTextType(ImGuiText_Type::Float);
@@ -139,7 +242,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_ScaleY = AddWidget<CIMGUITextInput>("ScaleY", 80.f, 30.f);
+	m_ScaleY = AddWidget<CIMGUITextInput>("ScaleY", 60.f, 30.f);
 	m_ScaleY->SetHideName(true);
 	m_ScaleY->SetCallback(this, &CDetailInfoWindow::SetScalingYCallback);
 	m_ScaleY->SetTextType(ImGuiText_Type::Float);
@@ -152,7 +255,7 @@ bool CDetailInfoWindow::Init()
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_ScaleZ = AddWidget<CIMGUITextInput>("ScaleZ", 80.f, 30.f);
+	m_ScaleZ = AddWidget<CIMGUITextInput>("ScaleZ", 60.f, 30.f);
 	m_ScaleZ->SetHideName(true);
 	m_ScaleZ->SetCallback(this, &CDetailInfoWindow::SetScalingZCallback);
 	m_ScaleZ->SetTextType(ImGuiText_Type::Float);
@@ -182,6 +285,12 @@ void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
 	m_ScaleY->SetFloat(Scale.y);
 	m_ScaleZ->SetFloat(Scale.z);
 }
+
+void CDetailInfoWindow::SetCurrentAnimation(int Index, const char* Animation)
+{}
+
+void CDetailInfoWindow::SetIsGround(int Index, const char* Animation)
+{}
 
 void CDetailInfoWindow::SetPositionXCallback()
 {

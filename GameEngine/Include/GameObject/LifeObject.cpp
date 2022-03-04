@@ -8,8 +8,8 @@ CLifeObject::CLifeObject():
 	m_MoveSpeed(200.f),
 	// m_IsGround(true),
 	// m_PhysicsSimulate(true),
-	m_PhysicsSimulate(false),
-	m_IsGround(true),
+	m_PhysicsSimulate(true),
+	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
 	m_Jump(false),
@@ -21,7 +21,8 @@ CLifeObject::CLifeObject():
 	m_SideWallCheck(true),	
 	m_JumpAccel(1.1f),
 	m_JumpAccelAccTime(0.f),
-	m_PrevPos{}
+	m_PrevPos{},
+	m_PhysicApplyDelayTime(1.5f)
 {}
 
 CLifeObject::CLifeObject(const CLifeObject& obj) : CGameObject(obj)
@@ -36,6 +37,14 @@ CLifeObject::~CLifeObject()
 
 void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 {
+	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
+	if (m_PhysicApplyDelayTime >= 0.f)
+	{
+		m_PhysicApplyDelayTime -= DeltaTime;
+
+		return;
+	}
+
 	if (!m_IsGround && m_PhysicsSimulate)
 	{
 		// 떨어지는 시간 누적 
@@ -388,9 +397,10 @@ void CLifeObject::Update(float DeltaTime)
 	// 1) 중력 적용 이전에 Side Collision 먼저 적용해야 한다.
 	CheckSideCollision();
 
-	// CheckBottomCollision();
-
 	UpdateWhileOffGround(DeltaTime);
+
+	CheckBottomCollision();
+
 }
 
 void CLifeObject::PostUpdate(float DeltaTime)

@@ -130,7 +130,7 @@ bool CEditorMenu::Init()
 	m_ObjectComboBox->AddItem("Player");
 	m_ObjectComboBox->AddItem("YellowBird");
 	m_ObjectComboBox->AddItem("PurpleBeatles");
-	m_ObjectComboBox->AddItem("NormalMonster");
+	m_ObjectComboBox->AddItem("NormalBear");
 	m_ObjectComboBox->AddItem("TileEmpty");
 	m_ObjectComboBox->AddItem("BackGround");
 	m_ObjectComboBox->SetHideName(true);
