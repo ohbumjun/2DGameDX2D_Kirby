@@ -352,30 +352,28 @@ void CPlayer2D::MoveRight(float DeltaTime)
 
 void CPlayer2D::MoveLeftW(float DeltaTime) //
 {
+	// 삼각 점프 상태였다면 계속 이동 시킨다
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
 			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
 		else
 			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+
 		return;
 	}
 
-	// 오른쪽 버튼을 누르고 있다면
+	// 오른쪽 버튼을 누른 상태라면 X
 	if (m_RightMovePush)
-	{
-		// 그냥 계속 오른쪽으로 이동
 		return;
-	}
 
-	// 이동 중임으로 true로 표시한다 --> 이동 안할 때 자동 감속하는 것을 방지하기 위한 것
+	// 레버 이동 표시
 	m_IsLeverMoving = true;
 
-	// 왼쪽 버튼을 누르고 있다는 것을 표시한다.
+	// 왼쪽 버튼 누르는 중 표시
 	m_LeftMovePush = true;
 
-	// 현재 오른쪽으로 이동중이었다면
-	// 오른쪽으로 가되, 감속을 해야 한다.
+	// 이동 관련 상태 표시
 	if (m_RightMove)
 	{
 		m_LeftMove = false;
@@ -387,32 +385,26 @@ void CPlayer2D::MoveLeftW(float DeltaTime) //
 		m_ToLeftWhenRightMove = false;
 	}
 
-	// 레버 움직임 속도를 계산한다
+	// 일반 이동 속도 계산
 	CalculateLeverMoveSpeed(DeltaTime);
 
-	// 만약 Dash를 누르고 있지 않다면
-	// 즉, 여기 함수에 들어오고 있다는 것은, 레버 움직임만을 수행하고
-	// 대시 움직임은 수행하지 않는다는 것이다
+	// 여기로 들어온 것은 Dash Move 중은 아니라는 것이므로
 	if (m_DashVelocity > 0.f)
 	{
-		m_DashVelocity -= m_DashMoveAccel * 1.5f;
+		m_DashVelocity -= m_DashMoveAccel;
 
 		if (m_DashVelocity < 0.f)
 			m_DashVelocity = 0.f;
 	}
 
-	// 레버 움직임 속도가 바뀌었으니, 전체 움직임 속도를 계산한다
+	// 총 이동 속도를 계산한다
 	CalculateTotalMoveSpeed(DeltaTime);
 
-	// 실제 움직임을 수행한다
+	// 실제 이동 처리를 한다
 	if (m_RightMove)
-	{
 		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
-	}
-	else 
-	{
+	else
 		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
-	}
 
 	// todo : 여기서 Animation 변환 처리를 해준다.
 }
@@ -421,7 +413,65 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 {}
 
 void CPlayer2D::MoveRightW(float DeltaTime)
-{}
+{
+	// Triangle Jump 중이라면 이동은 계속 하되 + 키보드는 안먹게 한다
+	if (m_TriangleJump)
+	{
+		if (m_RightMove)
+			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+		else
+			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+
+		return;
+	}
+
+	// 왼쪽 키를 누르고 있었다면 안먹게 한다
+	if (m_LeftMovePush)
+		return;
+
+	// 일반 이동 표시
+	m_IsLeverMoving = true;
+
+	// 오른쪽 이동 표시
+	m_RightMovePush = true;
+
+	// 이동 상태 Update
+	if (m_LeftMove)
+	{
+		m_RightMove = false;
+		m_ToRightWhenLeftMove = true;
+	}
+	else
+	{
+		m_RightMove = true;
+		m_ToRightWhenLeftMove = false;
+	}
+
+	// 이동 속도 계산
+	CalculateLeverMoveSpeed(DeltaTime);
+
+	// 대쉬 속도 Update
+	if (m_DashVelocity > 0.f)
+	{
+		m_DashVelocity -= m_DashMoveAccel;
+
+		if (m_DashVelocity < 0.f)
+			m_DashVelocity = 0.f;
+	}
+
+	// 총 이동 속도 계산
+	CalculateTotalMoveSpeed(DeltaTime);
+
+	// 실제 이동 수행
+	if (m_RightMove)
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+	else
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+
+	// Animation 전환
+
+
+}
 
 void CPlayer2D::MoveDashRight(float DeltaTime)
 {}
