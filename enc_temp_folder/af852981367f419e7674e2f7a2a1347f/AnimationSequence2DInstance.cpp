@@ -65,17 +65,6 @@ void CAnimationSequence2DInstance::GatherSequenceNames(std::vector<std::string>&
 	}
 }
 
-void CAnimationSequence2DInstance::GatherAnimationNames(std::vector<std::string>& vecNames)
-{
-	auto iter = m_mapAnimation.begin();
-	auto iterEnd = m_mapAnimation.end();
-
-	for (; iter != iterEnd; ++iter)
-	{
-		vecNames.push_back(iter->first);
-	}
-}
-
 void CAnimationSequence2DInstance::AddSequence2DToScene()
 {
 	CSceneResource* Resource = CSceneManager::GetInst()->GetScene()->GetResource();

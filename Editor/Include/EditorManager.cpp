@@ -370,8 +370,9 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		if (!ClickedObject)
 			return;
 
-		// 1) Detail 정보 세팅 
-		m_DetailInfoWindow->SetClickedObjectInfo(ClickedComponent);
+		// 1) Detail 정보 세팅
+		CSceneComponent* SelectRootComponent = ClickedComponent->GetGameObject()->GetRootComponent();
+		m_DetailInfoWindow->SetClickedObjectInfo(SelectRootComponent);
 
 
 		// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.

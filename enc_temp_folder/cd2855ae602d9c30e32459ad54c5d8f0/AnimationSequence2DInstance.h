@@ -68,7 +68,6 @@ public :
 public :
 	int GetCurrentAnimationOrder();
 	void GatherSequenceNames(std::vector<std::string>& vecNames);
-	void GatherAnimationNames(std::vector<std::string>& vecNames);
 	void AddSequence2DToScene();
 	void ClearAnimationSequence();
 	bool DeleteAnimationSequence(const std::string& Name);

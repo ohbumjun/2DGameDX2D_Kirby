@@ -295,25 +295,14 @@ void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
 
 void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
 {
-	// Sprite 정보 세팅하기
-	CSpriteComponent* SelectedRootComponent = (CSpriteComponent*)Component;
 
-	m_CharacterSprite->SetTexture(SelectedRootComponent->GetMaterial()->GetTexture());
-	m_CharacterSprite->SetImageStart(Vector2(0.f, 0.f));
-	m_CharacterSprite->SetImageEnd(Vector2(
-		(float)SelectedRootComponent->GetMaterial()->GetTexture()->GetWidth(),
-		(float)SelectedRootComponent->GetMaterial()->GetTexture()->GetHeight()));
-
-	// Object 이름 
-	SetDetailInfoName(Component->GetGameObject()->GetName());
+	// 이름 
+	SetDetailInfoName(Component->GetName());
 
 	// Animation 이름 
+	CSpriteComponent* SelectedRootComponent = (CSpriteComponent*)Component;
 	if (SelectedRootComponent->GetAnimationInstance())
 		SetCurrentAnimationName(SelectedRootComponent->GetAnimationInstance()->GetCurrentAnimation()->GetName());
-
-	// Animation Combox 목록에 Animation 목록 나열 하기
-	std::vector<std::string> AnimNames;
-	SelectedRootComponent->GetAnimationInstance()->GatherAnimationNames(AnimNames);
 
 	// Is Ground 여부
 	CLifeObject* OwnerObject = (CLifeObject*)(Component->GetGameObject());
