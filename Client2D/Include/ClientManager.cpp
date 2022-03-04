@@ -249,8 +249,8 @@ CComponent* CClientManager::CreateComponent(CGameObject* Obj, size_t Type)
 
 	// 하나라도 매치가 안된다면
 	// SceneComponent 로 Load 해본다.
-	CSceneComponent* Component = Obj->LoadComponent<CSceneComponent>();
-	return Component;
+	// CSceneComponent* Component = Obj->LoadComponent<CSceneComponent>();
+	return nullptr;
 }
 
 void CClientManager::CreateAnimationInstance(CSpriteComponent* Component, const size_t AnimationTypeID)

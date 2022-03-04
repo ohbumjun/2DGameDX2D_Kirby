@@ -47,6 +47,19 @@ CGameObject::~CGameObject()
 void CGameObject::SetScene(CScene* Scene)
 {
 	m_Scene = Scene;
+
+	/*
+	if (m_RootComponent)
+		m_RootComponent->SetScene(Scene);
+
+	auto iter = m_vecObjectComponent.begin();
+	auto iterEnd = m_vecObjectComponent.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		(*iter)->SetScene(Scene);
+	}
+	*/
 }
 
 CComponent* CGameObject::FindComponent(const std::string& Name)

@@ -46,7 +46,7 @@ void CMainScene::Start()
 
 	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
 
-	SetPlayerObject(TileMapEmtpyObject);
+	SetPlayerObject(Player2D);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 }

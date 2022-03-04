@@ -1,4 +1,7 @@
 ﻿#include "Player2D.h"
+
+#include <Scene/CameraManager.h>
+
 #include "Bullet.h"
 #include "BulletTornaido.h"
 #include "Input.h"
@@ -200,8 +203,6 @@ void CPlayer2D::Start()
 	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
-	m_Camera = (CCameraComponent*)FindComponent("Camera");
-	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	// Root Component Animation 세팅
@@ -209,7 +210,15 @@ void CPlayer2D::Start()
 	// m_Sprite->SetAnimationInstance(AnimationInstance);
 
 	// Widget Component의 Widget 생성
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+
+	m_Camera = CreateComponent<CCameraComponent>("Camera");
+	m_Camera->OnViewportCenter(); // Player 중심 세팅
+	m_Sprite->AddChild(m_Camera);
+
+	// CameraManager 에 세팅하기
+	// m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
 
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", KeyState_Push, this, &CPlayer2D::MoveUp);

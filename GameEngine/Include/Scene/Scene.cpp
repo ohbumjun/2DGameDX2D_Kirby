@@ -229,6 +229,8 @@ bool CScene::LoadFullPath(const char* FullPath)
 		// ex) 충돌체 목록들을 SceneCollision List 에 추가하기 
 		if (m_Start)
 			Object->Start();
+
+		// Object->SetScene(this);
 	}
 
 	fclose(pFile);
