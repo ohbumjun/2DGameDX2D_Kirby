@@ -350,7 +350,7 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * 300.f * DeltaTime);
 }
 
-void CPlayer2D::MoveLeftW(float DeltaTime)
+void CPlayer2D::MoveLeftW(float DeltaTime) //
 {
 	if (m_TriangleJump)
 	{
