@@ -351,7 +351,43 @@ void CPlayer2D::MoveRight(float DeltaTime)
 }
 
 void CPlayer2D::MoveLeftW(float DeltaTime)
-{}
+{
+	if (m_TriangleJump)
+	{
+		if (m_RightMove)
+			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+		else
+			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+		return;
+	}
+
+	// 오른쪽 버튼을 누르고 있다면
+	if (m_RightMovePush)
+	{
+		// 그냥 계속 오른쪽으로 이동
+		return;
+	}
+
+	// 이동 중임으로 true로 표시한다 --> 이동 안할 때 자동 감속하는 것을 방지하기 위한 것
+	m_IsLeverMoving = true;
+
+	// 왼쪽 버튼을 누르고 있다는 것을 표시한다.
+	m_LeftMovePush = true;
+
+	// 현재 오른쪽으로 이동중이었다면
+	// 오른쪽으로 가되, 감속을 해야 한다.
+	if (m_RightMove)
+	{
+		m_LeftMove = false;
+		m_ToLeftWhenRightMove = true;
+	}
+	else
+	{
+		m_LeftMove = true;
+		m_ToLeftWhenRightMove = false;
+	}
+
+}
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
 {}
@@ -378,6 +414,51 @@ void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 
 void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 {}
+
+float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
+{
+	// 오른쪽으로 이동중이라면
+	if (m_RightMove)
+	{
+		// 계속 오른쪽 이동 중이라면
+		if (!m_ToLeftWhenRightMove)
+		{
+			m_LeverVelocity += m_LeverMoveAccel;
+		}
+		// 그게 아니라, 오른쪽으로 이동 중이다가, 왼쪽으로 감속하는 것이라면
+		else
+		{
+			m_LeverVelocity -= m_LeverMoveAccel * 1.5f;
+		}
+	}
+
+	// 만약 왼쪽 이동중이라면
+	else if (m_LeftMove)
+	{
+		// 계속 왼쪽 이동 중이라면
+		if (!m_ToRightWhenLeftMove)
+		{
+			m_LeverVelocity += m_LeverMoveAccel;
+		}
+		// 왼쪽으로 이동 중이다가, 오른쪽으로 감속하는 것이라면
+		else
+		{
+			m_LeverVelocity -= m_LeverMoveAccel * 2.f;
+		}
+	}
+
+	// 최대 속도 조절
+	if (m_LeverVelocity >= m_LeverMaxMoveVelocity)
+	{
+		m_LeverVelocity = m_LeverMaxMoveVelocity;
+	}
+
+	// 최소 속도 조절
+	if (m_LeverVelocity < 0.f)
+		m_LeverVelocity = 0.f;
+
+	return m_LeverVelocity;
+}
 
 void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 {

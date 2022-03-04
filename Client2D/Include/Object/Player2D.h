@@ -87,6 +87,7 @@ private :
 	void LeftDashMoveEnd(float DeltaTime);
 	void RightDashMoveEnd(float DeltaTime);
 private :
+	float CalculateLeverMoveSpeed(float DeltaTime);
 	void PlayerMoveUpdate(float DeltaTime);
 	void ResetMoveInfo();
 private :
