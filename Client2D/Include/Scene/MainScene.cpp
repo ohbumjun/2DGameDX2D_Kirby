@@ -24,6 +24,33 @@ CMainScene::~CMainScene()
 {
 }
 
+void CMainScene::Start()
+{
+	CSceneMode::Start();
+	/*
+	CreateMaterial();
+
+	CreateAnimationSequence();
+
+	CreateParticle();
+
+	CreateSound();
+	*/
+
+	// TileMapEmpty Type 의 GameObject를 찾는다
+	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
+
+	SetTileMapEmptyObject(TileMapEmtpyObject);
+
+	m_Scene->SetWorldResolution(TileMapEmtpyObject->GetWorldScale().x, TileMapEmtpyObject->GetWorldScale().y);
+
+	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
+
+	SetPlayerObject(TileMapEmtpyObject);
+
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
+}
+
 bool CMainScene::Init()
 {
 	CreateMaterial();
@@ -193,4 +220,15 @@ void CMainScene::CreateParticle()
 	BubbleParticle->SetMove(true);
 
 
+}
+
+void CMainScene::PrepareResources()
+{
+	CreateMaterial();
+
+	CreateAnimationSequence();
+
+	CreateParticle();
+
+	CreateSound();
 }

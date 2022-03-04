@@ -39,3 +39,6 @@ void CSceneMode::Update(float DeltaTime)
 void CSceneMode::PostUpdate(float DeltaTime)
 {
 }
+
+void CSceneMode::PrepareResources()
+{}

@@ -1,7 +1,9 @@
 #include "NormalMonster.h"
 
 CNormalMonster::CNormalMonster()
-{}
+{
+	SetTypeID<CNormalMonster>();
+}
 
 CNormalMonster::CNormalMonster(const CNormalMonster& Monster) : CMonster(Monster)
 {}

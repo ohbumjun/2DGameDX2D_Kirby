@@ -3,7 +3,9 @@
 #include <Scene/Scene.h>
 
 CTileMap::CTileMap()
-{}
+{
+	SetTypeID<CTileMap>();
+}
 
 CTileMap::CTileMap(const CTileMap& Map)
 {

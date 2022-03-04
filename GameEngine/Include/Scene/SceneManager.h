@@ -121,8 +121,7 @@ public :
 		return m_NextScene->CreateSceneMode<T>();
 	}
 
-	template<typename T>
-	bool ChangeNextScene()
+	void ChangeNextScene()
 {
 		CSync sync(&m_Crt);
 

@@ -1,7 +1,9 @@
 #include "PurpleBeatle.h"
 
 CPurpleBeatle::CPurpleBeatle()
-{}
+{
+	SetTypeID<CPurpleBeatle>();
+}
 
 CPurpleBeatle::CPurpleBeatle(const CPurpleBeatle& Beatle) : CNormalMonster(Beatle)
 {}

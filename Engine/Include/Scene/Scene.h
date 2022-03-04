@@ -84,14 +84,21 @@ public:
 	{
 		return m_Mode->GetTileEmptyComponent();
 	}
+public :
+	void PrepareResources()
+	{
+		m_Mode->PrepareResources();
+	}
 private :
 	void ClearGameObjects();
 	void DeleteGameObject(const std::string& Name);
 	void RemoveDuplicateObject(const std::string& Name);
 public :
 	CGameObject* FindGameObject(const char* ObjectName) const;
+	CGameObject* FindGameObjectByTypeID(size_t TypeID) const;
 	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
 	void SetAutoChange(bool Change);
+
 public:
 	void Start();
 	void Update(float DeltaTime);
@@ -99,6 +106,7 @@ public:
 public :
 	void SaveFullPath(const char* FullPath);
 	bool LoadFullPath(const char* FullPath);
+	void Load(const char* FileName, const std::string& PathName);
 public:
 	template<typename T>
 	T* CreateSceneModeEmpty()
@@ -126,10 +134,12 @@ public:
 		return true;
 	}
 	template<typename T>
-	void LoadSceneMode()
+	T* LoadSceneMode()
 	{
 		m_Mode = new T;
 		m_Mode->m_Scene = this;
+
+		return (T*)*m_Mode;
 	}
 
 	template <typename T>

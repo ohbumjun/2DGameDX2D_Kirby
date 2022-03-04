@@ -8,6 +8,7 @@
 
 CDragObject::CDragObject()
 {
+	SetTypeID<CDragObject>();
 }
 
 CDragObject::CDragObject(const CDragObject& Obj) :

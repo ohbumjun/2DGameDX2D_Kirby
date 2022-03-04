@@ -3,7 +3,9 @@
 class CAnimationSequence2DInstance;
 
 CBeamMonster::CBeamMonster()
-{}
+{
+	SetTypeID<CBeamMonster>();
+}
 
 CBeamMonster::CBeamMonster(const CBeamMonster& Monster)
 {}

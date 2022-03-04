@@ -2,7 +2,9 @@
 #include "Scene/Scene.h"
 
 CTileMapEmpty::CTileMapEmpty()
-{}
+{
+	SetTypeID<CTileMapEmpty>();
+}
 
 CTileMapEmpty::CTileMapEmpty(const CTileMapEmpty& Map)
 {

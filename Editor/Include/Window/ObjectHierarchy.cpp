@@ -136,26 +136,30 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 	// 가장 첫번째 Component를 선택한 상태로 세팅한다.
 	m_CreatedComponentListBox->SetSelectIndex(0);
 
+	// TileMap 혹은 BackGround 가 아니라면 
 	// Object 의 Pos, Rot, Scale x,y,z 정보도 DetailWindow 측에 세팅해준다.
-	CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
-	DetailWindow->SetClickedObjectInfo(m_SelectObject->GetRootComponent());
+	if (!m_SelectObject->GetRootComponent()->CheckType<CTileEmptyComponent>() &&
+		!m_SelectObject->GetRootComponent()->CheckType<CBackGroundComponent>())
+	{
+		CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
+		DetailWindow->SetClickedObjectInfo(m_SelectObject->GetRootComponent());
 
-	CEditorManager::GetInst()->SetSceneEditObject();
+		CEditorManager::GetInst()->SetSceneEditObject();
 
-	// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
-	CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
-	
-	Vector3 ObjectPivot = m_SelectObject->GetPivot();
-	Vector3 ObjectSize = m_SelectObject->GetWorldScale();
-	Vector3 ObjectPos = m_SelectObject->GetWorldPos();
-	Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
+		// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
+		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 
-	Vector2 StartPos = Vector2(Pos.x, Pos.y);
-	Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
+		Vector3 ObjectPivot = m_SelectObject->GetPivot();
+		Vector3 ObjectSize = m_SelectObject->GetWorldScale();
+		Vector3 ObjectPos = m_SelectObject->GetWorldPos();
+		Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
 
-	ShowObject->SetStartPos(StartPos);
-	ShowObject->SetEndPos(EndPos);
-	
+		Vector2 StartPos = Vector2(Pos.x, Pos.y);
+		Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
+
+		ShowObject->SetStartPos(StartPos);
+		ShowObject->SetEndPos(EndPos);
+	}
 }
 
 void CObjectHierarchy::SeeObjectList(int Index, const char* ObjectName)

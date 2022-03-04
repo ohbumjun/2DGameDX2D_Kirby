@@ -40,6 +40,8 @@
 #include "Object/YellowBird.h"
 #include "Object/PurpleBeatle.h"
 #include "Object/NormalBear.h"
+#include "Object/TileMapEmpty.h"
+#include "Object/BackGround.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -570,6 +572,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CNormalBear).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CNormalBear>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CTileMapEmpty>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBackGround).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBackGround>();
 		return Obj;
 	}
 	

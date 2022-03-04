@@ -2,7 +2,9 @@
 #include "Component/BackGroundComponent.h"
 
 CBackGround::CBackGround()
-{}
+{
+	SetTypeID<CBackGround>();
+}
 
 CBackGround::CBackGround(const CBackGround& Map)
 {

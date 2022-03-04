@@ -4,6 +4,7 @@
 #include "CameraManager.h"
 #include "ViewPort.h"
 #include "NavigationManager.h"
+#include "../PathManager.h"
 
 CScene::CScene()  :
 	m_Change(false)
@@ -235,6 +236,20 @@ bool CScene::LoadFullPath(const char* FullPath)
 	return true;
 }
 
+void CScene::Load(const char* FileName, const std::string& PathName)
+{
+	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
+
+	char FullPath[MAX_PATH] = {};
+
+	if (Path)
+		strcpy_s(FullPath, Path->PathMultibyte);
+
+	strcat_s(FullPath, FileName);
+
+	LoadFullPath(FullPath);
+}
+
 void CScene::ClearGameObjects()
 {
 	m_ObjList.clear();
@@ -291,6 +306,18 @@ CGameObject* CScene::FindGameObject(const char* ObjectName) const
 	for (; iter != iterEnd; ++iter)
 	{
 		if ((*iter)->GetName() == ObjectName)
+			return (*iter);
+	}
+	return nullptr;
+}
+
+CGameObject* CScene::FindGameObjectByTypeID(size_t TypeID) const
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->m_TypeID == TypeID)
 			return (*iter);
 	}
 	return nullptr;

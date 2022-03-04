@@ -1,7 +1,9 @@
 #include "NormalBear.h"
 
 CNormalBear::CNormalBear()
-{}
+{
+	SetTypeID<CNormalBear>();
+}
 
 CNormalBear::CNormalBear(const CNormalBear& Beatle) : CNormalMonster(Beatle)
 {}

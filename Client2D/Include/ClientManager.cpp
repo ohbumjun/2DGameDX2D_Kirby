@@ -2,13 +2,22 @@
 #include "Engine.h"
 #include "Input.h"
 #include "resource.h"
+// Scene
 #include "Scene/MainScene.h"
 #include "Scene/StartScene.h"
 #include "Scene/SceneManager.h"
+// UI
 #include "UI/MouseNormal.h"
 #include "UI/MouseAttack.h"
+// Object 
 #include "Object/Player2D.h"
 #include "Object/TileMap.h"
+#include "Object/YellowBird.h"
+#include "Object/NormalBear.h"
+#include "Object/PurpleBeatle.h"
+#include "Object/TileMapEmpty.h"
+#include "Object/BackGround.h"
+
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
@@ -77,7 +86,11 @@ bool CClientManager::Init(HINSTANCE hInst)
 void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CStartScene>();
-	CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
+	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	CSceneManager::GetInst()->GetScene()->PrepareResources();
+	// MainScene->PrepareResources();
+	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerAndBack.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()
@@ -88,26 +101,50 @@ int CClientManager::Run()
 void CClientManager::CreateSceneMode(CScene* Scene, size_t Type)
 {}
 
-CGameObject* CClientManager::CreateObject(CScene* Scene, size_t Type)
+CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID)
 {
-	if (Type == typeid(CGameObject).hash_code())
+	if (GameObjectTypeID == typeid(CGameObject).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CGameObject>();
 
 		return Obj;
 	}
-	if (Type == typeid(CPlayer2D).hash_code())
+	else if (GameObjectTypeID == typeid(CPlayer2D).hash_code())
 	{
-		CPlayer2D* Obj = Scene->LoadGameObject<CPlayer2D>();
-
+		CGameObject* Obj = Scene->LoadGameObject<CPlayer2D>();
 		return Obj;
 	}
-	if (Type == typeid(CTileMap).hash_code())
+	else if (GameObjectTypeID == typeid(CYellowBird).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CYellowBird>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CPurpleBeatle).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CPurpleBeatle>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CNormalBear).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CNormalBear>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CTileMap).hash_code())
 	{
 		CTileMap* Obj = Scene->LoadGameObject<CTileMap>();
-
 		return Obj;
 	}
+	if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())
+	{
+		CTileMapEmpty* Obj = Scene->LoadGameObject<CTileMapEmpty>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CBackGround).hash_code())
+	{
+		CBackGround* Obj = Scene->LoadGameObject<CBackGround>();
+		return Obj;
+	}
+	
 
 	return nullptr;
 }

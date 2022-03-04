@@ -16,6 +16,7 @@ CSpriteEditObject::CSpriteEditObject() :
 	m_Distance(600.f),
 	m_EditWindow(nullptr)
 {
+	SetTypeID<CSpriteEditObject>();
 }
 
 CSpriteEditObject::CSpriteEditObject(const CSpriteEditObject& obj) :

@@ -5,7 +5,9 @@
 
 CShowObject::CShowObject() :
 	m_MeshComponent(nullptr)
-{}
+{
+	SetTypeID<CShowObject>();
+}
 
 CShowObject::CShowObject(const CShowObject& obj) : CGameObject(obj)
 {
