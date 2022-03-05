@@ -6,7 +6,8 @@ CTileEmpty::CTileEmpty() :
 	m_Owner(nullptr),
 	m_IndexX(-1),
 	m_IndexY(-1),
-	m_Index(-1)
+	m_Index(-1),
+	m_IsSideCollision(false)
 {}
 
 CTileEmpty::CTileEmpty(const CTileEmpty& Tile)

@@ -74,7 +74,6 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 		// 내려간 거리
 		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
-		// m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * 0.01f;
 
 		// 최대 낙하 속도를 조절한다.
 		if (Velocity - m_FallVelocity < m_FallVelocityMax * -1.f)
@@ -150,8 +149,8 @@ void CLifeObject::CheckBottomCollision()
 
 		bool Check = false;
 
-		// 아래에서 위로 반복한다
-		for (int row = BottomIdx; row <= TopIdx; row++)
+		// 위에서 아래로 반복한다
+		for (int row = TopIdx; row >= BottomIdx; row--)
 		{
 			for (int col = LeftIdx; col <= RightIdx; col++)
 			{
@@ -179,6 +178,7 @@ void CLifeObject::CheckBottomCollision()
 
 					// 위치 정보 세팅
 					float NewPosY = TilePos.y + Pivot.y * WorldScale.y;
+
 					SetWorldPos(m_Pos.x, NewPosY, m_Pos.z);
 
 					break;
@@ -243,9 +243,8 @@ void CLifeObject::CheckSideCollision()
 		if (DirX >  0.f)
 		{
 			int Index = -1;
-			Vector3 TilePos = {};
 
-			ResultLB.x = PrevLB.x;
+			ResultLB.x = PrevRT.x;
 			ResultLB.y = CurLB.y < PrevLB.y ? CurLB.y : PrevLB.y;
 
 			ResultRT.x = CurRT.x;
@@ -280,18 +279,18 @@ void CLifeObject::CheckSideCollision()
 					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall)
 						continue;
 
-					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
+					Vector3 TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
 
 					// Object 가 Tile 위에 거의 붙어있을 경우에는,
 					// 충돌 처리를 하지 않을 것이다
-					if (TilePos.y - 0.001f <= CurLB.y && CurLB.y <= TilePos.y + 0.001f)
+					if (TilePos.y + TileSize.y - 0.1f <= ResultLB.y && ResultLB.y <= TilePos.y + TileSize.y + 0.1f)
 						continue;
 
 					// 현재 코드 상에서는
 					// Side Collision 먼저 , Bottom Collision
 					// 만약 너무 깊이 파고든다면, Side Collision 무시하고, 중력 적용에 따른
 					// 위로 밀어내기 만을 적용할 예정이다
-					if (CurRT.x - TilePos.x > 8.f)
+					if (CurRT.x - TilePos.x > 10.f)
 						continue;
 
 					// 렉트 충돌
@@ -304,7 +303,7 @@ void CLifeObject::CheckSideCollision()
 						SideCollision = true;
 
 						// 현재 오른쪽으로 이동 중 --> 왼쪽으로 밀어낼 것이다
-						float MoveX = TilePos.x - CurRT.x - 0.01f;
+						float MoveX = TilePos.x - CurRT.x - 0.001f;
 
 						m_Pos.x += MoveX;
 
@@ -327,7 +326,7 @@ void CLifeObject::CheckSideCollision()
 			ResultLB.x = CurLB.x;
 			ResultLB.y = CurLB.y < PrevLB.y ? CurLB.y : PrevLB.y;
 
-			ResultRT.x = PrevRT.x;
+			ResultRT.x = PrevLB.x;
 			ResultRT.y = CurRT.y > PrevRT.y ? CurRT.y : PrevRT.y;
 
 			LBIndexX = TileMap->GetTileEmptyIndexX(Vector3(ResultLB.x, ResultLB.y, m_Pos.z));
@@ -343,9 +342,10 @@ void CLifeObject::CheckSideCollision()
 			RTIndexX = RTIndexX >= TileMap->GetTileCountX() ? TileMap->GetTileCountX() - 1 : RTIndexX;
 			RTIndexY = RTIndexY >= TileMap->GetTileCountY() ? TileMap->GetTileCountY() - 1 : RTIndexY;
 
+			// 오른쪽에서 왼쪽 순으로 타일을 조사한다.
 			for (int row = LBIndexY; row <= RTIndexY; row++)
 			{
-				for (int col = LBIndexX; col <= RTIndexX; col++)
+				for (int col = RTIndexX; col >= LBIndexX; col--)
 				{
 					Index = row * TileMap->GetTileCountX() + col;
 
@@ -356,12 +356,12 @@ void CLifeObject::CheckSideCollision()
 					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
 
 					// 마찬가지로, 바닥에 붙어있다면 체크하지 않는다.
-					if (TilePos.y - 0.001f <= CurLB.y && CurLB.y <= TilePos.y + 0.001f)
+					if (TilePos.y + TileSize.y - 0.1f <= ResultLB.y && ResultLB.y <= TilePos.y + TileSize.y + 0.1f)
 						continue;
 
 					// 너무 깊이 파고들면 Side Collision 은 무시하고, 중력 적용에 따른
 					// 위로 밀어내기 만을 적용할 예정이다.
-					if (TilePos.x + TileSize.x - CurLB.x > 8.f)
+					if (TilePos.x + TileSize.x - CurLB.x > 10.f)
 						continue;
 
 					if (CurLB.x <= TilePos.x + TileSize.x && 
@@ -410,18 +410,19 @@ void CLifeObject::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	// 1) 중력 적용 이전에 Side Collision 먼저 적용해야 한다.
-	CheckSideCollision();
-
 	UpdateWhileOffGround(DeltaTime);
-
-	CheckBottomCollision();
-
 }
 
 void CLifeObject::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
+
+	// 1) 중력 적용 이전에 Side Collision 먼저 적용해야 한다.
+	CheckSideCollision();
+
+	CheckBottomCollision();
+
+
 
 	m_PrevPos = GetWorldPos();
 }

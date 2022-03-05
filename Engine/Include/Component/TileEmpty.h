@@ -19,7 +19,12 @@ private :
 	int m_IndexX;
 	int m_IndexY;
 	int m_Index;
+	bool m_IsSideCollision;
 public:
+	bool IsSideCollision () const
+	{
+		return m_IsSideCollision;
+	}
 	Tile_Type GetTileType()	const
 	{
 		return m_TileType;
