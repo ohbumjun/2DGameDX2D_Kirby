@@ -251,7 +251,7 @@ void CSpriteComponent::Save(FILE* pFile)
 	bool Animation = false;
 	if (m_Animation)
 		Animation = true;
-	fwrite(&m_Animation, sizeof(bool), 1, pFile);
+	fwrite(&Animation, sizeof(bool), 1, pFile);
 
 	if (Animation)
 	{

@@ -92,6 +92,7 @@ public:
 	void Clear()
 	{
 		m_vecItem.clear();
+		m_vecItemUTF8.clear();
 	}
 
 	void Sort(bool bSort)

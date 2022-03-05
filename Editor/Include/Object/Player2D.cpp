@@ -91,7 +91,8 @@ bool CPlayer2D::Init()
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);
 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+		"Kirby_Normal", TEXT("Kirby_Normal.anim"));
 
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 

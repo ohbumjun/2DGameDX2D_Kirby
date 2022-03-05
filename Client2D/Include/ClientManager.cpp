@@ -100,7 +100,7 @@ void CClientManager::CreateDefaultSceneMode()
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 	// MainScene->PrepareResources();
-	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerAndBack.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBack.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()
