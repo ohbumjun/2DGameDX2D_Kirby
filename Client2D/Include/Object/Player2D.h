@@ -64,6 +64,9 @@ private :
 
 	bool m_TriangleJump;
 
+	bool m_IsFlying;
+	float m_FlySpeed;
+
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -74,6 +77,7 @@ private : // 화면 밖으로 안나가게 하기
 	void CheckOutsideWorldResolution();
 private:
 	void MoveUp(float DeltaTime);
+	void MoveUpEnd(float DeltaTime);
 	void MoveDown(float DeltaTime);
 private :
 	void MoveLeft(float DeltaTime);
@@ -94,10 +98,12 @@ private :
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
 private :
+	void FlyAfterJump(float DeltaTime);
 	void SimpleJump();
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
+private :
 	virtual void SetObjectLand() override;
 private :
 	void Attack(float DeltaTime);

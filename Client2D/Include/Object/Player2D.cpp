@@ -31,7 +31,9 @@ m_ToRightWhenLeftMove(false),
 m_LeftMovePush(false),
 m_IsLeverMoving(false),
 m_IsDashMoving(false),
-m_TriangleJump(false)
+m_TriangleJump(false),
+m_IsFlying(false),
+m_FlySpeed(300.f)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
@@ -243,6 +245,9 @@ void CPlayer2D::Start()
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 
 		KeyState_Push, this, &CPlayer2D::MoveUp);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp",
+		KeyState_Up, this, &CPlayer2D::MoveUpEnd);
+
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", 
 		KeyState_Push, this, &CPlayer2D::MoveDown);
 	// CInput::GetInst()->SetKeyCallback<CPlayer2D>("RotationZInv", KeyState_Push, this, &CPlayer2D::RotationZInv);
@@ -364,7 +369,19 @@ void CPlayer2D::CheckOutsideWorldResolution()
 
 void CPlayer2D::MoveUp(float DeltaTime)
 {
-	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+	FlyAfterJump(DeltaTime);
+	// m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+}
+
+void CPlayer2D::MoveUpEnd(float DeltaTime)
+{
+	if (m_IsFlying)
+	{
+		// 땋에 닿은 상태라면, m_IsFlying을 false 로 해서
+		// 다시 날려면, Jump 이후에 날 수 있게 세팅한다
+		if (m_IsGround)
+			m_IsFlying = false;
+	}
 }
 
 void CPlayer2D::MoveDown(float DeltaTime)
@@ -806,6 +823,31 @@ void CPlayer2D::RotationZInv(float DeltaTime) //
 void CPlayer2D::RotationZ(float DeltaTime)
 {
 	m_Sprite->AddRelativeRotationZ(-180.f * DeltaTime);
+}
+
+void CPlayer2D::FlyAfterJump(float DeltaTime)
+{
+	// 일단 한번 뛴 상태에서 날아야 한다.
+	if (m_Jump)
+	{
+		m_IsFlying = true;
+
+		// 중력 적용 방지
+		m_Jump = false;
+		m_IsGround = true;
+	}
+
+	// 나는 중이라면, 계속 날게 세팅한다
+	if (m_IsFlying)
+	{
+		m_Sprite->AddWorldPos(Vector3(0.f, 1.f, 0.f) * m_FlySpeed * DeltaTime);
+
+		// todo : Animation Change
+
+		// 중력 적용 방지
+		m_Jump = false;
+		m_IsGround = true;
+	}
 }
 
 void CPlayer2D::SimpleJump()
