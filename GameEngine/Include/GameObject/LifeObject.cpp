@@ -13,7 +13,7 @@ CLifeObject::CLifeObject():
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
 	m_Jump(false),
-	m_JumpVelocity(60.f),
+	m_JumpVelocity(70.f),
 	m_FallVelocity(0.f),
 	m_FallVelocityMax(1000.f),
 	m_GravityAccel(10.f),

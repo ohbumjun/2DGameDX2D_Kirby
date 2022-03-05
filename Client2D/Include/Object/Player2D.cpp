@@ -275,7 +275,10 @@ void CPlayer2D::Start()
 		KeyState_Down, this, &CPlayer2D::Skill1);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", 
 		KeyState_Down, this, &CPlayer2D::MovePointDown);
+
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Jump", 
+		KeyState_Down, this, &CPlayer2D::Jump);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("JumpWhileDash",
 		KeyState_Down, this, &CPlayer2D::Jump);
 
 }
