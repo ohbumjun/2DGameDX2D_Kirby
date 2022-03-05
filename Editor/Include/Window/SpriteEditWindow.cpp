@@ -1805,6 +1805,10 @@ void CSpriteEditWindow::LoadAnimation()
 		m_CurSeqAnimationLoop->SetSelectIndex(Loop ? 0 : 1);
 		m_CurSeqAnimationReverse->SetSelectIndex(Reverse ? 0 : 1);
 
+		// World Scale을 Texture 크기로 세팅해둔다.
+		CSceneManager::GetInst()->GetScene()->SetWorldResolution(
+		(float)AnimTexture->GetWidth(),(float)AnimTexture->GetHeight());
+
 		// Animation을 시작한다..
 		m_Animation->Play();
 
