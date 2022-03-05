@@ -410,7 +410,52 @@ void CPlayer2D::MoveLeftW(float DeltaTime) //
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
-{}
+{
+	if (m_TriangleJump)
+	{
+		if (m_RightMove)
+			AddWorldPos(Vector3(1.f, 0.1, 0.f) * m_MoveVelocity);
+		else
+			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+
+		return;
+	}
+
+	// 오른쪽 버튼을 누르고 있다면
+	if (m_RightMove)
+		return;
+
+	// 이동 상태 True + 버튼 이동 상태 True
+	m_IsLeverMoving = true;
+	m_IsDashMoving = true;
+
+	m_LeftMovePush = true;
+
+
+	if (m_RightMove)
+	{
+		m_LeftMove = false;
+		m_ToLeftWhenRightMove = true;
+	}
+	else
+	{
+		m_LeftMove = true;
+		m_ToLeftWhenRightMove = false;
+	}
+
+	CalculateLeverMoveSpeed(DeltaTime);
+
+	CalculateDashMoveSpeed(DeltaTime);
+
+	CalculateTotalMoveSpeed(DeltaTime);
+
+	if (m_RightMove)
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+	else
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+
+	// todo : Change Animation
+}
 
 void CPlayer2D::MoveRightW(float DeltaTime)
 {
@@ -484,7 +529,11 @@ void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 }
 
 void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
-{}
+{
+	m_RightMovePush = false;
+
+	ResetMoveInfo();
+}
 
 void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 {
