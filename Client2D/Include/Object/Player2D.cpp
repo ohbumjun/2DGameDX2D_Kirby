@@ -10,6 +10,7 @@
 #include "Scene/Scene.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
+#include "Component/TileEmptyComponent.h"
 #include "BulletCamera.h"
 #include "Scene/NavigationManager.h"
 #include "../UI/SimpleHUD.h"
@@ -706,7 +707,7 @@ float CPlayer2D::CalculateTotalMoveSpeed(float DeltaTime)
 	// 최대 치 조절
 	if (m_MoveVelocity > m_MoveVelocityMax)
 		m_MoveVelocity = m_MoveVelocityMax;
-
+	
 	// 최소 치 조절
 	if (m_MoveVelocity <= 0.1f)
 	{
@@ -807,7 +808,7 @@ void CPlayer2D::RotationZ(float DeltaTime)
 	m_Sprite->AddRelativeRotationZ(-180.f * DeltaTime);
 }
 
-void CPlayer2D:: Jump(float DeltaTime)
+void CPlayer2D::SimpleJump()
 {
 	if (!m_Jump)
 	{
@@ -817,6 +818,149 @@ void CPlayer2D:: Jump(float DeltaTime)
 		m_FallTime = 0.f;
 		m_FallStartY = GetWorldPos().y;
 	}
+}
+
+void CPlayer2D::Jump(float DeltaTime)
+{
+	// 삼각 충돌 적용하기
+	bool SideCollision = false;
+
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	Vector3 WorldPos    = GetWorldPos();
+	Vector3 WorldScale = GetWorldScale();
+	Vector3 Pivot			 = GetPivot();
+
+	Vector3 LB = WorldPos - Pivot * WorldScale;
+	Vector3 RT = LB + WorldScale;
+
+	// 오른쪽이면, 오른쪽 한칸 타일
+	if (m_RightMove)
+	{
+		// LBIndexX = TileMap->GetTileEmptyIndexX(Vector3(ResultLB.x, ResultLB.y, m_Pos.z));
+		int IndexX = TileMap->GetTileEmptyIndexX(RT.x);
+
+		int TopIndexY = TileMap->GetTileEmptyIndexY(RT.y);
+		int BottomIndexY = TileMap->GetTileEmptyIndexY(LB.y);
+
+		int IndexXRight = IndexX + 1;
+		int IndexXLeft = IndexX - 1;
+
+		if (IndexX >= TileMap->GetTileCountX() - 1)
+			IndexX = TileMap->GetTileCountX() - 1;
+		if (IndexXRight >= TileMap->GetTileCountX() - 1)
+			IndexXRight = TileMap->GetTileCountX() - 1;
+		if (IndexXLeft < 0)
+			IndexXLeft = 0;
+
+		for (int row = BottomIndexY; row <= TopIndexY; row++)
+		{
+			for (int col = IndexX; col <= IndexXRight; col++)
+			{
+				int IndexFinal = row * TileMap->GetTileCountX() + col;
+
+				if (TileMap->GetTileEmpty(IndexFinal)->GetTileType() != Tile_Type::Wall)
+					continue;
+
+				Vector3 TilePos   = TileMap->GetTileEmpty(IndexFinal)->GetWorldPos();
+				Vector3 TileSize = TileMap->GetTileEmpty(IndexFinal)->GetSize();
+
+				// 현재 땅에 딱 붙어있다면 무시한다
+				if (TilePos.y + TileSize.y - 0.01f <= LB.y && LB.y <= TilePos.y + TileSize.y + 0.01f)
+					continue;
+
+				// 현재 위치 Tile 도 Wall 이고, 왼쪽도 Wall 이라면
+				// 그것은 삼각 점프가 아니게 된다. 그냥 Tile이 연속적으로 있는 곳에 대해서는 삼각 점프 X
+				if (col == IndexX)
+				{
+					if (TileMap->GetTileEmpty(row * TileMap->GetTileCountX() + IndexXLeft)->GetTileType() == Tile_Type::Wall)
+						continue;
+				}
+				if (col == IndexXRight)
+				{
+					if (TileMap->GetTileEmpty(row * TileMap->GetTileCountX() + IndexX)->GetTileType() == Tile_Type::Wall)
+						continue;
+				}
+
+				SideCollision = true;
+				break;
+			}
+			if (SideCollision)
+				break;
+		}
+	}
+
+	// 왼쪽으로 이동하는 것이라면
+	else if (m_LeftMove)
+	{
+		int IndexX = TileMap->GetTileEmptyIndexX(LB.x);
+		int TopIndexY = TileMap->GetTileEmptyIndexY(RT.y);
+		int BottomIndexY = TileMap->GetTileEmptyIndexY(LB.y);
+
+		int IndexXLeft = IndexX - 1;
+		int IndexXRight = IndexX + 1;
+
+		if (IndexX < 0)
+			IndexX = 0;
+		if (IndexXLeft < 0)
+			IndexXLeft = 0;
+		if (IndexXRight >= TileMap->GetTileCountX())
+			IndexXRight = TileMap->GetTileCountX() - 1;
+
+		// 왼쪽 2개의 타일을 조사한다.
+		for (int row = BottomIndexY; row <= TopIndexY; row++)
+		{
+			for (int col = IndexX; col >= IndexXLeft; col--)
+			{
+				int IndexFinal = row * TileMap->GetTileCountX() + col;
+
+				if (TileMap->GetTileEmpty(IndexFinal)->GetTileType() != Tile_Type::Wall)
+					continue;
+
+				Vector3 TilePos = TileMap->GetTileEmpty(IndexFinal)->GetWorldPos();
+				Vector3 TileSize = TileMap->GetTileEmpty(IndexFinal)->GetSize();
+
+				// 현재 화면에 딱 붙어있는 경우에는 무시한다.
+				if (TilePos.y + TileSize.y - 0.001f <= LB.y &&
+					TilePos.y + TileSize.y + 0.001f)
+					continue;
+
+				// 현재 위치 Tile도 Wall 이고, 오른쪽도 Wall 이라면
+				// 연속적으로 Tile이 놓여있는 곳
+				// 그러한 곳에 대해서는 삼각 점프 X
+				if (col == IndexX)
+				{
+					if (TileMap->GetTileEmpty(row * TileMap->GetTileCountX() + IndexXRight)->GetTileType()
+						== Tile_Type::Wall)
+						continue;
+				}
+				if (col == IndexXLeft)
+				{
+					if (TileMap->GetTileEmpty(row * TileMap->GetTileCountX() + IndexX)->GetTileType()
+						== Tile_Type::Wall)
+						continue;
+				}
+
+				SideCollision = true;
+
+				break;
+			}
+			if (SideCollision)
+				break;
+		}
+	}
+
+	// 현재 그냥 땅에 있는 상태였다면 Simple Jump를 수행한다
+	if (m_IsGround)
+		SimpleJump();
+	// 그게 아니라면 삼각 점프를 수행한다.
+	else if (SideCollision)
+	{
+		// 현재 움직이는 방향 반대로 움직여야 한다
+		// 오른쪽
+		if (m_RightMove)
+	}
+
 }
 
 void CPlayer2D::Attack(float DeltaTime)
