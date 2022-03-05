@@ -64,7 +64,10 @@ bool CPlayer2D::Init()
 	m_Body->SetCollisionProfile("Player");
 
 	// Widget --> 이 녀석들은 Client 측 Start 에서 처리해주기 
-	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	// m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	// 반드시 이 위치에서 ( AddChild 이후에 위치 좌표 세팅 )
+	// m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+
 
 	// Client 측 Start 에서 처리해주기 
 	// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
@@ -83,10 +86,7 @@ bool CPlayer2D::Init()
 	m_Sprite->AddChild(m_ChildRoot);
 	m_Sprite->AddChild(m_Body);
 	// m_Sprite->AddChild(m_Camera);
-	m_Sprite->AddChild(m_SimpleHUDWidget);
-
-	// 반드시 이 위치에서 ( AddChild 이후에 위치 좌표 세팅 )
-	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	// m_Sprite->AddChild(m_SimpleHUDWidget);
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);

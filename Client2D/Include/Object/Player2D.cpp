@@ -234,10 +234,18 @@ void CPlayer2D::Start()
 	// Widget Component의 Widget 생성
 	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	m_Sprite->AddChild(m_SimpleHUDWidget);
 
-	m_Camera = CreateComponent<CCameraComponent>("Camera");
-	m_Camera->OnViewportCenter(); // Player 중심 세팅
-	m_Sprite->AddChild(m_Camera);
+	// m_Camera = (CCameraComponent*)FindComponent("Camera");
+	//m_Camera = FindComponentByType<CCameraComponent>();
+	//
+	//if (!m_Camera)
+	//{
+	//	m_Camera = CreateComponent<CCameraComponent>("Camera");
+	//	m_Sprite->AddChild(m_Camera);
+	//}
+	//m_Camera->OnViewportCenter(); // Player 중심 세팅
 
 	// CameraManager 에 세팅하기
 	// m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
@@ -395,9 +403,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
-			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
 		else
-			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
 
 		return;
 	}
@@ -453,9 +461,9 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.1f);
 		else
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.1f);
 
 		return;
 	}

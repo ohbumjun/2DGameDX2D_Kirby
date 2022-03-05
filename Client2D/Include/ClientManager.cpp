@@ -99,8 +99,10 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
-	// MainScene->PrepareResources();
-	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBack.scn", SCENE_PATH);
+
+
+	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBack.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTest.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()
