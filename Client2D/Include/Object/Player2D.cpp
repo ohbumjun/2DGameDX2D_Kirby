@@ -18,10 +18,10 @@ CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
 m_LeverMoveAccel(1.f),
 m_LeverVelocity(0.f),
-m_LeverMaxMoveVelocity(250.f),
+m_LeverMaxMoveVelocity(350.f),
 m_DashMoveAccel(1.5f),
 m_DashVelocity(0.f),
-m_DashMaxMoveVelocity(200.f),
+m_DashMaxMoveVelocity(250.f),
 m_RightMove(false),
 m_ToLeftWhenRightMove(false),
 m_RightMovePush(false),
@@ -240,23 +240,51 @@ void CPlayer2D::Start()
 	// m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
 
 	// Key Input 세팅 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", KeyState_Push, this, &CPlayer2D::MoveUp);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", KeyState_Push, this, &CPlayer2D::MoveDown);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 
+		KeyState_Push, this, &CPlayer2D::MoveUp);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", 
+		KeyState_Push, this, &CPlayer2D::MoveDown);
 	// CInput::GetInst()->SetKeyCallback<CPlayer2D>("RotationZInv", KeyState_Push, this, &CPlayer2D::RotationZInv);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft", KeyState_Push, this, &CPlayer2D::MoveLeft);
 	// CInput::GetInst()->SetKeyCallback<CPlayer2D>("RotationZ", KeyState_Push, this, &CPlayer2D::RotationZ);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveRight", KeyState_Push, this, &CPlayer2D::MoveRight);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", KeyState_Down, this, &CPlayer2D::Attack);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", KeyState_Down, this, &CPlayer2D::Attack1);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", KeyState_Down, this, &CPlayer2D::Skill1);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", KeyState_Down, this, &CPlayer2D::MovePointDown);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Jump", KeyState_Down, this, &CPlayer2D::Jump);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft", 
+		KeyState_Push, this, &CPlayer2D::MoveLeft);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft",
+		KeyState_Up, this, &CPlayer2D::LeftLeverMoveEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashLeft", 
+		KeyState_Push, this, &CPlayer2D::MoveDashLeft);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashLeft",
+		KeyState_Up, this, &CPlayer2D::LeftDashMoveEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveRight", 
+		KeyState_Push, this, &CPlayer2D::MoveRight);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveRight",
+		KeyState_Up, this, &CPlayer2D::RightLeverMoveEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashRight", 
+		KeyState_Push, this, &CPlayer2D::MoveDashRight);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashRight",
+		KeyState_Up, this, &CPlayer2D::RightDashMoveEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
+		KeyState_Down, this, &CPlayer2D::Attack);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", 
+		KeyState_Down, this, &CPlayer2D::Attack1);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
+		KeyState_Down, this, &CPlayer2D::Skill1);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", 
+		KeyState_Down, this, &CPlayer2D::MovePointDown);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Jump", 
+		KeyState_Down, this, &CPlayer2D::Jump);
 
 }
 
 void CPlayer2D::Update(float DeltaTime)
 {
 	CLifeObject::Update(DeltaTime);
+
+	PlayerMoveUpdate(DeltaTime);
 
 	static bool Fire2 = false;
 	
@@ -340,25 +368,15 @@ void CPlayer2D::MoveDown(float DeltaTime)
 	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime * -1.f);
 }
 
-void CPlayer2D::MoveLeft(float DeltaTime)
-{
-	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * 300.f * DeltaTime * -1.f);
-}
-
-void CPlayer2D::MoveRight(float DeltaTime)
-{
-	m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * 300.f * DeltaTime);
-}
-
-void CPlayer2D::MoveLeftW(float DeltaTime) //
+void CPlayer2D::MoveLeft(float DeltaTime) //
 {
 	// 삼각 점프 상태였다면 계속 이동 시킨다
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
-			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 		else
-			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 		return;
 	}
@@ -402,9 +420,9 @@ void CPlayer2D::MoveLeftW(float DeltaTime) //
 
 	// 실제 이동 처리를 한다
 	if (m_RightMove)
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 	else
-		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 	// todo : 여기서 Animation 변환 처리를 해준다.
 }
@@ -414,15 +432,15 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
-			AddWorldPos(Vector3(1.f, 0.1, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 		else
-			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 		return;
 	}
 
 	// 오른쪽 버튼을 누르고 있다면
-	if (m_RightMove)
+	if (m_RightMovePush)
 		return;
 
 	// 이동 상태 True + 버튼 이동 상태 True
@@ -450,22 +468,22 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	CalculateTotalMoveSpeed(DeltaTime);
 
 	if (m_RightMove)
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 	else
-		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 	// todo : Change Animation
 }
 
-void CPlayer2D::MoveRightW(float DeltaTime)
+void CPlayer2D::MoveRight(float DeltaTime)
 {
 	// Triangle Jump 중이라면 이동은 계속 하되 + 키보드는 안먹게 한다
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
-			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 		else
-			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 		return;
 	}
@@ -509,9 +527,9 @@ void CPlayer2D::MoveRightW(float DeltaTime)
 
 	// 실제 이동 수행
 	if (m_RightMove)
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 	else
-		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 	// Animation 전환
 
@@ -519,28 +537,73 @@ void CPlayer2D::MoveRightW(float DeltaTime)
 }
 
 void CPlayer2D::MoveDashRight(float DeltaTime)
-{}
+{
+	if (m_TriangleJump)
+	{
+		if (m_RightMove)
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+		else
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+		return;
+	}
+
+	if (m_LeftMovePush)
+		return;
+
+	m_IsLeverMoving = true;
+	m_IsDashMoving  = true;
+
+	m_RightMovePush = true;
+
+	if (m_LeftMove)
+	{
+		m_RightMove = false;
+		m_ToRightWhenLeftMove = true;
+	}
+	else
+	{
+		m_RightMove = true;
+		m_ToRightWhenLeftMove = false;
+	}
+
+	CalculateLeverMoveSpeed(DeltaTime);
+
+	CalculateDashMoveSpeed(DeltaTime);
+
+	CalculateTotalMoveSpeed(DeltaTime);
+
+	if (m_RightMove)
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+	else
+		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+
+	// todo : Change Animation
+
+}
 
 void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 {
 	m_LeftMovePush = false;
-
 	ResetMoveInfo();
 }
 
 void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
 {
 	m_RightMovePush = false;
-
 	ResetMoveInfo();
 }
 
 void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 {
+	m_LeftMovePush = false;
+	ResetMoveInfo();
 }
 
 void CPlayer2D::RightDashMoveEnd(float DeltaTime)
-{}
+{
+	m_RightMovePush = false;
+	ResetMoveInfo();
+}
 
 float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
 {
@@ -570,7 +633,7 @@ float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
 		// 왼쪽으로 이동 중이다가, 오른쪽으로 감속하는 것이라면
 		else
 		{
-			m_LeverVelocity -= m_LeverMoveAccel * 2.f;
+			m_LeverVelocity -= m_LeverMoveAccel * 1.5f;
 		}
 	}
 
@@ -629,6 +692,8 @@ float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
 	// 최소 치 조절
 	if (m_DashVelocity < 0.f)
 		m_DashVelocity = 0.f;
+
+	return m_DashVelocity;
 }
 
 float CPlayer2D::CalculateTotalMoveSpeed(float DeltaTime)
@@ -714,9 +779,9 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 
 		// 감속 중임에도 이동은 시켜줘야 한다.
 		if (m_RightMove)
-			AddWorldPos(Vector3(1.f, 0.f, 0.f) * m_MoveVelocity);
-		if (m_LeftMove)
-			AddWorldPos(Vector3(-1.f, 0.f, 0.f) * m_MoveVelocity);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+		else
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 	}
 }

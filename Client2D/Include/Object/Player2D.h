@@ -75,12 +75,10 @@ private : // 화면 밖으로 안나가게 하기
 private:
 	void MoveUp(float DeltaTime);
 	void MoveDown(float DeltaTime);
-	void MoveLeft(float DeltaTime);
-	void MoveRight(float DeltaTime);
 private :
-	void MoveLeftW(float DeltaTime);
+	void MoveLeft(float DeltaTime);
 	void MoveDashLeft(float DeltaTime);
-	void MoveRightW(float DeltaTime);
+	void MoveRight(float DeltaTime);
 	void MoveDashRight(float DeltaTime);
 	void LeftLeverMoveEnd(float DeltaTime);
 	void RightLeverMoveEnd(float DeltaTime);
