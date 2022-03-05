@@ -25,11 +25,15 @@ protected:
 	float m_JumpVelocity;
 	float m_JumpAccel;
 	float m_JumpAccelAccTime;
+	float m_GroundOffSet;
+
 private :
 	void UpdateWhileOffGround(float DeltaTime);
 	void CheckBottomCollision();
 	void CheckCeilingCollision();
 	void CheckSideCollision();
+public :
+	virtual void SetObjectLand();
 public :
 	bool IsGround () const
 {

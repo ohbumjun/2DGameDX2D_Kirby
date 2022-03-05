@@ -378,9 +378,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
 		else
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 
 		return;
 	}
@@ -866,7 +866,8 @@ void CPlayer2D::Jump(float DeltaTime)
 				Vector3 TileSize = TileMap->GetTileEmpty(IndexFinal)->GetSize();
 
 				// 현재 땅에 딱 붙어있다면 무시한다
-				if (TilePos.y + TileSize.y - 0.01f <= LB.y && LB.y <= TilePos.y + TileSize.y + 0.01f)
+				if (TilePos.y + TileSize.y - m_GroundOffSet <= LB.y &&
+					LB.y <= TilePos.y + TileSize.y + m_GroundOffSet)
 					continue;
 
 				// 현재 위치 Tile 도 Wall 이고, 왼쪽도 Wall 이라면
@@ -921,8 +922,8 @@ void CPlayer2D::Jump(float DeltaTime)
 				Vector3 TileSize = TileMap->GetTileEmpty(IndexFinal)->GetSize();
 
 				// 현재 화면에 딱 붙어있는 경우에는 무시한다.
-				if (TilePos.y + TileSize.y - 0.001f <= LB.y &&
-					TilePos.y + TileSize.y + 0.001f)
+				if (TilePos.y + TileSize.y - m_GroundOffSet <= LB.y &&
+					TilePos.y + TileSize.y + m_GroundOffSet)
 					continue;
 
 				// 현재 위치 Tile도 Wall 이고, 오른쪽도 Wall 이라면
@@ -951,7 +952,8 @@ void CPlayer2D::Jump(float DeltaTime)
 	}
 
 	// 현재 그냥 땅에 있는 상태였다면 Simple Jump를 수행한다
-	if (m_IsGround)
+	// if (m_IsGround || m_MoveVelocity == 0.f)
+	if (m_FallTime == 0.f)
 		SimpleJump();
 	// 그게 아니라면 삼각 점프를 수행한다.
 	else if (SideCollision)
@@ -959,8 +961,62 @@ void CPlayer2D::Jump(float DeltaTime)
 		// 현재 움직이는 방향 반대로 움직여야 한다
 		// 오른쪽
 		if (m_RightMove)
+		{
+			TriangleJumpLeft(DeltaTime);
+		}
+		else if (m_LeftMove)
+		{
+			TriangleJumpRight(DeltaTime);
+		}
 	}
 
+}
+
+void CPlayer2D::TriangleJumpLeft(float DeltaTime)
+{
+	m_Jump = true;
+	m_IsGround = false;
+
+	// 점프 시작 높이 세팅
+	m_FallStartY = GetWorldPos().y;
+
+	// Fall Time 초기화
+	m_FallTime = 0.f;
+
+	m_TriangleJump = true;
+
+	m_LeftMove = true;
+	m_RightMove = false;
+
+	m_ToLeftWhenRightMove = false;
+	m_ToRightWhenLeftMove = false;
+}
+
+void CPlayer2D::TriangleJumpRight(float DeltaTime)
+{
+	m_Jump = true;
+	m_IsGround = false;
+
+	// 점프 시작 높이 세팅
+	m_FallStartY = GetWorldPos().y;
+
+	// Fall Time 초기화
+	m_FallTime = 0.f;
+
+	m_TriangleJump = true;
+
+	m_RightMove = true;
+	m_LeftMove = false;
+
+	m_ToLeftWhenRightMove = false;
+	m_ToRightWhenLeftMove = false;
+}
+
+void CPlayer2D::SetObjectLand()
+{
+	CLifeObject::SetObjectLand();
+
+	m_TriangleJump = false;
 }
 
 void CPlayer2D::Attack(float DeltaTime)

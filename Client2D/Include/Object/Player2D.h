@@ -96,6 +96,9 @@ private :
 private :
 	void SimpleJump();
 	void Jump(float DeltaTime);
+	void TriangleJumpLeft(float DeltaTime);
+	void TriangleJumpRight(float DeltaTime);
+	virtual void SetObjectLand() override;
 private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);

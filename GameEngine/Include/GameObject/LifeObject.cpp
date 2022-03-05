@@ -21,6 +21,7 @@ CLifeObject::CLifeObject():
 	m_SideWallCheck(true),	
 	m_JumpAccel(1.2f),
 	m_JumpAccelAccTime(0.f),
+	m_GroundOffSet(0.1f),
 	m_PrevPos{},
 	m_PhysicApplyDelayTime(1.5f)
 {}
@@ -167,9 +168,8 @@ void CLifeObject::CheckBottomCollision()
 					Check = true;
 
 					// 땅에 닿음으로써 초기화 해줘야 할 변수들
-					m_FallTime = 0.f;
-					m_IsGround = true;
-					m_Jump = false;
+					SetObjectLand();
+
 					// m_JumpAccelAccTime = 0.f;
 
 					Vector3 CurrentPos = m_Pos;
@@ -283,7 +283,8 @@ void CLifeObject::CheckSideCollision()
 
 					// Object 가 Tile 위에 거의 붙어있을 경우에는,
 					// 충돌 처리를 하지 않을 것이다
-					if (TilePos.y + TileSize.y - 0.1f <= ResultLB.y && ResultLB.y <= TilePos.y + TileSize.y + 0.1f)
+					if (TilePos.y + TileSize.y - m_GroundOffSet <= ResultLB.y && 
+						ResultLB.y <= TilePos.y + TileSize.y + m_GroundOffSet)
 						continue;
 
 					// 현재 코드 상에서는
@@ -356,7 +357,8 @@ void CLifeObject::CheckSideCollision()
 					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
 
 					// 마찬가지로, 바닥에 붙어있다면 체크하지 않는다.
-					if (TilePos.y + TileSize.y - 0.1f <= ResultLB.y && ResultLB.y <= TilePos.y + TileSize.y + 0.1f)
+					if (TilePos.y + TileSize.y - m_GroundOffSet <= ResultLB.y &&
+						ResultLB.y <= TilePos.y + TileSize.y + m_GroundOffSet)
 						continue;
 
 					// 너무 깊이 파고들면 Side Collision 은 무시하고, 중력 적용에 따른
@@ -385,6 +387,13 @@ void CLifeObject::CheckSideCollision()
 			}
 		}
 	}
+}
+
+void CLifeObject::SetObjectLand()
+{
+	m_FallTime = 0.f;
+	m_IsGround = true;
+	m_Jump = false;
 }
 
 void CLifeObject::Start()
