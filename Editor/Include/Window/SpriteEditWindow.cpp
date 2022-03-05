@@ -779,6 +779,9 @@ void CSpriteEditWindow::LoadTextureButton()
 		m_SpriteObject->SetWorldScale(static_cast<float>(Texture->GetWidth()), static_cast<float>(Texture->GetHeight()),
 		                              1.f);
 		m_SpriteObject->SetAnimationNewTexture(Texture);
+
+		// Scene의 World Scale을 Texture의 크기로 세팅한다
+		CSceneManager::GetInst()->GetScene()->SetWorldResolution(static_cast<float>(Texture->GetWidth()), static_cast<float>(Texture->GetHeight()));
 	}
 }
 
@@ -1403,7 +1406,7 @@ void CSpriteEditWindow::SetCurAnimSequenceLoop(int Index, const char* Text)
 	if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 	m_CurSeqAnimationLoop->SetSelectIndex(Index);
-	m_Animation->GetCurrentAnimation()->SetLoop(true);
+	m_Animation->GetCurrentAnimation()->SetLoop(Index == 0 ? true : false);
 }
 
 void CSpriteEditWindow::SetCurAnimSequenceReverse(int Index, const char* Text)
@@ -1411,7 +1414,7 @@ void CSpriteEditWindow::SetCurAnimSequenceReverse(int Index, const char* Text)
 		if (!m_Animation || !m_Animation->GetCurrentAnimation())
 		return;
 	m_CurSeqAnimationReverse->SetSelectIndex(Index);
-	m_Animation->GetCurrentAnimation()->SetReverse(true);
+	m_Animation->GetCurrentAnimation()->SetReverse(Index == 0 ? true : false);
 }
 
 void CSpriteEditWindow::SaveSequence()
