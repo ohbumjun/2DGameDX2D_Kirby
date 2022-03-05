@@ -64,7 +64,7 @@ bool CPlayer2D::Init()
 	m_Body->SetCollisionProfile("Player");
 
 	// Widget --> 이 녀석들은 Client 측 Start 에서 처리해주기 
-	// m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
 	// 반드시 이 위치에서 ( AddChild 이후에 위치 좌표 세팅 )
 	// m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
@@ -73,8 +73,8 @@ bool CPlayer2D::Init()
 	// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 
 	// Camera --> Editor 상에서는 세팅하지 않고, Client 측에서 Load 이후 세팅해준다.
-	// m_Camera = CreateComponent<CCameraComponent>("Camera");
-	// m_Camera->OnViewportCenter(); // Player 중심 세팅
+	m_Camera = CreateComponent<CCameraComponent>("Camera");
+	m_Camera->OnViewportCenter(); // Player 중심 세팅
 
 	// NavAgent
 	m_NavAgent = CreateComponent<CNavAgent>("NavAgent");
@@ -85,8 +85,8 @@ bool CPlayer2D::Init()
 	m_Sprite->AddChild(m_Muzzle);
 	m_Sprite->AddChild(m_ChildRoot);
 	m_Sprite->AddChild(m_Body);
-	// m_Sprite->AddChild(m_Camera);
-	// m_Sprite->AddChild(m_SimpleHUDWidget);
+	m_Sprite->AddChild(m_Camera);
+	m_Sprite->AddChild(m_SimpleHUDWidget);
 
 	m_Sprite->SetTransparency(true);
 	//m_Sprite->SetOpacity(0.5f);

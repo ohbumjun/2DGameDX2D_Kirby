@@ -102,7 +102,8 @@ void CClientManager::CreateDefaultSceneMode()
 
 
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBack.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTest.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTest.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTestCamera.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()

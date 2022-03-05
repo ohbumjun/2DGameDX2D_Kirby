@@ -117,7 +117,6 @@ bool CPlayer2D::Init()
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_Sprite->SetTransparency(true);
-	//m_Sprite->SetOpacity(0.5f);
 
 	CAnimationSequence2DInstance* AnimationInstance =  m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
 
@@ -212,6 +211,8 @@ void CPlayer2D::Start()
 	CLifeObject::Start();
 
 	m_Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
+	SetRootComponent(m_Sprite);
+
 	m_ChildLeftSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
 	m_ChildRightSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
 	m_ChildLeftMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
@@ -232,23 +233,29 @@ void CPlayer2D::Start()
 	// m_Sprite->SetAnimationInstance(AnimationInstance);
 
 	// Widget Component의 Widget 생성
-	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	m_SimpleHUDWidget = (CWidgetComponent*)(FindComponent("SimpleHUD"));
+	if (!m_SimpleHUDWidget)
+	{
+		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+		m_Sprite->AddChild(m_SimpleHUDWidget);
+	}
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-	m_Sprite->AddChild(m_SimpleHUDWidget);
 
-	// m_Camera = (CCameraComponent*)FindComponent("Camera");
-	//m_Camera = FindComponentByType<CCameraComponent>();
-	//
-	//if (!m_Camera)
-	//{
-	//	m_Camera = CreateComponent<CCameraComponent>("Camera");
-	//	m_Sprite->AddChild(m_Camera);
-	//}
-	//m_Camera->OnViewportCenter(); // Player 중심 세팅
+	m_Camera = (CCameraComponent*)FindComponent("Camera");
+	// m_Camera = FindComponentByType<CCameraComponent>();
 
-	// CameraManager 에 세팅하기
-	// m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
+	/*
+	// todo : 왜 여기서 새롭게 만들어주면 작동을 안하게 되는 것일까 ?
+	if (!m_Camera)
+	{
+		m_Camera = CreateComponent<CCameraComponent>("Camera");
+		m_Camera->OnViewportCenter();
+		m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
+		m_Sprite->AddChild(m_Camera);
+	}
+	*/
+	
 
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 
