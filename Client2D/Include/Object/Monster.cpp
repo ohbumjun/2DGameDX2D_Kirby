@@ -451,7 +451,7 @@ void CMonster::ChangeHitAnimation()//
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightHit");
 }
 
-void CMonster::ChangeTraceAnimation()
+void CMonster::ChangeTraceAnimation() //
 {
 	if (m_MonsterMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftRun");
