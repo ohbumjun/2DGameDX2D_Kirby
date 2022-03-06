@@ -459,7 +459,7 @@ void CMonster::ChangeTraceAnimation() //
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightRun");
 }
 
-void CMonster::ChangeDeathAnimation()
+void CMonster::ChangeDeathAnimation() //
 {
 	if (m_MonsterMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftDeath");
