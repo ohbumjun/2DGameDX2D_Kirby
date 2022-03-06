@@ -123,6 +123,7 @@ public :
     // √ ±‚»≠ 
     void ClearFrame();
 public :
+    void SetColliderColor(float r, float g, float b, float a);
     virtual void Destroy() override;
 public :
     virtual void Start();

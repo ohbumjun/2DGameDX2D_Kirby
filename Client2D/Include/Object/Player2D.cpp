@@ -8,6 +8,7 @@
 #include "PlayerAnimation2D.h"
 #include "Resource/Material/Material.h"
 #include "Scene/Scene.h"
+#include "../Object/Monster.h"
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
 #include "Component/TileEmptyComponent.h"
@@ -32,8 +33,10 @@ m_LeftMovePush(false),
 m_IsLeverMoving(false),
 m_IsDashMoving(false),
 m_TriangleJump(false),
+m_DeltaTime(0.f),
 m_IsFlying(false),
-m_FlySpeed(300.f)
+m_FlySpeed(300.f),
+m_PullDistance(100.f)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
@@ -226,6 +229,23 @@ void CPlayer2D::Start()
 	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
+	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
+	m_PullRightCollider->SetCollisionProfile("Player");
+	m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
+	m_PullRightCollider->SetEnable(false);
+	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollision);
+	m_Sprite->AddChild(m_PullRightCollider);
+	
+	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x) * 0.5f,
+		(m_Sprite->GetWorldScale().y * 0.5f));
+	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 0.5f, 0.f, 1.f);
+
+	// m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
+	// m_PullLeftCollider->SetCollisionProfile("PlayerAttack");
+	// m_PullLeftCollider->SetEnable(false);
+	// m_RootComponent->AddChild(m_PullLeftCollider);
+	// m_OriginColliderBodyScale = m_Body->GetWorldScale();
+
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	// Root Component Animation 세팅
@@ -265,8 +285,6 @@ void CPlayer2D::Start()
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", 
 		KeyState_Push, this, &CPlayer2D::MoveDown);
-	// CInput::GetInst()->SetKeyCallback<CPlayer2D>("RotationZInv", KeyState_Push, this, &CPlayer2D::RotationZInv);
-	// CInput::GetInst()->SetKeyCallback<CPlayer2D>("RotationZ", KeyState_Push, this, &CPlayer2D::RotationZ);
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft", 
 		KeyState_Push, this, &CPlayer2D::MoveLeft);
@@ -287,6 +305,16 @@ void CPlayer2D::Start()
 		KeyState_Push, this, &CPlayer2D::MoveDashRight);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashRight",
 		KeyState_Up, this, &CPlayer2D::RightDashMoveEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullRight",
+		KeyState_Push, this, &CPlayer2D::PullRight);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullRight",
+		KeyState_Up, this, &CPlayer2D::PullRightEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullLeft",
+		KeyState_Push, this, &CPlayer2D::PullLeft);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullLeft",
+		KeyState_Up, this, &CPlayer2D::PullLeftEnd);
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
 		KeyState_Down, this, &CPlayer2D::Attack);
@@ -350,6 +378,8 @@ void CPlayer2D::PostUpdate(float DeltaTime)
 	CLifeObject::PostUpdate(DeltaTime);
 
 	CheckOutsideWorldResolution();
+
+	m_DeltaTime = 0.f;
 }
 
 CPlayer2D* CPlayer2D::Clone()
@@ -1075,6 +1105,44 @@ void CPlayer2D::SetObjectLand()
 
 	m_TriangleJump = false;
 }
+
+void CPlayer2D::PullRight(float DeltaTime)
+{
+	m_Sprite->GetAnimationInstance()->ChangeAnimation("RightPull");
+
+	// 오른쪽 범위 안에 있는지 확인하기
+	float PullDist = 0.f;
+
+	// 충돌체의 크기를 늘려볼까 ?
+	m_PullRightCollider->SetEnable(true);
+
+}
+
+void CPlayer2D::PullRightCollision(const CollisionResult& Result)
+{
+	CColliderComponent* CollisionDest = Result.Dest;
+
+	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
+
+	if (!DestMonster)
+		return;
+
+	if (!DestMonster->IsBeingPulled())
+	{
+		DestMonster->SetIsBeingPulled(true);
+		DestMonster->SetPulledDestPos(GetWorldPos());
+	}
+	// Owner->AddWorldPos(Vector3(-1.f, -0.f, 0.f) * 100.f * m_DeltaTime);
+}
+
+void CPlayer2D::PullRightEnd(float DeltaTime)
+{}
+
+void CPlayer2D::PullLeftEnd(float DeltaTime)
+{}
+
+void CPlayer2D::PullLeft(float DeltaTime)
+{}
 
 void CPlayer2D::Attack(float DeltaTime)
 {

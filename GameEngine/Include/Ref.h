@@ -69,6 +69,11 @@ public:
 		return m_Name;
 	}
 
+	void SetEnable (bool Enable)
+	{
+		m_Enable = Enable;
+	}
+
 	template <typename T>
 	void SetTypeID()
 	{

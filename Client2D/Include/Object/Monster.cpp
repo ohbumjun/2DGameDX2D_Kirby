@@ -12,7 +12,10 @@ CMonster::CMonster() :
 	m_HP(5.f),
 	m_DeathAccTime(0.f),
 	m_DeathFinishTime(0.f),
-	m_DeathStart(false)
+	m_DeathStart(false),
+	m_IsBeingPulled(false),
+	m_BeginPulledAccel(1.f),
+	m_BeginPulledAccelSum(0.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -172,6 +175,8 @@ void CMonster::Update(float DeltaTime)
 			}
 		}
 	}
+
+	UpdateBeingPulled(DeltaTime);
 }
 
 void CMonster::PostUpdate(float DeltaTime)
@@ -182,6 +187,20 @@ void CMonster::PostUpdate(float DeltaTime)
 CMonster* CMonster::Clone()
 {
 	return new CMonster(*this);
+}
+
+void CMonster::UpdateBeingPulled(float DeltaTime)
+{
+	if (!m_IsBeingPulled)
+		return;
+
+	Vector3 MonsterPos = GetWorldPos();
+	Vector3 PulledDir = m_PulledDestPos - MonsterPos;
+	PulledDir.Normalize();
+
+	m_BeginPulledAccelSum += m_BeginPulledAccel;
+
+	AddWorldPos(Vector3(PulledDir) * DeltaTime * m_BeginPulledAccelSum);
 }
 
 void CMonster::OnMouseBegin(const CollisionResult& Result)

@@ -20,6 +20,26 @@ private :
     float m_DeathAccTime;
     float m_DeathFinishTime;
     bool m_DeathStart;
+
+    // Player 에게 끌어당겨지기
+    bool m_IsBeingPulled;
+    float m_BeginPulledAccel;
+    float m_BeginPulledAccelSum;
+    Vector3 m_PulledDestPos;
+public :
+    bool IsBeingPulled() const
+{
+        return m_IsBeingPulled;
+}
+public :
+    void SetPulledDestPos(Vector3 Pos)
+{
+        m_PulledDestPos = Pos;
+}
+    void SetIsBeingPulled (bool Enable)
+{
+        m_IsBeingPulled = Enable;
+}
 public :
     void LoadAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
     void SetCurrentAnimation(const std::string& Name);
@@ -33,6 +53,8 @@ public :
     virtual void Update(float DeltaTime)override;
     virtual void PostUpdate(float DeltaTime)override;
     virtual CMonster* Clone() override;
+public :
+    void UpdateBeingPulled(float DeltaTime);
 public :
     void OnMouseBegin(const CollisionResult& Result);
     void OnMouseEnd(const CollisionResult& Result);

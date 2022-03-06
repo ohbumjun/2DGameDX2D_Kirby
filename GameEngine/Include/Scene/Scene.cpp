@@ -69,7 +69,7 @@ void CScene::Start()
 
 		if (Camera)
 		{
-			// m_CameraManager->SetCurrentCamera(Camera);
+			m_CameraManager->SetCurrentCamera(Camera);
 		}
 	}
 }

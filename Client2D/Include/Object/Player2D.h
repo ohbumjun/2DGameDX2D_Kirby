@@ -30,11 +30,16 @@ private:
 	CSharedPtr<CSpriteComponent> m_Child4Sprite;
 
 	CSharedPtr<class CColliderBox2D> m_Body;
+	CSharedPtr<class CColliderBox2D> m_PullRightCollider;
+	CSharedPtr<class CColliderBox2D> m_PullLeftCollider;
+
 	CSharedPtr<class CCameraComponent> m_Camera;
 
 	CSharedPtr<CWidgetComponent> m_SimpleHUDWidget;
 
 	CSharedPtr<CNavAgent> m_NavAgent;
+
+	float m_DeltaTime;
 
 	bool  m_SolW;
 	float m_WDistance;
@@ -66,6 +71,10 @@ private :
 
 	bool m_IsFlying;
 	float m_FlySpeed;
+
+	float m_PullDistance;
+	Vector3 m_PrevColliderBodyPos;
+	Vector3 m_OriginColliderBodyScale;
 
 public:
 	virtual bool       Init() override;
@@ -106,8 +115,17 @@ private :
 private :
 	virtual void SetObjectLand() override;
 private :
+	void PullRight(float DeltaTime);
+	void PullRightEnd(float DeltaTime);
+	void PullLeft(float DeltaTime);
+	void PullLeftEnd(float DeltaTime);
+	void PullRightCollision(const CollisionResult& Result);
+private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);
 	void Skill1(float DeltaTime);
 	void MovePointDown(float DeltaTime);
 };
+
+
+

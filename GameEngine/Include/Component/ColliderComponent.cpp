@@ -45,6 +45,15 @@ CColliderComponent::~CColliderComponent()
 	}
 }
 
+/*
+void CColliderComponent::SetColliderColor(float r, float g, float b, float a)
+{
+	if (!m_CBuffer)
+		return;
+	m_CBuffer->SetColliderColor(r, g, b, a);
+}
+*/
+
 void CColliderComponent::SetCollisionProfile(const std::string& Name)
 {
 	m_Profile = CCollisionManager::GetInst()->FindCollisionProfile(Name);
@@ -208,6 +217,14 @@ void CColliderComponent::ClearFrame()
 	m_vecSectionIndex.clear(); // 현재 충돌 영역 clear
 	m_CurrentCollisionList.clear(); // 현재 충돌한 목록 clear
 	m_CurrentSectionCheck = false; // 현재 충돌 목록에서의 충돌 여부도 false
+}
+
+void CColliderComponent::SetColliderColor(float r, float g, float b, float a)
+{
+	if (!m_CBuffer)
+		return;
+
+	m_CBuffer->SetColliderColor(r, g, b, a);
 }
 
 void CColliderComponent::Destroy()
