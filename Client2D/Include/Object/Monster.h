@@ -68,31 +68,38 @@ public :
     void Damage(float Damage);
     void SetHPMax(float HPMax);
     void DeathStart();
-public : // AI
+protected : // AI
     void AIStateUpdate(float DeltaTime);
+    void AIActionUpdate(float DeltaTime);
     virtual void AIIdle(float DeltaTime);
     virtual void AIWalk(float DeltaTime);
-    virtual void AIITrace(float DeltaTime, Vector3 PlayerPos);
+    virtual void AITrace(float DeltaTime, Vector3 PlayerPos);
     virtual void AIAttack(float DeltaTime, Vector3 PlayerPos);
     virtual void AIDeath(float DeltaTime);
-    virtual void AIIHit(float DeltaTime);
-
+    virtual void AIHit(float DeltaTime);
 public :
     virtual void Start() override;
     virtual bool Init() override;
     virtual void Update(float DeltaTime)override;
     virtual void PostUpdate(float DeltaTime)override;
     virtual CMonster* Clone() override;
-public :
+protected:
     void UpdateBeingPulled(float DeltaTime);
     void UpdateMonsterMove(float DeltaTime);
     void SetRandomTargetDir();
-public :
+protected:
     void OnMouseBegin(const CollisionResult& Result);
     void OnMouseEnd(const CollisionResult& Result);
     void CreateDamageFont(const CollisionResult& Result);
     void OnCollisionBegin(const CollisionResult& Result);
-private :
+protected: // Animation
+    void ChangeIdleAnimation();
+    void ChangeWalkAnimation();
+    void ChangeHitAnimation();
+    void ChangeTraceAnimation();
+    void ChangeDeathAnimation();
+    void ChangeAttackAnimation();
+protected:
     void PaperBurnEnd();
 public :
     virtual void Save(FILE* pFile)override;

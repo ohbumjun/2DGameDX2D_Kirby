@@ -156,7 +156,14 @@ void CMonster::AIStateUpdate(float DeltaTime)
 		// 같은 영역에 속하지 않는다면 --> Walk 혹은 AI
 		else
 		{
-			
+			if (m_MonsterMoveDir.Length() == 0.f)
+			{
+				m_AI == Monster_AI::Idle;
+			}
+			else
+			{
+				m_AI = Monster_AI::Walk;
+			}
 		}
 	}
 	else
@@ -168,12 +175,56 @@ void CMonster::AIStateUpdate(float DeltaTime)
 	// 속하지 않는다면, Idle, Walk 여부 결정
 }
 
+void CMonster::AIActionUpdate(float DeltaTime)
+{
+	CPlayer2D* Player2D = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+	if (!Player2D)
+		return;
+
+	switch(m_AI)
+	{
+	case Monster_AI::Idle :
+		{
+			AIIdle(DeltaTime);
+		}
+		break;
+	case Monster_AI::Walk:
+	{
+		AIWalk(DeltaTime);
+	}
+	break;
+	case Monster_AI::Trace:
+	{
+		AITrace(DeltaTime, Player2D->GetWorldPos());
+	}
+	break;
+	case Monster_AI::Attack:
+	{
+		AIAttack(DeltaTime, Player2D->GetWorldPos());
+	}
+	break;
+	case Monster_AI::Hit:
+	{
+		AIHit(DeltaTime);
+	}
+	break;
+	case Monster_AI::Death:
+	{
+		AIDeath(DeltaTime);
+	}
+	break;
+	}
+}
+
 void CMonster::AIIdle(float DeltaTime)
-{}
+{
+	ChangeIdleAnimation();
+}
 void CMonster::AIWalk(float DeltaTime)
 {}
 
-void CMonster::AIITrace(float DeltaTime, Vector3 PlayerPos)
+void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 {}
 
 void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
@@ -182,7 +233,7 @@ void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
 void CMonster::AIDeath(float DeltaTime)
 {}
 
-void CMonster::AIIHit(float DeltaTime)
+void CMonster::AIHit(float DeltaTime)
 {}
 
 void CMonster::Start()
@@ -295,8 +346,6 @@ void CMonster::PostUpdate(float DeltaTime)
 	CLifeObject::PostUpdate(DeltaTime);
 
 	UpdateMonsterMove(DeltaTime);
-
-
 }
 
 CMonster* CMonster::Clone()
@@ -340,6 +389,10 @@ void CMonster::UpdateMonsterMove(float DeltaTime)
 
 void CMonster::SetRandomTargetDir()
 {
+	// 현재 공격중이거나, Trace 상태라면 기존 Dir을 그대로 유지한다.
+	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
+		return;
+
 	Vector2 WorldResolution = m_Scene->GetWorldResolution();
 
 	float TargetX = (float)(rand() % (int)WorldResolution.x);
@@ -372,6 +425,54 @@ void CMonster::OnCollisionBegin(const CollisionResult& Result)
 		m_ColliderBody->Enable(false);
 		DeathStart();
 	}
+}
+
+void CMonster::ChangeIdleAnimation()
+{
+	if (m_MonsterMoveDir.x < 0)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftIdle");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
+}
+
+void CMonster::ChangeWalkAnimation()
+{
+	if (m_MonsterMoveDir.x < 0)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftWalk");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightWalk");
+}
+
+void CMonster::ChangeHitAnimation()
+{
+	if (m_MonsterMoveDir.x < 0)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftHit");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightHit");
+}
+
+void CMonster::ChangeTraceAnimation()
+{
+	if (m_MonsterMoveDir.x < 0)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftRun");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightRun");
+}
+
+void CMonster::ChangeDeathAnimation()
+{
+	if (m_MonsterMoveDir.x < 0)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftDeath");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightDeath");
+}
+
+void CMonster::ChangeAttackAnimation()
+{
+	if (m_MonsterMoveDir.x < 0)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");
 }
 
 void CMonster::PaperBurnEnd()
