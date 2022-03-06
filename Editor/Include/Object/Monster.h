@@ -23,6 +23,12 @@ public:
     void SetCurrentAnimation(const std::string& Name);
 public:
     void SetHPMax(float HPMax);
+    virtual void AIIdle(float DeltaTime);
+    virtual void AIWalk(float DeltaTime);
+    virtual void AIITrace(float DeltaTime, Vector3 PlayerPos);
+    virtual void AIAttack(float DeltaTime, Vector3 PlayerPos);
+    virtual void AIDeath(float DeltaTime);
+    virtual void AIIHit(float DeltaTime);
 public:
     virtual void Start() override;
     virtual bool Init() override;

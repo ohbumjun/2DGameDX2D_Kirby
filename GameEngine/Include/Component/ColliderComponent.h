@@ -123,6 +123,8 @@ public :
     // √ ±‚»≠ 
     void ClearFrame();
 public :
+    bool CheckIsInSameCollisionSection(CColliderComponent* Collider);
+public :
     void SetColliderColor(float r, float g, float b, float a);
     virtual void Destroy() override;
 public :

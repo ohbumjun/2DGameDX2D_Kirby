@@ -219,6 +219,23 @@ void CColliderComponent::ClearFrame()
 	m_CurrentSectionCheck = false; // 현재 충돌 목록에서의 충돌 여부도 false
 }
 
+bool CColliderComponent::CheckIsInSameCollisionSection(CColliderComponent* Collider)
+{
+	size_t SrcSectionCount = m_vecSectionIndex.size();
+	size_t DestSectionCount = Collider->m_vecSectionIndex.size();
+
+	for (size_t i = 0; i < SrcSectionCount; i++)
+	{
+		for (size_t j = 0; j < DestSectionCount; j++)
+		{
+			if (m_vecSectionIndex[i] == Collider->m_vecSectionIndex[j])
+				return true;
+		}
+	}
+
+	return false;
+}
+
 void CColliderComponent::SetColliderColor(float r, float g, float b, float a)
 {
 	if (!m_CBuffer)

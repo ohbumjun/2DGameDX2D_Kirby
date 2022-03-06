@@ -75,7 +75,11 @@ private :
 	float m_PullDistance;
 	Vector3 m_PrevColliderBodyPos;
 	Vector3 m_OriginColliderBodyScale;
-
+public :
+	CColliderBox2D* GetBodyCollider () const
+{
+		return m_Body;
+}
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;

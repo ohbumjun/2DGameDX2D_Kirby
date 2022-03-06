@@ -1,9 +1,11 @@
 #include "Monster.h"
 #include "Component/SpriteComponent.h"
 #include "Component/WidgetComponent.h"
+#include "Component/ColliderBox2D.h"
 #include "Component/ColliderCircle.h"
 #include "MonsterAnimation.h"
 #include "Engine.h"
+#include "Player2D.h"
 #include "Component/PaperBurnComponent.h"
 #include "../UI/SimpleHUD.h"
 
@@ -15,7 +17,12 @@ CMonster::CMonster() :
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
 	m_BeginPulledAccel(1.f),
-	m_BeginPulledAccelSum(0.f)
+	m_BeginPulledAccelSum(0.f),
+	m_AttackDistance(300.f),
+	m_DashDistance(500.f),
+	m_MonsterMoveVelocity(300.f),
+	m_RandomMoveTime(5.f),
+	m_RandomMoveTimeMax(5.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -24,6 +31,27 @@ CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)
 {
 	m_Sprite = (CSpriteComponent*)const_cast<CMonster&>(Monster).FindComponent("MonsterSprite");
 	m_ColliderBody = (CColliderCircle*)const_cast<CMonster&>(Monster).FindComponent("ColliderBody");
+	m_SimpleHUDWidget = (CWidgetComponent*)const_cast<CMonster&>(Monster).FindComponent("SimpleHUD");
+	m_PaperBurn = (CPaperBurnComponent*)const_cast<CMonster&>(Monster).FindComponent("PaperBurn");
+
+	// todo :  CSharedPtr<class CUIProgressBar> m_HpBar; 복사
+
+	m_HPMax = Monster.m_HPMax;
+	m_HP = m_HPMax;
+	m_DeathAccTime = 0.f;
+	m_DeathFinishTime = Monster.m_DeathFinishTime;
+	m_DeathStart = false;
+
+	// Player 에게 끌어당겨지기
+	m_IsBeingPulled = false;
+	m_BeginPulledAccel = Monster.m_BeginPulledAccel;
+	m_BeginPulledAccelSum = 0.f;
+
+	// AI
+	m_AttackDistance = Monster.m_AttackDistance;
+	m_DashDistance = Monster.m_DashDistance;
+	m_IsBeingHit = Monster.m_IsBeingHit;
+
 }
 
 CMonster::~CMonster()
@@ -75,6 +103,87 @@ void CMonster::DeathStart()
 {
 	m_DeathStart = true;
 }
+
+void CMonster::AIStateUpdate(float DeltaTime)
+{
+	// 만약 끌려가고 있는 상태라면 적용 X --> UpdateBeingPulled 함수만 적용
+	if (m_IsBeingPulled)
+		return;
+
+	// Hit 혹은 Death는 세팅해주고 Return
+	// Bullet 의 경우에도, 거기 내에서 뭔가 알고리즘을 넣지 않고,
+	// m_HP만 0으로 만들어주고 --> 추가적인 과정은 여기서 세팅하도록 한다.
+	if (m_HP <= 0)
+	{
+		m_AI = Monster_AI::Death;
+		return;
+	}
+	else if (m_IsBeingHit)
+	{
+		m_AI = Monster_AI::Hit;
+		return;
+	}
+
+	// Player 정보를 가져온다
+	CPlayer2D* Player2D = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+	// 같은 Collider 영역에 속하는지 확인
+	if (Player2D)
+	{
+		bool Result = m_ColliderBody->CheckIsInSameCollisionSection(Player2D->GetBodyCollider());
+
+		// 같은 영역에 속한다면
+		if (Result)
+		{
+			float DistToPlayer = GetWorldPos().Distance(Player2D->GetWorldPos());
+
+			if (DistToPlayer <= m_DashDistance)
+			{
+				if (DistToPlayer <= m_AttackDistance)
+				{
+					// Attack AI 세팅
+					m_AI = Monster_AI::Attack;
+					return;
+				}
+				else
+				{
+					// Trace AT 세팅
+					m_AI = Monster_AI::Trace;
+					return;
+				}
+			}
+		}
+		// 같은 영역에 속하지 않는다면 --> Walk 혹은 AI
+		else
+		{
+			
+		}
+	}
+	else
+	{
+		// todo : 여기에 걸리면 안된다 ! --> 애초에 Scene 내에 Player 가 없을 수는 없으므로
+		// 하지만, Scene Change 중간에는 없을 수도 있지 않을까 ?
+	}
+
+	// 속하지 않는다면, Idle, Walk 여부 결정
+}
+
+void CMonster::AIIdle(float DeltaTime)
+{}
+void CMonster::AIWalk(float DeltaTime)
+{}
+
+void CMonster::AIITrace(float DeltaTime, Vector3 PlayerPos)
+{}
+
+void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
+{}
+
+void CMonster::AIDeath(float DeltaTime)
+{}
+
+void CMonster::AIIHit(float DeltaTime)
+{}
 
 void CMonster::Start()
 {
@@ -177,11 +286,17 @@ void CMonster::Update(float DeltaTime)
 	}
 
 	UpdateBeingPulled(DeltaTime);
+
+	AIStateUpdate(DeltaTime);
 }
 
 void CMonster::PostUpdate(float DeltaTime)
 {
 	CLifeObject::PostUpdate(DeltaTime);
+
+	UpdateMonsterMove(DeltaTime);
+
+
 }
 
 CMonster* CMonster::Clone()
@@ -208,6 +323,30 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 		m_IsBeingPulled = false;
 		SetEnable(false);
 	}
+}
+
+void CMonster::UpdateMonsterMove(float DeltaTime)
+{
+	AddWorldPos(m_MonsterMoveDir * DeltaTime * m_MonsterMoveVelocity);
+
+	m_RandomMoveTime -= DeltaTime;
+
+	if (m_RandomMoveTime)
+	{
+		m_RandomMoveTime = m_RandomMoveTimeMax;
+		SetRandomTargetDir();
+	}
+}
+
+void CMonster::SetRandomTargetDir()
+{
+	Vector2 WorldResolution = m_Scene->GetWorldResolution();
+
+	float TargetX = (float)(rand() % (int)WorldResolution.x);
+	float TargetY = GetWorldPos().y;
+
+	m_MonsterMoveDir = GetWorldPos().Angle(Vector3(TargetX, TargetY, 1.f));
+
 }
 
 void CMonster::OnMouseBegin(const CollisionResult& Result)

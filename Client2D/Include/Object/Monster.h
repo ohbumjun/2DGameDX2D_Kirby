@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject\LifeObject.h"
+#include "../Client.h"
 
 class CMonster :
     public CLifeObject
@@ -14,7 +15,6 @@ private :
     CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
     CSharedPtr<class CUIProgressBar> m_HpBar;
     CSharedPtr<class CPaperBurnComponent> m_PaperBurn;
-    // CSharedPtr<class CColliderComponent> m_ColliderBody;
     float m_HPMax;
     float m_HP;
     float m_DeathAccTime;
@@ -26,12 +26,33 @@ private :
     float m_BeginPulledAccel;
     float m_BeginPulledAccelSum;
     Vector3 m_PulledDestPos;
+
+    // AI
+    Monster_AI m_AI;
+    float m_AttackDistance;
+    float m_DashDistance;
+    bool m_IsBeingHit;
+
+    // Move
+    float m_MonsterMoveVelocity;
+    float m_RandomMoveTime;
+    float m_RandomMoveTimeMax;
+    Vector3 m_MonsterMoveDir;
+
 public :
     bool IsBeingPulled() const
 {
         return m_IsBeingPulled;
 }
+    bool IsBeingHit () const
+{
+        return m_IsBeingHit;
+}
 public :
+    void SetBeingHit (bool Enable)
+{
+        m_IsBeingHit = Enable;
+}
     void SetPulledDestPos(Vector3 Pos)
 {
         m_PulledDestPos = Pos;
@@ -46,7 +67,16 @@ public :
 public :
     void Damage(float Damage);
     void SetHPMax(float HPMax);
-    void DeathStart(); //
+    void DeathStart();
+public : // AI
+    void AIStateUpdate(float DeltaTime);
+    virtual void AIIdle(float DeltaTime);
+    virtual void AIWalk(float DeltaTime);
+    virtual void AIITrace(float DeltaTime, Vector3 PlayerPos);
+    virtual void AIAttack(float DeltaTime, Vector3 PlayerPos);
+    virtual void AIDeath(float DeltaTime);
+    virtual void AIIHit(float DeltaTime);
+
 public :
     virtual void Start() override;
     virtual bool Init() override;
@@ -55,6 +85,8 @@ public :
     virtual CMonster* Clone() override;
 public :
     void UpdateBeingPulled(float DeltaTime);
+    void UpdateMonsterMove(float DeltaTime);
+    void SetRandomTargetDir();
 public :
     void OnMouseBegin(const CollisionResult& Result);
     void OnMouseEnd(const CollisionResult& Result);
