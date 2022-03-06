@@ -132,6 +132,69 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 	return Outside;
 }
 
+void CCameraComponent::AdjustCameraPosToRatio()
+{
+	// todo : 잔 떨림 문제 해결
+		// Player가 Is Ground 혹은 Side Collision 일때는 비율 조정 X
+	if (GetGameObject() == m_Scene->GetPlayerObject())
+	{
+		CLifeObject* OwnerObject = (CLifeObject*)GetGameObject();
+
+		if (OwnerObject->IsBottomCollided() || OwnerObject->IsSideCollided())
+			return;
+	}
+
+	// 자기 범위에 도달할 때까지 여기서 기다리게 해야 한다 .. ?
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	Vector3 CurRelativePos = GetRelativePos();
+	Vector3 CurWorldPos = GetWorldPos();
+
+	float WorldPosDiff = m_PrevWorldPos.Distance(CurWorldPos);
+
+	Vector3 NewRelativePos = CurRelativePos;
+
+	/*
+	if (m_RS.Width * m_Ratio.x * -1.f - m_RatioAdjustOffSet < CurRelativePos.x &&
+		CurRelativePos.x < m_RS.Width * m_Ratio.x * -1.f + m_RatioAdjustOffSet &&
+		m_RS.Height * m_Ratio.y * -1.f - m_RatioAdjustOffSet < CurRelativePos.y &&
+		CurRelativePos.y < m_RS.Height * m_Ratio.y * -1.f + m_RatioAdjustOffSet)
+		return;
+		*/
+
+		// 오른쪽 경계에 걸리면 RelativeX 는 더 - 가 된다.
+		// 오른쪽 경계에 막혔던 상황 --> 이전보다 왼쪽으로 온 상황
+		// 왼쪽으로 온 만큼, 기존 RelativeX 값에 + 해준다.
+	if (CurRelativePos.x < m_RS.Width * m_Ratio.x * -1.f - m_RatioAdjustOffSet)
+	{
+		NewRelativePos.x = m_PrevRelativePos.x + WorldPosDiff;
+	}
+	// 왼쪽 경계에 걸리면 ReleativeX 는 더 + 가 된다 ( 덜 - 가 된다. )
+	// 왼쪽 경계에 막혔던 상황 --> 이전보다 오른쪽으로 온 상황
+	// 오른쪽으로 온만큼 기존 RelativeX 값에 - 해준다.
+	else if (CurRelativePos.x > m_RS.Width * m_Ratio.x * -1.f + m_RatioAdjustOffSet)
+	{
+		NewRelativePos.x = m_PrevRelativePos.x - WorldPosDiff;
+	}
+
+	// 위쪽 경계에 걸리면, ReleativeY는 더 - 가 된다
+	// 위쪽 경계에 막혔던 상황 --> 이전보다 아래로 온 상황
+	// 아래로 온 만큼, 기존 RelativeY 값에 + 해준다.
+	if (CurRelativePos.y < m_RS.Height * m_Ratio.y * -1.f - m_RatioAdjustOffSet)
+	{
+		NewRelativePos.y = m_PrevRelativePos.y + WorldPosDiff;
+	}
+	// 아래쪽 경계에 걸리면 RelativeY 는 더 + 가 된다 ( 덜 + 가 된다. )
+	// 아래쪽 경계에 막혔던 상황 --> 이전보다 위로 온 상황
+	// 위로 온 만큼, 기존 RelativeY 값에 - 해준다.
+	else if (CurRelativePos.y > m_RS.Height * m_Ratio.y * -1.f + m_RatioAdjustOffSet)
+	{
+		NewRelativePos.y = m_PrevRelativePos.y - WorldPosDiff;
+	}
+
+	SetRelativePos(NewRelativePos);
+}
+
 void CCameraComponent::Save(FILE* pFile)
 {
 	CSceneComponent::Save(pFile);
@@ -184,65 +247,7 @@ void CCameraComponent::Update(float DeltaTime)
 
 	if (!IsOutSideWorld && m_Parent)
 	{
-		// todo : 잔 떨림 문제 해결
-		// Player가 Is Ground 혹은 Side Collision 일때는 비율 조정 X
-		if (GetGameObject() == m_Scene->GetPlayerObject())
-		{
-			CLifeObject* OwnerObject = (CLifeObject*)GetGameObject();
-
-			if (OwnerObject->IsBottomCollided() || OwnerObject->IsSideCollided())
-				return;
-		}
-
-		// 자기 범위에 도달할 때까지 여기서 기다리게 해야 한다 .. ?
-		Resolution RS = CEngine::GetInst()->GetResolution();
-
-		Vector3 CurRelativePos = GetRelativePos();
-		Vector3 CurWorldPos = GetWorldPos();
-
-		float WorldPosDiff = m_PrevWorldPos.Distance(CurWorldPos);
-
-		Vector3 NewRelativePos = CurRelativePos;
-
-		/*
-		if (m_RS.Width * m_Ratio.x * -1.f - m_RatioAdjustOffSet < CurRelativePos.x &&
-			CurRelativePos.x < m_RS.Width * m_Ratio.x * -1.f + m_RatioAdjustOffSet &&
-			m_RS.Height * m_Ratio.y * -1.f - m_RatioAdjustOffSet < CurRelativePos.y &&
-			CurRelativePos.y < m_RS.Height * m_Ratio.y * -1.f + m_RatioAdjustOffSet)
-			return;
-			*/
-
-		// 오른쪽 경계에 걸리면 RelativeX 는 더 - 가 된다.
-		// 오른쪽 경계에 막혔던 상황 --> 이전보다 왼쪽으로 온 상황
-		// 왼쪽으로 온 만큼, 기존 RelativeX 값에 + 해준다.
-		if (CurRelativePos.x < m_RS.Width * m_Ratio.x * -1.f - m_RatioAdjustOffSet)
-		{
-			NewRelativePos.x = m_PrevRelativePos.x + WorldPosDiff;
-		}
-		// 왼쪽 경계에 걸리면 ReleativeX 는 더 + 가 된다 ( 덜 - 가 된다. )
-		// 왼쪽 경계에 막혔던 상황 --> 이전보다 오른쪽으로 온 상황
-		// 오른쪽으로 온만큼 기존 RelativeX 값에 - 해준다.
-		else if (CurRelativePos.x > m_RS.Width * m_Ratio.x * -1.f + m_RatioAdjustOffSet)
-		{
-			NewRelativePos.x = m_PrevRelativePos.x - WorldPosDiff;
-		}
-
-		// 위쪽 경계에 걸리면, ReleativeY는 더 - 가 된다
-		// 위쪽 경계에 막혔던 상황 --> 이전보다 아래로 온 상황
-		// 아래로 온 만큼, 기존 RelativeY 값에 + 해준다.
-		if (CurRelativePos.y < m_RS.Height * m_Ratio.y * -1.f - m_RatioAdjustOffSet)
-		{
-			NewRelativePos.y = m_PrevRelativePos.y + WorldPosDiff;
-		}
-		// 아래쪽 경계에 걸리면 RelativeY 는 더 + 가 된다 ( 덜 + 가 된다. )
-		// 아래쪽 경계에 막혔던 상황 --> 이전보다 위로 온 상황
-		// 위로 온 만큼, 기존 RelativeY 값에 - 해준다.
-		else if (CurRelativePos.y > m_RS.Height * m_Ratio.y * -1.f + m_RatioAdjustOffSet)
-		{
-			NewRelativePos.y = m_PrevRelativePos.y - WorldPosDiff;
-		}
-
-		SetRelativePos(NewRelativePos);
+		AdjustCameraPosToRatio();
 	}
 
 	// Camera 범위 제한을 2번 한다.

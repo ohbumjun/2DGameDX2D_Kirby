@@ -51,6 +51,10 @@ public :
 {
 		return m_IsGround;
 }
+	bool IsPhysicsSimulate() const
+	{
+		return m_PhysicsSimulate;
+	}
 public :
 	void SetIsGround (bool Enable)
 {

@@ -108,6 +108,7 @@ public:
 private:
 	void CreateProjectionMatrix();
 	bool LimitCameraAreaInsideWorld();
+	void AdjustCameraPosToRatio();
 public :
 	virtual void Save(FILE* pFile) override;
 	virtual void Load(FILE* pFile) override;
