@@ -195,12 +195,19 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 		return;
 
 	Vector3 MonsterPos = GetWorldPos();
+
 	Vector3 PulledDir = m_PulledDestPos - MonsterPos;
 	PulledDir.Normalize();
 
 	m_BeginPulledAccelSum += m_BeginPulledAccel;
 
 	AddWorldPos(Vector3(PulledDir) * DeltaTime * m_BeginPulledAccelSum);
+
+	if (MonsterPos.Distance(m_PulledDestPos) <= 1.f)
+	{
+		m_IsBeingPulled = false;
+		SetEnable(false);
+	}
 }
 
 void CMonster::OnMouseBegin(const CollisionResult& Result)
