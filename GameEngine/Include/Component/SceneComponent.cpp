@@ -1,8 +1,11 @@
 ﻿#include "SceneComponent.h"
+#include "../Engine.h"
 #include "../GameObject/GameObject.h"
 #include "../Render/RenderManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
 #include "../Scene/SceneManager.h"
+#include "../Scene/Scene.h"
+#include "../Scene/CameraManager.h"
 
 CSceneComponent::CSceneComponent()
 {

@@ -29,6 +29,8 @@ protected:
 	float m_JumpAccelAccTime;
 	float m_GroundOffSet;
 	float m_CollisionOffset;
+protected :
+	bool m_IsGroundObject;
 
 protected :
 	void UpdateWhileOffGround(float DeltaTime);

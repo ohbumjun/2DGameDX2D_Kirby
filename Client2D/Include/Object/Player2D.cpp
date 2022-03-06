@@ -399,8 +399,8 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 	{
 		// 땋에 닿은 상태라면, m_IsFlying을 false 로 해서
 		// 다시 날려면, Jump 이후에 날 수 있게 세팅한다
-		if (m_IsGround)
-			m_IsFlying = false;
+		// if (m_IsGround)
+		m_IsFlying = false;
 	}
 }
 
@@ -500,13 +500,13 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.1f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.1f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
 		}
 
 		return;
@@ -568,13 +568,13 @@ void CPlayer2D::MoveRight(float DeltaTime)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
 		}
 
 		return;
@@ -647,13 +647,13 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
 		}
 		return;
 	}
@@ -737,7 +737,7 @@ float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
 		// 그게 아니라, 오른쪽으로 이동 중이다가, 왼쪽으로 감속하는 것이라면
 		else
 		{
-			m_LeverVelocity -= m_LeverMoveAccel * 1.5f;
+			m_LeverVelocity -= m_LeverMoveAccel * 2.f;
 		}
 	}
 
@@ -752,7 +752,7 @@ float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
 		// 왼쪽으로 이동 중이다가, 오른쪽으로 감속하는 것이라면
 		else
 		{
-			m_LeverVelocity -= m_LeverMoveAccel * 1.5f;
+			m_LeverVelocity -= m_LeverMoveAccel * 2.f;
 		}
 	}
 
@@ -785,7 +785,7 @@ float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
 		}
 		else
 		{
-			m_DashVelocity -= m_DashMoveAccel * 1.5f;
+			m_DashVelocity -= m_DashMoveAccel * 2.f;
 		}
 	}
 	// 왼쪽으로 이동 중이라면
@@ -798,7 +798,7 @@ float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
 		}
 		else
 		{
-			m_DashVelocity -= m_DashMoveAccel * 1.5f;
+			m_DashVelocity -= m_DashMoveAccel * 2.f;
 		}
 	}
 
@@ -858,7 +858,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	// 레버를 누르고 있지 않다면, 레버 속도를 감속 시킨다.
 	if (!m_IsLeverMoving)
 	{
-		m_LeverVelocity -= m_LeverMoveAccel * 0.5f;
+		m_LeverVelocity -= m_LeverMoveAccel ;
 
 		if (m_LeverVelocity <= 0.f)
 			m_LeverVelocity = 0.f;
@@ -867,7 +867,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	// 대쉬를 진행하고 있지 않다면, 대쉬 속도도 감속 시킨다.
 	if (!m_IsDashMoving)
 	{
-		m_DashVelocity -= m_DashMoveAccel * 0.5f;
+		m_DashVelocity -= m_DashMoveAccel ;
 
 		if (m_DashVelocity <= 0.f)
 			m_DashVelocity = 0.f;
@@ -938,6 +938,7 @@ void CPlayer2D::RotationZ(float DeltaTime)
 void CPlayer2D::FlyAfterJump(float DeltaTime)
 {
 	// 일단 한번 뛴 상태에서 날아야 한다.
+	/*
 	if (m_Jump)
 	{
 		m_IsFlying = true;
@@ -946,6 +947,13 @@ void CPlayer2D::FlyAfterJump(float DeltaTime)
 		m_Jump = false;
 		m_IsGround = true;
 	}
+	*/
+
+	m_IsFlying = true;
+
+	// 중력 적용 방지
+	m_Jump = false;
+	m_IsGround = true;
 
 	// 나는 중이라면, 계속 날게 세팅한다
 	if (m_IsFlying)

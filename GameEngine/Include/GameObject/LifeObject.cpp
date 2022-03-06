@@ -25,7 +25,9 @@ CLifeObject::CLifeObject():
 	m_CollisionOffset(0.001f),
 	m_GroundOffSet(1.f),
 	m_PrevPos{},
-	m_PhysicApplyDelayTime(1.5f)
+	m_PhysicApplyDelayTime(1.5f),
+	m_IsGroundObject(false)
+
 {}
 
 CLifeObject::CLifeObject(const CLifeObject& obj) : CGameObject(obj)
@@ -52,7 +54,7 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 		return;
 	}
 
-	if (!m_IsGround && m_PhysicsSimulate)
+	if ((!m_IsGround && m_PhysicsSimulate) || (!m_IsBottomCollided && m_PhysicsSimulate && m_IsGroundObject))
 	{
 		// 떨어지는 시간 누적 
 		m_FallTime += DeltaTime * m_GravityAccel;
@@ -444,7 +446,6 @@ void CLifeObject::Start()
 
 	m_PrevPos.y = GetWorldPos().y;
 
-	m_PhysicsSimulate = true;
 }
 
 bool CLifeObject::Init()

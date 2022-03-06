@@ -15,6 +15,8 @@ CPurpleBeatle::~CPurpleBeatle()
 void CPurpleBeatle::Start()
 {
 	CNormalMonster::Start();
+
+	m_PhysicsSimulate = false;
 }
 
 bool CPurpleBeatle::Init()

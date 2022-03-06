@@ -16,6 +16,8 @@ CYellowBird::~CYellowBird()
 void CYellowBird::Start()
 {
 	CNormalMonster::Start();
+
+	m_PhysicsSimulate = false;
 }
 
 bool CYellowBird::Init()

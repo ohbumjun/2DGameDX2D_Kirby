@@ -18,9 +18,9 @@ CMonster::CMonster() :
 	m_IsBeingPulled(false),
 	m_BeginPulledAccel(1.f),
 	m_BeginPulledAccelSum(0.f),
-	m_AttackDistance(300.f),
+	m_AttackDistance(150.f),
 	m_DashDistance(500.f),
-	m_MonsterMoveVelocity(150.f),
+	m_MonsterMoveVelocity(100.f),
 	m_RandomMoveTime(5.f),
 	m_RandomMoveTimeMax(5.f)
 {
@@ -130,27 +130,22 @@ void CMonster::AIStateUpdate(float DeltaTime)
 	// 같은 Collider 영역에 속하는지 확인
 	if (Player2D)
 	{
-		bool Result = m_ColliderBody->CheckIsInSameCollisionSection(Player2D->GetBodyCollider());
-
 		// 같은 영역에 속한다면
-		if (Result)
-		{
-			float DistToPlayer = GetWorldPos().Distance(Player2D->GetWorldPos());
+		float DistToPlayer = GetWorldPos().Distance(Player2D->GetWorldPos());
 
-			if (DistToPlayer <= m_DashDistance)
+		if (DistToPlayer <= m_DashDistance)
+		{
+			if (DistToPlayer <= m_AttackDistance)
 			{
-				if (DistToPlayer <= m_AttackDistance)
-				{
-					// Attack AI 세팅
-					m_AI = Monster_AI::Attack;
-					return;
-				}
-				else
-				{
-					// Trace AT 세팅
-					m_AI = Monster_AI::Trace;
-					return;
-				}
+				// Attack AI 세팅
+				m_AI = Monster_AI::Attack;
+				return;
+			}
+			else
+			{
+				// Trace AT 세팅
+				m_AI = Monster_AI::Trace;
+				return;
 			}
 		}
 		// 같은 영역에 속하지 않는다면 --> Walk 혹은 AI
@@ -366,9 +361,9 @@ void CMonster::Update(float DeltaTime)
 
 	UpdateBeingPulled(DeltaTime);
 
-	// AIStateUpdate(DeltaTime);
+	AIStateUpdate(DeltaTime);
 
-	// AIActionUpdate(DeltaTime);
+	AIActionUpdate(DeltaTime);
 }
 
 void CMonster::PostUpdate(float DeltaTime)
@@ -406,6 +401,10 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 
 void CMonster::UpdateMonsterMove(float DeltaTime)
 {
+	// 현재 공격중이거나, Trace 상태라면 기존 Dir을 그대로 유지한다.
+	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
+		return;
+
 	AddWorldPos(m_MonsterMoveDir * DeltaTime * m_MonsterMoveVelocity);
 
 	m_RandomMoveTime -= DeltaTime;
@@ -423,6 +422,7 @@ void CMonster::SetRandomTargetDir()
 	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
 		return;
 
+	/*
 	Vector2 WorldResolution = m_Scene->GetWorldResolution();
 
 	float TargetX = (float)(rand() % (int)WorldResolution.x);
@@ -430,9 +430,13 @@ void CMonster::SetRandomTargetDir()
 	Vector3 WorldPos = GetWorldPos();
 
 	float Angle = GetWorldPos().Angle(Vector3(TargetX, TargetY, 1.f));
-
+	
 	m_MonsterMoveDir.x = cosf(DegreeToRadian(Angle));
 	m_MonsterMoveDir.y = sinf(DegreeToRadian(Angle));
+	*/
+
+	int RandomDir = (int)(rand() % 2);
+	m_MonsterMoveDir.x = RandomDir == 0 ? -1.f : 1.f;
 
 	m_MonsterMoveDir.Normalize();
 

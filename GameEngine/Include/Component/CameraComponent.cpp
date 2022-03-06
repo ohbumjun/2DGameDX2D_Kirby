@@ -244,7 +244,6 @@ void CCameraComponent::Update(float DeltaTime)
 
 	bool IsOutSideWorld = LimitCameraAreaInsideWorld();
 
-
 	if (!IsOutSideWorld && m_Parent)
 	{
 		AdjustCameraPosToRatio();

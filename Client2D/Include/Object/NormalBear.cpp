@@ -14,6 +14,12 @@ CNormalBear::~CNormalBear()
 void CNormalBear::Start()
 {
 	CNormalMonster::Start();
+
+	m_PhysicsSimulate = true;
+
+	m_IsGround = true;
+
+	m_IsGroundObject = true;
 }
 
 bool CNormalBear::Init()
@@ -30,6 +36,7 @@ bool CNormalBear::Init()
 void CNormalBear::Update(float DeltaTime)
 {
 	CNormalMonster::Update(DeltaTime);
+
 }
 
 void CNormalBear::PostUpdate(float DeltaTime)

@@ -35,10 +35,6 @@ public :
 	{
 		return m_Render;
 	}
-	float GetScrollRatio() const
-{
-		return m_Transform->m_ScrollRatio;
-}
 
 public :
 	void SetLayerName(const std::string& Name)

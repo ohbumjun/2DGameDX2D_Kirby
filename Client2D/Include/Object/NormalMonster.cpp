@@ -14,6 +14,7 @@ CNormalMonster::~CNormalMonster()
 void CNormalMonster::Start()
 {
 	CMonster::Start();
+
 }
 
 bool CNormalMonster::Init()
