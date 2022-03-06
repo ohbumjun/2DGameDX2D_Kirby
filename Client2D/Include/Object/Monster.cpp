@@ -467,7 +467,7 @@ void CMonster::ChangeDeathAnimation() //
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightDeath");
 }
 
-void CMonster::ChangeAttackAnimation()
+void CMonster::ChangeAttackAnimation() //
 {
 	if (m_MonsterMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
