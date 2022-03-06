@@ -13,15 +13,17 @@ CLifeObject::CLifeObject():
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
 	m_Jump(false),
-	m_JumpVelocity(70.f),
+	m_JumpVelocity(90.f),
 	m_FallVelocity(0.f),
 	m_FallVelocityMax(1000.f),
 	m_GravityAccel(10.f),
 	m_FloorCheck(false),
 	m_SideWallCheck(true),	
-	m_JumpAccel(1.2f),
+	m_IsSideCollided(false),
+	m_JumpAccel(2.f),
 	m_JumpAccelAccTime(0.f),
-	m_GroundOffSet(0.1f),
+	m_CollisionOffset(0.001f),
+	m_GroundOffSet(1.f),
 	m_PrevPos{},
 	m_PhysicApplyDelayTime(1.5f)
 {}
@@ -90,12 +92,17 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 void CLifeObject::CheckBottomCollision()
 {
+	bool BottomCollision = false;
+
 	Vector3 m_Pos = GetWorldPos();
 
 	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
 	if (!TileMap)
+	{
+		m_IsBottomCollided = false;
 		return;
+	}
 
 	if (m_PhysicsSimulate && m_Pos.y - m_PrevPos.y <= 0.f)
 	{
@@ -181,6 +188,8 @@ void CLifeObject::CheckBottomCollision()
 
 					SetWorldPos(m_Pos.x, NewPosY, m_Pos.z);
 
+					BottomCollision = true;
+
 					break;
 				}
 			}
@@ -203,6 +212,8 @@ void CLifeObject::CheckBottomCollision()
 			m_IsGround = false;
 		}
 	}
+
+	m_IsBottomCollided = BottomCollision;
 }
 
 void CLifeObject::CheckCeilingCollision()
@@ -304,7 +315,7 @@ void CLifeObject::CheckSideCollision()
 						SideCollision = true;
 
 						// 현재 오른쪽으로 이동 중 --> 왼쪽으로 밀어낼 것이다
-						float MoveX = TilePos.x - CurRT.x - 0.001f;
+						float MoveX = TilePos.x - CurRT.x - m_CollisionOffset;
 
 						m_Pos.x += MoveX;
 
@@ -373,7 +384,7 @@ void CLifeObject::CheckSideCollision()
 					{
 						SideCollision = true;
 
-						float MoveX = TilePos.x + TileSize.x - CurLB.x + 0.001f;
+						float MoveX = TilePos.x + TileSize.x - CurLB.x + m_CollisionOffset;
 
 						m_Pos.x += MoveX;
 
@@ -387,6 +398,35 @@ void CLifeObject::CheckSideCollision()
 			}
 		}
 	}
+
+	m_IsSideCollided = SideCollision;
+}
+
+void CLifeObject::CheckOutsideWorldResolution()
+{
+	// todo : Up
+	Vector3 OriginalPos = GetWorldPos();
+	Vector3 WorldScale = GetWorldScale();
+	Vector3 Pivot = GetPivot();
+
+	Vector2 WorldResolution = m_Scene->GetWorldResolution();
+
+	if (OriginalPos.y + WorldScale.y * Pivot.y >= WorldResolution.y)
+		OriginalPos.y = WorldResolution.y - WorldScale.y * Pivot.y - m_CollisionOffset;
+
+	// todo : Down ( 나중에 ) --> 바꾸기 
+	if (OriginalPos.y - WorldScale.y * Pivot.y < 0.f)
+		OriginalPos.y = WorldScale.y * Pivot.y;
+
+	// Left
+	if (OriginalPos.x - WorldScale.x * Pivot.x < 0.f)
+		OriginalPos.x = WorldScale.x * Pivot.x + m_CollisionOffset;
+
+	// Right
+	if (OriginalPos.x + WorldScale.x * Pivot.x >= WorldResolution.x)
+		OriginalPos.x = WorldResolution.x - WorldScale.x * Pivot.x - m_CollisionOffset;
+
+	SetWorldPos(OriginalPos);
 }
 
 void CLifeObject::SetObjectLand()
@@ -420,6 +460,8 @@ void CLifeObject::Update(float DeltaTime)
 	CGameObject::Update(DeltaTime);
 
 	UpdateWhileOffGround(DeltaTime);
+
+	CheckOutsideWorldResolution();
 }
 
 void CLifeObject::PostUpdate(float DeltaTime)

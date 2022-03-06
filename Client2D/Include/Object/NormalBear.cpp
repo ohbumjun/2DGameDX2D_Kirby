@@ -13,7 +13,7 @@ CNormalBear::~CNormalBear()
 
 void CNormalBear::Start()
 {
-	CGameObject::Start();
+	CNormalMonster::Start();
 }
 
 bool CNormalBear::Init()
@@ -29,12 +29,12 @@ bool CNormalBear::Init()
 
 void CNormalBear::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CNormalMonster::Update(DeltaTime);
 }
 
 void CNormalBear::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CNormalMonster::PostUpdate(DeltaTime);
 }
 
 CNormalBear* CNormalBear::Clone()

@@ -474,6 +474,7 @@ void CEditorMenu::LoadScene()
 		CSceneManager::GetInst()->GetScene()->SetIsEditMode(true);
 
 		// 1) 만약 해당 Component 가 TileMapComponent 라면, Edit Mode 를 Tile 로 바꿔준다.
+		/*
 		std::list<CSharedPtr<CGameObject>> ObjLists = CSceneManager::GetInst()->GetScene()->GetObjectLists();
 
 		auto iter = ObjLists.begin();
@@ -489,6 +490,8 @@ void CEditorMenu::LoadScene()
 				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileEmptyComponent*)(*iter)->GetRootComponent());
 			}
 		}
+		*/
+		CEditorManager::GetInst()->SetEditMode(EditMode::Scene);
 
 
 		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해

@@ -99,10 +99,10 @@ bool CMonster::Init()
 
 void CMonster::AIIdle(float DeltaTime){}
 void CMonster::AIWalk(float DeltaTime){}
-void CMonster::AIITrace(float DeltaTime, Vector3 PlayerPos){}
+void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos){}
 void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos) {}
 void CMonster::AIDeath(float DeltaTime){}
-void CMonster::AIIHit(float DeltaTime){}
+void CMonster::AIHit(float DeltaTime){}
 
 void CMonster::Update(float DeltaTime)
 {

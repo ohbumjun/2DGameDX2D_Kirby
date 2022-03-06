@@ -51,9 +51,6 @@
     <ClCompile Include="EditorManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\DefaultScene.cpp">
-      <Filter>01. Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Window\EditorMenu.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
@@ -104,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Object\NormalMonster.cpp">
       <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\DefaultScene.cpp">
+      <Filter>01. Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

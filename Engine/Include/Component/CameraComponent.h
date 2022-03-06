@@ -21,6 +21,7 @@ protected:
 	Vector2		m_Ratio;
 	Vector3     m_PrevRelativePos;
 	Vector3     m_PrevWorldPos;
+	float         m_RatioAdjustOffSet;
 
 public:
 	Resolution GetResolution()	const
@@ -106,6 +107,7 @@ public:
 	}
 private:
 	void CreateProjectionMatrix();
+	bool LimitCameraAreaInsideWorld();
 public :
 	virtual void Save(FILE* pFile) override;
 	virtual void Load(FILE* pFile) override;

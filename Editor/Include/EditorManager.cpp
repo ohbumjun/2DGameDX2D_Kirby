@@ -68,7 +68,10 @@ void CEditorManager::SetEditMode(EditMode Mode)
 	if (m_EditMode == EditMode::Sprite)
 	{
 		if (m_DragObj)
+		{
 			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
 
 		m_DragObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CDragObject>("DragObject");
 		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);
@@ -82,7 +85,10 @@ void CEditorManager::SetEditMode(EditMode Mode)
 	else if (m_EditMode == EditMode::Scene)
 	{
 		if (m_DragObj)
+		{
 			m_DragObj->Destroy();
+			m_DragObj = nullptr;
+		}
 
 		sprintf_s(EditModeText, "%s", "Scene");
 

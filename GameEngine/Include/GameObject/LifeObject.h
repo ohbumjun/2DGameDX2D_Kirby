@@ -19,6 +19,8 @@ protected:
 	float m_FallStartY;
 	float m_FloorCheck;
 	float m_SideWallCheck;
+	bool m_IsSideCollided;
+	bool m_IsBottomCollided;
 	float m_PhysicApplyDelayTime;
 protected:
 	bool m_Jump;
@@ -26,15 +28,25 @@ protected:
 	float m_JumpAccel;
 	float m_JumpAccelAccTime;
 	float m_GroundOffSet;
+	float m_CollisionOffset;
 
-private :
+protected :
 	void UpdateWhileOffGround(float DeltaTime);
 	void CheckBottomCollision();
 	void CheckCeilingCollision();
 	void CheckSideCollision();
+	void CheckOutsideWorldResolution();
 public :
 	virtual void SetObjectLand();
 public :
+	bool IsSideCollided() const
+{
+		return m_IsSideCollided;
+}
+	bool IsBottomCollided() const
+	{
+		return m_IsBottomCollided;
+	}
 	bool IsGround () const
 {
 		return m_IsGround;

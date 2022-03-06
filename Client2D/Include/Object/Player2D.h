@@ -86,8 +86,6 @@ public:
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;
-private : // 화면 밖으로 안나가게 하기
-	void CheckOutsideWorldResolution();
 private:
 	void MoveUp(float DeltaTime);
 	void MoveUpEnd(float DeltaTime);

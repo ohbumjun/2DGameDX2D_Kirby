@@ -15,8 +15,8 @@ private :
     class CIMGUIComboBox* m_SetAnimationComboBox;
 private : // Detail Info
     class CIMGUIText*           m_CharacterName;
-    class CIMGUIText*           m_IsGroundText;
-    class CIMGUIComboBox* m_IsGroundComboBox;
+    class CIMGUIText*           m_IsPhysicsText;
+    class CIMGUIComboBox* m_IsPhysicsComboBox;
 private: // Transform Á¤º¸
     class CIMGUITextInput* m_PosX;
     class CIMGUITextInput* m_PosY;
@@ -45,10 +45,10 @@ private :
 
     // Detail
     void SetDetailInfoName(const std::string& Name);
-    void SetIsGroundInfo(bool Enable);
+    void SetPhysicsInfo(bool Enable);
     void SetCurrentAnimationName(const std::string& Name);
 
-    void SetIsGroundCallback(int Index, const char* Animation);
+    void SetPhysicsSimulateCallback(int Index, const char* Animation);
 
 
     void SetPositionXCallback();

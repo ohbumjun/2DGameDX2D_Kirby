@@ -101,31 +101,31 @@ bool CDetailInfoWindow::Init()
 
 
 	// ===============================================
-	Label = AddWidget<CIMGUILabel>("IsGround", 80.f, 20.f);
+	Label = AddWidget<CIMGUILabel>("IsPhysics", 80.f, 20.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(100.f);
 
-	m_IsGroundText = AddWidget<CIMGUIText>("AnimName");
-	m_IsGroundText->SetColor(255, 255, 255);
-	m_IsGroundText->SetText("- - - ");
-	m_IsGroundText->SetSize(150.f, 80.f);
+	m_IsPhysicsText = AddWidget<CIMGUIText>("IsPhysics");
+	m_IsPhysicsText->SetColor(255, 255, 255);
+	m_IsPhysicsText->SetText("- - - ");
+	m_IsPhysicsText->SetSize(150.f, 80.f);
 
 	// ===============================================
-	Label = AddWidget<CIMGUILabel>("Set Ground", 80.f, 20.f);
+	Label = AddWidget<CIMGUILabel>("Set Physics", 80.f, 20.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(100.f);
 
-	m_IsGroundComboBox = AddWidget<CIMGUIComboBox>("Is Ground", 100.f, 30.f);
-	m_IsGroundComboBox->AddItem("TRUE");
-	m_IsGroundComboBox->AddItem("FALSE");
-	m_IsGroundComboBox->SetHideName(true);
-	m_IsGroundComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetIsGroundCallback);
+	m_IsPhysicsComboBox = AddWidget<CIMGUIComboBox>("Physics", 100.f, 30.f);
+	m_IsPhysicsComboBox->AddItem("TRUE");
+	m_IsPhysicsComboBox->AddItem("FALSE");
+	m_IsPhysicsComboBox->SetHideName(true);
+	m_IsPhysicsComboBox->SetSelectCallback<CDetailInfoWindow>(this, &CDetailInfoWindow::SetPhysicsSimulateCallback);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
@@ -331,7 +331,7 @@ void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
 
 	// Is Ground 여부
 	CLifeObject* OwnerObject = (CLifeObject*)(Component->GetGameObject());
-	SetIsGroundInfo(OwnerObject->IsGround());
+	SetPhysicsInfo(OwnerObject->IsPhysicsSimulate());
 
 	// Transform 정보
 	SetTransformInfo(Component);
@@ -363,16 +363,16 @@ void CDetailInfoWindow::SetDetailInfoName(const std::string& Name)
 	m_CharacterName->SetText(Name.c_str());
 }
 
-void CDetailInfoWindow::SetIsGroundInfo(bool Enable)
+void CDetailInfoWindow::SetPhysicsInfo(bool Enable)
 {
-	char IsGroundText[MAX_PATH] = {};
+	char IsPhysicsText[MAX_PATH] = {};
 
 	if (Enable)
-		sprintf_s(IsGroundText, "%s", "TRUE");
+		sprintf_s(IsPhysicsText, "%s", "TRUE");
 	else
-		sprintf_s(IsGroundText, "%s", "FALSE");
+		sprintf_s(IsPhysicsText, "%s", "FALSE");
 
-	m_IsGroundText->SetText(IsGroundText);
+	m_IsPhysicsText->SetText(IsPhysicsText);
 }
 
 void CDetailInfoWindow::SetCurrentAnimationName(const std::string& Name)
@@ -380,11 +380,12 @@ void CDetailInfoWindow::SetCurrentAnimationName(const std::string& Name)
 	m_CharacterCurrentAnimation->SetText(Name.c_str());
 }
 
-void CDetailInfoWindow::SetIsGroundCallback(int Index, const char* Animation)
+void CDetailInfoWindow::SetPhysicsSimulateCallback(int Index, const char* Animation)
 {
 	if (!m_ClickedComponent)
 		return;
 
+	// CLifeObject* OwnerObject = (CLifeObject*)(m_ClickedComponent->GetGameObject());
 	CLifeObject* OwnerObject = (CLifeObject*)(m_ClickedComponent->GetGameObject());
 
 	if (!OwnerObject)
@@ -393,15 +394,15 @@ void CDetailInfoWindow::SetIsGroundCallback(int Index, const char* Animation)
 	if (strcmp(Animation, "TRUE") == 0)
 	{
 		// 실제 정보 세팅
-		OwnerObject->SetIsGround(true);
+		OwnerObject->SetPhysicsSimulate(true);
 
 		// 실제 Text 세팅 
-		SetIsGroundInfo(true);
+		SetPhysicsInfo(true);
 	}
 	else
 	{
-		OwnerObject->SetIsGround(false);
-		SetIsGroundInfo(false);
+		OwnerObject->SetPhysicsSimulate(false);
+		SetPhysicsInfo(false);
 	}
 }
 

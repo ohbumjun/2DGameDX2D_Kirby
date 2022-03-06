@@ -387,31 +387,6 @@ CPlayer2D* CPlayer2D::Clone()
 	return new CPlayer2D(*this);
 }
 
-void CPlayer2D::CheckOutsideWorldResolution()
-{
-	// todo : Up
-	Vector3 OriginalPos = GetWorldPos();
-	Vector3 WorldScale = GetWorldScale();
-	Vector3 Pivot = GetPivot();
-
-	Vector2 WorldResolution = m_Scene->GetWorldResolution();
-
-	if (OriginalPos.y + WorldScale.y * Pivot.y >= WorldResolution.y)
-		OriginalPos.y = WorldResolution.y - WorldScale.y * Pivot.y - 0.001f;
-
-	// todo : Down ( 나중에 )
-
-	// Left
-	if (OriginalPos.x - WorldScale.x * Pivot.x < 0.f)
-		OriginalPos.x = WorldScale.x * Pivot.x + 0.001f;
-
-	// Right
-	if (OriginalPos.x + WorldScale.x * Pivot.x >= WorldResolution.x)
-		OriginalPos.x = WorldResolution.x - WorldScale.x * Pivot.x - 0.001f;
-
-	SetWorldPos(OriginalPos);
-}
-
 void CPlayer2D::MoveUp(float DeltaTime)
 {
 	FlyAfterJump(DeltaTime);
@@ -436,13 +411,25 @@ void CPlayer2D::MoveDown(float DeltaTime)
 
 void CPlayer2D::MoveLeft(float DeltaTime) //
 {
+	// 범위 제한 하기
+	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
+	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+
 	// 삼각 점프 상태였다면 계속 이동 시킨다
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
+		{
+			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+				return;
 			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
+		}
 		else
+		{
+			if (WorldPosLeftX <= 0.1f)
+				return;
 			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
+		}
 
 		return;
 	}
@@ -486,21 +473,41 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 
 	// 실제 이동 처리를 한다
 	if (m_RightMove)
+	{
+		if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+	}
 	else
+	{
+		if (WorldPosLeftX <= 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+	}
 
 	// todo : 여기서 Animation 변환 처리를 해준다.
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
 {
+	// 범위 제한 하기
+	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
+	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
+		{
+			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.1f);
+		}
 		else
+		{
+			if (WorldPosLeftX <= 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.1f);
+		}
 
 		return;
 	}
@@ -534,22 +541,41 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	CalculateTotalMoveSpeed(DeltaTime);
 
 	if (m_RightMove)
+	{
+		if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+	}
 	else
+	{
+		if (WorldPosLeftX <= 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+	}
 
 	// todo : Change Animation
 }
 
 void CPlayer2D::MoveRight(float DeltaTime)
 {
+	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
+	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+
 	// Triangle Jump 중이라면 이동은 계속 하되 + 키보드는 안먹게 한다
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
+		{
+			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+		}
 		else
+		{
+			if (WorldPosLeftX <= 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+		}
 
 		return;
 	}
@@ -593,9 +619,17 @@ void CPlayer2D::MoveRight(float DeltaTime)
 
 	// 실제 이동 수행
 	if (m_RightMove)
+	{
+		if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+	}
 	else
+	{
+		if (WorldPosLeftX <= 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+	}
 
 	// Animation 전환
 
@@ -604,12 +638,23 @@ void CPlayer2D::MoveRight(float DeltaTime)
 
 void CPlayer2D::MoveDashRight(float DeltaTime)
 {
+	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
+	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
+		{
+			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+		}
 		else
+		{
+			if (WorldPosLeftX <= 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+		}
 		return;
 	}
 
@@ -639,9 +684,17 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	CalculateTotalMoveSpeed(DeltaTime);
 
 	if (m_RightMove)
+	{
+		if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+	}
 	else
+	{
+		if (WorldPosLeftX <= 0.1f)
+			return;
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+	}
 
 	// todo : Change Animation
 
@@ -843,11 +896,23 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 			m_MoveVelocity = 0.f;
 		}
 
+		// 범위 제한 하기
+		float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
+		float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+
 		// 감속 중임에도 이동은 시켜줘야 한다.
 		if (m_RightMove)
+		{
+			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime);
+		}
 		else
+		{
+			if (WorldPosLeftX < 0.1f)
+				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
+		}
 
 	}
 }

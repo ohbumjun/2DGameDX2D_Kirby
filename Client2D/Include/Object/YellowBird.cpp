@@ -2,6 +2,8 @@
 
 CYellowBird::CYellowBird()
 {
+	m_PhysicsSimulate = false;
+
 	SetTypeID<CYellowBird>();
 }
 

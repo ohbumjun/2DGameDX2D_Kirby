@@ -3,6 +3,7 @@
 CPurpleBeatle::CPurpleBeatle()
 {
 	SetTypeID<CPurpleBeatle>();
+	m_PhysicsSimulate = false;
 }
 
 CPurpleBeatle::CPurpleBeatle(const CPurpleBeatle& Beatle) : CNormalMonster(Beatle)
@@ -13,7 +14,7 @@ CPurpleBeatle::~CPurpleBeatle()
 
 void CPurpleBeatle::Start()
 {
-	CGameObject::Start();
+	CNormalMonster::Start();
 }
 
 bool CPurpleBeatle::Init()
@@ -29,12 +30,12 @@ bool CPurpleBeatle::Init()
 
 void CPurpleBeatle::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CNormalMonster::Update(DeltaTime);
 }
 
 void CPurpleBeatle::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CNormalMonster::PostUpdate(DeltaTime);
 }
 
 CPurpleBeatle* CPurpleBeatle::Clone()
