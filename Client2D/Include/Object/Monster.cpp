@@ -443,7 +443,7 @@ void CMonster::ChangeWalkAnimation()//
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightWalk");
 }
 
-void CMonster::ChangeHitAnimation()
+void CMonster::ChangeHitAnimation()// 
 {
 	if (m_MonsterMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftHit");
