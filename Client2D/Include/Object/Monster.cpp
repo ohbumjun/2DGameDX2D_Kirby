@@ -435,7 +435,7 @@ void CMonster::ChangeIdleAnimation()
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
 }
 
-void CMonster::ChangeWalkAnimation()
+void CMonster::ChangeWalkAnimation()//
 {
 	if (m_MonsterMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftWalk");
