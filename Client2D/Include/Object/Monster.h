@@ -46,7 +46,7 @@ public :
 public :
     void Damage(float Damage);
     void SetHPMax(float HPMax);
-    void DeathStart();
+    void DeathStart(); //
 public :
     virtual void Start() override;
     virtual bool Init() override;
