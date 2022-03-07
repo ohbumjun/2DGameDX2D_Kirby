@@ -31,14 +31,16 @@ protected:
 	float m_GroundOffSet;
 	float m_CollisionOffset;
 protected :
+	bool m_CollisionDisabled;
 	bool m_IsGroundObject;
 
 protected :
 	void UpdateWhileOffGround(float DeltaTime);
-	void CheckBottomCollision();
-	void CheckCeilingCollision();
-	void CheckSideCollision();
 	void CheckOutsideWorldResolution();
+public :
+	virtual void CheckCeilingCollision();
+	virtual void CheckBottomCollision();
+	virtual void CheckSideCollision();
 public :
 	virtual void SetObjectLand();
 public :
@@ -59,6 +61,10 @@ public :
 		return m_PhysicsSimulate;
 	}
 public :
+	void SetCollisionDisable(bool Enable)
+{
+		m_CollisionDisabled = Enable;
+}
 	void SetIsGround (bool Enable)
 {
 		m_IsGround = Enable;

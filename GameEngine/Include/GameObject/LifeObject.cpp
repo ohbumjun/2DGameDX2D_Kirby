@@ -9,6 +9,7 @@ CLifeObject::CLifeObject():
 	// m_IsGround(true),
 	// m_PhysicsSimulate(true),
 	m_PhysicsSimulate(true),
+	m_CollisionDisabled(false),
 	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
@@ -95,6 +96,9 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 void CLifeObject::CheckBottomCollision()
 {
+	if (m_CollisionDisabled)
+		return;
+
 	bool BottomCollision = false;
 
 	Vector3 m_Pos = GetWorldPos();
@@ -225,6 +229,9 @@ void CLifeObject::CheckCeilingCollision()
 
 void CLifeObject::CheckSideCollision()
 {
+	if (m_CollisionDisabled)
+		return;
+
 	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
 	if (!TileMap)

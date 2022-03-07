@@ -1248,6 +1248,7 @@ void CPlayer2D::PullRightCollision(const CollisionResult& Result)
 	if (!DestMonster->IsBeingPulled())
 	{
 		DestMonster->SetIsBeingPulled(true);
+		DestMonster->SetCollisionDisable(true);
 		DestMonster->SetPulledDestPos(GetWorldPos());
 	}
 }
@@ -1269,6 +1270,7 @@ void CPlayer2D::PullLeftCollision(const CollisionResult& Result)
 	if (!DestMonster->IsBeingPulled())
 	{
 		DestMonster->SetIsBeingPulled(true);
+		DestMonster->SetCollisionDisable(true);
 		DestMonster->SetPulledDestPos(GetWorldPos());
 	}
 }
@@ -1292,6 +1294,7 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 	{
 		m_PullingMonster->SetIsBeingPulled(false);
 		m_PullingMonster->ResetPulledInfo();
+		m_PullingMonster->SetCollisionDisable(false);
 		m_PullingMonster = nullptr;
 	}
 
@@ -1322,6 +1325,7 @@ void CPlayer2D::PullLeftEnd(float DeltaTime)
 	if (m_PullingMonster)
 	{
 		m_PullingMonster->SetIsBeingPulled(false);
+		m_PullingMonster->SetCollisionDisable(false);
 		m_PullingMonster->ResetPulledInfo();
 		m_PullingMonster = nullptr;
 	}
