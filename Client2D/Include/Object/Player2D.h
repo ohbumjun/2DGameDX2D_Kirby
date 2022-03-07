@@ -134,6 +134,7 @@ protected: // Animation
 	void ChangePlayerDeathAnimation();
 	void ChangePlayerAttackAnimation();
 	void ChangePlayerFlyAnimation();
+	void ChangePlayerJumpAnimation();
 private :
 	virtual void SetObjectLand() override;
 private :

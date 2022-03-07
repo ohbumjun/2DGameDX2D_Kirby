@@ -33,6 +33,7 @@ m_LeftMovePush(false),
 m_IsLeverMoving(false),
 m_IsDashMoving(false),
 m_TriangleJump(false),
+m_IsEatingMonster(false),
 m_DeltaTime(0.f),
 m_IsFlying(false),
 m_FlySpeed(300.f),
@@ -349,6 +350,10 @@ void CPlayer2D::Start()
 	// Animation Play Scale 세팅
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
+
+	// Animation Loop 여부 세팅
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetLoop(false);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -518,7 +523,11 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	ChangePlayerWalkAnimation();
+	// Animation 전환
+	if (!m_Jump)
+	{
+		ChangePlayerWalkAnimation();
+	}
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
@@ -589,7 +598,11 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	ChangePlayerRunAnimation();
+	// Animation 전환
+	if (!m_Jump)
+	{
+		ChangePlayerRunAnimation();
+	}
 }
 
 void CPlayer2D::MoveRight(float DeltaTime)
@@ -671,7 +684,10 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	ChangePlayerWalkAnimation();
+	if (!m_Jump)
+	{
+		ChangePlayerWalkAnimation();
+	}
 
 }
 
@@ -738,7 +754,11 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	ChangePlayerRunAnimation();
+	// Animation 전환
+	if (!m_Jump)
+	{
+		ChangePlayerRunAnimation();
+	}
 }
 
 void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
@@ -962,7 +982,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 		}
 
 		// Animation 세팅
-		ChangePlayerWalkAnimation();
+		// ChangePlayerWalkAnimation();
 
 		// 범위 제한 하기
 		float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
@@ -984,11 +1004,13 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 		}
 	}
 
-	// 속도가 없으면 Idle Animation으로 바꿔준다.
-	if (m_MoveVelocity <= 0.f)
+	// 속도가 없고 + 점프 상태가 아니라면 --> Idle Animation으로 바꿔준다.
+	/*
+	if (m_MoveVelocity <= 0.f && !m_Jump)
 	{
 		ChangePlayerIdleAnimation();
 	}
+	*/
 }
 
 void CPlayer2D::ResetMoveInfo()
@@ -1190,6 +1212,12 @@ void CPlayer2D::Jump(float DeltaTime)
 		}
 	}
 
+	// Animation Change
+	if (m_IsEatingMonster)
+		ChangePlayerWalkAnimation();
+	else
+		ChangePlayerJumpAnimation();
+
 	// 현재 그냥 땅에 있는 상태였다면 Simple Jump를 수행한다
 	// if (m_IsGround || m_MoveVelocity == 0.f)
 	if (m_FallTime == 0.f)
@@ -1345,6 +1373,14 @@ void CPlayer2D::ChangePlayerFlyAnimation()
 		ChangeAnimation("LeftFly");
 	else
 		ChangeAnimation("RightFly");
+}
+
+void CPlayer2D::ChangePlayerJumpAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftJump");
+	else
+ 		ChangeAnimation("RightJump");
 }
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
