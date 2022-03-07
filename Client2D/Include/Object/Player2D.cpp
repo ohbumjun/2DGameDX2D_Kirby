@@ -1427,6 +1427,9 @@ void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 	if (m_PullingMonster)
 		return;
 
+	if (m_IsEatingMonster)
+		return;
+
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
 
 	if (!DestMonster)
@@ -1469,6 +1472,9 @@ void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 	CColliderComponent* CollisionDest = Result.Dest;
 
 	if (m_PullingMonster)
+		return;
+
+	if (m_IsEatingMonster)
 		return;
 
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
