@@ -24,7 +24,7 @@ CMonster::CMonster() :
 	m_RandomMoveTime(5.f),
 	m_RandomMoveTimeMax(5.f),
 	m_IsBeingSpitOut(false),
-	m_SpitOutDistanceMax(1000.f)
+	m_SpitOutDistanceMax(500.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -115,6 +115,8 @@ void CMonster::AIStateUpdate(float DeltaTime)
 {
 	// 만약 끌려가고 있는 상태라면 적용 X --> UpdateBeingPulled 함수만 적용
 	if (m_IsBeingPulled)
+		return;
+	if (m_IsBeingSpitOut)
 		return;
 
 	// Hit 혹은 Death는 세팅해주고 Return
@@ -379,6 +381,8 @@ void CMonster::Update(float DeltaTime)
 
 	UpdateBeingPulled(DeltaTime);
 
+	UpdateBeingOutOfPlayer(DeltaTime);
+
 	AIStateUpdate(DeltaTime);
 
 	AIActionUpdate(DeltaTime);
@@ -400,6 +404,7 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 {
 	if (!m_IsBeingPulled)
 		return;
+
 	if (m_IsBeingSpitOut)
 		return;
 
@@ -434,13 +439,21 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 
 void CMonster::UpdateBeingOutOfPlayer(float DeltaTime)
 {
-	if (m_SpitOutDistance <= m_SpitOutDistanceMax)
+	if (!m_IsBeingSpitOut)
+		return;
+
+	if (m_SpitOutDistance < m_SpitOutDistanceMax)
 	{
-		m_SpitOutDistance += DeltaTime;
+		m_SpitOutDistance += DeltaTime * 500.f;
 
 		m_IsBeingSpitOut = true;
 
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 300.f);
+		AddWorldPos(m_ObjectMoveDir * DeltaTime * 500.f);
+
+		if (m_SpitOutDistance >= m_SpitOutDistanceMax)
+		{
+			m_IsBeingSpitOut = false;
+		}
 	}
 }
 
@@ -448,6 +461,9 @@ void CMonster::UpdateMonsterMove(float DeltaTime)
 {
 	// 현재 공격중이거나, Trace 상태라면 기존 Dir을 그대로 유지한다.
 	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
+		return;
+
+	if (m_IsBeingSpitOut || m_IsBeingPulled)
 		return;
 
 	AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity);

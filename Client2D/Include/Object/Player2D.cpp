@@ -457,6 +457,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
+	// 현재는 Pull 하고 있는 상태가 아니므로 false 로 세팅한다.
+	m_IsPulling = false;
+
 	// 삼각 점프 상태였다면 계속 이동 시킨다
 	if (m_TriangleJump)
 	{
@@ -617,6 +620,9 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
+	// 현재는 Pull 하고 있는 상태가 아니므로 false 로 세팅한다.
+	m_IsPulling = false;
+
 	// Triangle Jump 중이라면 이동은 계속 하되 + 키보드는 안먹게 한다
 	if (m_TriangleJump)
 	{
@@ -776,10 +782,7 @@ void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 
 	ChangePlayerIdleAnimation();
 
-	if (m_IsPulling)
-	{
-		PullLeftEnd(DeltaTime);
-	}
+	PullLeftEnd(DeltaTime);
 }
 
 void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
@@ -790,10 +793,7 @@ void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
 
 	ChangePlayerIdleAnimation();
 
-	if (m_IsPulling)
-	{
-		PullRightEnd(DeltaTime);
-	}
+	PullRightEnd(DeltaTime);
 }
 
 void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
@@ -803,6 +803,8 @@ void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 	m_LeftMovePush = false;
 
 	ResetMoveInfo();
+
+	PullLeftEnd(DeltaTime);
 }
 
 void CPlayer2D::RightDashMoveEnd(float DeltaTime)
@@ -812,6 +814,8 @@ void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 	m_RightMovePush = false;
 
 	ResetMoveInfo();
+
+	PullRightEnd(DeltaTime);
 }
 
 void CPlayer2D::SpitOut(float DeltaTime)
@@ -824,6 +828,19 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	m_EatenMonster->Enable(true);
 
 	m_EatenMonster->SetBeingSpitOut(true);
+
+	m_EatenMonster->SetWorldPos(GetWorldPos());
+
+	m_EatenMonster->SetAIState(Monster_AI::Hit);
+
+	if (m_ObjectMoveDir.x > 0)
+	{
+		m_EatenMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+	}
+	else
+	{
+		m_EatenMonster->SetObjectMoveDir(Vector3(1.f * -1, 0.f, 0.f));
+	}
 
 	m_EatenMonster = nullptr;
 }
@@ -1451,6 +1468,9 @@ void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 	if (m_IsEatingMonster)
 		return;
 
+	if (!m_IsPulling)
+		return;
+
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
 
 	if (!DestMonster)
@@ -1496,6 +1516,9 @@ void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 		return;
 
 	if (m_IsEatingMonster)
+		return;
+
+	if (!m_IsPulling)
 		return;
 
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());

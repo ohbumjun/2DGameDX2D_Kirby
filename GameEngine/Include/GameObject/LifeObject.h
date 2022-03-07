@@ -75,6 +75,10 @@ public :
 	{
 		m_PhysicsSimulate = Physics;
 	}
+	void SetObjectMoveDir (Vector3 Dir)
+{
+		m_ObjectMoveDir = Dir;
+}
 public:
 	virtual void         Start() override;
 	virtual bool         Init() override;

@@ -51,6 +51,10 @@ public :
         return m_IsBeingHit;
 }
 public :
+    void SetAIState(Monster_AI State)
+{
+        m_AI = State;
+}
     void SetBeingSpitOut(bool Enable)
 {
         m_IsBeingSpitOut = Enable;
