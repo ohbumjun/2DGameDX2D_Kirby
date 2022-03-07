@@ -124,6 +124,9 @@ private :
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
+private :
+	void FallFromCliff();
+	void ChangeToIdleWhenReachGroundAfterFall();
 protected: // Animation
 	void ChangePlayerIdleAnimation();
 	void ChangePlayerNormalIdleAnimation();

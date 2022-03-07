@@ -17,7 +17,7 @@ CLifeObject::CLifeObject():
 	m_JumpVelocity(90.f),
 	m_FallVelocity(0.f),
 	m_FallVelocityMax(1000.f),
-	m_GravityAccel(10.f),
+	m_GravityAccel(8.5f),
 	m_FloorCheck(false),
 	m_SideWallCheck(true),	
 	m_IsSideCollided(false),

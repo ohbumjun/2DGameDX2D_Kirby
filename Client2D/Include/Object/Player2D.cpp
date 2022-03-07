@@ -364,26 +364,9 @@ void CPlayer2D::Update(float DeltaTime)
 
 	PlayerMoveUpdate(DeltaTime);
 
-	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided)
-	{
-		ChangePlayerFallAnimation();
-	}
+	FallFromCliff();
 
-	if (m_IsBottomCollided)
-	{
-		// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
-		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
-
-		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
-		{
-			if (m_IsEatingMonster)
-				ChangePlayerEatIdleAnimation();
-			else
-				ChangePlayerNormalIdleAnimation();
-		}
-
-		m_IsFalling = false;
-	}
+	ChangeToIdleWhenReachGroundAfterFall();
 
 	static bool Fire2 = false;
 	
@@ -472,6 +455,10 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 
 		ChangePlayerFallAnimation();
 	}
+
+	// Fall StartY 를 여기서 다시 세팅한다.
+	m_FallTime = 0.f;
+	m_FallStartY = GetWorldPos().y;
 
 	m_IsFalling = true;
 }
@@ -1336,6 +1323,34 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 
 	m_ToLeftWhenRightMove = false;
 	m_ToRightWhenLeftMove = false;
+}
+
+void CPlayer2D::FallFromCliff()
+{
+	// 절벽에서 막 떨어졌을 때
+	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided && !m_IsFlying)
+	{
+		ChangePlayerFallAnimation();
+	}
+}
+
+void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
+{
+	if (m_IsBottomCollided)
+	{
+		// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
+		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
+		{
+			if (m_IsEatingMonster)
+				ChangePlayerEatIdleAnimation();
+			else
+				ChangePlayerNormalIdleAnimation();
+		}
+
+		m_IsFalling = false;
+	}
 }
 
 void CPlayer2D::ChangePlayerIdleAnimation()
