@@ -92,7 +92,7 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 	// Up
 	if (CameraOriginPos.y + RS.Height >= WorldRS.y)
 	{
-		CameraOriginPos.y = WorldRS.y - RS.Height - 0.001f;
+		CameraOriginPos.y = WorldRS.y - RS.Height;
 
 		SetWorldPos(CameraOriginPos);
 
@@ -100,9 +100,9 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 	}
 
 	// Down
-	else if (CameraOriginPos.y < 0.f)
+	if (CameraOriginPos.y < 0.f)
 	{
-		CameraOriginPos.y = 0.001f;
+		CameraOriginPos.y = 0.f;
 
 		SetWorldPos(CameraOriginPos);
 
@@ -110,9 +110,9 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 	}
 
 	// Right
-	else if (CameraOriginPos.x + RS.Width > WorldRS.x)
+	if (CameraOriginPos.x + RS.Width > WorldRS.x)
 	{
-		CameraOriginPos.x = WorldRS.x - RS.Width - 0.001f;
+		CameraOriginPos.x = WorldRS.x - RS.Width;
 
 		SetWorldPos(CameraOriginPos);
 
@@ -120,9 +120,9 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 	}
 
 	// Left
-	else if (CameraOriginPos.x < 0.f)
+	if (CameraOriginPos.x < 0.f)
 	{
-		CameraOriginPos.x = 0.001f;
+		CameraOriginPos.x = 0.f;
 
 		SetWorldPos(CameraOriginPos);
 

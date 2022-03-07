@@ -345,6 +345,10 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("JumpWhileDash",
 		KeyState_Down, this, &CPlayer2D::Jump);
 
+
+	// Animation Play Scale 세팅
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -404,7 +408,13 @@ CPlayer2D* CPlayer2D::Clone()
 
 void CPlayer2D::SetIsEatingMonster(bool Enable)
 {
-	
+	m_IsEatingMonster = Enable;
+
+	if (Enable)
+	{
+		// Animation Change
+		ChangeAnimation("RightEatIdle");
+	}
 }
 
 void CPlayer2D::MoveUp(float DeltaTime)
@@ -1218,6 +1228,24 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 	m_ToLeftWhenRightMove = false;
 	m_ToRightWhenLeftMove = false;
 }
+
+void CPlayer2D::ChangePlayerIdleAnimation()
+{}
+
+void CPlayer2D::ChangePlayerWalkAnimation()
+{}
+
+void CPlayer2D::ChangePlayerHitAnimation()
+{}
+
+void CPlayer2D::ChangePlayerTraceAnimation()
+{}
+
+void CPlayer2D::ChangePlayerDeathAnimation()
+{}
+
+void CPlayer2D::ChangePlayerAttackAnimation()
+{}
 
 void CPlayer2D::SetObjectLand()
 {

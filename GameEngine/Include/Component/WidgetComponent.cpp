@@ -120,6 +120,9 @@ void CWidgetComponent::Render()
 {
 	CSceneComponent::Render();
 
+	if (!m_Enable)
+		return;
+
 	if (m_WidgetWindow)
 		m_WidgetWindow->Render();
 }

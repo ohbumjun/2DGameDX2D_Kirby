@@ -33,6 +33,8 @@ protected:
 protected :
 	bool m_CollisionDisabled;
 	bool m_IsGroundObject;
+protected :
+	Vector3 m_ObjectMoveDir;
 
 protected :
 	void UpdateWhileOffGround(float DeltaTime);

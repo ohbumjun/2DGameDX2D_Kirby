@@ -120,6 +120,13 @@ private :
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
+protected: // Animation
+	void ChangePlayerIdleAnimation();
+	void ChangePlayerWalkAnimation();
+	void ChangePlayerHitAnimation();
+	void ChangePlayerTraceAnimation();
+	void ChangePlayerDeathAnimation();
+	void ChangePlayerAttackAnimation();
 private :
 	virtual void SetObjectLand() override;
 private :

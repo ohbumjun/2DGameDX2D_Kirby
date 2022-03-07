@@ -156,7 +156,7 @@ void CMonster::AIStateUpdate(float DeltaTime)
 		// 같은 영역에 속하지 않는다면 --> Walk 혹은 AI
 		else
 		{
-			if (m_MonsterMoveDir.Length() == 0.f)
+			if (m_ObjectMoveDir.Length() == 0.f)
 			{
 				m_AI = Monster_AI::Idle;
 			}
@@ -240,11 +240,11 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 
 	if (TraceDir.x < 0.f)
 	{
-		m_MonsterMoveDir.x = -1.f;
+		m_ObjectMoveDir.x = -1.f;
 	}
 	else if (TraceDir.x > 0.f)
 	{
-		m_MonsterMoveDir.x = 1.f;
+		m_ObjectMoveDir.x = 1.f;
 	}
 
 	ChangeTraceAnimation();
@@ -433,7 +433,7 @@ void CMonster::UpdateMonsterMove(float DeltaTime)
 	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
 		return;
 
-	AddWorldPos(m_MonsterMoveDir * DeltaTime * m_MonsterMoveVelocity);
+	AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity);
 
 	m_RandomMoveTime -= DeltaTime;
 
@@ -459,14 +459,14 @@ void CMonster::SetRandomTargetDir()
 
 	float Angle = GetWorldPos().Angle(Vector3(TargetX, TargetY, 1.f));
 	
-	m_MonsterMoveDir.x = cosf(DegreeToRadian(Angle));
-	m_MonsterMoveDir.y = sinf(DegreeToRadian(Angle));
+	m_ObjectMoveDir.x = cosf(DegreeToRadian(Angle));
+	m_ObjectMoveDir.y = sinf(DegreeToRadian(Angle));
 	*/
 
 	int RandomDir = (int)(rand() % 2);
-	m_MonsterMoveDir.x = RandomDir == 0 ? -1.f : 1.f;
+	m_ObjectMoveDir.x = RandomDir == 0 ? -1.f : 1.f;
 
-	m_MonsterMoveDir.Normalize();
+	m_ObjectMoveDir.Normalize();
 
 }
 
@@ -499,7 +499,7 @@ void CMonster::ChangeIdleAnimation()
 {
 	std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-	if (m_MonsterMoveDir.x < 0)
+	if (m_ObjectMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftIdle");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
@@ -509,7 +509,7 @@ void CMonster::ChangeWalkAnimation()
 {
 	std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-	if (m_MonsterMoveDir.x < 0)
+	if (m_ObjectMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftWalk");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightWalk");
@@ -519,7 +519,7 @@ void CMonster::ChangeHitAnimation()
 {
 	std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-	if (m_MonsterMoveDir.x < 0)
+	if (m_ObjectMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftHit");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightHit");
@@ -529,7 +529,7 @@ void CMonster::ChangeTraceAnimation()
 {
 	std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-	if (m_MonsterMoveDir.x < 0)
+	if (m_ObjectMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftRun");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightRun");
@@ -539,7 +539,7 @@ void CMonster::ChangeDeathAnimation()
 {
 	std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-	if (m_MonsterMoveDir.x < 0)
+	if (m_ObjectMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftDeath");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightDeath");
@@ -549,7 +549,7 @@ void CMonster::ChangeAttackAnimation()
 {
 	std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-	if (m_MonsterMoveDir.x < 0)
+	if (m_ObjectMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");

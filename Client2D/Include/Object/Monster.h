@@ -37,7 +37,7 @@ private :
     float m_MonsterMoveVelocity;
     float m_RandomMoveTime;
     float m_RandomMoveTimeMax;
-    Vector3 m_MonsterMoveDir;
+
 
 public :
     bool IsBeingPulled() const

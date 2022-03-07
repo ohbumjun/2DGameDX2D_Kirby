@@ -54,6 +54,10 @@ public :
 {
 		return m_Name;
 }
+	float GetPlayTime () const
+{
+		return m_PlayTime;
+}
 	int GetCurrentFrame() const
 	{
 		return m_Frame;
@@ -119,6 +123,11 @@ public :
 		m_Frame = 0;
 		m_Sequence->ClearFrame();
 	}
+
+	void SetPlayScale(float Scale)
+{
+		m_PlayScale = Scale;
+}
 
 	void SetFrameReverse(bool Reverse)
 {
