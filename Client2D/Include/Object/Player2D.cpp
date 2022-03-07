@@ -346,6 +346,8 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("JumpWhileDash",
 		KeyState_Down, this, &CPlayer2D::Jump);
 
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpitOut",
+		KeyState_Push, this, &CPlayer2D::SpitOut);
 
 	// Animation Play Scale 세팅
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
@@ -420,6 +422,11 @@ void CPlayer2D::SetIsEatingMonster(bool Enable)
 		// Animation Change
 		ChangePlayerIdleAnimation();
 	}
+}
+
+void CPlayer2D::SetEatenMonster(CMonster* Monster)
+{
+	m_EatenMonster = Monster;
 }
 
 void CPlayer2D::MoveUp(float DeltaTime)
@@ -805,6 +812,20 @@ void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 	m_RightMovePush = false;
 
 	ResetMoveInfo();
+}
+
+void CPlayer2D::SpitOut(float DeltaTime)
+{
+	if (!m_IsEatingMonster)
+		return;
+
+	m_IsEatingMonster = false;
+
+	m_EatenMonster->Enable(true);
+
+	m_EatenMonster->SetBeingSpitOut(true);
+
+	m_EatenMonster = nullptr;
 }
 
 float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)

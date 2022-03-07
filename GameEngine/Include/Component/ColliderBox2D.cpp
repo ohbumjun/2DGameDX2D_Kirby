@@ -151,11 +151,14 @@ void CColliderBox2D::Render()
 	if (m_MouseCollision)
 		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
 
-	m_CBuffer->UpdateCBuffer();
+	if (m_Enable)
+	{
+		m_CBuffer->UpdateCBuffer();
 
-	m_Shader->SetShader();
+		m_Shader->SetShader();
 
-	m_Mesh->Render();
+		m_Mesh->Render();
+	}
 }
 
 void CColliderBox2D::PostRender()

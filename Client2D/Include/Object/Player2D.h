@@ -77,6 +77,7 @@ private :
 	bool m_IsPulling;
 	float m_PullDistance;
 	class CMonster* m_PullingMonster;
+	class CMonster* m_EatenMonster;
 
 public :
 	CColliderBox2D* GetBodyCollider () const
@@ -85,7 +86,7 @@ public :
 }
 public :
 	void SetIsEatingMonster(bool Enable);
-
+	void SetEatenMonster(class CMonster* Monster);
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -105,6 +106,8 @@ private :
 	void RightLeverMoveEnd(float DeltaTime);
 	void LeftDashMoveEnd(float DeltaTime);
 	void RightDashMoveEnd(float DeltaTime);
+private :
+	void SpitOut(float DeltaTime);
 private :
 	float CalculateLeverMoveSpeed(float DeltaTime);
 	float CalculateDashMoveSpeed(float DeltaTime);

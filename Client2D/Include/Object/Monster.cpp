@@ -22,7 +22,9 @@ CMonster::CMonster() :
 	m_DashDistance(500.f),
 	m_MonsterMoveVelocity(100.f),
 	m_RandomMoveTime(5.f),
-	m_RandomMoveTimeMax(5.f)
+	m_RandomMoveTimeMax(5.f),
+	m_IsBeingSpitOut(false),
+	m_SpitOutDistanceMax(1000.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -398,6 +400,8 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 {
 	if (!m_IsBeingPulled)
 		return;
+	if (m_IsBeingSpitOut)
+		return;
 
 	Vector3 MonsterPos = GetWorldPos();
 
@@ -424,6 +428,19 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 		// Destroy();
 
 		Player2D->SetIsEatingMonster(true);
+		Player2D->SetEatenMonster(this);
+	}
+}
+
+void CMonster::UpdateBeingOutOfPlayer(float DeltaTime)
+{
+	if (m_SpitOutDistance <= m_SpitOutDistanceMax)
+	{
+		m_SpitOutDistance += DeltaTime;
+
+		m_IsBeingSpitOut = true;
+
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 300.f);
 	}
 }
 

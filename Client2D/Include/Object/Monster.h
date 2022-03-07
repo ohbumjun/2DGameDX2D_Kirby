@@ -21,11 +21,14 @@ private :
     float m_DeathFinishTime;
     bool m_DeathStart;
 
-    // Player 에게 끌어당겨지기
+    // Player 에게 끌어당겨지기 + 나오기
     bool m_IsBeingPulled;
     float m_BeginPulledAccel;
     float m_BeginPulledAccelSum;
     Vector3 m_PulledDestPos;
+    bool m_IsBeingSpitOut;
+    float m_SpitOutDistance;
+    float m_SpitOutDistanceMax;
 
     // AI
     Monster_AI m_AI;
@@ -38,7 +41,6 @@ private :
     float m_RandomMoveTime;
     float m_RandomMoveTimeMax;
 
-
 public :
     bool IsBeingPulled() const
 {
@@ -49,6 +51,10 @@ public :
         return m_IsBeingHit;
 }
 public :
+    void SetBeingSpitOut(bool Enable)
+{
+        m_IsBeingSpitOut = Enable;
+}
     void SetBeingHit (bool Enable)
 {
         m_IsBeingHit = Enable;
@@ -87,6 +93,7 @@ public :
     virtual CMonster* Clone() override;
 protected:
     void UpdateBeingPulled(float DeltaTime);
+    void UpdateBeingOutOfPlayer(float DeltaTime);
 protected:
     void UpdateMonsterMove(float DeltaTime);
     void SetRandomTargetDir();
