@@ -122,11 +122,18 @@ private :
 	void TriangleJumpRight(float DeltaTime);
 protected: // Animation
 	void ChangePlayerIdleAnimation();
+	void ChangePlayerNormalIdleAnimation();
+	void ChangePlayerEatIdleAnimation();
 	void ChangePlayerWalkAnimation();
+	void ChangePlayerNormalWalkAnimation();
+	void ChangePlayerEatWalkAnimation();
 	void ChangePlayerHitAnimation();
-	void ChangePlayerTraceAnimation();
+	void ChangePlayerRunAnimation();
+	void ChangePlayerNormalRunAnimation();
+	void ChangePlayerEatRunAnimation();
 	void ChangePlayerDeathAnimation();
 	void ChangePlayerAttackAnimation();
+	void ChangePlayerFlyAnimation();
 private :
 	virtual void SetObjectLand() override;
 private :

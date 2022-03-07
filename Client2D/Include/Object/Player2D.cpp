@@ -413,7 +413,7 @@ void CPlayer2D::SetIsEatingMonster(bool Enable)
 	if (Enable)
 	{
 		// Animation Change
-		ChangeAnimation("RightEatIdle");
+		ChangePlayerIdleAnimation();
 	}
 }
 
@@ -474,6 +474,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	// 왼쪽 버튼 누르는 중 표시
 	m_LeftMovePush = true;
 
+	// 방향 왼쪽 표시
+	m_ObjectMoveDir.x = 1.f * -1;
+
 	// 이동 관련 상태 표시
 	if (m_RightMove)
 	{
@@ -515,7 +518,7 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// todo : 여기서 Animation 변환 처리를 해준다.
+	ChangePlayerWalkAnimation();
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
@@ -552,6 +555,9 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 
 	m_LeftMovePush = true;
 
+	// 방향 왼쪽 표시
+	m_ObjectMoveDir.x = 1.f * -1;
+
 
 	if (m_RightMove)
 	{
@@ -583,7 +589,7 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// todo : Change Animation
+	ChangePlayerRunAnimation();
 }
 
 void CPlayer2D::MoveRight(float DeltaTime)
@@ -619,6 +625,9 @@ void CPlayer2D::MoveRight(float DeltaTime)
 
 	// 오른쪽 이동 표시
 	m_RightMovePush = true;
+
+	// 방향 왼쪽 표시
+	m_ObjectMoveDir.x = 1.f;
 
 	// 이동 상태 Update
 	if (m_LeftMove)
@@ -662,7 +671,7 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	// Animation 전환
-
+	ChangePlayerWalkAnimation();
 
 }
 
@@ -692,9 +701,12 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		return;
 
 	m_IsLeverMoving = true;
+
 	m_IsDashMoving  = true;
 
 	m_RightMovePush = true;
+
+	m_ObjectMoveDir.x = 1.f;
 
 	if (m_LeftMove)
 	{
@@ -726,8 +738,7 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// todo : Change Animation
-
+	ChangePlayerRunAnimation();
 }
 
 void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
@@ -736,7 +747,7 @@ void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 
 	ResetMoveInfo();
 
-	ChangeAnimation("LeftIdle");
+	ChangePlayerIdleAnimation();
 
 	if (m_IsPulling)
 	{
@@ -746,11 +757,11 @@ void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 
 void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
 {
-	ChangeAnimation("RightIdle");
-
 	m_RightMovePush = false;
 
 	ResetMoveInfo();
+
+	ChangePlayerIdleAnimation();
 
 	if (m_IsPulling)
 	{
@@ -760,7 +771,7 @@ void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
 
 void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 {
-	ChangeAnimation("LeftIdle");
+	ChangePlayerWalkAnimation();
 
 	m_LeftMovePush = false;
 
@@ -769,7 +780,7 @@ void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 
 void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 {
-	ChangeAnimation("RightIdle");
+	ChangePlayerWalkAnimation();
 
 	m_RightMovePush = false;
 
@@ -945,12 +956,18 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 				m_ToLeftWhenRightMove = false;
 			}
 
+			ChangePlayerIdleAnimation();
+
 			m_MoveVelocity = 0.f;
 		}
+
+		// Animation 세팅
+		ChangePlayerWalkAnimation();
 
 		// 범위 제한 하기
 		float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 		float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+
 
 		// 감속 중임에도 이동은 시켜줘야 한다.
 		if (m_RightMove)
@@ -965,7 +982,12 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 				return;
 			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 		}
+	}
 
+	// 속도가 없으면 Idle Animation으로 바꿔준다.
+	if (m_MoveVelocity <= 0.f)
+	{
+		ChangePlayerIdleAnimation();
 	}
 }
 
@@ -1230,22 +1252,116 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 }
 
 void CPlayer2D::ChangePlayerIdleAnimation()
-{}
+{
+	if (m_IsEatingMonster)
+		ChangePlayerEatIdleAnimation();
+	else
+		ChangePlayerNormalIdleAnimation();
+}
+
+void CPlayer2D::ChangePlayerNormalIdleAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftIdle");
+	else
+		ChangeAnimation("RightIdle");
+}
 
 void CPlayer2D::ChangePlayerWalkAnimation()
-{}
+{
+	if (m_IsEatingMonster)
+	{
+		ChangePlayerEatWalkAnimation();
+	}
+	else
+	{
+		ChangePlayerNormalWalkAnimation();
+	}
+}
+
+void CPlayer2D::ChangePlayerNormalWalkAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftWalk");
+	else
+		ChangeAnimation("RightWalk");
+}
 
 void CPlayer2D::ChangePlayerHitAnimation()
-{}
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftHit");
+	else
+		ChangeAnimation("RightHit");
+}
 
-void CPlayer2D::ChangePlayerTraceAnimation()
-{}
+void CPlayer2D::ChangePlayerRunAnimation()
+{
+	if (m_IsEatingMonster)
+	{
+		ChangePlayerEatRunAnimation();
+	}
+	else
+	{
+		ChangePlayerNormalRunAnimation();
+	}
+}
+
+void CPlayer2D::ChangePlayerNormalRunAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftRun");
+	else
+		ChangeAnimation("RightRun");
+}
+
+void CPlayer2D::ChangePlayerEatRunAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftEatWalk");
+	else
+		ChangeAnimation("RightEatWalk");
+}
 
 void CPlayer2D::ChangePlayerDeathAnimation()
-{}
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftDeath");
+	else
+		ChangeAnimation("RightDeath");
+}
 
 void CPlayer2D::ChangePlayerAttackAnimation()
-{}
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftAttack");
+	else
+		ChangeAnimation("RightAttack");
+}
+
+void CPlayer2D::ChangePlayerFlyAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftFly");
+	else
+		ChangeAnimation("RightFly");
+}
+
+void CPlayer2D::ChangePlayerEatIdleAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftEatIdle");
+	else
+		ChangeAnimation("RightEatIdle");
+}
+
+void CPlayer2D::ChangePlayerEatWalkAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftEatWalk");
+	else
+		ChangeAnimation("RightEatWalk");
+}
 
 void CPlayer2D::SetObjectLand()
 {
@@ -1264,6 +1380,8 @@ void CPlayer2D::PullRight(float DeltaTime)
 	m_PullRightCollider->Enable(true);
 
 	m_IsPulling = true;
+
+	m_ObjectMoveDir.x = 1.f;
 }
 
 void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
@@ -1355,7 +1473,7 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 		m_PullingMonster = nullptr;
 	}
 
-	ChangeAnimation("RightIdle");
+	ChangePlayerIdleAnimation();
 
 	m_IsPulling = false;
 }
@@ -1371,6 +1489,8 @@ void CPlayer2D::PullLeft(float DeltaTime)
 	m_PullLeftCollider->Enable(true);
 
 	m_IsPulling = true;
+
+	m_ObjectMoveDir.x = 1.f * -1;
 }
 
 void CPlayer2D::PullLeftEnd(float DeltaTime)
@@ -1387,7 +1507,7 @@ void CPlayer2D::PullLeftEnd(float DeltaTime)
 		m_PullingMonster = nullptr;
 	}
 
-	ChangeAnimation("LeftIdle");
+	ChangePlayerIdleAnimation();
 
 	m_IsPulling = false;
 }
