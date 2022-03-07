@@ -364,6 +364,27 @@ void CPlayer2D::Update(float DeltaTime)
 
 	PlayerMoveUpdate(DeltaTime);
 
+	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided)
+	{
+		ChangePlayerFallAnimation();
+	}
+
+	if (m_IsBottomCollided)
+	{
+		// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
+		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
+		{
+			if (m_IsEatingMonster)
+				ChangePlayerEatIdleAnimation();
+			else
+				ChangePlayerNormalIdleAnimation();
+		}
+
+		m_IsFalling = false;
+	}
+
 	static bool Fire2 = false;
 	
 	static bool Hide = false;
@@ -1321,6 +1342,11 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 {
 	if (!m_Jump && !m_IsFlying)
 	{
+		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
+			return;
+
 		if (m_IsEatingMonster)
 			ChangePlayerEatIdleAnimation();
 		else

@@ -235,6 +235,8 @@ void CLifeObject::CheckBottomCollision()
 			}
 
 			m_IsGround = false;
+
+			BottomCollision = false;
 		}
 	}
 
