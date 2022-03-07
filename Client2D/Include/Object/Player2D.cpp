@@ -233,8 +233,9 @@ void CPlayer2D::Start()
 	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 	m_PullRightCollider->SetCollisionProfile("Player");
 	m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
-	m_PullRightCollider->SetEnable(false);
-	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollision);
+	m_PullRightCollider->Enable(false);
+	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollisionBeginCallback);
+	m_PullRightCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullRightCollisionEndCallback);
 	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_Sprite->GetWorldScale().y * 0.5f));
 	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
@@ -242,8 +243,9 @@ void CPlayer2D::Start()
 	m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 	m_PullLeftCollider->SetCollisionProfile("Player");
 	m_PullLeftCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
-	m_PullLeftCollider->SetEnable(false);
-	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullLeftCollision);
+	m_PullLeftCollider->Enable(false);
+	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullLeftCollisionBeginCallback);
+	m_PullLeftCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullLeftCollisionEndCallback);
 	m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_Sprite->GetWorldScale().y * 0.5f));
 	m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
@@ -398,6 +400,11 @@ void CPlayer2D::PostUpdate(float DeltaTime)
 CPlayer2D* CPlayer2D::Clone()
 {
 	return new CPlayer2D(*this);
+}
+
+void CPlayer2D::SetIsEatingMonster(bool Enable)
+{
+	
 }
 
 void CPlayer2D::MoveUp(float DeltaTime)
@@ -1226,12 +1233,12 @@ void CPlayer2D::PullRight(float DeltaTime)
 	// 오른쪽 범위 안에 있는지 확인하기
 	float PullDist = 0.f;
 
-	m_PullRightCollider->SetEnable(true);
+	m_PullRightCollider->Enable(true);
 
 	m_IsPulling = true;
 }
 
-void CPlayer2D::PullRightCollision(const CollisionResult& Result)
+void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 {
 	CColliderComponent* CollisionDest = Result.Dest;
 
@@ -1253,7 +1260,29 @@ void CPlayer2D::PullRightCollision(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::PullLeftCollision(const CollisionResult& Result)
+void CPlayer2D::PullRightCollisionEndCallback(const CollisionResult& Result)
+{
+	if (m_PullingMonster)
+	{
+		m_PullingMonster->SetIsBeingPulled(false);
+		m_PullingMonster->ResetPulledInfo();
+		m_PullingMonster->SetCollisionDisable(false);
+		m_PullingMonster = nullptr;
+	}
+}
+
+void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
+{
+	if (m_PullingMonster)
+	{
+		m_PullingMonster->SetIsBeingPulled(false);
+		m_PullingMonster->ResetPulledInfo();
+		m_PullingMonster->SetCollisionDisable(false);
+		m_PullingMonster = nullptr;
+	}
+}
+
+void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 {
 	CColliderComponent* CollisionDest = Result.Dest;
 
@@ -1288,7 +1317,7 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 {
 	m_RightMovePush = false;
 
-	m_PullRightCollider->SetEnable(false);
+	m_PullRightCollider->Enable(false);
 
 	if (m_PullingMonster)
 	{
@@ -1311,7 +1340,7 @@ void CPlayer2D::PullLeft(float DeltaTime)
 	float PullDist = 0.f;
 
 	// 충돌체의 크기를 늘려볼까 ?
-	m_PullLeftCollider->SetEnable(true);
+	m_PullLeftCollider->Enable(true);
 
 	m_IsPulling = true;
 }
@@ -1320,7 +1349,7 @@ void CPlayer2D::PullLeftEnd(float DeltaTime)
 {
 	m_LeftMovePush = false;
 
-	m_PullLeftCollider->SetEnable(false);
+	m_PullLeftCollider->Enable(false);
 
 	if (m_PullingMonster)
 	{

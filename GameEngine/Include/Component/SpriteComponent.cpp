@@ -203,6 +203,9 @@ void CSpriteComponent::Render()
 {
 	CSceneComponent::Render();
 
+	if (!m_Enable)
+		return;
+
 	if (!m_Material || !m_Mesh)
 		return;
 

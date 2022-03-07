@@ -62,6 +62,14 @@ void CGameObject::SetScene(CScene* Scene)
 	*/
 }
 
+void CGameObject::Enable(bool Enable)
+{
+	CRef::Enable(Enable);
+
+	if (m_RootComponent)
+		m_RootComponent->Enable(Enable);
+}
+
 CComponent* CGameObject::FindComponent(const std::string& Name)
 {
 	{

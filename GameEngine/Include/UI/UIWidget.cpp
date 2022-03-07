@@ -55,11 +55,15 @@ void CUIWidget::SetShader(const std::string& Name)
 
 void CUIWidget::SetUseTexture(bool Use)
 {
+	if (!m_CBuffer)
+		return;
 	m_CBuffer->SetUseTexture(Use);
 }
 
 void CUIWidget::SetUseAnimation(bool Use)
 {
+	if (!m_CBuffer)
+		return;
 	m_CBuffer->SetUseAnimation(true);
 }
 

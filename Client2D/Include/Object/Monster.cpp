@@ -16,7 +16,7 @@ CMonster::CMonster() :
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
-	m_BeginPulledAccel(3.f),
+	m_BeginPulledAccel(2.f),
 	m_BeginPulledAccelSum(0.f),
 	m_AttackDistance(150.f),
 	m_DashDistance(500.f),
@@ -401,7 +401,7 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 
 	Vector3 MonsterPos = GetWorldPos();
 
-	CGameObject* Player2D = m_Scene->GetPlayerObject();
+	CPlayer2D* Player2D = (CPlayer2D*)m_Scene->GetPlayerObject();
 
 	if (!Player2D)
 		return;
@@ -415,10 +415,15 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 
 	AddWorldPos(Vector3(PulledDir) * DeltaTime * m_BeginPulledAccelSum);
 
-	if (MonsterPos.Distance(m_PulledDestPos) <= 1.f)
+	if (MonsterPos.Distance(m_PulledDestPos) <= 10.f)
 	{
 		m_IsBeingPulled = false;
-		SetEnable(false);
+
+		Enable(false);
+
+		// Destroy();
+
+		Player2D->SetIsEatingMonster(true);
 	}
 }
 

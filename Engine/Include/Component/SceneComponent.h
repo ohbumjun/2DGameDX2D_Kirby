@@ -57,6 +57,7 @@ public:
 public:
 	virtual void SetScene(class CScene* Scene) override;
 	virtual void SetGameObject(class CGameObject* Object) override;
+	virtual void Enable(bool Enable) override;
 public:
 	void             AddChild(CSceneComponent* Child);
 	bool             DeleteChild(CSceneComponent* Child);

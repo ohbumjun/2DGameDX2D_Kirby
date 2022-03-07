@@ -25,6 +25,7 @@ public:
 	}
 public:
 	void SetScene(class CScene* Scene);
+	virtual void Enable(bool Enable) override;
 protected:
 	CSharedPtr<CSceneComponent>               m_RootComponent;
 	std::list<CSceneComponent*>               m_SceneComponentList;

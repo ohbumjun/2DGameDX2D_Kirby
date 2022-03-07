@@ -129,6 +129,18 @@ void CSceneComponent::SetGameObject(CGameObject* Object)
 	}
 }
 
+void CSceneComponent::Enable(bool Enable)
+{
+	CRef::Enable(Enable);
+
+	size_t Size = m_vecChild.size();
+
+	for (size_t i = 0; i < Size; ++i)
+	{
+		m_vecChild[i]->Enable(Enable);
+	}
+}
+
 void CSceneComponent::AddChild(CSceneComponent* Child)
 {
 	Child->m_Parent = this;
