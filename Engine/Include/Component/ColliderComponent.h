@@ -15,6 +15,7 @@ protected :
     Vector3 m_Offset;
     Vector3 m_Min; // 자신이 속한 충돌영역을 구한기 위한 Min, Max 값 
     Vector3 m_Max;
+    bool m_ColliderEnable;
 
     // 하나의 충돌체가 여러개의 영역에 걸쳐 있을 경우가 있으므로, 여러개의 충돌영역 idx 정보를 저장해둔다. 
     std::vector<int> m_vecSectionIndex;

@@ -20,14 +20,22 @@ protected:
     CSharedPtr<CSpriteMesh> m_BackGroundMesh;
     CSharedPtr<CMaterial> m_BackGroundMaterial;
 protected:
+    bool m_EditMode;
     float m_DeltaTime;
 public:
-
+    void EnableEditMode(bool Mode)
+    {
+        m_EditMode = Mode;
+    }
     CMaterial* GetBackGroundMaterial()    const
     {
         return m_BackGroundMaterial;
     }
-
+public:
+    void SetEditMode(bool Enable)
+    {
+        m_EditMode = Enable;
+    }
 public: // BackGround Image
     void SetBackGroundMaterial(CMaterial* Material);
     void SetBackGroundBaseColor(const Vector4& Color);

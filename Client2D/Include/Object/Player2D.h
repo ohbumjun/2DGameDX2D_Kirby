@@ -73,8 +73,7 @@ private :
 	float m_FlySpeed;
 
 	float m_PullDistance;
-	Vector3 m_PrevColliderBodyPos;
-	Vector3 m_OriginColliderBodyScale;
+	class CMonster* m_PullingMonster;
 public :
 	CColliderBox2D* GetBodyCollider () const
 {

@@ -31,7 +31,6 @@ public:
     {
         return m_BackGroundMaterial;
     }
-
 public:
     void SetEditMode(bool Enable)
     {

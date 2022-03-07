@@ -16,7 +16,7 @@ CMonster::CMonster() :
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
-	m_BeginPulledAccel(1.f),
+	m_BeginPulledAccel(3.f),
 	m_BeginPulledAccelSum(0.f),
 	m_AttackDistance(150.f),
 	m_DashDistance(500.f),
@@ -395,6 +395,13 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 		return;
 
 	Vector3 MonsterPos = GetWorldPos();
+
+	CGameObject* Player2D = m_Scene->GetPlayerObject();
+
+	if (!Player2D)
+		return;
+
+	m_PulledDestPos = Player2D->GetWorldPos();
 
 	Vector3 PulledDir = m_PulledDestPos - MonsterPos;
 	PulledDir.Normalize();

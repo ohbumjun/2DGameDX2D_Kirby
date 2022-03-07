@@ -26,6 +26,10 @@ protected :
 		return m_Transform;
 }
 public :
+	float GetScrollRatio () const
+{
+		return m_Transform->m_ScrollRatio;
+}
 	std::string GetLayerName() const
 	{
 		return m_LayerName;

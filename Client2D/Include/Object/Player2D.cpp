@@ -18,10 +18,10 @@
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
-m_LeverMoveAccel(1.f),
+m_LeverMoveAccel(2.f),
 m_LeverVelocity(0.f),
 m_LeverMaxMoveVelocity(350.f),
-m_DashMoveAccel(1.5f),
+m_DashMoveAccel(2.5f),
 m_DashVelocity(0.f),
 m_DashMaxMoveVelocity(250.f),
 m_RightMove(false),
@@ -229,16 +229,27 @@ void CPlayer2D::Start()
 	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
+
 	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 	m_PullRightCollider->SetCollisionProfile("Player");
 	m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
 	m_PullRightCollider->SetEnable(false);
 	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollision);
-	m_Sprite->AddChild(m_PullRightCollider);
-	
-	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x) * 0.5f,
+	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_Sprite->GetWorldScale().y * 0.5f));
-	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 0.5f, 0.f, 1.f);
+	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
+
+	m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
+	m_PullLeftCollider->SetCollisionProfile("Player");
+	m_PullLeftCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
+	m_PullLeftCollider->SetEnable(false);
+	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollision);
+	m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
+		(m_Sprite->GetWorldScale().y * 0.5f));
+	m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
+
+	m_Sprite->AddChild(m_PullRightCollider);
+	m_Sprite->AddChild(m_PullLeftCollider);
 
 	// m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 	// m_PullLeftCollider->SetCollisionProfile("PlayerAttack");
