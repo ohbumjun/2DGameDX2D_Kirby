@@ -105,6 +105,9 @@
     <ClCompile Include="Scene\DefaultScene.cpp">
       <Filter>01. Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Object\MushRoom.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -168,6 +171,9 @@
       <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
     <ClInclude Include="Object\NormalMonster.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MushRoom.h">
       <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>

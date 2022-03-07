@@ -81,7 +81,8 @@ bool CObjectHierarchy::Init()
 	// ========================================================================
 
 	// m_mapVecObject ¼¼ÆÃ
-	std::vector<std::string>  vecNormalMonsters = { g_NormalBearName, g_PurpleBeatlesName, g_YellowBirdName };
+	std::vector<std::string>  vecNormalMonsters = { g_NormalBearName,
+		g_PurpleBeatlesName, g_YellowBirdName, g_MushRoomName };
 
 	m_mapVecObject.insert(std::make_pair(g_NormalBearName, vecNormalMonsters));
 

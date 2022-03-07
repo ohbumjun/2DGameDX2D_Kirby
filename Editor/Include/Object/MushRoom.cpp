@@ -36,7 +36,6 @@ bool CMushRoom::Init()
 void CMushRoom::Update(float DeltaTime)
 {
 	CNormalMonster::Update(DeltaTime);
-
 }
 
 void CMushRoom::PostUpdate(float DeltaTime)

@@ -14,6 +14,7 @@
 #include "Object/TileMap.h"
 #include "Object/YellowBird.h"
 #include "Object/NormalBear.h"
+#include "Object/MushRoom.h"
 #include "Object/PurpleBeatle.h"
 #include "Object/TileMapEmpty.h"
 #include "Object/BackGround.h"
@@ -111,8 +112,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBack.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTest.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTestCamera.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayer.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonster.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonster.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonsterMushRoom.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()
@@ -149,6 +150,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CNormalBear).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CNormalBear>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CTileMap).hash_code())

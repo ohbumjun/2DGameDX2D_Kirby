@@ -41,6 +41,7 @@
 #include "Object/PurpleBeatle.h"
 #include "Object/NormalBear.h"
 #include "Object/TileMapEmpty.h"
+#include "Object/MushRoom.h"
 #include "Object/BackGround.h"
 
 DEFINITION_SINGLE(CEditorManager)
@@ -349,6 +350,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(NewMonsterName);
 		}
+		else if (strcmp(g_MushRoomName.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMushRoom>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -581,6 +586,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CNormalBear).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CNormalBear>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())
