@@ -46,18 +46,28 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 {
 	// Edit Mode 라면 떨어지는 효과를 적용하지 않는다
 	if (m_Scene->IsEditMode())
+	{
+		m_IsFalling = false;
 		return;
+	}
 
 	if (m_CollisionDisabled)
+	{
+		m_IsFalling = false;
 		return;
+	}
 
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
 	if (m_PhysicApplyDelayTime >= 0.f)
 	{
 		m_PhysicApplyDelayTime -= DeltaTime;
 
+		m_IsFalling = false;
+
 		return;
 	}
+
+	bool IsFalling = false;
 
 	if ((!m_IsGround && m_PhysicsSimulate) || (!m_IsBottomCollided && m_PhysicsSimulate && m_IsGroundObject))
 	{
@@ -94,7 +104,11 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 		float CurrentYPos = m_FallStartY + (Velocity - m_FallVelocity);
 
 		SetWorldPos(GetWorldPos().x, CurrentYPos, GetWorldPos().z);
+
+		IsFalling = true;
 	}
+
+	m_IsFalling = IsFalling;
 }
 
 void CLifeObject::CheckBottomCollision()
@@ -448,6 +462,7 @@ void CLifeObject::SetObjectLand()
 	m_FallTime = 0.f;
 	m_IsGround = true;
 	m_Jump = false;
+	m_IsFalling = false;
 }
 
 void CLifeObject::Start()

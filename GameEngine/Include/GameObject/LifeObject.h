@@ -30,6 +30,7 @@ protected:
 	float m_JumpAccelAccTime;
 	float m_GroundOffSet;
 	float m_CollisionOffset;
+	bool m_IsFalling;
 protected :
 	bool m_CollisionDisabled;
 	bool m_IsGroundObject;
@@ -37,7 +38,7 @@ protected :
 	Vector3 m_ObjectMoveDir;
 
 protected :
-	void UpdateWhileOffGround(float DeltaTime);
+	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
 public :
 	virtual void CheckCeilingCollision();

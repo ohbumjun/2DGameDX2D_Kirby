@@ -93,6 +93,7 @@ public:
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;
+	virtual void UpdateWhileOffGround(float DeltaTime) override;
 private:
 	void MoveUp(float DeltaTime);
 	void MoveUpEnd(float DeltaTime);

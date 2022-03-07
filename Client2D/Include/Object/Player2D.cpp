@@ -429,6 +429,11 @@ void CPlayer2D::SetEatenMonster(CMonster* Monster)
 	m_EatenMonster = Monster;
 }
 
+void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
+{
+	CLifeObject::UpdateWhileOffGround(DeltaTime);
+}
+
 void CPlayer2D::MoveUp(float DeltaTime)
 {
 	FlyAfterJump(DeltaTime);
@@ -443,6 +448,10 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		// 다시 날려면, Jump 이후에 날 수 있게 세팅한다
 		// if (m_IsGround)
 		m_IsFlying = false;
+
+		m_IsFalling = true;
+
+		ChangePlayerFallAnimation();
 	}
 }
 
@@ -534,10 +543,7 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	}
 
 	// Animation 전환
-	if (!m_Jump && !m_IsFlying)
-	{
-		ChangePlayerWalkAnimation();
-	}
+	ChangePlayerWalkAnimation();
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
@@ -609,10 +615,8 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	}
 
 	// Animation 전환
-	if (!m_Jump && !m_IsFlying)
-	{
-		ChangePlayerRunAnimation();
-	}
+	ChangePlayerRunAnimation();
+	
 }
 
 void CPlayer2D::MoveRight(float DeltaTime)
@@ -697,10 +701,7 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	if (!m_Jump && !m_IsFlying)
-	{
-		ChangePlayerWalkAnimation();
-	}
+	ChangePlayerWalkAnimation();
 
 }
 
@@ -768,10 +769,8 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	if (!m_Jump && !m_IsFlying)
-	{
-		ChangePlayerRunAnimation();
-	}
+	ChangePlayerRunAnimation();
+	
 }
 
 void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
@@ -1320,10 +1319,13 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 
 void CPlayer2D::ChangePlayerIdleAnimation()
 {
-	if (m_IsEatingMonster)
-		ChangePlayerEatIdleAnimation();
-	else
-		ChangePlayerNormalIdleAnimation();
+	if (!m_Jump && !m_IsFlying && !m_IsGround)
+	{
+		if (m_IsEatingMonster)
+			ChangePlayerEatIdleAnimation();
+		else
+			ChangePlayerNormalIdleAnimation();
+	}
 }
 
 void CPlayer2D::ChangePlayerNormalIdleAnimation()
@@ -1336,13 +1338,16 @@ void CPlayer2D::ChangePlayerNormalIdleAnimation()
 
 void CPlayer2D::ChangePlayerWalkAnimation()
 {
-	if (m_IsEatingMonster)
+	if (!m_Jump && !m_IsFlying && !m_IsGround)
 	{
-		ChangePlayerEatWalkAnimation();
-	}
-	else
-	{
-		ChangePlayerNormalWalkAnimation();
+		if (m_IsEatingMonster)
+		{
+			ChangePlayerEatWalkAnimation();
+		}
+		else
+		{
+			ChangePlayerNormalWalkAnimation();
+		}
 	}
 }
 
@@ -1364,13 +1369,16 @@ void CPlayer2D::ChangePlayerHitAnimation()
 
 void CPlayer2D::ChangePlayerRunAnimation()
 {
-	if (m_IsEatingMonster)
+	if (!m_Jump && !m_IsFlying && !m_IsGround)
 	{
-		ChangePlayerEatRunAnimation();
-	}
-	else
-	{
-		ChangePlayerNormalRunAnimation();
+		if (m_IsEatingMonster)
+		{
+			ChangePlayerEatRunAnimation();
+		}
+		else
+		{
+			ChangePlayerNormalRunAnimation();
+		}
 	}
 }
 
