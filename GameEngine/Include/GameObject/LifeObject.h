@@ -21,6 +21,7 @@ protected:
 	float m_SideWallCheck;
 	bool m_IsSideCollided;
 	bool m_IsBottomCollided;
+	bool m_ApplyBottomCollision;
 	float m_PhysicApplyDelayTime;
 protected:
 	bool m_Jump;

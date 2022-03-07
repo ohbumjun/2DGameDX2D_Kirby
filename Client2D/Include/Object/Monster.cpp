@@ -515,7 +515,7 @@ void CMonster::ChangeTraceAnimation()
 	if (m_MonsterMoveDir.x < 0)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftRun");
 	else
-d		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightRun");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightRun");
 }
 
 void CMonster::ChangeDeathAnimation() 

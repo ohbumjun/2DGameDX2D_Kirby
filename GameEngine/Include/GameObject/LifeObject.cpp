@@ -24,6 +24,7 @@ CLifeObject::CLifeObject():
 	m_JumpAccelAccTime(0.f),
 	m_CollisionOffset(0.001f),
 	m_GroundOffSet(1.f),
+	m_ApplyBottomCollision(true),
 	m_PrevPos{},
 	m_PhysicApplyDelayTime(1.5f),
 	m_IsGroundObject(false)
@@ -106,7 +107,8 @@ void CLifeObject::CheckBottomCollision()
 		return;
 	}
 
-	if (m_PhysicsSimulate && m_Pos.y - m_PrevPos.y <= 0.f)
+	if ((m_PhysicsSimulate && m_Pos.y - m_PrevPos.y <= 0.f) || 
+		(m_ApplyBottomCollision && m_Pos.y - m_PrevPos.y <= 0.f))
 	{
 		CTileEmptyComponent* TileMap =  m_Scene->GetTileEmptyComponent();
 
