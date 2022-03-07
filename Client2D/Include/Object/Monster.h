@@ -61,6 +61,8 @@ public :
 {
         m_IsBeingPulled = Enable;
 }
+    void ResetPulledInfo();
+
 public :
     void LoadAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
     void SetCurrentAnimation(const std::string& Name);
@@ -85,6 +87,7 @@ public :
     virtual CMonster* Clone() override;
 protected:
     void UpdateBeingPulled(float DeltaTime);
+protected:
     void UpdateMonsterMove(float DeltaTime);
     void SetRandomTargetDir();
 protected:

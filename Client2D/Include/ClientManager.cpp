@@ -75,7 +75,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 	CInput::GetInst()->CreateKey("PullRight", 'D');
 	CInput::GetInst()->SetShiftKey("PullRight", true);
-	CInput::GetInst()->CreateKey("PullLeft", 'D');
+	CInput::GetInst()->CreateKey("PullLeft", 'A');
 	CInput::GetInst()->SetShiftKey("PullLeft", true);
 
 	// CInput::GetInst()->CreateKey("Attack", VK_SPACE);

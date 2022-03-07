@@ -78,6 +78,11 @@ void CMonster::SetCurrentAnimation(const std::string& Name)
 	m_Sprite->GetAnimationInstance()->ChangeAnimation(Name);
 }
 
+void CMonster::ResetPulledInfo()
+{
+	m_BeginPulledAccelSum = 0.f;
+}
+
 void CMonster::Damage(float Damage)
 {
 	// 실제 데미지

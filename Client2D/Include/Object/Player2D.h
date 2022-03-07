@@ -72,6 +72,7 @@ private :
 	bool m_IsFlying;
 	float m_FlySpeed;
 
+	bool m_IsPulling;
 	float m_PullDistance;
 	class CMonster* m_PullingMonster;
 public :
@@ -121,6 +122,10 @@ private :
 	void PullLeft(float DeltaTime);
 	void PullLeftEnd(float DeltaTime);
 	void PullRightCollision(const CollisionResult& Result);
+	void PullLeftCollision(const CollisionResult& Result);
+private :
+	void ChangeAnimation(const std::string& AnimName);
+
 private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);
