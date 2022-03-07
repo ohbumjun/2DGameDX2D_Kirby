@@ -48,6 +48,9 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 	if (m_Scene->IsEditMode())
 		return;
 
+	if (m_CollisionDisabled)
+		return;
+
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
 	if (m_PhysicApplyDelayTime >= 0.f)
 	{
