@@ -534,7 +534,7 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	}
 
 	// Animation 전환
-	if (!m_Jump)
+	if (!m_Jump && !m_IsFlying)
 	{
 		ChangePlayerWalkAnimation();
 	}
@@ -609,7 +609,7 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	}
 
 	// Animation 전환
-	if (!m_Jump)
+	if (!m_Jump && !m_IsFlying)
 	{
 		ChangePlayerRunAnimation();
 	}
@@ -697,7 +697,7 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	if (!m_Jump)
+	if (!m_Jump && !m_IsFlying)
 	{
 		ChangePlayerWalkAnimation();
 	}
@@ -768,7 +768,7 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	if (!m_Jump)
+	if (!m_Jump && !m_IsFlying)
 	{
 		ChangePlayerRunAnimation();
 	}
@@ -1100,6 +1100,7 @@ void CPlayer2D::FlyAfterJump(float DeltaTime)
 		m_Sprite->AddWorldPos(Vector3(0.f, 1.f, 0.f) * m_FlySpeed * DeltaTime);
 
 		// todo : Animation Change
+		ChangePlayerFlyAnimation();
 
 		// 중력 적용 방지
 		m_Jump = false;
@@ -1419,6 +1420,14 @@ void CPlayer2D::ChangePlayerJumpAnimation()
 		ChangeAnimation("LeftJump");
 	else
  		ChangeAnimation("RightJump");
+}
+
+void CPlayer2D::ChangePlayerFallAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftFall");
+	else
+		ChangeAnimation("RightFall");
 }
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
