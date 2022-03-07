@@ -108,6 +108,16 @@ void CObjectHierarchy::Update(float DeltaTime)
 	CIMGUIWindow::Update(DeltaTime);
 }
 
+void CObjectHierarchy::SetSeletedObjectByName(const std::string& Name)
+{
+	int Index = m_CreatedObjectListBox->FindItemIndex(Name);
+
+	if (Index == -1)
+		return;
+
+	m_CreatedObjectListBox->SetSelectIndex(Index);
+}
+
 void CObjectHierarchy::AddCreatedObject(const char* ObjectName)
 {
 	m_CreatedObjectListBox->AddItem(ObjectName);

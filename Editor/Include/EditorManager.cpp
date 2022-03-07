@@ -322,7 +322,6 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 	// Edit Mode가 Object Create 일 때는 해당 위치에 Object Create
 	if (m_EditMode == EditMode::CharacterCreate)
 	{
-
 		if (m_ObjectHierarchy->IsSpecificObjectSelected() == false)
 			return;
 
@@ -397,11 +396,15 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 
 		// 1) Detail 정보 세팅
 		CSceneComponent* SelectRootComponent = ClickedComponent->GetGameObject()->GetRootComponent();
+
 		m_DetailInfoWindow->SetClickedObjectInfo(SelectRootComponent);
 
 
 		// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
 		SetSceneEditObjectPos(ClickedObject);
+
+		// 3) ObjectHierarchy 에서도 해당 Name 을 Select 상태로 둔다.
+		m_ObjectHierarchy->SetSeletedObjectByName(ClickedObject->GetName());
 	}
 }
 

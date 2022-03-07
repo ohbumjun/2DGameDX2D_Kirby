@@ -41,6 +41,7 @@ public :
         return m_CreatedComponentListBox;
     }
 public :
+    void SetSeletedObjectByName(const std::string& Name);
     void AddCreatedObject(const char* ObjectName);
     void SelectCreatedObject(int Index, const char* ObjectName);
     void SelectCreatedComponent(int Index, const char* ComponentName);
