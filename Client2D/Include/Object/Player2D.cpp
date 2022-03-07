@@ -449,10 +449,10 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		// if (m_IsGround)
 		m_IsFlying = false;
 
-		m_IsFalling = true;
-
 		ChangePlayerFallAnimation();
 	}
+
+	m_IsFalling = true;
 }
 
 void CPlayer2D::MoveDown(float DeltaTime)
@@ -1319,7 +1319,7 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 
 void CPlayer2D::ChangePlayerIdleAnimation()
 {
-	if (!m_Jump && !m_IsFlying && !m_IsGround)
+	if (!m_Jump && !m_IsFlying)
 	{
 		if (m_IsEatingMonster)
 			ChangePlayerEatIdleAnimation();
@@ -1338,8 +1338,13 @@ void CPlayer2D::ChangePlayerNormalIdleAnimation()
 
 void CPlayer2D::ChangePlayerWalkAnimation()
 {
-	if (!m_Jump && !m_IsFlying && !m_IsGround)
+	if (!m_Jump && !m_IsFlying)
 	{
+		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
+			return;
+
 		if (m_IsEatingMonster)
 		{
 			ChangePlayerEatWalkAnimation();
@@ -1369,8 +1374,13 @@ void CPlayer2D::ChangePlayerHitAnimation()
 
 void CPlayer2D::ChangePlayerRunAnimation()
 {
-	if (!m_Jump && !m_IsFlying && !m_IsGround)
+	if (!m_Jump && !m_IsFlying)
 	{
+		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
+			return;
+
 		if (m_IsEatingMonster)
 		{
 			ChangePlayerEatRunAnimation();
