@@ -43,6 +43,7 @@
 #include "Object/TileMapEmpty.h"
 #include "Object/MushRoom.h"
 #include "Object/BackGround.h"
+#include "Object/BeamMonster.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -354,6 +355,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMushRoom>(NewMonsterName);
 		}
+		else if (strcmp(g_BeanMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBeamMonster>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -593,6 +598,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
 		return Obj;
 	}
+	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBeamMonster>();
+		return Obj;
+	}
 	else if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CTileMapEmpty>();
@@ -603,6 +613,7 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Obj = Scene->LoadGameObject<CBackGround>();
 		return Obj;
 	}
+
 	
 	return nullptr;
 }

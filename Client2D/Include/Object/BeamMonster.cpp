@@ -7,7 +7,7 @@ CBeamMonster::CBeamMonster()
 	SetTypeID<CBeamMonster>();
 }
 
-CBeamMonster::CBeamMonster(const CBeamMonster& Monster)
+CBeamMonster::CBeamMonster(const CBeamMonster& Monster) : CAbilityMonster(Monster)
 {}
 
 CBeamMonster::~CBeamMonster()
@@ -16,6 +16,12 @@ CBeamMonster::~CBeamMonster()
 void CBeamMonster::Start()
 {
 	CAbilityMonster::Start();
+
+	m_PhysicsSimulate = true;
+
+	m_IsGround = true;
+
+	m_IsGroundObject = true;
 }
 
 bool CBeamMonster::Init()
@@ -23,7 +29,8 @@ bool CBeamMonster::Init()
 	if (!CAbilityMonster::Init())
 		return false;
 
-	LoadAnimationInstance("Beam", TEXT("Kirby_Fight.anim"));
+	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
+
 	SetCurrentAnimation("RightIdle");
 
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();

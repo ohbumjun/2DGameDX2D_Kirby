@@ -24,7 +24,8 @@ CMonster::CMonster() :
 	m_RandomMoveTime(5.f),
 	m_RandomMoveTimeMax(5.f),
 	m_IsBeingSpitOut(false),
-	m_SpitOutDistanceMax(500.f)
+	m_SpitOutDistanceMax(500.f),
+	m_IsAbilityMonster(false)
 {
 	SetTypeID<CMonster>();
 }

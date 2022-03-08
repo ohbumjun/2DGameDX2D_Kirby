@@ -84,7 +84,11 @@ bool CObjectHierarchy::Init()
 	std::vector<std::string>  vecNormalMonsters = { g_NormalBearName,
 		g_PurpleBeatlesName, g_YellowBirdName, g_MushRoomName };
 
-	m_mapVecObject.insert(std::make_pair(g_NormalBearName, vecNormalMonsters));
+	std::vector<std::string>  vecAbilityMonsters = { g_BeanMonsterName,
+	g_FightMonsterName };
+
+	m_mapVecObject.insert(std::make_pair("Normal Monster", vecNormalMonsters));
+	m_mapVecObject.insert(std::make_pair("Ability Monster", vecAbilityMonsters));
 
 	// m_mapVecObject 의 Key 들을 m_ObjectList 에 추가
 	for (const auto & kv : m_mapVecObject)
@@ -178,6 +182,7 @@ void CObjectHierarchy::SeeObjectList(int Index, const char* ObjectName)
 	m_SpecificObjectList->Clear();
 
 	std::vector<std::string> vecObjectLists = m_mapVecObject[ObjectName];
+
 	for (size_t i = 0; i < vecObjectLists.size(); i++)
 	{
 		m_SpecificObjectList->AddItem(vecObjectLists[i]);

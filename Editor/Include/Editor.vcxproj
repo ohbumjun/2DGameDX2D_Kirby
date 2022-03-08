@@ -171,7 +171,9 @@
   <ItemGroup>
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object\AbilityMonster.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
+    <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MushRoom.cpp" />
@@ -194,7 +196,9 @@
   <ItemGroup>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
+    <ClInclude Include="Object\AbilityMonster.h" />
     <ClInclude Include="Object\BackGround.h" />
+    <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MushRoom.h" />

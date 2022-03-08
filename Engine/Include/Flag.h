@@ -78,9 +78,9 @@ enum class CreateObject_Type
 {
 	GameObject,
 	Player,
-	YellowBird,
-	PurpleBeatle,
-	NormalBear,
+	// YellowBird,
+	// PurpleBeatle,
+	// NormalBear,
 	TileEmptyObject,
 	BackGround,
 	End

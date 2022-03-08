@@ -5,6 +5,8 @@ const std::string g_NormalBearName = "NormalBear";
 const std::string g_PurpleBeatlesName = "PurpleBeatles";
 const std::string g_YellowBirdName = "YellowBird";
 const std::string g_MushRoomName = "MushRoom";
+const std::string g_BeanMonsterName = "Beam";
+const std::string g_FightMonsterName = "FightMonster";
 
 enum class Tile_EditMode {
 	Type,

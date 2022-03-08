@@ -128,9 +128,9 @@ bool CEditorMenu::Init()
 	m_ObjectComboBox = AddWidget<CIMGUIComboBox>("SelectObj", 100.f, 30.f);
 	m_ObjectComboBox->AddItem("GameObject");
 	m_ObjectComboBox->AddItem("Player");
-	m_ObjectComboBox->AddItem("YellowBird");
-	m_ObjectComboBox->AddItem("PurpleBeatles");
-	m_ObjectComboBox->AddItem("NormalBear");
+	// m_ObjectComboBox->AddItem("YellowBird");
+	// m_ObjectComboBox->AddItem("PurpleBeatles");
+	// m_ObjectComboBox->AddItem("NormalBear");
 	m_ObjectComboBox->AddItem("TileEmpty");
 	m_ObjectComboBox->AddItem("BackGround");
 	m_ObjectComboBox->SetHideName(true);
@@ -265,6 +265,19 @@ void CEditorMenu::CreateNewObject()
 		CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
+	case CreateObject_Type::TileEmptyObject:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::BackGround:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	}
+
+	/*
 	case CreateObject_Type::YellowBird:
 		{
 		CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(m_ObjectNameInput->GetTextMultibyte());
@@ -280,17 +293,7 @@ void CEditorMenu::CreateNewObject()
 		CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
-	case CreateObject_Type::TileEmptyObject:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-	case CreateObject_Type::BackGround:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-	}
+	*/
 
 	// Add List To Object List
 	Hierarchy->AddCreatedObject(m_ObjectNameInput->GetTextUTF8());

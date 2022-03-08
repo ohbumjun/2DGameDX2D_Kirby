@@ -1,7 +1,9 @@
 #include "AbilityMonster.h"
 
 CAbilityMonster::CAbilityMonster()
-{}
+{
+	m_IsAbilityMonster = true;
+}
 
 CAbilityMonster::CAbilityMonster(const CAbilityMonster& Monster) : CMonster(Monster)
 {}

@@ -9,7 +9,7 @@ public :
     CMonster();
     CMonster(const CMonster& Monster);
     virtual ~CMonster();
-private :
+protected: 
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
     CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
@@ -40,6 +40,9 @@ private :
     float m_MonsterMoveVelocity;
     float m_RandomMoveTime;
     float m_RandomMoveTimeMax;
+
+    // Ability
+    bool m_IsAbilityMonster;
 
 public :
     bool IsBeingPulled() const

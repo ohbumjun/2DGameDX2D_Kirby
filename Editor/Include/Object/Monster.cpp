@@ -83,8 +83,8 @@ bool CMonster::Init()
 	m_Sprite->SetTransparency(true);
 
 	// Animation 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Beam", TEXT("Beam.anim"));
-	m_Sprite->SetAnimationInstance(AnimationInstance);
+	// CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Beam", TEXT("Beam.anim"));
+	// m_Sprite->SetAnimationInstance(AnimationInstance);
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
 	// m_Sprite->AddChild(m_SimpleHUDWidget);
