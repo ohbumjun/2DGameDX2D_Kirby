@@ -358,6 +358,12 @@ void CPlayer2D::Start()
 	// Animation Loop 여부 세팅
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
+
+	// Jump 가 다 끝난 이후에는, Animation 을 Fall 상태로 바꿔라
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
+		this, &CPlayer2D::ChangePlayerFallAnimation);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
+		this, &CPlayer2D::ChangePlayerFallAnimation);
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -1083,7 +1089,7 @@ void CPlayer2D::RotationZ(float DeltaTime)
 	m_Sprite->AddRelativeRotationZ(-180.f * DeltaTime);
 }
 
-void CPlayer2D::FlyAfterJump(float DeltaTime)
+void CPlayer2D:: FlyAfterJump(float DeltaTime)
 {
 	// 일단 한번 뛴 상태에서 날아야 한다.
 	/*
@@ -1124,11 +1130,19 @@ void CPlayer2D::SimpleJump()
 {
 	if (!m_Jump)
 	{
-		m_Jump = true;
+  		m_Jump = true;
 		m_IsGround = false;
 
 		m_FallTime = 0.f;
 		m_FallStartY = GetWorldPos().y;
+
+		m_IsBottomCollided = false;
+
+		// Animation Change
+		if (m_IsEatingMonster)
+			ChangePlayerWalkAnimation();
+		else
+			ChangePlayerJumpAnimation();
 	}
 }
 
@@ -1263,18 +1277,7 @@ void CPlayer2D::Jump(float DeltaTime)
 		}
 	}
 
-	// Animation Change
-	if (m_IsEatingMonster)
-		ChangePlayerWalkAnimation();
-	else
-		ChangePlayerJumpAnimation();
-
-	// 현재 그냥 땅에 있는 상태였다면 Simple Jump를 수행한다
-	// if (m_IsGround || m_MoveVelocity == 0.f)
-	if (m_FallTime == 0.f)
-		SimpleJump();
-	// 그게 아니라면 삼각 점프를 수행한다.
-	else if (SideCollision)
+	if (SideCollision)
 	{
 		// 현재 움직이는 방향 반대로 움직여야 한다
 		// 오른쪽
@@ -1286,6 +1289,16 @@ void CPlayer2D::Jump(float DeltaTime)
 		{
 			TriangleJumpRight(DeltaTime);
 		}
+
+		// Animation Change
+		if (m_IsEatingMonster)
+			ChangePlayerWalkAnimation();
+		else
+			ChangePlayerJumpAnimation();
+	}
+	else
+	{
+		SimpleJump();  
 	}
 
 }
@@ -1346,7 +1359,8 @@ void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
 		// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
 		std::string CurAnimName = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" || 
+			CurAnimName == "RightJump" || CurAnimName == "LeftJump")
 		{
 			if (m_IsEatingMonster)
 				ChangePlayerEatIdleAnimation();
@@ -1515,6 +1529,8 @@ void CPlayer2D::SetObjectLand()
 	CLifeObject::SetObjectLand();
 
 	m_TriangleJump = false;
+
+	m_IsFlying = false;
 }
 
 void CPlayer2D::FallDownAttack(const CollisionResult& Result)
