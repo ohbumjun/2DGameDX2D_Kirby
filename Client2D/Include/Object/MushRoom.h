@@ -9,6 +9,14 @@ protected:
     CMushRoom();
     CMushRoom(const CMushRoom& Beatle);
     virtual ~CMushRoom();
+private :
+    bool m_IsToggleGoUp;
+    float m_ToggleLimitTime;
+    float m_ToggleLimitTimeMax;
+private :
+    virtual void AIWalk(float DeltaTim) override;
+    virtual void AITrace(float DeltaTime, Vector3 PlayerPos) override;
+    void UpdateToggle(float DeltaTime);
 public:
     virtual void Start() override;
     virtual bool Init() override;

@@ -68,6 +68,7 @@ private :
 	bool m_LeftMovePush;
 
 	bool m_TriangleJump;
+	float m_TriangleJumpVelocityRatio;
 
 	bool m_IsFlying;
 	float m_FlySpeed;

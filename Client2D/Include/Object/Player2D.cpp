@@ -24,6 +24,7 @@ m_LeverMaxMoveVelocity(350.f),
 m_DashMoveAccel(2.5f),
 m_DashVelocity(0.f),
 m_DashMaxMoveVelocity(250.f),
+m_TriangleJumpVelocityRatio(1.f),
 m_RightMove(false),
 m_ToLeftWhenRightMove(false),
 m_RightMovePush(false),
@@ -484,13 +485,13 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
+			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * m_TriangleJumpVelocityRatio);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
+			m_Sprite->AddWorldPos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * m_TriangleJumpVelocityRatio);
 		}
 
 		return;
@@ -566,13 +567,13 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * m_TriangleJumpVelocityRatio);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * m_TriangleJumpVelocityRatio);
 		}
 
 		return;
@@ -642,13 +643,13 @@ void CPlayer2D::MoveRight(float DeltaTime)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * m_TriangleJumpVelocityRatio);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * m_TriangleJumpVelocityRatio);
 		}
 
 		return;
@@ -724,13 +725,13 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * 0.3f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * m_TriangleJumpVelocityRatio);
 		}
 		else
 		{
 			if (WorldPosLeftX <= 0.1f)
 				return;
-			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * 0.3f);
+			m_Sprite->AddRelativePos(m_Sprite->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * m_TriangleJumpVelocityRatio);
 		}
 		return;
 	}
@@ -1096,6 +1097,9 @@ void CPlayer2D::FlyAfterJump(float DeltaTime)
 	*/
 
 	m_IsFlying = true;
+
+	// 삼각 점프 해제
+	m_TriangleJump = false;
 
 	// 중력 적용 방지
 	m_Jump = false;

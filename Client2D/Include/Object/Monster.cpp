@@ -2,11 +2,11 @@
 #include "Component/SpriteComponent.h"
 #include "Component/WidgetComponent.h"
 #include "Component/ColliderBox2D.h"
+#include "Component/PaperBurnComponent.h"
 #include "Component/ColliderCircle.h"
 #include "MonsterAnimation.h"
 #include "Engine.h"
 #include "Player2D.h"
-#include "Component/PaperBurnComponent.h"
 #include "../UI/SimpleHUD.h"
 
 CMonster::CMonster() :

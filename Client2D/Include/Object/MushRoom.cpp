@@ -1,15 +1,61 @@
 #include "MushRoom.h"
+#include "Component/PaperBurnComponent.h"
+#include "UI/UIProgressbar.h"
+#include "Component/SpriteComponent.h"
+#include "Component/WidgetComponent.h"
+#include "Component/ColliderBox2D.h"
+#include "Component/PaperBurnComponent.h"
+#include "Component/ColliderCircle.h"
+#include "MonsterAnimation.h"
+#include "Engine.h"
+#include "Player2D.h"
+#include "../UI/SimpleHUD.h"
 
-CMushRoom::CMushRoom()
+CMushRoom::CMushRoom() :
+	m_IsToggleGoUp(true),
+	m_ToggleLimitTime(0.2f),
+	m_ToggleLimitTimeMax(0.2f)
 {
+	m_JumpVelocity = 30.f;
+
 	SetTypeID<CMushRoom>();
 }
 
-CMushRoom::CMushRoom(const CMushRoom& Beatle) : CNormalMonster(Beatle)
-{}
+CMushRoom::CMushRoom(const CMushRoom& mushRoom) : CNormalMonster(mushRoom)
+{
+	*this = mushRoom;
+}
 
 CMushRoom::~CMushRoom()
-{}
+{
+}
+
+void CMushRoom::AIWalk(float DeltaTime)
+{
+	CNormalMonster::AIWalk(DeltaTime);
+
+	UpdateToggle(DeltaTime);
+}
+
+void CMushRoom::AITrace(float DeltaTime, Vector3 PlayerPos)
+{
+	CNormalMonster::AITrace(DeltaTime, PlayerPos);
+
+	UpdateToggle(DeltaTime);
+}
+
+void CMushRoom::UpdateToggle(float DeltaTime)
+{
+	if (m_IsBottomCollided)
+	{
+		m_Jump = true;
+		m_IsGround = false;
+
+		m_FallTime = 0.f;
+		m_FallStartY = GetWorldPos().y;
+	}
+}
+
 
 void CMushRoom::Start()
 {
@@ -36,7 +82,6 @@ bool CMushRoom::Init()
 void CMushRoom::Update(float DeltaTime)
 {
 	CNormalMonster::Update(DeltaTime);
-
 }
 
 void CMushRoom::PostUpdate(float DeltaTime)
