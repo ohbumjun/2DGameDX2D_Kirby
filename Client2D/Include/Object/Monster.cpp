@@ -225,13 +225,18 @@ void CMonster::AIActionUpdate(float DeltaTime)
 	}
 }
 
+
 void CMonster::AIIdle(float DeltaTime)
 {
 	ChangeIdleAnimation();
+
+	AIIdleSpecific(DeltaTime);
 }
 void CMonster::AIWalk(float DeltaTime)
 {
 	ChangeWalkAnimation();
+
+	AIWalkSpecific(DeltaTime);
 }
 
 void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
@@ -263,29 +268,28 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 
 	ChangeTraceAnimation();
 
-
-	/*
-	if (MonsterPos.Distance(m_PulledDestPos) <= 1.f)
-	{
-		m_IsBeingPulled = false;
-		SetEnable(false);
-	}
-	*/
+	AITraceSpecific(DeltaTime);
 }
 
 void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
 {
 	ChangeAttackAnimation();
+
+	AIAttackSpecific(DeltaTime);
 }
 
 void CMonster::AIDeath(float DeltaTime)
 {
 	ChangeDeathAnimation();
+
+	AIDeathSpecific(DeltaTime);
 }
 
 void CMonster::AIHit(float DeltaTime)
 {
 	ChangeHitAnimation();
+
+	AIHitSpecific(DeltaTime);
 }
 
 void CMonster::Start()

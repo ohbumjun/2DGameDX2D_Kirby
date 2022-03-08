@@ -332,6 +332,9 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullLeft",
 		KeyState_Up, this, &CPlayer2D::PullLeftEnd);
 
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialChange",
+		KeyState_Push, this, &CPlayer2D::MoveDown);
+
 	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
 		KeyState_Down, this, &CPlayer2D::Attack);
@@ -1631,6 +1634,18 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 		m_PullingMonster->SetCollisionDisable(false);
 		m_PullingMonster = nullptr;
 	}
+}
+
+void CPlayer2D::SpecialChange(float DeltaTime)
+{
+	// 먹고 있는 녀석이 없으면 X
+	if (!m_IsEatingMonster)
+		return;
+
+	// 능력 몬스터가 아니라면 Return
+	if (!m_EatenMonster->IsAbilityMonster())
+		return;
+
 }
 
 void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)

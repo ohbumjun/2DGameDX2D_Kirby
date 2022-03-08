@@ -14,8 +14,9 @@ private :
     float m_ToggleLimitTime;
     float m_ToggleLimitTimeMax;
 private :
-    virtual void AIWalk(float DeltaTim) override;
-    virtual void AITrace(float DeltaTime, Vector3 PlayerPos) override;
+    virtual void AIWalkSpecific(float DeltaTime) override;
+    virtual void AITraceSpecific(float DeltaTime) override;
+private :
     void UpdateToggle(float DeltaTime);
 public:
     virtual void Start() override;

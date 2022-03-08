@@ -22,15 +22,6 @@ public:
     void LoadAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
     void SetCurrentAnimation(const std::string& Name);
 public:
-    void SetHPMax(float HPMax);
-protected:
-    virtual void AIIdle(float DeltaTime);
-    virtual void AIWalk(float DeltaTime);
-    virtual void AITrace(float DeltaTime, Vector3 PlayerPos);
-    virtual void AIAttack(float DeltaTime, Vector3 PlayerPos);
-    virtual void AIDeath(float DeltaTime);
-    virtual void AIHit(float DeltaTime);
-public:
     virtual void Start() override;
     virtual bool Init() override;
     virtual void Update(float DeltaTime);

@@ -46,13 +46,6 @@ void CMonster::SetCurrentAnimation(const std::string& Name)
 	m_Sprite->GetAnimationInstance()->ChangeAnimation(Name);
 }
 
-
-void CMonster::SetHPMax(float HPMax)
-{
-	m_HPMax = HPMax;
-	m_HP = HPMax;
-}
-
 void CMonster::Start()
 {
 	CLifeObject::Start();
@@ -97,36 +90,9 @@ bool CMonster::Init()
 	return true;
 }
 
-void CMonster::AIIdle(float DeltaTime){}
-void CMonster::AIWalk(float DeltaTime){}
-void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos){}
-void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos) {}
-void CMonster::AIDeath(float DeltaTime){}
-void CMonster::AIHit(float DeltaTime){}
-
 void CMonster::Update(float DeltaTime)
 {
 	CLifeObject::Update(DeltaTime);
-
-	// 죽으면
-	// 1) Animation 바꿔주고
-	// 2) 해당 Animation의 Time 저장하고
-	// 3) Animation Time을 감소시켜서 0이 되면 그때 가서 
-	// 2) Animation 끝날 때까지 기다린 다음 PaperBurn
-
-
-	if (m_DeathStart)
-	{
-		if (m_DeathFinishTime > 0.f)
-		{
-			m_DeathFinishTime -= DeltaTime;
-			if (m_DeathFinishTime < 0.f)
-			{
-				m_PaperBurn->StartPaperBurn();
-				m_DeathStart = false;
-			}
-		}
-	}
 }
 
 void CMonster::PostUpdate(float DeltaTime)

@@ -57,6 +57,10 @@ public :
 {
         return m_IsBeingHit;
 }
+    bool IsAbilityMonster () const
+{
+	return m_IsAbilityMonster;
+}
 public :
     void SetAIState(Monster_AI State)
 {
@@ -95,12 +99,19 @@ public :
 protected : // AI
     void AIStateUpdate(float DeltaTime);
     void AIActionUpdate(float DeltaTime);
-    virtual void AIIdle(float DeltaTime);
-    virtual void AIWalk(float DeltaTime);
-    virtual void AITrace(float DeltaTime, Vector3 PlayerPos);
-    virtual void AIAttack(float DeltaTime, Vector3 PlayerPos);
-    virtual void AIDeath(float DeltaTime);
-    virtual void AIHit(float DeltaTime);
+protected:
+    void AIIdle(float DeltaTime);
+    void AIWalk(float DeltaTime);
+    void AITrace(float DeltaTime, Vector3 PlayerPos);
+    void AIAttack(float DeltaTime, Vector3 PlayerPos);
+    void AIDeath(float DeltaTime);
+    void AIHit(float DeltaTime);
+    virtual void AIIdleSpecific(float DeltaTime){};
+    virtual void AIWalkSpecific(float DeltaTime){};
+    virtual void AITraceSpecific(float DeltaTime){};
+    virtual void AIAttackSpecific(float DeltaTime){};
+    virtual void AIDeathSpecific(float DeltaTime){};
+    virtual void AIHitSpecific(float DeltaTime){};
 public :
     virtual void Start() override;
     virtual bool Init() override;

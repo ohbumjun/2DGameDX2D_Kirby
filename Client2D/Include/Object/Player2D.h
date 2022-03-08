@@ -154,6 +154,8 @@ private : // Spit Out & Pull
 	void PullRightCollisionEndCallback(const CollisionResult& Result);
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
+private : // Special Change
+	void SpecialChange(float DeltaTime);
 private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);

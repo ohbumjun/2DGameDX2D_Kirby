@@ -30,17 +30,13 @@ CMushRoom::~CMushRoom()
 {
 }
 
-void CMushRoom::AIWalk(float DeltaTime)
+void CMushRoom::AIWalkSpecific(float DeltaTime)
 {
-	CNormalMonster::AIWalk(DeltaTime);
-
 	UpdateToggle(DeltaTime);
 }
 
-void CMushRoom::AITrace(float DeltaTime, Vector3 PlayerPos)
+void CMushRoom::AITraceSpecific(float DeltaTime)
 {
-	CNormalMonster::AITrace(DeltaTime, PlayerPos);
-
 	UpdateToggle(DeltaTime);
 }
 
