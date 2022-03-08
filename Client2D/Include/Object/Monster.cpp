@@ -240,6 +240,12 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 
 	TraceDir.Normalize();
 
+	// 지상 Monster의 경우 --> Trace 중에도 좌우로만 움직일 수 있도록 세팅한다.
+	if (m_IsGroundObject)
+	{
+		TraceDir.y = 0.f;
+	}
+
 	AddWorldPos(Vector3(TraceDir) * DeltaTime * m_MonsterMoveVelocity);
 
 	if (TraceDir.x < 0.f)
