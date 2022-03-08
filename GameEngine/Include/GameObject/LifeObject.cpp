@@ -503,8 +503,6 @@ void CLifeObject::PostUpdate(float DeltaTime)
 
 	CheckBottomCollision();
 
-
-
 	m_PrevPos = GetWorldPos();
 }
 

@@ -16,6 +16,7 @@ CMonster::CMonster() :
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
+	m_IsBeingHit(false),
 	m_BeginPulledAccel(2.f),
 	m_BeginPulledAccelSum(0.f),
 	m_AttackDistance(150.f),
@@ -25,7 +26,9 @@ CMonster::CMonster() :
 	m_RandomMoveTimeMax(5.f),
 	m_IsBeingSpitOut(false),
 	m_SpitOutDistanceMax(500.f),
-	m_IsAbilityMonster(false)
+	m_IsAbilityMonster(false),
+	m_HitLimitTime(1.f),
+	m_HitLimitTimeMax(1.f)
 {
 	SetTypeID<CMonster>();
 }
@@ -90,7 +93,7 @@ void CMonster::Damage(float Damage)
 {
 	// 실제 데미지
 	m_HP -= Damage;
-	if (m_HP < 0.f)
+ 	if (m_HP < 0.f)
 	{
 		Destroy();
 		return;
@@ -386,6 +389,8 @@ void CMonster::Update(float DeltaTime)
 		}
 	}
 
+	UpdateBeingHit(DeltaTime);
+
 	UpdateBeingPulled(DeltaTime);
 
 	UpdateBeingOutOfPlayer(DeltaTime);
@@ -405,6 +410,22 @@ void CMonster::PostUpdate(float DeltaTime)
 CMonster* CMonster::Clone()
 {
 	return new CMonster(*this);
+}
+
+void CMonster::UpdateBeingHit(float DeltaTime)
+{
+	if (m_IsBeingHit)
+	{
+		AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity * 2.f);
+
+		m_HitLimitTime -= DeltaTime;
+
+		if (m_HitLimitTime < 0)
+		{
+			m_HitLimitTime = m_HitLimitTimeMax;
+			m_IsBeingHit = false;
+		}
+	}
 }
 
 void CMonster::UpdateBeingPulled(float DeltaTime)
@@ -470,7 +491,7 @@ void CMonster::UpdateMonsterMove(float DeltaTime)
 	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
 		return;
 
-	if (m_IsBeingSpitOut || m_IsBeingPulled)
+	if (m_IsBeingSpitOut || m_IsBeingPulled || m_IsBeingHit)
 		return;
 
 	AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity);
@@ -525,7 +546,7 @@ void CMonster::CreateDamageFont(const CollisionResult& Result)
 
 void CMonster::OnCollisionBegin(const CollisionResult& Result)
 {
-  	--m_HP;
+  	// --m_HP;
 	if (m_HP <= 0)
 	{
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightDeath");

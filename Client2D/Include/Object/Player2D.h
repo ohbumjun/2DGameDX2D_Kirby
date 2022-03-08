@@ -95,11 +95,11 @@ public:
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;
 	virtual void UpdateWhileOffGround(float DeltaTime) override;
-private:
+
+private: // Move 
 	void MoveUp(float DeltaTime);
 	void MoveUpEnd(float DeltaTime);
 	void MoveDown(float DeltaTime);
-private :
 	void MoveLeft(float DeltaTime);
 	void MoveDashLeft(float DeltaTime);
 	void MoveRight(float DeltaTime);
@@ -108,27 +108,27 @@ private :
 	void RightLeverMoveEnd(float DeltaTime);
 	void LeftDashMoveEnd(float DeltaTime);
 	void RightDashMoveEnd(float DeltaTime);
-private :
-	void SpitOut(float DeltaTime);
-private :
 	float CalculateLeverMoveSpeed(float DeltaTime);
 	float CalculateDashMoveSpeed(float DeltaTime);
 	float CalculateTotalMoveSpeed(float DeltaTime);
 	void PlayerMoveUpdate(float DeltaTime);
 	void ResetMoveInfo();
-private :
+private : // Rotation
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
-private :
+private : // Fly & Jump
 	void FlyAfterJump(float DeltaTime);
 	void SimpleJump();
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
-private :
+private : // Fall
 	void FallFromCliff();
 	void ChangeToIdleWhenReachGroundAfterFall();
+	virtual void SetObjectLand() override;
+	void FallDownAttack(const CollisionResult& Result);
 protected: // Animation
+	void ChangeAnimation(const std::string& AnimName);
 	void ChangePlayerIdleAnimation();
 	void ChangePlayerNormalIdleAnimation();
 	void ChangePlayerEatIdleAnimation();
@@ -144,9 +144,8 @@ protected: // Animation
 	void ChangePlayerFlyAnimation();
 	void ChangePlayerJumpAnimation();
 	void ChangePlayerFallAnimation();
-private :
-	virtual void SetObjectLand() override;
-private :
+private : // Spit Out & Pull
+	void SpitOut(float DeltaTime);
 	void PullRight(float DeltaTime);
 	void PullRightEnd(float DeltaTime);
 	void PullLeft(float DeltaTime);
@@ -155,8 +154,6 @@ private :
 	void PullRightCollisionEndCallback(const CollisionResult& Result);
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
-private :
-	void ChangeAnimation(const std::string& AnimName);
 private :
 	void Attack(float DeltaTime);
 	void Attack1(float DeltaTime);

@@ -34,7 +34,11 @@ protected:
     Monster_AI m_AI;
     float m_AttackDistance;
     float m_DashDistance;
+
+    // Hit
     bool m_IsBeingHit;
+    float m_HitLimitTime;
+    float m_HitLimitTimeMax;
 
     // Move
     float m_MonsterMoveVelocity;
@@ -57,6 +61,11 @@ public :
     void SetAIState(Monster_AI State)
 {
         m_AI = State;
+
+		if (State == Monster_AI::Hit)
+		{
+            m_IsBeingHit = true;
+		}
 }
     void SetBeingSpitOut(bool Enable)
 {
@@ -99,6 +108,7 @@ public :
     virtual void PostUpdate(float DeltaTime)override;
     virtual CMonster* Clone() override;
 protected:
+    void UpdateBeingHit(float DeltaTime);
     void UpdateBeingPulled(float DeltaTime);
     void UpdateBeingOutOfPlayer(float DeltaTime);
 protected:

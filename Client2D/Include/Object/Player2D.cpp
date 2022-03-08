@@ -231,6 +231,7 @@ void CPlayer2D::Start()
 	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
 
 	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 	m_PullRightCollider->SetCollisionProfile("Player");
@@ -1514,6 +1515,42 @@ void CPlayer2D::SetObjectLand()
 	CLifeObject::SetObjectLand();
 
 	m_TriangleJump = false;
+}
+
+void CPlayer2D::FallDownAttack(const CollisionResult& Result)
+{
+	Vector3 CurrentPos = GetWorldPos();
+
+	if (m_FallStartY > CurrentPos.y && !m_IsGround)
+	{
+		CColliderComponent* DestCollider = Result.Dest;
+
+		CGameObject* OwnerObject = DestCollider->GetGameObject();
+
+		CMonster* OwnerMonster = (CMonster*)OwnerObject;
+
+		if (!OwnerMonster)
+			return;
+
+		// 1) Hit Effect
+
+		// 2) Sound
+
+		// 3) Damage Font 작성
+
+		// Hit 상태로 변경
+		OwnerMonster->SetAIState(Monster_AI::Hit);
+
+		// 현재 Player 방향으로 나아가게 하기
+		if (m_ObjectMoveDir.x < 0)
+		{
+			OwnerMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
+		}
+		else
+		{
+			OwnerMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+		}
+	}
 }
 
 void CPlayer2D::PullRight(float DeltaTime)
