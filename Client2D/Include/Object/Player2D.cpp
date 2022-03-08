@@ -254,7 +254,7 @@ void CPlayer2D::Start()
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
 		this, &CPlayer2D::ChangePlayerFallAnimation);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
+		this, &CPlayer2D::ChangePlayerFallAnimation); //
 }
 
 void CPlayer2D::Update(float DeltaTime)
