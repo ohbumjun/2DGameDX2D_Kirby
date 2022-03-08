@@ -1508,11 +1508,11 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 
 	// 아래 녀석들을 기존에서 Child 에서 떼어내고 새롭게 붙여야 한다. 
 
-	m_KirbyState->DeleteChild(m_Camera);
-	m_KirbyState->DeleteChild(m_SimpleHUDWidget);
-	m_KirbyState->DeleteChild(m_Body);
-	m_KirbyState->DeleteChild(m_PullRightCollider);
-	m_KirbyState->DeleteChild(m_PullLeftCollider);
+	// m_KirbyState->DeleteChild(m_Camera);
+	// m_KirbyState->DeleteChild(m_SimpleHUDWidget);
+	// m_KirbyState->DeleteChild(m_Body);
+	// m_KirbyState->DeleteChild(m_PullRightCollider);
+	// m_KirbyState->DeleteChild(m_PullLeftCollider);
 
 	Vector3 OriginalPos = GetWorldPos();
 
@@ -1540,6 +1540,13 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	m_KirbyState->AddChild(m_Body);
 	m_KirbyState->AddChild(m_PullRightCollider);
 	m_KirbyState->AddChild(m_PullLeftCollider);
+
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+
+	m_KirbyState->SetTransparency(true);
+
+	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
+	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 }
 
 void CPlayer2D::Attack()
