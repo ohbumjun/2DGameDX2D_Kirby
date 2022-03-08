@@ -68,8 +68,8 @@ CPlayer2D::~CPlayer2D()
 
 bool CPlayer2D::Init()
 {
-	// m_KirbyState  = CreateComponent<CNormalKirbyState>("PlayerSprite");
-	m_KirbyState  = CreateComponent<CFightKirbyState>("PlayerSprite");
+	m_KirbyState  = CreateComponent<CNormalKirbyState>("PlayerSprite");
+	// m_KirbyState  = CreateComponent<CFightKirbyState>("PlayerSprite");
 	
 	// Collider 
 	m_Body = CreateComponent<CColliderBox2D>("Body");
@@ -221,7 +221,7 @@ void CPlayer2D::Start()
 		KeyState_Up, this, &CPlayer2D::PullLeftEnd);
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialChange",
-		KeyState_Push, this, &CPlayer2D::MoveDown);
+		KeyState_Down, this, &CPlayer2D::SpecialChange);
 
 	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
@@ -254,7 +254,7 @@ void CPlayer2D::Start()
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
 		this, &CPlayer2D::ChangePlayerFallAnimation);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation); ////
+		this, &CPlayer2D::ChangePlayerFallAnimation); 
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -1496,6 +1496,7 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 
 void CPlayer2D::SpecialChange(float DeltaTime)
 {
+	/*
 	// 먹고 있는 녀석이 없으면 X
 	if (!m_IsEatingMonster)
 		return;
@@ -1503,7 +1504,42 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	// 능력 몬스터가 아니라면 Return
 	if (!m_EatenMonster->IsAbilityMonster())
 		return;
+	*/
 
+	// 아래 녀석들을 기존에서 Child 에서 떼어내고 새롭게 붙여야 한다. 
+
+	m_KirbyState->DeleteChild(m_Camera);
+	m_KirbyState->DeleteChild(m_SimpleHUDWidget);
+	m_KirbyState->DeleteChild(m_Body);
+	m_KirbyState->DeleteChild(m_PullRightCollider);
+	m_KirbyState->DeleteChild(m_PullLeftCollider);
+
+	Vector3 OriginalPos = GetWorldPos();
+
+	// SAFE_DELETE(m_KirbyState);
+
+	if (m_TempChange)
+	{
+		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
+
+		m_TempChange = false;
+	}
+	else
+	{
+		m_KirbyState = CreateComponent<CNormalKirbyState>("FightKirbyState");
+
+		m_TempChange = true;
+	}
+
+	SetRootComponent(m_KirbyState);
+
+	m_KirbyState->SetWorldPos(OriginalPos);
+
+	m_KirbyState->AddChild(m_Camera);
+	m_KirbyState->AddChild(m_SimpleHUDWidget);
+	m_KirbyState->AddChild(m_Body);
+	m_KirbyState->AddChild(m_PullRightCollider);
+	m_KirbyState->AddChild(m_PullLeftCollider);
 }
 
 void CPlayer2D::Attack()

@@ -71,14 +71,15 @@ private :
 	class CMonster* m_PullingMonster;
 	class CMonster* m_EatenMonster;
 
+	bool m_TempChange;
+
 public :
 	CColliderBox2D* GetBodyCollider () const
 {
 		return m_Body;
 }
 public :
-	void SetIsEatingMonster(bool Enable);
-	void SetEatenMonster(class CMonster* Monster);
+
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -147,6 +148,9 @@ private : // Spit Out & Pull
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
 private : // Special Change
 	void SpecialChange(float DeltaTime);
+public :
+	void SetIsEatingMonster(bool Enable);
+	void SetEatenMonster(class CMonster* Monster);
 private : // Special Action
 	void Attack();
 	void FallDownAttack();
