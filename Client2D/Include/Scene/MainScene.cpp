@@ -75,16 +75,16 @@ bool CMainScene::Init()
 	m_Scene->SetWorldResolution(TileMapEmpty->GetWorldScale().x, TileMapEmpty->GetWorldScale().y);
 
 	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
-	BackGround->LoadByFileName("BackGround.gobj", OBJECT_PATH);
+	BackGround->LoadByFileName("TestBackGround.gobj", OBJECT_PATH);
 
 	// Sleep(1000);
 		
 	CreateSound();
 
-	// CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
+	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
 
-	CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
-	Player->LoadByFileName("TestPlayer.gobj", OBJECT_PATH);
+	// CPlayer2D* Player = m_Scene->LoadGameObject<CPlayer2D>();
+	// Player->LoadByFileName("TestPlayer.gobj", OBJECT_PATH);
 
 	SetPlayerObject(Player);
 
@@ -93,6 +93,7 @@ bool CMainScene::Init()
 
 	// Sleep(1000); ////
 
+	/*
 	CBeamMonster* BeamMonster = m_Scene->CreateGameObject<CBeamMonster>("BeamMonster");
 	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
 
@@ -109,6 +110,7 @@ bool CMainScene::Init()
 	CNormalBear* NormalBear = m_Scene->LoadGameObject<CNormalBear>();
 	NormalBear->LoadByFileName("TestBear.gobj", OBJECT_PATH);
 	NormalBear->SetWorldPos(Vector3(1000.f, 700.f, 1.));
+	*/
 
 	/*
 	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));

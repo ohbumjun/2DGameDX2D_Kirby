@@ -1,7 +1,5 @@
-ï»¿#include "Player2D.h"
-
+#include "PlayerOld.h"
 #include <Scene/CameraManager.h>
-
 #include "Bullet.h"
 #include "BulletTornaido.h"
 #include "Input.h"
@@ -16,43 +14,55 @@
 #include "Scene/NavigationManager.h"
 #include "../UI/SimpleHUD.h"
 
-CPlayer2D::CPlayer2D():
-m_MoveVelocity(0.f),
-m_LeverMoveAccel(2.f),
-m_LeverVelocity(0.f),
-m_LeverMaxMoveVelocity(350.f),
-m_DashMoveAccel(2.5f),
-m_DashVelocity(0.f),
-m_DashMaxMoveVelocity(250.f),
-m_TriangleJumpVelocityRatio(0.8f),
-m_RightMove(false),
-m_ToLeftWhenRightMove(false),
-m_RightMovePush(false),
-m_LeftMove(false),
-m_ToRightWhenLeftMove(false),
-m_LeftMovePush(false),
-m_IsLeverMoving(false),
-m_IsDashMoving(false),
-m_TriangleJump(false),
-m_IsEatingMonster(false),
-m_DeltaTime(0.f),
-m_IsFlying(false),
-m_FlySpeed(300.f),
-m_PullDistance(100.f)
+CPlayerOld::CPlayerOld() :
+	m_MoveVelocity(0.f),
+	m_LeverMoveAccel(2.f),
+	m_LeverVelocity(0.f),
+	m_LeverMaxMoveVelocity(350.f),
+	m_DashMoveAccel(2.5f),
+	m_DashVelocity(0.f),
+	m_DashMaxMoveVelocity(250.f),
+	m_TriangleJumpVelocityRatio(0.8f),
+	m_RightMove(false),
+	m_ToLeftWhenRightMove(false),
+	m_RightMovePush(false),
+	m_LeftMove(false),
+	m_ToRightWhenLeftMove(false),
+	m_LeftMovePush(false),
+	m_IsLeverMoving(false),
+	m_IsDashMoving(false),
+	m_TriangleJump(false),
+	m_IsEatingMonster(false),
+	m_DeltaTime(0.f),
+	m_IsFlying(false),
+	m_FlySpeed(300.f),
+	m_PullDistance(100.f)
 {
-	SetTypeID<CPlayer2D>();
-	m_SolW      = false;
+	SetTypeID<CPlayerOld>();
+	m_SolW = false;
 	m_WDistance = 0.f;
-	m_Opacity   = 1.f;
+	m_Opacity = 1.f;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
-	 
+
 }
 
-CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
+CPlayerOld::CPlayerOld(const CPlayerOld& obj) :
 	CLifeObject(obj)
 {
-	m_KirbyState           = dynamic_cast<CKirbyState*>(FindComponent("PlayerSprite"));
+	m_KirbyState = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
+	m_ChildLeftSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
+	m_ChildRightSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
+	m_ChildLeftMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
+	m_ChildRightMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
+	m_ChildRoot = dynamic_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
+	m_Muzzle = dynamic_cast<CSceneComponent*>(FindComponent("Muzzle"));
+
+	m_Child1Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
+	m_Child2Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
+	m_Child3Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
+	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
+
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
 	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
@@ -62,15 +72,26 @@ CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	m_Opacity = obj.m_Opacity;
 }
 
-CPlayer2D::~CPlayer2D()
+CPlayerOld::~CPlayerOld()
 {
 }
 
-bool CPlayer2D::Init()
+bool CPlayerOld::Init()
 {
-	// m_KirbyState  = CreateComponent<CNormalKirbyState>("PlayerSprite");
-	m_KirbyState  = CreateComponent<CFightKirbyState>("PlayerSprite");
-	
+	m_KirbyState = CreateComponent<CSpriteComponent>("PlayerSprite");
+	m_ChildLeftSprite = CreateComponent<CSpriteComponent>("PlayerChildLeftSprite");
+	m_ChildRightSprite = CreateComponent<CSpriteComponent>("PlayerChildRightSprite");
+	m_ChildRoot = CreateComponent<CSceneComponent>("PlayerChildRoot");
+	m_Muzzle = CreateComponent<CSceneComponent>("Muzzle");
+
+	m_ChildLeftMuzzle = CreateComponent<CSceneComponent>("LeftMuzzle");
+	m_ChildRightMuzzle = CreateComponent<CSceneComponent>("RightMuzzle");
+
+	m_Child1Sprite = CreateComponent<CSpriteComponent>("PlayerChild1Sprite");
+	m_Child2Sprite = CreateComponent<CSpriteComponent>("PlayerChild2Sprite");
+	m_Child3Sprite = CreateComponent<CSpriteComponent>("PlayerChild3Sprite");
+	m_Child4Sprite = CreateComponent<CSpriteComponent>("PlayerChild4Sprite");
+
 	// Collider 
 	m_Body = CreateComponent<CColliderBox2D>("Body");
 	m_Body->SetCollisionProfile("Player");
@@ -81,27 +102,106 @@ bool CPlayer2D::Init()
 
 	// Camera
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
-	m_Camera->OnViewportCenter(); // Player ì¤‘ì‹¬ ì„¸íŒ…
+	m_Camera->OnViewportCenter(); // Player Áß½É ¼¼ÆÃ
 
 	// NavAgent
 	m_NavAgent = CreateComponent<CNavAgent>("NavAgent");
 
 	SetRootComponent(m_KirbyState);
+	m_KirbyState->AddChild(m_ChildLeftSprite);
+	m_KirbyState->AddChild(m_ChildRightSprite);
+	m_KirbyState->AddChild(m_Muzzle);
+	m_KirbyState->AddChild(m_ChildRoot);
 	m_KirbyState->AddChild(m_Body);
 	m_KirbyState->AddChild(m_Camera);
 	m_KirbyState->AddChild(m_SimpleHUDWidget);
 
-	// ë°˜ë“œì‹œ ì´ ìœ„ì¹˜ì—ì„œ ( AddChild ì´í›„ì— ìœ„ì¹˜ ì¢Œí‘œ ì„¸íŒ… )
+	// ¹İµå½Ã ÀÌ À§Ä¡¿¡¼­ ( AddChild ÀÌÈÄ¿¡ À§Ä¡ ÁÂÇ¥ ¼¼ÆÃ )
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_KirbyState->SetTransparency(true);
 
-	// CAnimationSequence2DInstance* AnimationInstance =  m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
-	//
-	// m_KirbyState->SetAnimationInstance(AnimationInstance);
-	
-	// Pivot ê°’ì´ ì—†ë‹¤ë©´, ì›ë˜ì˜ pos ì¸ ì™¼ìª½ í•˜ë‹¨ pos ë¥¼ ì¤‘ì‹¬ìœ¼ë¡œ
-	// Center ê°€ í˜•ì„±ë˜ê²Œ ë  ê²ƒì´ë‹¤. 
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+
+	m_KirbyState->SetAnimationInstance(AnimationInstance);
+
+	// m_KirbyState->CreateAnimationInstance<CPlayerAnimation2D>();
+
+	m_ChildLeftSprite->AddChild(m_ChildLeftMuzzle);
+	m_ChildRightSprite->AddChild(m_ChildRightMuzzle);
+	m_ChildLeftSprite->SetTexture(0, 0, (int)(Buffer_Shader_Type::Pixel), "Teemo",
+		TEXT("Teemo.jpg"));
+	m_ChildRightSprite->SetTexture(0, 0, (int)(Buffer_Shader_Type::Pixel), "Teemo",
+		TEXT("Teemo.jpg"));
+	m_ChildLeftSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
+	m_ChildRightSprite->SetBaseColor(1.f, 0.f, 0.f, 1.f);
+
+
+	m_ChildRoot->AddChild(m_Child1Sprite);
+	m_ChildRoot->AddChild(m_Child2Sprite);
+	m_ChildRoot->AddChild(m_Child3Sprite);
+	m_ChildRoot->AddChild(m_Child4Sprite);
+
+	m_Muzzle->SetRelativePos(0.f, 150.f, 0.f);
+	m_Muzzle->SetInheritRotZ(true);
+
+	m_ChildLeftMuzzle->SetRelativePos(0.f, 100.f, 0.f);
+	m_ChildLeftMuzzle->SetInheritRotZ(true);
+
+	m_ChildRightMuzzle->SetRelativePos(0.f, 100.f, 0.f);
+	m_ChildRightMuzzle->SetInheritRotZ(true);
+
+	m_ChildRightSprite->SetRelativeScale(50.f, 50.f, 1.f);
+	m_ChildRightSprite->SetInheritScale(false);
+	m_ChildRightSprite->SetRelativePos(100.f, 0.f, 0.f);
+	m_ChildRightSprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_ChildRightSprite->SetInheritRotZ(true);
+
+	m_ChildLeftSprite->SetRelativeScale(50.f, 50.f, 1.f);
+	m_ChildLeftSprite->SetInheritScale(false);
+	m_ChildLeftSprite->SetRelativePos(-100.f, 0.f, 0.f);
+	m_ChildLeftSprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_ChildLeftSprite->SetInheritRotZ(true);
+
+	m_Child1Sprite->SetRelativeScale(25.f, 25.f, 1.f);
+	m_Child1Sprite->SetInheritScale(false);
+	m_Child1Sprite->SetRelativePos(200.f, 0.f, 0.f);
+	m_Child1Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_Child1Sprite->SetInheritRotZ(true);
+
+	m_Child2Sprite->SetRelativeScale(25.f, 25.f, 1.f);
+	m_Child2Sprite->SetInheritScale(false);
+	m_Child2Sprite->SetRelativePos(-200.f, 0.f, 0.f);
+	m_Child2Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_Child2Sprite->SetInheritRotZ(true);
+
+	m_Child3Sprite->SetRelativeScale(25.f, 25.f, 1.f);
+	m_Child3Sprite->SetInheritScale(false);
+	m_Child3Sprite->SetRelativePos(0.f, 200.f, 0.f);
+	m_Child3Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_Child3Sprite->SetInheritRotZ(true);
+
+	m_Child4Sprite->SetRelativeScale(25.f, 25.f, 1.f);
+	m_Child4Sprite->SetInheritScale(false);
+	m_Child4Sprite->SetRelativePos(0.f, -200.f, 0.f);
+	m_Child4Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_Child4Sprite->SetInheritRotZ(true);
+
+	/*
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveUp", KeyState_Push, this, &CPlayerOld::MoveUp);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveDown", KeyState_Push, this, &CPlayerOld::MoveDown);
+	// CInput::GetInst()->SetKeyCallback<CPlayerOld>("RotationZInv", KeyState_Push, this, &CPlayerOld::RotationZInv);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveLeft", KeyState_Push, this, &CPlayerOld::MoveLeft);
+	// CInput::GetInst()->SetKeyCallback<CPlayerOld>("RotationZ", KeyState_Push, this, &CPlayerOld::RotationZ);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveRight", KeyState_Push, this, &CPlayerOld::MoveRight);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Attack", KeyState_Down, this, &CPlayerOld::Attack);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Attack1", KeyState_Down, this, &CPlayerOld::Attack1);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Skill1", KeyState_Down, this, &CPlayerOld::Skill1);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MovePoint", KeyState_Down, this, &CPlayerOld::MovePointDown);
+	*/
+
+	// Pivot °ªÀÌ ¾ø´Ù¸é, ¿ø·¡ÀÇ pos ÀÎ ¿ŞÂÊ ÇÏ´Ü pos ¸¦ Áß½ÉÀ¸·Î
+	// Center °¡ Çü¼ºµÇ°Ô µÉ °ÍÀÌ´Ù. 
 	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
 	m_KirbyState->SetRelativePos(100.f, 50.f, 0.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
@@ -109,34 +209,44 @@ bool CPlayer2D::Init()
 	return true;
 }
 
-void CPlayer2D::Start()
+void CPlayerOld::Start()
 {
 	CLifeObject::Start();
 
-
-	m_KirbyState = dynamic_cast<CKirbyState*>(FindComponent("PlayerSprite"));
-
+	m_KirbyState = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerSprite"));
 	SetRootComponent(m_KirbyState);
-	
+
+	m_ChildLeftSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildLeftSprite"));
+	m_ChildRightSprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChildRightSprite"));
+	m_ChildLeftMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("LeftMuzzle"));
+	m_ChildRightMuzzle = dynamic_cast<CSceneComponent*>(FindComponent("RightMuzzle"));
+	m_ChildRoot = dynamic_cast<CSceneComponent*>(FindComponent("PlayerChildRoot"));
+	m_Muzzle = dynamic_cast<CSceneComponent*>(FindComponent("Muzzle"));
+
+	m_Child1Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild1Sprite"));
+	m_Child2Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild2Sprite"));
+	m_Child3Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild3Sprite"));
+	m_Child4Sprite = dynamic_cast<CSpriteComponent*>(FindComponent("PlayerChild4Sprite"));
+
 	m_Body = (CColliderBox2D*)FindComponent("Body");
-	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayerOld::FallDownAttack);
 
 	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 	m_PullRightCollider->SetCollisionProfile("Player");
-	m_PullRightCollider->Start(); // SceneCollision ì˜ Collider List ì— ì¶”ê°€í•˜ê¸°
+	m_PullRightCollider->Start(); // SceneCollision ÀÇ Collider List ¿¡ Ãß°¡ÇÏ±â
 	m_PullRightCollider->Enable(false);
-	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollisionBeginCallback);
-	m_PullRightCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullRightCollisionEndCallback);
+	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayerOld::PullRightCollisionBeginCallback);
+	m_PullRightCollider->AddCollisionCallback(Collision_State::End, this, &CPlayerOld::PullRightCollisionEndCallback);
 	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_KirbyState->GetWorldScale().y * 0.5f));
 	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
 
 	m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 	m_PullLeftCollider->SetCollisionProfile("Player");
-	m_PullLeftCollider->Start(); // SceneCollision ì˜ Collider List ì— ì¶”ê°€í•˜ê¸°
+	m_PullLeftCollider->Start(); // SceneCollision ÀÇ Collider List ¿¡ Ãß°¡ÇÏ±â
 	m_PullLeftCollider->Enable(false);
-	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullLeftCollisionBeginCallback);
-	m_PullLeftCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullLeftCollisionEndCallback);
+	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayerOld::PullLeftCollisionBeginCallback);
+	m_PullLeftCollider->AddCollisionCallback(Collision_State::End, this, &CPlayerOld::PullLeftCollisionEndCallback);
 	m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_KirbyState->GetWorldScale().y * 0.5f));
 	m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
@@ -152,11 +262,11 @@ void CPlayer2D::Start()
 
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
-	// Root Component Animation ì„¸íŒ…
+	// Root Component Animation ¼¼ÆÃ
 	// CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
 	// m_KirbyState->SetAnimationInstance(AnimationInstance);
 
-	// Widget Componentì˜ Widget ìƒì„±
+	// Widget ComponentÀÇ Widget »ı¼º
 	m_SimpleHUDWidget = (CWidgetComponent*)(FindComponent("SimpleHUD"));
 	if (!m_SimpleHUDWidget)
 	{
@@ -170,7 +280,7 @@ void CPlayer2D::Start()
 	// m_Camera = FindComponentByType<CCameraComponent>();
 
 	/*
-	// todo : ì™œ ì—¬ê¸°ì„œ ìƒˆë¡­ê²Œ ë§Œë“¤ì–´ì£¼ë©´ ì‘ë™ì„ ì•ˆí•˜ê²Œ ë˜ëŠ” ê²ƒì¼ê¹Œ ?
+	// todo : ¿Ö ¿©±â¼­ »õ·Ó°Ô ¸¸µé¾îÁÖ¸é ÀÛµ¿À» ¾ÈÇÏ°Ô µÇ´Â °ÍÀÏ±î ?
 	if (!m_Camera)
 	{
 		m_Camera = CreateComponent<CCameraComponent>("Camera");
@@ -179,85 +289,85 @@ void CPlayer2D::Start()
 		m_KirbyState->AddChild(m_Camera);
 	}
 	*/
-	
 
-	// Key Input ì„¸íŒ… 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 
-		KeyState_Push, this, &CPlayer2D::MoveUp);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp",
-		KeyState_Up, this, &CPlayer2D::MoveUpEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", 
-		KeyState_Push, this, &CPlayer2D::MoveDown);
+	// Key Input ¼¼ÆÃ 
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveUp",
+		KeyState_Push, this, &CPlayerOld::MoveUp);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveUp",
+		KeyState_Up, this, &CPlayerOld::MoveUpEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft", 
-		KeyState_Push, this, &CPlayer2D::MoveLeft);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft",
-		KeyState_Up, this, &CPlayer2D::LeftLeverMoveEnd);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveDown",
+		KeyState_Push, this, &CPlayerOld::MoveDown);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashLeft", 
-		KeyState_Push, this, &CPlayer2D::MoveDashLeft);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashLeft",
-		KeyState_Up, this, &CPlayer2D::LeftDashMoveEnd);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveLeft",
+		KeyState_Push, this, &CPlayerOld::MoveLeft);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveLeft",
+		KeyState_Up, this, &CPlayerOld::LeftLeverMoveEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveRight", 
-		KeyState_Push, this, &CPlayer2D::MoveRight);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveRight",
-		KeyState_Up, this, &CPlayer2D::RightLeverMoveEnd);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveDashLeft",
+		KeyState_Push, this, &CPlayerOld::MoveDashLeft);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveDashLeft",
+		KeyState_Up, this, &CPlayerOld::LeftDashMoveEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashRight", 
-		KeyState_Push, this, &CPlayer2D::MoveDashRight);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDashRight",
-		KeyState_Up, this, &CPlayer2D::RightDashMoveEnd);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveRight",
+		KeyState_Push, this, &CPlayerOld::MoveRight);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveRight",
+		KeyState_Up, this, &CPlayerOld::RightLeverMoveEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullRight",
-		KeyState_Push, this, &CPlayer2D::PullRight);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullRight",
-		KeyState_Up, this, &CPlayer2D::PullRightEnd);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveDashRight",
+		KeyState_Push, this, &CPlayerOld::MoveDashRight);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MoveDashRight",
+		KeyState_Up, this, &CPlayerOld::RightDashMoveEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullLeft",
-		KeyState_Push, this, &CPlayer2D::PullLeft);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("PullLeft",
-		KeyState_Up, this, &CPlayer2D::PullLeftEnd);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("PullRight",
+		KeyState_Push, this, &CPlayerOld::PullRight);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("PullRight",
+		KeyState_Up, this, &CPlayerOld::PullRightEnd);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialChange",
-		KeyState_Push, this, &CPlayer2D::MoveDown);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("PullLeft",
+		KeyState_Push, this, &CPlayerOld::PullLeft);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("PullLeft",
+		KeyState_Up, this, &CPlayerOld::PullLeftEnd);
+
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("SpecialChange",
+		KeyState_Push, this, &CPlayerOld::MoveDown);
 
 	/*
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
-		KeyState_Down, this, &CPlayer2D::Attack);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", 
-		KeyState_Down, this, &CPlayer2D::Attack1);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
-		KeyState_Down, this, &CPlayer2D::Skill1);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Attack",
+		KeyState_Down, this, &CPlayerOld::Attack);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Attack1",
+		KeyState_Down, this, &CPlayerOld::Attack1);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Skill1",
+		KeyState_Down, this, &CPlayerOld::Skill1);
 	*/
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", 
-		KeyState_Down, this, &CPlayer2D::MovePointDown);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("MovePoint",
+		KeyState_Down, this, &CPlayerOld::MovePointDown);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Jump", 
-		KeyState_Down, this, &CPlayer2D::Jump);
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("JumpWhileDash",
-		KeyState_Down, this, &CPlayer2D::Jump);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("Jump",
+		KeyState_Down, this, &CPlayerOld::Jump);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("JumpWhileDash",
+		KeyState_Down, this, &CPlayerOld::Jump);
 
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpitOut",
-		KeyState_Push, this, &CPlayer2D::SpitOut);
+	CInput::GetInst()->SetKeyCallback<CPlayerOld>("SpitOut",
+		KeyState_Push, this, &CPlayerOld::SpitOut);
 
-	// Animation Play Scale ì„¸íŒ…
+	// Animation Play Scale ¼¼ÆÃ
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
 
-	// Animation Loop ì—¬ë¶€ ì„¸íŒ…
+	// Animation Loop ¿©ºÎ ¼¼ÆÃ
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
-	// Jump ê°€ ë‹¤ ëë‚œ ì´í›„ì—ëŠ”, Animation ì„ Fall ìƒíƒœë¡œ ë°”ê¿”ë¼
+	// Jump °¡ ´Ù ³¡³­ ÀÌÈÄ¿¡´Â, Animation À» Fall »óÅÂ·Î ¹Ù²ã¶ó
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
+		this, &CPlayerOld::ChangePlayerFallAnimation);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
+		this, &CPlayerOld::ChangePlayerFallAnimation);
 }
 
-void CPlayer2D::Update(float DeltaTime)
+void CPlayerOld::Update(float DeltaTime)
 {
 	CLifeObject::Update(DeltaTime);
 
@@ -266,9 +376,43 @@ void CPlayer2D::Update(float DeltaTime)
 	FallFromCliff();
 
 	ChangeToIdleWhenReachGroundAfterFall();
+
+	static bool Fire2 = false;
+
+	static bool Hide = false;
+
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		Fire2 = true;
+	}
+
+	else if (Fire2)
+	{
+		Fire2 = false;
+
+		CBulletTornaido* Bullet = m_Scene->CreateGameObject<CBulletTornaido>("Bullet");
+
+		//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+		Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
+		Bullet->SetWorldRotation(GetWorldRot());
+
+		Hide = true;
+	}
+
+	m_ChildRoot->AddRelativeRotation(0.f, 0.f, 180.f * DeltaTime);
+
+	if (Hide)
+	{
+		m_Opacity -= DeltaTime / 5.f;
+
+		if (m_Opacity < 0.f)
+			m_Opacity = 0.f;
+
+		m_KirbyState->SetOpacity(m_Opacity);
+	}
 }
 
-void CPlayer2D::PostUpdate(float DeltaTime)
+void CPlayerOld::PostUpdate(float DeltaTime)
 {
 	CLifeObject::PostUpdate(DeltaTime);
 
@@ -277,12 +421,12 @@ void CPlayer2D::PostUpdate(float DeltaTime)
 	m_DeltaTime = 0.f;
 }
 
-CPlayer2D* CPlayer2D::Clone()
+CPlayerOld* CPlayerOld::Clone()
 {
-	return new CPlayer2D(*this);
+	return new CPlayerOld(*this);
 }
 
-void CPlayer2D::SetIsEatingMonster(bool Enable)
+void CPlayerOld::SetIsEatingMonster(bool Enable)
 {
 	m_IsEatingMonster = Enable;
 
@@ -293,60 +437,60 @@ void CPlayer2D::SetIsEatingMonster(bool Enable)
 	}
 }
 
-void CPlayer2D::SetEatenMonster(CMonster* Monster)
+void CPlayerOld::SetEatenMonster(CMonster* Monster)
 {
 	m_EatenMonster = Monster;
 }
 
-void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
+void CPlayerOld::UpdateWhileOffGround(float DeltaTime)
 {
 	CLifeObject::UpdateWhileOffGround(DeltaTime);
 }
 
-void CPlayer2D::MoveUp(float DeltaTime)
+void CPlayerOld::MoveUp(float DeltaTime)
 {
 	FlyAfterJump(DeltaTime);
 	// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
 }
 
-void CPlayer2D::MoveUpEnd(float DeltaTime)
+void CPlayerOld::MoveUpEnd(float DeltaTime)
 {
 	if (m_IsFlying)
 	{
-		// ë•‹ì— ë‹¿ì€ ìƒíƒœë¼ë©´, m_IsFlyingì„ false ë¡œ í•´ì„œ
-		// ë‹¤ì‹œ ë‚ ë ¤ë©´, Jump ì´í›„ì— ë‚  ìˆ˜ ìˆê²Œ ì„¸íŒ…í•œë‹¤
+		// ¶¦¿¡ ´êÀº »óÅÂ¶ó¸é, m_IsFlyingÀ» false ·Î ÇØ¼­
+		// ´Ù½Ã ³¯·Á¸é, Jump ÀÌÈÄ¿¡ ³¯ ¼ö ÀÖ°Ô ¼¼ÆÃÇÑ´Ù
 		// if (m_IsGround)
 		m_IsFlying = false;
 
 		ChangePlayerFallAnimation();
 	}
 
-	// Fall StartY ë¥¼ ì—¬ê¸°ì„œ ë‹¤ì‹œ ì„¸íŒ…í•œë‹¤.
+	// Fall StartY ¸¦ ¿©±â¼­ ´Ù½Ã ¼¼ÆÃÇÑ´Ù.
 	m_FallTime = 0.f;
 	m_FallStartY = GetWorldPos().y;
 
 	m_IsFalling = true;
 }
 
-void CPlayer2D::MoveDown(float DeltaTime)
+void CPlayerOld::MoveDown(float DeltaTime)
 {
 	m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime * -1.f);
 }
 
-void CPlayer2D::MoveLeft(float DeltaTime) //
+void CPlayerOld::MoveLeft(float DeltaTime) //
 {
-	// ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ ëˆ„ë¥¸ ìƒíƒœë¼ë©´ X
+	// ¿À¸¥ÂÊ ¹öÆ°À» ´©¸¥ »óÅÂ¶ó¸é X
 	if (m_RightMovePush)
 		return;
 
-	// ë²”ìœ„ ì œí•œ í•˜ê¸°
+	// ¹üÀ§ Á¦ÇÑ ÇÏ±â
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
-	// í˜„ì¬ëŠ” Pull í•˜ê³  ìˆëŠ” ìƒíƒœê°€ ì•„ë‹ˆë¯€ë¡œ false ë¡œ ì„¸íŒ…í•œë‹¤.
+	// ÇöÀç´Â Pull ÇÏ°í ÀÖ´Â »óÅÂ°¡ ¾Æ´Ï¹Ç·Î false ·Î ¼¼ÆÃÇÑ´Ù.
 	m_IsPulling = false;
 
-	// ì‚¼ê° ì í”„ ìƒíƒœì˜€ë‹¤ë©´ ê³„ì† ì´ë™ ì‹œí‚¨ë‹¤
+	// »ï°¢ Á¡ÇÁ »óÅÂ¿´´Ù¸é °è¼Ó ÀÌµ¿ ½ÃÅ²´Ù
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
@@ -367,16 +511,16 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 
 
 
-	// ë ˆë²„ ì´ë™ í‘œì‹œ
+	// ·¹¹ö ÀÌµ¿ Ç¥½Ã
 	m_IsLeverMoving = true;
 
-	// ì™¼ìª½ ë²„íŠ¼ ëˆ„ë¥´ëŠ” ì¤‘ í‘œì‹œ
+	// ¿ŞÂÊ ¹öÆ° ´©¸£´Â Áß Ç¥½Ã
 	m_LeftMovePush = true;
 
-	// ë°©í–¥ ì™¼ìª½ í‘œì‹œ
+	// ¹æÇâ ¿ŞÂÊ Ç¥½Ã
 	m_ObjectMoveDir.x = 1.f * -1;
 
-	// ì´ë™ ê´€ë ¨ ìƒíƒœ í‘œì‹œ
+	// ÀÌµ¿ °ü·Ã »óÅÂ Ç¥½Ã
 	if (m_RightMove)
 	{
 		m_LeftMove = false;
@@ -388,10 +532,10 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		m_ToLeftWhenRightMove = false;
 	}
 
-	// ì¼ë°˜ ì´ë™ ì†ë„ ê³„ì‚°
+	// ÀÏ¹İ ÀÌµ¿ ¼Óµµ °è»ê
 	CalculateLeverMoveSpeed(DeltaTime);
 
-	// ì—¬ê¸°ë¡œ ë“¤ì–´ì˜¨ ê²ƒì€ Dash Move ì¤‘ì€ ì•„ë‹ˆë¼ëŠ” ê²ƒì´ë¯€ë¡œ
+	// ¿©±â·Î µé¾î¿Â °ÍÀº Dash Move ÁßÀº ¾Æ´Ï¶ó´Â °ÍÀÌ¹Ç·Î
 	if (m_DashVelocity > 0.f)
 	{
 		m_DashVelocity -= m_DashMoveAccel;
@@ -400,10 +544,10 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 			m_DashVelocity = 0.f;
 	}
 
-	// ì´ ì´ë™ ì†ë„ë¥¼ ê³„ì‚°í•œë‹¤
+	// ÃÑ ÀÌµ¿ ¼Óµµ¸¦ °è»êÇÑ´Ù
 	CalculateTotalMoveSpeed(DeltaTime);
 
-	// ì‹¤ì œ ì´ë™ ì²˜ë¦¬ë¥¼ í•œë‹¤
+	// ½ÇÁ¦ ÀÌµ¿ Ã³¸®¸¦ ÇÑ´Ù
 	if (m_RightMove)
 	{
 		if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
@@ -417,17 +561,17 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// Animation ì „í™˜
+	// Animation ÀüÈ¯
 	ChangePlayerWalkAnimation();
 }
 
-void CPlayer2D::MoveDashLeft(float DeltaTime)
+void CPlayerOld::MoveDashLeft(float DeltaTime)
 {
-	// ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆë‹¤ë©´
+	// ¿À¸¥ÂÊ ¹öÆ°À» ´©¸£°í ÀÖ´Ù¸é
 	if (m_RightMovePush)
 		return;
 
-	// ë²”ìœ„ ì œí•œ í•˜ê¸°
+	// ¹üÀ§ Á¦ÇÑ ÇÏ±â
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
@@ -449,13 +593,13 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		return;
 	}
 
-	// ì´ë™ ìƒíƒœ True + ë²„íŠ¼ ì´ë™ ìƒíƒœ True
+	// ÀÌµ¿ »óÅÂ True + ¹öÆ° ÀÌµ¿ »óÅÂ True
 	m_IsLeverMoving = true;
 	m_IsDashMoving = true;
 
 	m_LeftMovePush = true;
 
-	// ë°©í–¥ ì™¼ìª½ í‘œì‹œ
+	// ¹æÇâ ¿ŞÂÊ Ç¥½Ã
 	m_ObjectMoveDir.x = 1.f * -1;
 
 
@@ -489,25 +633,25 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// Animation ì „í™˜
+	// Animation ÀüÈ¯
 	ChangePlayerRunAnimation();
-	
+
 }
 
-void CPlayer2D::MoveRight(float DeltaTime)
+void CPlayerOld::MoveRight(float DeltaTime)
 {
 
-	// ì™¼ìª½ í‚¤ë¥¼ ëˆ„ë¥´ê³  ìˆì—ˆë‹¤ë©´ ì•ˆë¨¹ê²Œ í•œë‹¤
+	// ¿ŞÂÊ Å°¸¦ ´©¸£°í ÀÖ¾ú´Ù¸é ¾È¸Ô°Ô ÇÑ´Ù
 	if (m_LeftMovePush)
 		return;
 
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
-	// í˜„ì¬ëŠ” Pull í•˜ê³  ìˆëŠ” ìƒíƒœê°€ ì•„ë‹ˆë¯€ë¡œ false ë¡œ ì„¸íŒ…í•œë‹¤.
+	// ÇöÀç´Â Pull ÇÏ°í ÀÖ´Â »óÅÂ°¡ ¾Æ´Ï¹Ç·Î false ·Î ¼¼ÆÃÇÑ´Ù.
 	m_IsPulling = false;
 
-	// Triangle Jump ì¤‘ì´ë¼ë©´ ì´ë™ì€ ê³„ì† í•˜ë˜ + í‚¤ë³´ë“œëŠ” ì•ˆë¨¹ê²Œ í•œë‹¤
+	// Triangle Jump ÁßÀÌ¶ó¸é ÀÌµ¿Àº °è¼Ó ÇÏµÇ + Å°º¸µå´Â ¾È¸Ô°Ô ÇÑ´Ù
 	if (m_TriangleJump)
 	{
 		if (m_RightMove)
@@ -527,16 +671,16 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 
-	// ì¼ë°˜ ì´ë™ í‘œì‹œ
+	// ÀÏ¹İ ÀÌµ¿ Ç¥½Ã
 	m_IsLeverMoving = true;
 
-	// ì˜¤ë¥¸ìª½ ì´ë™ í‘œì‹œ
+	// ¿À¸¥ÂÊ ÀÌµ¿ Ç¥½Ã
 	m_RightMovePush = true;
 
-	// ë°©í–¥ ì™¼ìª½ í‘œì‹œ
+	// ¹æÇâ ¿ŞÂÊ Ç¥½Ã
 	m_ObjectMoveDir.x = 1.f;
 
-	// ì´ë™ ìƒíƒœ Update
+	// ÀÌµ¿ »óÅÂ Update
 	if (m_LeftMove)
 	{
 		m_RightMove = false;
@@ -548,10 +692,10 @@ void CPlayer2D::MoveRight(float DeltaTime)
 		m_ToRightWhenLeftMove = false;
 	}
 
-	// ì´ë™ ì†ë„ ê³„ì‚°
+	// ÀÌµ¿ ¼Óµµ °è»ê
 	CalculateLeverMoveSpeed(DeltaTime);
 
-	// ëŒ€ì‰¬ ì†ë„ Update
+	// ´ë½¬ ¼Óµµ Update
 	if (m_DashVelocity > 0.f)
 	{
 		m_DashVelocity -= m_DashMoveAccel;
@@ -560,10 +704,10 @@ void CPlayer2D::MoveRight(float DeltaTime)
 			m_DashVelocity = 0.f;
 	}
 
-	// ì´ ì´ë™ ì†ë„ ê³„ì‚°
+	// ÃÑ ÀÌµ¿ ¼Óµµ °è»ê
 	CalculateTotalMoveSpeed(DeltaTime);
 
-	// ì‹¤ì œ ì´ë™ ìˆ˜í–‰
+	// ½ÇÁ¦ ÀÌµ¿ ¼öÇà
 	if (m_RightMove)
 	{
 		if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
@@ -577,12 +721,12 @@ void CPlayer2D::MoveRight(float DeltaTime)
 		m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// Animation ì „í™˜
+	// Animation ÀüÈ¯
 	ChangePlayerWalkAnimation();
 
 }
 
-void CPlayer2D::MoveDashRight(float DeltaTime)
+void CPlayerOld::MoveDashRight(float DeltaTime)
 {
 	if (m_LeftMovePush)
 		return;
@@ -609,7 +753,7 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 
 	m_IsLeverMoving = true;
 
-	m_IsDashMoving  = true;
+	m_IsDashMoving = true;
 
 	m_RightMovePush = true;
 
@@ -645,12 +789,12 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f);
 	}
 
-	// Animation ì „í™˜
+	// Animation ÀüÈ¯
 	ChangePlayerRunAnimation();
-	
+
 }
 
-void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
+void CPlayerOld::LeftLeverMoveEnd(float DeltaTime)
 {
 	m_LeftMovePush = false;
 
@@ -661,7 +805,7 @@ void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 	PullLeftEnd(DeltaTime);
 }
 
-void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
+void CPlayerOld::RightLeverMoveEnd(float DeltaTime)
 {
 	m_RightMovePush = false;
 
@@ -672,7 +816,7 @@ void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
 	PullRightEnd(DeltaTime);
 }
 
-void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
+void CPlayerOld::LeftDashMoveEnd(float DeltaTime)
 {
 	ChangePlayerWalkAnimation();
 
@@ -683,7 +827,7 @@ void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 	PullLeftEnd(DeltaTime);
 }
 
-void CPlayer2D::RightDashMoveEnd(float DeltaTime)
+void CPlayerOld::RightDashMoveEnd(float DeltaTime)
 {
 	ChangePlayerWalkAnimation();
 
@@ -694,7 +838,7 @@ void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 	PullRightEnd(DeltaTime);
 }
 
-void CPlayer2D::SpitOut(float DeltaTime)
+void CPlayerOld::SpitOut(float DeltaTime)
 {
 	if (!m_IsEatingMonster)
 		return;
@@ -721,61 +865,61 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	m_EatenMonster = nullptr;
 }
 
-float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
+float CPlayerOld::CalculateLeverMoveSpeed(float DeltaTime)
 {
-	// ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ì¤‘ì´ë¼ë©´
+	// ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÁßÀÌ¶ó¸é
 	if (m_RightMove)
 	{
-		// ê³„ì† ì˜¤ë¥¸ìª½ ì´ë™ ì¤‘ì´ë¼ë©´
+		// °è¼Ó ¿À¸¥ÂÊ ÀÌµ¿ ÁßÀÌ¶ó¸é
 		if (!m_ToLeftWhenRightMove)
 		{
 			m_LeverVelocity += m_LeverMoveAccel;
 		}
-		// ê·¸ê²Œ ì•„ë‹ˆë¼, ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë‹¤ê°€, ì™¼ìª½ìœ¼ë¡œ ê°ì†í•˜ëŠ” ê²ƒì´ë¼ë©´
+		// ±×°Ô ¾Æ´Ï¶ó, ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ´Ù°¡, ¿ŞÂÊÀ¸·Î °¨¼ÓÇÏ´Â °ÍÀÌ¶ó¸é
 		else
 		{
 			m_LeverVelocity -= m_LeverMoveAccel * 2.f;
 		}
 	}
 
-	// ë§Œì•½ ì™¼ìª½ ì´ë™ì¤‘ì´ë¼ë©´
+	// ¸¸¾à ¿ŞÂÊ ÀÌµ¿ÁßÀÌ¶ó¸é
 	else if (m_LeftMove)
 	{
-		// ê³„ì† ì™¼ìª½ ì´ë™ ì¤‘ì´ë¼ë©´
+		// °è¼Ó ¿ŞÂÊ ÀÌµ¿ ÁßÀÌ¶ó¸é
 		if (!m_ToRightWhenLeftMove)
 		{
 			m_LeverVelocity += m_LeverMoveAccel;
 		}
-		// ì™¼ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë‹¤ê°€, ì˜¤ë¥¸ìª½ìœ¼ë¡œ ê°ì†í•˜ëŠ” ê²ƒì´ë¼ë©´
+		// ¿ŞÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ´Ù°¡, ¿À¸¥ÂÊÀ¸·Î °¨¼ÓÇÏ´Â °ÍÀÌ¶ó¸é
 		else
 		{
 			m_LeverVelocity -= m_LeverMoveAccel * 2.f;
 		}
 	}
 
-	// ìµœëŒ€ ì†ë„ ì¡°ì ˆ
+	// ÃÖ´ë ¼Óµµ Á¶Àı
 	if (m_LeverVelocity >= m_LeverMaxMoveVelocity)
 	{
 		m_LeverVelocity = m_LeverMaxMoveVelocity;
 	}
 
-	// ìµœì†Œ ì†ë„ ì¡°ì ˆ
+	// ÃÖ¼Ò ¼Óµµ Á¶Àı
 	if (m_LeverVelocity < 0.f)
 		m_LeverVelocity = 0.f;
 
 	return m_LeverVelocity;
 }
 
-float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
+float CPlayerOld::CalculateDashMoveSpeed(float DeltaTime)
 {
-	// ê³µì¤‘ì— ë– ìˆë‹¤ë©´ Dash Move ëŠ” ì§„í–‰í•˜ì§€ ì•ŠëŠ”ë‹¤
+	// °øÁß¿¡ ¶°ÀÖ´Ù¸é Dash Move ´Â ÁøÇàÇÏÁö ¾Ê´Â´Ù
 	if (!m_IsGround)
 		return m_LeverVelocity;
 
-	// ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë¼ë©´
+	// ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ¶ó¸é
 	if (m_RightMove)
 	{
-		// ê³„ì† ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë¼ë©´
+		// °è¼Ó ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ¶ó¸é
 		if (!m_ToLeftWhenRightMove)
 		{
 			m_DashVelocity += m_DashMoveAccel;
@@ -785,10 +929,10 @@ float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
 			m_DashVelocity -= m_DashMoveAccel * 2.f;
 		}
 	}
-	// ì™¼ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë¼ë©´
+	// ¿ŞÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ¶ó¸é
 	else if (m_LeftMove)
 	{
-		// ê³„ì† ì™¼ìª½ìœ¼ë¡œ ì´ë™ ì¤‘ì´ë¼ë©´
+		// °è¼Ó ¿ŞÂÊÀ¸·Î ÀÌµ¿ ÁßÀÌ¶ó¸é
 		if (!m_ToRightWhenLeftMove)
 		{
 			m_DashVelocity += m_DashMoveAccel;
@@ -799,31 +943,31 @@ float CPlayer2D::CalculateDashMoveSpeed(float DeltaTime)
 		}
 	}
 
-	// ìµœëŒ€ ì¹˜ ì¡°ì ˆ
+	// ÃÖ´ë Ä¡ Á¶Àı
 	if (m_DashVelocity >= m_DashMaxMoveVelocity)
 	{
 		m_DashVelocity = m_DashMaxMoveVelocity;
 	}
 
-	// ìµœì†Œ ì¹˜ ì¡°ì ˆ
+	// ÃÖ¼Ò Ä¡ Á¶Àı
 	if (m_DashVelocity < 0.f)
 		m_DashVelocity = 0.f;
 
 	return m_DashVelocity;
 }
 
-float CPlayer2D::CalculateTotalMoveSpeed(float DeltaTime)
+float CPlayerOld::CalculateTotalMoveSpeed(float DeltaTime)
 {
 	m_MoveVelocity = m_LeverVelocity + m_DashVelocity;
 
-	// ìµœëŒ€ ì¹˜ ì¡°ì ˆ
+	// ÃÖ´ë Ä¡ Á¶Àı
 	if (m_MoveVelocity > m_MoveVelocityMax)
 		m_MoveVelocity = m_MoveVelocityMax;
-	
-	// ìµœì†Œ ì¹˜ ì¡°ì ˆ
+
+	// ÃÖ¼Ò Ä¡ Á¶Àı
 	if (m_MoveVelocity <= 0.1f)
 	{
-		// ê¸°ì¡´ ì˜¤ë¥¸ìª½, ì™¼ìª½ ì´ë™ í‘œì‹œ ìƒíƒœë¥¼ í•´ì œí•´ì¤€ë‹¤.
+		// ±âÁ¸ ¿À¸¥ÂÊ, ¿ŞÂÊ ÀÌµ¿ Ç¥½Ã »óÅÂ¸¦ ÇØÁ¦ÇØÁØ´Ù.
 		if (m_RightMove)
 		{
 			m_RightMove = false;
@@ -843,40 +987,40 @@ float CPlayer2D::CalculateTotalMoveSpeed(float DeltaTime)
 	return m_MoveVelocity;
 }
 
-void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
+void CPlayerOld::PlayerMoveUpdate(float DeltaTime)
 {
-	// ë ˆë²„ ì›€ì§ì„ --> í˜„ì¬ ì›€ì§ì´ì§€ ì•Šê³  ìˆëŠ” ìƒí™©ì´ë¼ë©´, ìì—° ê°ì†ì„ ì‹œì¼œì¤˜ì•¼ í•œë‹¤.
-	// ìµœëŒ€ ì›€ì§ì„ì„ ì œí•œí•´ì¤˜ì•¼ í•œë‹¤.
+	// ·¹¹ö ¿òÁ÷ÀÓ --> ÇöÀç ¿òÁ÷ÀÌÁö ¾Ê°í ÀÖ´Â »óÈ²ÀÌ¶ó¸é, ÀÚ¿¬ °¨¼ÓÀ» ½ÃÄÑÁà¾ß ÇÑ´Ù.
+	// ÃÖ´ë ¿òÁ÷ÀÓÀ» Á¦ÇÑÇØÁà¾ß ÇÑ´Ù.
 	if (m_MoveVelocity >= m_MoveVelocityMax)
 	{
 		m_MoveVelocity = m_MoveVelocityMax;
 	}
 
-	// ë ˆë²„ë¥¼ ëˆ„ë¥´ê³  ìˆì§€ ì•Šë‹¤ë©´, ë ˆë²„ ì†ë„ë¥¼ ê°ì† ì‹œí‚¨ë‹¤.
+	// ·¹¹ö¸¦ ´©¸£°í ÀÖÁö ¾Ê´Ù¸é, ·¹¹ö ¼Óµµ¸¦ °¨¼Ó ½ÃÅ²´Ù.
 	if (!m_IsLeverMoving)
 	{
-		m_LeverVelocity -= m_LeverMoveAccel ;
+		m_LeverVelocity -= m_LeverMoveAccel;
 
 		if (m_LeverVelocity <= 0.f)
 			m_LeverVelocity = 0.f;
 	}
 
-	// ëŒ€ì‰¬ë¥¼ ì§„í–‰í•˜ê³  ìˆì§€ ì•Šë‹¤ë©´, ëŒ€ì‰¬ ì†ë„ë„ ê°ì† ì‹œí‚¨ë‹¤.
+	// ´ë½¬¸¦ ÁøÇàÇÏ°í ÀÖÁö ¾Ê´Ù¸é, ´ë½¬ ¼Óµµµµ °¨¼Ó ½ÃÅ²´Ù.
 	if (!m_IsDashMoving)
 	{
-		m_DashVelocity -= m_DashMoveAccel ;
+		m_DashVelocity -= m_DashMoveAccel;
 
 		if (m_DashVelocity <= 0.f)
 			m_DashVelocity = 0.f;
 	}
 
-	// ì „ì²´ ì†ë„ ê°ì†ì„ ì§„í–‰í•œë‹¤.
+	// ÀüÃ¼ ¼Óµµ °¨¼ÓÀ» ÁøÇàÇÑ´Ù.
 	if (!m_IsLeverMoving && !m_IsDashMoving && m_MoveVelocity > 0.f)
 	{
-		// ê°ì†
+		// °¨¼Ó
 		m_MoveVelocity = m_LeverVelocity + m_DashVelocity;
 
-		// ì´ë™ì„ ë©ˆì¶”ë©´ -> ì˜¤ë¥¸ìª½ , ì™¼ìª½ ì´ë™ í‘œì‹œë¥¼ ì·¨ì†Œí•´ì¤€ë‹¤.
+		// ÀÌµ¿À» ¸ØÃß¸é -> ¿À¸¥ÂÊ , ¿ŞÂÊ ÀÌµ¿ Ç¥½Ã¸¦ Ãë¼ÒÇØÁØ´Ù.
 		if (m_MoveVelocity <= 0.1f)
 		{
 			if (m_RightMove)
@@ -895,15 +1039,15 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 			m_MoveVelocity = 0.f;
 		}
 
-		// Animation ì„¸íŒ…
+		// Animation ¼¼ÆÃ
 		// ChangePlayerWalkAnimation();
 
-		// ë²”ìœ„ ì œí•œ í•˜ê¸°
+		// ¹üÀ§ Á¦ÇÑ ÇÏ±â
 		float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 		float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
 
-		// ê°ì† ì¤‘ì„ì—ë„ ì´ë™ì€ ì‹œì¼œì¤˜ì•¼ í•œë‹¤.
+		// °¨¼Ó ÁßÀÓ¿¡µµ ÀÌµ¿Àº ½ÃÄÑÁà¾ß ÇÑ´Ù.
 		if (m_RightMove)
 		{
 			if (WorldPosRightX >= m_Scene->GetWorldResolution().x - 0.1f)
@@ -918,7 +1062,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 		}
 	}
 
-	// ì†ë„ê°€ ì—†ê³  + ì í”„ ìƒíƒœê°€ ì•„ë‹ˆë¼ë©´ --> Idle Animationìœ¼ë¡œ ë°”ê¿”ì¤€ë‹¤.
+	// ¼Óµµ°¡ ¾ø°í + Á¡ÇÁ »óÅÂ°¡ ¾Æ´Ï¶ó¸é --> Idle AnimationÀ¸·Î ¹Ù²ãÁØ´Ù.
 	/*
 	if (m_MoveVelocity <= 0.f && !m_Jump)
 	{
@@ -927,7 +1071,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	*/
 }
 
-void CPlayer2D::ResetMoveInfo()
+void CPlayerOld::ResetMoveInfo()
 {
 	m_IsDashMoving = false;
 	m_IsLeverMoving = false;
@@ -940,25 +1084,25 @@ void CPlayer2D::ResetMoveInfo()
 	}
 }
 
-void CPlayer2D::RotationZInv(float DeltaTime) //
+void CPlayerOld::RotationZInv(float DeltaTime) //
 {
 	m_KirbyState->AddRelativeRotationZ(180.f * DeltaTime);
 }
 
-void CPlayer2D::RotationZ(float DeltaTime)
+void CPlayerOld::RotationZ(float DeltaTime)
 {
 	m_KirbyState->AddRelativeRotationZ(-180.f * DeltaTime);
 }
 
-void CPlayer2D:: FlyAfterJump(float DeltaTime)
+void CPlayerOld::FlyAfterJump(float DeltaTime)
 {
-	// ì¼ë‹¨ í•œë²ˆ ë›´ ìƒíƒœì—ì„œ ë‚ ì•„ì•¼ í•œë‹¤.
+	// ÀÏ´Ü ÇÑ¹ø ¶Ú »óÅÂ¿¡¼­ ³¯¾Æ¾ß ÇÑ´Ù.
 	/*
 	if (m_Jump)
 	{
 		m_IsFlying = true;
 
-		// ì¤‘ë ¥ ì ìš© ë°©ì§€
+		// Áß·Â Àû¿ë ¹æÁö
 		m_Jump = false;
 		m_IsGround = true;
 	}
@@ -966,14 +1110,14 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 
 	m_IsFlying = true;
 
-	// ì‚¼ê° ì í”„ í•´ì œ
+	// »ï°¢ Á¡ÇÁ ÇØÁ¦
 	m_TriangleJump = false;
 
-	// ì¤‘ë ¥ ì ìš© ë°©ì§€
+	// Áß·Â Àû¿ë ¹æÁö
 	m_Jump = false;
 	m_IsGround = true;
 
-	// ë‚˜ëŠ” ì¤‘ì´ë¼ë©´, ê³„ì† ë‚ ê²Œ ì„¸íŒ…í•œë‹¤
+	// ³ª´Â ÁßÀÌ¶ó¸é, °è¼Ó ³¯°Ô ¼¼ÆÃÇÑ´Ù
 	if (m_IsFlying)
 	{
 		m_KirbyState->AddWorldPos(Vector3(0.f, 1.f, 0.f) * m_FlySpeed * DeltaTime);
@@ -981,17 +1125,17 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 		// todo : Animation Change
 		ChangePlayerFlyAnimation();
 
-		// ì¤‘ë ¥ ì ìš© ë°©ì§€
+		// Áß·Â Àû¿ë ¹æÁö
 		m_Jump = false;
 		m_IsGround = true;
 	}
 }
 
-void CPlayer2D::SimpleJump()
+void CPlayerOld::SimpleJump()
 {
 	if (!m_Jump)
 	{
-  		m_Jump = true;
+		m_Jump = true;
 		m_IsGround = false;
 
 		m_FallTime = 0.f;
@@ -1007,21 +1151,21 @@ void CPlayer2D::SimpleJump()
 	}
 }
 
-void CPlayer2D::Jump(float DeltaTime)
+void CPlayerOld::Jump(float DeltaTime)
 {
-	// ì‚¼ê° ì¶©ëŒ ì ìš©í•˜ê¸°
+	// »ï°¢ Ãæµ¹ Àû¿ëÇÏ±â
 	bool SideCollision = false;
 
 	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
-	Vector3 WorldPos    = GetWorldPos();
+	Vector3 WorldPos = GetWorldPos();
 	Vector3 WorldScale = GetWorldScale();
-	Vector3 Pivot			 = GetPivot();
+	Vector3 Pivot = GetPivot();
 
 	Vector3 LB = WorldPos - Pivot * WorldScale;
 	Vector3 RT = LB + WorldScale;
 
-	// ì˜¤ë¥¸ìª½ì´ë©´, ì˜¤ë¥¸ìª½ í•œì¹¸ íƒ€ì¼
+	// ¿À¸¥ÂÊÀÌ¸é, ¿À¸¥ÂÊ ÇÑÄ­ Å¸ÀÏ
 	if (m_RightMove)
 	{
 		// LBIndexX = TileMap->GetTileEmptyIndexX(Vector3(ResultLB.x, ResultLB.y, m_Pos.z));
@@ -1049,16 +1193,16 @@ void CPlayer2D::Jump(float DeltaTime)
 				if (TileMap->GetTileEmpty(IndexFinal)->GetTileType() != Tile_Type::Wall)
 					continue;
 
-				Vector3 TilePos   = TileMap->GetTileEmpty(IndexFinal)->GetWorldPos();
+				Vector3 TilePos = TileMap->GetTileEmpty(IndexFinal)->GetWorldPos();
 				Vector3 TileSize = TileMap->GetTileEmpty(IndexFinal)->GetSize();
 
-				// í˜„ì¬ ë•…ì— ë”± ë¶™ì–´ìˆë‹¤ë©´ ë¬´ì‹œí•œë‹¤
+				// ÇöÀç ¶¥¿¡ µü ºÙ¾îÀÖ´Ù¸é ¹«½ÃÇÑ´Ù
 				if (TilePos.y + TileSize.y - m_GroundOffSet <= LB.y &&
 					LB.y <= TilePos.y + TileSize.y + m_GroundOffSet)
 					continue;
 
-				// í˜„ì¬ ìœ„ì¹˜ Tile ë„ Wall ì´ê³ , ì™¼ìª½ë„ Wall ì´ë¼ë©´
-				// ê·¸ê²ƒì€ ì‚¼ê° ì í”„ê°€ ì•„ë‹ˆê²Œ ëœë‹¤. ê·¸ëƒ¥ Tileì´ ì—°ì†ì ìœ¼ë¡œ ìˆëŠ” ê³³ì— ëŒ€í•´ì„œëŠ” ì‚¼ê° ì í”„ X
+				// ÇöÀç À§Ä¡ Tile µµ Wall ÀÌ°í, ¿ŞÂÊµµ Wall ÀÌ¶ó¸é
+				// ±×°ÍÀº »ï°¢ Á¡ÇÁ°¡ ¾Æ´Ï°Ô µÈ´Ù. ±×³É TileÀÌ ¿¬¼ÓÀûÀ¸·Î ÀÖ´Â °÷¿¡ ´ëÇØ¼­´Â »ï°¢ Á¡ÇÁ X
 				if (col == IndexX)
 				{
 					if (TileMap->GetTileEmpty(row * TileMap->GetTileCountX() + IndexXLeft)->GetTileType() == Tile_Type::Wall)
@@ -1078,7 +1222,7 @@ void CPlayer2D::Jump(float DeltaTime)
 		}
 	}
 
-	// ì™¼ìª½ìœ¼ë¡œ ì´ë™í•˜ëŠ” ê²ƒì´ë¼ë©´
+	// ¿ŞÂÊÀ¸·Î ÀÌµ¿ÇÏ´Â °ÍÀÌ¶ó¸é
 	else if (m_LeftMove)
 	{
 		int IndexX = TileMap->GetTileEmptyIndexX(LB.x);
@@ -1095,7 +1239,7 @@ void CPlayer2D::Jump(float DeltaTime)
 		if (IndexXRight >= TileMap->GetTileCountX())
 			IndexXRight = TileMap->GetTileCountX() - 1;
 
-		// ì™¼ìª½ 2ê°œì˜ íƒ€ì¼ì„ ì¡°ì‚¬í•œë‹¤.
+		// ¿ŞÂÊ 2°³ÀÇ Å¸ÀÏÀ» Á¶»çÇÑ´Ù.
 		for (int row = BottomIndexY; row <= TopIndexY; row++)
 		{
 			for (int col = IndexX; col >= IndexXLeft; col--)
@@ -1108,14 +1252,14 @@ void CPlayer2D::Jump(float DeltaTime)
 				Vector3 TilePos = TileMap->GetTileEmpty(IndexFinal)->GetWorldPos();
 				Vector3 TileSize = TileMap->GetTileEmpty(IndexFinal)->GetSize();
 
-				// í˜„ì¬ í™”ë©´ì— ë”± ë¶™ì–´ìˆëŠ” ê²½ìš°ì—ëŠ” ë¬´ì‹œí•œë‹¤.
+				// ÇöÀç È­¸é¿¡ µü ºÙ¾îÀÖ´Â °æ¿ì¿¡´Â ¹«½ÃÇÑ´Ù.
 				if (TilePos.y + TileSize.y - m_GroundOffSet <= LB.y &&
 					TilePos.y + TileSize.y + m_GroundOffSet)
 					continue;
 
-				// í˜„ì¬ ìœ„ì¹˜ Tileë„ Wall ì´ê³ , ì˜¤ë¥¸ìª½ë„ Wall ì´ë¼ë©´
-				// ì—°ì†ì ìœ¼ë¡œ Tileì´ ë†“ì—¬ìˆëŠ” ê³³
-				// ê·¸ëŸ¬í•œ ê³³ì— ëŒ€í•´ì„œëŠ” ì‚¼ê° ì í”„ X
+				// ÇöÀç À§Ä¡ Tileµµ Wall ÀÌ°í, ¿À¸¥ÂÊµµ Wall ÀÌ¶ó¸é
+				// ¿¬¼ÓÀûÀ¸·Î TileÀÌ ³õ¿©ÀÖ´Â °÷
+				// ±×·¯ÇÑ °÷¿¡ ´ëÇØ¼­´Â »ï°¢ Á¡ÇÁ X
 				if (col == IndexX)
 				{
 					if (TileMap->GetTileEmpty(row * TileMap->GetTileCountX() + IndexXRight)->GetTileType()
@@ -1140,8 +1284,8 @@ void CPlayer2D::Jump(float DeltaTime)
 
 	if (SideCollision)
 	{
-		// í˜„ì¬ ì›€ì§ì´ëŠ” ë°©í–¥ ë°˜ëŒ€ë¡œ ì›€ì§ì—¬ì•¼ í•œë‹¤
-		// ì˜¤ë¥¸ìª½
+		// ÇöÀç ¿òÁ÷ÀÌ´Â ¹æÇâ ¹İ´ë·Î ¿òÁ÷¿©¾ß ÇÑ´Ù
+		// ¿À¸¥ÂÊ
 		if (m_RightMove)
 		{
 			TriangleJumpLeft(DeltaTime);
@@ -1159,20 +1303,20 @@ void CPlayer2D::Jump(float DeltaTime)
 	}
 	else
 	{
-		SimpleJump();  
+		SimpleJump();
 	}
 
 }
 
-void CPlayer2D::TriangleJumpLeft(float DeltaTime)
+void CPlayerOld::TriangleJumpLeft(float DeltaTime)
 {
 	m_Jump = true;
 	m_IsGround = false;
 
-	// ì í”„ ì‹œì‘ ë†’ì´ ì„¸íŒ…
+	// Á¡ÇÁ ½ÃÀÛ ³ôÀÌ ¼¼ÆÃ
 	m_FallStartY = GetWorldPos().y;
 
-	// Fall Time ì´ˆê¸°í™”
+	// Fall Time ÃÊ±âÈ­
 	m_FallTime = 0.f;
 
 	m_TriangleJump = true;
@@ -1184,15 +1328,15 @@ void CPlayer2D::TriangleJumpLeft(float DeltaTime)
 	m_ToRightWhenLeftMove = false;
 }
 
-void CPlayer2D::TriangleJumpRight(float DeltaTime)
+void CPlayerOld::TriangleJumpRight(float DeltaTime)
 {
 	m_Jump = true;
 	m_IsGround = false;
 
-	// ì í”„ ì‹œì‘ ë†’ì´ ì„¸íŒ…
+	// Á¡ÇÁ ½ÃÀÛ ³ôÀÌ ¼¼ÆÃ
 	m_FallStartY = GetWorldPos().y;
 
-	// Fall Time ì´ˆê¸°í™”
+	// Fall Time ÃÊ±âÈ­
 	m_FallTime = 0.f;
 
 	m_TriangleJump = true;
@@ -1204,23 +1348,23 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 	m_ToRightWhenLeftMove = false;
 }
 
-void CPlayer2D::FallFromCliff()
+void CPlayerOld::FallFromCliff()
 {
-	// ì ˆë²½ì—ì„œ ë§‰ ë–¨ì–´ì¡Œì„ ë•Œ
+	// Àıº®¿¡¼­ ¸· ¶³¾îÁ³À» ¶§
 	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided && !m_IsFlying)
 	{
 		ChangePlayerFallAnimation();
 	}
 }
 
-void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
+void CPlayerOld::ChangeToIdleWhenReachGroundAfterFall()
 {
 	if (m_IsBottomCollided)
 	{
-		// ì¶©ëŒí•˜ëŠ” ìˆœê°„ Animation ì´ Fall ì´ë¼ë©´, Animationì„ Idleë¡œ
+		// Ãæµ¹ÇÏ´Â ¼ø°£ Animation ÀÌ Fall ÀÌ¶ó¸é, AnimationÀ» Idle·Î
 		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
-		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" || 
+		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" ||
 			CurAnimName == "RightJump" || CurAnimName == "LeftJump")
 		{
 			if (m_IsEatingMonster)
@@ -1233,7 +1377,7 @@ void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
 	}
 }
 
-void CPlayer2D::ChangePlayerIdleAnimation()
+void CPlayerOld::ChangePlayerIdleAnimation()
 {
 	if (!m_Jump && !m_IsFlying)
 	{
@@ -1249,7 +1393,7 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 	}
 }
 
-void CPlayer2D::ChangePlayerNormalIdleAnimation()
+void CPlayerOld::ChangePlayerNormalIdleAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftIdle");
@@ -1257,7 +1401,7 @@ void CPlayer2D::ChangePlayerNormalIdleAnimation()
 		ChangeAnimation("RightIdle");
 }
 
-void CPlayer2D::ChangePlayerWalkAnimation()
+void CPlayerOld::ChangePlayerWalkAnimation()
 {
 	if (!m_Jump && !m_IsFlying)
 	{
@@ -1277,7 +1421,7 @@ void CPlayer2D::ChangePlayerWalkAnimation()
 	}
 }
 
-void CPlayer2D::ChangePlayerNormalWalkAnimation()
+void CPlayerOld::ChangePlayerNormalWalkAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftWalk");
@@ -1285,7 +1429,7 @@ void CPlayer2D::ChangePlayerNormalWalkAnimation()
 		ChangeAnimation("RightWalk");
 }
 
-void CPlayer2D::ChangePlayerHitAnimation()
+void CPlayerOld::ChangePlayerHitAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftHit");
@@ -1293,7 +1437,7 @@ void CPlayer2D::ChangePlayerHitAnimation()
 		ChangeAnimation("RightHit");
 }
 
-void CPlayer2D::ChangePlayerRunAnimation()
+void CPlayerOld::ChangePlayerRunAnimation()
 {
 	if (!m_Jump && !m_IsFlying)
 	{
@@ -1313,7 +1457,7 @@ void CPlayer2D::ChangePlayerRunAnimation()
 	}
 }
 
-void CPlayer2D::ChangePlayerNormalRunAnimation()
+void CPlayerOld::ChangePlayerNormalRunAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftRun");
@@ -1321,7 +1465,7 @@ void CPlayer2D::ChangePlayerNormalRunAnimation()
 		ChangeAnimation("RightRun");
 }
 
-void CPlayer2D::ChangePlayerEatRunAnimation()
+void CPlayerOld::ChangePlayerEatRunAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatWalk");
@@ -1329,7 +1473,7 @@ void CPlayer2D::ChangePlayerEatRunAnimation()
 		ChangeAnimation("RightEatWalk");
 }
 
-void CPlayer2D::ChangePlayerDeathAnimation()
+void CPlayerOld::ChangePlayerDeathAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftDeath");
@@ -1337,7 +1481,7 @@ void CPlayer2D::ChangePlayerDeathAnimation()
 		ChangeAnimation("RightDeath");
 }
 
-void CPlayer2D::ChangePlayerAttackAnimation()
+void CPlayerOld::ChangePlayerAttackAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftAttack");
@@ -1345,7 +1489,7 @@ void CPlayer2D::ChangePlayerAttackAnimation()
 		ChangeAnimation("RightAttack");
 }
 
-void CPlayer2D::ChangePlayerFlyAnimation()
+void CPlayerOld::ChangePlayerFlyAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftFly");
@@ -1353,15 +1497,15 @@ void CPlayer2D::ChangePlayerFlyAnimation()
 		ChangeAnimation("RightFly");
 }
 
-void CPlayer2D::ChangePlayerJumpAnimation()
+void CPlayerOld::ChangePlayerJumpAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftJump");
 	else
- 		ChangeAnimation("RightJump");
+		ChangeAnimation("RightJump");
 }
 
-void CPlayer2D::ChangePlayerFallAnimation()
+void CPlayerOld::ChangePlayerFallAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftFall");
@@ -1369,7 +1513,7 @@ void CPlayer2D::ChangePlayerFallAnimation()
 		ChangeAnimation("RightFall");
 }
 
-void CPlayer2D::ChangePlayerEatIdleAnimation()
+void CPlayerOld::ChangePlayerEatIdleAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatIdle");
@@ -1377,7 +1521,7 @@ void CPlayer2D::ChangePlayerEatIdleAnimation()
 		ChangeAnimation("RightEatIdle");
 }
 
-void CPlayer2D::ChangePlayerEatWalkAnimation()
+void CPlayerOld::ChangePlayerEatWalkAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatWalk");
@@ -1385,7 +1529,7 @@ void CPlayer2D::ChangePlayerEatWalkAnimation()
 		ChangeAnimation("RightEatWalk");
 }
 
-void CPlayer2D::SetObjectLand()
+void CPlayerOld::SetObjectLand()
 {
 	CLifeObject::SetObjectLand();
 
@@ -1394,7 +1538,7 @@ void CPlayer2D::SetObjectLand()
 	m_IsFlying = false;
 }
 
-void CPlayer2D::FallDownAttack(const CollisionResult& Result)
+void CPlayerOld::FallDownAttack(const CollisionResult& Result)
 {
 	Vector3 CurrentPos = GetWorldPos();
 
@@ -1413,12 +1557,12 @@ void CPlayer2D::FallDownAttack(const CollisionResult& Result)
 
 		// 2) Sound
 
-		// 3) Damage Font ì‘ì„±
+		// 3) Damage Font ÀÛ¼º
 
-		// Hit ìƒíƒœë¡œ ë³€ê²½
+		// Hit »óÅÂ·Î º¯°æ
 		OwnerMonster->SetAIState(Monster_AI::Hit);
 
-		// í˜„ì¬ Player ë°©í–¥ìœ¼ë¡œ ë‚˜ì•„ê°€ê²Œ í•˜ê¸°
+		// ÇöÀç Player ¹æÇâÀ¸·Î ³ª¾Æ°¡°Ô ÇÏ±â
 		if (m_ObjectMoveDir.x < 0)
 		{
 			OwnerMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
@@ -1430,11 +1574,11 @@ void CPlayer2D::FallDownAttack(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::PullRight(float DeltaTime)
+void CPlayerOld::PullRight(float DeltaTime)
 {
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("RightPull");
 
-	// ì˜¤ë¥¸ìª½ ë²”ìœ„ ì•ˆì— ìˆëŠ”ì§€ í™•ì¸í•˜ê¸°
+	// ¿À¸¥ÂÊ ¹üÀ§ ¾È¿¡ ÀÖ´ÂÁö È®ÀÎÇÏ±â
 	float PullDist = 0.f;
 
 	m_PullRightCollider->Enable(true);
@@ -1444,7 +1588,7 @@ void CPlayer2D::PullRight(float DeltaTime)
 	m_ObjectMoveDir.x = 1.f;
 }
 
-void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
+void CPlayerOld::PullRightCollisionBeginCallback(const CollisionResult& Result)
 {
 	CColliderComponent* CollisionDest = Result.Dest;
 
@@ -1472,7 +1616,7 @@ void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::PullRightCollisionEndCallback(const CollisionResult& Result)
+void CPlayerOld::PullRightCollisionEndCallback(const CollisionResult& Result)
 {
 	if (m_PullingMonster)
 	{
@@ -1483,7 +1627,7 @@ void CPlayer2D::PullRightCollisionEndCallback(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
+void CPlayerOld::PullLeftCollisionEndCallback(const CollisionResult& Result)
 {
 	if (m_PullingMonster)
 	{
@@ -1494,33 +1638,33 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::SpecialChange(float DeltaTime)
+void CPlayerOld::SpecialChange(float DeltaTime)
 {
-	// ë¨¹ê³  ìˆëŠ” ë…€ì„ì´ ì—†ìœ¼ë©´ X
+	// ¸Ô°í ÀÖ´Â ³à¼®ÀÌ ¾øÀ¸¸é X
 	if (!m_IsEatingMonster)
 		return;
 
-	// ëŠ¥ë ¥ ëª¬ìŠ¤í„°ê°€ ì•„ë‹ˆë¼ë©´ Return
+	// ´É·Â ¸ó½ºÅÍ°¡ ¾Æ´Ï¶ó¸é Return
 	if (!m_EatenMonster->IsAbilityMonster())
 		return;
 
 }
 
-void CPlayer2D::Attack()
+void CPlayerOld::Attack()
 {
 	if (!m_KirbyState)
 		return;
 	// m_KirbyState->Attack();
 }
 
-void CPlayer2D::FallDownAttack()
+void CPlayerOld::FallDownAttack()
 {
 	if (!m_KirbyState)
 		return;
 	// m_KirbyState->FallDownAttack();
 }
 
-void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
+void CPlayerOld::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 {
 	CColliderComponent* CollisionDest = Result.Dest;
 
@@ -1548,7 +1692,7 @@ void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::ChangeAnimation(const std::string& AnimName)
+void CPlayerOld::ChangeAnimation(const std::string& AnimName)
 {
 	if (!m_KirbyState)
 		return;
@@ -1557,7 +1701,7 @@ void CPlayer2D::ChangeAnimation(const std::string& AnimName)
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation(AnimName);
 }
 
-void CPlayer2D::PullRightEnd(float DeltaTime)
+void CPlayerOld::PullRightEnd(float DeltaTime)
 {
 	m_RightMovePush = false;
 
@@ -1576,14 +1720,14 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 	m_IsPulling = false;
 }
 
-void CPlayer2D::PullLeft(float DeltaTime)
+void CPlayerOld::PullLeft(float DeltaTime)
 {
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("LeftPull");
 
-	// ì˜¤ë¥¸ìª½ ë²”ìœ„ ì•ˆì— ìˆëŠ”ì§€ í™•ì¸í•˜ê¸°
+	// ¿À¸¥ÂÊ ¹üÀ§ ¾È¿¡ ÀÖ´ÂÁö È®ÀÎÇÏ±â
 	float PullDist = 0.f;
 
-	// ì¶©ëŒì²´ì˜ í¬ê¸°ë¥¼ ëŠ˜ë ¤ë³¼ê¹Œ ?
+	// Ãæµ¹Ã¼ÀÇ Å©±â¸¦ ´Ã·Áº¼±î ?
 	m_PullLeftCollider->Enable(true);
 
 	m_IsPulling = true;
@@ -1591,7 +1735,7 @@ void CPlayer2D::PullLeft(float DeltaTime)
 	m_ObjectMoveDir.x = 1.f * -1;
 }
 
-void CPlayer2D::PullLeftEnd(float DeltaTime)
+void CPlayerOld::PullLeftEnd(float DeltaTime)
 {
 	m_LeftMovePush = false;
 
@@ -1610,7 +1754,62 @@ void CPlayer2D::PullLeftEnd(float DeltaTime)
 	m_IsPulling = false;
 }
 
-void CPlayer2D::MovePointDown(float DeltaTime)
+void CPlayerOld::Attack(float DeltaTime)
+{
+	CBullet* Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
+	// Bullet->SetCollisionProfile("MonsterAttack");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot());
+
+	Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(m_ChildLeftMuzzle->GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot());
+
+	Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(m_ChildRightMuzzle->GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot());
+	// Bullet->SetCollisionProfile("MonsterAttack");
+
+}
+
+void CPlayerOld::Attack1(float DeltaTime)
+{
+	CBullet* Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot());
+	Bullet->SetCollisionProfile("PlayerAttack");
+
+	Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot() + Vector3(0.f, 0.f, 45.f));
+	Bullet->SetCollisionProfile("PlayerAttack");
+
+	Bullet = m_Scene->CreateGameObject<CBullet>("Bullet");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(m_Muzzle->GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot() + Vector3(0.f, 0.f, -45.f));
+	Bullet->SetCollisionProfile("PlayerAttack");
+}
+
+void CPlayerOld::Skill1(float DeltaTime)
+{
+	CBulletCamera* BulletCamera = m_Scene->CreateGameObject<CBulletCamera>("BulletCamera");
+	BulletCamera->SetWorldPos(m_Muzzle->GetWorldPos());
+	BulletCamera->SetWorldRotation(GetWorldRot());
+}
+
+void CPlayerOld::MovePointDown(float DeltaTime)
 {
 	Vector2 MousePos = CInput::GetInst()->GetMouseWorld2DPos();
 

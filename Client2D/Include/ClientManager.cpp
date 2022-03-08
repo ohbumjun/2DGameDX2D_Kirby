@@ -108,7 +108,9 @@ bool CClientManager::Init(HINSTANCE hInst)
 void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CStartScene>();
-	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
+	CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
+
+	/*
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
@@ -116,6 +118,7 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTestCamera.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonster.scn", SCENE_PATH);
 	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonsterMushRoom.scn", SCENE_PATH);
+	*/
 }
 
 int CClientManager::Run()

@@ -158,6 +158,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientManager.cpp" />
+    <ClCompile Include="Component\FightKirbyState.cpp" />
+    <ClCompile Include="Component\KirbyState.cpp" />
+    <ClCompile Include="Component\NormalKirbyState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
@@ -174,6 +177,7 @@
     <ClCompile Include="Object\PixelTest.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
+    <ClCompile Include="Object\PlayerOld.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
     <ClCompile Include="Object\TileMap.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
@@ -192,6 +196,9 @@
   <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientManager.h" />
+    <ClInclude Include="Component\FightKirbyState.h" />
+    <ClInclude Include="Component\KirbyState.h" />
+    <ClInclude Include="Component\NormalKirbyState.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\BeamMonster.h" />
@@ -207,6 +214,7 @@
     <ClInclude Include="Object\PixelTest.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PlayerAnimation2D.h" />
+    <ClInclude Include="Object\PlayerOld.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
     <ClInclude Include="Object\TileMap.h" />
     <ClInclude Include="Object\TileMapEmpty.h" />

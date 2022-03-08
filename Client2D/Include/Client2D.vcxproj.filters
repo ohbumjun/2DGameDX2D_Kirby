@@ -58,6 +58,9 @@
     <Filter Include="02. Object\08. BackGround">
       <UniqueIdentifier>{f3dc3208-3b18-49b7-816f-f42e69b00458}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\01. Player\01. State">
+      <UniqueIdentifier>{74c1292c-6f33-4df5-938a-5ec5d29a6673}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -152,6 +155,18 @@
     </ClCompile>
     <ClCompile Include="Object\BackGround.cpp">
       <Filter>02. Object\08. BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\NormalKirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\FightKirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\KirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\PlayerOld.cpp">
+      <Filter>02. Object\01. Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +265,18 @@
     </ClInclude>
     <ClInclude Include="Object\BackGround.h">
       <Filter>02. Object\08. BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\KirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\FightKirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\NormalKirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PlayerOld.h">
+      <Filter>02. Object\01. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

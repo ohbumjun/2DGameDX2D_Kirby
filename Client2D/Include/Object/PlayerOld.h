@@ -1,24 +1,33 @@
 #pragma once
+
 #include "Component/SpriteComponent.h"
 #include "GameObject/LifeObject.h"
 #include "Component/WidgetComponent.h"
 #include "Component/NavAgent.h"
-#include "../Component/FightKirbyState.h"
-#include "../Component/KirbyState.h"
-#include "../Component/NormalKirbyState.h"
 
-class CPlayer2D :
-	public CLifeObject
+class CPlayerOld :
+    public CLifeObject
 {
 	friend class CScene;
 
 protected:
-	CPlayer2D();
-	CPlayer2D(const CPlayer2D& obj);
-	virtual ~CPlayer2D() override;
+	CPlayerOld();
+	CPlayerOld(const CPlayerOld& obj);
+	virtual ~CPlayerOld() override;
 
 private:
-	CSharedPtr<CKirbyState> m_KirbyState;
+	CSharedPtr<CSpriteComponent> m_KirbyState;
+	CSharedPtr<CSpriteComponent> m_ChildLeftSprite;
+	CSharedPtr<CSpriteComponent> m_ChildRightSprite;
+	CSharedPtr<CSceneComponent>  m_ChildLeftMuzzle;
+	CSharedPtr<CSceneComponent>  m_ChildRightMuzzle;
+	CSharedPtr<CSceneComponent>  m_ChildRoot;
+	CSharedPtr<CSceneComponent>  m_Muzzle;
+
+	CSharedPtr<CSpriteComponent> m_Child1Sprite;
+	CSharedPtr<CSpriteComponent> m_Child2Sprite;
+	CSharedPtr<CSpriteComponent> m_Child3Sprite;
+	CSharedPtr<CSpriteComponent> m_Child4Sprite;
 
 	CSharedPtr<class CColliderBox2D> m_Body;
 	CSharedPtr<class CColliderBox2D> m_PullRightCollider;
@@ -35,7 +44,7 @@ private:
 	bool  m_SolW;
 	float m_WDistance;
 	float m_Opacity;
-private :
+private:
 	// 전체 움직임 속도 ( 레버 + 대쉬 )
 	float m_MoveVelocity;
 	float m_MoveVelocityMax;
@@ -71,12 +80,12 @@ private :
 	class CMonster* m_PullingMonster;
 	class CMonster* m_EatenMonster;
 
-public :
-	CColliderBox2D* GetBodyCollider () const
-{
+public:
+	CColliderBox2D* GetBodyCollider() const
+	{
 		return m_Body;
-}
-public :
+	}
+public:
 	void SetIsEatingMonster(bool Enable);
 	void SetEatenMonster(class CMonster* Monster);
 public:
@@ -84,7 +93,7 @@ public:
 	virtual void		Start() override;
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
-	virtual CPlayer2D* Clone() override;
+	virtual CPlayerOld* Clone() override;
 	virtual void UpdateWhileOffGround(float DeltaTime) override;
 
 private: // Move 
@@ -104,16 +113,16 @@ private: // Move
 	float CalculateTotalMoveSpeed(float DeltaTime);
 	void PlayerMoveUpdate(float DeltaTime);
 	void ResetMoveInfo();
-private : // Rotation
+private: // Rotation
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
-private : // Fly & Jump
+private: // Fly & Jump
 	void FlyAfterJump(float DeltaTime);
 	void SimpleJump();
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
-private : // Fall
+private: // Fall
 	void FallFromCliff();
 	void ChangeToIdleWhenReachGroundAfterFall();
 	virtual void SetObjectLand() override;
@@ -135,7 +144,7 @@ protected: // Animation
 	void ChangePlayerFlyAnimation();
 	void ChangePlayerJumpAnimation();
 	void ChangePlayerFallAnimation();
-private : // Spit Out & Pull
+private: // Spit Out & Pull
 	void SpitOut(float DeltaTime);
 	void PullRight(float DeltaTime);
 	void PullRightEnd(float DeltaTime);
@@ -145,14 +154,15 @@ private : // Spit Out & Pull
 	void PullRightCollisionEndCallback(const CollisionResult& Result);
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
-private : // Special Change
+private: // Special Change
 	void SpecialChange(float DeltaTime);
-private : // Special Action
+private: // Special Action
 	void Attack();
 	void FallDownAttack();
-private :
+private:
+	void Attack(float DeltaTime);
+	void Attack1(float DeltaTime);
+	void Skill1(float DeltaTime);
 	void MovePointDown(float DeltaTime);
 };
-
-
 
