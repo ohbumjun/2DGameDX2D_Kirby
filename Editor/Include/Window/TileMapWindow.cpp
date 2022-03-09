@@ -335,7 +335,7 @@ bool CTileMapWindow::Init()
 	Line->SetOffsetX(120.f);
 
 	m_TileBaseScaleXInput = AddWidget<CIMGUITextInput>("X");
-	m_TileBaseScaleXInput->SetSize(80.f, 40.f);
+	m_TileBaseScaleXInput->SetSize(70.f, 40.f);
 	m_TileBaseScaleXInput->SetInt(100);
 	m_TileBaseScaleXInput->SetTextType(ImGuiText_Type::Float);
 
@@ -343,7 +343,7 @@ bool CTileMapWindow::Init()
 	Line->SetOffsetX(230.f);
 
 	m_TileBaseScaleYInput = AddWidget<CIMGUITextInput>("Y");
-	m_TileBaseScaleYInput->SetSize(80.f, 40.f);
+	m_TileBaseScaleYInput->SetSize(70.f, 40.f);
 	m_TileBaseScaleYInput->SetInt(100);
 	m_TileBaseScaleYInput->SetTextType(ImGuiText_Type::Float);
 
@@ -352,6 +352,34 @@ bool CTileMapWindow::Init()
 
 	Button = AddWidget<CIMGUIButton>("Set Img Scale", 85.f, 30.f);
 	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileBaseImageScale);
+
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Set WPos", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_TileBaseWPosXInput = AddWidget<CIMGUITextInput>("WX");
+	m_TileBaseWPosXInput->SetSize(70.f, 40.f);
+	m_TileBaseWPosXInput->SetInt(100);
+	m_TileBaseWPosXInput->SetTextType(ImGuiText_Type::Float);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(230.f);
+
+	m_TileBaseWPosYInput = AddWidget<CIMGUITextInput>("WY");
+	m_TileBaseWPosYInput->SetSize(70.f, 40.f);
+	m_TileBaseWPosYInput->SetInt(100);
+	m_TileBaseWPosYInput->SetTextType(ImGuiText_Type::Float);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(325.f);
+
+	Button = AddWidget<CIMGUIButton>("Set World Pos", 85.f, 30.f);
+	Button->SetClickCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileBaseWorldPos);
 
 	// =============================================
 	Label = AddWidget<CIMGUILabel>("", 0, 0.f);
@@ -632,7 +660,21 @@ void CTileMapWindow::SetTileBaseImageScale()
 		sprintf_s(ImageWorldHeight, "%.1f", m_TileBaseScaleYInput->GetValueFloat());
 		m_TileBaseScaleY->SetText(ImageWorldHeight);
 		m_WorldSizeY->SetText(ImageWorldHeight);
+	}
+}
 
+void CTileMapWindow::SetTileBaseWorldPos()
+{
+	if (!m_TileMapEmpty)
+		return;
+
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Tile)
+		return;
+
+	if (!m_TileBaseWPosXInput->FloatEmpty() && !m_TileBaseWPosYInput->FloatEmpty())
+	{
+		m_TileMapEmpty->SetWorldPos(m_TileBaseWPosXInput->GetValueFloat(),
+					m_TileBaseWPosYInput->GetValueFloat(), 1.f);
 	}
 }
 

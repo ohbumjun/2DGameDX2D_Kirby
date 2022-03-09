@@ -29,6 +29,8 @@ private: // todo :  Tile Base Info
 	class CIMGUIImage* m_TileBaseImageSprite;
 	class CIMGUIText* m_TileBaseScaleX;
 	class CIMGUIText* m_TileBaseScaleY;
+	class CIMGUITextInput* m_TileBaseWPosXInput;
+	class CIMGUITextInput* m_TileBaseWPosYInput;
 	class CIMGUITextInput* m_TileBaseScaleXInput;
 	class CIMGUITextInput* m_TileBaseScaleYInput;
 private:
@@ -50,5 +52,6 @@ private:
 private:
 	void TileBaseImageLoadButton();
 	void SetTileBaseImageScale();
+	void SetTileBaseWorldPos();
 	void SetTileBaseImageResolutionScale();
 };
