@@ -168,6 +168,9 @@
     <ClCompile Include="Object\PlayerOld.cpp">
       <Filter>02. Object\01. Player</Filter>
     </ClCompile>
+    <ClCompile Include="Component\BeamKirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="Object\PlayerOld.h">
       <Filter>02. Object\01. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\BeamKirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
