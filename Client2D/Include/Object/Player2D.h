@@ -73,7 +73,7 @@ private :
 	class CMonster* m_PullingMonster;
 	class CMonster* m_EatenMonster;
 
-	bool m_TempChange;
+	bool m_Bounced;
 
 public :
 	CColliderBox2D* GetBodyCollider () const

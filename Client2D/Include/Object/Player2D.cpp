@@ -25,6 +25,7 @@ m_DashVelocity(0.f),
 m_DashMaxMoveVelocity(250.f),
 m_TriangleJumpVelocityRatio(0.8f),
 m_RightMove(false),
+m_Bounced(false),
 m_ToLeftWhenRightMove(false),
 m_RightMovePush(false),
 m_LeftMove(false),
@@ -998,6 +999,9 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 	m_Jump = false;
 	m_IsGround = true;
 
+	// 날고 나서 다시 바닥에 착지할 때, Bounce 될 수있도록 한다.
+	m_Bounced = false;
+
 	// 나는 중이라면, 계속 날게 세팅한다
 	if (m_IsFlying)
 	{
@@ -1029,6 +1033,7 @@ void CPlayer2D::SimpleJump()
 			ChangePlayerWalkAnimation();
 		else
 			ChangePlayerJumpAnimation();
+
 	}
 }
 
@@ -1245,17 +1250,27 @@ void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
 {
 	if (m_IsBottomCollided)
 	{
-		// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
-		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
-
-		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" || 
-			CurAnimName == "RightJump" || CurAnimName == "LeftJump")
+		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 2.f)
 		{
-			if (m_IsEatingMonster && !m_IsSpecialStateChanged)
-				ChangePlayerEatIdleAnimation();
-			else
-				ChangePlayerNormalIdleAnimation();
+			SimpleJump();
+			m_Bounced = true;
 		}
+
+		else
+		{
+			// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
+			std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+			if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" ||
+				CurAnimName == "RightJump" || CurAnimName == "LeftJump")
+			{
+				if (m_IsEatingMonster && !m_IsSpecialStateChanged)
+					ChangePlayerEatIdleAnimation();
+				else
+					ChangePlayerNormalIdleAnimation();
+			}
+		}
+
 
 		m_IsFalling = false;
 	}
