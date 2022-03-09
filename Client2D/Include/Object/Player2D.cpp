@@ -1186,7 +1186,7 @@ void CPlayer2D::Jump(float DeltaTime)
 	{
 		if (!m_IsFalling)
 		{
-			SimpleJump();  
+			SimpleJump();   //
 		}
 	}
 
