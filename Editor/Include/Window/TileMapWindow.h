@@ -11,8 +11,6 @@ public:
 private: // todo : World Info
 	class CIMGUIText* m_WorldSizeX;
 	class CIMGUIText* m_WorldSizeY;
-	class CIMGUITextInput* m_WorldSizeXInput;
-	class CIMGUITextInput* m_WorldSizeYInput;
 private: // todo : Tile Info
 	// class CIMGUIComboBox* m_TileShapeCombo;
 	class CIMGUITextInput* m_TileCountX;
@@ -39,25 +37,10 @@ private:
 	class CTileEmptyComponent* m_TileMapEmpty;
 	class CBackGroundComponent* m_BackGround;
 public:
-	/*
-	void SetTileEditMode (Tile_EditMode EditMode)
-	{
-		m_EditMode = EditMode;
-	}
-	*/
 	void SetTileMap(class CTileEmptyComponent* TileMap);
-public:
-	/*
-	Tile_EditMode GetTileEditMode () const
-{
-		return m_EditMode;
-}
-*/
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
-private :
-	void SetWorldScale();
 private:
 	void CreateTile();
 	void SetEditModeCallback(int Index, const char* Name);
