@@ -3,7 +3,7 @@
 CKirbyState::CKirbyState()
 {}
 
-CKirbyState::CKirbyState(const CKirbyState& Kirby)
+CKirbyState::CKirbyState(const CKirbyState& Kirby) : CSpriteComponent(Kirby)
 {}
 
 CKirbyState::~CKirbyState()

@@ -1,7 +1,5 @@
 ﻿#include "Player2D.h"
-
 #include <Scene/CameraManager.h>
-
 #include "Bullet.h"
 #include "BulletTornaido.h"
 #include "Input.h"
@@ -15,6 +13,7 @@
 #include "BulletCamera.h"
 #include "Scene/NavigationManager.h"
 #include "../UI/SimpleHUD.h"
+#include "AbilityMonster.h"
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
@@ -30,6 +29,7 @@ m_ToLeftWhenRightMove(false),
 m_RightMovePush(false),
 m_LeftMove(false),
 m_ToRightWhenLeftMove(false),
+m_IsSpecialStateChanged(false),
 m_LeftMovePush(false),
 m_IsLeverMoving(false),
 m_IsDashMoving(false),
@@ -96,10 +96,6 @@ bool CPlayer2D::Init()
 
 	m_KirbyState->SetTransparency(true);
 
-	// CAnimationSequence2DInstance* AnimationInstance =  m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
-	//
-	// m_KirbyState->SetAnimationInstance(AnimationInstance);
-	
 	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
 	// Center 가 형성되게 될 것이다. 
 	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
@@ -113,13 +109,14 @@ void CPlayer2D::Start()
 {
 	CLifeObject::Start();
 
-
-	m_KirbyState = dynamic_cast<CKirbyState*>(FindComponent("PlayerSprite"));
-
+	m_KirbyState = (CNormalKirbyState*)FindComponent("PlayerSprite");
+	
 	SetRootComponent(m_KirbyState);
 	
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
+	m_KirbyState->AddChild(m_Body);
+
 
 	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 	m_PullRightCollider->SetCollisionProfile("Player");
@@ -130,6 +127,7 @@ void CPlayer2D::Start()
 	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_KirbyState->GetWorldScale().y * 0.5f));
 	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
+	m_KirbyState->AddChild(m_PullRightCollider);
 
 	m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 	m_PullLeftCollider->SetCollisionProfile("Player");
@@ -140,21 +138,9 @@ void CPlayer2D::Start()
 	m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 		(m_KirbyState->GetWorldScale().y * 0.5f));
 	m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
-
-	m_KirbyState->AddChild(m_PullRightCollider);
 	m_KirbyState->AddChild(m_PullLeftCollider);
-
-	// m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
-	// m_PullLeftCollider->SetCollisionProfile("PlayerAttack");
-	// m_PullLeftCollider->SetEnable(false);
-	// m_RootComponent->AddChild(m_PullLeftCollider);
-	// m_OriginColliderBodyScale = m_Body->GetWorldScale();
-
+	
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
-
-	// Root Component Animation 세팅
-	// CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
-	// m_KirbyState->SetAnimationInstance(AnimationInstance);
 
 	// Widget Component의 Widget 생성
 	m_SimpleHUDWidget = (CWidgetComponent*)(FindComponent("SimpleHUD"));
@@ -165,8 +151,11 @@ void CPlayer2D::Start()
 	}
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	m_KirbyState->AddChild(m_SimpleHUDWidget);
 
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
+	m_KirbyState->AddChild(m_Camera);
+
 	// m_Camera = FindComponentByType<CCameraComponent>();
 
 	/*
@@ -179,7 +168,8 @@ void CPlayer2D::Start()
 		m_KirbyState->AddChild(m_Camera);
 	}
 	*/
-	
+
+
 
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 
@@ -247,14 +237,16 @@ void CPlayer2D::Start()
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
 
 	// Animation Loop 여부 세팅
+	/*
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
 	// Jump 가 다 끝난 이후에는, Animation 을 Fall 상태로 바꿔라
+	*/
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
 		this, &CPlayer2D::ChangePlayerFallAnimation);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation); 
+		this, &CPlayer2D::ChangePlayerFallAnimation);
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -719,6 +711,39 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	}
 
 	m_EatenMonster = nullptr;
+
+	// Special State 였다면 다시 원래 상태로 돌아가기
+	if (m_IsSpecialStateChanged)
+	{
+		Vector3 OriginalPos = GetWorldPos();
+
+		m_KirbyState = CreateComponent<CNormalKirbyState>("FightKirbyState");
+
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
+			this, &CPlayer2D::ChangePlayerFallAnimation);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
+			this, &CPlayer2D::ChangePlayerFallAnimation);
+		
+
+		SetRootComponent(m_KirbyState);
+
+		m_KirbyState->SetWorldPos(OriginalPos);
+
+		m_KirbyState->AddChild(m_Camera);
+		m_KirbyState->AddChild(m_SimpleHUDWidget);
+		m_KirbyState->AddChild(m_Body);
+		m_KirbyState->AddChild(m_PullRightCollider);
+		m_KirbyState->AddChild(m_PullLeftCollider);
+
+		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+
+		m_KirbyState->SetTransparency(true);
+
+		m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
+		m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
+
+		m_IsSpecialStateChanged = false;
+	}
 }
 
 float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
@@ -1000,7 +1025,7 @@ void CPlayer2D::SimpleJump()
 		m_IsBottomCollided = false;
 
 		// Animation Change
-		if (m_IsEatingMonster)
+		if (m_IsEatingMonster && !m_IsSpecialStateChanged)
 			ChangePlayerWalkAnimation();
 		else
 			ChangePlayerJumpAnimation();
@@ -1159,7 +1184,10 @@ void CPlayer2D::Jump(float DeltaTime)
 	}
 	else
 	{
-		SimpleJump();  
+		if (!m_IsFalling)
+		{
+			SimpleJump();  
+		}
 	}
 
 }
@@ -1223,7 +1251,7 @@ void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
 		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" || 
 			CurAnimName == "RightJump" || CurAnimName == "LeftJump")
 		{
-			if (m_IsEatingMonster)
+			if (m_IsEatingMonster && !m_IsSpecialStateChanged)
 				ChangePlayerEatIdleAnimation();
 			else
 				ChangePlayerNormalIdleAnimation();
@@ -1242,7 +1270,7 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
 			return;
 
-		if (m_IsEatingMonster)
+		if (m_IsEatingMonster && !m_IsSpecialStateChanged)
 			ChangePlayerEatIdleAnimation();
 		else
 			ChangePlayerNormalIdleAnimation();
@@ -1266,7 +1294,7 @@ void CPlayer2D::ChangePlayerWalkAnimation()
 		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
 			return;
 
-		if (m_IsEatingMonster)
+		if (m_IsEatingMonster && !m_IsSpecialStateChanged)
 		{
 			ChangePlayerEatWalkAnimation();
 		}
@@ -1302,7 +1330,7 @@ void CPlayer2D::ChangePlayerRunAnimation()
 		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
 			return;
 
-		if (m_IsEatingMonster)
+		if (m_IsEatingMonster && !m_IsSpecialStateChanged)
 		{
 			ChangePlayerEatRunAnimation();
 		}
@@ -1496,7 +1524,6 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 
 void CPlayer2D::SpecialChange(float DeltaTime)
 {
-	/*
 	// 먹고 있는 녀석이 없으면 X
 	if (!m_IsEatingMonster)
 		return;
@@ -1504,34 +1531,33 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	// 능력 몬스터가 아니라면 Return
 	if (!m_EatenMonster->IsAbilityMonster())
 		return;
-	*/
 
-	// 아래 녀석들을 기존에서 Child 에서 떼어내고 새롭게 붙여야 한다. 
+	if (m_IsSpecialStateChanged)
+		return;
 
-	// m_KirbyState->DeleteChild(m_Camera);
-	// m_KirbyState->DeleteChild(m_SimpleHUDWidget);
-	// m_KirbyState->DeleteChild(m_Body);
-	// m_KirbyState->DeleteChild(m_PullRightCollider);
-	// m_KirbyState->DeleteChild(m_PullLeftCollider);
+	CAbilityMonster* AbilityMonster = (CAbilityMonster*)m_EatenMonster;
+
+	Ability_State State = AbilityMonster->GetAbilityState();
+
+	switch (AbilityMonster->GetAbilityState())
+	{
+	case Ability_State::Beam :
+		{
+			m_KirbyState = CreateComponent<CBeamKirbyState>("FightKirbyState");
+
+			m_IsSpecialStateChanged = true;
+		}
+		break;
+	}
 
 	Vector3 OriginalPos = GetWorldPos();
 
-	// SAFE_DELETE(m_KirbyState);
-
-	if (m_TempChange)
-	{
-		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
-
-		m_TempChange = false;
-	}
-	else
-	{
-		m_KirbyState = CreateComponent<CNormalKirbyState>("FightKirbyState");
-
-		m_TempChange = true;
-	}
-
 	SetRootComponent(m_KirbyState);
+
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
+		this, &CPlayer2D::ChangePlayerFallAnimation);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
+		this, &CPlayer2D::ChangePlayerFallAnimation);
 
 	m_KirbyState->SetWorldPos(OriginalPos);
 
@@ -1547,6 +1573,8 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 
 	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
+
+	ChangePlayerIdleAnimation();
 }
 
 void CPlayer2D::Attack()

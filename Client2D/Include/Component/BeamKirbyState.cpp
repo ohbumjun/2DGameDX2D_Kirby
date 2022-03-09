@@ -1,11 +1,12 @@
 #include "BeamKirbyState.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "Animation/AnimationSequence2DInstance.h"
 
 CBeamKirbyState::CBeamKirbyState()
 {}
 
-CBeamKirbyState::CBeamKirbyState(const CBeamKirbyState& Kirby)
+CBeamKirbyState::CBeamKirbyState(const CBeamKirbyState& Kirby) : CKirbyState(Kirby)
 {}
 
 CBeamKirbyState::~CBeamKirbyState()
@@ -20,6 +21,9 @@ void CBeamKirbyState::FallDownAttack()
 void CBeamKirbyState::Start()
 {
 	CKirbyState::Start();
+
+	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
+	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 }
 
 bool CBeamKirbyState::Init()
@@ -30,6 +34,9 @@ bool CBeamKirbyState::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Beam", TEXT("Kirby_Beam.anim"));
 
 	SetAnimationInstance(AnimationInstance);
+
+	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
+	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
 	return true;
 }

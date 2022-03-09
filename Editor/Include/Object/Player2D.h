@@ -4,6 +4,7 @@
 #include "Component/SceneComponent.h"
 #include "Component/WidgetComponent.h"
 #include "Component/NavAgent.h"
+#include "Component/KirbyState.h"
 
 class CPlayer2D :
     public CLifeObject
@@ -16,25 +17,16 @@ public :
 	virtual ~CPlayer2D() override;
 
 private:
-	CSharedPtr<CSpriteComponent> m_Sprite;
-	CSharedPtr<CSpriteComponent> m_ChildLeftSprite;
-	CSharedPtr<CSpriteComponent> m_ChildRightSprite;
-private :
-	CSharedPtr<CSceneComponent>  m_ChildLeftMuzzle;
-	CSharedPtr<CSceneComponent>  m_ChildRightMuzzle;
-	CSharedPtr<CSceneComponent>  m_ChildRoot;
-	CSharedPtr<CSceneComponent>  m_Muzzle;
-private :
-	CSharedPtr<CSpriteComponent> m_Child1Sprite;
-	CSharedPtr<CSpriteComponent> m_Child2Sprite;
-	CSharedPtr<CSpriteComponent> m_Child3Sprite;
-	CSharedPtr<CSpriteComponent> m_Child4Sprite;
-private :
+	CSharedPtr<CKirbyState> m_KirbyState;
+
 	CSharedPtr<class CColliderBox2D> m_Body;
+	CSharedPtr<class CColliderBox2D> m_PullRightCollider;
+	CSharedPtr<class CColliderBox2D> m_PullLeftCollider;
+
 	CSharedPtr<class CCameraComponent> m_Camera;
-private :
+
 	CSharedPtr<CWidgetComponent> m_SimpleHUDWidget;
-private :
+
 	CSharedPtr<CNavAgent> m_NavAgent;
 
 	bool  m_SolW;

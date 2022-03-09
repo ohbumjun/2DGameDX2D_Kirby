@@ -3,6 +3,8 @@
 CAbilityMonster::CAbilityMonster()
 {
 	m_IsAbilityMonster = true;
+
+	m_AbilityState = Ability_State::End;
 }
 
 CAbilityMonster::CAbilityMonster(const CAbilityMonster& Monster) : CMonster(Monster)

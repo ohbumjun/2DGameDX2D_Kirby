@@ -1,11 +1,12 @@
 #include "NormalKirbyState.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "Animation/AnimationSequence2DInstance.h"
 
 CNormalKirbyState::CNormalKirbyState()
 {}
 
-CNormalKirbyState::CNormalKirbyState(const CNormalKirbyState& Kirby)
+CNormalKirbyState::CNormalKirbyState(const CNormalKirbyState& Kirby) : CKirbyState(Kirby)
 {}
 
 CNormalKirbyState::~CNormalKirbyState()
@@ -20,6 +21,9 @@ void CNormalKirbyState::FallDownAttack()
 void CNormalKirbyState::Start()
 {
 	CKirbyState::Start();
+
+	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
+	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 }
 
 bool CNormalKirbyState::Init()
@@ -30,6 +34,10 @@ bool CNormalKirbyState::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Normal", TEXT("Kirby_Normal.anim"));
 
 	SetAnimationInstance(AnimationInstance);
+
+
+	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
+	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
 	return true;
 }

@@ -5,6 +5,8 @@ class CAnimationSequence2DInstance;
 CBeamMonster::CBeamMonster()
 {
 	SetTypeID<CBeamMonster>();
+
+	m_AbilityState = Ability_State::Beam;
 }
 
 CBeamMonster::CBeamMonster(const CBeamMonster& Monster) : CAbilityMonster(Monster)

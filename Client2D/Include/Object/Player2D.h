@@ -5,6 +5,7 @@
 #include "Component/NavAgent.h"
 #include "../Component/FightKirbyState.h"
 #include "../Component/KirbyState.h"
+#include "../Component/BeamKirbyState.h"
 #include "../Component/NormalKirbyState.h"
 
 class CPlayer2D :
@@ -66,6 +67,7 @@ private :
 
 	bool m_IsEatingMonster;
 
+	bool m_IsSpecialStateChanged;
 	bool m_IsPulling;
 	float m_PullDistance;
 	class CMonster* m_PullingMonster;
