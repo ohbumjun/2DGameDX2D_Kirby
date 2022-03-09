@@ -23,6 +23,8 @@ protected:
 	Vector3     m_PrevWorldPos;
 	float         m_RatioAdjustOffSet;
 
+	bool m_FollowPlayer;
+
 public:
 	Resolution GetResolution()	const
 	{
@@ -57,6 +59,10 @@ public:
 	Matrix GetRatioViewMatrix(float ScrollRatio);
 
 public:
+	void SetFollowPlayer (bool Enable)
+	{
+		m_FollowPlayer = Enable;
+	}
 	void SetViewAngle(float Angle)
 	{
 		m_ViewAngle = Angle;
@@ -109,6 +115,7 @@ private:
 	void CreateProjectionMatrix();
 	bool LimitCameraAreaInsideWorld();
 	void AdjustCameraPosToRatio();
+	void FollowPlayerPos(float DeltaTime);
 public :
 	virtual void Save(FILE* pFile) override;
 	virtual void Load(FILE* pFile) override;

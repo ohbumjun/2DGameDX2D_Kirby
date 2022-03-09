@@ -442,21 +442,44 @@ void CLifeObject::CheckOutsideWorldResolution()
 	Vector2 WorldResolution = m_Scene->GetWorldResolution();
 
 	if (OriginalPos.y + WorldScale.y * Pivot.y >= WorldResolution.y)
+	{
 		OriginalPos.y = WorldResolution.y - WorldScale.y * Pivot.y - m_CollisionOffset;
+		SetWorldPos(OriginalPos);
+	}
 
 	// todo : Down ( 나중에 ) --> 바꾸기 
 	if (OriginalPos.y - WorldScale.y * Pivot.y < 0.f)
-		OriginalPos.y = WorldScale.y * Pivot.y;
+	{
+		CheckBelowWorldResolution();
+	}
 
 	// Left
 	if (OriginalPos.x - WorldScale.x * Pivot.x < 0.f)
+	{
 		OriginalPos.x = WorldScale.x * Pivot.x + m_CollisionOffset;
+		SetWorldPos(OriginalPos);
+	}
 
 	// Right
 	if (OriginalPos.x + WorldScale.x * Pivot.x >= WorldResolution.x)
+	{
 		OriginalPos.x = WorldResolution.x - WorldScale.x * Pivot.x - m_CollisionOffset;
+		SetWorldPos(OriginalPos);
+	}
+}
 
-	SetWorldPos(OriginalPos);
+void CLifeObject::CheckBelowWorldResolution()
+{
+	Vector3 OriginalPos = GetWorldPos();
+
+	// Vector3 WorldScale = GetWorldScale();
+	// Vector3 Pivot = GetPivot();
+
+	// Vector2 WorldResolution = m_Scene->GetWorldResolution();
+
+	// OriginalPos.y = WorldScale.y * Pivot.y;
+
+	SetWorldPos(Vector3(OriginalPos.x, GetWorldScale().y + GetPivot().y, OriginalPos.z));
 }
 
 void CLifeObject::SetObjectLand()

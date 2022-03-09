@@ -75,13 +75,17 @@ private :
 
 	bool m_Bounced;
 
+	Vector3 m_InitPlayerPos;
+
 public :
+	Vector3 GetInitWorldPos() const
+{
+		return m_InitPlayerPos;
+}
 	CColliderBox2D* GetBodyCollider () const
 {
 		return m_Body;
 }
-public :
-
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -107,6 +111,7 @@ private: // Move
 	float CalculateTotalMoveSpeed(float DeltaTime);
 	void PlayerMoveUpdate(float DeltaTime);
 	void ResetMoveInfo();
+	virtual void CheckBelowWorldResolution() override;
 private : // Rotation
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
@@ -118,7 +123,7 @@ private : // Fly & Jump
 	void TriangleJumpRight(float DeltaTime);
 private : // Fall
 	void FallFromCliff();
-	void ChangeToIdleWhenReachGroundAfterFall();
+	void UpdateActionWhenReachGroundAfterFall();
 	virtual void SetObjectLand() override;
 	void FallDownAttack(const CollisionResult& Result);
 protected: // Animation

@@ -111,8 +111,11 @@ void CPlayer2D::Start()
 	CLifeObject::Start();
 
 	m_KirbyState = (CNormalKirbyState*)FindComponent("PlayerSprite");
+	// m_KirbyState = dynamic_cast<CKirbyState*>(FindComponent("PlayerSprite");
 	
 	SetRootComponent(m_KirbyState);
+
+	m_InitPlayerPos = m_KirbyState->GetWorldPos();
 	
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
@@ -258,7 +261,7 @@ void CPlayer2D::Update(float DeltaTime)
 
 	FallFromCliff();
 
-	ChangeToIdleWhenReachGroundAfterFall();
+	UpdateActionWhenReachGroundAfterFall();
 }
 
 void CPlayer2D::PostUpdate(float DeltaTime)
@@ -966,6 +969,29 @@ void CPlayer2D::ResetMoveInfo()
 	}
 }
 
+void CPlayer2D::CheckBelowWorldResolution()
+{
+	Vector3 WorldPos = GetWorldPos();
+
+	m_KirbyState->DeleteChild(m_Camera);
+
+	m_Camera->SetFollowPlayer(true);
+
+	// 이것이 true 면, While Off Ground 처리로 인해 X Pos가 계속 현재로 유지되어 버린다.
+	m_PhysicsSimulate = false;
+
+	SetWorldPos(m_InitPlayerPos);
+	// SetWorldPos(Vector3(WorldPos.x, WorldPos.y + 800.f, WorldPos.z));
+
+	m_FallTime = 0.f;
+
+	m_FallStartY = m_InitPlayerPos.y;
+
+	WorldPos = GetWorldPos();
+
+	WorldPos = GetWorldPos();
+}
+
 void CPlayer2D::RotationZInv(float DeltaTime) //
 {
 	m_KirbyState->AddRelativeRotationZ(180.f * DeltaTime);
@@ -1246,11 +1272,11 @@ void CPlayer2D::FallFromCliff()
 	}
 }
 
-void CPlayer2D::ChangeToIdleWhenReachGroundAfterFall()
+void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 {
 	if (m_IsBottomCollided)
 	{
-		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 2.f)
+		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 3.f)
 		{
 			SimpleJump();
 			m_Bounced = true;

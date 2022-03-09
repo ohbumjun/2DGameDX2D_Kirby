@@ -7,7 +7,9 @@ CCameraComponent::CCameraComponent()
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
+
 	m_Render = false;
+	m_FollowPlayer = false;
 
 	m_ViewAngle = 90.f;
 	m_Distance = 1000.f;
@@ -193,6 +195,23 @@ void CCameraComponent::AdjustCameraPosToRatio()
 	}
 
 	SetRelativePos(NewRelativePos);
+}
+
+void CCameraComponent::FollowPlayerPos(float DeltaTime)
+{
+	if (m_Parent && m_FollowPlayer)
+	{
+		CGameObject* ParentOwnerObject = m_Parent->GetGameObject();
+
+		Vector3 ChangedPlayerWorldPos = ParentOwnerObject->GetWorldPos();
+
+		Vector3 TraceDir = ChangedPlayerWorldPos - GetWorldPos();
+
+		TraceDir.Normalize();
+
+		// AddWorldPos(Vector3(TraceDir * ));
+
+	}
 }
 
 void CCameraComponent::Save(FILE* pFile)

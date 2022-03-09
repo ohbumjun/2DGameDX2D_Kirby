@@ -36,10 +36,10 @@ protected :
 	bool m_IsGroundObject;
 protected :
 	Vector3 m_ObjectMoveDir;
-
 protected :
 	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
+	virtual void CheckBelowWorldResolution();
 public :
 	virtual void CheckCeilingCollision();
 	virtual void CheckBottomCollision();
