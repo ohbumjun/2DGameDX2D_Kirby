@@ -49,6 +49,10 @@ public :
 {
 		m_Transform->m_ScrollRatio = Ratio;
 }
+	void SetInheritParentWorldPosChange(bool Enable)
+{
+		m_Transform->m_InheritParentWorldPosChange = Enable;
+}
 
 public:
 	void SetSceneComponent(class CGameObject* Object);
@@ -59,6 +63,7 @@ public:
 	virtual void SetGameObject(class CGameObject* Object) override;
 	virtual void Enable(bool Enable) override;
 public:
+	CSceneComponent* FindChild(CSceneComponent* Child);
 	void             AddChild(CSceneComponent* Child);
 	bool             DeleteChild(CSceneComponent* Child);
 	bool             DeleteChild(const std::string& Name);

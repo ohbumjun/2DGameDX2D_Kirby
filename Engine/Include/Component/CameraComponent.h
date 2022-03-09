@@ -59,6 +59,7 @@ public:
 	Matrix GetRatioViewMatrix(float ScrollRatio);
 
 public:
+
 	void SetFollowPlayer (bool Enable)
 	{
 		m_FollowPlayer = Enable;

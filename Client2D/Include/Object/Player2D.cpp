@@ -70,7 +70,6 @@ CPlayer2D::~CPlayer2D()
 bool CPlayer2D::Init()
 {
 	m_KirbyState  = CreateComponent<CNormalKirbyState>("PlayerSprite");
-	// m_KirbyState  = CreateComponent<CFightKirbyState>("PlayerSprite");
 	
 	// Collider 
 	m_Body = CreateComponent<CColliderBox2D>("Body");
@@ -119,7 +118,7 @@ void CPlayer2D::Start()
 	
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
-	m_KirbyState->AddChild(m_Body);
+	// m_KirbyState->AddChild(m_Body);
 
 
 	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
@@ -155,10 +154,10 @@ void CPlayer2D::Start()
 	}
 	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-	m_KirbyState->AddChild(m_SimpleHUDWidget);
+	// m_KirbyState->AddChild(m_SimpleHUDWidget);
 
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
-	m_KirbyState->AddChild(m_Camera);
+	// m_KirbyState->AddChild(m_Camera);
 
 	// m_Camera = FindComponentByType<CCameraComponent>();
 
@@ -969,27 +968,30 @@ void CPlayer2D::ResetMoveInfo()
 	}
 }
 
+void CPlayer2D::ResetCameraInfoToPlayer()
+{
+	m_KirbyState->AddChild(m_Camera);
+
+	m_PhysicsSimulate = true;
+}
+
 void CPlayer2D::CheckBelowWorldResolution()
 {
 	Vector3 WorldPos = GetWorldPos();
 
-	m_KirbyState->DeleteChild(m_Camera);
-
 	m_Camera->SetFollowPlayer(true);
+
+	m_Camera->SetInheritParentWorldPosChange(false);
 
 	// 이것이 true 면, While Off Ground 처리로 인해 X Pos가 계속 현재로 유지되어 버린다.
 	m_PhysicsSimulate = false;
 
 	SetWorldPos(m_InitPlayerPos);
-	// SetWorldPos(Vector3(WorldPos.x, WorldPos.y + 800.f, WorldPos.z));
+	// SetWorldPos(Vector3(WorldPos.x - 300.f, WorldPos.y + 500.f, WorldPos.z));
 
 	m_FallTime = 0.f;
 
 	m_FallStartY = m_InitPlayerPos.y;
-
-	WorldPos = GetWorldPos();
-
-	WorldPos = GetWorldPos();
 }
 
 void CPlayer2D::RotationZInv(float DeltaTime) //

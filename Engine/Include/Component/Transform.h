@@ -35,8 +35,13 @@ private:
 	bool m_UpdateScale;
 	bool m_UpdateRot;
 	bool m_UpdatePos;
+	bool m_InheritParentWorldPosChange;
 
 public:
+	void SetInheritParentWorldPosChange(bool Enable)
+	{
+		m_InheritParentWorldPosChange = Enable;
+	}
 	void SetInheritScale(bool Inherit)
 	{
 		m_InheritScale = Inherit;

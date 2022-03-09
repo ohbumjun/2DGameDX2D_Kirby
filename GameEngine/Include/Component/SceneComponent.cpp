@@ -141,8 +141,32 @@ void CSceneComponent::Enable(bool Enable)
 	}
 }
 
+CSceneComponent* CSceneComponent::FindChild(CSceneComponent* Child)
+{
+	size_t Size = m_vecChild.size();
+
+	for (size_t i = 0; i < Size; ++i)
+	{
+		if (m_vecChild[i] == Child)
+		{
+			return m_vecChild[i];
+		}
+
+		CSceneComponent* FoundChild = m_vecChild[i]->FindChild(Child);
+
+		if (FoundChild)
+			return FoundChild;
+	}
+
+	return nullptr;
+}
+
 void CSceneComponent::AddChild(CSceneComponent* Child)
 {
+	// 중복 방지 하기
+	if (FindChild(Child))
+		return;
+
 	Child->m_Parent = this;
 
 	m_vecChild.push_back(Child);

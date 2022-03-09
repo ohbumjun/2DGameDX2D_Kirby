@@ -136,8 +136,11 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 
 void CCameraComponent::AdjustCameraPosToRatio()
 {
-	// todo : 잔 떨림 문제 해결
-		// Player가 Is Ground 혹은 Side Collision 일때는 비율 조정 X
+	// 현재 Player를 따라가고 있는 중이라면 X
+	if (m_FollowPlayer)
+		return;
+
+	// Player가 Is Ground 혹은 Side Collision 일때는 비율 조정 X
 	if (GetGameObject() == m_Scene->GetPlayerObject())
 	{
 		CLifeObject* OwnerObject = (CLifeObject*)GetGameObject();
@@ -199,18 +202,40 @@ void CCameraComponent::AdjustCameraPosToRatio()
 
 void CCameraComponent::FollowPlayerPos(float DeltaTime)
 {
-	if (m_Parent && m_FollowPlayer)
+	if (m_FollowPlayer && m_Scene->GetPlayerObject())
 	{
-		CGameObject* ParentOwnerObject = m_Parent->GetGameObject();
+		CLifeObject* Player = (CLifeObject*)m_Scene->GetPlayerObject();
 
-		Vector3 ChangedPlayerWorldPos = ParentOwnerObject->GetWorldPos();
+		Vector3  PlayerWorldPos = Player->GetWorldPos();
 
-		Vector3 TraceDir = ChangedPlayerWorldPos - GetWorldPos();
+		Resolution RS = CEngine::GetInst()->GetResolution();
+
+		Vector3 TargetMovePos = Vector3(PlayerWorldPos.x - (float)RS.Width * 0.5f, PlayerWorldPos.y - (float)RS.Height * 0.5f, 0.f);
+
+		if (TargetMovePos.x < 0.f)
+			TargetMovePos.x = 0.f;
+
+		if (TargetMovePos.y < 0.f)
+			TargetMovePos.y = 0.f;
+
+		Vector3 TraceDir = TargetMovePos - GetWorldPos();
+
+		float DistDiff = TraceDir.Length();
 
 		TraceDir.Normalize();
 
-		// AddWorldPos(Vector3(TraceDir * ));
+		AddWorldPos(Vector3(TraceDir * DeltaTime * 500.f));
 
+		if (DistDiff < 1.f)
+		{
+			SetInheritParentWorldPosChange(true);
+
+			m_FollowPlayer = false;
+
+			Player->GetRootComponent()->AddChild(this);
+
+			Player->SetPhysicsSimulate(true);
+		}
 	}
 }
 
@@ -270,6 +295,8 @@ void CCameraComponent::Update(float DeltaTime)
 
 	// Camera 범위 제한을 2번 한다.
 	LimitCameraAreaInsideWorld();
+
+	FollowPlayerPos(DeltaTime);
 }
 
 void CCameraComponent::PostUpdate(float DeltaTime)

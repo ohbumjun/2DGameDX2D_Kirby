@@ -111,6 +111,7 @@ private: // Move
 	float CalculateTotalMoveSpeed(float DeltaTime);
 	void PlayerMoveUpdate(float DeltaTime);
 	void ResetMoveInfo();
+	void ResetCameraInfoToPlayer();
 	virtual void CheckBelowWorldResolution() override;
 private : // Rotation
 	void RotationZInv(float DeltaTime);

@@ -17,6 +17,7 @@ CTransform::CTransform() :
 	m_InheritParentRotationPosX(true),
 	m_InheritParentRotationPosY(true),
 	m_InheritParentRotationPosZ(true),
+	m_InheritParentWorldPosChange(true),
 	m_UpdateScale(true),
 	m_UpdateRot(true),
 	m_UpdatePos(true),
@@ -140,7 +141,12 @@ void CTransform::InheritParentRotationPos(bool Current)
 		}
 
 		else
-			m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
+		{
+			if (m_InheritParentWorldPosChange)
+			{
+				m_WorldPos = m_RelativePos + m_Parent->GetWorldPos();
+			}
+		}
 	}
 
 	m_UpdatePos = true;
