@@ -62,6 +62,9 @@ private :
 	bool m_TriangleJump;
 	float m_TriangleJumpVelocityRatio;
 
+	bool m_JumpDown;
+	float m_JumpDownDist;
+
 	bool m_IsFlying;
 	float m_FlySpeed;
 
@@ -94,7 +97,8 @@ public:
 	virtual CPlayer2D* Clone() override;
 	virtual void UpdateWhileOffGround(float DeltaTime) override;
 
-private: // Move 
+private:
+	// Move 
 	void MoveUp(float DeltaTime);
 	void MoveUpEnd(float DeltaTime);
 	void MoveDown(float DeltaTime);
@@ -113,21 +117,28 @@ private: // Move
 	void ResetMoveInfo();
 	void ResetCameraInfoToPlayer();
 	virtual void CheckBelowWorldResolution() override;
-private : // Rotation
+private :
+	// Rotation
 	void RotationZInv(float DeltaTime);
 	void RotationZ(float DeltaTime);
-private : // Fly & Jump
+private :
+	// Fly & Jump
 	void FlyAfterJump(float DeltaTime);
 	void SimpleJump();
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
-private : // Fall
+	void JumpDown(float DeltaTime);
+	void JumpDownDistUpdate(float DeltaTime);
+private :
+	// Fall
 	void FallFromCliff();
 	void UpdateActionWhenReachGroundAfterFall();
 	virtual void SetObjectLand() override;
 	void FallDownAttack(const CollisionResult& Result);
-protected: // Animation
+	virtual void CheckBottomCollision() override;
+protected:
+	// Animation
 	void ChangeAnimation(const std::string& AnimName);
 	void ChangePlayerIdleAnimation();
 	void ChangePlayerNormalIdleAnimation();
@@ -144,7 +155,8 @@ protected: // Animation
 	void ChangePlayerFlyAnimation();
 	void ChangePlayerJumpAnimation();
 	void ChangePlayerFallAnimation();
-private : // Spit Out & Pull
+private :
+	// Spit Out & Pull
 	void SpitOut(float DeltaTime);
 	void PullRight(float DeltaTime);
 	void PullRightEnd(float DeltaTime);
@@ -154,12 +166,14 @@ private : // Spit Out & Pull
 	void PullRightCollisionEndCallback(const CollisionResult& Result);
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
-private : // Special Change
+private :
+	// Special Change
 	void SpecialChange(float DeltaTime);
 public :
 	void SetIsEatingMonster(bool Enable);
 	void SetEatenMonster(class CMonster* Monster);
-private : // Special Action
+private :
+	// Special Action
 	void Attack();
 	void FallDownAttack();
 private :

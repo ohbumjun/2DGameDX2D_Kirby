@@ -32,6 +32,7 @@ m_LeftMove(false),
 m_ToRightWhenLeftMove(false),
 m_IsSpecialStateChanged(false),
 m_LeftMovePush(false),
+m_JumpDown(false),
 m_IsLeverMoving(false),
 m_IsDashMoving(false),
 m_TriangleJump(false),
@@ -180,8 +181,10 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp",
 		KeyState_Up, this, &CPlayer2D::MoveUpEnd);
 
+	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", 
 		KeyState_Push, this, &CPlayer2D::MoveDown);
+	*/
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft", 
 		KeyState_Push, this, &CPlayer2D::MoveLeft);
@@ -231,6 +234,8 @@ void CPlayer2D::Start()
 		KeyState_Down, this, &CPlayer2D::Jump);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("JumpWhileDash",
 		KeyState_Down, this, &CPlayer2D::Jump);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("JumpDown",
+		KeyState_Down, this, &CPlayer2D::JumpDown);
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpitOut",
 		KeyState_Push, this, &CPlayer2D::SpitOut);
@@ -268,6 +273,8 @@ void CPlayer2D::PostUpdate(float DeltaTime)
 	CLifeObject::PostUpdate(DeltaTime);
 
 	CheckOutsideWorldResolution();
+
+	JumpDownDistUpdate(DeltaTime);
 
 	m_DeltaTime = 0.f;
 }
@@ -1265,6 +1272,39 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 	m_ToRightWhenLeftMove = false;
 }
 
+void CPlayer2D::JumpDown(float DeltaTime)
+{
+	if (m_IsGround)
+	{
+		if (m_BottomCollidedTile && m_BottomCollidedTile->GetTileType() == Tile_Type::Block)
+		{
+			// 떨어지게 세팅
+			m_IsGround = false;
+
+			m_IsFalling = false;
+
+			m_FallTime = 0.f;
+
+			m_FallStartY = GetWorldPos().y;
+
+			m_JumpDown = true;
+		}
+	}
+}
+
+void CPlayer2D::JumpDownDistUpdate(float DeltaTime)
+{
+	if (m_JumpDown)
+	{
+		m_JumpDownDist = m_FallStartY - GetWorldPos().y;
+
+		if (m_JumpDownDist > GetWorldScale().y * 0.6f)
+		{
+			m_JumpDown = false;
+		}
+	}
+}
+
 void CPlayer2D::FallFromCliff()
 {
 	// 절벽에서 막 떨어졌을 때
@@ -1499,6 +1539,14 @@ void CPlayer2D::FallDownAttack(const CollisionResult& Result)
 			OwnerMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
 		}
 	}
+}
+
+void CPlayer2D::CheckBottomCollision()
+{
+	if (m_JumpDown)
+		return;
+
+	CLifeObject::CheckBottomCollision();
 }
 
 void CPlayer2D::PullRight(float DeltaTime)

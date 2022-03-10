@@ -38,6 +38,8 @@ protected :
 protected :
 	Vector3 m_ObjectMoveDir;
 protected :
+	class CTileEmpty* m_BottomCollidedTile;
+protected :
 	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
 	virtual void CheckBelowWorldResolution();

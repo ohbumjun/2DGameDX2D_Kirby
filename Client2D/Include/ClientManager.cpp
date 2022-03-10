@@ -64,7 +64,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 
 	CInput::GetInst()->CreateKey("MoveUp", 'W');
-	CInput::GetInst()->CreateKey("MoveDown", 'S');
+	// CInput::GetInst()->CreateKey("MoveDown", 'S');
 	// CInput::GetInst()->CreateKey("RotationZInv", 'A');
 	// CInput::GetInst()->CreateKey("RotationZ", 'D');
 	CInput::GetInst()->CreateKey("MoveRight", 'D');
@@ -89,6 +89,9 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("Jump", VK_SPACE);
 	CInput::GetInst()->CreateKey("JumpWhileDash", VK_SPACE);
 	CInput::GetInst()->SetCtrlKey("JumpWhileDash", true);
+
+	CInput::GetInst()->CreateKey("JumpDown", 'S');
+	CInput::GetInst()->SetCtrlKey("JumpDown", true);
 
 
 	CInput::GetInst()->CreateKey("Attack1", VK_LBUTTON);

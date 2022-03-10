@@ -200,6 +200,8 @@ void CLifeObject::CheckBottomCollision()
 				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall ||
 					TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block)
 				{
+					m_BottomCollidedTile = TileMap->GetTileEmpty(col, row);
+
 					// 땅에 닿음
 					Check = true;
 
@@ -245,6 +247,11 @@ void CLifeObject::CheckBottomCollision()
 	}
 
 	m_IsBottomCollided = BottomCollision;
+
+	if (!m_IsBottomCollided)
+	{
+		m_BottomCollidedTile = nullptr;
+	}
 }
 
 void CLifeObject::CheckCeilingCollision(float DeltaTime)
