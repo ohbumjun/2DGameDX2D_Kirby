@@ -112,12 +112,14 @@ void CClientManager::CreateDefaultSceneMode()
 
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
+
 	/*
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTestCamera.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonster.scn", SCENE_PATH);
 	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonsterMushRoom.scn", SCENE_PATH);
 	*/
-	// CSceneManager::GetInst()->GetScene()->Load("TestPlayerChanged.scn", SCENE_PATH);
+
+	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
 	CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialStage.scn", SCENE_PATH);
 }
 

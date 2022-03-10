@@ -56,6 +56,7 @@ CTileEmptyComponent::CTileEmptyComponent(const CTileEmptyComponent& Component)
 	m_TileEmptyColor[(int)Tile_Type::Wall] = Vector4(1.f, 0.f, 0.f, 1.f);
 	m_TileEmptyColor[(int)Tile_Type::Ceiling] = Vector4(0.f, 1.f, 0.f, 1.f);
 	m_TileEmptyColor[(int)Tile_Type::Water] = Vector4(0.f, 0.f, 1.f, 1.f);
+	m_TileEmptyColor[(int)Tile_Type::Block] = Vector4(0.5f, 0.f, 1.f, 1.f);
 
 
 	m_EditMode = Component.m_EditMode;

@@ -21,6 +21,7 @@ protected:
 	float m_SideWallCheck;
 	bool m_IsSideCollided;
 	bool m_IsBottomCollided;
+	bool m_IsCeilingCollided;
 	bool m_ApplyBottomCollision;
 	float m_PhysicApplyDelayTime;
 protected:
@@ -41,7 +42,7 @@ protected :
 	void CheckOutsideWorldResolution();
 	virtual void CheckBelowWorldResolution();
 public :
-	virtual void CheckCeilingCollision();
+	virtual void CheckCeilingCollision(float DeltaTime);
 	virtual void CheckBottomCollision();
 	virtual void CheckSideCollision();
 public :

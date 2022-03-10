@@ -10,6 +10,7 @@ CLifeObject::CLifeObject():
 	// m_PhysicsSimulate(true),
 	m_PhysicsSimulate(true),
 	m_CollisionDisabled(false),
+	m_IsCeilingCollided(false),
 	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
@@ -165,6 +166,7 @@ void CLifeObject::CheckBottomCollision()
 
 		// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
 		TopIdx = TileMap->GetTileEmptyIndexY(RT);
+
 		// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
 		BottomIdx = TileMap->GetTileEmptyIndexY(LB);
 
@@ -245,8 +247,151 @@ void CLifeObject::CheckBottomCollision()
 	m_IsBottomCollided = BottomCollision;
 }
 
-void CLifeObject::CheckCeilingCollision()
-{}
+void CLifeObject::CheckCeilingCollision(float DeltaTime)
+{
+	if (m_CollisionDisabled)
+		return;
+
+	// 위로 올라가는 중에만 적용하기 
+	if (m_PrevPos.y >= GetWorldPos().y)
+		return;
+
+	bool CeilingCollision = false;
+
+	Vector3 m_Pos = GetWorldPos();
+
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+	{
+		m_IsBottomCollided = false;
+		return;
+	}
+
+	if (m_Pos.y - m_PrevPos.y > 0.f)
+	{
+		CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+		Vector3 Pivot = GetPivot();
+		Vector3 WorldScale = GetWorldScale();
+		Vector3 TileSize = TileMap->GetTileEmptySize();
+
+		float PrevUp = m_PrevPos.y + Pivot.y * WorldScale.y;
+		float CurUp = m_Pos.y + Pivot.y * WorldScale.y;
+
+		float PrevLeft = m_PrevPos.x - Pivot.x * WorldScale.x;
+		float CurLeft = m_Pos.x - Pivot.x * WorldScale.x;
+
+		float PrevRight = PrevLeft + WorldScale.x;
+		float CurRight = CurLeft + WorldScale.x;
+
+		float ResultLeft = PrevLeft < CurLeft ? PrevLeft : CurLeft;
+		float ResultRight = PrevRight > CurRight ? PrevRight : CurRight;
+
+		float ResultTop = CurUp > PrevUp ? CurUp : PrevUp;
+		float ResultBottom = CurUp < PrevUp ? CurUp : PrevUp;
+
+		// 해당 위치의 Tile을 구해온다.
+		int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
+
+		Vector3 LB = Vector3(ResultLeft, ResultBottom, 0.f);
+		Vector3 RT = Vector3(ResultRight, ResultTop, 0.f);
+
+		// LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
+		LeftIdx = TileMap->GetTileEmptyIndexX(LB);
+		// RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
+		RightIdx = TileMap->GetTileEmptyIndexX(RT);
+
+		// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
+		TopIdx = TileMap->GetTileEmptyIndexY(RT);
+
+		// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
+		BottomIdx = TileMap->GetTileEmptyIndexY(LB);
+
+		if (LeftIdx < 0)
+			LeftIdx = 0;
+
+		if (BottomIdx < 0)
+			BottomIdx = 0;
+
+		if (RightIdx >= TileMap->GetTileCountX())
+			RightIdx = TileMap->GetTileCountX() - 1;
+
+		if (TopIdx >= TileMap->GetTileCountY())
+			TopIdx = TileMap->GetTileCountY() - 1;
+
+		bool Check = false;
+
+		// 아래에서 위로 반복한다
+		for (int row = BottomIdx; row <= TopIdx; row++)
+		{
+			for (int col = LeftIdx; col <= RightIdx; col++)
+			{
+				// 이전 위치의 Bottom이, 타일의 Top 보다 클 경우 무시한다
+				// 즉, 내가 점프하는데, 그 위에 Tile이 존재하는 것
+				// 바닥 체크는 내려갈 때만 체크하기 위함이다.
+				/*
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block &&
+					TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
+					continue;
+				*/
+
+				// 못가는 곳이라면. 즉, 천장에 닿는 다면
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Ceiling)
+				{
+					// 천장에 닿음
+					Check = true;
+
+					// 땅에 닿음으로써 초기화 해줘야 할 변수들
+					// SetObjectLand();
+
+					// m_JumpAccelAccTime = 0.f;
+					
+					// Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos() - TileSize;
+					Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos();
+
+					float PosDiff = ResultTop - TilePos.y;
+
+					m_Pos.y -= (PosDiff + 0.001f);
+
+					SetWorldPos(m_Pos);
+
+					// 위치 정보 세팅
+					// float NewPosY = TilePos.y - Pivot.y * WorldScale.y;
+
+					// SetWorldPos(m_Pos.x, NewPosY, m_Pos.z);
+
+					CeilingCollision = true;
+
+					break;
+				}
+			}
+
+			if (Check)
+				break;
+		}
+
+		/*
+		// 만약 바닥에 닿지 않았다면
+		if (!Check)
+		{
+			// 그런데 m_IsGround는 true 라면
+			// 이제 막 다시 떨어지기 시작하는 것이다
+			if (m_IsGround)
+			{
+				m_FallTime = 0.f;
+				m_FallStartY = GetWorldPos().y;
+			}
+
+			m_IsGround = false;
+
+			CeilingCollision = false;
+		}
+		*/
+	}
+
+	m_IsCeilingCollided = CeilingCollision;
+}
 
 void CLifeObject::CheckSideCollision()
 {
@@ -319,8 +464,7 @@ void CLifeObject::CheckSideCollision()
 						!TileMap->GetTile(Index)->GetSideCollision())
 						continue;
 					 */
-					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall ||
-						TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Block)
+					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall)
 						continue;
 
 					Vector3 TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
@@ -395,9 +539,9 @@ void CLifeObject::CheckSideCollision()
 					Index = row * TileMap->GetTileCountX() + col;
 
 					// Wall 이 아니라면 Pass
-					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall ||
-						TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Block)
+					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall)
 						continue;
+
 
 					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
 
@@ -529,6 +673,8 @@ void CLifeObject::PostUpdate(float DeltaTime)
 	CheckSideCollision();
 
 	CheckBottomCollision();
+
+	CheckCeilingCollision(DeltaTime);
 
 	m_PrevPos = GetWorldPos();
 }
