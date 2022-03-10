@@ -271,6 +271,7 @@ bool CTileMapWindow::Init()
 	m_TileType->AddItem("Wall");
 	m_TileType->AddItem("Ceiling");
 	m_TileType->AddItem("Water");
+	m_TileType->AddItem("Block");
 	m_TileType->SetSelectCallback<CTileMapWindow>(this, &CTileMapWindow::SetTileTypeCallback);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);

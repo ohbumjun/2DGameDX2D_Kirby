@@ -202,6 +202,7 @@ enum class Tile_Type {
 	Wall,
 	Ceiling,
 	Water,
+	Block,
 	End
 };
 

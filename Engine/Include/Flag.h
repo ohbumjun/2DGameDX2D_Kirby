@@ -78,9 +78,6 @@ enum class CreateObject_Type
 {
 	GameObject,
 	Player,
-	// YellowBird,
-	// PurpleBeatle,
-	// NormalBear,
 	TileEmptyObject,
 	BackGround,
 	End
@@ -95,9 +92,8 @@ enum class CreateComponent_Type
 	ColliderCircle,
 	ColliderPixel,
 	Camera,
-	// TileMap
 	TileEmpty,
-	BackGround,
+	BackGround
 };
 
 enum Collision_Channel
@@ -209,6 +205,7 @@ enum class Tile_Type {
 	Wall,
 	Ceiling,
 	Water,
+	Block,
 	End
 };
 

@@ -190,11 +190,13 @@ void CLifeObject::CheckBottomCollision()
 				// 이전 위치의 Bottom이, 타일의 Top 보다 클 경우 무시한다
 				// 즉, 내가 점프하는데, 그 위에 Tile이 존재하는 것
 				// 바닥 체크는 내려갈 때만 체크하기 위함이다.
-				// if (TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
-				//	continue;
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block &&
+					TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
+					continue;
 
 				// 못가는 곳이라면. 즉, 바닥에 닿는 다면
-				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall)
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall ||
+					TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block)
 				{
 					// 땅에 닿음
 					Check = true;
@@ -317,7 +319,8 @@ void CLifeObject::CheckSideCollision()
 						!TileMap->GetTile(Index)->GetSideCollision())
 						continue;
 					 */
-					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall)
+					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall ||
+						TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Block)
 						continue;
 
 					Vector3 TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
@@ -392,7 +395,8 @@ void CLifeObject::CheckSideCollision()
 					Index = row * TileMap->GetTileCountX() + col;
 
 					// Wall 이 아니라면 Pass
-					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall)
+					if (TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Wall ||
+						TileMap->GetTileEmpty(Index)->GetTileType() != Tile_Type::Block)
 						continue;
 
 					TilePos = TileMap->GetTileEmpty(Index)->GetWorldPos();
