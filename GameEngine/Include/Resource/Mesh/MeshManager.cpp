@@ -71,6 +71,20 @@ bool CMeshManager::Init()
 		D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 
+	// Line
+	CMesh* LineMesh = new CStaticMesh;
+	Vector3 LinePos[2] =
+	{
+		Vector3(1.f, 0.f, 0.f),
+		Vector3(0.f, 1.f, 0.f)
+	};
+
+	LineMesh->SetName("Line");
+	LineMesh->CreateMesh(LinePos, sizeof(Vector3), 2,
+		D3D11_USAGE_IMMUTABLE, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
+
+
 	CMesh* WidgetMesh = new CStaticMesh;
 
 	// Pos의 경우, y는 위가 1, 아래가 0
@@ -103,6 +117,9 @@ bool CMeshManager::Init()
 
 	// FrameRect Mesh
 	m_mapMesh.insert(std::make_pair("FrameRect", FrameRectMesh));
+
+	// LineMesh
+	m_mapMesh.insert(std::make_pair("Line", LineMesh));
 
 	// Box2DMesh
 	m_mapMesh.insert(std::make_pair("Box2D", Box2DMesh));

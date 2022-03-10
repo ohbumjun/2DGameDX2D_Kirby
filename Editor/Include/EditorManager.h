@@ -17,15 +17,17 @@ class CEditorManager
 {
 private:
 	EditMode           m_EditMode;
+	// Obj
 	class CDragObject* m_DragObj;
 	class CShowObject* m_ShowObj;
+	// Window
 	class CSpriteEditWindow* m_SpriteWindow;
 	class CTileMapWindow* m_TileMapWindow;
 	class CBackGroundWindow* m_BackGroundWindow;
 	class CEditorMenu* m_EditorMenu;
 	class CObjectHierarchy* m_ObjectHierarchy;
 	class CDetailInfoWindow* m_DetailInfoWindow;
-	class CSpriteCameraObject* m_CameraObject;
+	class CLineEditWindow* m_LineEditWindow;
 private :
 	float m_CameraMoveSpeed;
 	bool m_MousePush;
@@ -38,6 +40,10 @@ public:
 	EditMode GetEditMode()
 	{
 		return m_EditMode;
+	}
+	class CLineEditWindow* GetLineEditWindow() const
+	{
+		return m_LineEditWindow;
 	}
 	class CTileMapWindow* GetTileMapWindow () const
 	{

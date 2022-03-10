@@ -61,6 +61,9 @@
     <Filter Include="02. Object\01. Player\01. State">
       <UniqueIdentifier>{74c1292c-6f33-4df5-938a-5ec5d29a6673}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\09. Line">
+      <UniqueIdentifier>{8c9146dc-b37f-46e0-87aa-abe304173656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

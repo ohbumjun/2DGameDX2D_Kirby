@@ -7,8 +7,6 @@
 #include "IMGUIListBox.h"
 // Scene
 #include "Animation/AnimationSequence2DInstance.h"
-#include "Object/DragObject.h"
-#include "Object/SpriteEditObject.h"
 #include "Render/RenderManager.h"
 #include "Scene/DefaultScene.h"
 #include "Scene/SceneManager.h"
@@ -21,6 +19,7 @@
 #include "Window/DetailInfoWindow.h"
 #include "Window/TileMapWindow.h"
 #include "Window/BackGroundWindow.h"
+#include "Window/LineEditWindow.h"
 // Component 
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
@@ -44,6 +43,9 @@
 #include "Object/MushRoom.h"
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
+#include "Object/DragObject.h"
+#include "Object/LineObject.h"
+#include "Object/SpriteEditObject.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -78,6 +80,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		m_DragObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CDragObject>("DragObject");
 		m_DragObj->SetWorldScale(0.f, 0.f, 1.f);
 
+		// m_LineObj = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLineObject>("DragObject");
+		// m_LineObj->SetWorldScale(0.f, 0.f, 1.f);
+
 		sprintf_s(EditModeText, "%s", "Sprite");
 
 		_strupr_s(EditModeText);
@@ -105,6 +110,11 @@ void CEditorManager::SetEditMode(EditMode Mode)
 			m_DragObj->Destroy();
 			m_DragObj = nullptr;
 		}
+		if (m_ShowObj)
+		{
+			m_ShowObj->Destroy();
+			m_ShowObj = nullptr;
+		}
 
 		sprintf_s(EditModeText, "%s", "Tile");
 
@@ -118,6 +128,11 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		{
 			m_DragObj->Destroy();
 			m_DragObj = nullptr;
+		}
+		if (m_ShowObj)
+		{
+			m_ShowObj->Destroy();
+			m_ShowObj = nullptr;
 		}
 
 		sprintf_s(EditModeText, "%s", "Back");
@@ -227,6 +242,7 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
 	m_TileMapWindow = CIMGUIManager::GetInst()->AddWindow<CTileMapWindow>("TileMapWindow");
 	m_BackGroundWindow = CIMGUIManager::GetInst()->AddWindow<CBackGroundWindow>("BackGroundWindow");
+	m_LineEditWindow = CIMGUIManager::GetInst()->AddWindow<CLineEditWindow>("LineEditWindow");
 
 	// SceneMode 에 중력 적용 X 를 세팅한다.
 	CSceneManager::GetInst()->GetScene()->SetIsEditMode(true);
@@ -241,18 +257,18 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Down, this, &CEditorManager::MouseLButtonDown);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Up, this, &CEditorManager::MouseLButtonUp);
-	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Push, this, &CEditorManager::MouseLButtonPush);
+	// CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Push, this, &CEditorManager::MouseLButtonPush);
 
 	CInput::GetInst()->CreateKey("MouseRButton", VK_RBUTTON);
 	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Down, this, &CEditorManager::MouseRButtonDown);
 	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Push, this, &CEditorManager::MouseRButtonPush);
-
 
 	// KeyBoard
 	// CInput::GetInst()->CreateKey("Up", VK_UP);
 	// CInput::GetInst()->CreateKey("Down", VK_DOWN);
 	// CInput::GetInst()->CreateKey("Left", VK_LEFT);
 	// CInput::GetInst()->CreateKey("Right", VK_RIGHT);
+
 	CInput::GetInst()->CreateKey("Up", 'W');
 	CInput::GetInst()->CreateKey("Down", 'S');
 	CInput::GetInst()->CreateKey("Left", 'A');
@@ -299,7 +315,23 @@ void CEditorManager::MouseLButtonDown(float DeltaTime)
 	if (m_DragObj)
 	{
 		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
-		m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
+
+		if (!m_MousePush)
+		{
+			m_MousePush = true;
+
+			m_DragObj->SetStartPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+			// m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
+
+			// m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
+		}
+		else
+		{
+			m_MousePush = false;
+
+			m_DragObj->SetEndPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+			// m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
+		}
 	}
 }
 
@@ -316,7 +348,7 @@ void CEditorManager::MouseLButtonPush(float DeltaTime)
 
 void CEditorManager::MouseLButtonUp(float DeltaTime)
 {
-	m_MousePush = false;
+	// m_MousePush = false;
 }
 
 void CEditorManager::MouseRButtonDown(float DeltaTime)

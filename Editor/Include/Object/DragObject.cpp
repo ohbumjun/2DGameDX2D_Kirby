@@ -2,6 +2,8 @@
 #include "Component/StaticMeshComponent.h"
 #include "Render/RenderManager.h"
 #include "Resource/Material/Material.h"
+#include "Resource/Mesh/Mesh.h"
+#include "Resource/Mesh/StaticMesh.h"
 #include "../Window/SpriteEditWindow.h"
 #include "../EditorManager.h"
 #include "SpriteEditObject.h"
@@ -99,6 +101,8 @@ bool CDragObject::Init()
 
 void CDragObject::Update(float DeltaTime)
 {
+	m_MeshComponent->GetMesh()->GetMeshContainer()->VB.Buffer;
+
 	CGameObject::Update(DeltaTime);
 }
 

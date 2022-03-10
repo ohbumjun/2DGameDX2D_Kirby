@@ -175,6 +175,7 @@
     <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
+    <ClCompile Include="Object\LineObject.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalBear.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Window\BackGroundWindow.cpp" />
     <ClCompile Include="Window\DetailInfoWindow.cpp" />
     <ClCompile Include="Window\EditorMenu.cpp" />
+    <ClCompile Include="Window\LineEditWindow.cpp" />
     <ClCompile Include="Window\ObjectHierarchy.cpp" />
     <ClCompile Include="Window\SpriteEditWindow.cpp" />
     <ClCompile Include="Window\TileMapWindow.cpp" />
@@ -200,6 +202,7 @@
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\DragObject.h" />
+    <ClInclude Include="Object\LineObject.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalBear.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="Window\BackGroundWindow.h" />
     <ClInclude Include="Window\DetailInfoWindow.h" />
     <ClInclude Include="Window\EditorMenu.h" />
+    <ClInclude Include="Window\LineEditWindow.h" />
     <ClInclude Include="Window\ObjectHierarchy.h" />
     <ClInclude Include="Window\SpriteEditWindow.h" />
     <ClInclude Include="Window\TileMapWindow.h" />

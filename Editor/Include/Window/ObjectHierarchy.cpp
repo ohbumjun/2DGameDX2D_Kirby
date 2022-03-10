@@ -38,16 +38,16 @@ bool CObjectHierarchy::Init()
 
 	// ========================================================================
 
-	m_CreatedObjectListBox = AddWidget<CIMGUIListBox>("CreatedObjectList", 200.f, 200.f);
+	m_CreatedObjectListBox = AddWidget<CIMGUIListBox>("CreatedObjectList", 200.f, 100.f);
 	m_CreatedObjectListBox->SetHideName(true);
-	m_CreatedObjectListBox->SetPageItemCount(20);
+	m_CreatedObjectListBox->SetPageItemCount(10);
 	m_CreatedObjectListBox->SetSelectCallback(this, &CObjectHierarchy::SelectCreatedObject);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_CreatedComponentListBox = AddWidget<CIMGUIListBox>("CreatedComponentList", 200.f, 200.f);
+	m_CreatedComponentListBox = AddWidget<CIMGUIListBox>("CreatedComponentList", 200.f, 100.f);
 	m_CreatedComponentListBox->SetHideName(true);
-	m_CreatedComponentListBox->SetPageItemCount(20);
+	m_CreatedComponentListBox->SetPageItemCount(10);
 	m_CreatedComponentListBox->SetSelectCallback(this, &CObjectHierarchy::SelectCreatedComponent);
 
 
@@ -66,16 +66,16 @@ bool CObjectHierarchy::Init()
 
 	// ========================================================================
 
-	m_ObjectList = AddWidget<CIMGUIListBox>("ObjectList", 200.f, 200.f);
+	m_ObjectList = AddWidget<CIMGUIListBox>("ObjectList", 200.f, 100.f);
 	m_ObjectList->SetHideName(true);
-	m_ObjectList->SetPageItemCount(20);
+	m_ObjectList->SetPageItemCount(12);
 	m_ObjectList->SetSelectCallback(this, &CObjectHierarchy::SeeObjectList);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 
-	m_SpecificObjectList = AddWidget<CIMGUIListBox>("Specific Object List", 200.f, 200.f);
+	m_SpecificObjectList = AddWidget<CIMGUIListBox>("Specific Object List", 200.f, 100.f);
 	m_SpecificObjectList->SetHideName(true);
-	m_SpecificObjectList->SetPageItemCount(20);
+	m_SpecificObjectList->SetPageItemCount(12);
 	m_SpecificObjectList->SetSelectCallback(this, &CObjectHierarchy::SeeSpecificObjectList);
 
 	// ========================================================================

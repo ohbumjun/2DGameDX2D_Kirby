@@ -17,6 +17,12 @@ protected:
 	Vector3 m_Min;
 	Vector3 m_Max;
 
+public :
+	MeshContainer* GetMeshContainer(int Index = 0) const
+{
+	return m_vecContainer[Index];
+}
+
 public:
 	virtual bool Init();
 	virtual void Render();
