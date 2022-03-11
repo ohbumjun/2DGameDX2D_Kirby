@@ -510,32 +510,47 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 
 		Line_DrawType DrawType = SelectLine->GetDrawType();
 
+		float XScale = -1.f, YScale = -1.f;
+
 		switch(DrawType)
 		{
 		case Line_DrawType::RightBottom :
 			{
 				SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+
+				XScale = EndPos.x - StartPos.x;
+				YScale = StartPos.y - EndPos.y;
 			}
 			break;
 		case Line_DrawType::RightUp:
 			{
 				SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+
+				XScale = EndPos.x - StartPos.x;
+				YScale = StartPos.y - EndPos.y;
 			}
 			break;
 		case Line_DrawType::LeftBottom:
 			{
 				SelectLine->SetWorldPos(EndPos.x, StartPos.y, 1.f);
+
+				XScale = StartPos.x - EndPos.x;
+				YScale = EndPos.y - StartPos.y;
 			}
 			break;
 		case Line_DrawType::LeftUp:
 			{
 				SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+
+				XScale = EndPos.x - StartPos.x;
+				YScale = StartPos.y - EndPos.y;
 			}
 			break;
 		}
 
-		// SelectLine->SetWorldPos(StartPos.x, StartPos.y - WorldScale.y, 1.f);
+		SelectLine->SetWorldScale(XScale, YScale, 1.f);
 
+		SelectLine->ResetDrawBoxPos();
 	}
 }
 

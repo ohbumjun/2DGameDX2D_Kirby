@@ -13,9 +13,13 @@ protected:
 	virtual ~CLine() override;
 public:
 	CSharedPtr<class CStaticMeshComponent> m_MeshComponent;
-	Vector2                                m_StartPos;
-	Vector2                                m_EndPos;
+private :
+	Vector2                                m_DrawStartPos;
+	Vector2                                m_DrawEndPos;
 	Line_DrawType m_DrawType;
+private :
+	CSharedPtr<class CStaticMeshComponent> m_StartPosBox;
+	CSharedPtr<class CStaticMeshComponent> m_EndPosBox;
 public:
 	Line_DrawType GetDrawType ()  const
 	{
@@ -23,16 +27,17 @@ public:
 	}
 	Vector3 GetStartPos() const
 	{
-		return Vector3(m_StartPos.x, m_StartPos.y, 1.f);
+		return Vector3(m_DrawStartPos.x, m_DrawStartPos.y, 1.f);
 	}
 	Vector3 GetEndPos() const
 	{
-		return Vector3(m_EndPos.x, m_EndPos.y, 1.f);
+		return Vector3(m_DrawEndPos.x, m_DrawEndPos.y, 1.f);
 	}
 
 public:
 	void SetStartPos(const Vector2& Pos);
 	void SetEndPos(const Vector2& Pos);
+	void ResetDrawBoxPos();
 public:
 	virtual bool         Init() override;
 	virtual void         Update(float DeltaTime) override;
