@@ -18,6 +18,10 @@ private :
 	Vector2                                m_DrawEndPos;
 	Line_DrawType m_DrawType;
 private :
+	Vector3 m_FinalLeftPos;
+	Vector3 m_FinalRightPos;
+	float m_Slope;
+private :
 	CSharedPtr<class CStaticMeshComponent> m_StartPosBox;
 	CSharedPtr<class CStaticMeshComponent> m_EndPosBox;
 public:
@@ -33,8 +37,8 @@ public:
 	{
 		return Vector3(m_DrawEndPos.x, m_DrawEndPos.y, 1.f);
 	}
-
 public:
+	void SetFinalPosInfo(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope);
 	void SetStartPos(const Vector2& Pos);
 	void SetEndPos(const Vector2& Pos);
 	void ResetDrawBoxPos();

@@ -24,6 +24,13 @@ CLine::~CLine()
 {
 }
 
+void CLine::SetFinalPosInfo(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope)
+{
+	m_FinalLeftPos = FinalLeftPos;
+	m_FinalRightPos = FinalRightPos;
+	m_Slope = Slope;
+}
+
 void CLine::SetStartPos(const Vector2& Pos)
 {
 	m_DrawStartPos = Pos;
@@ -44,26 +51,28 @@ void CLine::SetEndPos(const Vector2& Pos)
 	오른쪽 아래일 때 시작점은
 	X는 작은 것, Y는 큰 것
 	끝점은 X는 큰 것, Y는 작은 것
-
-	1) 오른쪽 아래로 선 긋기 ---
-	그러면 오른쪽 아래로 선을 그을 때는 Y만 - 가 된다.
-	그래서 오른쪽 위로 그려지는 것이다.
-
-	그러면 이때는
-	StartPos의 경우,
-	WorldScale은 Y도 양수로 바꿔줘야 하고
-
-	StartPos 의 Y는 EndPos.y로 수정해줘야 한다.
 	*/
 	float XScale = -1.f, YScale = -1.f;
 
 	if (Pos.x >= m_DrawStartPos.x && Pos.y < m_DrawStartPos.y)
 	{
-		XScale = Pos.x - m_DrawStartPos.x;
-		YScale = m_DrawStartPos.y - Pos.y;
+		/*
+			1) 오른쪽 아래로 선 긋기 ---
+			그러면 오른쪽 아래로 선을 그을 때는 Y만 - 가 된다.
+			그래서 오른쪽 위로 그려지는 것이다.
+
+			그러면 이때는
+			StartPos의 경우,
+			WorldScale은 Y도 양수로 바꿔줘야 하고
+
+			StartPos 의 Y는 EndPos.y로 수정해줘야 한다.
+
+			
+			XScale = Pos.x - m_DrawStartPos.x;
+			YScale = m_DrawStartPos.y - Pos.y;
+		 */
 
 		m_DrawType = Line_DrawType::RightBottom;
-		// m_StartPos.y = Pos.y;
 	}
 	else if (Pos.x >= m_DrawStartPos.x && Pos.y >= m_DrawStartPos.y)
 	{
@@ -71,9 +80,10 @@ void CLine::SetEndPos(const Vector2& Pos)
 			2) 오른쪽 위로 선 긋기 --
 			이때는 Y가 + 인데, Y를 -로 바꿔줘야 한다.
 			그리고 StartPos의 Y도 EndPos.y로 다시 세팅해줘야 한다.
+			
+			XScale = Pos.x - m_DrawStartPos.x;
+			YScale = m_DrawStartPos.y - Pos.y;
 		*/
-		XScale = Pos.x - m_DrawStartPos.x;
-		YScale = m_DrawStartPos.y - Pos.y;
 
 		m_DrawType = Line_DrawType::RightUp;
 	}
@@ -85,9 +95,10 @@ void CLine::SetEndPos(const Vector2& Pos)
 
 		XScale은 양수로 바꿔야 하며
 		StartPos.x 는 EndPos.x 로 바꿔야 한다.
-		 */
+
 		XScale = m_DrawStartPos.x - Pos.x;
 		YScale = Pos.y - m_DrawStartPos.y;
+		 */
 
 		m_DrawType = Line_DrawType::LeftBottom;
 	}
@@ -99,9 +110,11 @@ void CLine::SetEndPos(const Vector2& Pos)
 
 		XScale은 양수로 바꿔야 하며
 		StartPos.x 는 EndPos.x 로 바꿔야 한다.
-		 */
+
+		
 		XScale = m_DrawStartPos.x - Pos.x;
 		YScale = Pos.y - m_DrawStartPos.y;
+		 */
 
 		m_DrawType = Line_DrawType::LeftBottom;
 	}
@@ -114,9 +127,11 @@ void CLine::SetEndPos(const Vector2& Pos)
 
 		YScale은 양수를 음수로 바꿔주고
 		x,y 둘다 EndPos로
-		*/
+
+		
 		XScale = Pos.x - m_DrawStartPos.x;
 		YScale = m_DrawStartPos.y - Pos.y;
+		*/
 
 		m_DrawType = Line_DrawType::LeftUp;
 	}

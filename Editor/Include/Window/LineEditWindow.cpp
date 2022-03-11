@@ -73,6 +73,29 @@ void CLineEditWindow::SetLineInfo(CLine* Line)
 	m_LineEndPosY->SetText(EndPosY);
 }
 
+void CLineEditWindow::SetLineDescription(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope)
+{
+	char StartPosX[MAX_PATH] = {};
+	sprintf_s(StartPosX, "%.1f", FinalLeftPos.x);
+	m_LineStartPosX->SetText(StartPosX);
+
+	char StartPosY[MAX_PATH] = {};
+	sprintf_s(StartPosY, "%.1f", FinalLeftPos.y);
+	m_LineStartPosY->SetText(StartPosY);
+
+	char EndPosX[MAX_PATH] = {};
+	sprintf_s(EndPosX, "%.1f", FinalRightPos.x);
+	m_LineEndPosX->SetText(EndPosX);
+
+	char EndPosY[MAX_PATH] = {};
+	sprintf_s(EndPosY, "%.1f", FinalRightPos.y);
+	m_LineEndPosY->SetText(EndPosY);
+
+	char SlopeText[MAX_PATH] = {};
+	sprintf_s(SlopeText, "%.1f", Slope);
+	m_LineSlope->SetText(SlopeText);
+}
+
 bool CLineEditWindow::Init()
 {
 	if (!CIMGUIWindow::Init())
@@ -182,14 +205,14 @@ bool CLineEditWindow::Init()
 
 	// ==============================
 
-	Label = AddWidget<CIMGUILabel>("Set Ratio", 100.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Slope", 100.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_LineSlope = AddWidget<CIMGUIText>("Slope");
+	m_LineSlope = AddWidget<CIMGUIText>("Slope Text");
 	m_LineSlope->SetSize(80.f, 40.f);
 
 	char Slope[MAX_PATH] = {};

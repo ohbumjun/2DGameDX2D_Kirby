@@ -7,8 +7,7 @@ class CLineEditWindow :
 public:
 	CLineEditWindow();
 	virtual ~CLineEditWindow() override;
-
-private: // todo :  BackGround Info
+private: 
 	class CIMGUIText* m_LineStartPosX;
 	class CIMGUIText* m_LineStartPosY;
 	class CIMGUIText* m_LineEndPosX;
@@ -22,6 +21,7 @@ private:
 public:
 	void SetLineContainer(class CGameObject* LineContainer);
 	void SetLineInfo(class CLine* Line);
+	void SetLineDescription(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope);
 public:
 	class CGameObject* GetSelectLine() const
 	{

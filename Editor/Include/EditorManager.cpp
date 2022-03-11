@@ -495,6 +495,7 @@ void CEditorManager::MouseRButtonPush(float DeltaTime)
 
 void CEditorManager::MouseRButtonUp(float DeltaTime)
 {
+	// 최종 Line 모양 및 WorldPos, 기울기를 결정할 것이다.
 	if (m_EditMode == EditMode::LineEdit)
 	{
 		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
@@ -549,8 +550,55 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 		}
 
 		SelectLine->SetWorldScale(XScale, YScale, 1.f);
-
 		SelectLine->ResetDrawBoxPos();
+
+		Vector3 FinalStartPos = SelectLine->GetWorldPos();
+		Vector3 FinalWorldScale = SelectLine->GetWorldScale();
+		Vector3 FinalEndPos = FinalStartPos + FinalWorldScale;
+
+		Vector3 FinalLeftPos = {};
+		Vector3 FinalRightPos = {};
+
+		float Slope = -1.f;
+
+		switch (DrawType)
+		{
+		case Line_DrawType::RightBottom:
+		{
+			FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y,1.f);
+			FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+		}
+		break;
+		case Line_DrawType::RightUp:
+		{
+			FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+			FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+		}
+		break;
+		case Line_DrawType::LeftBottom:
+		{
+			FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+			FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+		}
+		break;
+		case Line_DrawType::LeftUp:
+		{
+			FinalLeftPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+			FinalRightPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+		}
+		break;
+		}
+
+		// 이제 Line Edit Window의 Description에 세팅한다.
+		m_LineEditWindow->SetLineDescription(FinalLeftPos, FinalRightPos, Slope);
 	}
 }
 
