@@ -17,6 +17,7 @@
 #include "../Object/ShowObject.h"
 #include "../Object/TileMapEmpty.h"
 #include "../Object/BackGround.h"
+#include "../Object/LineContainer.h"
 #include "../Object/YellowBird.h"
 #include "../Object/PurpleBeatle.h"
 #include "../Object/NormalBear.h"
@@ -67,6 +68,8 @@ bool CEditorMenu::Init()
 	m_EditMenuComboBox->AddItem("Line");
 	m_EditMenuComboBox->AddItem("CharacterCreate");
 	m_EditMenuComboBox->AddItem("CharacterEdit");
+	m_EditMenuComboBox->AddItem("LineCreate");
+	m_EditMenuComboBox->AddItem("LineEdit");
 	m_EditMenuComboBox->SetHideName(true);
 	m_EditMenuComboBox->SetSelectCallback<CEditorMenu>(this, &CEditorMenu::SelectEditModeCallback);
 
@@ -133,6 +136,7 @@ bool CEditorMenu::Init()
 	// m_ObjectComboBox->AddItem("NormalBear");
 	m_ObjectComboBox->AddItem("TileEmpty");
 	m_ObjectComboBox->AddItem("BackGround");
+	m_ObjectComboBox->AddItem("LineContainer");
 	m_ObjectComboBox->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
@@ -273,6 +277,11 @@ void CEditorMenu::CreateNewObject()
 	case CreateObject_Type::BackGround:
 		{
 			CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
+		}
+		break;
+	case CreateObject_Type::LineContainer:
+		{
+			CSceneManager::GetInst()->GetScene()->CreateGameObject<CLineContainer>(m_ObjectNameInput->GetTextMultibyte());
 		}
 		break;
 	}

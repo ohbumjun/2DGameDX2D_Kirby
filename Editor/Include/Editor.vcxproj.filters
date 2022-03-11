@@ -43,6 +43,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="03. Object\06. Line">
+      <UniqueIdentifier>{205787ae-77c7-40cb-8f6a-dede2d47d791}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,12 @@
     </ClCompile>
     <ClCompile Include="Window\LineEditWindow.cpp">
       <Filter>02. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\LineContainer.cpp">
+      <Filter>03. Object\06. Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Line.cpp">
+      <Filter>03. Object\06. Line</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="Window\LineEditWindow.h">
       <Filter>02. Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\LineContainer.h">
+      <Filter>03. Object\06. Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Line.h">
+      <Filter>03. Object\06. Line</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

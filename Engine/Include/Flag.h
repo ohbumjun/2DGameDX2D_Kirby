@@ -80,6 +80,7 @@ enum class CreateObject_Type
 	Player,
 	TileEmptyObject,
 	BackGround,
+	LineContainer,
 	End
 };
 

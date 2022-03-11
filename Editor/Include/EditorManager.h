@@ -10,7 +10,9 @@ enum class EditMode
 	Back,
 	Line,
 	CharacterCreate,
-	CharacterEdit
+	CharacterEdit,
+	LineCreate,
+	LineEdit
 };
 
 class CEditorManager
