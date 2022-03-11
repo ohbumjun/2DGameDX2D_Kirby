@@ -17,7 +17,7 @@ private: // todo :  BackGround Info
 	class CIMGUIListBox* m_CreatedLineListBox;
 private:
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.
-	class CBackGroundComponent* m_BackGround;
+	class CLineContainer* m_LineContainer;
 public:
 	void SetBackGround(class CBackGroundComponent* BackGround);
 public:
