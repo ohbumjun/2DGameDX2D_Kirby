@@ -77,20 +77,51 @@ void CLine::SetEndPos(const Vector2& Pos)
 
 		m_DrawType = Line_DrawType::RightUp;
 	}
+	else if (Pos.x < m_StartPos.x && Pos.y < m_StartPos.y)
+	{
+		/*
+		3) 왼쪽 아래로 선 긋기 ---
+		XScale 과 YScale 모두 음수가 나올 것이다
 
-	/*
-	3) 왼쪽 아래로 선 긋기 ---
+		XScale은 양수로 바꿔야 하며
+		StartPos.x 는 EndPos.x 로 바꿔야 한다.
+		 */
+		XScale = m_StartPos.x - Pos.x;
+		YScale = Pos.y - m_StartPos.y;
 
-	4) 왼쪽 위로 선 긋기 ---
-	 */
+		m_DrawType = Line_DrawType::LeftBottom;
+	}
+	else if (Pos.x < m_StartPos.x && Pos.y < m_StartPos.y)
+	{
+		/*
+		3) 왼쪽 아래로 선 긋기 ---
+		XScale 과 YScale 모두 음수가 나올 것이다
 
-	// m_MeshComponent->SetWorldPos(m_StartPos.x, m_StartPos.y, 1.f);
+		XScale은 양수로 바꿔야 하며
+		StartPos.x 는 EndPos.x 로 바꿔야 한다.
+		 */
+		XScale = m_StartPos.x - Pos.x;
+		YScale = Pos.y - m_StartPos.y;
+
+		m_DrawType = Line_DrawType::LeftBottom;
+	}
+	else if (Pos.x < m_StartPos.x && Pos.y > m_StartPos.y)
+	{
+		/*
+		4) 왼쪽 위로 선 긋기 ---
+			XScale은 음수가 나올 것이다.
+		YScale은 양수가 나올 것이다
+
+		YScale은 양수를 음수로 바꿔주고
+		x,y 둘다 EndPos로
+		*/
+		XScale = Pos.x - m_StartPos.x;
+		YScale = m_StartPos.y - Pos.y;
+
+		m_DrawType = Line_DrawType::LeftUp;
+	}
+
 	m_MeshComponent->SetWorldScale(XScale, YScale, 1.f);
-
-
-	// m_MeshComponent->SetWorldScale(XScale, YScale, 1.f);
-	// m_MeshComponent->SetWorldScale(Pos.x - m_StartPos.x, YScale, 1.f);
-
 }
 
 bool CLine::Init()
@@ -147,10 +178,21 @@ bool CLine::Init()
 
 	3) 왼쪽 아래로 선 긋기 ---
 	// m_MeshComponent->SetWorldScale(200.f, -200.f, 0.f); // 오른쪽 위 --> 200.0 에서 400.200 으로
-	마찬가지로 YScale은 음수로 세팅하고
-	StartPos 의 Y도 EndPos 의 Y 로 세팅해야 한다.
+
+	XScale 과 YSCale 모두 음수가 나올 것이다
+
+	XScale은 양수로 바꿔야 하며
+	StartPos.x 는 EndPox.s 로 바꿔야 한다.
 
 	4) 왼쪽 위로 선 긋기 ---
+	// m_MeshComponent->SetWorldScale(-200.f, -200.f, 0.f); // 오른쪽 아래 0.200 --> 200.0
+
+	XScale은 음수가 나올 것이다.
+	YScale은 양수가 나올 것이다
+
+	YScale은 양수를 음수로 바꿔주고
+	x,y 둘다 EndPos로 
+	
 	 */
 
 	return true;

@@ -518,10 +518,20 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 			}
 			break;
 		case Line_DrawType::RightUp:
-		{
-			SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
-		}
-		break;
+			{
+				SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+			}
+			break;
+		case Line_DrawType::LeftBottom:
+			{
+				SelectLine->SetWorldPos(EndPos.x, StartPos.y, 1.f);
+			}
+			break;
+		case Line_DrawType::LeftUp:
+			{
+				SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+			}
+			break;
 		}
 
 		// SelectLine->SetWorldPos(StartPos.x, StartPos.y - WorldScale.y, 1.f);
