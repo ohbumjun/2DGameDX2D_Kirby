@@ -6,11 +6,13 @@
 #include "IMGUILabel.h"
 #include "GameObject/GameObject.h"
 #include "../Object/ShowObject.h"
+#include "../Object/LineContainer.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "../EditorManager.h"
 #include "DetailInfoWindow.h"
+#include "LineEditWindow.h"
 #include "Component/TileMapComponent.h"
 #include "Component/TileEmptyComponent.h"
 #include "Component/BackGroundComponent.h"
@@ -174,6 +176,27 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
+	}
+	else if (m_SelectObject->CheckType<CLineContainer>())
+	{
+		EditMode CurrentEditMode = CEditorManager::GetInst()->GetEditMode();
+
+		if (CurrentEditMode != EditMode::LineCreate && CurrentEditMode != EditMode::LineEdit)
+		{
+			CEditorManager::GetInst()->SetEditMode(EditMode::LineEdit);
+
+			CEditorManager::GetInst()->GetLineEditWindow()->SetLineContainer(m_SelectObject);
+		}
+		else
+		{
+			// 그게 아니라면 Line Container의 가장 첫번째 원소에 대한 내용에
+			// Show Object를 세팅한다.
+			// 그리고 해당 내용의 정보로 Line Edit Window도 바꿔준다.
+			if (m_SelectObject->GetChildCount() > 0)
+			{
+				CEditorManager::GetInst()->SetSceneEditObjectPos(m_SelectObject->GetChildObject(0));
+			}
+		}
 	}
 }
 

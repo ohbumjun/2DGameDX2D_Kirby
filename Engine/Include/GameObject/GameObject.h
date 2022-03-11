@@ -23,6 +23,14 @@ public:
 	{
 		return m_Scene;
 	}
+	int GetChildCount() const
+	{
+		return (int)m_vecChildObject.size();
+	}
+	CGameObject* GetChildObject(int Index = 0)
+	{
+		return m_vecChildObject[Index];
+	}
 public:
 	void SetScene(class CScene* Scene);
 	virtual void Enable(bool Enable) override;
@@ -35,6 +43,10 @@ protected:
 protected:
 	float m_LifeTime;
 public:
+	void AddChildGameObject(CGameObject* Child)
+	{
+		m_vecChildObject.push_back(Child);
+	}
 	void SetLifeTime(float LifeTime)
 	{
 		m_LifeTime = LifeTime;

@@ -65,7 +65,6 @@ bool CEditorMenu::Init()
 	m_EditMenuComboBox->AddItem("Scene");
 	m_EditMenuComboBox->AddItem("TileMap");
 	m_EditMenuComboBox->AddItem("BackGround");
-	m_EditMenuComboBox->AddItem("Line");
 	m_EditMenuComboBox->AddItem("CharacterCreate");
 	m_EditMenuComboBox->AddItem("CharacterEdit");
 	m_EditMenuComboBox->AddItem("LineCreate");

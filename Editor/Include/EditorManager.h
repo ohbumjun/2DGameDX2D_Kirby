@@ -8,7 +8,6 @@ enum class EditMode
 	Scene,
 	Tile,
 	Back,
-	Line,
 	CharacterCreate,
 	CharacterEdit,
 	LineCreate,

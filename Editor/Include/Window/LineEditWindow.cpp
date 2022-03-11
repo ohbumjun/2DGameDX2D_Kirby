@@ -12,6 +12,9 @@
 #include "PathManager.h"
 #include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
+#include "../Object/Line.h"
+#include "../Object/LineContainer.h"
+#include "../Editor.h"
 
 CLineEditWindow::CLineEditWindow()
 {}
@@ -19,17 +22,27 @@ CLineEditWindow::CLineEditWindow()
 CLineEditWindow::~CLineEditWindow()
 {}
 
-void CLineEditWindow::SetBackGround(CBackGroundComponent* BackGround)
+void CLineEditWindow::SetLineContainer(CGameObject* LineContainer)
 {
-	if (m_BackGround)
-		return;
+	m_LineContainer = (CLineContainer*)LineContainer;
 
-	// 2) BackMaterial 세팅 
-	std::string BackMaterialName = BackGround->GetBackGroundMaterial()->GetName();
+	if (m_LineContainer->GetChildCount() == 0)
+	{
+		// - 기본적으로 Line Object 를 하나를 생성하고
+		CLine* CreatedLine =  CSceneManager::GetInst()->GetScene()->CreateGameObject<CLine>("Line0");
 
-	m_BackGround = BackGround;
+		// - Line Object 를 Line Container의 자식으로 세팅하고
+		m_LineContainer->AddChildGameObject(CreatedLine);
 
+		// - 첫 Line Object 정보를 Line Window에다가 세팅한다.
+		// ex) st , ed pos, slope
+		SetLineInfo(CreatedLine);
+	}
+}
 
+void CLineEditWindow::SetLineInfo(CLine* Line)
+{
+	// ex) st , ed pos, slope
 }
 
 bool CLineEditWindow::Init()
@@ -47,14 +60,35 @@ bool CLineEditWindow::Init()
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
-	CIMGUIButton* Button = AddWidget<CIMGUIButton>("Line Create", 95.f, 30.f);
+	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Label = AddWidget<CIMGUILabel>("Create Line", 195.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	// ==============================
+
+	CIMGUIButton* Button = AddWidget<CIMGUIButton>("Create Mode", 95.f, 30.f);
 	Button->SetClickCallback<CLineEditWindow>(this, &CLineEditWindow::SetLineCreateMode);
 
-	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
-	Line->SetOffsetX(105.f);
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(109.f);
 
-	Button = AddWidget<CIMGUIButton>("Line Edit", 95.f, 30.f);
+	Button = AddWidget<CIMGUIButton>("Edit Mode", 95.f, 30.f);
 	Button->SetClickCallback<CLineEditWindow>(this, &CLineEditWindow::SetLineEditMode);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	Button = AddWidget<CIMGUIButton>("Create Line", 95.f, 30.f);
+	Button->SetClickCallback<CLineEditWindow>(this, &CLineEditWindow::CreateNewLine);
+
+	Label = AddWidget<CIMGUILabel>("", 0, 0);
+	Label->SetColor(0, 0, 0);
+	Label->SetAlign(0.f, 0.f);
+
+	// ==============================
 
 	Label = AddWidget<CIMGUILabel>("", 0, 0);
 	Label->SetColor(0, 0, 0);
@@ -170,4 +204,25 @@ void CLineEditWindow::SetLineCreateMode()
 void CLineEditWindow::SetLineEditMode()
 {
 	CEditorManager::GetInst()->SetEditMode(EditMode::LineEdit);
+}
+
+void CLineEditWindow::CreateNewLine()
+{
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::LineCreate)
+		return;
+
+	if (!m_LineContainer)
+		return;
+
+	std::string NewLineName = "Line" + GetRandomString();
+
+	// - 기본적으로 Line Object 를 하나를 생성하고
+	CLine* CreatedLine = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLine>(NewLineName);
+
+	// - Line Object 를 Line Container의 자식으로 세팅하고
+	m_LineContainer->AddChildGameObject(CreatedLine);
+
+	// - 첫 Line Object 정보를 Line Window에다가 세팅한다.
+	// ex) st , ed pos, slope
+	SetLineInfo(CreatedLine);
 }

@@ -141,20 +141,6 @@ void CEditorManager::SetEditMode(EditMode Mode)
 
 		m_EditorMenu->SetEditModeText(EditModeText);
 	}
-	else if (m_EditMode == EditMode::Line)
-	{
-		if (m_DragObj)
-		{
-			m_DragObj->Destroy();
-			m_DragObj = nullptr;
-		}
-
-		sprintf_s(EditModeText, "%s", "Sprite");
-
-		_strupr_s(EditModeText);
-
-		m_EditorMenu->SetEditModeText(EditModeText);
-	}
 	else if (m_EditMode == EditMode::CharacterCreate)
 	{
 		if (m_DragObj)
