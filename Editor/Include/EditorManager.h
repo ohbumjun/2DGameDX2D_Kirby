@@ -95,6 +95,7 @@ public:
 
 	void MouseRButtonDown(float DeltaTime);
 	void MouseRButtonPush(float DeltaTime);
+	void MouseRButtonUp(float DeltaTime);
 
 	void KeyBoardUp(float DeltaTime);
 	void KeyBoardLeft(float DeltaTime);

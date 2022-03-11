@@ -29,6 +29,7 @@ void CDragObject::SetStartPos(const Vector2& Pos)
 	m_MeshComponent->SetWorldPos(m_StartPos.x, m_StartPos.y, 1.f);
 
 	CSpriteEditObject* SpriteEditObject = CEditorManager::GetInst()->GetSpriteWindow()->GetSpriteEditObject();
+
 	if (SpriteEditObject)
 	{
 		CTexture* Texture = SpriteEditObject->GetSpriteComponent()->GetTexture();

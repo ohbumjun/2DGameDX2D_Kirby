@@ -37,12 +37,40 @@ void CLineEditWindow::SetLineContainer(CGameObject* LineContainer)
 		// - 첫 Line Object 정보를 Line Window에다가 세팅한다.
 		// ex) st , ed pos, slope
 		SetLineInfo(CreatedLine);
+
+		// Line Object List에 추가한다.
+		m_CreatedLineListBox->AddItem(CreatedLine->GetName());
+
+		m_CreatedLineListBox->SetSelectIndex(0);
+
+		m_SelectLine = CreatedLine;
 	}
 }
 
 void CLineEditWindow::SetLineInfo(CLine* Line)
 {
+	if (!Line)
+		return;
+
 	// ex) st , ed pos, slope
+	Vector3 StartPos = Line->GetWorldPos();
+	Vector3 EndPos = Line->GetWorldPos() + Line->GetWorldScale();
+
+	char StartPosX[MAX_PATH] = {};
+	sprintf_s(StartPosX, "%.1f", StartPos.x);
+	m_LineStartPosX->SetText(StartPosX);
+
+	char StartPosY[MAX_PATH] = {};
+	sprintf_s(StartPosY, "%.1f", StartPos.y);
+	m_LineStartPosY->SetText(StartPosY);
+
+	char EndPosX[MAX_PATH] = {};
+	sprintf_s(EndPosX, "%.1f", EndPos.x);
+	m_LineEndPosX->SetText(EndPosX);
+
+	char EndPosY[MAX_PATH] = {};
+	sprintf_s(EndPosY, "%.1f", EndPos.y);
+	m_LineEndPosY->SetText(EndPosY);
 }
 
 bool CLineEditWindow::Init()
@@ -63,7 +91,7 @@ bool CLineEditWindow::Init()
 	CIMGUISameLine* Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
 
-	Label = AddWidget<CIMGUILabel>("Create Line", 195.f, 30.f);
+	Label = AddWidget<CIMGUILabel>("Create", 195.f, 30.f);
 	Label->SetColor(0, 0, 255);
 	Label->SetAlign(0.5f, 0.0f);
 
@@ -181,7 +209,7 @@ bool CLineEditWindow::Init()
 	m_CreatedLineListBox = AddWidget<CIMGUIListBox>("ObjectList", 195.f, 100.f);
 	m_CreatedLineListBox->SetHideName(true);
 	m_CreatedLineListBox->SetPageItemCount(8);
-	// m_CreatedLineListBox->SetSelectCallback(this, &CObjectHierarchy::SeeObjectList);
+	m_CreatedLineListBox->SetSelectCallback(this, &CLineEditWindow::SelectLineObject);
 
 	return true;
 }
@@ -191,9 +219,14 @@ void CLineEditWindow::Update(float DeltaTime)
 	CIMGUIWindow::Update(DeltaTime);
 }
 
-void CLineEditWindow::SetEditModeCallback(int Index, const char* Name)
+void CLineEditWindow::SelectLineObject(int Index, const char* Name)
 {
-	CEditorManager::GetInst()->SetEditMode(EditMode::Back);
+	m_SelectLine = CSceneManager::GetInst()->GetScene()->FindGameObject(Name);
+
+	if (!m_SelectLine)
+		return;
+
+	SetLineInfo((CLine*)m_SelectLine);
 }
 
 void CLineEditWindow::SetLineCreateMode()
@@ -225,4 +258,9 @@ void CLineEditWindow::CreateNewLine()
 	// - 첫 Line Object 정보를 Line Window에다가 세팅한다.
 	// ex) st , ed pos, slope
 	SetLineInfo(CreatedLine);
+
+	// Line Object List에 추가한다.
+	m_CreatedLineListBox->AddItem(NewLineName);
+
+	m_CreatedLineListBox->SetSelectIndex(m_CreatedLineListBox->GetItemCount() - 1);
 }

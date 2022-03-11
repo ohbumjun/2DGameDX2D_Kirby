@@ -75,13 +75,13 @@ bool CMeshManager::Init()
 	CMesh* LineMesh = new CStaticMesh;
 	Vector3 LinePos[2] =
 	{
-		Vector3(1.f, 0.f, 0.f),
-		Vector3(0.f, 1.f, 0.f)
+		Vector3(0.f, 1.f, 0.f),
+		Vector3(1.f, 0.f, 0.f)
 	};
 
 	LineMesh->SetName("Line");
 	LineMesh->CreateMesh(LinePos, sizeof(Vector3), 2,
-		D3D11_USAGE_IMMUTABLE, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		D3D11_USAGE_IMMUTABLE, D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 
 

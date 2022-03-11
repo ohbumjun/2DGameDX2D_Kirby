@@ -177,7 +177,6 @@
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\Line.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
-    <ClCompile Include="Object\LineObject.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalBear.cpp" />
@@ -206,7 +205,6 @@
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\Line.h" />
     <ClInclude Include="Object\LineContainer.h" />
-    <ClInclude Include="Object\LineObject.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalBear.h" />

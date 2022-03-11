@@ -155,7 +155,8 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 
 	// TileMap 혹은 BackGround 가 아니라면 
 	// Object 의 Pos, Rot, Scale x,y,z 정보도 DetailWindow 측에 세팅해준다.
-	if (!m_SelectObject->GetRootComponent()->CheckType<CTileEmptyComponent>() &&
+	if (m_SelectObject->GetRootComponent() &&
+		!m_SelectObject->GetRootComponent()->CheckType<CTileEmptyComponent>() &&
 		!m_SelectObject->GetRootComponent()->CheckType<CBackGroundComponent>())
 	{
 		CDetailInfoWindow* DetailWindow = CEditorManager::GetInst()->GetDetailWindow();
@@ -166,6 +167,9 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 		// 화면에 ShowObject 위치를 Object의 Root Component 것으로 세팅
 		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
 
+		CEditorManager::GetInst()->SetSceneEditObjectPos(ShowObject);
+
+		/*
 		Vector3 ObjectPivot = m_SelectObject->GetPivot();
 		Vector3 ObjectSize = m_SelectObject->GetWorldScale();
 		Vector3 ObjectPos = m_SelectObject->GetWorldPos();
@@ -176,6 +180,7 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
+		*/
 	}
 	else if (m_SelectObject->CheckType<CLineContainer>())
 	{
@@ -186,6 +191,11 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 			CEditorManager::GetInst()->SetEditMode(EditMode::LineEdit);
 
 			CEditorManager::GetInst()->GetLineEditWindow()->SetLineContainer(m_SelectObject);
+
+			if (m_SelectObject->GetChildCount() > 0)
+			{
+				CEditorManager::GetInst()->SetSceneEditObjectPos(m_SelectObject->GetChildObject(0));
+			}
 		}
 		else
 		{

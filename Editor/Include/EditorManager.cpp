@@ -46,6 +46,7 @@
 #include "Object/DragObject.h"
 #include "Object/LineObject.h"
 #include "Object/SpriteEditObject.h"
+#include "Object/Line.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -277,6 +278,7 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	CInput::GetInst()->CreateKey("MouseRButton", VK_RBUTTON);
 	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Down, this, &CEditorManager::MouseRButtonDown);
 	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Push, this, &CEditorManager::MouseRButtonPush);
+	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Up, this, &CEditorManager::MouseRButtonUp);
 
 	// KeyBoard
 	// CInput::GetInst()->CreateKey("Up", VK_UP);
@@ -327,27 +329,25 @@ int CEditorManager::Run()
 
 void CEditorManager::MouseLButtonDown(float DeltaTime)
 {
+	Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
+
 	if (m_DragObj)
 	{
-		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
 
 		if (!m_MousePush)
 		{
 			m_MousePush = true;
 
-			m_DragObj->SetStartPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
-			// m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
-
-			// m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
+			m_DragObj->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
 		}
 		else
 		{
 			m_MousePush = false;
 
-			m_DragObj->SetEndPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
-			// m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
+			m_DragObj->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
 		}
 	}
+	
 }
 
 void CEditorManager::MouseLButtonPush(float DeltaTime)
@@ -363,7 +363,7 @@ void CEditorManager::MouseLButtonPush(float DeltaTime)
 
 void CEditorManager::MouseLButtonUp(float DeltaTime)
 {
-	// m_MousePush = false;
+	m_MousePush = false;
 }
 
 void CEditorManager::MouseRButtonDown(float DeltaTime)
@@ -417,26 +417,6 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 
 		// Object Hierarchy 목록에 추가하기
 		m_ObjectHierarchy->AddCreatedObject(NewMonsterName.c_str());
-
-		/*
-		case CreateObject_Type::Player:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CPlayer2D>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-		break;
-		case CreateObject_Type::TileEmptyObject:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CTileMapEmpty>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-		case CreateObject_Type::BackGround:
-		{
-			CSceneManager::GetInst()->GetScene()->CreateGameObject<CBackGround>(m_ObjectNameInput->GetTextMultibyte());
-		}
-		break;
-		}
-		*/
 	}
 	else if (m_EditMode == EditMode::CharacterEdit)
 	{
@@ -463,6 +443,17 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		// 3) ObjectHierarchy 에서도 해당 Name 을 Select 상태로 둔다.
 		m_ObjectHierarchy->SetSeletedObjectByName(ClickedObject->GetName());
 	}
+	else if(m_EditMode == EditMode::LineEdit)
+	{
+		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
+
+		CLine* SelectLine = (CLine*)m_LineEditWindow->GetSelectLine();
+
+		if (!SelectLine)
+			return;
+
+		SelectLine->SetStartPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+	}
 }
 
 void CEditorManager::MouseRButtonPush(float DeltaTime)
@@ -488,6 +479,53 @@ void CEditorManager::MouseRButtonPush(float DeltaTime)
 		SetSceneEditObjectPos(ClickedObject);
 
 		m_DetailInfoWindow->SetTransformInfo(ClickedObject->GetRootComponent());
+	}
+	else if (m_EditMode == EditMode::LineEdit)
+	{
+		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
+
+		CLine* SelectLine = (CLine*)m_LineEditWindow->GetSelectLine();
+
+		if (!SelectLine)
+			return;
+
+		SelectLine->SetEndPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+	}
+}
+
+void CEditorManager::MouseRButtonUp(float DeltaTime)
+{
+	if (m_EditMode == EditMode::LineEdit)
+	{
+		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
+
+		CLine* SelectLine = (CLine*)m_LineEditWindow->GetSelectLine();
+
+		if (!SelectLine)
+			return;
+
+		Vector3 StartPos = SelectLine->GetStartPos();
+		Vector3 WorldScale = SelectLine->GetWorldScale();
+		Vector3 EndPos = SelectLine->GetEndPos();
+
+		Line_DrawType DrawType = SelectLine->GetDrawType();
+
+		switch(DrawType)
+		{
+		case Line_DrawType::RightBottom :
+			{
+				SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+			}
+			break;
+		case Line_DrawType::RightUp:
+		{
+			SelectLine->SetWorldPos(StartPos.x, EndPos.y, 1.f);
+		}
+		break;
+		}
+
+		// SelectLine->SetWorldPos(StartPos.x, StartPos.y - WorldScale.y, 1.f);
+
 	}
 }
 

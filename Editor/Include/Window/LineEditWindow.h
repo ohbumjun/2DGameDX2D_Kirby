@@ -18,14 +18,19 @@ private: // todo :  BackGround Info
 private:
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.
 	class CLineContainer* m_LineContainer;
+	class CGameObject* m_SelectLine;
 public:
 	void SetLineContainer(class CGameObject* LineContainer);
 	void SetLineInfo(class CLine* Line);
 public:
+	class CGameObject* GetSelectLine() const
+	{
+		return m_SelectLine;
+	}
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
 private:
-	void SetEditModeCallback(int Index, const char* Name);
+	void SelectLineObject(int Index, const char* Name);
 	void SetLineCreateMode();
 	void SetLineEditMode();
 	void CreateNewLine();

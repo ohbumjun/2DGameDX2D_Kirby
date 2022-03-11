@@ -305,7 +305,15 @@ float Vector2::Dot(const Vector2& v) const
 
 float Vector2::Angle(const Vector2& v) const
 {
-	return 0.0f;
+	Vector2 v1 = *this;
+	Vector2 v2 = v;
+
+	v1.Normalize();
+	v2.Normalize();
+
+	float Angle = RadianToDegree(acosf(v1.Dot(v2)));
+
+	return Angle;
 }
 
 

@@ -117,9 +117,6 @@
     <ClCompile Include="Object\AbilityMonster.cpp">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClCompile>
-    <ClCompile Include="Object\LineObject.cpp">
-      <Filter>03. Object\01. Editor</Filter>
-    </ClCompile>
     <ClCompile Include="Window\LineEditWindow.cpp">
       <Filter>02. Editor</Filter>
     </ClCompile>
@@ -202,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="Object\AbilityMonster.h">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\LineObject.h">
-      <Filter>03. Object\01. Editor</Filter>
     </ClInclude>
     <ClInclude Include="Window\LineEditWindow.h">
       <Filter>02. Editor</Filter>
