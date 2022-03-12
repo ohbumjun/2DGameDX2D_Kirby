@@ -53,8 +53,12 @@ void CLineEditWindow::SetLineInfo(CLine* Line)
 		return;
 
 	// ex) st , ed pos, slope
-	Vector3 StartPos = Line->GetWorldPos();
-	Vector3 EndPos = Line->GetWorldPos() + Line->GetWorldScale();
+	Vector3 StartPos = Line->GetFinalWorldLeftPos();
+	Vector3 EndPos = Line->GetFinalWorldRightPos();
+
+	// 아직 세팅된 적이 없다면 
+	if (StartPos.x == -FLT_MAX)
+		return;
 
 	char StartPosX[MAX_PATH] = {};
 	sprintf_s(StartPosX, "%.1f", StartPos.x);

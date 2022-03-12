@@ -223,7 +223,11 @@ bool CScene::LoadFullPath(const char* FullPath)
 		CGameObject* Object = CSceneManager::GetInst()->CallCreateObjectFunc(this, TypeID);
 
 		if (!Object)
+		{
+			assert("No Object Created");
+			MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("No Object Created"), TEXT("No Object Created"), 0);
 			return false;
+		}
 
 		Object->Load(pFile);
 

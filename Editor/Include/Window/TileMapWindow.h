@@ -40,6 +40,7 @@ private:
 	class CBackGroundComponent* m_BackGround;
 public:
 	void SetTileMap(class CTileEmptyComponent* TileMap);
+	void SetTileMapComponentEditMode(bool Enable);
 public:
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
@@ -54,4 +55,5 @@ private:
 	void SetTileBaseImageScale();
 	void SetTileBaseWorldPos();
 	void SetTileBaseImageResolutionScale();
+
 };

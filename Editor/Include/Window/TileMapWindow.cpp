@@ -90,6 +90,13 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	m_TileSizeY->SetFloat(m_TileMapEmpty->GetTileEmptySize().y);
 }
 
+void CTileMapWindow::SetTileMapComponentEditMode(bool Enable)
+{
+	if (!m_TileMapEmpty)
+		return;
+	m_TileMapEmpty->EnableEditMode(Enable);
+}
+
 bool CTileMapWindow::Init()
 {
 	if (!CIMGUIWindow::Init())

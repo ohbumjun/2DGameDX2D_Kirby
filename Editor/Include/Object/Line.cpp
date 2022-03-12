@@ -9,7 +9,8 @@
 #include "SpriteEditObject.h"
 #include "Device.h"
 
-CLine::CLine()
+CLine::CLine() :
+	m_FinalWorldLeftPos(-FLT_MAX, -FLT_MAX, 0.f)
 {
 	SetTypeID<CLine>();
 }
@@ -26,8 +27,8 @@ CLine::~CLine()
 
 void CLine::SetFinalPosInfo(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope)
 {
-	m_FinalLeftPos = FinalLeftPos;
-	m_FinalRightPos = FinalRightPos;
+	m_FinalWorldLeftPos = FinalLeftPos;
+	m_FinalWorldRightPos = FinalRightPos;
 	m_Slope = Slope;
 }
 
@@ -168,7 +169,7 @@ bool CLine::Init()
 	// m_MeshComponent->SetMesh("FrameRect");
 	m_MeshComponent->GetMaterial()->SetShader("PosMeshShader");
 	// m_MeshComponent->SetPivot(0.001f, 0.001f, 0.f);
-	m_MeshComponent->SetBaseColor(0.f, 1.f, 0.f, 1.f);
+	m_MeshComponent->SetBaseColor(0.f, 0.f, 1.f, 1.f);
 
 	m_MeshComponent->SetWorldPos(200.f, 200.f, 0.f);
 	// m_MeshComponent->SetWorldScale(-200.f, -200.f, 0.f); // 오른쪽 아래 0.200 --> 200.0
@@ -256,4 +257,28 @@ void CLine::PostUpdate(float DeltaTime)
 CLine* CLine::Clone()
 {
 	return new CLine(*this);
+}
+
+void CLine::Save(FILE* pFile)
+{
+	CGameObject::Save(pFile);
+
+	fwrite(&m_DrawStartPos, sizeof(Vector2), 1, pFile);
+	fwrite(&m_DrawEndPos, sizeof(Vector2), 1, pFile);
+	fwrite(&m_DrawType, sizeof(Line_DrawType), 1, pFile);
+	fwrite(&m_FinalWorldLeftPos, sizeof(Vector3), 1, pFile);
+	fwrite(&m_FinalWorldLeftPos, sizeof(Vector3), 1, pFile);
+	fwrite(&m_Slope, sizeof(float), 1, pFile);
+}
+
+void CLine::Load(FILE* pFile)
+{
+	CGameObject::Load(pFile);
+
+	fread(&m_DrawStartPos, sizeof(Vector2), 1, pFile);
+	fread(&m_DrawEndPos, sizeof(Vector2), 1, pFile);
+	fread(&m_DrawType, sizeof(Line_DrawType), 1, pFile);
+	fread(&m_FinalWorldLeftPos, sizeof(Vector3), 1, pFile);
+	fread(&m_FinalWorldLeftPos, sizeof(Vector3), 1, pFile);
+	fread(&m_Slope, sizeof(float), 1, pFile);
 }

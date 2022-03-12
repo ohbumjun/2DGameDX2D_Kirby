@@ -89,6 +89,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(false);
 	}
 	else if (m_EditMode == EditMode::Scene)
 	{
@@ -122,6 +125,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(true);
 	}
 	else if (m_EditMode == EditMode::Back)
 	{
@@ -141,6 +147,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(false);
 	}
 	else if (m_EditMode == EditMode::CharacterCreate)
 	{
@@ -155,6 +164,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(false);
 	}
 	else if (m_EditMode == EditMode::CharacterEdit)
 	{
@@ -169,6 +181,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(false);
 	}
 	else if (m_EditMode == EditMode::LineCreate)
 	{
@@ -183,6 +198,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(true);
 	}
 	else if (m_EditMode == EditMode::LineEdit)
 	{
@@ -197,6 +215,9 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		_strupr_s(EditModeText);
 
 		m_EditorMenu->SetEditModeText(EditModeText);
+
+		// 타일을 그리지 않도록 세팅한다.
+		m_TileMapWindow->SetTileMapComponentEditMode(true);
 	}
 
 }
@@ -452,7 +473,8 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		if (!SelectLine)
 			return;
 
-		SelectLine->SetStartPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+		// SelectLine->SetStartPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+		SelectLine->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
 	}
 }
 
@@ -489,7 +511,8 @@ void CEditorManager::MouseRButtonPush(float DeltaTime)
 		if (!SelectLine)
 			return;
 
-		SelectLine->SetEndPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+		// SelectLine->SetEndPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+		SelectLine->SetEndPos(CInput::GetInst()->GetMousePos() + CameraLB);
 	}
 }
 
@@ -567,7 +590,7 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 		{
 			FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y,1.f);
 			FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
-			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
 			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
 		}
 		break;
@@ -575,7 +598,7 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 		{
 			FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
 			FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
-			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
 			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
 		}
 		break;
@@ -583,7 +606,7 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 		{
 			FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
 			FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
-			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
 			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
 		}
 		break;
@@ -591,7 +614,7 @@ void CEditorManager::MouseRButtonUp(float DeltaTime)
 		{
 			FinalLeftPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
 			FinalRightPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
-			Slope = (FinalRightPos.x - FinalLeftPos.x) / (FinalRightPos.y - FinalLeftPos.y);
+			Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
 			SelectLine->SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
 		}
 		break;

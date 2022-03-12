@@ -18,8 +18,8 @@ private :
 	Vector2                                m_DrawEndPos;
 	Line_DrawType m_DrawType;
 private :
-	Vector3 m_FinalLeftPos;
-	Vector3 m_FinalRightPos;
+	Vector3 m_FinalWorldLeftPos;
+	Vector3 m_FinalWorldRightPos;
 	float m_Slope;
 private :
 	CSharedPtr<class CStaticMeshComponent> m_StartPosBox;
@@ -37,6 +37,14 @@ public:
 	{
 		return Vector3(m_DrawEndPos.x, m_DrawEndPos.y, 1.f);
 	}
+		Vector3 GetFinalWorldLeftPos() const
+	{
+			return m_FinalWorldLeftPos;
+	}
+	Vector3 GetFinalWorldRightPos() const
+	{
+		return m_FinalWorldRightPos;
+	}
 public:
 	void SetFinalPosInfo(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope);
 	void SetStartPos(const Vector2& Pos);
@@ -47,5 +55,8 @@ public:
 	virtual void         Update(float DeltaTime) override;
 	virtual void         PostUpdate(float DeltaTime) override;
 	virtual CLine* Clone() override;
+public:
+	virtual void Save(FILE* pFile) override;
+	virtual void Load(FILE* pFile) override;
 };
 

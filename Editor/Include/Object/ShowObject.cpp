@@ -35,6 +35,7 @@ bool CShowObject::Init()
 {
 	if (!CGameObject::Init())
 		return false;
+
 	m_MeshComponent = CreateComponent<CStaticMeshComponent>("ShowMeshComponent");
 	SetRootComponent(m_MeshComponent);
 
