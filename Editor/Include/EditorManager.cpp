@@ -295,7 +295,7 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	CInput::GetInst()->CreateKey("MouseLButton", VK_LBUTTON);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Down, this, &CEditorManager::MouseLButtonDown);
 	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Up, this, &CEditorManager::MouseLButtonUp);
-	// CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Push, this, &CEditorManager::MouseLButtonPush);
+	CInput::GetInst()->SetKeyCallback("MouseLButton", Key_State::KeyState_Push, this, &CEditorManager::MouseLButtonPush);
 
 	CInput::GetInst()->CreateKey("MouseRButton", VK_RBUTTON);
 	CInput::GetInst()->SetKeyCallback("MouseRButton", Key_State::KeyState_Down, this, &CEditorManager::MouseRButtonDown);

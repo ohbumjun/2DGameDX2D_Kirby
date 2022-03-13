@@ -170,7 +170,6 @@
     <ClCompile Include="Object\Bullet.cpp" />
     <ClCompile Include="Object\BulletCamera.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
-    <ClCompile Include="Object\Line.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
@@ -210,7 +209,6 @@
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
-    <ClInclude Include="Object\Line.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />

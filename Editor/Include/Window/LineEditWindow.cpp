@@ -314,4 +314,7 @@ void CLineEditWindow::CreateNewLine()
 	CreatedObjList->AddItem(NewLineName);
 
 	CreatedObjList->SetSelectIndex(CreatedObjList->GetItemCount() - 1);
+
+	// 다시 LineEdit Mode로 세팅한다.
+	CEditorManager::GetInst()->SetEditMode(EditMode::LineEdit);
 }

@@ -15,6 +15,7 @@
 #include "../Object/PurpleBeatle.h"
 #include "../Object/NormalBear.h"
 #include "../Object/BackGround.h"
+#include "../Object/LineContainer.h"
 
 CMainScene::CMainScene()
 {
@@ -47,6 +48,10 @@ void CMainScene::Start()
 	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
 
 	SetPlayerObject(Player2D);
+
+	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
+
+	SetLineContainerObject(LineContainer);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 }

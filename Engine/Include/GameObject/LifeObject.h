@@ -35,6 +35,8 @@ protected:
 protected :
 	bool m_CollisionDisabled;
 	bool m_IsGroundObject;
+protected:
+	bool m_LineCollided;
 protected :
 	Vector3 m_ObjectMoveDir;
 protected :
@@ -43,7 +45,9 @@ protected :
 	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
 	virtual void CheckBelowWorldResolution();
+	bool UpdateYPosIfLineCollided(float x);
 public :
+	virtual void CheckLineCollision(float DeltaTime);
 	virtual void CheckCeilingCollision(float DeltaTime);
 	virtual void CheckBottomCollision();
 	virtual void CheckSideCollision();

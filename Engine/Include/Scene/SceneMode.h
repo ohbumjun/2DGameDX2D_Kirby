@@ -16,12 +16,14 @@ protected:
 	class CScene*                 m_Scene;
 	CSharedPtr<class CGameObject> m_PlayerObject;
 	CSharedPtr<class CGameObject> m_TileMapEmptyObject;
+	CSharedPtr<class CGameObject> m_LineContainerObject;
 protected:
 	bool m_IsEditMode;
 
 public:
 	void SetPlayerObject(class CGameObject* Obj);
 	void SetTileMapEmptyObject(class CGameObject* Obj);
+	void SetLineContainerObject(class CGameObject* Obj);
 public :
 	void SetIsEditMode (bool Enable)
 {
@@ -41,6 +43,11 @@ public :
 	{
 		return m_TileMapEmptyObject;
 	}
+
+	class CGameObject* GetLineContainer() const
+{
+		return m_LineContainerObject;
+}
 
 	class CTileEmptyComponent* GetTileEmptyComponent () const
 	{

@@ -212,6 +212,7 @@
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="GameObject\LifeObject.h" />
+    <ClInclude Include="GameObject\Line.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="IMGUIButton.h" />
@@ -347,6 +348,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="GameObject\LifeObject.cpp" />
+    <ClCompile Include="GameObject\Line.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="IMGUIButton.cpp" />
     <ClCompile Include="IMGUIComboBox.cpp" />

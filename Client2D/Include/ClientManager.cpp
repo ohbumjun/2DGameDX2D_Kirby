@@ -20,7 +20,7 @@
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
 #include "Object/LineContainer.h"
-#include "Object/Line.h"
+#include "GameObject/Line.h"
 
 // SceneComponent
 #include "Component/StaticMeshComponent.h"

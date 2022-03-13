@@ -23,6 +23,11 @@ void CSceneMode::SetTileMapEmptyObject(CGameObject* Obj)
 	m_TileMapEmptyObject = Obj;
 }
 
+void CSceneMode::SetLineContainerObject(CGameObject* Obj)
+{
+	m_LineContainerObject = Obj;
+}
+
 void CSceneMode::Start()
 {
 }

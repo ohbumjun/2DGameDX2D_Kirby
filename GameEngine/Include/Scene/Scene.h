@@ -80,6 +80,10 @@ public:
 	{
 		return m_Mode->GetTileMapEmpty();
 	}
+	CGameObject* GetLineContainerObject() const
+	{
+		return m_Mode->GetLineContainer();
+	}
 	class CTileEmptyComponent* GetTileEmptyComponent() const
 	{
 		return m_Mode->GetTileEmptyComponent();
@@ -96,8 +100,10 @@ private :
 public :
 	CGameObject* FindGameObject(const char* ObjectName) const;
 	CGameObject* FindGameObjectByTypeID(size_t TypeID) const;
-	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
 	void SetAutoChange(bool Change);
+	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
+	template<typename T>
+	void GatherSpecificTypeObjectsName(std::vector<std::string>& vecObjNames);
 
 public:
 	void Start();
@@ -178,3 +184,20 @@ public:
 	}
 
 };
+
+template <typename T>
+void CScene::GatherSpecificTypeObjectsName(std::vector<std::string>& vecObjNames)
+{
+	vecObjNames.reserve(m_ObjList.size());
+
+	auto iter      = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->CheckType<T>())
+		{
+			vecObjNames.push_back((*iter)->GetName());
+		}
+	}
+}

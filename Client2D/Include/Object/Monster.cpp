@@ -500,6 +500,9 @@ void CMonster::UpdateMonsterMove(float DeltaTime)
 
 	AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity);
 
+	// 혹시나 Line 위에 있을 수도 있으니 그에 맞춰 조정해준다. 
+	CheckLineCollision(DeltaTime);
+
 	m_RandomMoveTime -= DeltaTime;
 
 	if (m_RandomMoveTime <= 0.f)
