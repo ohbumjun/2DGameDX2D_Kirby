@@ -465,7 +465,7 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		// 3) ObjectHierarchy 에서도 해당 Name 을 Select 상태로 둔다.
 		m_ObjectHierarchy->SetSeletedObjectByName(ClickedObject->GetName());
 	}
-	else if(m_EditMode == EditMode::LineEdit)
+	else if (m_EditMode == EditMode::LineEdit)
 	{
 		Vector2 CameraLB = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetLeftBottom();
 
@@ -474,7 +474,7 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		if (!SelectLine)
 			return;
 
-		// SelectLine->SetStartPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
+		// SelectLine->SetEndPos(CInput::GetInst()->GetMouseWorld2DPos() + CameraLB);
 		SelectLine->SetStartPos(CInput::GetInst()->GetMousePos() + CameraLB);
 	}
 }

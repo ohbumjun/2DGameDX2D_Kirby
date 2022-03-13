@@ -296,6 +296,9 @@ void CLineEditWindow::CreateNewLine()
 	// - Line Object 를 Line Container의 자식으로 세팅하고
 	m_LineContainer->AddChildGameObject(CreatedLine);
 
+	// 선택된 Line GameObject 로 세팅한다.
+	m_SelectLine = CreatedLine;
+
 	// - 첫 Line Object 정보를 Line Window에다가 세팅한다.
 	// ex) st , ed pos, slope
 	SetLineInfo(CreatedLine);
