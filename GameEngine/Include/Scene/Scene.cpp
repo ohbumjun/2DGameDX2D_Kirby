@@ -234,8 +234,29 @@ bool CScene::LoadFullPath(const char* FullPath)
 		// ex) 충돌체 목록들을 SceneCollision List 에 추가하기 
 		if (m_Start)
 			Object->Start();
+	}
 
-		// Object->SetScene(this);
+	// 다시 Object List를 돌면서, Object 자신의 Parent 세팅을 해준다.
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->m_ParentName.length() > 0)
+		{
+			CGameObject* Parent = FindGameObject((*iter)->m_ParentName.c_str());
+
+			// 부모가 존재하지 않는다면
+			if (!Parent)
+				continue;
+
+			// 이미 자식으로 추가되어 있다면
+			if (Parent->FindChildGameObject((*iter)))
+				continue;
+
+			(*iter)->m_Parent = Parent;
+			Parent->AddChildGameObject((*iter));
+		}
 	}
 
 	fclose(pFile);

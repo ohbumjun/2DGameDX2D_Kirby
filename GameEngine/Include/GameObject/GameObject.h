@@ -39,6 +39,7 @@ protected:
 	std::list<CSceneComponent*>               m_SceneComponentList;
 	std::vector<CSharedPtr<CObjectComponent>> m_vecObjectComponent;
 	CGameObject*                         m_Parent;
+	std::string m_ParentName;
 	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
 protected:
 	float m_LifeTime;
@@ -64,7 +65,7 @@ public:
 		m_SceneComponentList.push_back(Component);
 	}
 	class CComponent* FindComponent(const std::string& Name);
-
+	CGameObject* FindChildGameObject(CGameObject* Child);
 protected :
 	virtual void Destroy() override;
 	void ClearSceneComponents();

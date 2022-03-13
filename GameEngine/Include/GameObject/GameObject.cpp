@@ -8,7 +8,8 @@
 CGameObject::CGameObject() :
 	m_Scene(nullptr),
 	m_Parent(nullptr),
-m_LifeTime(0.f)
+m_LifeTime(0.f),
+m_ParentName(nullptr)
 {
 	SetTypeID<CGameObject>();
 }
@@ -91,6 +92,19 @@ CComponent* CGameObject::FindComponent(const std::string& Name)
 			if ((*iter)->GetName() == Name)
 				return *iter;
 		}
+	}
+
+	return nullptr;
+}
+
+CGameObject* CGameObject::FindChildGameObject(CGameObject* Child)
+{
+	size_t ChildSize = m_vecChildObject.size();
+
+	for (size_t i = 0; i < ChildSize; i++)
+	{
+		if (m_vecChildObject[i] == Child)
+			return m_vecChildObject[i];
 	}
 
 	return nullptr;
@@ -322,6 +336,22 @@ void CGameObject::Save(FILE* pFile)
 		m_vecObjectComponent[i]->Save(pFile);
 	}
 
+	bool ParentEnable = false;
+
+	if (m_Parent)
+	{
+		ParentEnable = true;
+	}
+
+	if (m_Parent)
+	{
+		int ParentNameLength = (int)m_Parent->GetName().length();
+
+		fwrite(&ParentNameLength, sizeof(int), 1, pFile);
+
+		fwrite(m_Parent->GetName().c_str(), sizeof(char), ParentNameLength, pFile);
+	}
+
 	/*
 	아래 목록들으 Load 하는 과정에서 자연스럽게 추가할 예정이다.
 	-------------------------------------------------------------------------
@@ -360,6 +390,24 @@ void CGameObject::Load(FILE* pFile)
 		Component->Load(pFile);
 		m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 	}
+
+	bool ParentEnable = false;
+
+	fread(&ParentEnable, sizeof(bool), 1, pFile);
+
+	if (ParentEnable)
+	{
+		int ParentNameLength = -1;
+
+		fread(&ParentNameLength, sizeof(int), 1, pFile);
+
+		char ParentName[MAX_PATH] = {};
+
+		fread(ParentName, sizeof(char), ParentNameLength, pFile);
+
+		m_ParentName = ParentName;
+	}
+
 }
 
 void CGameObject::SaveByFileName(const char* FileName, const std::string& PathName)
