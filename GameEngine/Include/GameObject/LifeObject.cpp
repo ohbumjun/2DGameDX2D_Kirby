@@ -22,6 +22,7 @@ CLifeObject::CLifeObject():
 	m_FloorCheck(false),
 	m_SideWallCheck(true),	
 	m_IsSideCollided(false),
+	m_IsFalling(false),
 	m_JumpAccel(2.f),
 	m_JumpAccelAccTime(0.f),
 	m_CollisionOffset(0.001f),
@@ -57,6 +58,13 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 		m_IsFalling = false;
 		return;
 	}
+
+	// 현재 떨어지는 중이고
+	// Line Collision 영역과 Y 위치가 일정 영역 차이가 나지 않는다면 더이상 떨어뜨리지 않는다.
+	// 그러면 PostUpdate 에서, Line 위치 위에 세팅해줄 것이다. 
+	// if (!m_IsGround && m_IsFalling && CalculateYPosDiffWithLineCollisionArea())
+	//	return;
+
 
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
 	if (m_PhysicApplyDelayTime >= 0.f)
@@ -640,11 +648,94 @@ void CLifeObject::CheckBelowWorldResolution()
 	SetWorldPos(Vector3(OriginalPos.x, GetWorldScale().y + GetPivot().y, OriginalPos.z));
 }
 
+bool CLifeObject::CalculateYPosDiffWithLineCollisionArea()
+{
+	Vector3 m_WorldPos = GetWorldPos();
+
+	float PosXLeft = m_WorldPos.x - GetWorldScale().x * GetPivot().x;
+	float PosXRight = PosXLeft + GetWorldScale().x;
+	float PosYUp = m_WorldPos.y + GetWorldScale().y * GetPivot().y;
+	float PosYDown = PosYUp - GetWorldScale().y;
+
+	CGameObject* LineContainer = m_Scene->GetLineContainerObject();
+
+	if (!LineContainer)
+		return false;
+
+	int LineCount = LineContainer->GetChildCount();
+
+	for (int i = 0; i < LineCount; i++)
+	{
+		CLine* Line = (CLine*)LineContainer->GetChildObject(i);
+
+		if (!Line)
+			return false;
+
+		Vector3 FinalLeftPos = Line->GetFinalWorldLeftPos();
+		Vector3 FinalRightPos = Line->GetFinalWorldRightPos();
+
+		float Slope = Line->GetSlope();
+
+		float FinalLeftXPos = FinalLeftPos.x;
+		float FinalRightXPos = FinalRightPos.x;
+		float FinalBottomYPos = FinalLeftPos.y < FinalRightPos.y ? FinalLeftPos.y : FinalRightPos.y;
+		float FinalTopYPos = FinalLeftPos.y > FinalRightPos.y ? FinalLeftPos.y : FinalRightPos.y;
+
+		// 기울기가 음수라면
+		// 1) LB.x를 중심으로 WorldPos 세팅
+		// 2) x 범위는 LB.x가 LeftStartPos.x 보다 큰지를 검사한다.
+		if (Slope < 0)
+		{
+			// 해당 영역안에 들어왔다면
+			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
+				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
+				PosXLeft <= FinalRightXPos &&
+				PosXRight >= FinalLeftXPos)
+				&&
+				(PosXLeft >= FinalLeftXPos))
+			{
+				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
+				// 1) 기울기가 음수라면
+				float LineYPosBasedOnCurrentXPo = FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope + GetWorldScale().y * GetPivot().y;
+
+				if (PosYDown - LineYPosBasedOnCurrentXPo < 1.f)
+				{
+					return true;
+				}
+			}
+		}
+		// 기울기가 양수라면
+		// 1) RB.x를 중심으로 WorldPos 세팅
+		// 2) x 범위는 RB.x가 RightStartPos.x 보다 작은지를 검사한다.
+		else
+		{
+			// 해당 영역안에 들어왔다면
+			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
+				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
+				PosXLeft <= FinalRightXPos &&
+				PosXRight >= FinalLeftXPos)
+				&&
+				(PosXRight <= FinalRightXPos))
+			{
+				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
+				float LineYPosBasedOnCurrentXPo = FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope + GetWorldScale().y * GetPivot().y;
+
+				if (PosYDown - LineYPosBasedOnCurrentXPo < 1.f)
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 void CLifeObject::CheckLineCollision(float DeltaTime)
 {
 	// 날아다니는 Object 들은 적용하지 않는다.
-	if (!m_IsGroundObject)
-		return;
+	// if (!m_IsGroundObject)
+	// 	return;
 
 	bool BottomLineCollision = false;
 
@@ -656,6 +747,9 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 	float PosYDown  = PosYUp - GetWorldScale().y;
 
 	CGameObject* LineContainer = m_Scene->GetLineContainerObject();
+
+	if (!LineContainer)
+		return;
 
 	int LineCount = LineContainer->GetChildCount();
 
@@ -676,33 +770,79 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 		float FinalBottomYPos = FinalLeftPos.y < FinalRightPos.y ? FinalLeftPos.y : FinalRightPos.y;
 		float FinalTopYPos       = FinalLeftPos.y > FinalRightPos.y ? FinalLeftPos.y : FinalRightPos.y;
 
-		// 해당 영역안에 들어왔다면
-		if (PosYDown <= FinalTopYPos + m_CollisionOffset &&
-			PosYDown >= FinalBottomYPos - m_CollisionOffset &&
-			PosXLeft <= FinalRightXPos &&
-			PosXRight >= FinalLeftXPos)
+		// 기울기가 음수라면
+		// 1) LB.x를 중심으로 WorldPos 세팅
+		// 2) x 범위는 LB.x가 LeftStartPos.x 보다 큰지를 검사한다.
+		if (Slope < 0)
 		{
-			// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
-			// 1) 기울기가 음수라면
-			if (Slope < 0)
+			// 해당 영역안에 들어왔다면
+			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
+				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
+				PosXLeft <= FinalRightXPos &&
+				PosXRight >= FinalLeftXPos) 
+				&&
+				(PosXLeft >= FinalLeftXPos))
 			{
-				float ObjFinalYPos = FinalTopYPos + (m_WorldPos.x - FinalLeftXPos) * Slope;
-				SetWorldPos(m_WorldPos.x, ObjFinalYPos + GetWorldScale().y * GetPivot().y, m_WorldPos.z);
+				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
+				// 해당 X Pos에 기초한 Line 위에서의 Y Pos 와의 차이가 얼마 되지 않을 때
+				// 세팅해준다.
+				float ObjFinalYPos = FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope;
+
+				// if (std::abs(GetWorldPos().y - ObjFinalYPos < 1.f))
+				// {
+					SetWorldPos(m_WorldPos.x, ObjFinalYPos + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2, m_WorldPos.z);
+
+					BottomLineCollision = true;
+
+					// 땅에 닿음으로써 초기화 해줘야 할 변수들
+					// SetObjectLand();
+
+					break;
+				// }
+
+				// 왼쪽 끝에 도달했다면d
+				// 혹시나 Side Collision 에 걸려버릴지도 모르므로
+				// 더 위로 올려준다. 
+				// if (PosXLeft == FinalLeftXPos)
+				// {
+				// 	AddWorldPos(0.f,  2.f, 0.f);
+				// }
+				// break;
 			}
-			// 2) 기울기가 양수라면
-			if (Slope >= 0)
+		}
+		// 기울기가 양수라면
+		// 1) RB.x를 중심으로 WorldPos 세팅
+		// 2) x 범위는 RB.x가 RightStartPos.x 보다 작은지를 검사한다.
+		else
+		{
+			// 해당 영역안에 들어왔다면
+			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
+				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
+				PosXLeft <= FinalRightXPos &&
+				PosXRight >= FinalLeftXPos) 
+				&&
+				(PosXRight <= FinalRightXPos))
 			{
-				float ObjFinalYPos = FinalBottomYPos + (m_WorldPos.x - FinalLeftXPos) * Slope;
-				SetWorldPos(m_WorldPos.x, ObjFinalYPos + GetWorldScale().y * GetPivot().y, m_WorldPos.z);
+				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
+				float ObjFinalYPos = FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope;
+
+				// if (std::abs(GetWorldPos().y - ObjFinalYPos < 1.f))
+				//{
+					SetWorldPos(m_WorldPos.x, ObjFinalYPos + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2, m_WorldPos.z);
+
+					BottomLineCollision = true;
+
+					// 땅에 닿음으로써 초기화 해줘야 할 변수들
+					// SetObjectLand();
+
+					break;
+				// }
 			}
-
-			BottomLineCollision = true;
-
-			break;
 		}
 	}
 
 	m_LineCollided = BottomLineCollision;
+	// m_IsBottomCollided = BottomLineCollision;
 }
 
 void CLifeObject::SetObjectLand()
@@ -744,10 +884,10 @@ void CLifeObject::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
 
-	// Line Colision
+	// Line Collision --> 떨어지기 이전에 적용 ?
 	CheckLineCollision(DeltaTime);
 
-	// 1) 중력 적용 이전에 Side Collision 먼저 적용해야 한다.
+	// 중력 적용 이전에 Side Collision 먼저 적용해야 한다.
 	CheckSideCollision();
 
 	CheckBottomCollision();

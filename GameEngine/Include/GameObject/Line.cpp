@@ -335,6 +335,8 @@ void CLine::Start()
 	CGameObject::Start();
 
 	m_MeshComponent = (CStaticMeshComponent*)FindComponent("Mesh");
+	m_MeshComponent->SetLayerName("Particle");
+	
 	m_StartPosBox = (CStaticMeshComponent*)FindComponent("DrawStartPosMesh");
 	m_EndPosBox = (CStaticMeshComponent*)FindComponent("DrawEndPosMesh");
 

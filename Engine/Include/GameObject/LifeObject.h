@@ -45,7 +45,8 @@ protected :
 	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
 	virtual void CheckBelowWorldResolution();
-	bool UpdateYPosIfLineCollided(float x);
+	// Line Collision 영역과 일정 Y Pos 차이 안에 존재한다면 true 를 리턴한다.
+	bool CalculateYPosDiffWithLineCollisionArea();
 public :
 	virtual void CheckLineCollision(float DeltaTime);
 	virtual void CheckCeilingCollision(float DeltaTime);
