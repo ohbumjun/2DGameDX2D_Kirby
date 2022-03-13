@@ -293,5 +293,9 @@ void CLineEditWindow::CreateNewLine()
 	m_CreatedLineListBox->SetSelectIndex(m_CreatedLineListBox->GetItemCount() - 1);
 
 	// 생성된 Object List 에서도 추가되게 한다.
-	CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedObjectListBox()->AddItem(NewLineName);
+	CIMGUIListBox* CreatedObjList = CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedObjectListBox();
+
+	CreatedObjList->AddItem(NewLineName);
+
+	CreatedObjList->SetSelectIndex(CreatedObjList->GetItemCount() - 1);
 }
