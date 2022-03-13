@@ -202,6 +202,8 @@ void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 			// 그게 아니라면 Line Container의 가장 첫번째 원소에 대한 내용에
 			// Show Object를 세팅한다.
 			// 그리고 해당 내용의 정보로 Line Edit Window도 바꿔준다.
+			CEditorManager::GetInst()->GetLineEditWindow()->SetLineContainer(m_SelectObject);
+
 			if (m_SelectObject->GetChildCount() > 0)
 			{
 				CEditorManager::GetInst()->SetSceneEditObjectPos(m_SelectObject->GetChildObject(0));

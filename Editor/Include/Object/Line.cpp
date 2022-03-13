@@ -153,6 +153,69 @@ void CLine::ResetDrawBoxPos()
 	m_EndPosBox->SetWorldScale(0.f, 0.f, 0.f);
 }
 
+void CLine::CalculateFinalPosInfo()
+{
+	Vector3 FinalStartPos = GetWorldPos();
+	Vector3 FinalWorldScale = GetWorldScale();
+	Vector3 FinalEndPos = FinalStartPos + FinalWorldScale;
+
+	Vector3 FinalLeftPos = {};
+	Vector3 FinalRightPos = {};
+
+	float Slope = -1.f;
+
+	switch (m_DrawType)
+	{
+	case Line_DrawType::RightBottom:
+	{
+		FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+		FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+		Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
+		SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+	}
+	break;
+	case Line_DrawType::RightUp:
+	{
+		FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+		FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+		Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
+		SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+	}
+	break;
+	case Line_DrawType::LeftBottom:
+	{
+		FinalLeftPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+		FinalRightPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+		Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
+		SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+	}
+	break;
+	case Line_DrawType::LeftUp:
+	{
+		FinalLeftPos = Vector3(FinalEndPos.x, FinalStartPos.y, 1.f);
+		FinalRightPos = Vector3(FinalStartPos.x, FinalEndPos.y, 1.f);
+		Slope = (FinalRightPos.y - FinalLeftPos.y) / (FinalRightPos.x - FinalLeftPos.x);
+		SetFinalPosInfo(FinalLeftPos, FinalRightPos, Slope);
+	}
+	break;
+	}
+}
+
+void CLine::SetWorldPos(const Vector3& Pos)
+{
+	CGameObject::SetWorldPos(Pos);
+
+	CalculateFinalPosInfo();
+}
+
+void CLine::SetWorldPos(float x, float y, float z)
+{
+	CGameObject::SetWorldPos(x, y, z);
+
+	CalculateFinalPosInfo();
+}
+
+
 bool CLine::Init()
 {
 	if (!CGameObject::Init())
@@ -160,6 +223,7 @@ bool CLine::Init()
 
 	m_MeshComponent = CreateComponent<CStaticMeshComponent>("Mesh");
 	SetRootComponent(m_MeshComponent);
+	SetMeshSize(1.f, 1.f, 0.f);
 
 	// Drag Layer에 세팅하기 
 	m_MeshComponent->SetLayerName("DragLayer");
@@ -172,10 +236,14 @@ bool CLine::Init()
 	m_MeshComponent->SetBaseColor(0.f, 0.f, 1.f, 1.f);
 
 	m_MeshComponent->SetWorldPos(200.f, 200.f, 0.f);
+	m_MeshComponent->SetWorldScale(200.f, 200.f, 0.f); // 오른쪽 아래 --> 200.400 에서 400.200 으로 
 	// m_MeshComponent->SetWorldScale(-200.f, -200.f, 0.f); // 오른쪽 아래 0.200 --> 200.0
 	// m_MeshComponent->SetWorldScale(-200.f, 200.f, 0.f); // 오른쪽 위 0.200 -> 200.400
-	m_MeshComponent->SetWorldScale(200.f, 200.f, 0.f); // 오른쪽 아래 --> 200.400 에서 400.200 으로 
 	// m_MeshComponent->SetWorldScale(200.f, -200.f, 0.f); // 오른쪽 위 --> 200.0 에서 400.200 으로
+
+	CalculateFinalPosInfo();
+
+	m_DrawType = Line_DrawType::RightBottom;
 
 	/*
 	오른쪽 위의 방식으로 하려면, 적어도 둘중 하나는 World Scale이 음수
@@ -231,6 +299,8 @@ bool CLine::Init()
 	m_StartPosBox->SetMesh("FrameRect");
 	m_StartPosBox->GetMaterial()->SetShader("PosMeshShader");
 	m_StartPosBox->SetBaseColor(1.f, 0.f, 0.f, 1.f);
+	m_StartPosBox->SetPivot(0.5f, 0.5f, 0.0f);
+	m_StartPosBox->SetMeshSize(1.f, 1.f, 0.f);
 	m_MeshComponent->AddChild(m_StartPosBox);
 
 	m_EndPosBox = CreateComponent<CStaticMeshComponent>("DrawEndPosMesh");
@@ -239,6 +309,8 @@ bool CLine::Init()
 	m_EndPosBox->SetMesh("FrameRect");
 	m_EndPosBox->GetMaterial()->SetShader("PosMeshShader");
 	m_EndPosBox->SetBaseColor(1.f, 0.f, 0.f, 1.f);
+	m_EndPosBox->SetPivot(0.5f, 0.5f, 0.0f);
+	m_EndPosBox->SetMeshSize(1.f, 1.f, 0.f);
 	m_MeshComponent->AddChild(m_EndPosBox);
 
 	return true;
@@ -251,13 +323,13 @@ void CLine::Update(float DeltaTime)
 	if (m_StartPosBox)
 	{
 		m_StartPosBox->SetWorldPos(m_FinalWorldLeftPos.x, m_FinalWorldLeftPos.y, 1.f);
-		m_StartPosBox->SetWorldScale(10.f, 10.f, 1.f);
+		m_StartPosBox->SetWorldScale(20.f, 20.f, 1.f);
 	}
 
 	if (m_EndPosBox)
 	{
 		m_EndPosBox->SetWorldPos(m_FinalWorldRightPos.x, m_FinalWorldRightPos.y, 1.f);
-		m_EndPosBox->SetWorldScale(10.f, 10.f, 1.f);
+		m_EndPosBox->SetWorldScale(20.f, 20.f, 1.f);
 	}
 }
 

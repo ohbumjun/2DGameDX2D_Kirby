@@ -1,4 +1,7 @@
 #include "LineEditWindow.h"
+
+#include <Scene/CameraManager.h>
+
 #include "IMGUIButton.h"
 #include "IMGUIComboBox.h"
 #include "IMGUIImage.h"
@@ -27,6 +30,7 @@ void CLineEditWindow::SetLineContainer(CGameObject* LineContainer)
 {
 	m_LineContainer = (CLineContainer*)LineContainer;
 
+	/*
 	if (m_LineContainer->GetChildCount() == 0)
 	{
 		// - 기본적으로 Line Object 를 하나를 생성하고
@@ -46,6 +50,7 @@ void CLineEditWindow::SetLineContainer(CGameObject* LineContainer)
 
 		m_SelectLine = CreatedLine;
 	}
+	*/
 }
 
 void CLineEditWindow::SetLineInfo(CLine* Line)
@@ -279,6 +284,14 @@ void CLineEditWindow::CreateNewLine()
 
 	// - 기본적으로 Line Object 를 하나를 생성하고
 	CLine* CreatedLine = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLine>(NewLineName);
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	Vector3 CameraWorldPos = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera()->GetWorldPos();
+
+	CreatedLine->SetWorldPos(Vector3((float)RS.Width * 0.5f + CameraWorldPos.x , 
+														(float)RS.Height * 0.5f + CameraWorldPos.y,
+														CameraWorldPos.z));
 
 	// - Line Object 를 Line Container의 자식으로 세팅하고
 	m_LineContainer->AddChildGameObject(CreatedLine);

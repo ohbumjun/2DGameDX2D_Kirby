@@ -9,7 +9,7 @@ CGameObject::CGameObject() :
 	m_Scene(nullptr),
 	m_Parent(nullptr),
 m_LifeTime(0.f),
-m_ParentName(nullptr)
+m_ParentName{}
 {
 	SetTypeID<CGameObject>();
 }
@@ -343,13 +343,15 @@ void CGameObject::Save(FILE* pFile)
 		ParentEnable = true;
 	}
 
+	fwrite(&ParentEnable, sizeof(bool), 1, pFile);
+
 	if (m_Parent)
 	{
-		int ParentNameLength = (int)m_Parent->GetName().length();
+		int ParentNameLength = (int)m_ParentName.length();
 
 		fwrite(&ParentNameLength, sizeof(int), 1, pFile);
 
-		fwrite(m_Parent->GetName().c_str(), sizeof(char), ParentNameLength, pFile);
+		fwrite(m_ParentName.c_str(), sizeof(char), ParentNameLength, pFile);
 	}
 
 	/*
@@ -405,9 +407,8 @@ void CGameObject::Load(FILE* pFile)
 
 		fread(ParentName, sizeof(char), ParentNameLength, pFile);
 
-		m_ParentName = ParentName;
+		m_ParentName = std::string(ParentName);
 	}
-
 }
 
 void CGameObject::SaveByFileName(const char* FileName, const std::string& PathName)

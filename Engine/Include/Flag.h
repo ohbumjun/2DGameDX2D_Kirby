@@ -78,8 +78,8 @@ enum class CreateObject_Type
 {
 	GameObject,
 	Player,
-	BackGround,
 	TileEmptyObject,
+	BackGround,
 	LineContainer,
 	End
 };

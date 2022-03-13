@@ -152,6 +152,7 @@ bool CLine::Init()
 
 	m_MeshComponent = CreateComponent<CStaticMeshComponent>("Mesh");
 	SetRootComponent(m_MeshComponent);
+	SetMeshSize(1.f, 1.f, 0.f);
 
 	// Drag Layer에 세팅하기 
 	m_MeshComponent->SetLayerName("DragLayer");

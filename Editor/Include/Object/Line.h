@@ -50,6 +50,10 @@ public:
 	void SetStartPos(const Vector2& Pos);
 	void SetEndPos(const Vector2& Pos);
 	void ResetDrawBoxPos();
+	void CalculateFinalPosInfo();
+public :
+	virtual void SetWorldPos(const Vector3& Pos);
+	virtual void SetWorldPos(float x, float y, float z);
 public:
 	virtual auto   Init() -> bool override;
 	virtual void   Start() override;

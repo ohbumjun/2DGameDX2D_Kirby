@@ -46,6 +46,8 @@ protected:
 public:
 	void AddChildGameObject(CGameObject* Child)
 	{
+		Child->m_ParentName = m_Name;
+		Child->m_Parent = this;
 		m_vecChildObject.push_back(Child);
 	}
 	void SetLifeTime(float LifeTime)
