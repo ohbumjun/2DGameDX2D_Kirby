@@ -12,30 +12,32 @@ protected:
 	float m_MoveSpeed;
 	float m_FallVelocityMax;
 	float m_FallVelocity;
+	float m_SideWallCheck;
+	float m_PhysicApplyDelayTime;
+	// Jump & Fall
+protected:
 	bool m_PhysicsSimulate;
 	float m_GravityAccel;
 	bool m_IsGround;
 	float m_FallTime;
 	float m_FallStartY;
-	float m_FloorCheck;
-	float m_SideWallCheck;
-	bool m_IsSideCollided;
-	bool m_IsBottomCollided;
-	bool m_IsCeilingCollided;
-	bool m_ApplyBottomCollision;
-	float m_PhysicApplyDelayTime;
-protected:
+	bool m_JumpStart;
 	bool m_Jump;
 	float m_JumpVelocity;
 	float m_JumpAccel;
 	float m_JumpAccelAccTime;
 	float m_GroundOffSet;
-	float m_CollisionOffset;
 	bool m_IsFalling;
 protected :
-	bool m_CollisionDisabled;
 	bool m_IsGroundObject;
+	// Collision
 protected:
+	float m_CollisionOffset;
+	bool m_CollisionDisabled;
+	bool m_IsSideCollided;
+	bool m_IsBottomCollided;
+	bool m_IsCeilingCollided;
+	bool m_ApplyBottomCollision;
 	bool m_LineCollided;
 protected :
 	Vector3 m_ObjectMoveDir;
@@ -45,8 +47,6 @@ protected :
 	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
 	virtual void CheckBelowWorldResolution();
-	// Line Collision 영역과 일정 Y Pos 차이 안에 존재한다면 true 를 리턴한다.
-	bool CalculateYPosDiffWithLineCollisionArea();
 public :
 	virtual void CheckLineCollision(float DeltaTime);
 	virtual void CheckCeilingCollision(float DeltaTime);

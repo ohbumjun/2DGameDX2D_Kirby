@@ -1063,6 +1063,8 @@ void CPlayer2D::SimpleJump()
 
 		m_IsBottomCollided = false;
 
+		m_JumpStart = true;
+
 		// Animation Change
 		if (m_IsEatingMonster && !m_IsSpecialStateChanged)
 			ChangePlayerWalkAnimation();

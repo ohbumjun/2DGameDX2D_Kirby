@@ -49,6 +49,8 @@ void CMushRoom::UpdateToggle(float DeltaTime)
 
 		m_FallTime = 0.f;
 		m_FallStartY = GetWorldPos().y;
+
+		m_JumpStart = true;
 	}
 }
 

@@ -11,6 +11,7 @@ CLifeObject::CLifeObject():
 	m_PhysicsSimulate(true),
 	m_CollisionDisabled(false),
 	m_IsCeilingCollided(false),
+	m_JumpStart(false),
 	m_IsGround(false),
 	m_FallTime(0.f),
 	m_FallStartY(0.f),
@@ -19,7 +20,6 @@ CLifeObject::CLifeObject():
 	m_FallVelocity(0.f),
 	m_FallVelocityMax(1000.f),
 	m_GravityAccel(8.5f),
-	m_FloorCheck(false),
 	m_SideWallCheck(true),	
 	m_IsSideCollided(false),
 	m_IsFalling(false),
@@ -83,6 +83,16 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 		// 떨어지는 시간 누적 
 		m_FallTime += DeltaTime * m_GravityAccel;
 
+		// 점프 이후 일정 시간이 지났다면 --> FallTime이 어느정도 시간이 지났다면, 다시 false로 세팅
+		// Line Collision 이후, 해당 자리에서 점프를 허용해주기 위함이다
+		if (m_FallTime >= 0.5f)
+		{
+			if (m_JumpStart)
+			{
+				m_JumpStart = false;
+			}
+		}
+
 		float Velocity = 0.f;
 
 		// 점프한 상태라면, 초기 점프 속도 * 시간 --> 위로 올라간 거리를 세팅하는 것 
@@ -126,7 +136,10 @@ void CLifeObject::CheckBottomCollision()
 		return;
 
 	if (m_LineCollided)
+	{
+		m_IsBottomCollided = true;
 		return;
+	}
 
 	bool BottomCollision = false;
 
@@ -648,89 +661,6 @@ void CLifeObject::CheckBelowWorldResolution()
 	SetWorldPos(Vector3(OriginalPos.x, GetWorldScale().y + GetPivot().y, OriginalPos.z));
 }
 
-bool CLifeObject::CalculateYPosDiffWithLineCollisionArea()
-{
-	Vector3 m_WorldPos = GetWorldPos();
-
-	float PosXLeft = m_WorldPos.x - GetWorldScale().x * GetPivot().x;
-	float PosXRight = PosXLeft + GetWorldScale().x;
-	float PosYUp = m_WorldPos.y + GetWorldScale().y * GetPivot().y;
-	float PosYDown = PosYUp - GetWorldScale().y;
-
-	CGameObject* LineContainer = m_Scene->GetLineContainerObject();
-
-	if (!LineContainer)
-		return false;
-
-	int LineCount = LineContainer->GetChildCount();
-
-	for (int i = 0; i < LineCount; i++)
-	{
-		CLine* Line = (CLine*)LineContainer->GetChildObject(i);
-
-		if (!Line)
-			return false;
-
-		Vector3 FinalLeftPos = Line->GetFinalWorldLeftPos();
-		Vector3 FinalRightPos = Line->GetFinalWorldRightPos();
-
-		float Slope = Line->GetSlope();
-
-		float FinalLeftXPos = FinalLeftPos.x;
-		float FinalRightXPos = FinalRightPos.x;
-		float FinalBottomYPos = FinalLeftPos.y < FinalRightPos.y ? FinalLeftPos.y : FinalRightPos.y;
-		float FinalTopYPos = FinalLeftPos.y > FinalRightPos.y ? FinalLeftPos.y : FinalRightPos.y;
-
-		// 기울기가 음수라면
-		// 1) LB.x를 중심으로 WorldPos 세팅
-		// 2) x 범위는 LB.x가 LeftStartPos.x 보다 큰지를 검사한다.
-		if (Slope < 0)
-		{
-			// 해당 영역안에 들어왔다면
-			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
-				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
-				PosXLeft <= FinalRightXPos &&
-				PosXRight >= FinalLeftXPos)
-				&&
-				(PosXLeft >= FinalLeftXPos))
-			{
-				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
-				// 1) 기울기가 음수라면
-				float LineYPosBasedOnCurrentXPo = FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope + GetWorldScale().y * GetPivot().y;
-
-				if (PosYDown - LineYPosBasedOnCurrentXPo < 1.f)
-				{
-					return true;
-				}
-			}
-		}
-		// 기울기가 양수라면
-		// 1) RB.x를 중심으로 WorldPos 세팅
-		// 2) x 범위는 RB.x가 RightStartPos.x 보다 작은지를 검사한다.
-		else
-		{
-			// 해당 영역안에 들어왔다면
-			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
-				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
-				PosXLeft <= FinalRightXPos &&
-				PosXRight >= FinalLeftXPos)
-				&&
-				(PosXRight <= FinalRightXPos))
-			{
-				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
-				float LineYPosBasedOnCurrentXPo = FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope + GetWorldScale().y * GetPivot().y;
-
-				if (PosYDown - LineYPosBasedOnCurrentXPo < 1.f)
-				{
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
 void CLifeObject::CheckLineCollision(float DeltaTime)
 {
 	// 날아다니는 Object 들은 적용하지 않는다.
@@ -758,7 +688,7 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 		CLine* Line = (CLine*)LineContainer->GetChildObject(i);
 
 		if (!Line)
-			return;
+			continue;
 
 		Vector3 FinalLeftPos = Line->GetFinalWorldLeftPos();
 		Vector3 FinalRightPos = Line->GetFinalWorldRightPos();
@@ -786,28 +716,29 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
 				// 해당 X Pos에 기초한 Line 위에서의 Y Pos 와의 차이가 얼마 되지 않을 때
 				// 세팅해준다.
-				float ObjFinalYPos = FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope;
+				float ObjFinalYPos = (FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope) + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2;
 
-				// if (std::abs(GetWorldPos().y - ObjFinalYPos < 1.f))
-				// {
-					SetWorldPos(m_WorldPos.x, ObjFinalYPos + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2, m_WorldPos.z);
+				float DiffFromLineYPos = std::abs(GetWorldPos().y - ObjFinalYPos);
+				float DiffFromFallStartYPos = std::abs(m_FallStartY - GetWorldPos().y);
+
+				// 차이가 5.f 이내
+				if (DiffFromLineYPos < 5.f)
+				 {
+					// 하지만, 지금 막 점프하는 순간에는, 점프가 되도록 허용해야 하므로
+					// if (m_FallTime == 0.f && DiffFromFallStartYPos <= 0.f)
+ 					//	continue;
+					if (m_JumpStart)
+						continue;
+
+					SetWorldPos(m_WorldPos.x, ObjFinalYPos, m_WorldPos.z);
 
 					BottomLineCollision = true;
 
 					// 땅에 닿음으로써 초기화 해줘야 할 변수들
-					// SetObjectLand();
+					SetObjectLand();
 
 					break;
-				// }
-
-				// 왼쪽 끝에 도달했다면d
-				// 혹시나 Side Collision 에 걸려버릴지도 모르므로
-				// 더 위로 올려준다. 
-				// if (PosXLeft == FinalLeftXPos)
-				// {
-				// 	AddWorldPos(0.f,  2.f, 0.f);
-				// }
-				// break;
+				}
 			}
 		}
 		// 기울기가 양수라면
@@ -824,19 +755,26 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 				(PosXRight <= FinalRightXPos))
 			{
 				// Y Pos는 기울기를 고려하여 XPos 에 기초하여 세팅한다.
-				float ObjFinalYPos = FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope;
+				float ObjFinalYPos = (FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope) + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2;
+				float DiffFromFallStartYPos = std::abs(m_FallStartY - GetWorldPos().y);
 
-				// if (std::abs(GetWorldPos().y - ObjFinalYPos < 1.f))
-				//{
-					SetWorldPos(m_WorldPos.x, ObjFinalYPos + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2, m_WorldPos.z);
+				if (std::abs(GetWorldPos().y - ObjFinalYPos < 5.f))
+				{
+					// 하지만, 지금 막 점프하는 순간에는, 점프가 되도록 허용해야 하므로
+					// if (m_FallTime == 0.f && DiffFromFallStartYPos <= 0.f)
+					// 		continue;
+					if (m_JumpStart)
+						continue;
+
+					SetWorldPos(m_WorldPos.x, ObjFinalYPos, m_WorldPos.z);
 
 					BottomLineCollision = true;
 
 					// 땅에 닿음으로써 초기화 해줘야 할 변수들
-					// SetObjectLand();
+					SetObjectLand();
 
 					break;
-				// }
+				}
 			}
 		}
 	}
