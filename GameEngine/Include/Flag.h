@@ -217,3 +217,10 @@ enum class Nav_Node_Type {
 	Open,
 	Close
 };
+
+enum class Line_DrawType {
+	RightBottom,
+	RightUp,
+	LeftBottom,
+	LeftUp
+};

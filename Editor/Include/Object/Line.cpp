@@ -247,7 +247,29 @@ bool CLine::Init()
 void CLine::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
+
+	if (m_StartPosBox)
+	{
+		m_StartPosBox->SetWorldPos(m_FinalWorldLeftPos.x, m_FinalWorldLeftPos.y, 1.f);
+		m_StartPosBox->SetWorldScale(10.f, 10.f, 1.f);
+	}
+
+	if (m_EndPosBox)
+	{
+		m_EndPosBox->SetWorldPos(m_FinalWorldRightPos.x, m_FinalWorldRightPos.y, 1.f);
+		m_EndPosBox->SetWorldScale(10.f, 10.f, 1.f);
+	}
 }
+
+void CLine::Start()
+{
+	CGameObject::Start();
+
+	m_MeshComponent = (CStaticMeshComponent*)FindComponent("Mesh");
+	m_StartPosBox = (CStaticMeshComponent*)FindComponent("DrawStartPosMesh");
+	m_EndPosBox = (CStaticMeshComponent*)FindComponent("DrawEndPosMesh");
+}
+
 
 void CLine::PostUpdate(float DeltaTime)
 {

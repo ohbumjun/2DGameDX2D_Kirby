@@ -47,6 +47,7 @@
 #include "Object/LineObject.h"
 #include "Object/SpriteEditObject.h"
 #include "Object/Line.h"
+#include "Object/LineContainer.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -794,7 +795,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Obj = Scene->LoadGameObject<CBackGround>();
 		return Obj;
 	}
-
+	else if (GameObjectTypeID == typeid(CLine).hash_code())
+	{
+		CLine* Obj = Scene->LoadGameObject<CLine>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CLineContainer).hash_code())
+	{
+		CLineContainer* Obj = Scene->LoadGameObject<CLineContainer>();
+		return Obj;
+	}
 	
 	return nullptr;
 }

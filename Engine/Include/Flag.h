@@ -78,8 +78,8 @@ enum class CreateObject_Type
 {
 	GameObject,
 	Player,
-	TileEmptyObject,
 	BackGround,
+	TileEmptyObject,
 	LineContainer,
 	End
 };
@@ -220,4 +220,11 @@ enum class Nav_Node_Type {
 	None,
 	Open,
 	Close
+};
+
+enum class Line_DrawType {
+	RightBottom,
+	RightUp,
+	LeftBottom,
+	LeftUp
 };

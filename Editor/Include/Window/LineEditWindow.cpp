@@ -7,6 +7,7 @@
 #include "IMGUISameLine.h"
 #include "IMGUIText.h"
 #include "IMGUITextInput.h"
+#include "ObjectHierarchy.h"
 #include "Component/BackGroundComponent.h"
 #include "../EditorManager.h"
 #include "PathManager.h"
@@ -290,4 +291,7 @@ void CLineEditWindow::CreateNewLine()
 	m_CreatedLineListBox->AddItem(NewLineName);
 
 	m_CreatedLineListBox->SetSelectIndex(m_CreatedLineListBox->GetItemCount() - 1);
+
+	// 생성된 Object List 에서도 추가되게 한다.
+	CEditorManager::GetInst()->GetObjectHierarchy()->GetCreatedObjectListBox()->AddItem(NewLineName);
 }

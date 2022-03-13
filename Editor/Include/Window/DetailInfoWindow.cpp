@@ -298,10 +298,19 @@ void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
 
 void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)
 {
-	m_ClickedComponent = Component;
+	if (!Component)
+		return;
 
 	// Sprite 정보 세팅하기
-	CSpriteComponent* SelectedRootComponent = (CSpriteComponent*)Component;
+	CSpriteComponent* SelectedRootComponent = dynamic_cast<CSpriteComponent*>(Component);
+
+	if (!SelectedRootComponent)
+		return;
+
+	if (!SelectedRootComponent->GetAnimationInstance())
+		return;
+
+	m_ClickedComponent = Component;
 
 	AnimationFrameData SelectFrame = SelectedRootComponent->GetAnimationInstance()->GetCurrentAnimation()->GetFrameData(0);
 

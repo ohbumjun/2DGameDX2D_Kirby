@@ -51,9 +51,10 @@ public:
 	void SetEndPos(const Vector2& Pos);
 	void ResetDrawBoxPos();
 public:
-	virtual bool         Init() override;
-	virtual void         Update(float DeltaTime) override;
-	virtual void         PostUpdate(float DeltaTime) override;
+	virtual auto   Init() -> bool override;
+	virtual void   Start() override;
+	virtual void   Update(float DeltaTime) override;
+	virtual void   PostUpdate(float DeltaTime) override;
 	virtual CLine* Clone() override;
 public:
 	virtual void Save(FILE* pFile) override;

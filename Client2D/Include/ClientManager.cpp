@@ -19,6 +19,8 @@
 #include "Object/TileMapEmpty.h"
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
+#include "Object/LineContainer.h"
+#include "Object/Line.h"
 
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
@@ -122,8 +124,8 @@ void CClientManager::CreateDefaultSceneMode()
 	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonsterMushRoom.scn", SCENE_PATH);
 	*/
 
-	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialStage.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialStage.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()
@@ -187,7 +189,16 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 		CBackGround* Obj = Scene->LoadGameObject<CBackGround>();
 		return Obj;
 	}
-	
+	if (GameObjectTypeID == typeid(CLine).hash_code())
+	{
+		CLine* Obj = Scene->LoadGameObject<CLine>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CLineContainer).hash_code())
+	{
+		CLineContainer* Obj = Scene->LoadGameObject<CLineContainer>();
+		return Obj;
+	}
 
 	return nullptr;
 }

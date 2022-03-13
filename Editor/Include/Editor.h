@@ -13,12 +13,6 @@ enum class Tile_EditMode {
 	Frame
 };
 
-enum class Line_DrawType {
-	RightBottom,
-	RightUp,
-	LeftBottom,
-	LeftUp
-};
 
 static std::string GetRandomString()
 {
