@@ -21,6 +21,7 @@
 #include "../Object/YellowBird.h"
 #include "../Object/PurpleBeatle.h"
 #include "../Object/NormalBear.h"
+#include "../Object/Line.h"
 // Component
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
@@ -37,6 +38,7 @@
 // Window 
 #include "TileMapWindow.h"
 #include "BackGroundWindow.h"
+#include "LineEditWindow.h"
 
 
 CEditorMenu::CEditorMenu()
@@ -515,10 +517,6 @@ void CEditorMenu::LoadScene()
 		size_t NameCount = vecObjNames.size();
 		for (size_t i = 0; i < NameCount; i++)
 		{
-			// Scene Edit Object의 경우는 더해주지 않는다
-			// if (vecObjNames[i] == "SceneEditObject")
-			// 	continue;
-
 			ObjectListBox->AddItem(vecObjNames[i]);
 		}
 
@@ -544,6 +542,19 @@ void CEditorMenu::LoadScene()
 
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
+
+		// Line Object 목록은 LineEdit Window의 Object list 에 추가하기
+		std::vector<std::string> vecLineObjNames;
+		CSceneManager::GetInst()->GetScene()->GatherSpecificTypeObjectsName<CLine>(vecLineObjNames);
+
+		CIMGUIListBox* LineListBox = CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox();
+
+		size_t LineListSize = vecLineObjNames.size();
+
+		for (size_t i = 0; i < LineListSize; i++)
+		{
+			LineListBox->AddItem(vecLineObjNames[i]);
+		}
 	}
 }
 
@@ -879,8 +890,8 @@ void CEditorMenu::DeleteObject()
 		}
 	}
 
-
-	// 단, idx 에 따라 다르게 세팅해야 한다.
+	// Line Object일 경우, LineEditWindow 상에서 생성된 Line Object 목록에서도 지워줘야 한다.
+	int DeleteLineIndex = CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->FindItemIndex(SelectObjectName);
 }
 
 void CEditorMenu::SelectEditModeCallback(int Index, const char* EditModeText)

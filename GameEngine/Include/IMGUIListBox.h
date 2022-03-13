@@ -44,7 +44,10 @@ public:
 	{
 		m_SelectIndex = Index;
 	}
-
+	bool IsEmpty() const
+	{
+		return m_vecItem.empty() || m_vecItemUTF8.empty();
+	}
 public:
 	void AddItem(const std::string& Item)
 	{
@@ -127,6 +130,18 @@ public:
 				return true;
 		}
 		return false;
+	}
+
+	int FindItemIndex(const std::string& Item)
+	{
+		for (int i = 0; i < m_vecItem.size(); i++)
+		{
+			if (m_vecItem[i] == Item)
+			{
+				return i;
+			}
+		}
+		return -1;
 	}
 
 public:

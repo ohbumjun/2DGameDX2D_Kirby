@@ -23,6 +23,10 @@ public:
 	void SetLineInfo(class CLine* Line);
 	void SetLineDescription(const Vector3& FinalLeftPos, const Vector3& FinalRightPos, float Slope);
 public:
+	class CIMGUIListBox* GetCreatedLineListBox () const
+	{
+		return m_CreatedLineListBox;
+	}
 	class CGameObject* GetSelectLine() const
 	{
 		return m_SelectLine;

@@ -21,10 +21,6 @@ protected:
 	std::function<void(int, const char*)> m_SelectCallback;
 
 public:
-	bool IsEmpty () const
-	{
-		return (int)m_vecItem.size() == 0;
-	}
 	const std::string& GetItem(int Index)
 	{
 		return m_vecItem[Index];
@@ -48,7 +44,10 @@ public:
 	{
 		m_SelectIndex = Index;
 	}
-
+	bool IsEmpty() const
+	{
+		return m_vecItem.empty() || m_vecItemUTF8.empty();
+	}
 public:
 	void AddItem(const std::string& Item)
 	{
@@ -133,12 +132,14 @@ public:
 		return false;
 	}
 
-	int FindItemIndex (const std::string& Item)
+	int FindItemIndex(const std::string& Item)
 	{
 		for (int i = 0; i < m_vecItem.size(); i++)
 		{
 			if (m_vecItem[i] == Item)
+			{
 				return i;
+			}
 		}
 		return -1;
 	}
