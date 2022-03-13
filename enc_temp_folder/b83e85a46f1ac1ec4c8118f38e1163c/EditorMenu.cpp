@@ -897,13 +897,9 @@ void CEditorMenu::DeleteObject()
 	// Line Object일 경우, LineEditWindow 상에서 생성된 Line Object 목록에서도 지워줘야 한다.
 	int DeleteLineIndex = CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->FindItemIndex(SelectObjectName);
 
+	CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->DeleteItem(DeleteLineIndex);
 
-	if (DeleteLineIndex != -1)
-	{
-		CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->DeleteItem(DeleteLineIndex);
-
-		CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->SetSelectIndex(CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->GetItemCount() - 1);
-	}
+	CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->SetSelectIndex(CEditorManager::GetInst()->GetLineEditWindow()->GetCreatedLineListBox()->GetItemCount() - 1);
 }
 
 void CEditorMenu::SelectEditModeCallback(int Index, const char* EditModeText)
