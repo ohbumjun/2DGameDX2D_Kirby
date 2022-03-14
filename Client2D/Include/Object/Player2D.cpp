@@ -1390,7 +1390,7 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 {
 	if (m_IsBottomCollided)
 	{
-		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 2.f)
+		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 1.5f)
 		{
 			SimpleJump();
 
@@ -1406,6 +1406,9 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 			// 충돌하는 순간 Animation 이 Fall 이라면, Animation을 Idle로
 			std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
 
+			// 1. 떨어지고 있었거나
+			// 2. 점프중이었거나
+			// 3. 
 			if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" ||
 				CurAnimName == "RightJump" || CurAnimName == "LeftJump")
 			{
@@ -1704,11 +1707,15 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 	}
 }
 
-void CPlayer2D::ChangeToFallAnimationAfterSpitOut()
+void CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut()
 {
 	if (m_FallStartY - GetWorldPos().y > 0.f || m_IsFalling)
 	{
 		ChangePlayerFallAnimation();
+	}
+	else
+	{
+		ChangePlayerIdleAnimation();
 	}
 }
 
@@ -1775,9 +1782,9 @@ void CPlayer2D::SetBasicSettingToChangedState()
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetPlayTime(0.2f);
 
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpitOut")->SetEndFunction(
-		this, &CPlayer2D::ChangeToFallAnimationAfterSpitOut);
+		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetEndFunction(
-		this, &CPlayer2D::ChangeToFallAnimationAfterSpitOut);
+		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
 		
 		
 }

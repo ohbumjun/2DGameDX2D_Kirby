@@ -169,7 +169,7 @@ private :
 	void PullRightCollisionEndCallback(const CollisionResult& Result);
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
-	void ChangeToFallAnimationAfterSpitOut();
+	void ChangeToAfterWardsAnimationAfterSpitOut();
 private :
 	// Special Change
 	void SpecialChange(float DeltaTime);
