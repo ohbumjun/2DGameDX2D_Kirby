@@ -113,8 +113,12 @@ void CPlayer2D::Start()
 {
 	CLifeObject::Start();
 
+	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?
 	m_KirbyState = (CNormalKirbyState*)FindComponent("PlayerSprite");
-	// m_KirbyState = dynamic_cast<CKirbyState*>(FindComponent("PlayerSprite");
+	// m_KirbyState = dynamic_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
+	// m_KirbyState = static_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
+
+	m_KirbyState->Start();
 	
 	SetRootComponent(m_KirbyState);
 
@@ -345,8 +349,8 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		EffectSpitOut->SetWorldPos(EffectPos);
 
 
-		// ChangePlayerSpitOutAnimation();
-		ChangePlayerFallAnimation();
+		ChangePlayerSpitOutAnimation();
+		// ChangePlayerFallAnimation();
 	}
 
 	// Fall StartY 를 여기서 다시 세팅한다.
@@ -1757,12 +1761,13 @@ void CPlayer2D::SetBasicSettingToChangedState()
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
 		this, &CPlayer2D::ChangePlayerFallAnimation);
 
-	/*
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightFly")->SetEndFunction(
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpitOut")->SetPlayTime(0.2f);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetPlayTime(0.2f);
+
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpitOut")->SetEndFunction(
 		this, &CPlayer2D::ChangeToFallAnimationAfterSpitOut);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftFly")->SetEndFunction(
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetEndFunction(
 		this, &CPlayer2D::ChangeToFallAnimationAfterSpitOut);
-	*/
 		
 		
 }

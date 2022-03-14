@@ -148,10 +148,8 @@ bool CMainScene::Init()
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 	BubbleParticle->SetRelativePos(-300.f, 0.f, 0.f);
 	*/
+
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
-
-	// 모든 Object List를 돌면서 EditMode를 true로 만들어준다.
-
 
 	return true;
 }

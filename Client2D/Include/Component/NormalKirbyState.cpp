@@ -24,6 +24,8 @@ void CNormalKirbyState::Start()
 
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
+	m_Animation->FindAnimationSequence2DData("RightSpitOut")->SetReverse(false);
+	m_Animation->FindAnimationSequence2DData("LeftSpitOut")->SetReverse(false);
 }
 
 bool CNormalKirbyState::Init()
@@ -38,6 +40,8 @@ bool CNormalKirbyState::Init()
 
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
+	m_Animation->FindAnimationSequence2DData("RightSpitOut")->SetReverse(false);
+	m_Animation->FindAnimationSequence2DData("LeftSpitOut")->SetReverse(false);
 
 	return true;
 }

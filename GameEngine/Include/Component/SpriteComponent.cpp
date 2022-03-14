@@ -160,6 +160,7 @@ void CSpriteComponent::SetTextureWorldScale(int Index)
 void CSpriteComponent::Start()
 {
 	CSceneComponent::Start();
+
 	if (m_Animation)
 		m_Animation->Start();
 }
