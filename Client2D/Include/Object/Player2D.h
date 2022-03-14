@@ -80,6 +80,8 @@ private :
 
 	Vector3 m_InitPlayerPos;
 
+	bool m_MoveDashEffectMade;
+
 public :
 	Vector3 GetInitWorldPos() const
 {

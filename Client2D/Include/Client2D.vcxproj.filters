@@ -52,9 +52,6 @@
     <Filter Include="02. Object\07. Effect">
       <UniqueIdentifier>{a5a5dbfa-bb5e-4eb8-ab59-3529402a9192}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Object\07. Effect\01. MonsterAttack">
-      <UniqueIdentifier>{11f59ad5-685f-4a21-8cb4-8aea5f26ed97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Object\08. BackGround">
       <UniqueIdentifier>{f3dc3208-3b18-49b7-816f-f42e69b00458}</UniqueIdentifier>
     </Filter>
@@ -177,6 +174,9 @@
     <ClCompile Include="Object\LineContainer.cpp">
       <Filter>02. Object\09. Line</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectDash.cpp">
+      <Filter>02. Object\07. Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -292,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="Object\LineContainer.h">
       <Filter>02. Object\09. Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectDash.h">
+      <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

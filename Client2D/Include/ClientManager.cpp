@@ -124,8 +124,7 @@ void CClientManager::CreateDefaultSceneMode()
 	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonsterMushRoom.scn", SCENE_PATH);
 	*/
 
-	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green1_OnlyBear.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialStage.scn", SCENE_PATH);
 }
 

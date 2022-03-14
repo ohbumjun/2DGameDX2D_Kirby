@@ -14,13 +14,14 @@
 #include "Scene/NavigationManager.h"
 #include "../UI/SimpleHUD.h"
 #include "AbilityMonster.h"
+#include "EffectDash.h"
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
-m_LeverMoveAccel(2.f),
+m_LeverMoveAccel(1.5f),
 m_LeverVelocity(0.f),
 m_LeverMaxMoveVelocity(350.f),
-m_DashMoveAccel(2.5f),
+m_DashMoveAccel(2.0f),
 m_DashVelocity(0.f),
 m_DashMaxMoveVelocity(250.f),
 m_TriangleJumpVelocityRatio(0.8f),
@@ -33,6 +34,7 @@ m_ToRightWhenLeftMove(false),
 m_IsSpecialStateChanged(false),
 m_LeftMovePush(false),
 m_JumpDown(false),
+m_MoveDashEffectMade(false),
 m_IsLeverMoving(false),
 m_IsDashMoving(false),
 m_TriangleJump(false),
@@ -493,7 +495,22 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 
 	// Animation 전환
 	ChangePlayerRunAnimation();
-	
+
+	// Effect 생성
+	if (!m_MoveDashEffectMade)
+	{
+		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
+
+		Vector3 EffectPos = Vector3(GetWorldPos().x,
+			GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+			GetWorldPos().z);
+
+		EffectDash->SetWorldPos(EffectPos);
+
+		EffectDash->SetDirGoRight(true);
+
+		m_MoveDashEffectMade = true;
+	}
 }
 
 void CPlayer2D::MoveRight(float DeltaTime)
@@ -649,7 +666,22 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 
 	// Animation 전환
 	ChangePlayerRunAnimation();
-	
+
+	// Effect 생성
+	if (!m_MoveDashEffectMade)
+	{
+		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
+
+		Vector3 EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2, 
+												GetWorldPos().y - GetWorldScale().y * GetPivot().y, 
+													GetWorldPos().z);
+
+		EffectDash->SetWorldPos(EffectPos);
+
+		EffectDash->SetDirGoRight(false);
+
+		m_MoveDashEffectMade = true;
+	}
 }
 
 void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
@@ -661,6 +693,8 @@ void CPlayer2D::LeftLeverMoveEnd(float DeltaTime)
 	ChangePlayerIdleAnimation();
 
 	PullLeftEnd(DeltaTime);
+
+	m_MoveDashEffectMade = false;
 }
 
 void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
@@ -672,6 +706,8 @@ void CPlayer2D::RightLeverMoveEnd(float DeltaTime)
 	ChangePlayerIdleAnimation();
 
 	PullRightEnd(DeltaTime);
+
+	m_MoveDashEffectMade = false;
 }
 
 void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
@@ -683,6 +719,8 @@ void CPlayer2D::LeftDashMoveEnd(float DeltaTime)
 	ResetMoveInfo();
 
 	PullLeftEnd(DeltaTime);
+
+	m_MoveDashEffectMade = false;
 }
 
 void CPlayer2D::RightDashMoveEnd(float DeltaTime)
@@ -694,6 +732,8 @@ void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 	ResetMoveInfo();
 
 	PullRightEnd(DeltaTime);
+
+	m_MoveDashEffectMade = false;
 }
 
 void CPlayer2D::SpitOut(float DeltaTime)

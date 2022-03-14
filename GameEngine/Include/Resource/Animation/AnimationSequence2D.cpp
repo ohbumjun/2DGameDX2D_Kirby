@@ -235,7 +235,10 @@ bool CAnimationSequence2D::Load(FILE* pFile)
 			m_Texture = CResourceManager::GetInst()->FindTexture(TextureName);
 		}
 		if (!m_Texture)
+		{
+			assert(false);
 			return false;
+		}
 		m_Texture->SetImageType(ImageType);
 	}
 
