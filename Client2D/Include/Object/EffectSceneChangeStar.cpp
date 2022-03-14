@@ -1,10 +1,13 @@
 #include "EffectSceneChangeStar.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "Scene/CameraManager.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
+#include "Component/CameraComponent.h"
 #include "Component/ColliderCircle.h"
 #include "EffectKirbyRide.h"
+#include "Engine.h"
 
 CEffectSceneChangeStar::CEffectSceneChangeStar()
 {
@@ -94,14 +97,37 @@ CEffectSceneChangeStar* CEffectSceneChangeStar::Clone()
 
 void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const CollisionResult& Result)
 {
-	CEffectKirbyRide* KirbyRide = m_Scene->CreateGameObject<CEffectKirbyRide>("KirbyRide");
-
-	KirbyRide->SetWorldPos(GetWorldPos());
 
 	CGameObject* DestObject = Result.Dest->GetGameObject();
 
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
-		// DestObject->Enable(false);
+		// Kirby Ride Object 생성하고
+		CEffectKirbyRide* KirbyRide = m_Scene->CreateGameObject<CEffectKirbyRide>("KirbyRide");
+
+		KirbyRide->SetWorldPos(GetWorldPos());
+
+		// Player는 화면에서 안보이게 하고
+		DestObject->Enable(false);
+
+		// 메인 카메라를 Player 에서 지워주고, EffectKirby Ride 에 붙여준다.
+		CCameraComponent* MainCamera = m_Scene->GetCameraManager()->GetCurrentCamera();
+
+		DestObject->GetRootComponent()->DeleteChild(MainCamera);
+
+		KirbyRide->GetRootComponent()->AddChild(MainCamera);
+
+		Resolution  RS = CEngine::GetInst()->GetResolution();
+
+		/*
+		MainCamera->SetWorldPos(Vector3(KirbyRide->GetWorldPos().x - (float)RS.Width * 0.5f,
+															KirbyRide->GetWorldPos().y - (float)RS.Height * 0.5f, 
+															KirbyRide->GetWorldPos().z));
+		*/
+
+		MainCamera->SetGameObject(this);
+
+		// 자기 자신도 사라지게 세팅한다
+		Destroy();
 	}
 }
