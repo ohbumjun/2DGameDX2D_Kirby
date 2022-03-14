@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "C:\Users\dhsys\Desktop\DX_Project\Engine\Include\GameObject\GameObject.h"
 
 class CEffectSceneChangeStar :
     public CGameObject
@@ -18,7 +18,5 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CEffectSceneChangeStar* Clone() override;
-private :
-    void CreateKirbyRideAndChangeToNextScene(const CollisionResult& Result);
 };
 

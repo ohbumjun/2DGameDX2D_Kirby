@@ -4,7 +4,6 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
 #include "Component/ColliderCircle.h"
-#include "EffectKirbyRide.h"
 
 CEffectSceneChangeStar::CEffectSceneChangeStar()
 {
@@ -23,8 +22,7 @@ void CEffectSceneChangeStar::Start()
 
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
 	m_ColliderBody = (CColliderCircle*)FindComponent("ColliderBody");
-	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene);
-	m_ColliderBody->SetCollisionProfile("Monster");
+
 }
 
 bool CEffectSceneChangeStar::Init()
@@ -66,8 +64,7 @@ bool CEffectSceneChangeStar::Init()
 	);
 
 	m_ColliderBody->SetInfo(ColliderCenter, m_Sprite->GetWorldScale().x * 0.4f);
-	m_ColliderBody->SetCollisionProfile("Monster");
-	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene);
+	m_ColliderBody->SetCollisionProfile("Player");
 
 	m_Sprite->AddChild(m_ColliderBody);
 
@@ -90,18 +87,4 @@ void CEffectSceneChangeStar::PostUpdate(float DeltaTime)
 CEffectSceneChangeStar* CEffectSceneChangeStar::Clone()
 {
 	return new CEffectSceneChangeStar(*this);
-}
-
-void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const CollisionResult& Result)
-{
-	CEffectKirbyRide* KirbyRide = m_Scene->CreateGameObject<CEffectKirbyRide>("KirbyRide");
-
-	KirbyRide->SetWorldPos(GetWorldPos());
-
-	CGameObject* DestObject = Result.Dest->GetGameObject();
-
-	if (m_Scene->GetPlayerObject() == DestObject)
-	{
-		// DestObject->Enable(false);
-	}
 }

@@ -31,7 +31,8 @@ bool CEffectKirbyRide::Init()
 
 	m_Sprite->SetRenderState("AlphaBlend");
 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("KirbyRideEffect", TEXT("Effect_KirbyRide.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+		"KirbyRideEffect", TEXT("Effect_KirbyRide.anim"));
 
 	if (!AnimationInstance)
 	{

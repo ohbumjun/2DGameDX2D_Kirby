@@ -49,7 +49,6 @@
 #include "Object/Line.h"
 #include "Object/LineContainer.h"
 #include "Object/EffectSceneChangeStar.h"
-#include "Object/EffectSceneChangeStar.cpp"
 
 DEFINITION_SINGLE(CEditorManager)
 

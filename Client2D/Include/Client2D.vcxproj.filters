@@ -190,7 +190,7 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
     <ClCompile Include="Object\EffectKirbyRide.cpp">
-      <Filter>02. Object\08. BackGround</Filter>
+      <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -324,7 +324,7 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectKirbyRide.h">
-      <Filter>02. Object\08. BackGround</Filter>
+      <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

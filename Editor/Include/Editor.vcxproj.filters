@@ -46,6 +46,9 @@
     <Filter Include="03. Object\06. Line">
       <UniqueIdentifier>{205787ae-77c7-40cb-8f6a-dede2d47d791}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\07. Effect">
+      <UniqueIdentifier>{1801276c-8f5c-4db6-bd18-f9315f0b763c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="Object\Line.cpp">
       <Filter>03. Object\06. Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectSceneChangeStar.cpp">
+      <Filter>03. Object\07. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Object\Line.h">
       <Filter>03. Object\06. Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectSceneChangeStar.h">
+      <Filter>03. Object\07. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
