@@ -334,17 +334,13 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 
 		if (m_ObjectMoveDir.x > 0) // 오른쪽 
 		{
-			EffectPos = Vector3(GetWorldPos().x,
-				GetWorldPos().y - GetWorldScale().y * GetPivot().y,
-				GetWorldPos().z);
+			EffectPos = Vector3(GetWorldPos().x + (GetWorldScale().x * GetPivot().x * 1.3f),GetWorldPos().y, GetWorldPos().z);
 
 			EffectSpitOut->SetDirGoRight(true);
 		}
 		else // 왼쪽
 		{
-			EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x * 2.f),
-				GetWorldPos().y - GetWorldScale().y * GetPivot().y,
-				GetWorldPos().z);
+			EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x * 1.5f),GetWorldPos().y, GetWorldPos().z);
 
 			EffectSpitOut->SetDirGoRight(false);
 		}
@@ -1801,8 +1797,6 @@ void CPlayer2D::SetBasicSettingToChangedState()
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetEndFunction(
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
-		
-		
 }
 
 void CPlayer2D::SpecialChangeEffect()

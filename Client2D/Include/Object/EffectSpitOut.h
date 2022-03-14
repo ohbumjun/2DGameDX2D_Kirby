@@ -12,6 +12,7 @@ protected:
 private:
     bool m_GoRight;
     CSharedPtr<class CSpriteComponent> m_Sprite;
+    CSharedPtr<class CColliderCircle> m_ColliderBody;
 public:
     void SetDirGoRight(bool Enable);
 public:
