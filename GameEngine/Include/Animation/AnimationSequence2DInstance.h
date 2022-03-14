@@ -65,6 +65,7 @@ public :
 			return;
 		m_CurrentAnimation->SetFrameReverse(Reverse);
 }
+	void SetPlayScaleOfAllAnimation(float PlayScale);
 public :
 	int GetCurrentAnimationOrder();
 	void GatherSequenceNames(std::vector<std::string>& vecNames);

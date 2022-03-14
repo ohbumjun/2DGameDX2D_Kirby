@@ -171,6 +171,7 @@
     <ClCompile Include="Object\BulletCamera.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\EffectDash.cpp" />
+    <ClCompile Include="Object\EffectSpitOut.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\EffectDash.h" />
+    <ClInclude Include="Object\EffectSpitOut.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />

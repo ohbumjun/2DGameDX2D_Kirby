@@ -457,6 +457,17 @@ CAnimationSequence2DData* CAnimationSequence2DInstance::GetCurrentAnimation() co
 	return nullptr;
 }
 
+void CAnimationSequence2DInstance::SetPlayScaleOfAllAnimation(float PlayScale)
+{
+	auto iter = m_mapAnimation.begin();
+	auto iterEnd = m_mapAnimation.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		(*iter).second->SetPlayScale(PlayScale);
+	}
+}
+
 int CAnimationSequence2DInstance::GetCurrentAnimationOrder()
 {
 	if (!m_CurrentAnimation)

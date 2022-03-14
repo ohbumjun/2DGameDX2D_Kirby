@@ -31,7 +31,7 @@ bool CNormalKirbyState::Init()
 	if (!CKirbyState::Init())
 		return false;
 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Normal", TEXT("Kirby_Normal.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Normal", TEXT("Kirby_Normal.anim"), ENGINE_ANIMATION_PATH);
 
 	SetAnimationInstance(AnimationInstance);
 

@@ -9,7 +9,7 @@ CEffectDash::CEffectDash() :
 {
 	SetTypeID<CEffectDash>();
 
-	m_LifeTime = 1.f;
+	m_LifeTime = 0.5f;
 }
 
 CEffectDash::CEffectDash(const CEffectDash& Beatle)
@@ -60,6 +60,13 @@ bool CEffectDash::Init()
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+	m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayScale(m_LifeTime);
+
+
+	Vector3 CurWorldScale = GetWorldScale();
+
+	SetWorldScale(CurWorldScale.x * 0.7f, CurWorldScale.y * 0.7f, 1.f);
+	
 
 	return true;
 }
@@ -76,11 +83,11 @@ void CEffectDash::PostUpdate(float DeltaTime)
 
 	if (m_GoRight)
 	{
-		m_Sprite->AddWorldPos(Vector3(1.f, 0.f, 0.f) * 50.f * DeltaTime);
+		m_Sprite->AddWorldPos(Vector3(1.f, 0.f, 0.f) * 20.f * DeltaTime);
 	}
 	else
 	{
-		m_Sprite->AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * 50.f * DeltaTime);
+		m_Sprite->AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * 20.f * DeltaTime);
 	}
 }
 

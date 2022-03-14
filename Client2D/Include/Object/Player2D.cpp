@@ -15,6 +15,7 @@
 #include "../UI/SimpleHUD.h"
 #include "AbilityMonster.h"
 #include "EffectDash.h"
+#include "EffectSpitOut.h"
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
@@ -253,10 +254,7 @@ void CPlayer2D::Start()
 
 	// Jump 가 다 끝난 이후에는, Animation 을 Fall 상태로 바꿔라
 	*/
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
+	SetBasicSettingToChangedState();
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -322,6 +320,32 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		// if (m_IsGround)
 		m_IsFlying = false;
 
+		// Air Effect를 하나 만들어낸다.
+		CEffectSpitOut* EffectSpitOut = m_Scene->CreateGameObject<CEffectSpitOut>("DashEffect");
+
+		Vector3 EffectPos = {};
+
+		if (m_ObjectMoveDir.x > 0) // 오른쪽 
+		{
+			EffectPos = Vector3(GetWorldPos().x,
+				GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+				GetWorldPos().z);
+
+			EffectSpitOut->SetDirGoRight(true);
+		}
+		else // 왼쪽
+		{
+			EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x * 2.f),
+				GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+				GetWorldPos().z);
+
+			EffectSpitOut->SetDirGoRight(false);
+		}
+
+		EffectSpitOut->SetWorldPos(EffectPos);
+
+
+		// ChangePlayerSpitOutAnimation();
 		ChangePlayerFallAnimation();
 	}
 
@@ -497,7 +521,7 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	ChangePlayerRunAnimation();
 
 	// Effect 생성
-	if (!m_MoveDashEffectMade)
+	if (!m_MoveDashEffectMade && !m_Jump)
 	{
 		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
 
@@ -668,7 +692,7 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	ChangePlayerRunAnimation();
 
 	// Effect 생성
-	if (!m_MoveDashEffectMade)
+	if (!m_MoveDashEffectMade && !m_Jump)
 	{
 		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
 
@@ -762,18 +786,14 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 	m_EatenMonster = nullptr;
 
+	ChangePlayerSpitOutAnimation();
+
 	// Special State 였다면 다시 원래 상태로 돌아가기
 	if (m_IsSpecialStateChanged)
 	{
 		Vector3 OriginalPos = GetWorldPos();
 
 		m_KirbyState = CreateComponent<CNormalKirbyState>("FightKirbyState");
-
-		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
-			this, &CPlayer2D::ChangePlayerFallAnimation);
-		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-			this, &CPlayer2D::ChangePlayerFallAnimation);
-		
 
 		SetRootComponent(m_KirbyState);
 
@@ -1352,6 +1372,11 @@ void CPlayer2D::FallFromCliff()
 	// 절벽에서 막 떨어졌을 때
 	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided && !m_IsFlying)
 	{
+		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+		if (CurAnimName == "RightSpitOut" || CurAnimName == "LeftSpitOut")
+			return;
+
 		ChangePlayerFallAnimation();
 	}
 }
@@ -1522,6 +1547,16 @@ void CPlayer2D::ChangePlayerFallAnimation()
 		ChangeAnimation("RightFall");
 }
 
+void CPlayer2D::ChangePlayerSpitOutAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftSpitOut");
+	else
+		ChangeAnimation("RightSpitOut");
+
+	// Effect 만들어내기 
+}
+
 void CPlayer2D::ChangePlayerEatIdleAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
@@ -1655,6 +1690,14 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 	}
 }
 
+void CPlayer2D::ChangeToFallAnimationAfterSpitOut()
+{
+	if (m_FallStartY - GetWorldPos().y > 0.f || m_IsFalling)
+	{
+		ChangePlayerFallAnimation();
+	}
+}
+
 void CPlayer2D::SpecialChange(float DeltaTime)
 {
 	// 먹고 있는 녀석이 없으면 X
@@ -1687,10 +1730,7 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 
 	SetRootComponent(m_KirbyState);
 
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
-		this, &CPlayer2D::ChangePlayerFallAnimation);
+	SetBasicSettingToChangedState();
 
 	m_KirbyState->SetWorldPos(OriginalPos);
 
@@ -1708,6 +1748,23 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
 	ChangePlayerIdleAnimation();
+}
+
+void CPlayer2D::SetBasicSettingToChangedState()
+{
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
+		this, &CPlayer2D::ChangePlayerFallAnimation);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(
+		this, &CPlayer2D::ChangePlayerFallAnimation);
+
+	/*
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightFly")->SetEndFunction(
+		this, &CPlayer2D::ChangeToFallAnimationAfterSpitOut);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftFly")->SetEndFunction(
+		this, &CPlayer2D::ChangeToFallAnimationAfterSpitOut);
+	*/
+		
+		
 }
 
 void CPlayer2D::Attack()

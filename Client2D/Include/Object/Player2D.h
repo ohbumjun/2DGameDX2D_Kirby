@@ -157,6 +157,7 @@ protected:
 	void ChangePlayerFlyAnimation();
 	void ChangePlayerJumpAnimation();
 	void ChangePlayerFallAnimation();
+	void ChangePlayerSpitOutAnimation();
 private :
 	// Spit Out & Pull
 	void SpitOut(float DeltaTime);
@@ -168,9 +169,11 @@ private :
 	void PullRightCollisionEndCallback(const CollisionResult& Result);
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
+	void ChangeToFallAnimationAfterSpitOut();
 private :
 	// Special Change
 	void SpecialChange(float DeltaTime);
+	void SetBasicSettingToChangedState();
 public :
 	void SetIsEatingMonster(bool Enable);
 	void SetEatenMonster(class CMonster* Monster);
