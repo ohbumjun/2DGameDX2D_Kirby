@@ -392,10 +392,12 @@ void CAnimationSequence2DInstance::SetLoop(const std::string& Name, bool Loop)
 
 void CAnimationSequence2DInstance::SetCurrentAnimation(const std::string& Name)
 {
-	m_CurrentAnimation = FindAnimationSequence2DData(Name);
+	CAnimationSequence2DData* FoundAnimation = FindAnimationSequence2DData(Name);
 
-	if (!m_CurrentAnimation)
+	if (!FoundAnimation)
 		return;
+
+	m_CurrentAnimation = FoundAnimation;
 
 	m_CurrentAnimation->m_Frame = 0;
 	m_CurrentAnimation->m_Time  = 0.f;

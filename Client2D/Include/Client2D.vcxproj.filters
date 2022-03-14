@@ -180,6 +180,9 @@
     <ClCompile Include="Object\EffectSpitOut.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectRandomStar.cpp">
+      <Filter>02. Object\07. Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -300,6 +303,9 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectSpitOut.h">
+      <Filter>02. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectRandomStar.h">
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
   </ItemGroup>

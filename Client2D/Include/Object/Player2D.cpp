@@ -16,6 +16,7 @@
 #include "AbilityMonster.h"
 #include "EffectDash.h"
 #include "EffectSpitOut.h"
+#include "EffectRandomStar.h"
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
@@ -1389,10 +1390,15 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 {
 	if (m_IsBottomCollided)
 	{
-		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 3.f)
+		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 2.f)
 		{
 			SimpleJump();
+
 			m_Bounced = true;
+
+			CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+
+			RandomStar->SetWorldPos(GetWorldPos());
 		}
 
 		else
@@ -1407,6 +1413,10 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 					ChangePlayerEatIdleAnimation();
 				else
 					ChangePlayerNormalIdleAnimation();
+
+				CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+
+				RandomStar->SetWorldPos(Vector3(GetWorldPos().x - GetWorldScale().x * GetPivot().x, GetWorldPos().y, GetWorldPos().z));
 			}
 		}
 
