@@ -1,12 +1,16 @@
 #pragma once
 
 // define ¹®
+// Normal
 const std::string g_NormalBearName = "NormalBear";
 const std::string g_PurpleBeatlesName = "PurpleBeatles";
 const std::string g_YellowBirdName = "YellowBird";
 const std::string g_MushRoomName = "MushRoom";
+// Ability
 const std::string g_BeanMonsterName = "Beam";
 const std::string g_FightMonsterName = "FightMonster";
+// Effect
+const std::string g_SceneChangeStart = "SceneChangeStart";
 
 enum class Tile_EditMode {
 	Type,

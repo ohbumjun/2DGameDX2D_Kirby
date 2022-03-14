@@ -48,6 +48,8 @@
 #include "Object/SpriteEditObject.h"
 #include "Object/Line.h"
 #include "Object/LineContainer.h"
+#include "Object/EffectSceneChangeStar.h"
+#include "Object/EffectSceneChangeStar.cpp"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -428,6 +430,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBeamMonster>(NewMonsterName);
 		}
+		else if (strcmp(g_SceneChangeStart.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectSceneChangeStar>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -803,6 +809,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CLineContainer).hash_code())
 	{
 		CLineContainer* Obj = Scene->LoadGameObject<CLineContainer>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectSceneChangeStar).hash_code())
+	{
+		CEffectSceneChangeStar* Obj = Scene->LoadGameObject<CEffectSceneChangeStar>();
 		return Obj;
 	}
 	

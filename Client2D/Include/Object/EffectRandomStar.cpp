@@ -58,6 +58,7 @@ bool CEffectRandomStar::Init()
 	SetWorldScale(CurWorldScale.x * 1.8f, CurWorldScale.y * 1.8f, 1.f);
 
 
+
 	return true;
 }
 

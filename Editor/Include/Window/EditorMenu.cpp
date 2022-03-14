@@ -721,67 +721,6 @@ void CEditorMenu::LoadObject()
 
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
-
-		/*
-
-		// 1) 만약 해당 Component 가 TileMapComponent 라면, Edit Mode 를 Tile 로 바꿔준다.
-		std::list<CSharedPtr<CGameObject>> ObjLists = CSceneManager::GetInst()->GetScene()->GetObjectLists();
-
-		auto iter = ObjLists.begin();
-		auto iterEnd = ObjLists.end();
-
-		for (; iter != iterEnd; ++iter)
-		{
-			if ((*iter)->GetRootComponent()->CheckType<CTileMapComponent>())
-			{
-				// 1) Edit mode 수정
-				CEditorManager::GetInst()->SetEditMode(EditMode::Tile);
-				// 2) TileMap Window 에 TileMapComponent 지정하기
-				CEditorManager::GetInst()->GetTileMapWindow()->SetTileMap((CTileMapComponent*)(*iter)->GetRootComponent());
-			}
-		}
-
-
-		// Scene의 Object 목록을 돌면서, Object Hierarchy 에 Add 시키기 위해
-		// Object 들의 이름을 가져온다
-		std::vector<std::string> vecObjNames;
-		CSceneManager::GetInst()->GetScene()->GatherObjectsNames(vecObjNames);
-
-		CIMGUIListBox* ObjectListBox = Hierarchy->GetObjectListBox();
-
-		size_t NameCount = vecObjNames.size();
-		for (size_t i = 0; i < NameCount; i++)
-		{
-			// Scene Edit Object의 경우는 더해주지 않는다
-			// if (vecObjNames[i] == "SceneEditObject")
-			// 	continue;
-
-			ObjectListBox->AddItem(vecObjNames[i]);
-		}
-
-		// 화면에 Scene Edit Object를 만든다
-		CEditorManager::GetInst()->SetSceneEditObject();
-
-		// 가장 처음 녀석의 Component 들을 세팅해둔다.
-		Hierarchy->SelectObject(0, vecObjNames[0].c_str());
-
-		// 현재 선택된 Component의 위치로 세팅한다.
-		CShowObject* ShowObject = CEditorManager::GetInst()->GetShowObject();
-
-		std::string ObjectName = Hierarchy->GetObjectListBox()->GetSelectItem();
-		CGameObject* SelectedObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
-
-		Vector3 ObjectPivot = SelectedObject->GetPivot();
-		Vector3 ObjectSize = SelectedObject->GetWorldScale();
-		Vector3 ObjectPos = SelectedObject->GetWorldPos();
-		Vector3 Pos = ObjectPos - ObjectPivot * ObjectSize;
-
-		Vector2 StartPos = Vector2(Pos.x, Pos.y);
-		Vector2 EndPos = Vector2(Pos.x + ObjectSize.x, Pos.y + ObjectSize.y);
-
-		ShowObject->SetStartPos(StartPos);
-		ShowObject->SetEndPos(EndPos);
-	*/
 	}
 }
 
