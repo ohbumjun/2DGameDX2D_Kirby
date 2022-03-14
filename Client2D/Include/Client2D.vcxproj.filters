@@ -189,6 +189,9 @@
     <ClCompile Include="Object\EffectSceneChangeStar.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectKirbyRide.cpp">
+      <Filter>02. Object\08. BackGround</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectSceneChangeStar.h">
       <Filter>02. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectKirbyRide.h">
+      <Filter>02. Object\08. BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

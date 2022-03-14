@@ -135,8 +135,13 @@ void CObjectHierarchy::AddCreatedObject(const char* ObjectName)
 
 void CObjectHierarchy::SelectCreatedObject(int Index, const char* ObjectName)
 {
+	CGameObject* Object = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+
+	if (!Object)
+		return;
+
 	// 선택한 Object 내에 있는 Scene Component 목록을 보여준다
-	m_SelectObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName);
+	m_SelectObject = Object;
 
 	// 기존 모두 지워주기
 	m_CreatedComponentListBox->Clear();

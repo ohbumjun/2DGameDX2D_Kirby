@@ -8,8 +8,6 @@
 CEffectSceneChangeStar::CEffectSceneChangeStar()
 {
 	SetTypeID<CEffectSceneChangeStar>();
-
-	m_LifeTime = 0.5f;
 }
 
 CEffectSceneChangeStar::CEffectSceneChangeStar(const CEffectSceneChangeStar& Beatle)
@@ -24,6 +22,7 @@ void CEffectSceneChangeStar::Start()
 
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
 	m_ColliderBody = (CColliderCircle*)FindComponent("ColliderBody");
+
 }
 
 bool CEffectSceneChangeStar::Init()
@@ -40,6 +39,7 @@ bool CEffectSceneChangeStar::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"CSceneChangeStarEffect", TEXT("Effect_SceneChangeStar.anim"));
 
+
 	if (!AnimationInstance)
 	{
 		assert(false);
@@ -50,7 +50,8 @@ bool CEffectSceneChangeStar::Init()
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
-	m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayScale(m_LifeTime);
+
+	SetWorldScale(GetWorldScale().x * 2.0f, GetWorldScale().y * 2.0f, 1.f);
 
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
 
@@ -62,7 +63,7 @@ bool CEffectSceneChangeStar::Init()
 		m_Sprite->GetWorldPos().y + m_Sprite->GetWorldScale().y * m_Sprite->GetPivot().y
 	);
 
-	m_ColliderBody->SetInfo(ColliderCenter, m_Sprite->GetWorldScale().x * 0.3f);
+	m_ColliderBody->SetInfo(ColliderCenter, m_Sprite->GetWorldScale().x * 0.4f);
 
 	m_ColliderBody->SetCollisionProfile("Player");
 

@@ -21,6 +21,7 @@
 #include "Object/BeamMonster.h"
 #include "Object/LineContainer.h"
 #include "GameObject/Line.h"
+#include "Object/EffectSceneChangeStar.h"
 
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
@@ -197,6 +198,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CLineContainer).hash_code())
 	{
 		CLineContainer* Obj = Scene->LoadGameObject<CLineContainer>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectSceneChangeStar).hash_code())
+	{
+		CEffectSceneChangeStar* Obj = Scene->LoadGameObject<CEffectSceneChangeStar>();
 		return Obj;
 	}
 

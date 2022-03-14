@@ -131,26 +131,30 @@ bool CSpriteEditWindow::Init()
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::LoadTextureButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(95.f);
 
 	Button = AddWidget<CIMGUIButton>("StartEdit", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SpriteEditButton);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(180.f);
 
 	Button = AddWidget<CIMGUIButton>("SetReverse", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetReverseMode);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(265.f);
 
 	Button = AddWidget<CIMGUIButton>("SetNormal", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetNormalMode);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(350.f);
 
 	Button = AddWidget<CIMGUIButton>("SetCandy", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::SetCandyCrushMode);
-
 	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(435.f);
 
 	Button = AddWidget<CIMGUIButton>("UndoCandy", 80.f, 80.f);
 	Button->SetClickCallback<CSpriteEditWindow>(this, &CSpriteEditWindow::UndoCandyCrushMode);
