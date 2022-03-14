@@ -184,6 +184,7 @@
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
     <ClCompile Include="Object\PlayerOld.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
+    <ClCompile Include="Object\SpecialChangeParticle.cpp" />
     <ClCompile Include="Object\TileMap.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Object\PlayerAnimation2D.h" />
     <ClInclude Include="Object\PlayerOld.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
+    <ClInclude Include="Object\SpecialChangeParticle.h" />
     <ClInclude Include="Object\TileMap.h" />
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\YellowBird.h" />

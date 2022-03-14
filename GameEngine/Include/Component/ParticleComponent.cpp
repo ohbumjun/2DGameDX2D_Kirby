@@ -66,6 +66,9 @@ void CParticleComponent::SetParticle(const std::string& Name)
 
 void CParticleComponent::SetParticle(CParticle* Particle)
 {
+	if (!Particle)
+		return;
+
 	m_Particle = Particle;
 
 	m_Material = m_Particle->CloneMaterial();

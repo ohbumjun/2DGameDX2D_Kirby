@@ -10,6 +10,7 @@
 #include "../UI/MainWidget.h"
 #include "Resource/Particle/Particle.h"
 #include "../Object/BubbleParticle.h"
+#include "../Object/SpecialChangeParticle.h"
 #include "../Object/YellowBird.h"
 #include "../Object/BeamMonster.h"
 #include "../Object/PurpleBeatle.h"
@@ -28,7 +29,7 @@ CMainScene::~CMainScene()
 void CMainScene::Start()
 {
 	CSceneMode::Start();
-	/*
+	
 	CreateMaterial();
 
 	CreateAnimationSequence();
@@ -36,6 +37,14 @@ void CMainScene::Start()
 	CreateParticle();
 
 	CreateSound();
+
+	// Particle
+	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
+	SpecialChangeParticle->SetRelativePos(900.f, 200.f, 0.f);
+
+	/*
+	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
 	*/
 
 	// TileMapEmpty Type 의 GameObject를 찾는다
@@ -98,30 +107,6 @@ bool CMainScene::Init()
 
 	// Sleep(1000); ////
 
-	/*
-	CBeamMonster* BeamMonster = m_Scene->CreateGameObject<CBeamMonster>("BeamMonster");
-	BeamMonster->SetWorldPos(Vector3(300.f, 400.f, 1.f));
-
-	// CYellowBird * YellowBirdMonster = m_Scene->CreateGameObject<CYellowBird>("YellowBird");
-	CYellowBird* YellowBirdMonster = m_Scene->LoadGameObject<CYellowBird>();
-	YellowBirdMonster->LoadByFileName("TestYellowBird.gobj", OBJECT_PATH);
-	YellowBirdMonster->SetWorldPos(Vector3(500.f, 500.f, 1.));
-
-	CPurpleBeatle* PurpleBeatle = m_Scene->LoadGameObject<CPurpleBeatle>();
-	PurpleBeatle->LoadByFileName("TestPurpleBeatles.gobj", OBJECT_PATH);
-	PurpleBeatle->SetWorldPos(Vector3(1200.f, 500.f, 1.));
-
-	// CNormalBear* NormalBear = m_Scene->CreateGameObject<CNormalBear>("NormalBear");
-	CNormalBear* NormalBear = m_Scene->LoadGameObject<CNormalBear>();
-	NormalBear->LoadByFileName("TestBear.gobj", OBJECT_PATH);
-	NormalBear->SetWorldPos(Vector3(1000.f, 700.f, 1.));
-	*/
-
-	/*
-	Monster->LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
-	Monster->SetCurrentAnimation("RightIdle");
-	*/
-
 	CPixelTest* Pixel = m_Scene->CreateGameObject<CPixelTest>("Pixel");
 
 	if (m_LoadingFunction)
@@ -129,8 +114,12 @@ bool CMainScene::Init()
 
 	// Sleep(1000);
 
-	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
-	BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
+	// CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	// BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
+
+	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
+	SpecialChangeParticle->SetRelativePos(900.f, 200.f, 0.f);
+
 	/*
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 
@@ -157,14 +146,19 @@ bool CMainScene::Init()
 void CMainScene::CreateMaterial()
 {
 	// Particle 
-	m_Scene->GetResource()->CreateMaterial<CMaterial>("ParticleMaterial");
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("BubbleParticleMaterial");
+	CMaterial* BubbleParticleMaterial = m_Scene->GetResource()->FindMaterial("BubbleParticleMaterial");
+	BubbleParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "BubbleParticleTexture", TEXT("Particle/Bubbles99px.png"));
+	BubbleParticleMaterial->SetShader("ParticleRenderShader");
+	BubbleParticleMaterial->SetRenderState("AlphaBlend");
 
-	CMaterial* ParticleMaterial = m_Scene->GetResource()->FindMaterial("ParticleMaterial");
 
-	ParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "ParticleTexture", TEXT("Particle/Bubbles99px.png"));
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("SpecialChangeMaterial");
+	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
+	SpecialChangeParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SpecialChangeParticleTexture", TEXT("Particle/Sparks.png"));
+	SpecialChangeParticleMaterial->SetShader("ParticleRenderShader");
+	SpecialChangeParticleMaterial->SetRenderState("AlphaBlend");
 
-	ParticleMaterial->SetShader("ParticleRenderShader");
-	ParticleMaterial->SetRenderState("AlphaBlend");
 
 	// TileMap
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("DiabloTileMap");
@@ -202,29 +196,49 @@ void CMainScene::CreateSound()
 
 void CMainScene::CreateParticle()
 {
+	// Bubble
 	m_Scene->GetResource()->CreateParticle("Bubble");
 	CParticle* BubbleParticle = m_Scene->GetResource()->FindParticle("Bubble");
-
-	CMaterial* ParticleMaterial = m_Scene->GetResource()->FindMaterial("ParticleMaterial");
+	CMaterial* ParticleMaterial = m_Scene->GetResource()->FindMaterial("BubbleParticleMaterial");
 
 	BubbleParticle->SetMaterial(ParticleMaterial);
-	BubbleParticle->SetSpawnCountMax(1000);
+	BubbleParticle->SetSpawnCountMax(50);
 	BubbleParticle->SetScaleMin(Vector3(20.f, 20.f, 1.f));
 	BubbleParticle->SetScaleMax(Vector3(50.f, 50.f, 1.f));
 	BubbleParticle->SetSpeedMin(100.f);
-	BubbleParticle->SetSpeedMax(200.f);
-	BubbleParticle->SetLifeTimeMin(1.f);
-	BubbleParticle->SetLifeTimeMax(8.f);
+	BubbleParticle->SetSpeedMax(300.f);
+	BubbleParticle->SetLifeTimeMin(0.6f);
+	BubbleParticle->SetLifeTimeMax(1.3f);
 	BubbleParticle->SetMoveDir(Vector3(0.f, 1.f, 0.f));
-	BubbleParticle->SetStartMin(Vector3(-300.f, -30.f, 0.f));
-	BubbleParticle->SetStartMax(Vector3(300.f, 30.f, 0.f));
-	BubbleParticle->SetColorMin(Vector4(0.4f, 0.4f, 0.1f, 1.f));
-	BubbleParticle->SetColorMax(Vector4(0.9f, 0.8f, 0.8f, 1.f));
-	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, -100.f));
-	BubbleParticle->SetGravity(true);
+	BubbleParticle->SetStartMin(Vector3(-100.f, 0.f, 0.f));
+	BubbleParticle->SetStartMax(Vector3(100.f, 10.f, 0.f));
+	BubbleParticle->SetColorMin(Vector4(0.6f, 0.8f, 1.0f, 1.f));
+	BubbleParticle->SetColorMax(Vector4(0.1f, 0.1f, 1.0f, 1.f));
+	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, -40.f));
+	// BubbleParticle->SetGravity(true);
 	BubbleParticle->SetMove(true);
 
+	// Special Change
+	m_Scene->GetResource()->CreateParticle("SpecialChange");
+	CParticle* SpecialChangeParticle = m_Scene->GetResource()->FindParticle("SpecialChange");
+	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
 
+	SpecialChangeParticle->SetMaterial(ParticleMaterial);
+	SpecialChangeParticle->SetSpawnCountMax(50);
+	SpecialChangeParticle->SetScaleMin(Vector3(20.f, 20.f, 1.f));
+	SpecialChangeParticle->SetScaleMax(Vector3(50.f, 50.f, 1.f));
+	SpecialChangeParticle->SetSpeedMin(100.f);
+	SpecialChangeParticle->SetSpeedMax(300.f);
+	SpecialChangeParticle->SetLifeTimeMin(0.6f);
+	SpecialChangeParticle->SetLifeTimeMax(1.3f);
+	SpecialChangeParticle->SetMoveDir(Vector3(0.f, 1.f, 0.f));
+	SpecialChangeParticle->SetStartMin(Vector3(-100.f, 0.f, 0.f));
+	SpecialChangeParticle->SetStartMax(Vector3(100.f, 10.f, 0.f));
+	SpecialChangeParticle->SetColorMin(Vector4(0.6f, 0.8f, 1.0f, 1.f));
+	SpecialChangeParticle->SetColorMax(Vector4(0.1f, 0.1f, 1.0f, 1.f));
+	SpecialChangeParticle->SetMoveAngle(Vector3(0.f, 0.f, -40.f));
+	// BubbleParticle->SetGravity(true);
+	SpecialChangeParticle->SetMove(true);
 }
 
 void CMainScene::PrepareResources()

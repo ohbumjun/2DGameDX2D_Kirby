@@ -17,6 +17,8 @@
 #include "EffectDash.h"
 #include "EffectSpitOut.h"
 #include "EffectRandomStar.h"
+#include "SpecialChangeParticle.h"
+#include "BubbleParticle.h"
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
@@ -398,8 +400,6 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		return;
 	}
 
-
-
 	// 레버 이동 표시
 	m_IsLeverMoving = true;
 
@@ -451,7 +451,13 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	}
 
 	// Animation 전환
-	ChangePlayerWalkAnimation();
+		// Animation 전환
+	// 현재 날다가, 방금 Air를 내뱉은 상태라면 X
+	if (m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "RightSpitOut" &&
+		m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "LeftSpitOut")
+	{
+		ChangePlayerWalkAnimation();
+	}
 }
 
 void CPlayer2D::MoveDashLeft(float DeltaTime)
@@ -626,8 +632,12 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	ChangePlayerWalkAnimation();
-
+	// 현재 날다가, 방금 Air를 내뱉은 상태라면 X
+	if (m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "RightSpitOut" &&
+		m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "LeftSpitOut")
+	{
+		ChangePlayerWalkAnimation();
+	}
 }
 
 void CPlayer2D::MoveDashRight(float DeltaTime)
@@ -1398,7 +1408,7 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 
 			CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
 
-			RandomStar->SetWorldPos(GetWorldPos());
+			RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
 		}
 
 		else
@@ -1419,7 +1429,7 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 
 				CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
 
-				RandomStar->SetWorldPos(Vector3(GetWorldPos().x - GetWorldScale().x * GetPivot().x, GetWorldPos().y, GetWorldPos().z));
+				RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
 			}
 		}
 
@@ -1750,6 +1760,9 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 		break;
 	}
 
+	// Special Change Effect
+	SpecialChangeEffect();
+
 	Vector3 OriginalPos = GetWorldPos();
 
 	SetRootComponent(m_KirbyState);
@@ -1790,6 +1803,16 @@ void CPlayer2D::SetBasicSettingToChangedState()
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
 		
 		
+}
+
+void CPlayer2D::SpecialChangeEffect()
+{
+	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
+	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, GetWorldPos().z);
+	/*
+	CBubbleParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CBubbleParticle>("Special Change");
+	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z);
+	*/
 }
 
 void CPlayer2D::Attack()

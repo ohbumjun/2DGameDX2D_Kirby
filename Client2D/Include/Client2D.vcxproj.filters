@@ -183,6 +183,9 @@
     <ClCompile Include="Object\EffectRandomStar.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\SpecialChangeParticle.cpp">
+      <Filter>02. Object\05. Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectRandomStar.h">
       <Filter>02. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SpecialChangeParticle.h">
+      <Filter>02. Object\05. Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

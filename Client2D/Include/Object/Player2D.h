@@ -174,6 +174,7 @@ private :
 	// Special Change
 	void SpecialChange(float DeltaTime);
 	void SetBasicSettingToChangedState();
+	void SpecialChangeEffect();
 public :
 	void SetIsEatingMonster(bool Enable);
 	void SetEatenMonster(class CMonster* Monster);
