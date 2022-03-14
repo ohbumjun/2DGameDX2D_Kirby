@@ -44,6 +44,10 @@ public:
 	{
 		return m_Scene;
 	}
+	CScene* GetNextScene() const
+	{
+		return m_NextScene;
+	}
 public :
 	template<typename T>
 	void SetCreateSceneModeCallback(T*Obj, void(T::*Func)(CScene* Scene, const size_t SceneModeTypeID))

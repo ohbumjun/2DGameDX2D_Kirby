@@ -17,5 +17,7 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CEffectChangeToGreen2* Clone() override;
+private :
+    void ChangeSceneToGreen2Scene(const CollisionResult& Result);
 };
 

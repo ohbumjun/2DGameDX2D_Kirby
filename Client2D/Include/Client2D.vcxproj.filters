@@ -195,6 +195,9 @@
     <ClCompile Include="Object\EffectChangeToGreen2.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Green2Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen2.h">
       <Filter>02. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Green2Scene.h">
+      <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
