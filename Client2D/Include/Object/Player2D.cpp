@@ -1645,6 +1645,9 @@ void CPlayer2D::CheckBottomCollision()
 
 void CPlayer2D::PullRight(float DeltaTime)
 {
+	if (m_IsEatingMonster)
+		return;
+
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("RightPull");
 
 	// 오른쪽 범위 안에 있는지 확인하기
@@ -1861,6 +1864,9 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 
 void CPlayer2D::PullLeft(float DeltaTime)
 {
+	if (m_IsEatingMonster)
+		return;
+
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("LeftPull");
 
 	// 오른쪽 범위 안에 있는지 확인하기

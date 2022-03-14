@@ -55,7 +55,7 @@ bool CEffectRandomStar::Init()
 
 	m_RandomDir = Vector3(DirX, DirY, 0.f);
 
-	SetWorldScale(CurWorldScale.x * 1.3f, CurWorldScale.y * 1.3f, 1.f);
+	SetWorldScale(CurWorldScale.x * 1.8f, CurWorldScale.y * 1.8f, 1.f);
 
 
 	return true;
