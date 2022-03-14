@@ -26,11 +26,11 @@ bool CSpecialChangeParticle::Init()
 
 	SetRootComponent(m_Particle);
 
-	m_Particle->SetRelativePos(200.f, 50.f, 0.f);
+	// m_Particle->SetRelativePos(200.f, 50.f, 0.f);
 
 	m_Particle->SetParticle("SpecialChange");
 
-	SetLifeTime(2.f);
+	SetLifeTime(6.f);
 
 	return true;
 }

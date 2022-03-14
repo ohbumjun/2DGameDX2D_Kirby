@@ -49,6 +49,7 @@
 #include "Object/Line.h"
 #include "Object/LineContainer.h"
 #include "Object/EffectSceneChangeStar.h"
+#include "Object/EffectChangeToGreen2.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -433,6 +434,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectSceneChangeStar>(NewMonsterName);
 		}
+		else if (strcmp(g_SceneChangeToGreen2.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen2>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -813,6 +818,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CEffectSceneChangeStar).hash_code())
 	{
 		CEffectSceneChangeStar* Obj = Scene->LoadGameObject<CEffectSceneChangeStar>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToGreen2).hash_code())
+	{
+		CEffectChangeToGreen2* Obj = Scene->LoadGameObject<CEffectChangeToGreen2>();
 		return Obj;
 	}
 	

@@ -22,6 +22,7 @@
 #include "Object/LineContainer.h"
 #include "GameObject/Line.h"
 #include "Object/EffectSceneChangeStar.h"
+#include "Object/EffectChangeToGreen2.h"
 
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
@@ -126,7 +127,7 @@ void CClientManager::CreateDefaultSceneMode()
 	*/
 
 	CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialStage.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
 }
 
 int CClientManager::Run()
@@ -203,6 +204,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CEffectSceneChangeStar).hash_code())
 	{
 		CEffectSceneChangeStar* Obj = Scene->LoadGameObject<CEffectSceneChangeStar>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectChangeToGreen2).hash_code())
+	{
+		CEffectChangeToGreen2* Obj = Scene->LoadGameObject<CEffectChangeToGreen2>();
 		return Obj;
 	}
 

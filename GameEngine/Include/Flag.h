@@ -100,7 +100,7 @@ enum Collision_Channel
 	PlayerAttack,
 	Monster,
 	MonsterAttack,
-	Channel1,
+	PlayerEffect,
 	Channel2,
 	Channel3,
 	Channel4,

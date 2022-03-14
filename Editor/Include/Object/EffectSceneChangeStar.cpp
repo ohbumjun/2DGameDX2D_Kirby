@@ -21,7 +21,7 @@ void CEffectSceneChangeStar::Start()
 	CGameObject::Start();
 
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
-	m_ColliderBody = (CColliderCircle*)FindComponent("ColliderBody");
+	m_ColliderBody = (CColliderCircle*)FindComponent("EffectChangeStarColliderBody");
 
 }
 
@@ -56,7 +56,7 @@ bool CEffectSceneChangeStar::Init()
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
 
 	// Todo : Collider Circle
-	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
+	m_ColliderBody = CreateComponent<CColliderCircle>("EffectChangeStarColliderBody");
 
 	Vector2 ColliderCenter = Vector2(
 		m_Sprite->GetWorldPos().x + m_Sprite->GetWorldScale().x * m_Sprite->GetPivot().x,
@@ -87,4 +87,9 @@ void CEffectSceneChangeStar::PostUpdate(float DeltaTime)
 CEffectSceneChangeStar* CEffectSceneChangeStar::Clone()
 {
 	return new CEffectSceneChangeStar(*this);
+}
+
+void CEffectSceneChangeStar::Save(FILE* pFile)
+{
+	CGameObject::Save(pFile);
 }

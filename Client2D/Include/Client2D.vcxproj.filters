@@ -192,6 +192,9 @@
     <ClCompile Include="Object\EffectKirbyRide.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen2.cpp">
+      <Filter>02. Object\07. Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -324,6 +327,9 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectKirbyRide.h">
+      <Filter>02. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen2.h">
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
   </ItemGroup>

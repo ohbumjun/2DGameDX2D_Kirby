@@ -22,10 +22,10 @@
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
-m_LeverMoveAccel(1.5f),
+m_LeverMoveAccel(1.8f),
 m_LeverVelocity(0.f),
 m_LeverMaxMoveVelocity(350.f),
-m_DashMoveAccel(2.0f),
+m_DashMoveAccel(2.2f),
 m_DashVelocity(0.f),
 m_DashMaxMoveVelocity(250.f),
 m_TriangleJumpVelocityRatio(0.8f),
@@ -54,7 +54,6 @@ m_PullDistance(100.f)
 	m_Opacity   = 1.f;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
-	 
 }
 
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
@@ -1108,6 +1107,9 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 	// 날고 나서 다시 바닥에 착지할 때, Bounce 될 수있도록 한다.
 	m_Bounced = false;
 
+	// Line 위에서 올라갈 수 있게 , JumpStart를 true로 세팅한ㄷ
+	m_JumpStart = true;
+
 	// 나는 중이라면, 계속 날게 세팅한다
 	if (m_IsFlying)
 	{
@@ -1803,6 +1805,9 @@ void CPlayer2D::SpecialChangeEffect()
 {
 	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
 	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, GetWorldPos().z);
+
+	m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
+
 	/*
 	CBubbleParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CBubbleParticle>("Special Change");
 	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z);

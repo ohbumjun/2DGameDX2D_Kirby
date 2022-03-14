@@ -29,6 +29,9 @@ CMainScene::~CMainScene()
 void CMainScene::Start()
 {
 	CSceneMode::Start();
+
+	/*
+	< 아래의 과정들은, PrepareScene 함수에서 미리 처리해준다. >
 	
 	CreateMaterial();
 
@@ -37,6 +40,7 @@ void CMainScene::Start()
 	CreateParticle();
 
 	CreateSound();
+	*/
 
 	// Particle
 	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
@@ -224,19 +228,19 @@ void CMainScene::CreateParticle()
 	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
 
 	SpecialChangeParticle->SetMaterial(ParticleMaterial);
-	SpecialChangeParticle->SetSpawnCountMax(50);
+	SpecialChangeParticle->SetSpawnCountMax(100);
 	SpecialChangeParticle->SetScaleMin(Vector3(20.f, 20.f, 1.f));
 	SpecialChangeParticle->SetScaleMax(Vector3(50.f, 50.f, 1.f));
-	SpecialChangeParticle->SetSpeedMin(100.f);
-	SpecialChangeParticle->SetSpeedMax(300.f);
+	SpecialChangeParticle->SetSpeedMin(50.f);
+	SpecialChangeParticle->SetSpeedMax(400.f);
 	SpecialChangeParticle->SetLifeTimeMin(0.6f);
 	SpecialChangeParticle->SetLifeTimeMax(1.3f);
 	SpecialChangeParticle->SetMoveDir(Vector3(0.f, 1.f, 0.f));
-	SpecialChangeParticle->SetStartMin(Vector3(-100.f, 0.f, 0.f));
-	SpecialChangeParticle->SetStartMax(Vector3(100.f, 10.f, 0.f));
+	SpecialChangeParticle->SetStartMin(Vector3(-200.f, 0.f, 0.f));
+	SpecialChangeParticle->SetStartMax(Vector3(200.f, 10.f, 0.f));
 	SpecialChangeParticle->SetColorMin(Vector4(0.6f, 0.8f, 1.0f, 1.f));
 	SpecialChangeParticle->SetColorMax(Vector4(0.1f, 0.1f, 1.0f, 1.f));
-	SpecialChangeParticle->SetMoveAngle(Vector3(0.f, 0.f, -40.f));
+	SpecialChangeParticle->SetMoveAngle(Vector3(0.f, 0.f, -50.f));
 	// BubbleParticle->SetGravity(true);
 	SpecialChangeParticle->SetMove(true);
 }

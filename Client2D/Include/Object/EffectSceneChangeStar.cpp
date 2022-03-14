@@ -25,9 +25,9 @@ void CEffectSceneChangeStar::Start()
 	CGameObject::Start();
 
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
-	m_ColliderBody = (CColliderCircle*)FindComponent("ColliderBody");
+	m_ColliderBody = (CColliderCircle*)FindComponent("EffectChangeStarColliderBody");
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene);
-	m_ColliderBody->SetCollisionProfile("Monster");
+	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 }
 
 bool CEffectSceneChangeStar::Init()
@@ -61,7 +61,7 @@ bool CEffectSceneChangeStar::Init()
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
 
 	// Todo : Collider Circle
-	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
+	m_ColliderBody = CreateComponent<CColliderCircle>("EffectChangeStarColliderBody");
 
 	Vector2 ColliderCenter = Vector2(
 		m_Sprite->GetWorldPos().x + m_Sprite->GetWorldScale().x * m_Sprite->GetPivot().x,
@@ -69,7 +69,7 @@ bool CEffectSceneChangeStar::Init()
 	);
 
 	m_ColliderBody->SetInfo(ColliderCenter, m_Sprite->GetWorldScale().x * 0.4f);
-	m_ColliderBody->SetCollisionProfile("Monster");
+	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene);
 
 	m_Sprite->AddChild(m_ColliderBody);
@@ -97,7 +97,6 @@ CEffectSceneChangeStar* CEffectSceneChangeStar::Clone()
 
 void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const CollisionResult& Result)
 {
-
 	CGameObject* DestObject = Result.Dest->GetGameObject();
 
 	if (m_Scene->GetPlayerObject() == DestObject)

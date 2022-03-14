@@ -23,7 +23,8 @@ bool CCollisionManager::Init()
 	CreateProfile("Player", Collision_Channel::Player, true);
 	CreateProfile("PlayerAttack", Collision_Channel::PlayerAttack, true);
 	CreateProfile("Monster", Collision_Channel::Monster, true);
-	CreateProfile("MonsterAttack", Collision_Channel::MonsterAttack, true); //
+	CreateProfile("MonsterAttack", Collision_Channel::MonsterAttack, true); 
+	CreateProfile("PlayerEffect", Collision_Channel::PlayerEffect, true);
 
 	SetCollisionState("Player", Collision_Channel::Player, Collision_Interaction::Ignore);
 	SetCollisionState("Player", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
@@ -31,13 +32,20 @@ bool CCollisionManager::Init()
 	SetCollisionState("PlayerAttack", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
 	SetCollisionState("PlayerAttack", Collision_Channel::Player, Collision_Interaction::Ignore);
 	SetCollisionState("PlayerAttack", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
+	SetCollisionState("PlayerAttack", Collision_Channel::PlayerEffect, Collision_Interaction::Ignore);
+
+	SetCollisionState("PlayerEffect", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
+	SetCollisionState("PlayerEffect", Collision_Channel::Monster, Collision_Interaction::Ignore);
+	SetCollisionState("PlayerEffect", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
 
 	SetCollisionState("Monster", Collision_Channel::Monster, Collision_Interaction::Ignore);
 	SetCollisionState("Monster", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
+	SetCollisionState("Monster", Collision_Channel::PlayerEffect, Collision_Interaction::Ignore);
 
 	SetCollisionState("MonsterAttack", Collision_Channel::Monster, Collision_Interaction::Ignore);
 	SetCollisionState("MonsterAttack", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
 	SetCollisionState("MonsterAttack", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
+	SetCollisionState("MonsterAttack", Collision_Channel::PlayerEffect, Collision_Interaction::Ignore);
 
 	return true;
 }

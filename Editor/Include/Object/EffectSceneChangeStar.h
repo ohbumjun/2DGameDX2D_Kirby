@@ -18,5 +18,7 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CEffectSceneChangeStar* Clone() override;
+public:
+    virtual void Save(FILE* pFile) override;
 };
 
