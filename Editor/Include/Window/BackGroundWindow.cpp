@@ -310,10 +310,7 @@ void CBackGroundWindow::SetBackImageScale()
 	if (!m_BackImgScaleXInput->FloatEmpty() && !m_BackImgScaleYInput->FloatEmpty())
 	{
 		m_BackGround->SetWorldScale(m_BackImgScaleXInput->GetValueFloat(), m_BackImgScaleYInput->GetValueFloat(), 1.f);
-
-		// World Scale 도 세팅하기
-		CSceneManager::GetInst()->GetScene()->SetWorldResolution(
-			m_BackImgScaleXInput->GetValueFloat(), m_BackImgScaleYInput->GetValueFloat());
+		
 
 		char ImageWorldWidth[MAX_PATH] = {};
 		sprintf_s(ImageWorldWidth, "%.1f", m_BackImgScaleXInput->GetValueFloat());
