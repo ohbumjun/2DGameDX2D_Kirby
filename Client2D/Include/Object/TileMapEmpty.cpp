@@ -16,7 +16,7 @@ CTileMapEmpty::~CTileMapEmpty()
 
 void CTileMapEmpty::Start()
 {
-	CGameObject::Start();
+	CGameObject::Start(); //
 }
 
 bool CTileMapEmpty::Init()
