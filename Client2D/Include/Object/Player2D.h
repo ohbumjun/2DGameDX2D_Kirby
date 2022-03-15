@@ -81,6 +81,8 @@ private :
 
 	bool m_MoveDashEffectMade;
 
+	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
+
 public :
 	Vector3 GetInitWorldPos() const
 {
@@ -183,6 +185,16 @@ private :
 	void FallDownAttack();
 private :
 	void MovePointDown(float DeltaTime);
+public :
+	void ResetPlayerCallback()
+{
+		m_SceneChangeCallback = nullptr;
+}
+	template<typename T>
+	void SetSceneChangeCallback(T* Obj, void(T::*Func)(const CollisionResult&))
+{
+		m_SceneChangeCallback = std::bind(Func, Obj, std::placeholders::_1);
+}
 
 };
 

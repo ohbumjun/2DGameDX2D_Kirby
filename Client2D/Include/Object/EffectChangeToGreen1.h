@@ -19,5 +19,7 @@ public:
     virtual CEffectChangeToGreen1* Clone() override;
 private:
     void ChangeSceneToGreen1Scene(const CollisionResult& Result);
+    void SetSceneChangeCallbackToPlayer(const CollisionResult& Result);
+    void ResetSceneChangeCallbackToPlayer(const CollisionResult& Result);
 };
 

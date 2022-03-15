@@ -61,6 +61,12 @@
     <Filter Include="02. Object\09. Line">
       <UniqueIdentifier>{8c9146dc-b37f-46e0-87aa-abe304173656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect\01. SceneChange">
+      <UniqueIdentifier>{1969b4e5-cb3e-463c-9d8a-cc2f390fcb3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\07. Effect\02. PlayerEffect">
+      <UniqueIdentifier>{cba2cb7b-d67e-4ca4-be2f-5f801ff3b2e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,32 +180,35 @@
     <ClCompile Include="Object\LineContainer.cpp">
       <Filter>02. Object\09. Line</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectDash.cpp">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\EffectSpitOut.cpp">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\EffectRandomStar.cpp">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Object\SpecialChangeParticle.cpp">
       <Filter>02. Object\05. Particle</Filter>
     </ClCompile>
     <ClCompile Include="Object\EffectSceneChangeStar.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectKirbyRide.cpp">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\EffectChangeToGreen2.cpp">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Green2Scene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
     <ClCompile Include="Object\EffectChangeToGreen1.cpp">
-      <Filter>02. Object\07. Effect</Filter>
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen2.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectSceneChange.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectDash.cpp">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectKirbyRide.cpp">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectRandomStar.cpp">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectSpitOut.cpp">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,32 +326,35 @@
     <ClInclude Include="Object\LineContainer.h">
       <Filter>02. Object\09. Line</Filter>
     </ClInclude>
-    <ClInclude Include="Object\EffectDash.h">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectSpitOut.h">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectRandomStar.h">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Object\SpecialChangeParticle.h">
       <Filter>02. Object\05. Particle</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectSceneChangeStar.h">
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Object\EffectKirbyRide.h">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectChangeToGreen2.h">
-      <Filter>02. Object\07. Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Green2Scene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen1.h">
-      <Filter>02. Object\07. Effect</Filter>
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen2.h">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectSceneChange.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectDash.h">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectKirbyRide.h">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectRandomStar.h">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectSpitOut.h">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

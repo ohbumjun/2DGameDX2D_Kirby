@@ -6,6 +6,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
 #include "../Scene/Green2Scene.h"
+#include "Player2D.h"
 
 class CLoadingScene;
 
@@ -26,7 +27,11 @@ void CEffectChangeToGreen2::Start()
 
 	// m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen2Body");
 	m_ColliderBody = (CColliderBox2D*)m_RootComponent.Get();
-	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen2::ChangeSceneToGreen2Scene);
+
+	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen2::ChangeSceneToGreen2Scene);
+
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen2::SetSceneChangeCallbackToPlayer);
+	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToGreen2::ResetSceneChangeCallbackToPlayer);
 
 }
 
@@ -64,6 +69,7 @@ CEffectChangeToGreen2* CEffectChangeToGreen2::Clone()
 
 void CEffectChangeToGreen2::ChangeSceneToGreen2Scene(const CollisionResult& Result)
 {
+	/*
 	CGameObject* DestObject = Result.Dest->GetGameObject();
 
 	if (m_Scene->GetPlayerObject() == DestObject)
@@ -77,5 +83,35 @@ void CEffectChangeToGreen2::ChangeSceneToGreen2Scene(const CollisionResult& Resu
 			CSceneManager::GetInst()->ChangeNextScene();
 		}
 	}
+	*/
+	// Next Scene 에 세팅해둔다.
+	CSceneManager::GetInst()->CreateNewScene(false);
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);
+	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
+	{
+		CSceneManager::GetInst()->ChangeNextScene();
+	}
+}
 
+void CEffectChangeToGreen2::SetSceneChangeCallbackToPlayer(const CollisionResult& Result)
+{
+	CGameObject* DestObject = Result.Dest->GetGameObject();
+
+	if (m_Scene->GetPlayerObject() == DestObject)
+	{
+		CPlayer2D* Player = (CPlayer2D*)DestObject;
+		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen2::ChangeSceneToGreen2Scene);
+	}
+}
+
+void CEffectChangeToGreen2::ResetSceneChangeCallbackToPlayer(const CollisionResult& Result)
+{
+	CGameObject* DestObject = Result.Dest->GetGameObject();
+
+	if (m_Scene->GetPlayerObject() == DestObject)
+	{
+		CPlayer2D*Player = (CPlayer2D*)DestObject;
+		Player->ResetPlayerCallback();
+	}
 }

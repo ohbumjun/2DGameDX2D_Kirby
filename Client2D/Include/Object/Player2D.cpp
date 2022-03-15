@@ -48,7 +48,8 @@ m_IsEatingMonster(false),
 m_DeltaTime(0.f),
 m_IsFlying(false),
 m_FlySpeed(300.f),
-m_PullDistance(100.f)
+m_PullDistance(100.f),
+m_SceneChangeCallback(nullptr)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
@@ -333,8 +334,17 @@ void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 
 void CPlayer2D::MoveUp(float DeltaTime)
 {
-	FlyAfterJump(DeltaTime);
-	// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+	if (m_SceneChangeCallback)
+	{
+		CollisionResult Result;
+		m_SceneChangeCallback(Result);
+		m_SceneChangeCallback = nullptr;
+	}
+	else
+	{
+		FlyAfterJump(DeltaTime);
+		// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+	}
 }
 
 void CPlayer2D::MoveUpEnd(float DeltaTime)

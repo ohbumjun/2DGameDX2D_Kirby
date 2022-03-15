@@ -6,6 +6,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
 #include "../Scene/MainScene.h"
+#include "Player2D.h"
 
 CEffectChangeToGreen1::CEffectChangeToGreen1()
 {
@@ -70,6 +71,7 @@ CEffectChangeToGreen1* CEffectChangeToGreen1::Clone()
 
 void CEffectChangeToGreen1::ChangeSceneToGreen1Scene(const CollisionResult& Result)
 {
+	/*
 	CGameObject* DestObject = Result.Dest->GetGameObject();
 
 	if (m_Scene->GetPlayerObject() == DestObject )
@@ -83,5 +85,35 @@ void CEffectChangeToGreen1::ChangeSceneToGreen1Scene(const CollisionResult& Resu
 			CSceneManager::GetInst()->ChangeNextScene();
 		}
 	}
+	*/
+	CSceneManager::GetInst()->CreateNewScene(false);
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
+	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Green1.scn", SCENE_PATH))
+	{
+		CSceneManager::GetInst()->ChangeNextScene();
+	}
+}
 
+
+void CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer(const CollisionResult& Result)
+{
+	CGameObject* DestObject = Result.Dest->GetGameObject();
+
+	if (m_Scene->GetPlayerObject() == DestObject)
+	{
+		CPlayer2D* Player = (CPlayer2D*)DestObject;
+		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
+	}
+}
+
+void CEffectChangeToGreen1::ResetSceneChangeCallbackToPlayer(const CollisionResult& Result)
+{
+	CGameObject* DestObject = Result.Dest->GetGameObject();
+
+	if (m_Scene->GetPlayerObject() == DestObject)
+	{
+		CPlayer2D* Player = (CPlayer2D*)DestObject;
+		Player->ResetPlayerCallback();
+	}
 }
