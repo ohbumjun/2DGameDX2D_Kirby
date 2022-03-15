@@ -24,9 +24,6 @@ CTileMapWindow::~CTileMapWindow()
 
 void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 {
-	if (m_TileMapEmpty)
-		return;
-
 	m_TileMapEmpty = TileMap;
 
 	// 전체 World Scale 정보도 세팅해야 하는가 ?

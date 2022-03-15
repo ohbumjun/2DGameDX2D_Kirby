@@ -23,7 +23,8 @@ protected:
 	Vector3     m_PrevWorldPos;
 	float         m_RatioAdjustOffSet;
 
-	bool m_FollowPlayer;
+	bool			m_FollowPlayer;
+	bool			m_AdjustRatio;
 
 public:
 	Resolution GetResolution()	const
@@ -59,7 +60,10 @@ public:
 	Matrix GetRatioViewMatrix(float ScrollRatio);
 
 public:
-
+	void SetAdjustRatio(bool Ratio)
+	{
+		m_AdjustRatio = Ratio;
+	}
 	void SetFollowPlayer (bool Enable)
 	{
 		m_FollowPlayer = Enable;

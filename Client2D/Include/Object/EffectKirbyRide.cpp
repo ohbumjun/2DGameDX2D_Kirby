@@ -5,9 +5,11 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
 #include "Engine.h"
+#include "Component/TileEmptyComponent.h"
 
 CEffectKirbyRide::CEffectKirbyRide()  :
-	m_YToggleDir(1.f)
+	m_YToggleDir(1.f) ,
+	m_GetOutOfOriginalWorldTime(2.f)
 {
 	SetTypeID<CEffectKirbyRide>();
 }
@@ -25,6 +27,9 @@ void CEffectKirbyRide::Start()
 	m_Scene->GetCameraManager()->KeepCamera();
 	m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
 	// m_Scene->GetCameraManager()->ReturnCamera();
+
+	// TileMap을 보이지 않게 세팅한다.
+	m_Scene->GetTileEmptyComponent()->Enable(false);
 }
 
 bool CEffectKirbyRide::Init()
@@ -57,6 +62,8 @@ bool CEffectKirbyRide::Init()
 
 	m_Camera->OnViewportCenter();
 
+	m_Camera->SetAdjustRatio(false);
+
 	m_Sprite->AddChild(m_Camera);
 
 	// Resolution
@@ -69,20 +76,29 @@ void CEffectKirbyRide::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	AddWorldPos(Vector3(1.f, m_YToggleDir, 0.f) * DeltaTime * 400.f);
+	if (m_GetOutOfOriginalWorldTime > 0.f)
+	{
+		m_GetOutOfOriginalWorldTime -= DeltaTime;
 
-	if (GetWorldPos().y - (float)m_RS.Height * 0.4f < 0.f)
-	{
-		m_YToggleDir = 1.f;
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 500.f);
 	}
-	else if (GetWorldPos().y + (float)m_RS.Height * 0.4f >= (float)m_RS.Height)
+	else
 	{
-		m_YToggleDir = 1.f * -1.f;
+		AddWorldPos(Vector3(1.f, m_YToggleDir, 0.f) * DeltaTime * 300.f);
+
+		if (GetWorldPos().y - (float)m_RS.Height * 0.5f <= 0.f)
+		{
+			m_YToggleDir = 1.f;
+		}
+		else if (GetWorldPos().y + (float)m_RS.Height * 0.2f >= (float)m_RS.Height)
+		{
+			m_YToggleDir = 1.f * -1.f;
+		}
 	}
 
 
 	// 점점 줄어들게 한다.
-	SetWorldScale(GetWorldScale().x * 0.9995f, GetWorldScale().y * 0.9995f, 1.f);
+	SetWorldScale(GetWorldScale().x * 0.9998f, GetWorldScale().y * 0.9998f, 1.f);
 
 	// 현재 카메라가 자식 Component 라면
 	if (m_Sprite->FindChild(m_Scene->GetCameraManager()->GetCurrentCamera()))

@@ -16,6 +16,7 @@ private:
     Resolution m_RS;
 private :
     float m_YToggleDir;
+    float m_GetOutOfOriginalWorldTime;
 public :
     CCameraComponent* GetCameraComponent() const
 {

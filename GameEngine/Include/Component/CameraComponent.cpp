@@ -3,17 +3,18 @@
 #include "../Scene/Scene.h"
 #include "../GameObject/LifeObject.h"
 
-CCameraComponent::CCameraComponent() 
+CCameraComponent::CCameraComponent()  :
+	m_AdjustRatio(true),
+	m_FollowPlayer(false)
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
 
-	m_Render = false;
-	m_FollowPlayer = false;
-
 	m_ViewAngle = 90.f;
 	m_Distance = 1000.f;
 	m_CameraType = Camera_Type::Camera2D;
+
+	m_Render = false;
 
 	m_RatioAdjustOffSet = 2.f;
 }
@@ -82,6 +83,9 @@ void CCameraComponent::CreateProjectionMatrix()
 
 bool CCameraComponent::LimitCameraAreaInsideWorld()
 {
+	if (!m_AdjustRatio)
+		return false;
+
 	bool Outside = false;
 
 	// Limit Area
@@ -138,6 +142,9 @@ void CCameraComponent::AdjustCameraPosToRatio()
 {
 	// 현재 Player를 따라가고 있는 중이라면 X
 	if (m_FollowPlayer)
+		return;
+
+	if (!m_AdjustRatio)
 		return;
 
 	// Player가 Is Ground 혹은 Side Collision 일때는 비율 조정 X

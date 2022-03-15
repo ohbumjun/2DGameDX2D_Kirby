@@ -656,7 +656,8 @@ void CEditorMenu::LoadObject()
 
 			CGameObject* CheckObject = CSceneManager::GetInst()->GetScene()->FindGameObject(ObjectName.c_str());
 
-			if (CheckObject->GetRootComponent()->CheckType<CTileMapComponent>())
+			if (CheckObject->GetRootComponent() &&
+				CheckObject->GetRootComponent()->CheckType<CTileMapComponent>())
 			{
 				SAFE_DELETE(LoadedObject);
 				return;
