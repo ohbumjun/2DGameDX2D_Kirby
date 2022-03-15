@@ -13,7 +13,7 @@ CNormalBear::~CNormalBear()
 
 void CNormalBear::Start()
 {
-	SetWorldScale(150.f, 150.f, 1.f);
+	SetWorldScale(180.f, 180.f, 1.f);
 
 	CNormalMonster::Start();
 
@@ -34,7 +34,7 @@ bool CNormalBear::Init()
 
 	SetCurrentAnimation("RightIdle");
 
-	SetWorldScale(150.f, 150.f, 1.f);
+	SetWorldScale(180.f, 180.f, 1.f);
 
 	return true;
 }

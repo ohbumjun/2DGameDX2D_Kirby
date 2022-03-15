@@ -42,7 +42,7 @@ void CBullet::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	float Dist = 500.f * DeltaTime;
+	float Dist = 50.f * DeltaTime;
 
 	m_Distance -= Dist;
 
@@ -51,7 +51,7 @@ void CBullet::Update(float DeltaTime)
 		Destroy();
 	}
 
-	AddRelativePos(GetWorldAxis(AXIS_Y) * Dist);
+	AddRelativePos(GetWorldAxis(AXIS_X) * Dist * -1.f);
 }
 
 void CBullet::PostUpdate(float DeltaTime)

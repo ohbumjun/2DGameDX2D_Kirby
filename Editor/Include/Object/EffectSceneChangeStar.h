@@ -1,5 +1,6 @@
 #pragma once
-#include "C:\Users\dhsys\Desktop\DX_Project\Engine\Include\GameObject\GameObject.h"
+#include "GameObject\GameObject.h"
+#include "Component/CameraComponent.h"
 
 class CEffectSceneChangeStar :
     public CGameObject
@@ -12,6 +13,7 @@ protected:
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
+    CSharedPtr<CCameraComponent>     m_Camera;
 public:
     virtual void Start() override;
     virtual bool Init() override;

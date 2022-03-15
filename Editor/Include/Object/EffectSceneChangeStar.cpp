@@ -68,6 +68,10 @@ bool CEffectSceneChangeStar::Init()
 
 	m_Sprite->AddChild(m_ColliderBody);
 
+	// Camera
+	m_Camera = CreateComponent<CCameraComponent>("DefaultCamera");
+	m_Camera->OnViewportCenter();
+	m_Sprite->AddChild(m_Camera);
 
 	return true;
 }

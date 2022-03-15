@@ -8,6 +8,7 @@
 #include "Component/ColliderCircle.h"
 #include "EffectKirbyRide.h"
 #include "Engine.h"
+#include "BulletCamera.h"
 
 CEffectSceneChangeStar::CEffectSceneChangeStar()
 {
@@ -30,6 +31,10 @@ void CEffectSceneChangeStar::Start()
 	m_ColliderBody = (CColliderCircle*)m_RootComponent->FindComponent("EffectChangeStarColliderBody");
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene);
 	m_ColliderBody->SetCollisionProfile("PlayerEffect");
+
+	// m_Camera = FindComponentByType<CCameraComponent>();
+	m_Camera = (CCameraComponent*)FindComponent("DefaultCamera");
+	m_Camera->OnViewportCenter();
 }
 
 bool CEffectSceneChangeStar::Init()
@@ -62,7 +67,7 @@ bool CEffectSceneChangeStar::Init()
 
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
 
-	// Todo : Collider Circle
+	// Collider
 	m_ColliderBody = CreateComponent<CColliderCircle>("EffectChangeStarColliderBody");
 
 	Vector2 ColliderCenter = Vector2(
@@ -76,6 +81,10 @@ bool CEffectSceneChangeStar::Init()
 
 	m_Sprite->AddChild(m_ColliderBody);
 
+	// Camera
+	m_Camera = CreateComponent<CCameraComponent>("DefaultCamera");
+	m_Camera->OnViewportCenter();
+	m_Sprite->AddChild(m_Camera);
 
 	return true;
 }
@@ -104,31 +113,31 @@ void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const Collision
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		// Kirby Ride Object 생성하고
+		// 메인 카메라를 Player 에서 지워주고, EffectKirby Ride 에 붙여준다.
 		CEffectKirbyRide* KirbyRide = m_Scene->CreateGameObject<CEffectKirbyRide>("KirbyRide");
 
 		// Player는 화면에서 안보이게 하고
 		DestObject->Enable(false);
 
-		// 메인 카메라를 Player 에서 지워주고, EffectKirby Ride 에 붙여준다.
-		CCameraComponent* MainCamera = m_Scene->GetCameraManager()->GetCurrentCamera();
-
-		DestObject->GetRootComponent()->DeleteChild(MainCamera);
-
-		KirbyRide->GetRootComponent()->AddChild(MainCamera);
-
+		/*
 		Vector2  WorldMapScale = m_Scene->GetWorldResolution();
 
 		Resolution RS = CEngine::GetInst()->GetResolution();
 
 		Vector3 OriginalScale = GetWorldScale();
 
-		// 화면 나가지 않는 선에서 비율 조정하기
 		float XOutDiff = GetWorldPos().x + (float)RS.Width * 0.5f - WorldMapScale.x;
+		
 		float YOutDiff = GetWorldPos().y + (float)RS.Height * 0.5f - WorldMapScale.y;
+		*/
 
-		KirbyRide->SetWorldPos(Vector3(GetWorldPos().x - XOutDiff, GetWorldPos().y - YOutDiff, GetWorldPos().z));
+		// KirbyRide->SetWorldPos(Vector3(GetWorldPos().x - XOutDiff, GetWorldPos().y - YOutDiff, GetWorldPos().z));
 
-		MainCamera->SetGameObject(this);
+		KirbyRide->SetWorldPos(DestObject->GetWorldPos());
+
+		// World Scale을 가로 2배로 늘린다.
+		
+		m_Scene->SetWorldResolution(m_Scene->GetWorldResolution().x * 2.f, m_Scene->GetWorldResolution().y);
 
 		// 자기 자신도 사라지게 세팅한다
 		Destroy();

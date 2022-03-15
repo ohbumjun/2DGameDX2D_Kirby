@@ -176,6 +176,8 @@ void CRenderManager::Render()
 		{
 			for (int i = 0; i < (*iter)->RenderCount; i++)
 			{
+				if (!(*iter)->RenderList[i]->IsEnable())
+					continue;
 				(*iter)->RenderList[i]->Render();
 			}
 		}

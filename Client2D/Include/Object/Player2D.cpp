@@ -254,9 +254,10 @@ void CPlayer2D::Start()
 		KeyState_Down, this, &CPlayer2D::Attack);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", 
 		KeyState_Down, this, &CPlayer2D::Attack1);
+	*/
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
 		KeyState_Down, this, &CPlayer2D::Skill1);
-	*/
+
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", 
 		KeyState_Down, this, &CPlayer2D::MovePointDown);
 
@@ -1994,4 +1995,13 @@ void CPlayer2D::MovePointDown(float DeltaTime)
 	Vector2 MousePos = CInput::GetInst()->GetMouseWorld2DPos();
 
 	Move(Vector3(MousePos.x, MousePos.y, 0.f));
+}
+
+void CPlayer2D::Skill1(float DeltaTime)
+{
+	CBulletCamera* Bullet = m_Scene->CreateGameObject<CBulletCamera>("Bullet");
+
+	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
+	Bullet->SetWorldPos(GetWorldPos());
+	Bullet->SetWorldRotation(GetWorldRot());
 }

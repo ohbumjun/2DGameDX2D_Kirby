@@ -197,7 +197,7 @@ public :
 {
 		m_SceneChangeCallback = std::bind(Func, Obj, std::placeholders::_1);
 }
-
+	void Skill1(float DeltaTime);
 };
 
 

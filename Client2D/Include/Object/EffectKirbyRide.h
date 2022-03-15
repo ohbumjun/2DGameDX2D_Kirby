@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject\GameObject.h"
+#include "Component/CameraComponent.h"
 
 class CEffectKirbyRide :
     public CGameObject
@@ -11,6 +12,15 @@ protected:
     virtual ~CEffectKirbyRide();
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
+    CSharedPtr<CCameraComponent>     m_Camera;
+    Resolution m_RS;
+private :
+    float m_YToggleDir;
+public :
+    CCameraComponent* GetCameraComponent() const
+{
+        return m_Camera;
+}
 public:
     virtual void Start() override;
     virtual bool Init() override;

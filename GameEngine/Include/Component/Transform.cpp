@@ -3,6 +3,7 @@
 #include "CameraComponent.h"
 #include "../Scene/CameraManager.h"
 #include "../Scene/Scene.h"
+#include "../Scene/SceneManager.h"
 
 CTransform::CTransform() :
 	m_Scene(nullptr),
@@ -609,7 +610,8 @@ void CTransform::SetTransform()
 	// m_CBuffer->SetProjMatrix(matProj);
 
 	// 카메라 메니저의 Camera 행렬 정보를 가져와서 세팅한다
-	CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
+	// CCameraComponent* Camera = m_Scene->GetCameraManager()->GetCurrentCamera();
+	CCameraComponent* Camera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
 
 	m_CBuffer->SetViewMatrix(Camera->GetRatioViewMatrix(m_ScrollRatio));
   	// m_CBuffer->SetViewMatrix(Camera->GetViewMatrix());
