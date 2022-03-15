@@ -101,6 +101,8 @@ void CEffectChangeToGreen2::SetSceneChangeCallbackToPlayer(const CollisionResult
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		CPlayer2D* Player = (CPlayer2D*)DestObject;
+		if (!Player)
+			return;
 		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen2::ChangeSceneToGreen2Scene);
 	}
 }
@@ -112,6 +114,10 @@ void CEffectChangeToGreen2::ResetSceneChangeCallbackToPlayer(const CollisionResu
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		CPlayer2D*Player = (CPlayer2D*)DestObject;
+
+		if (!Player)
+			return;
+
 		Player->ResetPlayerCallback();
 	}
 }

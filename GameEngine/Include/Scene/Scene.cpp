@@ -270,7 +270,6 @@ bool CScene::LoadFullPath(const char* FullPath)
 
 		for (; iter != iterEnd;++iter)
 		{
-
 			// 만약 Scene Change 과정에서 이미 Player가 세팅되어 있다면
 			// Player2D Type은 Load 하지 않는다. --> ClientManager 코드에서 살펴보기 
 			// if (CSceneManager::GetStaticPlayerInfo() && TypeID == m_PlayerTypeID)
@@ -349,7 +348,7 @@ void CScene::DeletePlayerFromScene()
 	// 하나를 찾아내고
 	for (; iter != iterEnd; ++iter)
 	{
-		if ((*iter)->GetTypeID() == m_PlayerTypeID)
+		if ((*iter)->GetTypeID() == CSceneManager::GetStaticPlayerInfo()->GetTypeID())
 		{
 			iter = m_ObjList.erase(iter);
 			return;

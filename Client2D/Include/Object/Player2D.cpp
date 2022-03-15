@@ -123,6 +123,9 @@ void CPlayer2D::Start()
 {
 	CLifeObject::Start();
 
+	m_Body = (CColliderBox2D*)FindComponent("Body");
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
+
 	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?
 	// 한편, 기존 Kirby State 정보는 유지하기 위해서, Static Player가 없을 때만
 	// 즉, Scene Change가 일어나지 않을 때만 Kirby State 를 다시 세팅해준다. 
@@ -131,6 +134,28 @@ void CPlayer2D::Start()
 		m_KirbyState = (CNormalKirbyState*)FindComponent("PlayerSprite");
 		// m_KirbyState = dynamic_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
 		// m_KirbyState = static_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
+
+
+		// PullRightCollider
+		m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
+		m_PullRightCollider->SetCollisionProfile("Player");
+		m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
+		m_PullRightCollider->Enable(false);
+
+		m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
+			(m_KirbyState->GetWorldScale().y * 0.5f));
+		m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
+		m_KirbyState->AddChild(m_PullRightCollider);
+
+		// PullLeftCollider
+		m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
+		m_PullLeftCollider->SetCollisionProfile("Player");
+		m_PullLeftCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
+		m_PullLeftCollider->Enable(false);
+		m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
+			(m_KirbyState->GetWorldScale().y * 0.5f));
+		m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
+		m_KirbyState->AddChild(m_PullLeftCollider);
 	}
 
 	m_KirbyState->Start();
@@ -138,46 +163,32 @@ void CPlayer2D::Start()
 	SetRootComponent(m_KirbyState);
 
 	m_InitPlayerPos = m_KirbyState->GetWorldPos();
-	
-	m_Body = (CColliderBox2D*)FindComponent("Body");
-	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
-	// m_KirbyState->AddChild(m_Body);
 
-
-	m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
-	m_PullRightCollider->SetCollisionProfile("Player");
-	m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
-	m_PullRightCollider->Enable(false);
+	m_PullRightCollider = (CColliderBox2D*)FindComponent("PullRightCollider");
 	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollisionBeginCallback);
 	m_PullRightCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullRightCollisionEndCallback);
-	m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
-		(m_KirbyState->GetWorldScale().y * 0.5f));
-	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
-	m_KirbyState->AddChild(m_PullRightCollider);
 
-	m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
-	m_PullLeftCollider->SetCollisionProfile("Player");
-	m_PullLeftCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
-	m_PullLeftCollider->Enable(false);
+	m_PullLeftCollider = (CColliderBox2D*)FindComponent("PullLeftCollider");
 	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullLeftCollisionBeginCallback);
 	m_PullLeftCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullLeftCollisionEndCallback);
-	m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
-		(m_KirbyState->GetWorldScale().y * 0.5f));
-	m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
-	m_KirbyState->AddChild(m_PullLeftCollider);
 	
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	// Widget Component의 Widget 생성
 	m_SimpleHUDWidget = (CWidgetComponent*)(FindComponent("SimpleHUD"));
+
 	if (!m_SimpleHUDWidget)
 	{
 		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
 		m_KirbyState->AddChild(m_SimpleHUDWidget);
 	}
-	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
-	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-	// m_KirbyState->AddChild(m_SimpleHUDWidget);
+
+	if (!CSceneManager::GetStaticPlayerInfo())
+	{
+		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+		// m_KirbyState->AddChild(m_SimpleHUDWidget);
+	}
 
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
 	// m_KirbyState->AddChild(m_Camera);
@@ -280,8 +291,6 @@ void CPlayer2D::Start()
 	*/
 	SetBasicSettingToChangedState();
 
-	m_Scene->SetPlayerTypeID(GetTypeID());
-
 	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
 }
 
@@ -335,6 +344,11 @@ void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 
 void CPlayer2D::MoveUp(float DeltaTime)
 {
+	if (m_GamePlayDelayTime > 0.f)
+	{
+		return;
+	}
+
 	if (m_SceneChangeCallback && m_FallTime < 0.1f)
 	{
 		CollisionResult Result;
@@ -397,6 +411,11 @@ void CPlayer2D::MoveDown(float DeltaTime)
 
 void CPlayer2D::MoveLeft(float DeltaTime) //
 {
+	if (m_GamePlayDelayTime > 0.f)
+	{
+		return;
+	}
+
 	// 오른쪽 버튼을 누른 상태라면 X
 	if (m_RightMovePush)
 		return;
@@ -577,6 +596,10 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 
 void CPlayer2D::MoveRight(float DeltaTime)
 {
+	if (m_GamePlayDelayTime > 0.f)
+	{
+		return;
+	}
 
 	// 왼쪽 키를 누르고 있었다면 안먹게 한다
 	if (m_LeftMovePush)
@@ -1115,6 +1138,11 @@ void CPlayer2D::RotationZ(float DeltaTime)
 
 void CPlayer2D:: FlyAfterJump(float DeltaTime)
 {
+	if (m_GamePlayDelayTime > 0.f)
+	{
+		return;
+	}
+
 	// 일단 한번 뛴 상태에서 날아야 한다.
 	/*
 	if (m_Jump)
@@ -1181,6 +1209,11 @@ void CPlayer2D::SimpleJump()
 
 void CPlayer2D::Jump(float DeltaTime)
 {
+	if (m_GamePlayDelayTime > 0.f)
+	{
+		return;
+	}
+
 	// 삼각 충돌 적용하기
 	bool SideCollision = false;
 

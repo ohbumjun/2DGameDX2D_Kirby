@@ -61,7 +61,7 @@ bool CSceneManager::ChangeScene()
 			m_StaticPlayer = m_Scene->GetPlayerObject();
 
 			// 어느정도 Delay를 준다.
-			Sleep(1500);
+			Sleep(1000);
 
 			// Scene 정보 변화
 			SAFE_DELETE(m_Scene);
@@ -72,6 +72,8 @@ bool CSceneManager::ChangeScene()
 			{
 				m_Scene->SetPlayerObject(m_StaticPlayer);
 
+				m_StaticPlayer->SetScene(m_Scene);
+
 				// 현재 Scene 에서 Player2D 에 해당하는 GameObject를 지운다.
 				m_Scene->DeletePlayerFromScene();
 
@@ -79,19 +81,18 @@ bool CSceneManager::ChangeScene()
 				m_Scene->m_ObjList.push_back(m_StaticPlayer);
 
 				// m_StaticPlayer = nullptr;
+
+				m_Scene->m_PlayerTypeID = m_StaticPlayer->GetTypeID();
 			}
 
 			m_NextScene = nullptr;
-
-			CGameObject* Player = m_Scene->GetPlayerObject();
-
-			Player->SetScene(m_Scene);
 
 			// Object 목록 세팅 
 			CRenderManager::GetInst()->SetObjectList(&m_Scene->m_ObjList);
 
 			// Start 함수 호출
 			m_Scene->Start();
+
 
 			return true;
 		}

@@ -29,7 +29,7 @@ CLifeObject::CLifeObject():
 	m_GroundOffSet(1.f),
 	m_ApplyBottomCollision(true),
 	m_PrevPos{},
-	m_PhysicApplyDelayTime(2.0f),
+	m_GamePlayDelayTime(2.0f),
 	m_IsGroundObject(false)
 {}
 
@@ -66,9 +66,9 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
-	if (m_PhysicApplyDelayTime >= 0.f)
+	if (m_GamePlayDelayTime >= 0.f)
 	{
-		m_PhysicApplyDelayTime -= DeltaTime;
+		m_GamePlayDelayTime -= DeltaTime;
 
 		m_IsFalling = false;
 

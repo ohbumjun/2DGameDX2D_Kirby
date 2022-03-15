@@ -261,6 +261,13 @@ void CGameObject::PrevRender()
 {
 	size_t Size = m_vecObjectComponent.size();
 
+	// 야매 코드
+	if (Size > 10000)
+	{
+		m_vecChildObject.clear();
+		Size = 0;
+	}
+
 	for (size_t i = 0; i < Size; ++i)
 	{
 		m_vecObjectComponent[i]->PrevRender();
@@ -274,6 +281,13 @@ void CGameObject::Render()
 {
 	size_t Size = m_vecObjectComponent.size();
 
+	// 야매 코드
+	if (Size > 10000)
+	{
+		m_vecChildObject.clear();
+		Size = 0;
+	}
+
 	for (size_t i = 0; i < Size; ++i)
 	{
 		m_vecObjectComponent[i]->Render();
@@ -286,6 +300,13 @@ void CGameObject::Render()
 void CGameObject::PostRender()
 {
 	size_t Size = m_vecObjectComponent.size();
+
+	// 야매 코드
+	if (Size > 10000)
+	{
+		m_vecChildObject.clear();
+		Size = 0;
+	}
 
 	for (size_t i = 0; i < Size; ++i)
 	{
@@ -383,6 +404,11 @@ void CGameObject::Load(FILE* pFile)
 	fread(&ObjectCount, sizeof(int), 1, pFile);
 
 	m_vecObjectComponent.clear();
+
+	if (ObjectCount > 10) // 디버그용 
+	{
+		int NewObjCount = ObjectCount;
+	}
 
 	for (int i = 0; i < ObjectCount; i++)
 	{

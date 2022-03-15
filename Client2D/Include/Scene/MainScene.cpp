@@ -62,6 +62,8 @@ void CMainScene::Start()
 
 	SetPlayerObject(Player2D);
 
+	Player2D->SetWorldPos(100.f, 600.f, 0.f);
+
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);

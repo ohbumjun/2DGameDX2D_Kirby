@@ -13,7 +13,7 @@ protected:
 	float m_FallVelocityMax;
 	float m_FallVelocity;
 	float m_SideWallCheck;
-	float m_PhysicApplyDelayTime;
+	float m_GamePlayDelayTime;
 	// Jump & Fall
 protected:
 	bool m_PhysicsSimulate;
