@@ -334,7 +334,7 @@ void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 
 void CPlayer2D::MoveUp(float DeltaTime)
 {
-	if (m_SceneChangeCallback)
+	if (m_SceneChangeCallback && m_IsGround && !m_IsFalling)
 	{
 		CollisionResult Result;
 		m_SceneChangeCallback(Result);

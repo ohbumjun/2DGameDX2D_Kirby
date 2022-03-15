@@ -307,6 +307,12 @@ void CMonster::Start()
 	m_ColliderBody->SetInheritScale(true);
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
 
+	float ParentWorldScaleX = m_ColliderBody->GetTransform()->GetTransformParent()->GetWorldScale().x;
+	if (ParentWorldScaleX != 0.f)
+	{
+		m_ColliderBody->SetInfo(Vector2(GetWorldPos().x, GetWorldPos().y), ParentWorldScaleX * 0.5f * 0.8f);
+	}
+
 	// PaperBurn
 	m_PaperBurn = (CPaperBurnComponent*)FindComponent("PaperBurn");
 	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);

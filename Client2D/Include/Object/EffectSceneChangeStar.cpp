@@ -100,6 +100,7 @@ CEffectSceneChangeStar* CEffectSceneChangeStar::Clone()
 void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const CollisionResult& Result)
 {
 	CGameObject* DestObject = Result.Dest->GetGameObject();
+	/*
 
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
@@ -120,15 +121,11 @@ void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const Collision
 
 		Resolution  RS = CEngine::GetInst()->GetResolution();
 
-		/*
-		MainCamera->SetWorldPos(Vector3(KirbyRide->GetWorldPos().x - (float)RS.Width * 0.5f,
-															KirbyRide->GetWorldPos().y - (float)RS.Height * 0.5f, 
-															KirbyRide->GetWorldPos().z));
-		*/
 
 		MainCamera->SetGameObject(this);
 
 		// 자기 자신도 사라지게 세팅한다
 		Destroy();
 	}
+	*/
 }

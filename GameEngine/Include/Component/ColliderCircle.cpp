@@ -56,7 +56,18 @@ void CColliderCircle::PostUpdate(float DeltaTime)
 {
 	CColliderComponent::PostUpdate(DeltaTime);
 
-	m_Info.Radius = m_Transform->GetTransformParent()->GetWorldScale().x * m_Transform->GetRelativeScale().x * 0.8f;
+	/*
+	if (!m_Scene->IsEditMode())
+	{
+		float ParentWorldScaleX = m_Transform->GetTransformParent()->GetWorldScale().x;
+		float RelativeScale = m_Transform->GetRelativeScale().x;
+
+		if (ParentWorldScaleX != 0.f && RelativeScale != 0.f)
+		{
+			m_Info.Radius = ParentWorldScaleX * RelativeScale * 0.8f;
+		}
+	}
+	*/
 
 	m_Info.Center.x = GetWorldPos().x + m_Offset.x;
 	m_Info.Center.y = GetWorldPos().y + m_Offset.y;

@@ -20,8 +20,8 @@ protected:
 	CSceneComponent*                         m_Parent;
 	std::vector<CSharedPtr<CSceneComponent>> m_vecChild;
 	bool                                     m_Render;
-protected :
-	CTransform* GetTrasform () const
+public: 
+	CTransform* GetTransform () const
 {
 		return m_Transform;
 }
