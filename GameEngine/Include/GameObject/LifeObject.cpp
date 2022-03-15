@@ -31,7 +31,6 @@ CLifeObject::CLifeObject():
 	m_PrevPos{},
 	m_PhysicApplyDelayTime(2.0f),
 	m_IsGroundObject(false)
-
 {}
 
 CLifeObject::CLifeObject(const CLifeObject& obj) : CGameObject(obj)

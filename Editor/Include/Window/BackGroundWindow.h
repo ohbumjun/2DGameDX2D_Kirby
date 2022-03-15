@@ -15,6 +15,8 @@ private: // todo :  BackGround Info
 	class CIMGUIText* m_BackImgScaleY;
 	class CIMGUIText* m_BaseImgScrollRatio;
 	class CIMGUITextInput* m_BaseImgScrollRatioInput;
+	class CIMGUITextInput* m_BackImgScaleXInput;
+	class CIMGUITextInput* m_BackImgScaleYInput;
 private:
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.
 	class CBackGroundComponent* m_BackGround;
@@ -41,6 +43,7 @@ private:
 private:
 	void BackGroundImageLoadButton();
 	void SetBackGroundScrollRatio();
+	void SetBackImageScale();
 
 };
 

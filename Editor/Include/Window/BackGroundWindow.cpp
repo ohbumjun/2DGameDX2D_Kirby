@@ -140,6 +140,33 @@ bool CBackGroundWindow::Init()
 	CIMGUIButton* Button = AddWidget<CIMGUIButton>("Change", 100.f, 30.f);
 	Button->SetClickCallback<CBackGroundWindow>(this, &CBackGroundWindow::SetBackGroundScrollRatio);
 
+	// ==============================
+
+	Label = AddWidget<CIMGUILabel>("Set Scale", 100.f, 30.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(120.f);
+
+	m_BackImgScaleXInput = AddWidget<CIMGUITextInput>("X");
+	m_BackImgScaleXInput->SetSize(70.f, 40.f);
+	m_BackImgScaleXInput->SetInt(100);
+	m_BackImgScaleXInput->SetTextType(ImGuiText_Type::Float);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(230.f);
+
+	m_BackImgScaleYInput = AddWidget<CIMGUITextInput>("Y");
+	m_BackImgScaleYInput->SetSize(70.f, 40.f);
+	m_BackImgScaleYInput->SetInt(100);
+	m_BackImgScaleYInput->SetTextType(ImGuiText_Type::Float);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(325.f);
+
+	Button = AddWidget<CIMGUIButton>("Set Img Scale", 85.f, 30.f);
+	Button->SetClickCallback<CBackGroundWindow>(this, &CBackGroundWindow::SetBackImageScale);
 
 	// BackGround Image Info 세팅 
 	char BackSizeX[MAX_PATH] = {};
@@ -263,4 +290,30 @@ void CBackGroundWindow::SetBackGroundScrollRatio()
 
 	// 실제 Scroll Ratio 정보 세팅
 	m_BackGround->SetScrollRatio(InputRatio);
+}
+
+void CBackGroundWindow::SetBackImageScale()
+{
+	if (!m_BackGround)
+		return;
+
+	if (CEditorManager::GetInst()->GetEditMode() != EditMode::Back)
+		return;
+
+	if (!m_BackImgScaleXInput->FloatEmpty() && !m_BackImgScaleYInput->FloatEmpty())
+	{
+		m_BackGround->SetWorldScale(m_BackImgScaleXInput->GetValueFloat(), m_BackImgScaleYInput->GetValueFloat(), 1.f);
+
+		// World Scale 도 세팅하기
+		CSceneManager::GetInst()->GetScene()->SetWorldResolution(
+			m_BackImgScaleXInput->GetValueFloat(), m_BackImgScaleYInput->GetValueFloat());
+
+		char ImageWorldWidth[MAX_PATH] = {};
+		sprintf_s(ImageWorldWidth, "%.1f", m_BackImgScaleXInput->GetValueFloat());
+		m_BackImgScaleX->SetText(ImageWorldWidth);
+
+		char ImageWorldHeight[MAX_PATH] = {};
+		sprintf_s(ImageWorldHeight, "%.1f", m_BackImgScaleYInput->GetValueFloat());
+		m_BackImgScaleY->SetText(ImageWorldHeight);
+	}
 }
