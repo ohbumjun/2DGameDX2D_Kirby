@@ -80,6 +80,8 @@ private :
 	Vector3 m_InitPlayerPos;
 
 	bool m_MoveDashEffectMade;
+	float m_MoveDashEffectLimitTime;
+	float m_MoveDashEffectLimitTimeMax;
 
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 

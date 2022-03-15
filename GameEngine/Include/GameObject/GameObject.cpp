@@ -261,13 +261,6 @@ void CGameObject::PrevRender()
 {
 	size_t Size = m_vecObjectComponent.size();
 
-	// 具概 内靛
-	if (Size > 10000)
-	{
-		m_vecChildObject.clear();
-		Size = 0;
-	}
-
 	for (size_t i = 0; i < Size; ++i)
 	{
 		m_vecObjectComponent[i]->PrevRender();
@@ -281,13 +274,6 @@ void CGameObject::Render()
 {
 	size_t Size = m_vecObjectComponent.size();
 
-	// 具概 内靛
-	if (Size > 10000)
-	{
-		m_vecChildObject.clear();
-		Size = 0;
-	}
-
 	for (size_t i = 0; i < Size; ++i)
 	{
 		m_vecObjectComponent[i]->Render();
@@ -300,13 +286,6 @@ void CGameObject::Render()
 void CGameObject::PostRender()
 {
 	size_t Size = m_vecObjectComponent.size();
-
-	// 具概 内靛
-	if (Size > 10000)
-	{
-		m_vecChildObject.clear();
-		Size = 0;
-	}
 
 	for (size_t i = 0; i < Size; ++i)
 	{

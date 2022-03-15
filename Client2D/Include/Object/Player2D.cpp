@@ -49,6 +49,8 @@ m_DeltaTime(0.f),
 m_IsFlying(false),
 m_FlySpeed(300.f),
 m_PullDistance(100.f),
+m_MoveDashEffectLimitTimeMax(0.2f),
+m_MoveDashEffectLimitTime(0.2f),
 m_SceneChangeCallback(nullptr)
 {
 	SetTypeID<CPlayer2D>();
@@ -574,7 +576,7 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	ChangePlayerRunAnimation();
 
 	// Effect 생성
-	if (!m_MoveDashEffectMade && !m_Jump)
+	if (!m_MoveDashEffectMade && !m_Jump && m_MoveDashEffectLimitTime >= m_MoveDashEffectLimitTimeMax)
 	{
 		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
 
@@ -587,6 +589,8 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		EffectDash->SetDirGoRight(true);
 
 		m_MoveDashEffectMade = true;
+
+		m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
 	}
 }
 
@@ -753,7 +757,7 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	ChangePlayerRunAnimation();
 
 	// Effect 생성
-	if (!m_MoveDashEffectMade && !m_Jump)
+	if (!m_MoveDashEffectMade && !m_Jump && m_MoveDashEffectLimitTime >= m_MoveDashEffectLimitTimeMax)
 	{
 		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
 
@@ -766,6 +770,8 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		EffectDash->SetDirGoRight(false);
 
 		m_MoveDashEffectMade = true;
+
+		m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
 	}
 }
 
@@ -1074,13 +1080,11 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 		}
 	}
 
-	// 속도가 없고 + 점프 상태가 아니라면 --> Idle Animation으로 바꿔준다.
-	/*
-	if (m_MoveVelocity <= 0.f && !m_Jump)
+	// 대시 Effect Limit Time을 Update 시킨다.
+	if (m_MoveDashEffectLimitTime < m_MoveDashEffectLimitTimeMax)
 	{
-		ChangePlayerIdleAnimation();
+		m_MoveDashEffectLimitTime += DeltaTime;
 	}
-	*/
 }
 
 void CPlayer2D::ResetMoveInfo()
@@ -1667,7 +1671,7 @@ void CPlayer2D::SetObjectLand()
 
 	m_IsFlying = false;
 
-	// m_MoveDashEffectMade = false;
+	m_MoveDashEffectMade = false;
 }
 
 void CPlayer2D::FallDownAttack(const CollisionResult& Result)
