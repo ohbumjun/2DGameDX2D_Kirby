@@ -344,6 +344,7 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	{
 		FlyAfterJump(DeltaTime);
 		// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+		
 	}
 }
 

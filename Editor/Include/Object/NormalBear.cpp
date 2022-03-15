@@ -21,6 +21,8 @@ bool CNormalBear::Init()
 	LoadAnimationInstance("Normal_Bear", TEXT("Normal_Bear.anim"));
 	SetCurrentAnimation("RightIdle");
 
+	SetWorldScale(200.f, 200.f, 1.f);
+
 	return true;
 }
 

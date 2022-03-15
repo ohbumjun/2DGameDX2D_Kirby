@@ -37,7 +37,9 @@ bool CColliderCircle::Init()
 		return false;
 
 	m_Info.Radius = 50.f;
+
 	SetInheritRotZ(true);
+
 	SetWorldScale(m_Info.Radius * 2.f, m_Info.Radius * 2.f, 1.f);
 
 	m_Mesh = m_Scene->GetResource()->FindMesh("Circle");
@@ -53,6 +55,8 @@ void CColliderCircle::Update(float DeltaTime)
 void CColliderCircle::PostUpdate(float DeltaTime)
 {
 	CColliderComponent::PostUpdate(DeltaTime);
+
+	m_Info.Radius = m_Transform->GetTransformParent()->GetWorldScale().x * m_Transform->GetRelativeScale().x * 0.8f;
 
 	m_Info.Center.x = GetWorldPos().x + m_Offset.x;
 	m_Info.Center.y = GetWorldPos().y + m_Offset.y;

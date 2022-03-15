@@ -304,6 +304,7 @@ void CMonster::Start()
 		&CMonster::OnMouseBegin);
 	m_ColliderBody->AddCollisionMouseCallback(Collision_State::End, this,
 		&CMonster::OnMouseEnd);
+	m_ColliderBody->SetInheritScale(true);
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
 
 	// PaperBurn
@@ -491,6 +492,12 @@ void CMonster::UpdateBeingOutOfPlayer(float DeltaTime)
 
 void CMonster::UpdateMonsterMove(float DeltaTime)
 {
+	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
+	if (m_PhysicApplyDelayTime >= 0.f)
+	{
+		return;
+	}
+
 	// 현재 공격중이거나, Trace 상태라면 기존 Dir을 그대로 유지한다.
 	if (m_AI == Monster_AI::Attack || m_AI == Monster_AI::Trace)
 		return;

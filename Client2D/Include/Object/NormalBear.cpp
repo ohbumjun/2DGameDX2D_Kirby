@@ -13,6 +13,8 @@ CNormalBear::~CNormalBear()
 
 void CNormalBear::Start()
 {
+	SetWorldScale(200.f, 200.f, 1.f);
+
 	CNormalMonster::Start();
 
 	m_PhysicsSimulate = true;
@@ -20,6 +22,7 @@ void CNormalBear::Start()
 	m_IsGround = true;
 
 	m_IsGroundObject = true;
+
 }
 
 bool CNormalBear::Init()
@@ -28,7 +31,10 @@ bool CNormalBear::Init()
 		return false;
 
 	LoadAnimationInstance("Normal_Bear", TEXT("Normal_Bear.anim"));
+
 	SetCurrentAnimation("RightIdle");
+
+	SetWorldScale(200.f, 200.f, 1.f);
 
 	return true;
 }

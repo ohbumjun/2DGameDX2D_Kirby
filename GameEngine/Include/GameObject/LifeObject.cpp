@@ -664,7 +664,7 @@ void CLifeObject::CheckBelowWorldResolution()
 void CLifeObject::CheckLineCollision(float DeltaTime)
 {
 	// 날아다니는 Object 들은 적용하지 않는다.
-	// if (!m_IsGroundObject)
+	//if (!m_IsGroundObject)
 	//	return;
 
 	bool BottomLineCollision = false;

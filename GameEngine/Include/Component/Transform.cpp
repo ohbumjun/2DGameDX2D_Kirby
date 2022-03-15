@@ -10,7 +10,8 @@ CTransform::CTransform() :
 	m_Owner(nullptr),
 	m_Parent(nullptr),
 	m_CBuffer(nullptr),
-	m_InheritScale(false),
+	// m_InheritScale(false),
+	m_InheritScale(true),
 	m_InheritRotX(false),
 	m_InheritRotY(false),
 	m_InheritRotZ(false),
@@ -163,7 +164,13 @@ void CTransform::InheritParentRotationPos(bool Current)
 void CTransform::InheritWorldScale(bool Current)
 {
 	if (m_Parent && m_InheritScale)
+	{
+		// 이거는 추가 코드
+		// m_WorldScale = m_Parent->GetWorldScale() * m_RelativeScale;
+
+		// 이거는 원래 코드 
 		m_RelativeScale = m_WorldScale / m_Parent->GetWorldScale();
+	}
 
 	m_UpdateScale = true;
 
@@ -429,6 +436,7 @@ void CTransform::SetWorldScale(const Vector3& Scale)
 	m_RelativeScale = m_WorldScale;
 
 	InheritWorldScale(true);
+	// InheritScale(true);
 }
 
 void CTransform::SetWorldScale(float x, float y, float z)

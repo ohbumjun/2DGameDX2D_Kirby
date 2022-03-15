@@ -21,6 +21,11 @@ private:
 	std::vector<CTransform*>        m_vecChild;
 	class CTransformConstantBuffer* m_CBuffer;
 
+public :
+	CTransform* GetTransformParent() const
+{
+		return m_Parent;
+}
 private :
 	float m_ScrollRatio;
 

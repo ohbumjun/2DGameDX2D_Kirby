@@ -23,17 +23,13 @@ void CEffectChangeToGreen1::Start()
 {
 	CGameObject::Start();
 
-	// m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen1Body");
+	m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen1Body");
 	m_ColliderBody = (CColliderBox2D*)(m_RootComponent.Get());
 
-	if (!m_ColliderBody)
-	{
-		dynamic_cast<CColliderBox2D*>(m_RootComponent.Get())->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
-	}
-	else
-	{
-		m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
-	}
+	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer);
+	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToGreen1::ResetSceneChangeCallbackToPlayer);
+
 
 }
 
