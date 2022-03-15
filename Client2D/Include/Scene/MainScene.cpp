@@ -247,6 +247,8 @@ void CMainScene::CreateParticle()
 
 void CMainScene::PrepareResources()
 {
+	CSceneMode::PrepareResources();
+
 	CreateMaterial();
 
 	CreateAnimationSequence();

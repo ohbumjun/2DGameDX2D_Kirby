@@ -170,6 +170,7 @@
     <ClCompile Include="Object\Bullet.cpp" />
     <ClCompile Include="Object\BulletCamera.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
+    <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
     <ClCompile Include="Object\EffectDash.cpp" />
     <ClCompile Include="Object\EffectKirbyRide.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
+    <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />
     <ClInclude Include="Object\EffectDash.h" />
     <ClInclude Include="Object\EffectKirbyRide.h" />

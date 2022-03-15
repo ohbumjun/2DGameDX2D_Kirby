@@ -142,10 +142,13 @@ void CUIWidget::Render()
 	matTranslate.Translation(m_RenderPos.x, m_RenderPos.y, 1.f);
 
 	CCameraComponent* UICamera = nullptr;
+	/*
 	if (m_Owner->GetViewPort())
 		UICamera = m_Owner->GetViewPort()->GetScene()->GetCameraManager()->GetCurrentCamera();
 	else
 		UICamera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
+	*/
+	UICamera = CSceneManager::GetInst()->GetScene()->GetCameraManager()->GetCurrentCamera();
 
 	matProj = UICamera->GetProjMatrix();
 	matWorld = matScale * matRotate * matTranslate;

@@ -1,5 +1,7 @@
 ﻿#include "Player2D.h"
 #include <Scene/CameraManager.h>
+#include <Scene/SceneManager.h>
+
 #include "Bullet.h"
 #include "BulletTornaido.h"
 #include "Input.h"
@@ -54,6 +56,7 @@ m_PullDistance(100.f)
 	m_Opacity   = 1.f;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
+
 }
 
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
@@ -67,6 +70,7 @@ CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	m_Opacity = obj.m_Opacity;
+
 }
 
 CPlayer2D::~CPlayer2D()
@@ -108,6 +112,9 @@ bool CPlayer2D::Init()
 	m_KirbyState->SetRelativePos(100.f, 50.f, 0.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
+
+	m_Scene->SetPlayerTypeID(GetTypeID());
+
 	return true;
 }
 
@@ -116,9 +123,14 @@ void CPlayer2D::Start()
 	CLifeObject::Start();
 
 	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?
-	m_KirbyState = (CNormalKirbyState*)FindComponent("PlayerSprite");
-	// m_KirbyState = dynamic_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
-	// m_KirbyState = static_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
+	// 한편, 기존 Kirby State 정보는 유지하기 위해서, Static Player가 없을 때만
+	// 즉, Scene Change가 일어나지 않을 때만 Kirby State 를 다시 세팅해준다. 
+	if (!CSceneManager::GetStaticPlayerInfo())
+	{
+		m_KirbyState = (CNormalKirbyState*)FindComponent("PlayerSprite");
+		// m_KirbyState = dynamic_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
+		// m_KirbyState = static_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
+	}
 
 	m_KirbyState->Start();
 	
@@ -250,8 +262,14 @@ void CPlayer2D::Start()
 		KeyState_Push, this, &CPlayer2D::SpitOut);
 
 	// Animation Play Scale 세팅
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
+	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle"))
+	{
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
+	}
+	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle"))
+	{
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
+	}
 
 	// Animation Loop 여부 세팅
 	/*
@@ -261,6 +279,8 @@ void CPlayer2D::Start()
 	// Jump 가 다 끝난 이후에는, Animation 을 Fall 상태로 바꿔라
 	*/
 	SetBasicSettingToChangedState();
+
+	m_Scene->SetPlayerTypeID(GetTypeID());
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -1766,6 +1786,8 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	SetRootComponent(m_KirbyState);
 
 	SetBasicSettingToChangedState();
+
+	m_KirbyState->SetScene(m_Scene);
 
 	m_KirbyState->SetWorldPos(OriginalPos);
 

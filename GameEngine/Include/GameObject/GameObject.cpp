@@ -49,7 +49,6 @@ void CGameObject::SetScene(CScene* Scene)
 {
 	m_Scene = Scene;
 
-	/*
 	if (m_RootComponent)
 		m_RootComponent->SetScene(Scene);
 
@@ -60,7 +59,6 @@ void CGameObject::SetScene(CScene* Scene)
 	{
 		(*iter)->SetScene(Scene);
 	}
-	*/
 }
 
 void CGameObject::Enable(bool Enable)
@@ -210,9 +208,9 @@ void CGameObject::Start()
 	if (m_RootComponent)
 		m_RootComponent->Start();
 
-	size_t Size = m_vecObjectComponent.size();
+	int Size = (int)m_vecObjectComponent.size();
 
-	for (size_t i = 0; i < Size; ++i)
+	for (int i = 0; i < Size; ++i)
 	{
 		m_vecObjectComponent[i]->Start();
 	}
@@ -381,8 +379,10 @@ void CGameObject::Load(FILE* pFile)
 		// m_RootComponent->ReAddTransformChild();
 	}
 
-	int ObjectCount;
+	int ObjectCount = 0;
 	fread(&ObjectCount, sizeof(int), 1, pFile);
+
+	m_vecObjectComponent.clear();
 
 	for (int i = 0; i < ObjectCount; i++)
 	{

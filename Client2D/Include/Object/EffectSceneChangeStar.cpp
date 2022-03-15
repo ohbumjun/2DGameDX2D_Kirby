@@ -25,7 +25,9 @@ void CEffectSceneChangeStar::Start()
 	CGameObject::Start();
 
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
-	m_ColliderBody = (CColliderCircle*)FindComponent("EffectChangeStarColliderBody");
+	// m_Sprite = (CSpriteComponent*)m_RootComponent.Get();
+	// m_ColliderBody = (CColliderCircle*)FindComponent("EffectChangeStarColliderBody");
+	m_ColliderBody = (CColliderCircle*)m_RootComponent->FindComponent("EffectChangeStarColliderBody");
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene);
 	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 }

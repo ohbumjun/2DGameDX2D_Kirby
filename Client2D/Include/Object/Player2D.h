@@ -1,5 +1,4 @@
 #pragma once
-#include "Component/SpriteComponent.h"
 #include "GameObject/LifeObject.h"
 #include "Component/WidgetComponent.h"
 #include "Component/NavAgent.h"
@@ -184,6 +183,7 @@ private :
 	void FallDownAttack();
 private :
 	void MovePointDown(float DeltaTime);
+
 };
 
 

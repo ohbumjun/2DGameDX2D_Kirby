@@ -12,6 +12,7 @@ const std::string g_FightMonsterName = "FightMonster";
 // Effect
 const std::string g_SceneChangeStart = "SceneChangeStart";
 const std::string g_SceneChangeToGreen2 = "SceneChangeToGreen2";
+const std::string g_SceneChangeToGreen1 = "SceneChangeToGreen1";
 
 enum class Tile_EditMode {
 	Type,

@@ -18,7 +18,7 @@ CSceneResource::~CSceneResource()
 
 			iter = m_mapMesh.erase(iter);
 
-			CResourceManager::GetInst()->ReleaseMesh(Name);
+			// CResourceManager::GetInst()->ReleaseMesh(Name);
 		}
 	}
 
@@ -32,7 +32,7 @@ CSceneResource::~CSceneResource()
 
 			iter = m_mapShader.erase(iter);
 
-			CResourceManager::GetInst()->ReleaseShader(Name);
+			// CResourceManager::GetInst()->ReleaseShader(Name);
 		}
 	}
 

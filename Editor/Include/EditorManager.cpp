@@ -50,6 +50,7 @@
 #include "Object/LineContainer.h"
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
+#include "Object/EffectChangeToGreen1.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -402,7 +403,7 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		std::string SelectMonsterName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
 
 		// 생성될 Monster 이름을 Random 하게 만든다.
-		std::string NewMonsterName = SelectMonsterName + GetRandomString();
+		std::string NewMonsterName = SelectMonsterName + "_" + GetRandomString();
 
 		// 혹시나 이미 만들어진 이름이라면 X
 		if (m_ObjectHierarchy->CheckDuplicateObject(NewMonsterName))
@@ -437,6 +438,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_SceneChangeToGreen2.c_str(), SelectMonsterName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen2>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToGreen1.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen1>(NewMonsterName);
 		}
 
 		if (!CreatedObject)
@@ -823,6 +828,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CEffectChangeToGreen2).hash_code())
 	{
 		CEffectChangeToGreen2* Obj = Scene->LoadGameObject<CEffectChangeToGreen2>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToGreen1).hash_code())
+	{
+		CEffectChangeToGreen1* Obj = Scene->LoadGameObject<CEffectChangeToGreen1>();
 		return Obj;
 	}
 	

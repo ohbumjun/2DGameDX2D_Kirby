@@ -80,31 +80,8 @@ public :
 	void CreateNewScene(bool AutoChange = true);
 
 private :
-	bool ChangeScene()
-{
-	// ex) CreateNewScene 하고 있는 동안에는 ChangeScene이 동작하지 않게 한다
-		CSync sync(&m_Crt);
+	bool ChangeScene();
 
-		if (m_NextScene)
-		{
-			if (m_NextScene->m_Change)
-			{
-				// Scene 정보 변화
-				SAFE_DELETE(m_Scene);
-				m_Scene = m_NextScene;
-				m_NextScene = nullptr;
-
-				// Object 목록 세팅 
-				CRenderManager::GetInst()->SetObjectList(&m_Scene->m_ObjList);
-
-				// Start 함수 호출
-				m_Scene->Start();
-
-				return true;
-			}
-		}
-		return false;
-}
 public :
 	template<typename T>
 	T* CreateSceneModeEmpty(bool Current = true)
@@ -132,6 +109,18 @@ public :
 		if (m_NextScene)
 			m_NextScene->SetAutoChange(true);
 }
+
+private:
+	static CSharedPtr<CGameObject> m_StaticPlayer;
+public:
+	static void SetStaticPlayerInfo(CGameObject* Player)
+	{
+		m_StaticPlayer = Player;
+	}
+	static CGameObject* GetStaticPlayerInfo()
+	{
+		return m_StaticPlayer;
+	}
 
 	DECLARE_SINGLE(CSceneManager)
 };

@@ -293,7 +293,7 @@ void CDetailInfoWindow::SetPosRotScaleInfo(CGameObject* Object)
 	Vector3 Scale = Object->GetWorldScale();
 	m_ScaleX->SetFloat(Scale.x);
 	m_ScaleY->SetFloat(Scale.y);
-	m_ScaleZ->SetFloat(Scale.z);
+	// m_ScaleZ->SetFloat(Scale.z);
 }
 
 void CDetailInfoWindow::SetClickedObjectInfo(CSceneComponent* Component)

@@ -23,9 +23,14 @@ private:
 	class CNavigationManager* m_NavManager;
 	bool                               m_Start;
 	bool m_Change;
+	size_t m_PlayerTypeID;
 private :
 	Vector2 m_WorldResolution;
 public :
+	void SetPlayerTypeID(size_t TypeID)
+{
+		m_PlayerTypeID = TypeID;
+}
 	void SetWorldResolution (float Width, float Height)
 {
 		m_WorldResolution = Vector2(Width, Height);
@@ -96,7 +101,10 @@ public :
 private :
 	void ClearGameObjects();
 	void DeleteGameObject(const std::string& Name);
+	void DeletePlayerFromScene();
 	void RemoveDuplicateObject(const std::string& Name);
+	template<typename T>
+	void DeleteGameObjectByType();
 public :
 	CGameObject* FindGameObject(const char* ObjectName) const;
 	CGameObject* FindGameObjectByTypeID(size_t TypeID) const;
@@ -112,7 +120,7 @@ public:
 public :
 	void SaveFullPath(const char* FullPath);
 	bool LoadFullPath(const char* FullPath);
-	void Load(const char* FileName, const std::string& PathName);
+	bool Load(const char* FileName, const std::string& PathName);
 public:
 	template<typename T>
 	T* CreateSceneModeEmpty()
@@ -184,6 +192,22 @@ public:
 	}
 
 };
+
+template <typename T>
+void CScene::DeleteGameObjectByType()
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->CheckType<T>())
+		{
+			iter = m_ObjList.erase(iter);
+			return;
+		}
+	}
+}
 
 template <typename T>
 void CScene::GatherSpecificTypeObjectsName(std::vector<std::string>& vecObjNames)

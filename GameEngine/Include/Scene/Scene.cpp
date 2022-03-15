@@ -6,6 +6,8 @@
 #include "NavigationManager.h"
 #include "../PathManager.h"
 
+class CPlayer2D;
+
 CScene::CScene()  :
 	m_Change(false)
 {
@@ -225,46 +227,84 @@ bool CScene::LoadFullPath(const char* FullPath)
 		if (!Object)
 		{
 			assert("No Object Created");
-			MessageBox(CEngine::GetInst()->GetWindowHandle(), TEXT("No Object Created"), TEXT("No Object Created"), 0);
+			MessageBox(CEngine::GetInst()->GetWindowHandle(), 
+			TEXT("No Object Created"), TEXT("No Proper Function To Create Object"), 0);
 			return false;
+			// continue;
 		}
 
 		Object->Load(pFile);
 
-		// ex) 충돌체 목록들을 SceneCollision List 에 추가하기 
-		if (m_Start)
-			Object->Start();
+		// Scene 세칭
+		Object->SetScene(this);
 	}
 
 	// 다시 Object List를 돌면서, Object 자신의 Parent 세팅을 해준다.
-	auto iter = m_ObjList.begin();
-	auto iterEnd = m_ObjList.end();
-
-	for (; iter != iterEnd; ++iter)
 	{
-		if ((*iter)->m_ParentName.length() > 0)
+		auto iter = m_ObjList.begin();
+		auto iterEnd = m_ObjList.end();
+
+		for (; iter != iterEnd; ++iter)
 		{
-			CGameObject* Parent = FindGameObject((*iter)->m_ParentName.c_str());
+			if ((*iter)->m_ParentName.length() > 0)
+			{
+				CGameObject* Parent = FindGameObject((*iter)->m_ParentName.c_str());
 
-			// 부모가 존재하지 않는다면
-			if (!Parent)
-				continue;
+				// 부모가 존재하지 않는다면
+				if (!Parent)
+					continue;
 
-			// 이미 자식으로 추가되어 있다면
-			if (Parent->FindChildGameObject((*iter)))
-				continue;
+				// 이미 자식으로 추가되어 있다면
+				if (Parent->FindChildGameObject((*iter)))
+					continue;
 
-			(*iter)->m_Parent = Parent;
-			Parent->AddChildGameObject((*iter));
+				(*iter)->m_Parent = Parent;
+				Parent->AddChildGameObject((*iter));
+			}
 		}
 	}
+
+	{
+		auto iter = m_ObjList.begin();
+		auto iterEnd = m_ObjList.end();
+
+		for (; iter != iterEnd;++iter)
+		{
+
+			// 만약 Scene Change 과정에서 이미 Player가 세팅되어 있다면
+			// Player2D Type은 Load 하지 않는다. --> ClientManager 코드에서 살펴보기 
+			// if (CSceneManager::GetStaticPlayerInfo() && TypeID == m_PlayerTypeID)
+			//	continue;
+			if (CSceneManager::GetStaticPlayerInfo() && (*iter)->GetTypeID() == CSceneManager::GetStaticPlayerInfo()->GetTypeID())
+			{
+				iter = m_ObjList.erase(iter);
+				iterEnd = m_ObjList.end();
+				break;
+			}
+		}
+	}
+	
+	if (m_Start)
+	{
+		// 모든 Object 를 돌면서, Start 함수를 실행해준다.
+		// ex) 충돌체 목록들을 SceneCollision List 에 추가하기 
+		auto iter = m_ObjList.begin();
+		auto iterEnd = m_ObjList.end();
+
+		for (; iter != iterEnd;)
+		{
+			(*iter)->Start();
+			++iter;
+		}
+	}
+
 
 	fclose(pFile);
 
 	return true;
 }
 
-void CScene::Load(const char* FileName, const std::string& PathName)
+bool CScene::Load(const char* FileName, const std::string& PathName)
 {
 	const PathInfo* Path = CPathManager::GetInst()->FindPath(PathName);
 
@@ -275,7 +315,7 @@ void CScene::Load(const char* FileName, const std::string& PathName)
 
 	strcat_s(FullPath, FileName);
 
-	LoadFullPath(FullPath);
+	return LoadFullPath(FullPath);
 }
 
 void CScene::ClearGameObjects()
@@ -297,6 +337,22 @@ void CScene::DeleteGameObject(const std::string& Name)
 			// m_ObjList.erase(iter);
 
 			break;
+		}
+	}
+}
+
+void CScene::DeletePlayerFromScene()
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	// 하나를 찾아내고
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->GetTypeID() == m_PlayerTypeID)
+		{
+			iter = m_ObjList.erase(iter);
+			return;
 		}
 	}
 }

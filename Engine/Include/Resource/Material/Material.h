@@ -71,6 +71,11 @@ public:
 		return m_TextureInfo[Index].Texture->GetFileName(Index);
 	}
 
+	bool IsTextureEmpty() const
+	{
+		return m_TextureInfo.empty();
+	}
+
 protected:
 	CSharedPtr<CGraphicShader>       m_Shader;
 	std::vector<MaterialTextureInfo> m_TextureInfo;

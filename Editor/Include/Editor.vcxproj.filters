@@ -135,6 +135,9 @@
     <ClCompile Include="Object\EffectChangeToGreen2.cpp">
       <Filter>03. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen1.cpp">
+      <Filter>03. Object\07. Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -222,6 +225,9 @@
       <Filter>03. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen2.h">
+      <Filter>03. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen1.h">
       <Filter>03. Object\07. Effect</Filter>
     </ClInclude>
   </ItemGroup>

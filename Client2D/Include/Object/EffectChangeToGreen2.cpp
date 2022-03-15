@@ -24,7 +24,8 @@ void CEffectChangeToGreen2::Start()
 {
 	CGameObject::Start();
 
-	m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen2Body");
+	// m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen2Body");
+	m_ColliderBody = (CColliderBox2D*)m_RootComponent.Get();
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen2::ChangeSceneToGreen2Scene);
 
 }
@@ -71,8 +72,10 @@ void CEffectChangeToGreen2::ChangeSceneToGreen2Scene(const CollisionResult& Resu
 		CSceneManager::GetInst()->CreateNewScene(false);
 		CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);
 		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
-		CSceneManager::GetInst()->ChangeNextScene();
+		if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
+		{
+			CSceneManager::GetInst()->ChangeNextScene();
+		}
 	}
 
 }
