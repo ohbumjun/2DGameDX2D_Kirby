@@ -39,6 +39,10 @@ public :
 {
 		m_Mode->SetPlayerObject(Object);
 }
+	void SetSceneChangeObject(CGameObject* Object)
+{
+		m_Mode->SetSceneChangeObject(Object);
+}
 public:
 	void SetIsEditMode (bool Enable)
 	{
@@ -88,6 +92,10 @@ public:
 	CGameObject* GetLineContainerObject() const
 	{
 		return m_Mode->GetLineContainer();
+	}
+	CGameObject* GetSceneChangeObject() const
+	{
+		return m_Mode->GetSceneChangeObject();
 	}
 	class CTileEmptyComponent* GetTileEmptyComponent() const
 	{

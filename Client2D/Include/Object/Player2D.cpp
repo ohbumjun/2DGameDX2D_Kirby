@@ -135,26 +135,19 @@ void CPlayer2D::Start()
 		// m_KirbyState = dynamic_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
 		// m_KirbyState = static_cast<CNormalKirbyState*>(FindComponent("PlayerSprite"));
 
-
 		// PullRightCollider
 		m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 		m_PullRightCollider->SetCollisionProfile("Player");
-		m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
-		m_PullRightCollider->Enable(false);
 
 		m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 			(m_KirbyState->GetWorldScale().y * 0.5f));
-		m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
 		m_KirbyState->AddChild(m_PullRightCollider);
 
 		// PullLeftCollider
 		m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 		m_PullLeftCollider->SetCollisionProfile("Player");
-		m_PullLeftCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
-		m_PullLeftCollider->Enable(false);
 		m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
 			(m_KirbyState->GetWorldScale().y * 0.5f));
-		m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
 		m_KirbyState->AddChild(m_PullLeftCollider);
 	}
 
@@ -167,10 +160,16 @@ void CPlayer2D::Start()
 	m_PullRightCollider = (CColliderBox2D*)FindComponent("PullRightCollider");
 	m_PullRightCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullRightCollisionBeginCallback);
 	m_PullRightCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullRightCollisionEndCallback);
+	m_PullRightCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
+	m_PullRightCollider->Enable(false);
+	m_PullRightCollider->SetRelativePos(m_Body->GetWorldScale().x * 1.5f * 0.5f, 0.f, 1.f);
 
 	m_PullLeftCollider = (CColliderBox2D*)FindComponent("PullLeftCollider");
 	m_PullLeftCollider->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PullLeftCollisionBeginCallback);
 	m_PullLeftCollider->AddCollisionCallback(Collision_State::End, this, &CPlayer2D::PullLeftCollisionEndCallback);
+	m_PullLeftCollider->Start(); // SceneCollision 의 Collider List 에 추가하기
+	m_PullLeftCollider->Enable(false);
+	m_PullLeftCollider->SetRelativePos(m_Body->GetWorldScale().x * -1.5f * 0.5f, 0.f, 1.f);
 	
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
@@ -1682,7 +1681,7 @@ void CPlayer2D::FallDownAttack(const CollisionResult& Result)
 
 		CGameObject* OwnerObject = DestCollider->GetGameObject();
 
-		CMonster* OwnerMonster = (CMonster*)OwnerObject;
+		CMonster* OwnerMonster = dynamic_cast<CMonster*>(OwnerObject);
 
 		if (!OwnerMonster)
 			return;

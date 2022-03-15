@@ -233,10 +233,10 @@ bool CScene::LoadFullPath(const char* FullPath)
 			// continue;
 		}
 
-		Object->Load(pFile);
-
 		// Scene 세칭
 		Object->SetScene(this);
+
+		Object->Load(pFile);
 	}
 
 	// 다시 Object List를 돌면서, Object 자신의 Parent 세팅을 해준다.

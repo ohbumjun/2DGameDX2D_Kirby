@@ -1,4 +1,7 @@
 #include "MainScene.h"
+
+#include <Scene/SceneManager.h>
+
 #include "../Object/Player2D.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
@@ -62,13 +65,23 @@ void CMainScene::Start()
 
 	SetPlayerObject(Player2D);
 
-	Player2D->SetWorldPos(100.f, 600.f, 0.f);
 
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
+
+	if (CSceneManager::GetStaticPlayerInfo())
+	{
+		if (m_Scene->GetSceneChangeObject())
+		{
+			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
+
+			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
+		}
+	}
+
 }
 
 bool CMainScene::Init()

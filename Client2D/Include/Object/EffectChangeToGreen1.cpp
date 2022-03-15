@@ -113,3 +113,9 @@ void CEffectChangeToGreen1::ResetSceneChangeCallbackToPlayer(const CollisionResu
 		Player->ResetPlayerCallback();
 	}
 }
+
+void CEffectChangeToGreen1::Load(FILE* pFile)
+{
+	CGameObject::Load(pFile);
+	m_Scene->SetSceneChangeObject(this);
+}

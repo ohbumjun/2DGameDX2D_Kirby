@@ -21,5 +21,7 @@ private:
     void ChangeSceneToGreen1Scene(const CollisionResult& Result);
     void SetSceneChangeCallbackToPlayer(const CollisionResult& Result);
     void ResetSceneChangeCallbackToPlayer(const CollisionResult& Result);
+public:
+    virtual void Load(FILE* pFile) override;
 };
 

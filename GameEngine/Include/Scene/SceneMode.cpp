@@ -29,6 +29,11 @@ void CSceneMode::SetLineContainerObject(CGameObject* Obj)
 	m_LineContainerObject = Obj;
 }
 
+void CSceneMode::SetSceneChangeObject(CGameObject* Obj)
+{
+	m_SceneChangeObject = Obj;
+}
+
 void CSceneMode::Start()
 {
 }
