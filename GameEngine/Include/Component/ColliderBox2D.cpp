@@ -144,7 +144,7 @@ void CColliderBox2D::Render()
 
 	// 현재 충돌중인 목록이 없다면, 초록색으로 그린다
 	if (m_PrevCollisionList.empty())
-		m_CBuffer->SetColliderColor(Vector4(0.f, 1.f, 0.f, 1.f));
+		m_CBuffer->SetColliderColor(Vector4(0.f, 0.f, 1.f, 1.f));
 	else
 		m_CBuffer->SetColliderColor(Vector4(1.f, 0.f, 0.f, 1.f));
 	

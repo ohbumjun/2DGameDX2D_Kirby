@@ -1669,6 +1669,8 @@ void CPlayer2D::SetObjectLand()
 	m_TriangleJump = false;
 
 	m_IsFlying = false;
+
+	// m_MoveDashEffectMade = false;
 }
 
 void CPlayer2D::FallDownAttack(const CollisionResult& Result)

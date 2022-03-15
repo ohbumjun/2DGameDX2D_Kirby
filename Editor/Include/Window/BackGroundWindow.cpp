@@ -24,20 +24,27 @@ void CBackGroundWindow::SetBackGround(CBackGroundComponent* BackGround)
 	if (m_BackGround)
 		return;
 
+	if (!BackGround)
+		return;
+
 	// 2) BackMaterial 세팅 
 	std::string BackMaterialName = BackGround->GetBackGroundMaterial()->GetName();
 
 	m_BackGround = BackGround;
 
+	m_BackGround->GetBackGroundMaterial()->SetOpacity(0.8f);
+
 	if (!m_BackGround->GetBackGroundMaterial()->EmptyTexture())
 	{
 		// Texture 크기 정보 세팅 
 		char TextureWidth[MAX_PATH] = {};
-		sprintf_s(TextureWidth, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
+		// sprintf_s(TextureWidth, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureWidth());
+		sprintf_s(TextureWidth, "%.1f", (float)m_BackGround->GetWorldScale().x);
 		m_BackImgScaleX->SetText(TextureWidth);
 
 		char TextureHeight[MAX_PATH] = {};
-		sprintf_s(TextureHeight, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
+		// sprintf_s(TextureHeight, "%.1f", (float)m_BackGround->GetBackGroundMaterial()->GetTextureHeight());
+		sprintf_s(TextureHeight, "%.1f", (float)m_BackGround->GetWorldScale().y);
 		m_BackImgScaleY->SetText(TextureHeight);
 
 		// Texture 정보 세팅

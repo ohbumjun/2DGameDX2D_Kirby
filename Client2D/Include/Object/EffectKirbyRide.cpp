@@ -54,7 +54,9 @@ void CEffectKirbyRide::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 100.f);
+	AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 50.f);
+
+	SetWorldScale(GetWorldScale().x * 0.9999f, GetWorldScale().y * 0.9999f, 1.f);
 
 	// 현재 카메라가 자식 Component 라면
 	if (m_Sprite->FindChild(m_Scene->GetCameraManager()->GetCurrentCamera()))
