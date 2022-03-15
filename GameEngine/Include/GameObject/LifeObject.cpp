@@ -705,8 +705,8 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 		if (Slope < 0)
 		{
 			// 해당 영역안에 들어왔다면
-			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
-				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
+			if ((PosYDown <= FinalTopYPos + 5.f &&
+				PosYDown >= FinalBottomYPos - 5.f &&
 				PosXLeft <= FinalRightXPos &&
 				PosXRight >= FinalLeftXPos) 
 				&&

@@ -100,14 +100,11 @@ CEffectSceneChangeStar* CEffectSceneChangeStar::Clone()
 void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const CollisionResult& Result)
 {
 	CGameObject* DestObject = Result.Dest->GetGameObject();
-	/*
 
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		// Kirby Ride Object 생성하고
 		CEffectKirbyRide* KirbyRide = m_Scene->CreateGameObject<CEffectKirbyRide>("KirbyRide");
-
-		KirbyRide->SetWorldPos(GetWorldPos());
 
 		// Player는 화면에서 안보이게 하고
 		DestObject->Enable(false);
@@ -119,13 +116,21 @@ void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const Collision
 
 		KirbyRide->GetRootComponent()->AddChild(MainCamera);
 
-		Resolution  RS = CEngine::GetInst()->GetResolution();
+		Vector2  WorldMapScale = m_Scene->GetWorldResolution();
 
+		Resolution RS = CEngine::GetInst()->GetResolution();
+
+		Vector3 OriginalScale = GetWorldScale();
+
+		// 화면 나가지 않는 선에서 비율 조정하기
+		float XOutDiff = GetWorldPos().x + (float)RS.Width * 0.5f - WorldMapScale.x;
+		float YOutDiff = GetWorldPos().y + (float)RS.Height * 0.5f - WorldMapScale.y;
+
+		KirbyRide->SetWorldPos(Vector3(GetWorldPos().x - XOutDiff, GetWorldPos().y - YOutDiff, GetWorldPos().z));
 
 		MainCamera->SetGameObject(this);
 
 		// 자기 자신도 사라지게 세팅한다
 		Destroy();
 	}
-	*/
 }
