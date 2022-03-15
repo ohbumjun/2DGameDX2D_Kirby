@@ -51,7 +51,8 @@ Matrix CCameraComponent::GetRatioViewMatrix(float ScrollRatio)
 	matView.Transpose();
 
 	// 이동행렬 까지 적용 = 마지막 행 작성 == 각 축과 현재 위치의 내적 형태
-	Vector3 Pos = GetWorldPos() * ScrollRatio * -1.f;
+	// Vector3 Pos = GetWorldPos() * ScrollRatio * -1.f;
+	Vector3 Pos = Vector3(GetWorldPos().x * -1.f * ScrollRatio, GetWorldPos().y * -1.f * ScrollRatio, GetWorldPos().z * -1.f);
 
 	for (int i = 0; i < AXIS_MAX; i++)
 	{

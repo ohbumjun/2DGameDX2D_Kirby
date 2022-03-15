@@ -175,7 +175,6 @@
     <ClCompile Include="Object\EffectDash.cpp" />
     <ClCompile Include="Object\EffectKirbyRide.cpp" />
     <ClCompile Include="Object\EffectRandomStar.cpp" />
-    <ClCompile Include="Object\EffectSceneChange.cpp" />
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\EffectSpitOut.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
@@ -224,7 +223,6 @@
     <ClInclude Include="Object\EffectDash.h" />
     <ClInclude Include="Object\EffectKirbyRide.h" />
     <ClInclude Include="Object\EffectRandomStar.h" />
-    <ClInclude Include="Object\EffectSceneChange.h" />
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\EffectSpitOut.h" />
     <ClInclude Include="Object\LineContainer.h" />

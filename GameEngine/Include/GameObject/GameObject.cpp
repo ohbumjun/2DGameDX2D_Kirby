@@ -348,6 +348,11 @@ void CGameObject::Save(FILE* pFile)
 	int ObjectCount = (int)m_vecObjectComponent.size();
 	fwrite(&ObjectCount, sizeof(int), 1, pFile);
 
+	if (ObjectCount > 10) // 디버그용 
+	{
+		int NewObjCount = ObjectCount;
+	}
+
 	for (int i = 0; i < ObjectCount; i++)
 	{
 		size_t TypeID = m_vecObjectComponent[i]->GetTypeID();
@@ -416,7 +421,6 @@ void CGameObject::Load(FILE* pFile)
 		fread(&TypeID, sizeof(size_t), 1, pFile);
 		CComponent* Component = CSceneManager::GetInst()->CallCreateComponentFunc(this, TypeID);
 		Component->Load(pFile);
-		m_vecObjectComponent.push_back(dynamic_cast<CObjectComponent*>(Component));
 	}
 
 	bool ParentEnable = false;

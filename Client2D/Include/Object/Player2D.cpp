@@ -57,9 +57,9 @@ m_SceneChangeCallback(nullptr)
 	m_Opacity   = 1.f;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
-
 }
 
+// todo : 이거 제대로 
 CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	CLifeObject(obj)
 {
@@ -67,10 +67,7 @@ CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
 	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
-
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
-
-	m_Opacity = obj.m_Opacity;
 
 }
 
@@ -113,7 +110,6 @@ bool CPlayer2D::Init()
 	m_KirbyState->SetRelativePos(100.f, 50.f, 0.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
-
 	m_Scene->SetPlayerTypeID(GetTypeID());
 
 	return true;
@@ -122,6 +118,8 @@ bool CPlayer2D::Init()
 void CPlayer2D::Start()
 {
 	CLifeObject::Start();
+
+	SetPhysicsSimulate(true);
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
@@ -192,7 +190,6 @@ void CPlayer2D::Start()
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
 	// m_KirbyState->AddChild(m_Camera);
 
-	// m_Camera = FindComponentByType<CCameraComponent>();
 
 	/*
 	// todo : 왜 여기서 새롭게 만들어주면 작동을 안하게 되는 것일까 ?

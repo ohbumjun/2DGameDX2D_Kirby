@@ -2,6 +2,7 @@
 #include "../Object/Player2D.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "Scene/SceneManager.h"
 #include "../Object/Monster.h"
 #include "../Object/TileMap.h"
 #include "../Object/TileMapEmpty.h"
@@ -30,11 +31,19 @@ void CGreen2Scene::Start()
 
 	SetPlayerObject(Player2D);
 
-	Player2D->SetWorldPos(400.f, 500.f, 1.f);
-
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
+
+	if (CSceneManager::GetStaticPlayerInfo())
+	{
+		if (m_Scene->GetSceneChangeObject())
+		{
+			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
+
+			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
+		}
+	}
 }
 
 bool CGreen2Scene::Init()

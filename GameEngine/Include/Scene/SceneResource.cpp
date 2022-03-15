@@ -46,7 +46,7 @@ CSceneResource::~CSceneResource()
 
 			iter = m_mapTexture.erase(iter);
 
-			CResourceManager::GetInst()->ReleaseTexture(Name);
+			// CResourceManager::GetInst()->ReleaseTexture(Name);
 		}
 	}
 
@@ -60,7 +60,7 @@ CSceneResource::~CSceneResource()
 
 			iter = m_mapMaterial.erase(iter);
 
-			CResourceManager::GetInst()->ReleaseMaterial(Name);
+			// CResourceManager::GetInst()->ReleaseMaterial(Name);
 		}
 	}
 

@@ -46,10 +46,12 @@ void CBackGround::PostUpdate(float DeltaTime)
 void CBackGround::PrevRender()
 {
 	CGameObject::PrevRender();
+	m_BackGroundComponent->GetBackGroundMaterial()->SetBaseColor(1.f, 1.f, 0.7f, 0.5f);
 }
 
 void CBackGround::Render()
 {
+
 	CGameObject::Render();
 }
 

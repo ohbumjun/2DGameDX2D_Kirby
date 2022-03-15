@@ -195,9 +195,6 @@
     <ClCompile Include="Object\EffectChangeToGreen2.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectSceneChange.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Object\EffectDash.cpp">
       <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClCompile>
@@ -340,9 +337,6 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen2.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectSceneChange.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectDash.h">
       <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
