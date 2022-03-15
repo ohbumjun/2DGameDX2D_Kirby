@@ -196,7 +196,6 @@ void CPlayer2D::Start()
 	*/
 
 
-
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 
 		KeyState_Push, this, &CPlayer2D::MoveUp);
@@ -282,6 +281,8 @@ void CPlayer2D::Start()
 	SetBasicSettingToChangedState();
 
 	m_Scene->SetPlayerTypeID(GetTypeID());
+
+	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -334,7 +335,7 @@ void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 
 void CPlayer2D::MoveUp(float DeltaTime)
 {
-	if (m_SceneChangeCallback && m_IsGround && !m_IsFalling)
+	if (m_SceneChangeCallback && m_FallTime < 0.1f)
 	{
 		CollisionResult Result;
 		m_SceneChangeCallback(Result);
@@ -1811,7 +1812,6 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_KirbyState->SetTransparency(true);
-
 	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 

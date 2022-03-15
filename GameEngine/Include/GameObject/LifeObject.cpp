@@ -29,7 +29,7 @@ CLifeObject::CLifeObject():
 	m_GroundOffSet(1.f),
 	m_ApplyBottomCollision(true),
 	m_PrevPos{},
-	m_PhysicApplyDelayTime(1.5f),
+	m_PhysicApplyDelayTime(2.0f),
 	m_IsGroundObject(false)
 
 {}

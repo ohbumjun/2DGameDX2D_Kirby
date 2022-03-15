@@ -499,7 +499,7 @@ void CMonster::UpdateBeingOutOfPlayer(float DeltaTime)
 void CMonster::UpdateMonsterMove(float DeltaTime)
 {
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
-	if (m_PhysicApplyDelayTime >= 0.f)
+	if (m_PhysicApplyDelayTime > 0.f)
 	{
 		return;
 	}
