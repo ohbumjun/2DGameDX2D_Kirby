@@ -148,14 +148,14 @@ void CPlayer2D::Start()
 		m_PullRightCollider->SetCollisionProfile("Player");
 
 		m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
-			(m_KirbyState->GetWorldScale().y * 0.5f));
+			(m_KirbyState->GetWorldScale().y * 2.f));
 		m_KirbyState->AddChild(m_PullRightCollider);
 
 		// PullLeftCollider
 		m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 		m_PullLeftCollider->SetCollisionProfile("Player");
 		m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
-			(m_KirbyState->GetWorldScale().y * 0.5f));
+			(m_KirbyState->GetWorldScale().y * 2.f));
 		m_KirbyState->AddChild(m_PullLeftCollider);
 	}
 
