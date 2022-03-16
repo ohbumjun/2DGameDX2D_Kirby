@@ -684,6 +684,13 @@ void CAnimationSequence2DInstance::Update(float DeltaTime)
 	if (m_CurrentAnimation->GetFrameCount() <= 0)
 		return;
 
+	if (m_CurrentAnimation->GetInitPauseTime() > 0.f)
+	{
+		m_CurrentAnimation->SetInitPauseTime(m_CurrentAnimation->GetInitPauseTime() - DeltaTime);
+
+		return;
+	}
+
 	// FrameTime Update
 	m_CurrentAnimation->m_FrameTime = m_CurrentAnimation->m_PlayTime / m_CurrentAnimation->GetFrameCount();
 

@@ -70,6 +70,9 @@
     <Filter Include="02. Object\07. Effect\03. DecorateEffect">
       <UniqueIdentifier>{598ccc4f-82ee-4fde-9a3a-22160c0dd1ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect\04. MonsterAttack">
+      <UniqueIdentifier>{648a2537-61c3-4e20-ae53-c300829a6f11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="Object\EffectStar.cpp">
       <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BeamMonsterAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectStar.h">
       <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BeamMonsterAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -35,6 +35,7 @@ private:
 	float                                  m_PlayScale; // 재생 비율
 	bool                                   m_Loop;
 	bool                                   m_Reverse;
+	float									m_InitPauseTime;
 	std::function<void()>                  m_EndFunction;
 	std::vector<Animation2DNotify*>        m_vecNotify;
 public :
@@ -76,13 +77,19 @@ public :
 	{
 		return m_Sequence;
 	}
-
 	AnimationFrameData GetFrameData(int Frame)
 	{
 		return m_Sequence->GetFrameData(Frame);
 	}
-
+	float GetInitPauseTime() const
+	{
+		return m_InitPauseTime;
+	}
 public :
+	void SetInitPauseTime(float Time)
+	{
+		m_InitPauseTime = Time;
+	}
 	void ClearSequenceFrame()
 {
 		m_Sequence->ClearFrame();
@@ -112,23 +119,28 @@ public :
 {
 		m_Reverse = State;
 }
+
 	void SetFrame(int Frame)
 {
 		m_Frame = 0;
 }
+
 	void ResetFrame()
 	{
 		m_Frame = 0;
 		m_Sequence->ClearFrame();
 	}
+
 	void SetPlayScale(float Scale)
 {
 		m_PlayScale = Scale;
 }
+
 	void SetPlayTime(float Time)
-	{
+{
 		m_PlayTime = Time;
-	}
+}
+
 	void SetFrameReverse(bool Reverse)
 {
 		m_Sequence->SetFrameReverse(Reverse);
