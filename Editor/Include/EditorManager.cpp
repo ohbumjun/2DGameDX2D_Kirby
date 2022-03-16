@@ -43,6 +43,7 @@
 #include "Object/MushRoom.h"
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
+#include "Object/FireMonster.h"
 #include "Object/DragObject.h"
 #include "Object/LineObject.h"
 #include "Object/SpriteEditObject.h"
@@ -427,9 +428,13 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMushRoom>(NewMonsterName);
 		}
-		else if (strcmp(g_BeanMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_BeamMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBeamMonster>(NewMonsterName);
+		}
+		else if (strcmp(g_FireMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFireMonster>(NewMonsterName);
 		}
 		else if (strcmp(g_SceneChangeStart.c_str(), SelectMonsterName.c_str()) == 0)
 		{
@@ -798,6 +803,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBeamMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CFireMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())

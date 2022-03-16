@@ -4,7 +4,7 @@
 class CFireMonsterAttack :
     public CGameObject
 {
-    friend class CBeamMonster;
+    friend class CFireMonster;
 public:
     CFireMonsterAttack();
     CFireMonsterAttack(const CFireMonsterAttack& Attack);

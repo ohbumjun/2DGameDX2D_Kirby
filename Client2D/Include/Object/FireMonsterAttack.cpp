@@ -4,7 +4,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
-#include "BeamMonster.h"
+#include "FireMonster.h"
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
@@ -78,6 +78,11 @@ void CFireMonsterAttack::Update(float DeltaTime)
 		if (m_AttackDistLimit >= m_AttackDistLimitMax)
 		{
 			Destroy();
+
+			if (m_FireMonsterOwner)
+			{
+				m_FireMonsterOwner->SetAttackEnd();
+			}
 		}
 	}
 }

@@ -19,6 +19,7 @@
 #include "Object/TileMapEmpty.h"
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
+#include "Object/FireMonster.h"
 #include "Object/LineContainer.h"
 #include "GameObject/Line.h"
 #include "Object/EffectSceneChangeStar.h"
@@ -177,6 +178,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBeamMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CFireMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CTileMap).hash_code())
