@@ -69,7 +69,6 @@ public:
 	class CComponent* FindComponent(const std::string& Name);
 	CGameObject* FindChildGameObject(CGameObject* Child);
 protected :
-	virtual void Destroy() override;
 	void ClearSceneComponents();
 	void DeleteComponent(const std::string& Name);
 	void Move(const Vector3& EndPos);
@@ -83,6 +82,7 @@ public :
 	virtual void         PostRender();
 	virtual CGameObject* Clone();
 public :
+	virtual void Destroy() override;
 	void AddCollision();
 public :
 	virtual void Save(FILE* pFile);

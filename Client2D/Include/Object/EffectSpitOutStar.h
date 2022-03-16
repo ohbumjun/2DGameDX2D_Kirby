@@ -12,6 +12,13 @@ protected:
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
+    float m_SpitOutDir;
+    float m_AliveTime;
+public :
+    void SetSpitOutDir(float Dir)
+{
+        m_SpitOutDir = Dir;
+}
 public:
     virtual void Start() override;
     virtual bool Init() override;

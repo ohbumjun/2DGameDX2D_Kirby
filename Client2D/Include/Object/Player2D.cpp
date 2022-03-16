@@ -1,26 +1,29 @@
-﻿#include "Player2D.h"
+﻿// Engine
+#include "Input.h"
+// UI
+#include "../UI/SimpleHUD.h"
+// Scene
+#include "Scene/Scene.h"
 #include <Scene/CameraManager.h>
 #include <Scene/SceneManager.h>
-
-#include "Bullet.h"
-#include "BulletTornaido.h"
-#include "Input.h"
-#include "PlayerAnimation2D.h"
-#include "Resource/Material/Material.h"
-#include "Scene/Scene.h"
-#include "../Object/Monster.h"
+#include "Scene/NavigationManager.h"
+// Component
 #include "Component/ColliderBox2D.h"
 #include "Component/CameraComponent.h"
 #include "Component/TileEmptyComponent.h"
+// Object
 #include "BulletCamera.h"
-#include "Scene/NavigationManager.h"
-#include "../UI/SimpleHUD.h"
+#include "Bullet.h"
+#include "BulletTornaido.h"
+#include "Player2D.h"
 #include "AbilityMonster.h"
 #include "EffectDash.h"
 #include "EffectSpitOut.h"
 #include "EffectRandomStar.h"
 #include "SpecialChangeParticle.h"
+#include "EffectSpitOutStar.h"
 #include "BubbleParticle.h"
+#include "../Object/Monster.h"
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
@@ -834,6 +837,9 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 	m_IsEatingMonster = false;
 
+	m_EatenMonster->Destroy();
+
+	/*
 	m_EatenMonster->Enable(true);
 
 	m_EatenMonster->SetBeingSpitOut(true);
@@ -849,6 +855,19 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	else
 	{
 		m_EatenMonster->SetObjectMoveDir(Vector3(1.f * -1, 0.f, 0.f));
+	}
+	*/
+	CEffectSpitOutStar* SpitOutStar = m_Scene->CreateGameObject<CEffectSpitOutStar>("SpitOutStar");
+
+	if (m_ObjectMoveDir.x > 0)
+	{
+		SpitOutStar->SetWorldPos(GetWorldPos());
+		SpitOutStar->SetSpitOutDir(1.f);
+	}
+	else
+	{
+		SpitOutStar->SetWorldPos(GetWorldPos());
+		SpitOutStar->SetSpitOutDir(-1.f);
 	}
 
 	m_EatenMonster = nullptr;

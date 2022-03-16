@@ -13,7 +13,8 @@
 #include "UI/UIDamageFont.h"
 #include "Component/WidgetComponent.h"
 
-CEffectSpitOutStar::CEffectSpitOutStar()
+CEffectSpitOutStar::CEffectSpitOutStar() :
+	m_AliveTime(3.f)
 {
 	SetTypeID<CEffectSpitOutStar>();
 }
@@ -86,7 +87,17 @@ void CEffectSpitOutStar::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	// 계속 회전 시키기 
+	AddWorldPos(Vector3(m_SpitOutDir, 0.f, 0.f) * DeltaTime * 300.f);
+
+	if (m_AliveTime > 0.f)
+	{
+		m_AliveTime -= DeltaTime;
+
+		if (m_AliveTime < 0)
+		{
+			Destroy();
+		}
+	}
 }
 
 void CEffectSpitOutStar::PostUpdate(float DeltaTime)
@@ -104,17 +115,33 @@ void CEffectSpitOutStar::StarCollision(const CollisionResult& Result)
 	Destroy();
 
 	CColliderComponent* CollisionDest = Result.Dest;
+
 	CGameObject* Owner = CollisionDest->GetGameObject();
+
 	CWidgetComponent* ObjectWindow = nullptr;
 
 	if (Owner)
 	{
+		CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+
+		if (!DestMonster)
+			return;
+
 		// HP Bar 달게 하기
-		if (Owner->GetTypeID() == typeid(CMonster).hash_code())
+		DestMonster->SetBeingHit(true);
+
+		DestMonster->SetAIState(Monster_AI::Hit);
+
+		if (m_SpitOutDir > 0)
 		{
-			CMonster* DestMonster = (CMonster*)Owner;
-			// DestMonster->Damage(2.f);
+			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
 		}
+		else
+		{
+			DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+		}
+
+		// DestMonster->Damage(2.f);
 
 		// Create Damage Font
 		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
