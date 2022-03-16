@@ -24,11 +24,15 @@ CFightMonsterAttack::~CFightMonsterAttack()
 void CFightMonsterAttack::SetRightAttackDir()
 {
 	m_AttackDir = 1.f;
+
+	m_Sprite->GetAnimationInstance()->ChangeAnimation("EffectRight");
 }
 
 void CFightMonsterAttack::SetLeftAttackDir()
 {
 	m_AttackDir = -1.f;
+
+	m_Sprite->GetAnimationInstance()->ChangeAnimation("EffectLeft");
 }
 
 void CFightMonsterAttack::Start()

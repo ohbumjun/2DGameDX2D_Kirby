@@ -237,6 +237,9 @@
     <ClCompile Include="Object\FightMonsterAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\FightMonster.cpp">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="Object\FightMonsterAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FightMonster.h">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

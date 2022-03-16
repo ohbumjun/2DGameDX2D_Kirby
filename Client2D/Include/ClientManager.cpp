@@ -186,6 +186,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
 		return Obj;
 	}
+	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFightMonster>();
+		return Obj;
+	}
 	if (GameObjectTypeID == typeid(CTileMap).hash_code())
 	{
 		CTileMap* Obj = Scene->LoadGameObject<CTileMap>();
