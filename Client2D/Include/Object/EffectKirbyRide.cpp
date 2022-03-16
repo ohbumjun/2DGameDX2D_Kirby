@@ -1,5 +1,7 @@
 #include "EffectKirbyRide.h"
 #include "Scene/Scene.h"
+#include "Scene/SceneManager.h"	
+#include "../Scene/Green3Scene.h"
 #include "Scene/SceneResource.h"
 #include "Scene/CameraManager.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -9,7 +11,8 @@
 
 CEffectKirbyRide::CEffectKirbyRide()  :
 	m_YToggleDir(1.f) ,
-	m_GetOutOfOriginalWorldTime(2.f)
+	m_GetOutOfOriginalWorldTime(2.f),
+	m_SceneChangeLimitTime(7.f)
 {
 	SetTypeID<CEffectKirbyRide>();
 }
@@ -84,7 +87,7 @@ void CEffectKirbyRide::Update(float DeltaTime)
 	}
 	else
 	{
-		AddWorldPos(Vector3(1.f, m_YToggleDir, 0.f) * DeltaTime * 300.f);
+		AddWorldPos(Vector3(1.f, m_YToggleDir, 0.f) * DeltaTime * 500.f);
 
 		if (GetWorldPos().y - (float)m_RS.Height * 0.5f <= 0.f)
 		{
@@ -110,14 +113,39 @@ void CEffectKirbyRide::Update(float DeltaTime)
 			GetWorldPos().y - (float)RS.Height * 0.5f,
 				GetWorldPos().z));
 	}
+
+	
 }
 
 void CEffectKirbyRide::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
+
+	// 일정 시간이 지난 후에 Scene을 Change 한다.
+	if (m_SceneChangeLimitTime > 0.f)
+	{
+		m_SceneChangeLimitTime -= DeltaTime;
+
+		if (m_SceneChangeLimitTime <= 0.f)
+		{
+			ChangeSceneToGreen3Scene();
+		}
+	}
 }
 
 CEffectKirbyRide* CEffectKirbyRide::Clone()
 {
 	return new CEffectKirbyRide(*this);
+}
+
+void CEffectKirbyRide::ChangeSceneToGreen3Scene()
+{
+	CSceneManager::GetInst()->CreateNewScene(false);
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>(false);
+	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Green3.scn", SCENE_PATH))
+	{
+		CSceneManager::GetInst()->ChangeNextScene();
+	}
 }

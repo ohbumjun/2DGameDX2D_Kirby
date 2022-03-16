@@ -17,6 +17,7 @@ private:
 private :
     float m_YToggleDir;
     float m_GetOutOfOriginalWorldTime;
+    float m_SceneChangeLimitTime;
 public :
     CCameraComponent* GetCameraComponent() const
 {
@@ -28,5 +29,7 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CEffectKirbyRide* Clone() override;
+private :
+    void ChangeSceneToGreen3Scene();
 };
 

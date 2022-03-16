@@ -297,7 +297,7 @@ void CCameraComponent::Update(float DeltaTime)
 
 	if (!IsOutSideWorld && m_Parent)
 	{
-		// AdjustCameraPosToRatio();
+		AdjustCameraPosToRatio();
 	}
 
 	// Camera 범위 제한을 2번 한다.
