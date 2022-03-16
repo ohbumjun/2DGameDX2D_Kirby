@@ -20,6 +20,7 @@
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
 #include "Object/FireMonster.h"
+#include "Object/FightMonster.h"
 #include "Object/LineContainer.h"
 #include "GameObject/Line.h"
 #include "Object/EffectSceneChangeStar.h"

@@ -44,6 +44,7 @@
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
 #include "Object/FireMonster.h"
+#include "Object/FightMonster.h"
 #include "Object/DragObject.h"
 #include "Object/LineObject.h"
 #include "Object/SpriteEditObject.h"
@@ -435,6 +436,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_FireMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFireMonster>(NewMonsterName);
+		}
+		else if (strcmp(g_FightMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFightMonster>(NewMonsterName);
 		}
 		else if (strcmp(g_SceneChangeStart.c_str(), SelectMonsterName.c_str()) == 0)
 		{
