@@ -219,6 +219,9 @@
     <ClCompile Include="Object\MoonAboveParticle.cpp">
       <Filter>02. Object\05. Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectSpitOutStar.cpp">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="Object\MoonAboveParticle.h">
       <Filter>02. Object\05. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectSpitOutStar.h">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
