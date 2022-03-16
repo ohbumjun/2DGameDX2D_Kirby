@@ -1,7 +1,9 @@
 #include "FireMonster.h"
 
 CFireMonster::CFireMonster()
-{}
+{
+	SetTypeID<CFireMonster>();
+}
 
 CFireMonster::CFireMonster(const CFireMonster& Monster)
 {}
@@ -16,7 +18,7 @@ void CFireMonster::Start()
 
 bool CFireMonster::Init()
 {
-	if (CAbilityMonster::Init())
+	if (!CAbilityMonster::Init())
 		return false;
 
 	LoadAnimationInstance("Fire", TEXT("Ability_Fire.anim"));

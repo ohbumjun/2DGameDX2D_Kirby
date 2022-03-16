@@ -11,7 +11,8 @@ protected:
     virtual ~CFireMonster();
 private:
     bool m_IsAttacking;
-    CSharedPtr<class CFireMonsterAttack> m_AttackEffect;
+    float m_AttackResetTime;
+    float m_AttackResetTimeMax;
 public:
     void SetAttackEnd()
     {

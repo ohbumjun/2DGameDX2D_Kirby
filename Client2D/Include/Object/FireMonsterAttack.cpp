@@ -10,7 +10,7 @@
 #include "UI/UIDamageFont.h"
 
 CFireMonsterAttack::CFireMonsterAttack() :
-	m_AttackDir(1.f),
+	m_AttackDir(1.f, 0.f),
 	m_AttackDistLimit(0.f),
 	m_AttackDistLimitMax(1000.f)
 {}
@@ -21,15 +21,17 @@ CFireMonsterAttack::CFireMonsterAttack(const CFireMonsterAttack& Attack) : CGame
 CFireMonsterAttack::~CFireMonsterAttack()
 {}
 
-void CFireMonsterAttack::SetRightAttackDir()
+void CFireMonsterAttack::SetRightAttackDir(float YDir)
 {
-	m_AttackDir = 1.f;
+	m_AttackDir.x = 1.f;
+	m_AttackDir.y = YDir;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
-void CFireMonsterAttack::SetLeftAttackDir()
+void CFireMonsterAttack::SetLeftAttackDir(float YDir)
 {
-	m_AttackDir = -1.f;
+	m_AttackDir.x = -1.f;
+	m_AttackDir.y = YDir;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
@@ -67,9 +69,9 @@ void CFireMonsterAttack::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	float MoveDist = m_AttackDir * DeltaTime * 500.f;
+	float MoveDist = m_AttackDir.x * DeltaTime * 500.f;
 
-	AddWorldPos(Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * 500.f);
+	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 500.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{
@@ -89,6 +91,13 @@ void CFireMonsterAttack::Update(float DeltaTime)
 
 void CFireMonsterAttack::CollisionCallback(const CollisionResult& Result)
 {
+	Destroy();
+
+	if (m_FireMonsterOwner)
+	{
+		m_FireMonsterOwner->SetAttackEnd();
+	}
+
 	CColliderComponent* CollisionDest = Result.Dest;
 
 	CGameObject* Owner = CollisionDest->GetGameObject();
@@ -102,10 +111,10 @@ void CFireMonsterAttack::CollisionCallback(const CollisionResult& Result)
 		// HP Bar 달게 하기
 		Player->SetIsBeingHit();
 
-		if (m_AttackDir > 0)
-			Player->SetBeingHitDirection(m_AttackDir);
+		if (m_AttackDir.x > 0)
+			Player->SetBeingHitDirection(m_AttackDir.x);
 		else
-			Player->SetBeingHitDirection(m_AttackDir);
+			Player->SetBeingHitDirection(m_AttackDir.x);
 
 		// DestMonster->Damage(2.f);
 

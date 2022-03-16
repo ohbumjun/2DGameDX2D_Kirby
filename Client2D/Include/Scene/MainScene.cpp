@@ -85,12 +85,15 @@ void CMainScene::Start()
 	// 
 	CGameObject* DoorToGreen2Scene = m_Scene->FindGameObjectByTypeID(typeid(CEffectChangeToGreen2).hash_code());
 
-	CMoonAboveParticle* MoonAboveParticle = m_Scene->CreateGameObject<CMoonAboveParticle>("MoonAboveParticle");
+	if (DoorToGreen2Scene)
+	{
+		CMoonAboveParticle* MoonAboveParticle = m_Scene->CreateGameObject<CMoonAboveParticle>("MoonAboveParticle");
 
-	MoonAboveParticle->SetWorldPos(
-		DoorToGreen2Scene->GetWorldPos().x, 
-		DoorToGreen2Scene->GetWorldPos().y + DoorToGreen2Scene->GetWorldScale().y * 2.f,
-		DoorToGreen2Scene->GetWorldPos().z);
+		MoonAboveParticle->SetWorldPos(
+			DoorToGreen2Scene->GetWorldPos().x, 
+			DoorToGreen2Scene->GetWorldPos().y + DoorToGreen2Scene->GetWorldScale().y * 2.f,
+			DoorToGreen2Scene->GetWorldPos().z);
+	}
 	/*
 	
 	 *	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");

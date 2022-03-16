@@ -58,7 +58,7 @@ CPlayer2D::CPlayer2D() :
 	m_SceneChangeCallback(nullptr),
 	m_IsBeingHit(false),
 	m_BeingHitTime(0.f),
-	m_BeingHitTimeMax(1.5f)
+	m_BeingHitTimeMax(0.5f)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;

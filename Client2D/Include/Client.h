@@ -19,5 +19,6 @@ enum class Monster_AI {
 enum class Ability_State {
 	Fight,
 	Beam,
+	Fire,
 	End
 };
