@@ -17,7 +17,9 @@ private:
     CSharedPtr<class CSpriteComponent> m_ThirdSprite;
     CSharedPtr<class CSpriteComponent> m_FourthSprite;
     float m_AttackImageSize;
+    float m_RotationSpeed;
     float m_RotateLimit;
+    float m_AttackDir;
 protected:
     void SetBeamOwner(class CBeamMonster* Owner)
     {

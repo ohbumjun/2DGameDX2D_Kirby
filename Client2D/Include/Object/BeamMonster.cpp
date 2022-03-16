@@ -32,6 +32,8 @@ void CBeamMonster::Start()
 	m_IsGroundObject = true;
 
 	// Ready의 경우, 매우 긴 PlayTime 을 세팅하고
+	m_Sprite->GetAnimationInstance()->Play();
+
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetPlayTime(2.f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(this, &CBeamMonster::Attack);
 
@@ -73,20 +75,27 @@ CBeamMonster* CBeamMonster::Clone()
 
 void CBeamMonster::Attack()
 {
-	ChangeAttackAnimation();
+	if (m_IsAttacking)
+		return;
+
+	m_IsAttacking = true;
 
 	// 왼쪽을 보고 있다면 
 	if (m_ObjectMoveDir.x < 0.f)
 	{
 		m_AttackEffect = m_Scene->CreateGameObject<CBeamMonsterAttack>("Attack");
-		m_AttackEffect->SetWorldPos(GetWorldPos());
+		m_AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f ,
+			GetWorldPos().y, GetWorldPos().z);
 		m_AttackEffect->SetBeamOwner(this);
+		m_AttackEffect->SetLeftAttackDir();
 	}
 	// 오른쪽으로 보고 있다면 
 	else
 	{
 		m_AttackEffect = m_Scene->CreateGameObject<CBeamMonsterAttack>("Attack");
-		m_AttackEffect->SetWorldPos(GetWorldPos());
+		m_AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
+			GetWorldPos().y, GetWorldPos().z);
 		m_AttackEffect->SetBeamOwner(this);
+		m_AttackEffect->SetRightAttackDir();
 	}
 }
