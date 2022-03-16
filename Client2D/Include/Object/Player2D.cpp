@@ -21,7 +21,7 @@
 #include "EffectSpitOut.h"
 #include "EffectRandomStar.h"
 #include "SpecialChangeParticle.h"
-#include "EffectSpitOutStar.h"
+#include "EffectStar.h"
 #include "BubbleParticle.h"
 #include "../Object/Monster.h"
 
@@ -857,18 +857,14 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		m_EatenMonster->SetObjectMoveDir(Vector3(1.f * -1, 0.f, 0.f));
 	}
 	*/
-	CEffectSpitOutStar* SpitOutStar = m_Scene->CreateGameObject<CEffectSpitOutStar>("SpitOutStar");
+	CEffectStar* SpitOutStar = m_Scene->CreateGameObject<CEffectStar>("SpitOutStar");
+
+	SpitOutStar->SetWorldPos(GetWorldPos());
 
 	if (m_ObjectMoveDir.x > 0)
-	{
-		SpitOutStar->SetWorldPos(GetWorldPos());
-		SpitOutStar->SetSpitOutDir(1.f);
-	}
+		SpitOutStar->SetSpitOutDir(Vector2(1.f, 0.f));
 	else
-	{
-		SpitOutStar->SetWorldPos(GetWorldPos());
-		SpitOutStar->SetSpitOutDir(-1.f);
-	}
+		SpitOutStar->SetSpitOutDir(Vector2(- 1.f, 0.f));
 
 	m_EatenMonster = nullptr;
 

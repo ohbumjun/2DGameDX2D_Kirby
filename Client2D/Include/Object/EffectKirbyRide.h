@@ -18,6 +18,8 @@ private :
     float m_YToggleDir;
     float m_GetOutOfOriginalWorldTime;
     float m_SceneChangeLimitTime;
+    float m_GenerateStarTime;
+    float m_GenerateStarTimeMax;
 public :
     CCameraComponent* GetCameraComponent() const
 {

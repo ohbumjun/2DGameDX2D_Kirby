@@ -1,4 +1,5 @@
 #include "EffectKirbyRide.h"
+#include "EffectStar.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"	
 #include "../Scene/Green3Scene.h"
@@ -12,7 +13,9 @@
 CEffectKirbyRide::CEffectKirbyRide()  :
 	m_YToggleDir(1.f) ,
 	m_GetOutOfOriginalWorldTime(2.f),
-	m_SceneChangeLimitTime(7.f)
+	m_SceneChangeLimitTime(7.f),
+	m_GenerateStarTime(0.f),
+	m_GenerateStarTimeMax(0.3f)
 {
 	SetTypeID<CEffectKirbyRide>();
 }
@@ -129,6 +132,31 @@ void CEffectKirbyRide::PostUpdate(float DeltaTime)
 		if (m_SceneChangeLimitTime <= 0.f)
 		{
 			ChangeSceneToGreen3Scene();
+		}
+	}
+
+	// 일정 시간 마다 Effect Start를 만들어낸다.
+	if (m_GenerateStarTime < m_GenerateStarTimeMax)
+	{
+		m_GenerateStarTime += DeltaTime;
+
+		if (m_GenerateStarTime >= m_GenerateStarTimeMax)
+		{
+			m_GenerateStarTime -= m_GenerateStarTimeMax;
+
+			CEffectStar* SpitOutStar = m_Scene->CreateGameObject<CEffectStar>("SpitOutStar");
+
+			SpitOutStar->SetWorldPos(GetWorldPos());
+
+			SpitOutStar->SetSpitOutDir(Vector2(-1.f, -1.f));
+
+			SpitOutStar->SetLifeTime(0.2f);
+
+			SpitOutStar->SetStarMoveSpeed(200.f);
+
+			Vector3 StarScale =  SpitOutStar->GetWorldScale();
+
+			SpitOutStar->SetWorldScale(StarScale.x * 0.5f, StarScale.y * 0.5f, StarScale.z);
 		}
 	}
 }

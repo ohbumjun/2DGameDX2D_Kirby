@@ -1,21 +1,26 @@
 #pragma once
 #include "GameObject\GameObject.h"
 
-class CEffectSpitOutStar :
+class CEffectStar :
     public CGameObject
 {
     friend class CScene;
 protected:
-    CEffectSpitOutStar();
-    CEffectSpitOutStar(const CEffectSpitOutStar& Dash);
-    virtual ~CEffectSpitOutStar();
+    CEffectStar();
+    CEffectStar(const CEffectStar& Dash);
+    virtual ~CEffectStar();
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
-    float m_SpitOutDir;
+    Vector2 m_SpitOutDir;
     float m_AliveTime;
+    float m_StarMoveSpeed;
 public :
-    void SetSpitOutDir(float Dir)
+    void SetStarMoveSpeed(float Speed)
+{
+        m_StarMoveSpeed = Speed;
+}
+    void SetSpitOutDir(const Vector2& Dir)
 {
         m_SpitOutDir = Dir;
 }
@@ -24,7 +29,7 @@ public:
     virtual bool Init() override;
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
-    virtual CEffectSpitOutStar* Clone() override;
+    virtual CEffectStar* Clone() override;
 private :
     void StarCollision(const CollisionResult& Result);
 };

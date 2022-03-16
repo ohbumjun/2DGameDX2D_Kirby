@@ -1,4 +1,4 @@
-#include "EffectSpitOutStar.h"
+#include "EffectStar.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Scene/CameraManager.h"
@@ -13,19 +13,20 @@
 #include "UI/UIDamageFont.h"
 #include "Component/WidgetComponent.h"
 
-CEffectSpitOutStar::CEffectSpitOutStar() :
-	m_AliveTime(3.f)
+CEffectStar::CEffectStar() :
+	m_AliveTime(3.f),
+	m_StarMoveSpeed(600.f)
 {
-	SetTypeID<CEffectSpitOutStar>();
+	SetTypeID<CEffectStar>();
 }
 
-CEffectSpitOutStar::CEffectSpitOutStar(const CEffectSpitOutStar& Beatle) : CGameObject(Beatle)
+CEffectStar::CEffectStar(const CEffectStar& Beatle) : CGameObject(Beatle)
 {}
 
-CEffectSpitOutStar::~CEffectSpitOutStar()
+CEffectStar::~CEffectStar()
 {}
 
-void CEffectSpitOutStar::Start()
+void CEffectStar::Start()
 {
 	CGameObject::Start();
 
@@ -36,7 +37,7 @@ void CEffectSpitOutStar::Start()
 	m_ColliderBody->SetCollisionProfile("PlayerAttack");
 }
 
-bool CEffectSpitOutStar::Init()
+bool CEffectStar::Init()
 {
 	if (!CGameObject::Init())
 		return false;
@@ -75,19 +76,21 @@ bool CEffectSpitOutStar::Init()
 	);
 
 	m_ColliderBody->SetInfo(ColliderCenter, m_Sprite->GetWorldScale().x * 0.4f);
+
 	m_ColliderBody->SetCollisionProfile("PlayerAttack");
-	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectSpitOutStar::StarCollision);
+
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectStar::StarCollision);
 
 	m_Sprite->AddChild(m_ColliderBody);
 
 	return true;
 }
 
-void CEffectSpitOutStar::Update(float DeltaTime)
+void CEffectStar::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	AddWorldPos(Vector3(m_SpitOutDir, 0.f, 0.f) * DeltaTime * 300.f);
+	AddWorldPos(Vector3(m_SpitOutDir.x, m_SpitOutDir.y, 0.f) * DeltaTime * m_StarMoveSpeed);
 
 	if (m_AliveTime > 0.f)
 	{
@@ -100,17 +103,17 @@ void CEffectSpitOutStar::Update(float DeltaTime)
 	}
 }
 
-void CEffectSpitOutStar::PostUpdate(float DeltaTime)
+void CEffectStar::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
 }
 
-CEffectSpitOutStar* CEffectSpitOutStar::Clone()
+CEffectStar* CEffectStar::Clone()
 {
-	return new CEffectSpitOutStar(*this);
+	return new CEffectStar(*this);
 }
 
-void CEffectSpitOutStar::StarCollision(const CollisionResult& Result)
+void CEffectStar::StarCollision(const CollisionResult& Result)
 {
 	Destroy();
 
@@ -132,7 +135,7 @@ void CEffectSpitOutStar::StarCollision(const CollisionResult& Result)
 
 		DestMonster->SetAIState(Monster_AI::Hit);
 
-		if (m_SpitOutDir > 0)
+		if (m_SpitOutDir.x > 0)
 		{
 			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
 		}
