@@ -65,7 +65,7 @@ void CScene::Start()
 
 	// 카메라 Component가 세팅되어 있다면
 	// 카메라 매니저의 메인 카메라로 세팅해둔다
-	if (m_Mode->GetPlayerObject())
+	if (m_Mode->GetPlayerObject() && CSceneManager::GetStaticPlayerInfo() == nullptr)
 	{
 		CCameraComponent* Camera = m_Mode->GetPlayerObject()->FindComponentByType<CCameraComponent>();
 

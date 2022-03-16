@@ -1,6 +1,9 @@
 #include "SceneManager.h"
+
+#include "CameraManager.h"
 #include "../Render/RenderManager.h"
 #include "../Sync.h"
+#include "../Component/ColliderComponent.h"
 
 DEFINITION_SINGLE(CSceneManager)
 
@@ -74,13 +77,19 @@ bool CSceneManager::ChangeScene()
 
 				m_StaticPlayer->SetScene(m_Scene);
 
+				CCameraComponent* Camera = m_StaticPlayer->FindComponentByType<CCameraComponent>();
+
+				Camera->SetName("DefaultCamera");
+
+				Camera->SetWorldPos(m_StaticPlayer->GetWorldPos());
+
+				m_Scene->GetCameraManager()->SetCurrentCamera(Camera);
+
 				// 현재 Scene 에서 Player2D 에 해당하는 GameObject를 지운다.
-				m_Scene->DeletePlayerFromScene();
+				// m_Scene->DeletePlayerFromScene();
 
 				// 해당 m_StaticPlayer를 Obj List에 추가한다. 
 				m_Scene->m_ObjList.push_back(m_StaticPlayer);
-
-				// m_StaticPlayer = nullptr;
 
 				m_Scene->m_PlayerTypeID = m_StaticPlayer->GetTypeID();
 			}

@@ -207,6 +207,9 @@
     <ClCompile Include="Object\EffectSpitOut.cpp">
       <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\BeginningScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectSpitOut.h">
       <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\BeginningScene.h">
+      <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -24,12 +24,12 @@
 
 CPlayer2D::CPlayer2D():
 m_MoveVelocity(0.f),
-m_LeverMoveAccel(1.8f),
+m_LeverMoveAccel(1.6f),
 m_LeverVelocity(0.f),
-m_LeverMaxMoveVelocity(350.f),
-m_DashMoveAccel(2.2f),
+m_LeverMaxMoveVelocity(270.f),
+m_DashMoveAccel(2.0f),
 m_DashVelocity(0.f),
-m_DashMaxMoveVelocity(250.f),
+m_DashMaxMoveVelocity(170.f),
 m_TriangleJumpVelocityRatio(0.8f),
 m_RightMove(false),
 m_Bounced(false),
@@ -124,6 +124,7 @@ void CPlayer2D::Start()
 	SetPhysicsSimulate(true);
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
+	m_Body->SetExtend(GetWorldScale().x * 0.5f, GetWorldScale().y * 0.5f);
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
 
 	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?
@@ -190,8 +191,6 @@ void CPlayer2D::Start()
 	}
 
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
-	// m_KirbyState->AddChild(m_Camera);
-
 
 	/*
 	// todo : 왜 여기서 새롭게 만들어주면 작동을 안하게 되는 것일까 ?
@@ -1105,11 +1104,14 @@ void CPlayer2D::ResetCameraInfoToPlayer()
 {
 	m_KirbyState->AddChild(m_Camera);
 
-	m_PhysicsSimulate = true;
+	// m_PhysicsSimulate = true;
 }
 
 void CPlayer2D::CheckBelowWorldResolution()
 {
+	if (m_GamePlayDelayTime > 0)
+		return;
+
 	Vector3 WorldPos = GetWorldPos();
 
 	m_Camera->SetFollowPlayer(true);

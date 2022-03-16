@@ -192,6 +192,7 @@
     <ClCompile Include="Object\TileMap.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
+    <ClCompile Include="Scene\BeginningScene.cpp" />
     <ClCompile Include="Scene\Green2Scene.cpp" />
     <ClCompile Include="Scene\LoadingScene.cpp" />
     <ClCompile Include="Scene\LoadingThread.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Scene\BeginningScene.h" />
     <ClInclude Include="Scene\Green2Scene.h" />
     <ClInclude Include="Scene\LoadingScene.h" />
     <ClInclude Include="Scene\LoadingThread.h" />

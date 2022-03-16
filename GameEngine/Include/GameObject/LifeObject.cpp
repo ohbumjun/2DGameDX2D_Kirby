@@ -798,6 +798,7 @@ void CLifeObject::Start()
 
 	m_PrevPos.y = GetWorldPos().y;
 
+	m_GamePlayDelayTime = 2.f;
 }
 
 bool CLifeObject::Init()
