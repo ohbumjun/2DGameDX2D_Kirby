@@ -180,6 +180,7 @@
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
+    <ClCompile Include="Object\MoonAboveParticle.cpp" />
     <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalBear.cpp" />
     <ClCompile Include="Object\NormalMonster.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\BeginningScene.cpp" />
     <ClCompile Include="Scene\Green2Scene.cpp" />
+    <ClCompile Include="Scene\Green3Scene.cpp" />
     <ClCompile Include="Scene\LoadingScene.cpp" />
     <ClCompile Include="Scene\LoadingThread.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
@@ -229,6 +231,7 @@
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />
+    <ClInclude Include="Object\MoonAboveParticle.h" />
     <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalBear.h" />
     <ClInclude Include="Object\NormalMonster.h" />
@@ -244,6 +247,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\BeginningScene.h" />
     <ClInclude Include="Scene\Green2Scene.h" />
+    <ClInclude Include="Scene\Green3Scene.h" />
     <ClInclude Include="Scene\LoadingScene.h" />
     <ClInclude Include="Scene\LoadingThread.h" />
     <ClInclude Include="Scene\MainScene.h" />

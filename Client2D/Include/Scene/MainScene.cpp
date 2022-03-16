@@ -1,17 +1,17 @@
 #include "MainScene.h"
-
+#include "../UI/MainWidget.h"
+#include "Resource/Particle/Particle.h"
+// Scene
 #include <Scene/SceneManager.h>
-
-#include "../Object/Player2D.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "Scene/ViewPort.h"
+// Object
+#include "../Object/Player2D.h"
 #include "../Object/Monster.h"
 #include "../Object/TileMap.h"
 #include "../Object/TileMapEmpty.h"
 #include "../Object/PixelTest.h"
-#include "Scene/ViewPort.h"
-#include "../UI/MainWidget.h"
-#include "Resource/Particle/Particle.h"
 #include "../Object/BubbleParticle.h"
 #include "../Object/SpecialChangeParticle.h"
 #include "../Object/YellowBird.h"
@@ -20,6 +20,8 @@
 #include "../Object/NormalBear.h"
 #include "../Object/BackGround.h"
 #include "../Object/LineContainer.h"
+#include "../Object/MoonAboveParticle.h"
+#include "../Object/EffectChangeToGreen2.h"
 
 CMainScene::CMainScene()
 {
@@ -45,15 +47,6 @@ void CMainScene::Start()
 	CreateSound();
 	*/
 
-	// Particle
-	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
-	SpecialChangeParticle->SetRelativePos(900.f, 200.f, 0.f);
-
-	/*
-	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
-	BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
-	*/
-
 	// TileMapEmpty Type 의 GameObject를 찾는다
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 
@@ -61,11 +54,12 @@ void CMainScene::Start()
 
 	m_Scene->SetWorldResolution(TileMapEmtpyObject->GetWorldScale().x, TileMapEmtpyObject->GetWorldScale().y);
 
+	// Player
 	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
 
 	SetPlayerObject(Player2D);
 
-
+	// Line
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
@@ -81,6 +75,24 @@ void CMainScene::Start()
 			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
 		}
 	}
+
+	// 
+	CGameObject* DoorToGreen2Scene = m_Scene->FindGameObjectByTypeID(typeid(CEffectChangeToGreen2).hash_code());
+
+	CMoonAboveParticle* MoonAboveParticle = m_Scene->CreateGameObject<CMoonAboveParticle>("MoonAboveParticle");
+
+	MoonAboveParticle->SetWorldPos(
+		DoorToGreen2Scene->GetWorldPos().x, 
+		DoorToGreen2Scene->GetWorldPos().y + DoorToGreen2Scene->GetWorldScale().y * 2.f,
+		DoorToGreen2Scene->GetWorldPos().z);
+	/*
+	
+	 *	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
+
+	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
+	SpecialChangeParticle->SetRelativePos(900.f, 200.f, 0.f);
+	*/
 
 }
 
@@ -164,19 +176,27 @@ bool CMainScene::Init()
 
 void CMainScene::CreateMaterial()
 {
-	// Particle 
+	// Particle
+	// - Bubble
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("BubbleParticleMaterial");
 	CMaterial* BubbleParticleMaterial = m_Scene->GetResource()->FindMaterial("BubbleParticleMaterial");
 	BubbleParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "BubbleParticleTexture", TEXT("Particle/Bubbles99px.png"));
 	BubbleParticleMaterial->SetShader("ParticleRenderShader");
 	BubbleParticleMaterial->SetRenderState("AlphaBlend");
 
-
+	// - SpecialChange
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("SpecialChangeMaterial");
 	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
 	SpecialChangeParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SpecialChangeParticleTexture", TEXT("Particle/Sparks.png"));
 	SpecialChangeParticleMaterial->SetShader("ParticleRenderShader");
 	SpecialChangeParticleMaterial->SetRenderState("AlphaBlend");
+
+	// - MoonAbove
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("MoonAboveParticleMaterial");
+	CMaterial* MoonAboveParticleMaterial = m_Scene->GetResource()->FindMaterial("MoonAboveParticleMaterial");
+	MoonAboveParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "MoonAboveParticleTexture", TEXT("Particle/Bubbles99px.png"));
+	MoonAboveParticleMaterial->SetShader("ParticleRenderShader");
+	MoonAboveParticleMaterial->SetRenderState("AlphaBlend");
 
 
 	// TileMap
@@ -234,8 +254,8 @@ void CMainScene::CreateParticle()
 	BubbleParticle->SetColorMin(Vector4(0.6f, 0.8f, 1.0f, 1.f));
 	BubbleParticle->SetColorMax(Vector4(0.1f, 0.1f, 1.0f, 1.f));
 	BubbleParticle->SetMoveAngle(Vector3(0.f, 0.f, -40.f));
-	// BubbleParticle->SetGravity(true);
-	BubbleParticle->SetMove(true);
+	BubbleParticle->SetGravity(true);
+	// BubbleParticle->SetMove(true);
 
 	// Special Change
 	m_Scene->GetResource()->CreateParticle("SpecialChange");
@@ -258,6 +278,28 @@ void CMainScene::CreateParticle()
 	SpecialChangeParticle->SetMoveAngle(Vector3(0.f, 0.f, -50.f));
 	// BubbleParticle->SetGravity(true);
 	SpecialChangeParticle->SetMove(true);
+
+	// MoonAbove
+	m_Scene->GetResource()->CreateParticle("MoonAbove");
+	CParticle* MoonAboveParticle = m_Scene->GetResource()->FindParticle("MoonAbove");
+	CMaterial* MoonAboveParticleMaterial = m_Scene->GetResource()->FindMaterial("MoonAboveParticleMaterial");
+
+	MoonAboveParticle->SetMaterial(MoonAboveParticleMaterial);
+	MoonAboveParticle->SetSpawnCountMax(100);
+	MoonAboveParticle->SetScaleMin(Vector3(20.f, 20.f, 1.f));
+	MoonAboveParticle->SetScaleMax(Vector3(40.f, 40.f, 1.f));
+	MoonAboveParticle->SetSpeedMin(5.f);
+	MoonAboveParticle->SetSpeedMax(100.f);
+	MoonAboveParticle->SetLifeTimeMin(0.2f);
+	MoonAboveParticle->SetLifeTimeMax(3.5f);
+	MoonAboveParticle->SetMoveDir(Vector3(0.f, 1.f, 0.f));
+	MoonAboveParticle->SetStartMin(Vector3(-150.f, 0.f, 0.f));
+	MoonAboveParticle->SetStartMax(Vector3(150.f, 10.f, 0.f));
+	MoonAboveParticle->SetColorMin(Vector4(0.6f, 1.0f, 0.6f, 1.f));
+	MoonAboveParticle->SetColorMax(Vector4(0.1f, 1.0f, 0.1f, 1.f));
+	MoonAboveParticle->SetMoveAngle(Vector3(0.f, 0.f, -20.f));
+	MoonAboveParticle->SetGravity(true);
+	// SpecialChangeParticle->SetMove(true);
 }
 
 void CMainScene::PrepareResources()

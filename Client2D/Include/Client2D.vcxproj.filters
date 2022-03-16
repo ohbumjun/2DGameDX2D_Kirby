@@ -67,6 +67,9 @@
     <Filter Include="02. Object\07. Effect\02. PlayerEffect">
       <UniqueIdentifier>{cba2cb7b-d67e-4ca4-be2f-5f801ff3b2e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect\03. DecorateEffect">
+      <UniqueIdentifier>{598ccc4f-82ee-4fde-9a3a-22160c0dd1ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -209,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="Scene\BeginningScene.cpp">
       <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Green3Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\MoonAboveParticle.cpp">
+      <Filter>02. Object\05. Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="Scene\BeginningScene.h">
       <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Green3Scene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MoonAboveParticle.h">
+      <Filter>02. Object\05. Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
