@@ -4,18 +4,26 @@
 class CBeamMonsterAttack :
     public CGameObject
 {
+    friend class CBeamMonster;
 public :
     CBeamMonsterAttack();
     CBeamMonsterAttack(const CBeamMonsterAttack& Attack);
     virtual ~CBeamMonsterAttack() override;
+private :
+    class CBeamMonster* m_BeamOwner;
 private:
-    CSharedPtr<class CSceneComponent> m_Root;
     CSharedPtr<class CSpriteComponent> m_FirstSprite;
     CSharedPtr<class CSpriteComponent> m_SecondSprite;
     CSharedPtr<class CSpriteComponent> m_ThirdSprite;
     CSharedPtr<class CSpriteComponent> m_FourthSprite;
     float m_AttackImageSize;
-public :
+    float m_RotateLimit;
+protected:
+    void SetBeamOwner(class CBeamMonster* Owner)
+    {
+        m_BeamOwner = Owner;
+    }
+protected:
     void SetRightAttackDir();
     void SetLeftAttackDir();
 public:

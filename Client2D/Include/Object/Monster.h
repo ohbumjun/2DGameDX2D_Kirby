@@ -109,7 +109,7 @@ protected:
     virtual void AIIdleSpecific(float DeltaTime){};
     virtual void AIWalkSpecific(float DeltaTime){};
     virtual void AITraceSpecific(float DeltaTime){};
-    virtual void AIAttackSpecific(float DeltaTime){};
+    virtual void AIAttackSpecific(float DeltaTime){}
     virtual void AIDeathSpecific(float DeltaTime){};
     virtual void AIHitSpecific(float DeltaTime){};
 public :

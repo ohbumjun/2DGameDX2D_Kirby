@@ -5,6 +5,8 @@
 #include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
 
+#include "BeamMonster.h"
+
 CBeamMonsterAttack::CBeamMonsterAttack() :
 	m_AttackImageSize(50.f)
 {}
@@ -37,12 +39,9 @@ bool CBeamMonsterAttack::Init()
 	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
 	/	AnimationInstance->GetCurrentAnimation()->GetFrameCount();
 
-	m_Root = CreateComponent<CSceneComponent>("Root");
-
 	m_FirstSprite = CreateComponent<CSpriteComponent>("MainSprite");
 	m_FirstSprite->SetAnimationInstance(AnimationInstance);
 	m_FirstSprite->SetWorldScale(m_AttackImageSize, m_AttackImageSize, 1.f);
-	m_FirstSprite->SetInheritRotZ(true);
 
 	m_SecondSprite = CreateComponent<CSpriteComponent>("SecondSprite");
 	m_SecondSprite->SetAnimationInstance(AnimationInstance);
@@ -65,10 +64,13 @@ bool CBeamMonsterAttack::Init()
 	m_FourthSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 6.f);
 	m_FourthSprite->SetInheritRotZ(true);
 
-	m_Root->AddChild(m_FirstSprite);
-	m_Root->AddChild(m_SecondSprite);
-	m_Root->AddChild(m_ThirdSprite);
-	m_Root->AddChild(m_FourthSprite);
+	m_FirstSprite->AddChild(m_SecondSprite);
+	m_FirstSprite->AddChild(m_ThirdSprite);
+	m_FirstSprite->AddChild(m_FourthSprite);
+
+	m_FirstSprite->SetWorldRotationZ(70.f);
+
+	m_RotateLimit = 70.f * 2;
 
 	return true;
 }
@@ -77,5 +79,19 @@ void CBeamMonsterAttack::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	m_Root->AddRelativeRotationZ(200.f * DeltaTime);
+	float AddedRotation = -50.f * DeltaTime;
+
+	m_FirstSprite->AddRelativeRotationZ(-50.f * DeltaTime);
+
+	m_RotateLimit += AddedRotation;
+
+	if (m_RotateLimit < 0.f)
+	{
+		Destroy();
+
+		if (m_BeamOwner)
+		{
+			m_BeamOwner->SetAttackEnd();
+		}
+	}
 }

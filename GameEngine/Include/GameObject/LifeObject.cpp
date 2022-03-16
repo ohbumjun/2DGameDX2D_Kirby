@@ -705,8 +705,8 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 		if (Slope < 0)
 		{
 			// 해당 영역안에 들어왔다면
-			if ((PosYDown <= FinalTopYPos + 5.f &&
-				PosYDown >= FinalBottomYPos - 5.f &&
+			if ((PosYDown <= FinalTopYPos + 10.f &&
+				PosYDown >= FinalBottomYPos - 10.f &&
 				PosXLeft <= FinalRightXPos &&
 				PosXRight >= FinalLeftXPos) 
 				&&
@@ -717,11 +717,8 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 				// 세팅해준다.
 				float ObjFinalYPos = (FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope) + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2;
 
-				float DiffFromLineYPos = std::abs(GetWorldPos().y - ObjFinalYPos);
-				float DiffFromFallStartYPos = std::abs(m_FallStartY - GetWorldPos().y);
-
 				// 차이가 5.f 이내
-				if (DiffFromLineYPos < 5.f)
+				if (std::abs(GetWorldPos().y - ObjFinalYPos) < 10.f)
 				 {
 					// 하지만, 지금 막 점프하는 순간에는, 점프가 되도록 허용해야 하므로
 					// if (m_FallTime == 0.f && DiffFromFallStartYPos <= 0.f)
@@ -746,8 +743,8 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 		else
 		{
 			// 해당 영역안에 들어왔다면
-			if ((PosYDown <= FinalTopYPos + m_CollisionOffset &&
-				PosYDown >= FinalBottomYPos - m_CollisionOffset &&
+			if ((PosYDown <= FinalTopYPos + 10.f &&
+				PosYDown >= FinalBottomYPos - 10.f &&
 				PosXLeft <= FinalRightXPos &&
 				PosXRight >= FinalLeftXPos) 
 				&&
@@ -757,7 +754,7 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 				float ObjFinalYPos = (FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope) + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2;
 				float DiffFromFallStartYPos = std::abs(m_FallStartY - GetWorldPos().y);
 
-				if (std::abs(GetWorldPos().y - ObjFinalYPos < 5.f))
+				if (std::abs(GetWorldPos().y - ObjFinalYPos < 10.f))
 				{
 					// 하지만, 지금 막 점프하는 순간에는, 점프가 되도록 허용해야 하므로
 					// if (m_FallTime == 0.f && DiffFromFallStartYPos <= 0.f)
