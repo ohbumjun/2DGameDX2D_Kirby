@@ -179,6 +179,8 @@
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\EffectSpitOut.cpp" />
     <ClCompile Include="Object\EffectStar.cpp" />
+    <ClCompile Include="Object\FireMonster.cpp" />
+    <ClCompile Include="Object\FireMonsterAttack.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
@@ -232,6 +234,8 @@
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\EffectSpitOut.h" />
     <ClInclude Include="Object\EffectStar.h" />
+    <ClInclude Include="Object\FireMonster.h" />
+    <ClInclude Include="Object\FireMonsterAttack.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />

@@ -138,6 +138,9 @@
     <ClCompile Include="Object\EffectChangeToGreen1.cpp">
       <Filter>03. Object\07. Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\FireMonster.cpp">
+      <Filter>03. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen1.h">
       <Filter>03. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FireMonster.h">
+      <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

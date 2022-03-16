@@ -228,6 +228,12 @@
     <ClCompile Include="Object\BeamMonsterAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\FireMonster.cpp">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\FireMonsterAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -384,6 +390,12 @@
       <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
     </ClInclude>
     <ClInclude Include="Object\BeamMonsterAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FireMonster.h">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FireMonsterAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>
