@@ -2,6 +2,7 @@
 #include "Input.h"
 // UI
 #include "../UI/SimpleHUD.h"
+#include "Ui/UIDamageFont.h"
 // Scene
 #include "Scene/Scene.h"
 #include <Scene/CameraManager.h>
@@ -1712,8 +1713,16 @@ void CPlayer2D::FallDownAttack(const CollisionResult& Result)
 		// 2) Sound
 
 		// 3) Damage Font 작성
+		CWidgetComponent*  ObjectWindow = OwnerMonster->FindComponentByType<CWidgetComponent>();
 
-		// Hit 상태로 변경
+		if (ObjectWindow)
+		{
+			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+		}
+
+		// 4) Hit 상태로 변경
+		OwnerMonster->SetBeingHit(true);
+
 		OwnerMonster->SetAIState(Monster_AI::Hit);
 
 		// 현재 Player 방향으로 나아가게 하기
