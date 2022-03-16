@@ -83,6 +83,10 @@ private :
 	float m_MoveDashEffectLimitTime;
 	float m_MoveDashEffectLimitTimeMax;
 
+	bool m_IsBeingHit;
+	float m_BeingHitTime;
+	float m_BeingHitTimeMax;
+
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
 public :
@@ -94,6 +98,9 @@ public :
 {
 		return m_Body;
 }
+public :
+	void SetBeingHitDirection(float Dir);
+	void SetIsBeingHit();
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -122,6 +129,9 @@ private:
 	void ResetMoveInfo();
 	void ResetCameraInfoToPlayer();
 	virtual void CheckBelowWorldResolution() override;
+private :
+	// Hit
+	void UpdateBeingHit(float DeltaTime);
 private :
 	// Rotation
 	void RotationZInv(float DeltaTime);

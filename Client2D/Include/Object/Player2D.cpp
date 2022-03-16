@@ -26,36 +26,39 @@
 #include "BubbleParticle.h"
 #include "../Object/Monster.h"
 
-CPlayer2D::CPlayer2D():
-m_MoveVelocity(0.f),
-m_LeverMoveAccel(1.6f),
-m_LeverVelocity(0.f),
-m_LeverMaxMoveVelocity(270.f),
-m_DashMoveAccel(2.0f),
-m_DashVelocity(0.f),
-m_DashMaxMoveVelocity(170.f),
-m_TriangleJumpVelocityRatio(0.8f),
-m_RightMove(false),
-m_Bounced(false),
-m_ToLeftWhenRightMove(false),
-m_RightMovePush(false),
-m_LeftMove(false),
-m_ToRightWhenLeftMove(false),
-m_IsSpecialStateChanged(false),
-m_LeftMovePush(false),
-m_JumpDown(false),
-m_MoveDashEffectMade(false),
-m_IsLeverMoving(false),
-m_IsDashMoving(false),
-m_TriangleJump(false),
-m_IsEatingMonster(false),
-m_DeltaTime(0.f),
-m_IsFlying(false),
-m_FlySpeed(300.f),
-m_PullDistance(100.f),
-m_MoveDashEffectLimitTimeMax(0.2f),
-m_MoveDashEffectLimitTime(0.2f),
-m_SceneChangeCallback(nullptr)
+CPlayer2D::CPlayer2D() :
+	m_MoveVelocity(0.f),
+	m_LeverMoveAccel(1.6f),
+	m_LeverVelocity(0.f),
+	m_LeverMaxMoveVelocity(270.f),
+	m_DashMoveAccel(2.0f),
+	m_DashVelocity(0.f),
+	m_DashMaxMoveVelocity(170.f),
+	m_TriangleJumpVelocityRatio(0.8f),
+	m_RightMove(false),
+	m_Bounced(false),
+	m_ToLeftWhenRightMove(false),
+	m_RightMovePush(false),
+	m_LeftMove(false),
+	m_ToRightWhenLeftMove(false),
+	m_IsSpecialStateChanged(false),
+	m_LeftMovePush(false),
+	m_JumpDown(false),
+	m_MoveDashEffectMade(false),
+	m_IsLeverMoving(false),
+	m_IsDashMoving(false),
+	m_TriangleJump(false),
+	m_IsEatingMonster(false),
+	m_DeltaTime(0.f),
+	m_IsFlying(false),
+	m_FlySpeed(300.f),
+	m_PullDistance(100.f),
+	m_MoveDashEffectLimitTimeMax(0.2f),
+	m_MoveDashEffectLimitTime(0.2f),
+	m_SceneChangeCallback(nullptr),
+	m_IsBeingHit(false),
+	m_BeingHitTime(0.f),
+	m_BeingHitTimeMax(1.5f)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
@@ -304,6 +307,8 @@ void CPlayer2D::Update(float DeltaTime)
 
 	FallFromCliff();
 
+	UpdateBeingHit(DeltaTime);
+
 	UpdateActionWhenReachGroundAfterFall();
 }
 
@@ -339,6 +344,29 @@ void CPlayer2D::SetEatenMonster(CMonster* Monster)
 	m_EatenMonster = Monster;
 }
 
+void CPlayer2D::SetBeingHitDirection(float Dir)
+{
+	if (Dir < 0)
+		Dir = -1.f;
+	if (Dir >= 0)
+		Dir = 1.f;
+
+	m_ObjectMoveDir.x = Dir;
+}
+
+void CPlayer2D::SetIsBeingHit()
+{
+	m_IsBeingHit = true;
+
+	m_BeingHitTime = m_BeingHitTimeMax;
+
+	ResetMoveInfo();
+
+	m_LeverVelocity = 0.f;
+
+	m_DashVelocity = 0.f;
+}
+
 void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 {
 	CLifeObject::UpdateWhileOffGround(DeltaTime);
@@ -351,6 +379,9 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		return;
 	}
 
+	if (m_IsBeingHit)
+		return;
+
 	if (m_SceneChangeCallback && m_FallTime < 0.1f)
 	{
 		CollisionResult Result;
@@ -361,7 +392,6 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	{
 		FlyAfterJump(DeltaTime);
 		// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
-		
 	}
 }
 
@@ -408,6 +438,9 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 
 void CPlayer2D::MoveDown(float DeltaTime)
 {
+	if (m_IsBeingHit)
+		return;
+
 	m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime * -1.f);
 }
 
@@ -420,6 +453,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 
 	// 오른쪽 버튼을 누른 상태라면 X
 	if (m_RightMovePush)
+		return;
+
+	if (m_IsBeingHit)
 		return;
 
 	// 범위 제한 하기
@@ -514,6 +550,9 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	if (m_RightMovePush)
 		return;
 
+	if (m_IsBeingHit)
+		return;
+
 	// 범위 제한 하기
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
@@ -604,6 +643,9 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	{
 		return;
 	}
+
+	if (m_IsBeingHit)
+		return;
 
 	// 왼쪽 키를 누르고 있었다면 안먹게 한다
 	if (m_LeftMovePush)
@@ -697,6 +739,9 @@ void CPlayer2D::MoveRight(float DeltaTime)
 void CPlayer2D::MoveDashRight(float DeltaTime)
 {
 	if (m_LeftMovePush)
+		return;
+
+	if (m_IsBeingHit)
 		return;
 
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
@@ -834,6 +879,9 @@ void CPlayer2D::RightDashMoveEnd(float DeltaTime)
 void CPlayer2D::SpitOut(float DeltaTime)
 {
 	if (!m_IsEatingMonster)
+		return;
+
+	if (m_IsBeingHit)
 		return;
 
 	m_IsEatingMonster = false;
@@ -1145,6 +1193,26 @@ void CPlayer2D::CheckBelowWorldResolution()
 	m_FallStartY = m_InitPlayerPos.y;
 }
 
+void CPlayer2D::UpdateBeingHit(float DeltaTime)
+{
+	if (!m_IsBeingHit)
+		return;
+
+	if (m_BeingHitTime > 0.f)
+	{
+		m_BeingHitTime -= DeltaTime;
+
+		AddWorldPos(Vector3(m_ObjectMoveDir.x, 0.f, 0.f) * DeltaTime * 450.f);
+
+		ChangePlayerHitAnimation();
+			
+		if (m_BeingHitTime < 0.f)
+		{
+			m_IsBeingHit = false;
+		}
+	}
+}
+
 void CPlayer2D::RotationZInv(float DeltaTime) //
 {
 	m_KirbyState->AddRelativeRotationZ(180.f * DeltaTime);
@@ -1161,6 +1229,9 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 	{
 		return;
 	}
+
+	if (m_IsBeingHit)
+		return;
 
 	// 일단 한번 뛴 상태에서 날아야 한다.
 	/*
@@ -1205,6 +1276,9 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 
 void CPlayer2D::SimpleJump()
 {
+	if (m_IsBeingHit)
+		return;
+
 	if (!m_Jump)
 	{
   		m_Jump = true;
@@ -1232,6 +1306,9 @@ void CPlayer2D::Jump(float DeltaTime)
 	{
 		return;
 	}
+
+	if (m_IsBeingHit)
+		return;
 
 	// 삼각 충돌 적용하기
 	bool SideCollision = false;
@@ -1433,6 +1510,9 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 
 void CPlayer2D::JumpDown(float DeltaTime)
 {
+	if (m_IsBeingHit)
+		return;
+
 	if (m_IsGround)
 	{
 		if (m_BottomCollidedTile && m_BottomCollidedTile->GetTileType() == Tile_Type::Block)
@@ -1750,6 +1830,9 @@ void CPlayer2D::PullRight(float DeltaTime)
 	if (m_IsEatingMonster)
 		return;
 
+	if (m_IsBeingHit)
+		return;
+
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("RightPull");
 
 	// 오른쪽 범위 안에 있는지 확인하기
@@ -1828,6 +1911,9 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 {
 	// 먹고 있는 녀석이 없으면 X
 	if (!m_IsEatingMonster)
+		return;
+
+	if (m_IsBeingHit)
 		return;
 
 	// 능력 몬스터가 아니라면 Return
@@ -1982,6 +2068,9 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 void CPlayer2D::PullLeft(float DeltaTime)
 {
 	if (m_IsEatingMonster)
+		return;
+
+	if (m_IsBeingHit)
 		return;
 
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("LeftPull");

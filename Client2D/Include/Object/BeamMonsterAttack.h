@@ -32,5 +32,7 @@ public:
     virtual void Start() override;
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
+private :
+    void CollisionCallback(const CollisionResult& Result);
 };
 
