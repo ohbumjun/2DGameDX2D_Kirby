@@ -46,6 +46,9 @@ bool CFireKirbyState::Init()
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
+	m_Animation->FindAnimationSequence2DData("RightAttack")->SetPlayTime(0.3f);
+	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(0.3f);
+
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
 		this, &CFireKirbyState::NormalAttackCallback);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(

@@ -14,6 +14,12 @@ protected:
         virtual void Attack();
         virtual void FallDownAttack();
         virtual void GoUpAttack();
+private :
+    bool m_GoUpState;
+    float m_GoUpTime;
+	float m_GoUpTimeMax;
+private :
+    void UpdateAttackGoUpState(float DeltaTime);
 public :
     virtual void              Start() override;
     virtual bool              Init() override;

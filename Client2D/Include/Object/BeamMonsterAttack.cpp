@@ -13,7 +13,8 @@ CBeamMonsterAttack::CBeamMonsterAttack() :
 	m_AttackImageSize(50.f),
 	m_RotationSpeed(120.f),
 	m_AttackDir(1.f)
-{}
+{
+}
 
 CBeamMonsterAttack::CBeamMonsterAttack(const CBeamMonsterAttack& Attack) : CAttackEffect(Attack)
 {}

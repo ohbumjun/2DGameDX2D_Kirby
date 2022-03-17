@@ -2,7 +2,8 @@
 #include "Component/TileEmptyComponent.h"
 #include "Scene/Scene.h"
 
-CAttackEffect::CAttackEffect() 
+CAttackEffect::CAttackEffect()  :
+	m_SideCollisionApplied(true)
 {}
 
 CAttackEffect::CAttackEffect(const CAttackEffect& obj)
@@ -13,6 +14,9 @@ CAttackEffect::~CAttackEffect()
 
 bool CAttackEffect::CheckSideCollision()
 {
+	if (!m_SideCollisionApplied)
+		return false;
+
 	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
 	if (!TileMap)

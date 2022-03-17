@@ -14,6 +14,7 @@ public:
     virtual ~CKirbyNormalAttack() override;
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
+    CSharedPtr<class CColliderCircle> m_Collider;
     Vector2 m_AttackDir;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
@@ -23,6 +24,7 @@ protected:
     void SetRightAttackDir(float YDir);
     void SetLeftAttackDir(float YDir);
     void SetAttackType(KirbyNormalAttack_Type Type);
+
 public:
     virtual void Start() override;
     virtual bool Init() override;

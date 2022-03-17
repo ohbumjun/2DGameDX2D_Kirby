@@ -51,18 +51,22 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 		{
 		m_AttackDistLimitMax = 1000.f;
 		m_AttackObjectSpeed = 500.f;
+
 		m_Sprite->SetWorldScale(170.f, 170.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"FireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
-
+		m_Sprite->SetAnimationInstance(AnimationInstance);
 		}
 		break;
 	case KirbyNormalAttack_Type::Fight:
 	{
 		m_AttackDistLimitMax = 500.f;
 		m_AttackObjectSpeed = 1200.f;
+
 		m_Sprite->SetWorldScale(100.f, 100.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"FightAttackEffect", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
@@ -72,18 +76,19 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 	case KirbyNormalAttack_Type::Beam:
 	{
 		m_Sprite->SetWorldScale(40.f, 40.f, 1.f);
-		m_AttackDistLimitMax = 1000.f;
-		m_AttackObjectSpeed = 500.f;
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+
+		m_AttackDistLimitMax = 700.f;
+		m_AttackObjectSpeed = 400.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"BeamAttackEffect", TEXT("Kirby_Beam_Effect_NormalAttack.anim"));
 		m_Sprite->SetAnimationInstance(AnimationInstance);
+
+		m_SideCollisionApplied = false;
 	}
 		break;
 	}
-
-	m_Sprite->SetAnimationInstance(AnimationInstance);
-
 }
 
 void CKirbyNormalAttack::Start()
@@ -106,11 +111,11 @@ bool CKirbyNormalAttack::Init()
 	m_Sprite->SetWorldScale(170.f, 170.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
-	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
-	m_Sprite->AddChild(ColliderCirle);
-	ColliderCirle->SetCollisionProfile("PlayerAttack");
-	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CKirbyNormalAttack::CollisionCallback);
+	m_Collider = CreateComponent<CColliderCircle>("FirstCollider");
+	m_Sprite->AddChild(m_Collider);
+	m_Collider->SetCollisionProfile("PlayerAttack");
+	m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CKirbyNormalAttack::CollisionCallback);
 
 	return true;
 }

@@ -5,7 +5,9 @@
 #include "../Object/Player2D.h"
 #include "../Object/KirbyNormalAttack.h"
 
-CFightKirbyState::CFightKirbyState()
+CFightKirbyState::CFightKirbyState() :
+	m_GoUpTimeMax(0.4f),
+	m_GoUpTime(0.f)
 {}
 
 CFightKirbyState::CFightKirbyState(const CFightKirbyState& Kirby) : CKirbyState(Kirby)
@@ -21,7 +23,27 @@ void CFightKirbyState::FallDownAttack()
 {}
 
 void CFightKirbyState::GoUpAttack()
-{}
+{
+	m_GoUpState = true;
+	m_GoUpTime = m_GoUpTimeMax;
+}
+
+void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
+{
+	if (m_GoUpTime > 0.f)
+	{
+		m_GoUpTime -= DeltaTime;
+
+		if (m_Player->GetObjectMoveDir().x > 0)
+		{
+			AddWorldPos(Vector3(0.3f, 1.f, 0.f) * DeltaTime * 500.f);
+		}
+		else
+		{
+			AddWorldPos(Vector3(0.3f * -1.f, 1.f, 0.f) * DeltaTime * 500.f);
+		}
+	}
+}
 
 void CFightKirbyState::Start()
 {
@@ -45,6 +67,9 @@ bool CFightKirbyState::Init()
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
+	m_Animation->FindAnimationSequence2DData("RightAttack")->SetPlayTime(0.3f);
+	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(0.3f);
+
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
 		this, &CFightKirbyState::NormalAttackCallback);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
@@ -58,6 +83,8 @@ bool CFightKirbyState::Init()
 void CFightKirbyState::Update(float DeltaTime)
 {
 	CKirbyState::Update(DeltaTime);
+
+	UpdateAttackGoUpState(DeltaTime);
 }
 
 void CFightKirbyState::PostUpdate(float DeltaTime)

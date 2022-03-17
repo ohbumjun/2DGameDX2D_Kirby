@@ -1773,9 +1773,6 @@ void CPlayer2D::ChangePlayerEatRunAnimation()
 
 void CPlayer2D::ChangePlayerDeathAnimation()
 {
-	if (m_IsAttacking)
-		return;
-
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftDeath");
 	else
@@ -1800,8 +1797,6 @@ void CPlayer2D::ChangePlayerFallDownAttackAnimation()
 
 void CPlayer2D::ChangePlayerGoUpAttackAnimation()
 {
-	if (m_IsAttacking)
-		return;
 
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftUpAttack");
@@ -2154,14 +2149,16 @@ void CPlayer2D::Attack(float DeltaTime)
 	m_DashVelocity = 0.f;
 	m_MoveVelocity = 0.f;
 
+	float YDiff = GetWorldPos().y - m_PrevPos.y;
+
 	// 내려가고 있을 때
-	if (m_IsFalling && !m_IsGround)
+	if (YDiff < 0)
 	{
 		ChangePlayerFallDownAttackAnimation();
 
 		m_KirbyState->FallDownAttack();
 	}
-	else if (m_IsFlying || m_Jump)
+	else if (YDiff > 0)
 	{
 		ChangePlayerGoUpAttackAnimation();
 
