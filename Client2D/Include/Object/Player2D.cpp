@@ -1931,11 +1931,28 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	{
 	case Ability_State::Beam :
 		{
-			m_KirbyState = CreateComponent<CBeamKirbyState>("FightKirbyState");
+			m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
 			m_IsSpecialStateChanged = true;
 		}
 		break;
+	case Ability_State::Fire:
+	{
+		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
+
+		// 조금 크기를 키워야할 것 같다.
+		m_KirbyState->SetWorldScale(90.f, 90.f, 1.f);
+
+		m_IsSpecialStateChanged = true;
+	}
+	break;
+	case Ability_State::Fight:
+	{
+		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
+
+		m_IsSpecialStateChanged = true;
+	}
+	break;
 	}
 
 	// Special Change Effect

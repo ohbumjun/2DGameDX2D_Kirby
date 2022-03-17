@@ -18,6 +18,9 @@ void CNormalKirbyState::Attack()
 void CNormalKirbyState::FallDownAttack()
 {}
 
+void CNormalKirbyState::GoUpAttack()
+{}
+
 void CNormalKirbyState::Start()
 {
 	CKirbyState::Start();

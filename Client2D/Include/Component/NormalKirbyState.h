@@ -13,6 +13,7 @@ public :
 protected:
     virtual void Attack();
     virtual void FallDownAttack();
+    virtual void GoUpAttack();
 protected:
     virtual void              Start() override;
     virtual bool              Init() override;
