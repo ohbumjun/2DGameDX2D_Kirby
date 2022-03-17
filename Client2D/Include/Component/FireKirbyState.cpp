@@ -45,7 +45,7 @@ void CFireKirbyState::FallDownAttack()
 		// Attack Effect
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
 
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FireFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FireFall);
 
 		AttackEffect->SetRightAttackDir(-1.f); // 해당 Animation은 EffectRight 만이 존재한다.
 
@@ -102,7 +102,7 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 	{
 		m_GoUpTime -= DeltaTime;
 
-		SetWorldScale(Vector3(m_InitWorldScale.x * 2.f, m_InitWorldScale.y * 2.f, m_InitWorldScale.z));
+		SetWorldScale(Vector3(m_InitWorldScale.x * 3.f, m_InitWorldScale.y * 3.f, m_InitWorldScale.z));
 
 		if (m_Player->GetObjectMoveDir().x > 0)
 		{

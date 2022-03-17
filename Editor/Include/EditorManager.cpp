@@ -815,6 +815,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
 		return Obj;
 	}
+	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFightMonster>();
+		return Obj;
+	}
 	else if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CTileMapEmpty>();

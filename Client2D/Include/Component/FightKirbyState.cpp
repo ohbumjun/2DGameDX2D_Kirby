@@ -40,21 +40,21 @@ void CFightKirbyState::FallDownAttack()
 	{
 		// 가운데
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FightFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
 		AttackEffect->SetLeftAttackDir(-1.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 
 		// 위
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FightFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
 		AttackEffect->SetLeftAttackDir(-1.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y + 20.f, GetWorldPos().z);
 
 		// 아래
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FightFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
 		AttackEffect->SetLeftAttackDir(-1.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y - 20.f, GetWorldPos().z);
@@ -63,20 +63,20 @@ void CFightKirbyState::FallDownAttack()
 	else
 	{
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FightFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
 		AttackEffect->SetRightAttackDir(-1.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FightFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
 		AttackEffect->SetRightAttackDir(-1.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y + 20.f, GetWorldPos().z);
 
 		// 아래
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FightFall);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
 		AttackEffect->SetRightAttackDir(-1.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y - 20.f, GetWorldPos().z);
@@ -238,7 +238,7 @@ void CFightKirbyState::NormalAttackCallback()
 	{
 		// 가운데
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Fight);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Fight);
 		AttackEffect->SetLeftAttackDir(0.f);
 		// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
 		// AttackEffect->SetLeftAttackDir(0.f);
@@ -250,7 +250,7 @@ void CFightKirbyState::NormalAttackCallback()
 	else
 	{
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Fight);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Fight);
 		AttackEffect->SetRightAttackDir(0.f);
 		// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
 		// AttackEffect->SetRightAttackDir(0.f);

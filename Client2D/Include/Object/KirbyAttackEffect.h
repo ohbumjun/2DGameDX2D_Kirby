@@ -19,11 +19,11 @@ private:
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
     float m_AttackObjectSpeed;
-    KirbyNormalAttack_Type m_AttackType;
+    KirbyAttackEffect_Type m_AttackType;
 protected:
     void SetRightAttackDir(float YDir);
     void SetLeftAttackDir(float YDir);
-    void SetAttackType(KirbyNormalAttack_Type Type);
+    void SetAttackType(KirbyAttackEffect_Type Type);
     void SetAttackDirX(float XDir);
 protected :
     virtual void BottomCollisionSpecificAction() override;
