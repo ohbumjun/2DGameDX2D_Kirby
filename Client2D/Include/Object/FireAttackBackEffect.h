@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "AttackEffect.h"
 
 class CFireAttackBackEffect :
-    public CGameObject
+    public CAttackEffect
 {
     friend class CScene;
 protected:

@@ -18,7 +18,7 @@ CFireAttackBackEffect::CFireAttackBackEffect()
 	SetTypeID<CFireAttackBackEffect>();
 }
 
-CFireAttackBackEffect::CFireAttackBackEffect(const CFireAttackBackEffect& Beatle) : CGameObject(Beatle)
+CFireAttackBackEffect::CFireAttackBackEffect(const CFireAttackBackEffect& Beatle) : CAttackEffect(Beatle)
 {}
 
 CFireAttackBackEffect::~CFireAttackBackEffect()
@@ -36,7 +36,7 @@ void CFireAttackBackEffect::SetLeftAttackDir()
 
 void CFireAttackBackEffect::Start()
 {
-	CGameObject::Start();
+	CAttackEffect::Start();
 
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
 }
@@ -67,12 +67,12 @@ bool CFireAttackBackEffect::Init()
 
 void CFireAttackBackEffect::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CAttackEffect::Update(DeltaTime);
 }
 
 void CFireAttackBackEffect::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CAttackEffect::PostUpdate(DeltaTime);
 }
 
 CFireAttackBackEffect* CFireAttackBackEffect::Clone()

@@ -16,6 +16,8 @@ public :
 {
 		m_BottomCollisionApplied = Enable;
 }
+protected :
+	virtual void BottomCollisionSpecificAction();
 protected:
 	virtual bool CheckSideCollision();
 	virtual bool CheckBottomCollision();

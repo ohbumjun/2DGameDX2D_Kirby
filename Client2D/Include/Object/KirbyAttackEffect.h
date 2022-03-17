@@ -25,6 +25,8 @@ protected:
     void SetLeftAttackDir(float YDir);
     void SetAttackType(KirbyNormalAttack_Type Type);
     void SetAttackDirX(float XDir);
+protected :
+    virtual void BottomCollisionSpecificAction() override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

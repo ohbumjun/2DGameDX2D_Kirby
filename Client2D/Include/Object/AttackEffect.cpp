@@ -13,6 +13,11 @@ CAttackEffect::CAttackEffect(const CAttackEffect& obj)
 CAttackEffect::~CAttackEffect()
 {}
 
+void CAttackEffect::BottomCollisionSpecificAction()
+{
+	Destroy();
+}
+
 bool CAttackEffect::CheckSideCollision()
 {
 	if (!m_SideCollisionApplied)
@@ -262,7 +267,7 @@ void CAttackEffect::Update(float DeltaTime)
 
 	if (CheckBottomCollision())
 	{
-		Destroy();
+		BottomCollisionSpecificAction();
 	}
 
 	m_PrevPos = GetWorldPos();

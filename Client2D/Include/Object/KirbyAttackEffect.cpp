@@ -6,6 +6,7 @@
 #include <Component/SpriteComponent.h>
 #include "FireMonster.h"
 #include "Player2D.h"
+#include "FireAttackBackEffect.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
 
@@ -125,6 +126,21 @@ void CKirbyAttackEffect::SetAttackType(KirbyNormalAttack_Type Type)
 void CKirbyAttackEffect::SetAttackDirX(float XDir)
 {
 	m_AttackDir.x = XDir;
+}
+
+void CKirbyAttackEffect::BottomCollisionSpecificAction()
+{
+	// Attack Back Effect
+	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+
+	BackEffect->SetWorldPos(GetWorldPos());
+	BackEffect->SetWorldScale(60.f, 60.f, 1.f);
+
+	BackEffect->AddRelativeRotationZ(90.f);
+
+	BackEffect->SetLifeTime(0.4f);
+
+	Destroy();
 }
 
 void CKirbyAttackEffect::Start()

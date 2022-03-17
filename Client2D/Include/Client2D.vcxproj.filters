@@ -253,7 +253,7 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
     <ClCompile Include="Object\FireAttackBackEffect.cpp">
-      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -435,7 +435,7 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\FireAttackBackEffect.h">
-      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
