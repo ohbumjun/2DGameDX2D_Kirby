@@ -1,14 +1,14 @@
 #pragma once
 #include "GameObject\GameObject.h"
 
-class CFireKirbyNormalAttack :
+class CFightKirbyNormalAttack :
     public CGameObject
 {
     friend class CFireMonster;
 public:
-    CFireKirbyNormalAttack();
-    CFireKirbyNormalAttack(const CFireKirbyNormalAttack& Attack);
-    virtual ~CFireKirbyNormalAttack() override;
+    CFightKirbyNormalAttack();
+    CFightKirbyNormalAttack(const CFightKirbyNormalAttack& Attack);
+    virtual ~CFightKirbyNormalAttack() override;
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     float m_AttackDir;

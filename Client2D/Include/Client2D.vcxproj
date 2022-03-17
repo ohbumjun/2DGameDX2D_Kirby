@@ -166,7 +166,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
-    <ClCompile Include="Object\BeamKirbyAttack.cpp" />
+    <ClCompile Include="Object\BeamKirbyNormalAttack.cpp" />
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\BeamMonsterAttack.cpp" />
     <ClCompile Include="Object\BubbleParticle.cpp" />
@@ -181,7 +181,7 @@
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\EffectSpitOut.cpp" />
     <ClCompile Include="Object\EffectStar.cpp" />
-    <ClCompile Include="Object\FightKirbyAttack.cpp" />
+    <ClCompile Include="Object\FightKirbyNormalAttack.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FightMonsterAttack.cpp" />
     <ClCompile Include="Object\FireKirbyNormalAttack.cpp" />
@@ -227,7 +227,7 @@
     <ClInclude Include="Component\NormalKirbyState.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
     <ClInclude Include="Object\BackGround.h" />
-    <ClInclude Include="Object\BeamKirbyAttack.h" />
+    <ClInclude Include="Object\BeamKirbyNormalAttack.h" />
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\BeamMonsterAttack.h" />
     <ClInclude Include="Object\BubbleParticle.h" />
@@ -242,7 +242,7 @@
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\EffectSpitOut.h" />
     <ClInclude Include="Object\EffectStar.h" />
-    <ClInclude Include="Object\FightKirbyAttack.h" />
+    <ClInclude Include="Object\FightKirbyNormalAttack.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FightMonsterAttack.h" />
     <ClInclude Include="Object\FireKirbyNormalAttack.h" />

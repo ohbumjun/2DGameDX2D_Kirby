@@ -1,4 +1,4 @@
-#include "FireKirbyNormalAttack.h"
+#include "FightKirbyNormalAttack.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -9,42 +9,42 @@
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
 
-CFireKirbyNormalAttack::CFireKirbyNormalAttack() :
+CFightKirbyNormalAttack::CFightKirbyNormalAttack() :
 	m_AttackDir(1.f),
 	m_AttackDistLimit(0.f),
 	m_AttackDistLimitMax(1000.f)
 {}
 
-CFireKirbyNormalAttack::CFireKirbyNormalAttack(const CFireKirbyNormalAttack& Attack) : CGameObject(Attack)
+CFightKirbyNormalAttack::CFightKirbyNormalAttack(const CFightKirbyNormalAttack& Attack) : CGameObject(Attack)
 {}
 
-CFireKirbyNormalAttack::~CFireKirbyNormalAttack()
+CFightKirbyNormalAttack::~CFightKirbyNormalAttack()
 {}
 
-void CFireKirbyNormalAttack::SetRightAttackDir(float YDir)
+void CFightKirbyNormalAttack::SetRightAttackDir(float YDir)
 {
 	m_AttackDir = 1.f;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
-void CFireKirbyNormalAttack::SetLeftAttackDir(float YDir)
+void CFightKirbyNormalAttack::SetLeftAttackDir(float YDir)
 {
 	m_AttackDir = -1.f;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
-void CFireKirbyNormalAttack::Start()
+void CFightKirbyNormalAttack::Start()
 {
 	CGameObject::Start();
 }
 
-bool CFireKirbyNormalAttack::Init()
+bool CFightKirbyNormalAttack::Init()
 {
 	if (!CGameObject::Init())
 		return false;
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"FireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
+		"FightAttackEffect", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
 
 	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
 		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
@@ -58,12 +58,12 @@ bool CFireKirbyNormalAttack::Init()
 	m_Sprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("PlayerAttack");
 	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CFireKirbyNormalAttack::CollisionCallback);
+	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CFightKirbyNormalAttack::CollisionCallback);
 
 	return true;
 }
 
-void CFireKirbyNormalAttack::Update(float DeltaTime)
+void CFightKirbyNormalAttack::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
@@ -82,7 +82,7 @@ void CFireKirbyNormalAttack::Update(float DeltaTime)
 	}
 }
 
-void CFireKirbyNormalAttack::CollisionCallback(const CollisionResult& Result)
+void CFightKirbyNormalAttack::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
