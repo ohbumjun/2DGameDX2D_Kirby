@@ -1868,6 +1868,8 @@ void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 	if (!DestMonster->IsBeingPulled())
 	{
 		DestMonster->SetIsBeingPulled(true);
+		DestMonster->SetBeingHit(true);
+		DestMonster->SetAIState(Monster_AI::Hit);
 		DestMonster->SetCollisionDisable(true);
 		DestMonster->SetPulledDestPos(GetWorldPos());
 	}
@@ -1879,6 +1881,7 @@ void CPlayer2D::PullRightCollisionEndCallback(const CollisionResult& Result)
 	{
 		m_PullingMonster->SetIsBeingPulled(false);
 		m_PullingMonster->ResetPulledInfo();
+		m_PullingMonster->SetBeingHit(false);
 		m_PullingMonster->SetCollisionDisable(false);
 		m_PullingMonster = nullptr;
 	}
@@ -1891,6 +1894,7 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 		m_PullingMonster->SetIsBeingPulled(false);
 		m_PullingMonster->ResetPulledInfo();
 		m_PullingMonster->SetCollisionDisable(false);
+		m_PullingMonster->SetBeingHit(false);
 		m_PullingMonster = nullptr;
 	}
 }
@@ -2050,6 +2054,8 @@ void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 	{
 		DestMonster->SetIsBeingPulled(true);
 		DestMonster->SetCollisionDisable(true);
+		DestMonster->SetBeingHit(true);
+		DestMonster->SetAIState(Monster_AI::Hit);
 		DestMonster->SetPulledDestPos(GetWorldPos());
 	}
 }

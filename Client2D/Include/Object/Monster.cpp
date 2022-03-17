@@ -425,6 +425,9 @@ CMonster* CMonster::Clone()
 
 void CMonster::UpdateBeingHit(float DeltaTime)
 {
+	if (m_IsBeingPulled)
+		return;
+
 	if (m_IsBeingHit)
 	{
 		AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity * 2.f);

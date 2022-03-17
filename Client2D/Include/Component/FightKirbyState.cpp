@@ -25,6 +25,8 @@ void CFightKirbyState::Start()
 {
 	CKirbyState::Start();
 
+	m_Animation->Play();
+
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 }
@@ -40,6 +42,8 @@ bool CFightKirbyState::Init()
 
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
+
+	m_Animation->Play();
 
 	return true;
 }
