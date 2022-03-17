@@ -255,9 +255,6 @@
     <ClCompile Include="Object\FireAttackBackEffect.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="Object\BeamSparkEffect.cpp">
-      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -438,9 +435,6 @@
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\FireAttackBackEffect.h">
-      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\BeamSparkEffect.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClInclude>
   </ItemGroup>

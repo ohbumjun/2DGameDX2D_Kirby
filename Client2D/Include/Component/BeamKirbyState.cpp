@@ -36,39 +36,50 @@ void CBeamKirbyState::FallDownAttack()
 
 	m_FallAttackTime = m_FallAttackTimeMax;
 
-	m_Player->SetPhysicsSimulate(false);
-
-	// 총 10개의 Object를 만들어낸다.
-	float XLeftEnd = GetWorldPos().x - (GetWorldScale().x * 0.5f) * 6.f;
-	float XStepSize = (GetWorldScale().x * 0.5f);
-
-	for (int i = 0; i < 13; i++)
+	// 왼쪽을 보고 있다면
+	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
+	
+	for (int i = 0; i < 8.f; i++)
 	{
-		// Attack Effect
+		Vector3 TargetPos = {};
+		Vector3 TraceDir = {};
+
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(45 * i)) * (90.f);
+		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(45 * i)) * (90.f);
+
+		TraceDir = TargetPos - GetWorldPos();
+
+		TraceDir.Normalize();
+
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Beam);
 
-		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FireFall);
+		AttackEffect->SetLeftAttackDir(-1.f);
 
-		AttackEffect->SetRightAttackDir(-1.f); // 해당 Animation은 EffectRight 만이 존재한다.
+		AttackEffect->SetWorldPos(TargetPos);
 
-		AttackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
-			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetLifeTime(1.5f);
 
-		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->SetAttackDirX(TraceDir.x);
 
-		AttackEffect->SetBottomCollisionEnable(true);
+		if (PlayerMoveDir.x < 0.f)
+		{
+			AttackEffect->GetRootComponent()->SetRelativeRotationZ(45.f);
 
-		// Attack Back Effect
-		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+			AttackEffect->SetAttackDirX(-1.f);
+		}
+		else
+		{
+			AttackEffect->GetRootComponent()->SetRelativeRotationZ(45.f * -1.f);
 
-		BackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
-			GetWorldPos().y, GetWorldPos().z);
-		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
-
-		BackEffect->AddRelativeRotationZ(-90.f);
-
-		BackEffect->SetLifeTime(0.3f);
+			AttackEffect->SetAttackDirX(1.f);
+		}
 	}
+	
+	m_Player->SetAttackEnable(false);
+
+	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
+	m_Player->ChangePlayerFallAnimation();
 }
 
 void CBeamKirbyState::GoUpAttack()
@@ -86,18 +97,6 @@ void CBeamKirbyState::GoUpAttack()
 	m_GoUpTime = m_GoUpTimeMax;
 
 	m_Player->SetPhysicsSimulate(false);
-
-	/*
-	CMesh* CircleMesh = new CStaticMesh;
-	Vector3 CirclePos[31] = {};
-	CirclePos[0] = Vector3(0.5f, 0.f, 0.f); // 반지름 0.5f
-
-	for (int i = 1; i < 31; i++)
-	{
-		CirclePos[i].x = cosf(DegreeToRadian(12.f * i)) * 0.5f;
-		CirclePos[i].y = sinf(DegreeToRadian(12.f * i)) * 0.5f;
-	}
-	*/
 
 	for (int i = 0; i < 12.f; i++)
 	{
@@ -128,26 +127,11 @@ void CBeamKirbyState::GoUpAttack()
 			AttackEffect->SetAttackDirX(TraceDir.x);
 
 			AttackEffect->SetWorldPos(TargetPos);
+
+			AttackEffect->SetLifeTime(1.5f);
 		}
 
 	}
-
-	/*
-		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Fight);
-		AttackEffect->SetRightAttackDir(0.f);
-		// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
-		// AttackEffect->SetRightAttackDir(0.f);
-
-		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
-		GetWorldPos().y, GetWorldPos().z);
-	 */
-
-	// 주변으로 Spark를 생성하고,
-
-	// 3개씩
-
-	// 그리고 LifeTime을 세팅한다.
 }
 
 void CBeamKirbyState::UpdateAttackGoUpState(float DeltaTime)
@@ -195,8 +179,6 @@ void CBeamKirbyState::UpdateFallAttack(float DeltaTime)
 			m_Player->SetAttackEnable(false);
 
 			m_Player->ChangePlayerFallAnimation();
-
-			m_Player->SetPhysicsSimulate(true);
 		}
 	}
 }
