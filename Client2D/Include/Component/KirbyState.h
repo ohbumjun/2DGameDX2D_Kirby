@@ -14,6 +14,7 @@ protected:
 protected:
     virtual void Attack() = 0;
     virtual void FallDownAttack() = 0;
+    virtual void GoUpAttack() = 0;
 protected:
     virtual void              Start() override;
     virtual bool              Init() override;

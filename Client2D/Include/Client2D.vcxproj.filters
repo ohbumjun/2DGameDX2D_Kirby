@@ -240,6 +240,9 @@
     <ClCompile Include="Object\FightMonster.cpp">
       <Filter>02. Object\03. Monster\02. Ability</Filter>
     </ClCompile>
+    <ClCompile Include="Component\FireKirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -409,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="Object\FightMonster.h">
       <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\FireKirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

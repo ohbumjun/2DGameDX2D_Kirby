@@ -15,9 +15,11 @@ CFireMonster::CFireMonster() :
 
 	m_AbilityState = Ability_State::Fire;
 
-	m_DashDistance = 700.f;
+	m_DashDistance = 800.f;
 
 	m_AttackDistance = 450.f;
+
+	m_JumpVelocity = 50.f;
 }
 
 CFireMonster::CFireMonster(const CFireMonster& Monster) : CAbilityMonster(Monster)
@@ -161,4 +163,18 @@ void CFireMonster::Attack()
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
+}
+
+void CFireMonster::AITraceSpecific(float DeltaTime)
+{
+	if (m_IsBottomCollided)
+	{
+		m_Jump = true;
+		m_IsGround = false;
+
+		m_FallTime = 0.f;
+		m_FallStartY = GetWorldPos().y;
+
+		m_JumpStart = true;
+	}
 }

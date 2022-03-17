@@ -160,6 +160,7 @@
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="Component\BeamKirbyState.cpp" />
     <ClCompile Include="Component\FightKirbyState.cpp" />
+    <ClCompile Include="Component\FireKirbyState.cpp" />
     <ClCompile Include="Component\KirbyState.cpp" />
     <ClCompile Include="Component\NormalKirbyState.cpp" />
     <ClCompile Include="main.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Component\BeamKirbyState.h" />
     <ClInclude Include="Component\FightKirbyState.h" />
+    <ClInclude Include="Component\FireKirbyState.h" />
     <ClInclude Include="Component\KirbyState.h" />
     <ClInclude Include="Component\NormalKirbyState.h" />
     <ClInclude Include="Object\AbilityMonster.h" />

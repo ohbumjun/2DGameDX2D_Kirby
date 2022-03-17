@@ -8,7 +8,7 @@ const std::string g_YellowBirdName = "YellowBird";
 const std::string g_MushRoomName = "MushRoom";
 // Ability
 const std::string g_BeamMonsterName = "Beam";
-const std::string g_FireMonsterName = "Fire";
+const std::string g_FireMonsterName    = "Fire";
 const std::string g_FightMonsterName = "Fight";
 // Effect
 const std::string g_SceneChangeStart = "SceneChangeStart";

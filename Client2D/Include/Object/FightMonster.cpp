@@ -13,7 +13,7 @@ CFightMonster::CFightMonster() :
 {
 	SetTypeID<CFightMonster>();
 
-	m_AbilityState = Ability_State::Fire;
+	m_AbilityState = Ability_State::Fight;
 
 	m_DashDistance = 600.f;
 

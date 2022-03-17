@@ -18,6 +18,9 @@ void CFightKirbyState::Attack()
 void CFightKirbyState::FallDownAttack()
 {}
 
+void CFightKirbyState::GoUpAttack()
+{}
+
 void CFightKirbyState::Start()
 {
 	CKirbyState::Start();

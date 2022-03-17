@@ -18,6 +18,9 @@ void CBeamKirbyState::Attack()
 void CBeamKirbyState::FallDownAttack()
 {}
 
+void CBeamKirbyState::GoUpAttack()
+{}
+
 void CBeamKirbyState::Start()
 {
 	CKirbyState::Start();

@@ -13,6 +13,10 @@ CBeamMonster::CBeamMonster() :
 	SetTypeID<CBeamMonster>();
 
 	m_AbilityState = Ability_State::Beam;
+
+	m_DashDistance = 550.f;
+
+	m_AttackDistance = 400.f;
 }
 
 CBeamMonster::CBeamMonster(const CBeamMonster& Monster) : CAbilityMonster(Monster)

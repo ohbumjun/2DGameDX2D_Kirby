@@ -26,5 +26,6 @@ public:
     virtual CFireMonster* Clone() override;
 private:
     void Attack();
+    virtual void AITraceSpecific(float DeltaTime) override;
 };
 

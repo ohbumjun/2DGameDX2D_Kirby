@@ -1,4 +1,7 @@
 #include "Green2Scene.h"
+
+#include <Scene/CameraManager.h>
+
 #include "../Object/Player2D.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
@@ -30,6 +33,10 @@ void CGreen2Scene::Start()
 	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
 
 	SetPlayerObject(Player2D);
+
+	m_Scene->GetCameraManager()->SetCurrentCamera(Player2D->FindComponentByType<CCameraComponent>());
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
 
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
