@@ -4,7 +4,7 @@
 class CFireKirbyNormalAttack :
     public CGameObject
 {
-    friend class CFireMonster;
+    friend class CFireKirbyState;
 public:
     CFireKirbyNormalAttack();
     CFireKirbyNormalAttack(const CFireKirbyNormalAttack& Attack);
@@ -15,8 +15,8 @@ private:
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
 protected:
-    void SetRightAttackDir(float YDir);
-    void SetLeftAttackDir(float YDir);
+    void SetRightAttackDir();
+    void SetLeftAttackDir();
 public:
     virtual void Start() override;
     virtual bool Init() override;

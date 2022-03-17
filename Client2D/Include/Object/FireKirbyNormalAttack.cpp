@@ -12,7 +12,7 @@
 CFireKirbyNormalAttack::CFireKirbyNormalAttack() :
 	m_AttackDir(1.f),
 	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(1000.f)
+	m_AttackDistLimitMax(500.f)
 {}
 
 CFireKirbyNormalAttack::CFireKirbyNormalAttack(const CFireKirbyNormalAttack& Attack) : CGameObject(Attack)
@@ -21,13 +21,13 @@ CFireKirbyNormalAttack::CFireKirbyNormalAttack(const CFireKirbyNormalAttack& Att
 CFireKirbyNormalAttack::~CFireKirbyNormalAttack()
 {}
 
-void CFireKirbyNormalAttack::SetRightAttackDir(float YDir)
+void CFireKirbyNormalAttack::SetRightAttackDir()
 {
 	m_AttackDir = 1.f;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
-void CFireKirbyNormalAttack::SetLeftAttackDir(float YDir)
+void CFireKirbyNormalAttack::SetLeftAttackDir()
 {
 	m_AttackDir = -1.f;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
@@ -51,7 +51,7 @@ bool CFireKirbyNormalAttack::Init()
 
 	m_Sprite = CreateComponent<CSpriteComponent>("MainSprite");
 	m_Sprite->SetAnimationInstance(AnimationInstance);
-	m_Sprite->SetWorldScale(120.f, 120.f, 1.f);
+	m_Sprite->SetWorldScale(170.f, 170.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");

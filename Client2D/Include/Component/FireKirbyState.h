@@ -23,5 +23,7 @@ public:
     virtual void              Render() override;
     virtual void              PostRender() override;
     virtual CFireKirbyState* Clone() override;
+private:
+    void NormalAttackCallback();
 };
 

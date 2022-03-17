@@ -71,6 +71,10 @@ public :
 	{
 		return m_PhysicsSimulate;
 	}
+	const Vector3& GetObjectMoveDir() const
+{
+		return m_ObjectMoveDir;
+}
 public :
 	void SetCollisionDisable(bool Enable)
 {

@@ -15,6 +15,13 @@ protected:
     virtual void Attack() = 0;
     virtual void FallDownAttack() = 0;
     virtual void GoUpAttack() = 0;
+protected :
+   class  CPlayer2D* m_Player;
+protected :
+    void SetPlayer(class CPlayer2D* Player)
+{
+        m_Player = Player;
+}
 protected:
     virtual void              Start() override;
     virtual bool              Init() override;

@@ -36,6 +36,7 @@ CPlayer2D::CPlayer2D() :
 	m_DashMaxMoveVelocity(170.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_RightMove(false),
+	m_IsAttacking(false),
 	m_Bounced(false),
 	m_ToLeftWhenRightMove(false),
 	m_RightMovePush(false),
@@ -367,6 +368,11 @@ void CPlayer2D::SetIsBeingHit()
 	m_DashVelocity = 0.f;
 }
 
+void CPlayer2D::SetAttackEnd()
+{
+	m_IsAttacking = false;
+}
+
 void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 {
 	CLifeObject::UpdateWhileOffGround(DeltaTime);
@@ -380,6 +386,9 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	}
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	if (m_SceneChangeCallback && m_FallTime < 0.1f)
@@ -441,6 +450,9 @@ void CPlayer2D::MoveDown(float DeltaTime)
 	if (m_IsBeingHit)
 		return;
 
+	if (m_IsAttacking)
+		return;
+
 	m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime * -1.f);
 }
 
@@ -456,6 +468,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		return;
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	// 범위 제한 하기
@@ -553,6 +568,9 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	if (m_IsBeingHit)
 		return;
 
+	if (m_IsAttacking)
+		return;
+
 	// 범위 제한 하기
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 	float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
@@ -645,6 +663,9 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	// 왼쪽 키를 누르고 있었다면 안먹게 한다
@@ -742,6 +763,9 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		return;
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
@@ -1118,7 +1142,11 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 				m_ToLeftWhenRightMove = false;
 			}
 
-			ChangePlayerIdleAnimation();
+			// 공격중 이라면 Idle Animation으로 바꾸지 않는다
+			if (!m_IsAttacking)
+			{
+				ChangePlayerIdleAnimation();
+			}
 
 			m_MoveVelocity = 0.f;
 		}
@@ -1310,6 +1338,9 @@ void CPlayer2D::Jump(float DeltaTime)
 	}
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	// 삼각 충돌 적용하기
@@ -1955,6 +1986,8 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 		{
 			m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
+			m_KirbyState->SetPlayer(this);
+
 			m_IsSpecialStateChanged = true;
 		}
 		break;
@@ -1962,8 +1995,7 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	{
 		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
 
-		// 조금 크기를 키워야할 것 같다.
-		m_KirbyState->SetWorldScale(90.f, 90.f, 1.f);
+		m_KirbyState->SetPlayer(this);
 
 		m_IsSpecialStateChanged = true;
 	}
@@ -1971,6 +2003,8 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	case Ability_State::Fight:
 	{
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
+
+		m_KirbyState->SetPlayer(this);
 
 		m_IsSpecialStateChanged = true;
 	}
@@ -2041,6 +2075,13 @@ void CPlayer2D::Attack(float DeltaTime)
 
 	if (!m_IsSpecialStateChanged)
 		return;
+
+	if (m_IsAttacking)
+		return;
+
+	m_IsAttacking = true;
+
+	ResetMoveInfo();
 
 	// 내려가고 있을 때
 	if (m_IsFalling)

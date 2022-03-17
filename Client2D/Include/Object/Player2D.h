@@ -12,6 +12,9 @@ class CPlayer2D :
 	public CLifeObject
 {
 	friend class CScene;
+	friend class CFireKirbyState;
+	friend class CBeamKirbyState;
+	friend class CFightKirbyState;
 
 protected:
 	CPlayer2D();
@@ -41,52 +44,66 @@ private :
 	float m_MoveVelocity;
 	float m_MoveVelocityMax;
 
+	// 일반 움직임
 	bool m_IsLeverMoving;
 	float m_LeverMoveAccel;
 	float m_LeverVelocity;
 	float m_LeverMaxMoveVelocity;
 
+	// 대쉬 움직임
 	bool m_IsDashMoving;
 	float m_DashMoveAccel;
 	float m_DashVelocity;
 	float m_DashMaxMoveVelocity;
+	bool m_MoveDashEffectMade;
+	float m_MoveDashEffectLimitTime;
+	float m_MoveDashEffectLimitTimeMax;
 
+	// 오른쪽 움직임
 	bool m_RightMove;
 	float m_ToLeftWhenRightMove;
 	bool m_RightMovePush;
 
+	// 왼쪽 움직임
 	bool m_LeftMove;
 	bool m_ToRightWhenLeftMove;
 	bool m_LeftMovePush;
 
+	// 삼각 점프
 	bool m_TriangleJump;
 	float m_TriangleJumpVelocityRatio;
 
+	// 하단 점프
 	bool m_JumpDown;
 	float m_JumpDownDist;
 
+	// 날기 
 	bool m_IsFlying;
 	float m_FlySpeed;
 
+	// 몬스터 먹기
 	bool m_IsEatingMonster;
-
-	bool m_IsSpecialStateChanged;
 	bool m_IsPulling;
 	float m_PullDistance;
 	class CMonster* m_PullingMonster;
 	class CMonster* m_EatenMonster;
 
+	// Change 여부
+	bool m_IsSpecialStateChanged;
+
+	// 높은 곳에서 떨어지고 한번 더 바운스
 	bool m_Bounced;
 
+	// 초기 Player 위치 
 	Vector3 m_InitPlayerPos;
 
-	bool m_MoveDashEffectMade;
-	float m_MoveDashEffectLimitTime;
-	float m_MoveDashEffectLimitTimeMax;
-
+	// HIt
 	bool m_IsBeingHit;
 	float m_BeingHitTime;
 	float m_BeingHitTimeMax;
+
+	// Attack
+	bool m_IsAttacking;
 
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
@@ -102,6 +119,8 @@ public :
 public :
 	void SetBeingHitDirection(float Dir);
 	void SetIsBeingHit();
+private:
+	void SetAttackEnd();
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
@@ -153,7 +172,7 @@ private :
 	virtual void SetObjectLand() override;
 	void FallDownAttackCallback(const CollisionResult& Result);
 	virtual void CheckBottomCollision() override;
-protected:
+private:
 	// Animation
 	void ChangeAnimation(const std::string& AnimName);
 	void ChangePlayerIdleAnimation();
