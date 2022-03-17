@@ -73,6 +73,9 @@
     <Filter Include="02. Object\07. Effect\04. MonsterAttack">
       <UniqueIdentifier>{648a2537-61c3-4e20-ae53-c300829a6f11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect\05. SpecialPlayer">
+      <UniqueIdentifier>{3d91dd58-f160-4c4d-9040-72e7b6470910}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -242,6 +245,15 @@
     </ClCompile>
     <ClCompile Include="Component\FireKirbyState.cpp">
       <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BeamKirbyAttack.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\FireKirbyNormalAttack.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\FightKirbyAttack.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -415,6 +427,15 @@
     </ClInclude>
     <ClInclude Include="Component\FireKirbyState.h">
       <Filter>02. Object\01. Player\01. State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BeamKirbyAttack.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FireKirbyNormalAttack.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FightKirbyAttack.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

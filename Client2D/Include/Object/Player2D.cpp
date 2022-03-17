@@ -132,7 +132,7 @@ void CPlayer2D::Start()
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Body->SetExtend(GetWorldScale().x * 0.5f, GetWorldScale().y * 0.5f);
-	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttack);
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttackCallback);
 
 	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?
 	// 한편, 기존 Kirby State 정보는 유지하기 위해서, Static Player가 없을 때만
@@ -255,9 +255,9 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialChange",
 		KeyState_Down, this, &CPlayer2D::SpecialChange);
 
-	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
 		KeyState_Down, this, &CPlayer2D::Attack);
+	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", 
 		KeyState_Down, this, &CPlayer2D::Attack1);
 	*/
@@ -924,7 +924,9 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	{
 		Vector3 OriginalPos = GetWorldPos();
 
-		m_KirbyState = CreateComponent<CNormalKirbyState>("FightKirbyState");
+		m_KirbyState = CreateComponent<CNormalKirbyState>("NormalKirbyState");
+
+		ChangePlayerIdleAnimation();
 
 		SetRootComponent(m_KirbyState);
 
@@ -1712,6 +1714,22 @@ void CPlayer2D::ChangePlayerAttackAnimation()
 		ChangeAnimation("RightAttack");
 }
 
+void CPlayer2D::ChangePlayerFallDownAttackAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftFallAttack");
+	else
+		ChangeAnimation("RightFallAttack");
+}
+
+void CPlayer2D::ChangePlayerGoUpAttackAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftUpAttack");
+	else
+		ChangeAnimation("RightUpAttack");
+}
+
 void CPlayer2D::ChangePlayerFlyAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
@@ -1773,7 +1791,7 @@ void CPlayer2D::SetObjectLand()
 	m_MoveDashEffectMade = false;
 }
 
-void CPlayer2D::FallDownAttack(const CollisionResult& Result)
+void CPlayer2D::FallDownAttackCallback(const CollisionResult& Result)
 {
 	Vector3 CurrentPos = GetWorldPos();
 
@@ -2016,18 +2034,33 @@ void CPlayer2D::SpecialChangeEffect()
 	*/
 }
 
-void CPlayer2D::Attack()
+void CPlayer2D::Attack(float DeltaTime)
 {
 	if (!m_KirbyState)
 		return;
-	// m_KirbyState->Attack();
-}
 
-void CPlayer2D::FallDownAttack()
-{
-	if (!m_KirbyState)
+	if (!m_IsSpecialStateChanged)
 		return;
-	// m_KirbyState->FallDownAttack();
+
+	// 내려가고 있을 때
+	if (m_IsFalling)
+	{
+		ChangePlayerFallDownAttackAnimation();
+
+		m_KirbyState->FallDownAttack();
+	}
+	else if (m_IsFlying || m_Jump)
+	{
+		ChangePlayerGoUpAttackAnimation();
+
+		m_KirbyState->GoUpAttack();
+	}
+	else
+	{
+		ChangePlayerAttackAnimation();
+
+		m_KirbyState->Attack();
+	}
 }
 
 void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)

@@ -87,12 +87,12 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("PullLeft", 'A');
 	CInput::GetInst()->SetShiftKey("PullLeft", true);
 
-	CInput::GetInst()->CreateKey("SpitOut", 'F');
+	CInput::GetInst()->CreateKey("SpitOut", 'Q');
 
 	CInput::GetInst()->CreateKey("SpecialChange", 'S');
 	CInput::GetInst()->SetShiftKey("SpecialChange", true);
 
-	// CInput::GetInst()->CreateKey("Attack", VK_SPACE);
+	CInput::GetInst()->CreateKey("Attack", 'F');
 	CInput::GetInst()->CreateKey("Jump", VK_SPACE);
 	CInput::GetInst()->CreateKey("JumpWhileDash", VK_SPACE);
 	CInput::GetInst()->SetCtrlKey("JumpWhileDash", true);

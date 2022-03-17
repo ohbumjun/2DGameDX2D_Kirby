@@ -151,7 +151,7 @@ private :
 	void FallFromCliff();
 	void UpdateActionWhenReachGroundAfterFall();
 	virtual void SetObjectLand() override;
-	void FallDownAttack(const CollisionResult& Result);
+	void FallDownAttackCallback(const CollisionResult& Result);
 	virtual void CheckBottomCollision() override;
 protected:
 	// Animation
@@ -168,6 +168,8 @@ protected:
 	void ChangePlayerEatRunAnimation();
 	void ChangePlayerDeathAnimation();
 	void ChangePlayerAttackAnimation();
+	void ChangePlayerFallDownAttackAnimation();
+	void ChangePlayerGoUpAttackAnimation();
 	void ChangePlayerFlyAnimation();
 	void ChangePlayerJumpAnimation();
 	void ChangePlayerFallAnimation();
@@ -194,8 +196,7 @@ public :
 	void SetEatenMonster(class CMonster* Monster);
 private :
 	// Special Action
-	void Attack();
-	void FallDownAttack();
+	void Attack(float DeltaTime);
 private :
 	void MovePointDown(float DeltaTime);
 public :
