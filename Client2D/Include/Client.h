@@ -27,5 +27,6 @@ enum class KirbyNormalAttack_Type {
 	Fire,
 	Beam,
 	Fight,
-	FightFall
+	FightFall,
+	FireFall
 };

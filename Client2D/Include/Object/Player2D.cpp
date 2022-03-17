@@ -133,7 +133,9 @@ void CPlayer2D::Start()
 	SetPhysicsSimulate(true);
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
-	m_Body->SetExtend(GetWorldScale().x * 0.5f, GetWorldScale().y * 0.5f);
+
+	m_Body->SetExtend(GetWorldScale().x * 0.4f, GetWorldScale().y * 0.4f);
+
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttackCallback);
 
 	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?

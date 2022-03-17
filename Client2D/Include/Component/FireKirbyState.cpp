@@ -28,7 +28,32 @@ void CFireKirbyState::Attack()
 }
 
 void CFireKirbyState::FallDownAttack()
-{}
+{
+	if (m_GoUpState)
+		return;
+
+	m_FallAttackState = true;
+
+	m_FallAttackTime = m_FallAttackTimeMax;
+
+	// 총 10개의 Object를 만들어낸다.
+	float XLeftEnd = GetWorldPos().x - (GetWorldScale().x * 0.5f) * 10.f;
+	float XStepSize = (GetWorldScale().x * 0.5f);
+
+	for (int i = 0; i < 20; i++)
+	{
+		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack");
+
+		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FireFall);
+
+		AttackEffect->SetRightAttackDir(-1.f); // 해당 Animation은 EffectRight 만이 존재한다.
+
+		AttackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
+			GetWorldPos().y, GetWorldPos().z);
+
+		AttackEffect->SetAttackDirX(0.f);
+	}
+}
 
 void CFireKirbyState::GoUpAttack()
 {
@@ -84,7 +109,34 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 }
 
 void CFireKirbyState::UpdateFallAttack(float DeltaTime)
-{}
+{
+	if (m_FallAttackTime > 0.f)
+	{
+		m_FallAttackTime -= DeltaTime;
+
+		m_Player->ChangePlayerFallDownAttackAnimation();
+
+		m_Player->SetAttackEnable(true);
+
+		if (m_Player->GetObjectMoveDir().x > 0)
+		{
+			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+		}
+		else
+		{
+			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+		}
+
+		if (m_FallAttackTime <= 0.f)
+		{
+			m_FallAttackState = false;
+
+			m_Player->SetAttackEnable(false);
+
+			m_Player->ChangePlayerFallAnimation();
+		}
+	}
+}
 
 void CFireKirbyState::Start()
 {

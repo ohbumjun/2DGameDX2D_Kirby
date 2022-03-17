@@ -105,7 +105,26 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 		m_SideCollisionApplied = false;
 	}
 	break;
+	case KirbyNormalAttack_Type::FireFall:
+	{
+		m_Sprite->SetWorldScale(50.f, 50.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.6f);
+
+		m_AttackDistLimitMax = 1000.f;
+		m_AttackObjectSpeed = 900.f;
+
+		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+			"FireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
+
+		m_Sprite->SetAnimationInstance(AnimationInstance);
 	}
+	break;
+	}
+}
+
+void CKirbyNormalAttack::SetAttackDirX(float XDir)
+{
+	m_AttackDir.x = XDir;
 }
 
 void CKirbyNormalAttack::Start()

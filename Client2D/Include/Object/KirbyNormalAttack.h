@@ -24,7 +24,7 @@ protected:
     void SetRightAttackDir(float YDir);
     void SetLeftAttackDir(float YDir);
     void SetAttackType(KirbyNormalAttack_Type Type);
-
+    void SetAttackDirX(float XDir);
 public:
     virtual void Start() override;
     virtual bool Init() override;
