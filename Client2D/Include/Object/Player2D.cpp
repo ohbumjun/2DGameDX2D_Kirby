@@ -1671,6 +1671,9 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 
 void CPlayer2D::ChangePlayerNormalIdleAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftIdle");
 	else
@@ -1679,6 +1682,7 @@ void CPlayer2D::ChangePlayerNormalIdleAnimation()
 
 void CPlayer2D::ChangePlayerWalkAnimation()
 {
+
 	if (m_IsAttacking)
 		return;
 
@@ -1702,6 +1706,9 @@ void CPlayer2D::ChangePlayerWalkAnimation()
 
 void CPlayer2D::ChangePlayerNormalWalkAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftWalk");
 	else
@@ -1710,6 +1717,9 @@ void CPlayer2D::ChangePlayerNormalWalkAnimation()
 
 void CPlayer2D::ChangePlayerHitAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftHit");
 	else
@@ -1741,6 +1751,9 @@ void CPlayer2D::ChangePlayerRunAnimation()
 
 void CPlayer2D::ChangePlayerNormalRunAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftRun");
 	else
@@ -1749,6 +1762,9 @@ void CPlayer2D::ChangePlayerNormalRunAnimation()
 
 void CPlayer2D::ChangePlayerEatRunAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatWalk");
 	else
@@ -1757,6 +1773,9 @@ void CPlayer2D::ChangePlayerEatRunAnimation()
 
 void CPlayer2D::ChangePlayerDeathAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftDeath");
 	else
@@ -1781,6 +1800,9 @@ void CPlayer2D::ChangePlayerFallDownAttackAnimation()
 
 void CPlayer2D::ChangePlayerGoUpAttackAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftUpAttack");
 	else
@@ -1789,6 +1811,9 @@ void CPlayer2D::ChangePlayerGoUpAttackAnimation()
 
 void CPlayer2D::ChangePlayerFlyAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftFly");
 	else
@@ -1797,6 +1822,9 @@ void CPlayer2D::ChangePlayerFlyAnimation()
 
 void CPlayer2D::ChangePlayerJumpAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftJump");
 	else
@@ -1805,6 +1833,9 @@ void CPlayer2D::ChangePlayerJumpAnimation()
 
 void CPlayer2D::ChangePlayerFallAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftFall");
 	else
@@ -1813,6 +1844,9 @@ void CPlayer2D::ChangePlayerFallAnimation()
 
 void CPlayer2D::ChangePlayerSpitOutAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftSpitOut");
 	else
@@ -1823,6 +1857,9 @@ void CPlayer2D::ChangePlayerSpitOutAnimation()
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatIdle");
 	else
@@ -1831,6 +1868,9 @@ void CPlayer2D::ChangePlayerEatIdleAnimation()
 
 void CPlayer2D::ChangePlayerEatWalkAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatWalk");
 	else
@@ -2084,6 +2124,7 @@ void CPlayer2D::SetBasicSettingToChangedState()
 void CPlayer2D::SpecialChangeEffect()
 {
 	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
+
 	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, GetWorldPos().z);
 
 	m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
@@ -2106,6 +2147,12 @@ void CPlayer2D::Attack(float DeltaTime)
 		return;
 
 	m_IsAttacking = true;
+
+	ResetMoveInfo();
+
+	m_LeverVelocity = 0.f;
+	m_DashVelocity = 0.f;
+	m_MoveVelocity = 0.f;
 
 	// 내려가고 있을 때
 	if (m_IsFalling && !m_IsGround)

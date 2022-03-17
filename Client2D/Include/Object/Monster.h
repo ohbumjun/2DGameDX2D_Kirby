@@ -49,6 +49,10 @@ protected:
     bool m_IsAbilityMonster;
 
 public :
+    Monster_AI GetAIState() const
+{
+        return m_AI;
+}
     bool IsBeingPulled() const
 {
         return m_IsBeingPulled;
