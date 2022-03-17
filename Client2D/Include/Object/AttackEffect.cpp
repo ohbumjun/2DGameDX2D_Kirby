@@ -153,6 +153,8 @@ bool CAttackEffect::CheckSideCollision()
 		}
 	}
 
+	m_PrevPos = GetWorldPos();
+
 	return false;
 }
 
@@ -169,6 +171,4 @@ void CAttackEffect::Update(float DeltaTime)
 void CAttackEffect::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
-
-	m_PrevPos = GetWorldPos();
 }
