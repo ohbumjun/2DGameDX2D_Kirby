@@ -71,7 +71,7 @@ bool CBeamMonsterAttack::Init()
 	m_SecondSprite->SetAnimationInstance(AnimationInstance);
 	m_SecondSprite->SetWorldScale(m_AttackImageSize, m_AttackImageSize, 1.f);
 	m_SecondSprite->SetRelativePos(m_AttackImageSize, 0.f, 0.f);
-	m_SecondSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 2.f);
+	m_SecondSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 1.5f);
 	m_SecondSprite->SetInheritRotZ(true);
 	m_SecondSprite->SetPivot(0.5f, 0.5f, 0.f);
 	ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
@@ -84,7 +84,7 @@ bool CBeamMonsterAttack::Init()
 	m_ThirdSprite->SetAnimationInstance(AnimationInstance);
 	m_ThirdSprite->SetWorldScale(m_AttackImageSize, m_AttackImageSize, 1.f);
 	m_ThirdSprite->SetRelativePos(m_AttackImageSize * 2.f, 0.f, 0.f);
-	m_ThirdSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 4.f);
+	m_ThirdSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 2.5f);
 	m_ThirdSprite->SetInheritRotZ(true);
 	m_ThirdSprite->SetPivot(0.5f, 0.5f, 0.f);
 	ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
@@ -98,7 +98,7 @@ bool CBeamMonsterAttack::Init()
 	m_FourthSprite->SetAnimationInstance(AnimationInstance);
 	m_FourthSprite->SetWorldScale(m_AttackImageSize, m_AttackImageSize, 1.f);
 	m_FourthSprite->SetRelativePos(m_AttackImageSize * 3.f, 0.f, 0.f);
-	m_FourthSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 6.f);
+	m_FourthSprite->GetAnimationInstance()->GetCurrentAnimation()->SetInitPauseTime(AnimDelayTime * 3.5f);
 	m_FourthSprite->SetInheritRotZ(true);
 	m_FourthSprite->SetPivot(0.5f, 0.5f, 0.f);
 	ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");

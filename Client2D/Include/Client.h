@@ -22,3 +22,9 @@ enum class Ability_State {
 	Fire,
 	End
 };
+
+enum class KirbyNormalAttack_Type {
+	Fire,
+	Beam,
+	Fight
+};

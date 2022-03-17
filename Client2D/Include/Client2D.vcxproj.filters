@@ -255,6 +255,9 @@
     <ClCompile Include="Object\FightKirbyNormalAttack.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="Object\KirbyNormalAttack.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -435,6 +438,9 @@
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClInclude>
     <ClInclude Include="Object\FightKirbyNormalAttack.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\KirbyNormalAttack.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClInclude>
   </ItemGroup>

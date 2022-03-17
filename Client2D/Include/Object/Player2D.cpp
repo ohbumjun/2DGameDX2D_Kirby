@@ -34,6 +34,7 @@ CPlayer2D::CPlayer2D() :
 	m_DashMoveAccel(2.0f),
 	m_DashVelocity(0.f),
 	m_DashMaxMoveVelocity(170.f),
+	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_RightMove(false),
 	m_IsAttacking(false),
@@ -309,6 +310,8 @@ void CPlayer2D::Update(float DeltaTime)
 	FallFromCliff();
 
 	UpdateBeingHit(DeltaTime);
+
+	UpdateAttackTime(DeltaTime);
 
 	UpdateActionWhenReachGroundAfterFall();
 }
@@ -1239,6 +1242,24 @@ void CPlayer2D::UpdateBeingHit(float DeltaTime)
 		if (m_BeingHitTime < 0.f)
 		{
 			m_IsBeingHit = false;
+		}
+	}
+}
+
+void CPlayer2D::UpdateAttackTime(float DeltaTime)
+{
+	if (m_IsAttacking)
+	{
+		if (m_AttackTime < m_AttackTimeLimit)
+		{
+			m_AttackTime += DeltaTime;
+
+			if (m_AttackTime > m_AttackTimeLimit)
+			{
+				m_AttackTime = 0.f;
+
+				m_IsAttacking = false;
+			}
 		}
 	}
 }

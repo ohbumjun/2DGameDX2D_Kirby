@@ -187,6 +187,7 @@
     <ClCompile Include="Object\FireKirbyNormalAttack.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
     <ClCompile Include="Object\FireMonsterAttack.cpp" />
+    <ClCompile Include="Object\KirbyNormalAttack.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="Object\FireKirbyNormalAttack.h" />
     <ClInclude Include="Object\FireMonster.h" />
     <ClInclude Include="Object\FireMonsterAttack.h" />
+    <ClInclude Include="Object\KirbyNormalAttack.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />

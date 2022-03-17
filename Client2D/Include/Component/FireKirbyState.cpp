@@ -3,7 +3,7 @@
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
-#include "../Object/FireKirbyNormalAttack.h"
+#include "../Object/KirbyNormalAttack.h"
 
 class CFightMonsterAttack;
 
@@ -33,11 +33,6 @@ void CFireKirbyState::Start()
 
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
-
-	m_Animation->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
-		this, &CFireKirbyState::NormalAttackCallback);
-	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
-		this, &CFireKirbyState::NormalAttackCallback);
 }
 
 bool CFireKirbyState::Init()
@@ -98,18 +93,18 @@ void CFireKirbyState::NormalAttackCallback()
 	if (PlayerMoveDir.x < 0.f)
 	{
 		// 가운데
-		CFireKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFireKirbyNormalAttack>("Attack");
+		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetLeftAttackDir();
+		AttackEffect->SetLeftAttackDir(0.f);
 	}
 	// 오른쪽으로 보고 있다면 
 	else
 	{
-		CFireKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFireKirbyNormalAttack>("Attack");
+		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetRightAttackDir();
+		AttackEffect->SetRightAttackDir(0.f);
 	}
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.

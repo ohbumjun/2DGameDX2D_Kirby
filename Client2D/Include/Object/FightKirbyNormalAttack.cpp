@@ -12,7 +12,7 @@
 CFightKirbyNormalAttack::CFightKirbyNormalAttack() :
 	m_AttackDir(1.f),
 	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(1000.f)
+	m_AttackDistLimitMax(600.f)
 {}
 
 CFightKirbyNormalAttack::CFightKirbyNormalAttack(const CFightKirbyNormalAttack& Attack) : CGameObject(Attack)
@@ -51,7 +51,7 @@ bool CFightKirbyNormalAttack::Init()
 
 	m_Sprite = CreateComponent<CSpriteComponent>("MainSprite");
 	m_Sprite->SetAnimationInstance(AnimationInstance);
-	m_Sprite->SetWorldScale(120.f, 120.f, 1.f);
+	m_Sprite->SetWorldScale(100.f, 100.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
@@ -67,9 +67,9 @@ void CFightKirbyNormalAttack::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	float MoveDist = m_AttackDir * DeltaTime * 500.f;
+	float MoveDist = m_AttackDir * DeltaTime * 1200.f;
 
-	AddWorldPos(Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * 500.f);
+	AddWorldPos(Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * 1200.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{

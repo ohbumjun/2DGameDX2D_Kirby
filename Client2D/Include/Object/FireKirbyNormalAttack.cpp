@@ -12,7 +12,7 @@
 CFireKirbyNormalAttack::CFireKirbyNormalAttack() :
 	m_AttackDir(1.f),
 	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(500.f)
+	m_AttackDistLimitMax(1000.f)
 {}
 
 CFireKirbyNormalAttack::CFireKirbyNormalAttack(const CFireKirbyNormalAttack& Attack) : CGameObject(Attack)

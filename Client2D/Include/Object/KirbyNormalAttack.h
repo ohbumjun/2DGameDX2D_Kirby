@@ -1,22 +1,28 @@
 #pragma once
 #include "GameObject\GameObject.h"
+#include "../Client.h"
 
-class CFightKirbyNormalAttack :
+class CKirbyNormalAttack :
     public CGameObject
 {
+    friend class CFireKirbyState;
     friend class CFightKirbyState;
+    friend class CBeamKirbyState;
 public:
-    CFightKirbyNormalAttack();
-    CFightKirbyNormalAttack(const CFightKirbyNormalAttack& Attack);
-    virtual ~CFightKirbyNormalAttack() override;
+    CKirbyNormalAttack();
+    CKirbyNormalAttack(const CKirbyNormalAttack& Attack);
+    virtual ~CKirbyNormalAttack() override;
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
-    float m_AttackDir;
+    Vector2 m_AttackDir;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
+    float m_AttackObjectSpeed;
+    KirbyNormalAttack_Type m_AttackType;
 protected:
     void SetRightAttackDir(float YDir);
     void SetLeftAttackDir(float YDir);
+    void SetAttackType(KirbyNormalAttack_Type Type);
 public:
     virtual void Start() override;
     virtual bool Init() override;

@@ -104,6 +104,8 @@ private :
 
 	// Attack
 	bool m_IsAttacking;
+	float m_AttackTimeLimit;
+	float m_AttackTime;
 
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
@@ -152,6 +154,8 @@ private:
 private :
 	// Hit
 	void UpdateBeingHit(float DeltaTime);
+private :
+	void UpdateAttackTime(float DeltaTime);
 private :
 	// Rotation
 	void RotationZInv(float DeltaTime);
