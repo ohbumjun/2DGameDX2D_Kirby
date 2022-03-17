@@ -1146,10 +1146,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 			}
 
 			// 공격중 이라면 Idle Animation으로 바꾸지 않는다
-			if (!m_IsAttacking)
-			{
-				ChangePlayerIdleAnimation();
-			}
+			ChangePlayerIdleAnimation();
 
 			m_MoveVelocity = 0.f;
 		}
@@ -1634,7 +1631,6 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 
 			// 1. 떨어지고 있었거나
 			// 2. 점프중이었거나
-			// 3. 
 			if (CurAnimName == "RightFall" || CurAnimName == "LeftFall" ||
 				CurAnimName == "RightJump" || CurAnimName == "LeftJump")
 			{
@@ -1656,6 +1652,9 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 
 void CPlayer2D::ChangePlayerIdleAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (!m_Jump && !m_IsFlying)
 	{
 		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
@@ -1680,6 +1679,9 @@ void CPlayer2D::ChangePlayerNormalIdleAnimation()
 
 void CPlayer2D::ChangePlayerWalkAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (!m_Jump && !m_IsFlying)
 	{
 		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
@@ -1716,6 +1718,9 @@ void CPlayer2D::ChangePlayerHitAnimation()
 
 void CPlayer2D::ChangePlayerRunAnimation()
 {
+	if (m_IsAttacking)
+		return;
+
 	if (!m_Jump && !m_IsFlying)
 	{
 		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
@@ -2102,10 +2107,8 @@ void CPlayer2D::Attack(float DeltaTime)
 
 	m_IsAttacking = true;
 
-	ResetMoveInfo();
-
 	// 내려가고 있을 때
-	if (m_IsFalling)
+	if (m_IsFalling && !m_IsGround)
 	{
 		ChangePlayerFallDownAttackAnimation();
 

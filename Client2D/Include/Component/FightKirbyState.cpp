@@ -4,7 +4,6 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
 #include "../Object/KirbyNormalAttack.h"
-#include "../Object/FightKirbyNormalAttack.h"
 
 CFightKirbyState::CFightKirbyState()
 {}
