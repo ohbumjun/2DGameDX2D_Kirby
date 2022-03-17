@@ -162,5 +162,5 @@ void CBeamKirbyState::NormalAttackCallback()
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	m_Player->ChangePlayerIdleAnimation();
 
-	m_Player->SetAttackEnd();
+	m_Player->SetAttackEnable(false);
 }

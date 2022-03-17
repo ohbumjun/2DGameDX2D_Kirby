@@ -65,7 +65,7 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 		m_AttackDistLimitMax = 500.f;
 		m_AttackObjectSpeed = 1200.f;
 
-		m_Sprite->SetWorldScale(100.f, 100.f, 1.f);
+		m_Sprite->SetWorldScale(140.f, 140.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
@@ -83,11 +83,28 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"BeamAttackEffect", TEXT("Kirby_Beam_Effect_NormalAttack.anim"));
+
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 
 		m_SideCollisionApplied = false;
 	}
 		break;
+	case KirbyNormalAttack_Type::FightFall:
+	{
+		m_Sprite->SetWorldScale(90.f, 90.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+
+		m_AttackDistLimitMax = 1000.f;
+		m_AttackObjectSpeed = 600.f;
+
+		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+			"FightFallAttackEffect", TEXT("Kirby_Fight_Effect_FallDownAttack.anim"));
+
+		m_Sprite->SetAnimationInstance(AnimationInstance);
+
+		m_SideCollisionApplied = false;
+	}
+	break;
 	}
 }
 
@@ -131,11 +148,10 @@ void CKirbyNormalAttack::Update(float DeltaTime)
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{
 		m_AttackDistLimit += MoveDist;
-
-		if (m_AttackDistLimit >= m_AttackDistLimitMax)
-		{
-			Destroy();
-		}
+	}
+	if (m_AttackDistLimit >= m_AttackDistLimitMax)
+	{
+		Destroy();
 	}
 }
 

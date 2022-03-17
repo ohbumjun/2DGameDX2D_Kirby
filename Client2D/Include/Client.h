@@ -26,5 +26,6 @@ enum class Ability_State {
 enum class KirbyNormalAttack_Type {
 	Fire,
 	Beam,
-	Fight
+	Fight,
+	FightFall
 };

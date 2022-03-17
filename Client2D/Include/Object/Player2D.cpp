@@ -371,10 +371,11 @@ void CPlayer2D::SetIsBeingHit()
 	m_DashVelocity = 0.f;
 }
 
-void CPlayer2D::SetAttackEnd()
+void CPlayer2D::SetAttackEnable(bool Enable)
 {
-	m_IsAttacking = false;
+	m_IsAttacking = Enable;
 }
+
 
 void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
 {
@@ -2152,7 +2153,7 @@ void CPlayer2D::Attack(float DeltaTime)
 	float YDiff = GetWorldPos().y - m_PrevPos.y;
 
 	// 내려가고 있을 때
-	if (YDiff < 0)
+	if (m_IsFalling && !m_Jump && !m_IsFlying)
 	{
 		ChangePlayerFallDownAttackAnimation();
 

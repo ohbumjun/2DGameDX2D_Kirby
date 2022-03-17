@@ -122,7 +122,8 @@ public :
 	void SetBeingHitDirection(float Dir);
 	void SetIsBeingHit();
 private:
-	void SetAttackEnd();
+	void SetAttackEnable(bool Enable);
+	;
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
