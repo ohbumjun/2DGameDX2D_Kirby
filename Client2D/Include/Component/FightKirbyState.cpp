@@ -200,6 +200,7 @@ void CFightKirbyState::Update(float DeltaTime)
 	CKirbyState::Update(DeltaTime);
 
 	UpdateAttackGoUpState(DeltaTime);
+
 	UpdateFallAttack(DeltaTime);
 }
 

@@ -4,10 +4,17 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
 #include "../Object/KirbyNormalAttack.h"
+#include "../Object/FireAttackBackEffect.h"
 
 class CFightMonsterAttack;
 
-CFireKirbyState::CFireKirbyState()
+CFireKirbyState::CFireKirbyState() :
+	m_GoUpTimeMax(0.4f),
+	m_GoUpTime(0.f),
+	m_FallAttackTime(0.f),
+	m_FallAttackTimeMax(0.4f),
+	m_FallAttackState(false),
+	m_GoUpState(false)
 {}
 
 CFireKirbyState::CFireKirbyState(const CFireKirbyState& Kirby) : CKirbyState(Kirby)
@@ -24,6 +31,59 @@ void CFireKirbyState::FallDownAttack()
 {}
 
 void CFireKirbyState::GoUpAttack()
+{
+	if (m_FallAttackState)
+		return;
+
+	if (!m_GoUpState)
+	{
+		m_InitWorldScale = GetWorldScale();
+	}
+
+	m_GoUpState = true;
+
+	m_GoUpTime = m_GoUpTimeMax;
+
+	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+	BackEffect->SetWorldPos(GetWorldPos());
+	BackEffect->SetWorldScale(150.f, 150.f, 1.f);
+	BackEffect->SetLifeTime(0.3f);
+
+	// ¿ÞÂÊ
+	if (m_Player->GetObjectMoveDir().x < 0)
+		BackEffect->SetLeftAttackDir();
+	// ¿À¸¥ÂÊ
+	else
+		BackEffect->SetRightAttackDir();
+}
+
+void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
+{
+	if (m_GoUpTime > 0.f)
+	{
+		m_GoUpTime -= DeltaTime;
+
+		SetWorldScale(Vector3(m_InitWorldScale.x * 2.f, m_InitWorldScale.y * 2.f, m_InitWorldScale.z));
+
+		if (m_Player->GetObjectMoveDir().x > 0)
+		{
+			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 900.f);
+		}
+		else
+		{
+			AddWorldPos(Vector3(1.0f * -1.f, 0.f, 0.f) * DeltaTime * 900.f);
+		}
+
+		if (m_GoUpTime <= 0.f)
+		{
+			m_GoUpState = false;
+
+			SetWorldScale(m_InitWorldScale);
+		}
+	}
+}
+
+void CFireKirbyState::UpdateFallAttack(float DeltaTime)
 {}
 
 void CFireKirbyState::Start()
@@ -49,6 +109,9 @@ bool CFireKirbyState::Init()
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetPlayTime(0.3f);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(0.3f);
 
+	m_Animation->FindAnimationSequence2DData("RightFallAttack")->SetPlayTime(0.3f);
+	m_Animation->FindAnimationSequence2DData("LeftFallAttack")->SetPlayTime(0.3f);
+
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
 		this, &CFireKirbyState::NormalAttackCallback);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
@@ -60,6 +123,10 @@ bool CFireKirbyState::Init()
 void CFireKirbyState::Update(float DeltaTime)
 {
 	CKirbyState::Update(DeltaTime);
+
+	UpdateAttackGoUpState(DeltaTime);
+
+	UpdateFallAttack(DeltaTime);
 }
 
 void CFireKirbyState::PostUpdate(float DeltaTime)

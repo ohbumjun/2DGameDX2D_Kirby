@@ -183,6 +183,7 @@
     <ClCompile Include="Object\EffectStar.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FightMonsterAttack.cpp" />
+    <ClCompile Include="Object\FireAttackBackEffect.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
     <ClCompile Include="Object\FireMonsterAttack.cpp" />
     <ClCompile Include="Object\KirbyNormalAttack.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="Object\EffectStar.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FightMonsterAttack.h" />
+    <ClInclude Include="Object\FireAttackBackEffect.h" />
     <ClInclude Include="Object\FireMonster.h" />
     <ClInclude Include="Object\FireMonsterAttack.h" />
     <ClInclude Include="Object\KirbyNormalAttack.h" />

@@ -57,6 +57,8 @@ bool CBeamKirbyState::Init()
 void CBeamKirbyState::Update(float DeltaTime)
 {
 	CKirbyState::Update(DeltaTime);
+
+
 }
 
 void CBeamKirbyState::PostUpdate(float DeltaTime)
