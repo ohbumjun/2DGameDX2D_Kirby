@@ -15,7 +15,7 @@ CFightMonsterAttack::CFightMonsterAttack() :
 	m_AttackDistLimitMax(1000.f)
 {}
 
-CFightMonsterAttack::CFightMonsterAttack(const CFightMonsterAttack& Attack) : CGameObject(Attack)
+CFightMonsterAttack::CFightMonsterAttack(const CFightMonsterAttack& Attack) : CAttackEffect(Attack)
 {}
 
 CFightMonsterAttack::~CFightMonsterAttack()
@@ -66,21 +66,25 @@ bool CFightMonsterAttack::Init()
 
 void CFightMonsterAttack::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = m_AttackDir * DeltaTime * 500.f;
+	float MoveDist = std::abs(m_AttackDir) * DeltaTime * 500.f;
 
 	AddWorldPos(Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * 500.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{
 		m_AttackDistLimit += MoveDist;
-
-		if (m_AttackDistLimit >= m_AttackDistLimitMax)
-		{
-			Destroy();
-		}
 	}
+	if (m_AttackDistLimit >= m_AttackDistLimitMax)
+	{
+		Destroy();
+	}
+}
+
+void CFightMonsterAttack::PostUpdate(float DeltaTime)
+{
+	CAttackEffect::PostUpdate(DeltaTime);
 }
 
 void CFightMonsterAttack::CollisionCallback(const CollisionResult& Result)

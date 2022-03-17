@@ -15,7 +15,7 @@ CBeamMonsterAttack::CBeamMonsterAttack() :
 	m_AttackDir(1.f)
 {}
 
-CBeamMonsterAttack::CBeamMonsterAttack(const CBeamMonsterAttack& Attack) : CGameObject(Attack)
+CBeamMonsterAttack::CBeamMonsterAttack(const CBeamMonsterAttack& Attack) : CAttackEffect(Attack)
 {}
 
 CBeamMonsterAttack::~CBeamMonsterAttack()
@@ -121,7 +121,7 @@ bool CBeamMonsterAttack::Init()
 
 void CBeamMonsterAttack::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CAttackEffect::Update(DeltaTime);
 
 	// 오른쪽 공격
 	if (m_AttackDir > 0.f)
@@ -148,6 +148,11 @@ void CBeamMonsterAttack::Update(float DeltaTime)
 			m_BeamOwner->SetAttackEnd();
 		}
 	}
+}
+
+void CBeamMonsterAttack::PostUpdate(float DeltaTime)
+{
+	CAttackEffect::PostUpdate(DeltaTime);
 }
 
 void CBeamMonsterAttack::CollisionCallback(const CollisionResult& Result)

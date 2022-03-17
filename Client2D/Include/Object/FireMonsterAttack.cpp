@@ -15,7 +15,7 @@ CFireMonsterAttack::CFireMonsterAttack() :
 	m_AttackDistLimitMax(1000.f)
 {}
 
-CFireMonsterAttack::CFireMonsterAttack(const CFireMonsterAttack& Attack) : CGameObject(Attack)
+CFireMonsterAttack::CFireMonsterAttack(const CFireMonsterAttack& Attack) : CAttackEffect(Attack)
 {}
 
 CFireMonsterAttack::~CFireMonsterAttack()
@@ -67,26 +67,31 @@ bool CFireMonsterAttack::Init()
 
 void CFireMonsterAttack::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = m_AttackDir.x * DeltaTime * 500.f;
+	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
 
 	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 500.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{
 		m_AttackDistLimit += MoveDist;
+	}
 
-		if (m_AttackDistLimit >= m_AttackDistLimitMax)
+	if (m_AttackDistLimit >= m_AttackDistLimitMax)
+	{
+		Destroy();
+
+		if (m_FireMonsterOwner)
 		{
-			Destroy();
-
-			if (m_FireMonsterOwner)
-			{
-				m_FireMonsterOwner->SetAttackEnd();
-			}
+			m_FireMonsterOwner->SetAttackEnd();
 		}
 	}
+}
+
+void CFireMonsterAttack::PostUpdate(float DeltaTime)
+{
+	CAttackEffect::PostUpdate(DeltaTime);
 }
 
 void CFireMonsterAttack::CollisionCallback(const CollisionResult& Result)

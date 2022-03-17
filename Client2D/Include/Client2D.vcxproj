@@ -172,6 +172,7 @@
     <ClCompile Include="Object\Bullet.cpp" />
     <ClCompile Include="Object\BulletCamera.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
+    <ClCompile Include="Object\AttackEffect.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
     <ClCompile Include="Object\EffectDash.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Component\KirbyState.h" />
     <ClInclude Include="Component\NormalKirbyState.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
+    <ClInclude Include="Object\AttackEffect.h" />
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\BeamMonsterAttack.h" />

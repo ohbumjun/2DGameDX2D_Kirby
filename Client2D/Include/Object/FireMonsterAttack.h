@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "AttackEffect.h"
 
 class CFireMonsterAttack :
-    public CGameObject
+    public CAttackEffect
 {
     friend class CFireMonster;
 public:
@@ -28,6 +28,7 @@ public:
     virtual void Start() override;
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
+    virtual void PostUpdate(float DeltaTime) override;
 private:
     void CollisionCallback(const CollisionResult& Result);
 };

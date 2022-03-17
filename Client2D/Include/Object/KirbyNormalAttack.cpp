@@ -16,7 +16,7 @@ CKirbyNormalAttack::CKirbyNormalAttack() :
 	m_AttackObjectSpeed(500.f)
 {}
 
-CKirbyNormalAttack::CKirbyNormalAttack(const CKirbyNormalAttack& Attack) : CGameObject(Attack)
+CKirbyNormalAttack::CKirbyNormalAttack(const CKirbyNormalAttack& Attack) : CAttackEffect(Attack)
 {}
 
 CKirbyNormalAttack::~CKirbyNormalAttack()
@@ -117,7 +117,7 @@ bool CKirbyNormalAttack::Init()
 
 void CKirbyNormalAttack::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CAttackEffect::Update(DeltaTime);
 
 	float MoveDist = m_AttackDir.x * DeltaTime * m_AttackObjectSpeed;
 
@@ -134,25 +134,43 @@ void CKirbyNormalAttack::Update(float DeltaTime)
 	}
 }
 
+void CKirbyNormalAttack::PostUpdate(float DeltaTime)
+{
+	CAttackEffect::PostUpdate(DeltaTime);
+}
+
 void CKirbyNormalAttack::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
 	CColliderComponent* CollisionDest = Result.Dest;
+
 	CGameObject* Owner = CollisionDest->GetGameObject();
+
 	CWidgetComponent* ObjectWindow = nullptr;
 
 	if (Owner)
 	{
+		CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+
+		if (!DestMonster)
+			return;
+
 		// HP Bar 달게 하기
-		if (Owner->GetTypeID() == typeid(CMonster).hash_code())
-		{
-			CMonster* DestMonster = (CMonster*)Owner;
-			// DestMonster->Damage(2.f);
-		}
+		DestMonster->SetBeingHit(true);
+
+		DestMonster->SetAIState(Monster_AI::Hit);
+
+		if (m_AttackDir.x < 0)
+			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
+		else
+			DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+
+		// DestMonster->Damage(2.f);
 
 		// Create Damage Font
 		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");

@@ -1,9 +1,9 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "AttackEffect.h"
 #include "../Client.h"
 
 class CKirbyNormalAttack :
-    public CGameObject
+    public CAttackEffect
 {
     friend class CFireKirbyState;
     friend class CFightKirbyState;
@@ -27,6 +27,7 @@ public:
     virtual void Start() override;
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
+    virtual void PostUpdate(float DeltaTime) override;
 private:
     void CollisionCallback(const CollisionResult& Result);
 };
