@@ -3,7 +3,7 @@
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
-#include "../Object/KirbyNormalAttack.h"
+#include "../Object/KirbyAttackEffect.h"
 
 CBeamKirbyState::CBeamKirbyState()
 {}
@@ -108,14 +108,14 @@ void CBeamKirbyState::NormalAttackCallback()
 		TraceUpDir = Vector3(TraceLeftX, TraceUpY, GetWorldPos().z) - GetWorldPos();
 		TraceUpDir.Normalize();
 
-		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack1");
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack1");
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Beam);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(TraceUpDir.y);
 
 		// 啊款单
-		 AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack2");
+		 AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Beam);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
@@ -124,7 +124,7 @@ void CBeamKirbyState::NormalAttackCallback()
 		// 酒贰
 		TraceDownDir = Vector3(TraceLeftX, TraceDownY, GetWorldPos().z) - GetWorldPos();
 		TraceDownDir.Normalize();
-		AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack3");
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack3");
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Beam);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
@@ -137,14 +137,14 @@ void CBeamKirbyState::NormalAttackCallback()
 		TraceUpDir = Vector3(TraceRightX, TraceUpY, GetWorldPos().z) - GetWorldPos();
 		TraceUpDir.Normalize();
 
-		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack1");
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack1");
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Beam);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(TraceUpDir.y);
 
 		// 啊款单 
-		AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack2");
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Beam);
 		AttackEffect->SetRightAttackDir(0.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
@@ -154,7 +154,7 @@ void CBeamKirbyState::NormalAttackCallback()
 		TraceDownDir = Vector3(TraceRightX, TraceDownY, GetWorldPos().z) - GetWorldPos();
 		TraceDownDir.Normalize();
 
-		AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack3");
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack3");
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::Beam);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);

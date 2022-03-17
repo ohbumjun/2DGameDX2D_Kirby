@@ -3,7 +3,7 @@
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
-#include "../Object/KirbyNormalAttack.h"
+#include "../Object/KirbyAttackEffect.h"
 #include "../Object/FireAttackBackEffect.h"
 
 class CFightMonsterAttack;
@@ -42,7 +42,8 @@ void CFireKirbyState::FallDownAttack()
 
 	for (int i = 0; i < 20; i++)
 	{
-		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack");
+		// Attack Effect
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
 
 		AttackEffect->SetAttackType(KirbyNormalAttack_Type::FireFall);
 
@@ -52,6 +53,19 @@ void CFireKirbyState::FallDownAttack()
 			GetWorldPos().y, GetWorldPos().z);
 
 		AttackEffect->SetAttackDirX(0.f);
+
+		AttackEffect->SetBottomCollisionEnable(true);
+
+		// Attack Back Effect
+		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+
+		BackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
+			GetWorldPos().y, GetWorldPos().z);
+		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
+
+		BackEffect->AddRelativeRotationZ(-90.f);
+
+		BackEffect->SetLifeTime(0.3f);
 	}
 }
 
@@ -214,7 +228,7 @@ void CFireKirbyState::NormalAttackCallback()
 	if (PlayerMoveDir.x < 0.f)
 	{
 		// 가운데
-		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack");
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(0.f);
@@ -222,7 +236,7 @@ void CFireKirbyState::NormalAttackCallback()
 	// 오른쪽으로 보고 있다면 
 	else
 	{
-		CKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CKirbyNormalAttack>("Attack");
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(0.f);

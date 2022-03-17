@@ -3,7 +3,8 @@
 #include "Scene/Scene.h"
 
 CAttackEffect::CAttackEffect()  :
-	m_SideCollisionApplied(true)
+	m_SideCollisionApplied(true),
+	m_BottomCollisionApplied(false)
 {}
 
 CAttackEffect::CAttackEffect(const CAttackEffect& obj)
@@ -156,8 +157,96 @@ bool CAttackEffect::CheckSideCollision()
 			}
 		}
 	}
+	return false;
+}
 
-	m_PrevPos = GetWorldPos();
+bool CAttackEffect::CheckBottomCollision()
+{
+	Vector3 m_Pos = GetWorldPos();
+
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+		return false;
+
+	if (!m_BottomCollisionApplied)
+		return false;
+
+	if (m_Pos.y - m_PrevPos.y < 0.f)
+	{
+		CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+		Vector3 Pivot = GetPivot();
+		Vector3 WorldScale = GetWorldScale();
+		Vector3 TileSize = TileMap->GetTileEmptySize();
+
+		float PrevBottom = m_PrevPos.y - Pivot.y * WorldScale.y;
+		float CurBottom = m_Pos.y - Pivot.y * WorldScale.y;
+
+		float PrevLeft = m_PrevPos.x - Pivot.x * WorldScale.x;
+		float CurLeft = m_Pos.x - Pivot.x * WorldScale.x;
+
+		float PrevRight = PrevLeft + WorldScale.x;
+		float CurRight = CurLeft + WorldScale.x;
+
+		float ResultLeft = PrevLeft < CurLeft ? PrevLeft : CurLeft;
+		float ResultRight = PrevRight > CurRight ? PrevRight : CurRight;
+
+		float ResultTop = CurBottom > PrevBottom ? CurBottom : PrevBottom;
+		float ResultBottom = CurBottom < PrevBottom ? CurBottom : PrevBottom;
+
+		// 해당 위치의 Tile을 구해온다.
+		int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
+
+		Vector3 LB = Vector3(ResultLeft, ResultBottom, 0.f);
+		Vector3 RT = Vector3(ResultRight, ResultTop, 0.f);
+
+		// LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
+		LeftIdx = TileMap->GetTileEmptyIndexX(LB);
+		// RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
+		RightIdx = TileMap->GetTileEmptyIndexX(RT);
+
+		// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
+		TopIdx = TileMap->GetTileEmptyIndexY(RT);
+
+		// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
+		BottomIdx = TileMap->GetTileEmptyIndexY(LB);
+
+		if (LeftIdx < 0)
+			LeftIdx = 0;
+
+		if (BottomIdx < 0)
+			BottomIdx = 0;
+
+		if (RightIdx >= TileMap->GetTileCountX())
+			RightIdx = TileMap->GetTileCountX() - 1;
+
+		if (TopIdx >= TileMap->GetTileCountY())
+			TopIdx = TileMap->GetTileCountY() - 1;
+
+		bool Check = false;
+
+		// 위에서 아래로 반복한다
+		for (int row = TopIdx; row >= BottomIdx; row--)
+		{
+			for (int col = LeftIdx; col <= RightIdx; col++)
+			{
+				// 이전 위치의 Bottom이, 타일의 Top 보다 클 경우 무시한다
+				// 즉, 내가 점프하는데, 그 위에 Tile이 존재하는 것
+				// 바닥 체크는 내려갈 때만 체크하기 위함이다.
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block &&
+					TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
+					continue;
+
+				// 못가는 곳이라면. 즉, 바닥에 닿는 다면
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall ||
+					TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block)
+				{
+					return true;
+				}
+			}
+		}
+	}
 
 	return false;
 }
@@ -170,6 +259,14 @@ void CAttackEffect::Update(float DeltaTime)
 	{
 		Destroy();
 	}
+
+	if (CheckBottomCollision())
+	{
+		Destroy();
+	}
+
+	m_PrevPos = GetWorldPos();
+
 }
 
 void CAttackEffect::PostUpdate(float DeltaTime)

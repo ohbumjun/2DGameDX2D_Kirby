@@ -2,16 +2,16 @@
 #include "AttackEffect.h"
 #include "../Client.h"
 
-class CKirbyNormalAttack :
+class CKirbyAttackEffect :
     public CAttackEffect
 {
     friend class CFireKirbyState;
     friend class CFightKirbyState;
     friend class CBeamKirbyState;
 public:
-    CKirbyNormalAttack();
-    CKirbyNormalAttack(const CKirbyNormalAttack& Attack);
-    virtual ~CKirbyNormalAttack() override;
+    CKirbyAttackEffect();
+    CKirbyAttackEffect(const CKirbyAttackEffect& Attack);
+    virtual ~CKirbyAttackEffect() override;
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_Collider;

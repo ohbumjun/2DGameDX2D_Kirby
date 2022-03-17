@@ -246,7 +246,7 @@
     <ClCompile Include="Component\FireKirbyState.cpp">
       <Filter>02. Object\01. Player\01. State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\KirbyNormalAttack.cpp">
+    <ClCompile Include="Object\KirbyAttackEffect.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClCompile>
     <ClCompile Include="Object\AttackEffect.cpp">
@@ -428,7 +428,7 @@
     <ClInclude Include="Component\FireKirbyState.h">
       <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\KirbyNormalAttack.h">
+    <ClInclude Include="Object\KirbyAttackEffect.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
     </ClInclude>
     <ClInclude Include="Object\AttackEffect.h">

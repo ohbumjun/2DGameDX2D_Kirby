@@ -1,4 +1,4 @@
-#include "KirbyNormalAttack.h"
+#include "KirbyAttackEffect.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -9,34 +9,34 @@
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
 
-CKirbyNormalAttack::CKirbyNormalAttack() :
+CKirbyAttackEffect::CKirbyAttackEffect() :
 	m_AttackDir(1.f, 0.f),
 	m_AttackDistLimit(0.f),
 	m_AttackDistLimitMax(500.f),
 	m_AttackObjectSpeed(500.f)
 {}
 
-CKirbyNormalAttack::CKirbyNormalAttack(const CKirbyNormalAttack& Attack) : CAttackEffect(Attack)
+CKirbyAttackEffect::CKirbyAttackEffect(const CKirbyAttackEffect& Attack) : CAttackEffect(Attack)
 {}
 
-CKirbyNormalAttack::~CKirbyNormalAttack()
+CKirbyAttackEffect::~CKirbyAttackEffect()
 {}
 
-void CKirbyNormalAttack::SetRightAttackDir(float YDir)
+void CKirbyAttackEffect::SetRightAttackDir(float YDir)
 {
 	m_AttackDir.x = 1.f;
 	m_AttackDir.y = YDir;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
-void CKirbyNormalAttack::SetLeftAttackDir(float YDir)
+void CKirbyAttackEffect::SetLeftAttackDir(float YDir)
 {
 	m_AttackDir.x = -1.f;
 	m_AttackDir.y = YDir;
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
-void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
+void CKirbyAttackEffect::SetAttackType(KirbyNormalAttack_Type Type)
 {
 	if (Type == m_AttackType)
 		return;
@@ -111,7 +111,7 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.6f);
 
 		m_AttackDistLimitMax = 1000.f;
-		m_AttackObjectSpeed = 900.f;
+		m_AttackObjectSpeed = 800.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"FireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
@@ -122,17 +122,17 @@ void CKirbyNormalAttack::SetAttackType(KirbyNormalAttack_Type Type)
 	}
 }
 
-void CKirbyNormalAttack::SetAttackDirX(float XDir)
+void CKirbyAttackEffect::SetAttackDirX(float XDir)
 {
 	m_AttackDir.x = XDir;
 }
 
-void CKirbyNormalAttack::Start()
+void CKirbyAttackEffect::Start()
 {
 	CGameObject::Start();
 }
 
-bool CKirbyNormalAttack::Init()
+bool CKirbyAttackEffect::Init()
 {
 	if (!CGameObject::Init())
 		return false;
@@ -151,16 +151,16 @@ bool CKirbyNormalAttack::Init()
 	m_Sprite->AddChild(m_Collider);
 	m_Collider->SetCollisionProfile("PlayerAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
-	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CKirbyNormalAttack::CollisionCallback);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CKirbyAttackEffect::CollisionCallback);
 
 	return true;
 }
 
-void CKirbyNormalAttack::Update(float DeltaTime)
+void CKirbyAttackEffect::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = m_AttackDir.x * DeltaTime * m_AttackObjectSpeed;
+	float MoveDist = (Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * m_AttackObjectSpeed).Length();
 
 	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * m_AttackObjectSpeed);
 
@@ -174,12 +174,12 @@ void CKirbyNormalAttack::Update(float DeltaTime)
 	}
 }
 
-void CKirbyNormalAttack::PostUpdate(float DeltaTime)
+void CKirbyAttackEffect::PostUpdate(float DeltaTime)
 {
 	CAttackEffect::PostUpdate(DeltaTime);
 }
 
-void CKirbyNormalAttack::CollisionCallback(const CollisionResult& Result)
+void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
