@@ -1,4 +1,7 @@
 #include "Item.h"
+#include <Scene/Scene.h>
+#include "Component/ColliderComponent.h"
+#include "Component/ColliderCircle.h"
 
 CItem::CItem()
 {}
@@ -12,6 +15,13 @@ CItem::~CItem()
 void CItem::Start()
 {
 	CGameObject::Start();
+
+	m_ColliderBody = FindComponentByType<CColliderCircle>();
+
+	if (m_ColliderBody)
+	{
+		m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CItem::CollisionPlayerCallback);
+	}
 }
 
 bool CItem::Init()
@@ -38,4 +48,14 @@ void CItem::Load(FILE* pFile)
 	CGameObject::Load(pFile);
 
 	fread(&m_ItemType, sizeof(Item_Type), 1, pFile);
+}
+
+void CItem::CollisionPlayerCallback(const CollisionResult& Result)
+{
+	CGameObject* DestObj = Result.Dest->GetGameObject();
+
+	if (DestObj == m_Scene->GetPlayerObject())
+	{
+		Destroy();
+	}
 }

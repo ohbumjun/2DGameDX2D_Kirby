@@ -825,6 +825,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CGameObject* Obj = Scene->LoadGameObject<CHPYellowItem>();
 		return Obj;
 	}
+	else if (GameObjectTypeID == typeid(CHPGreenItem).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CHPGreenItem>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CHPRedItem).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CHPRedItem>();
+		return Obj;
+	}
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBeamMonster>();

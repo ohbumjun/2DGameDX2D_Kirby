@@ -11,6 +11,7 @@ protected:
 	virtual ~CItem() = 0;
 protected:
 	Item_Type m_ItemType;
+	CSharedPtr<class CColliderCircle> m_ColliderBody;
 public:
 	virtual void   Start() override;
 	virtual bool   Init() override;
@@ -18,5 +19,7 @@ public:
 	virtual void   PostUpdate(float DeltaTime);
 public:
 	virtual void Load(FILE* pFile) override;
+private :
+	void CollisionPlayerCallback(const CollisionResult& Result);
 };
 
