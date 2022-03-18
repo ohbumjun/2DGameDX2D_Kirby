@@ -456,7 +456,7 @@ void CDetailInfoWindow::SetBlockTileAroundBlockItem()
 	{
 		BlockObject = dynamic_cast<CBlock*>(m_ClickedComponent->GetGameObject());
 
-		BlockObject->MakeTileTypeAround(true);
+		BlockObject->MakeTileTypeAround(true); //
 	}
 }
 
