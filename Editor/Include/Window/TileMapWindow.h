@@ -38,6 +38,11 @@ private:
 	// Tile_EditMode m_EditMode; --> 무조건 여기서는 Type만 적용할 것이다.
 	class CTileEmptyComponent* m_TileMapEmpty;
 	class CBackGroundComponent* m_BackGround;
+public :
+	class CTileEmptyComponent* GetTileMapEmpty() const
+{
+		return m_TileMapEmpty;
+}
 public:
 	void SetTileMap(class CTileEmptyComponent* TileMap);
 	void SetTileMapComponentEditMode(bool Enable);

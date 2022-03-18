@@ -92,7 +92,7 @@ bool CObjectHierarchy::Init()
 	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStart, g_SceneChangeToGreen2,
 	g_SceneChangeToGreen1};
 
-	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem };
+	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem, g_Block };
 
 	m_mapVecObject.insert(std::make_pair("NormalMonster", vecNormalMonsters));
 	m_mapVecObject.insert(std::make_pair("AbilityMonster", vecAbilityMonsters));

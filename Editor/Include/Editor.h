@@ -18,6 +18,7 @@ const std::string g_SceneChangeToGreen1 = "SceneChangeToGreen1";
 const std::string g_HPYellowItem = "HPYellowItem";
 const std::string g_HPRedItem    = "HPRedItem";
 const std::string g_HPGreenItem = "HPGreenItem";
+const std::string g_Block             = "BlockItem";
 
 enum class Tile_EditMode {
 	Type,

@@ -46,6 +46,7 @@
 #include "Object/FireMonster.h"
 #include "Object/FightMonster.h"
 #include "Object/DragObject.h"
+#include "Object/Block.h"
 #include "Object/LineObject.h"
 #include "Object/SpriteEditObject.h"
 #include "Object/HPYellowItem.h"
@@ -192,7 +193,7 @@ void CEditorManager::SetEditMode(EditMode Mode)
 		m_EditorMenu->SetEditModeText(EditModeText);
 
 		// 타일을 그리지 않도록 세팅한다.
-		m_TileMapWindow->SetTileMapComponentEditMode(false);
+		m_TileMapWindow->SetTileMapComponentEditMode(true);
 	}
 	else if (m_EditMode == EditMode::LineCreate)
 	{
@@ -455,6 +456,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_HPRedItem.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CHPRedItem>(NewMonsterName);
+		}
+		else if (strcmp(g_Block.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBlock>(NewMonsterName);
 		}
 		else if (strcmp(g_SceneChangeStart.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -833,6 +838,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CHPRedItem).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CHPRedItem>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBlock).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBlock>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())

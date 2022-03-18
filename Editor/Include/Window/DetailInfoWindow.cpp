@@ -3,6 +3,7 @@
 #include "IMGUILabel.h"
 #include "IMGUIImage.h"
 #include "IMGUIComboBox.h"
+#include "IMGUIButton.h"
 #include "IMGUIText.h"
 #include "IMGUISameLine.h"
 #include "IMGUITextInput.h"
@@ -12,6 +13,7 @@
 // Object
 #include "GameObject/GameObject.h"
 #include "GameObject/LifeObject.h"
+#include "../Object/Block.h"
 // Scene
 #include "Scene/SceneResource.h"
 #include "Scene/Scene.h"
@@ -270,6 +272,33 @@ bool CDetailInfoWindow::Init()
 	m_ScaleZ->SetCallback(this, &CDetailInfoWindow::SetScalingZCallback);
 	m_ScaleZ->SetTextType(ImGuiText_Type::Float);
 
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+
+	// ===============================================
+	Label = AddWidget<CIMGUILabel>("Block Item", 400.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Label = AddWidget<CIMGUILabel>("Set Block", 80.f, 20.f);
+	Label->SetColor(0, 0, 255);
+	Label->SetAlign(0.5f, 0.0f);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(100.f);
+
+	m_BlockSetButton = AddWidget<CIMGUIButton>("Make Block", 100.f, 20.f);
+	m_BlockSetButton->SetClickCallback(this, &CDetailInfoWindow::SetBlockTileAroundBlockItem);
+
+	Line = AddWidget<CIMGUISameLine>("Line");
+	Line->SetOffsetX(210.f);
+
+	m_NormalSetButton = AddWidget<CIMGUIButton>("Make Normal", 100.f, 20.f);
+	m_NormalSetButton->SetClickCallback(this, &CDetailInfoWindow::SetNormalTileAroundBlockItem);
+
+	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
+	Label->SetColor(0, 0, 0);
+
 	return true;
 }
 
@@ -412,6 +441,38 @@ void CDetailInfoWindow::SetPhysicsSimulateCallback(int Index, const char* Animat
 	{
 		OwnerObject->SetPhysicsSimulate(false);
 		SetPhysicsInfo(false);
+	}
+}
+
+void CDetailInfoWindow::SetBlockTileAroundBlockItem()
+{
+	if (!m_ClickedComponent)
+		return;
+
+	// CLifeObject* OwnerObject = (CLifeObject*)(m_ClickedComponent->GetGameObject());
+	CBlock* BlockObject = dynamic_cast<CBlock*>(m_ClickedComponent->GetGameObject());
+
+	if (BlockObject)
+	{
+		BlockObject = dynamic_cast<CBlock*>(m_ClickedComponent->GetGameObject());
+
+		BlockObject->MakeTileTypeAround(true);
+	}
+}
+
+void CDetailInfoWindow::SetNormalTileAroundBlockItem()
+{
+	if (!m_ClickedComponent)
+		return;
+
+	// CLifeObject* OwnerObject = (CLifeObject*)(m_ClickedComponent->GetGameObject());
+	CBlock* BlockObject = dynamic_cast<CBlock*>(m_ClickedComponent->GetGameObject());
+
+	if (BlockObject)
+	{
+		BlockObject = dynamic_cast<CBlock*>(m_ClickedComponent->GetGameObject());
+
+		BlockObject->MakeTileTypeAround(false);
 	}
 }
 

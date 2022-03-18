@@ -160,7 +160,7 @@
       <Filter>03. Object\08. Item</Filter>
     </ClCompile>
     <ClCompile Include="Object\Block.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>03. Object\08. Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,7 +273,7 @@
       <Filter>03. Object\08. Item</Filter>
     </ClInclude>
     <ClInclude Include="Object\Block.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>03. Object\08. Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

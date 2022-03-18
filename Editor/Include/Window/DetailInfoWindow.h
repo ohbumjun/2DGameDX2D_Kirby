@@ -29,6 +29,9 @@ private: // Transform 정보
     class CIMGUITextInput* m_ScaleX;
     class CIMGUITextInput* m_ScaleY;
     class CIMGUITextInput* m_ScaleZ;
+private : // Block Type 세팅 정보
+    class CIMGUIButton* m_BlockSetButton;
+    class CIMGUIButton* m_NormalSetButton;
 public:
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
@@ -42,23 +45,21 @@ public:
 private :
     // Animation
     void SetCurrentAnimationCallback(int Index, const char* Animation);
-
     // Detail
     void SetDetailInfoName(const std::string& Name);
     void SetPhysicsInfo(bool Enable);
     void SetCurrentAnimationName(const std::string& Name);
-
     void SetPhysicsSimulateCallback(int Index, const char* Animation);
-
-
+    // Block
+    void SetBlockTileAroundBlockItem();
+    void SetNormalTileAroundBlockItem();
+    // Transform
     void SetPositionXCallback();
     void SetPositionYCallback();
     void SetPositionZCallback();
-
     void SetRotationXCallback();
     void SetRotationYCallback();
     void SetRotationZCallback();
-
     void SetScalingXCallback();
     void SetScalingYCallback();
     void SetScalingZCallback();
