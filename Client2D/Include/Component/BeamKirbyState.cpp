@@ -44,8 +44,8 @@ void CBeamKirbyState::FallDownAttack()
 		Vector3 TargetPos = {};
 		Vector3 TraceDir = {};
 
-		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(45 * i)) * (90.f);
-		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(45 * i)) * (90.f);
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(45 * (float)i)) * (90.f);
+		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(45 * (float)i)) * (90.f);
 
 		TraceDir = TargetPos - GetWorldPos();
 

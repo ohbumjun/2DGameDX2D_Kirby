@@ -78,6 +78,9 @@ enum class CreateObject_Type
 {
 	GameObject,
 	Player,
+	TileEmptyObject,
+	BackGround,
+	LineContainer,
 	End
 };
 
@@ -90,7 +93,8 @@ enum class CreateComponent_Type
 	ColliderCircle,
 	ColliderPixel,
 	Camera,
-	TileMap
+	TileEmpty,
+	BackGround
 };
 
 enum Collision_Channel
@@ -223,4 +227,10 @@ enum class Line_DrawType {
 	RightUp,
 	LeftBottom,
 	LeftUp
+};
+
+enum class Item_Type {
+	HPYellowPotion,
+	HPRedPotion,
+	HPGreenPotion
 };

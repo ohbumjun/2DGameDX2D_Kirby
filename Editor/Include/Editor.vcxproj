@@ -180,6 +180,10 @@
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
+    <ClCompile Include="Object\HPGreenItem.cpp" />
+    <ClCompile Include="Object\HPRedItem.cpp" />
+    <ClCompile Include="Object\HPYellowItem.cpp" />
+    <ClCompile Include="Object\Item.cpp" />
     <ClCompile Include="Object\Line.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
@@ -213,6 +217,10 @@
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FireMonster.h" />
+    <ClInclude Include="Object\HPGreenItem.h" />
+    <ClInclude Include="Object\HPRedItem.h" />
+    <ClInclude Include="Object\HPYellowItem.h" />
+    <ClInclude Include="Object\Item.h" />
     <ClInclude Include="Object\Line.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\Monster.h" />

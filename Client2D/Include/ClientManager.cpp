@@ -23,10 +23,12 @@
 #include "Object/FightMonster.h"
 #include "Object/LineContainer.h"
 #include "GameObject/Line.h"
+#include "Object/HPYellowItem.h"
+#include "Object/HPGreenItem.h"
+#include "Object/HPRedItem.h"
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
-
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
@@ -151,8 +153,6 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	}
 	else if (GameObjectTypeID == typeid(CPlayer2D).hash_code())
 	{
-		// 
-
 		CGameObject* Obj = Scene->LoadGameObject<CPlayer2D>();
 		return Obj;
 	}
@@ -184,6 +184,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CFireMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CHPYellowItem>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())

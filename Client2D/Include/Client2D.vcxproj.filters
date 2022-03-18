@@ -76,6 +76,9 @@
     <Filter Include="02. Object\07. Effect\05. SpecialPlayer">
       <UniqueIdentifier>{3d91dd58-f160-4c4d-9040-72e7b6470910}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\10. Item">
+      <UniqueIdentifier>{db6918bc-6df6-4d6c-a733-cb5b07c574b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -254,6 +257,18 @@
     </ClCompile>
     <ClCompile Include="Object\FireAttackBackEffect.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Item.cpp">
+      <Filter>02. Object\10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HPYellowItem.cpp">
+      <Filter>02. Object\10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HPRedItem.cpp">
+      <Filter>02. Object\10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HPGreenItem.cpp">
+      <Filter>02. Object\10. Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -436,6 +451,18 @@
     </ClInclude>
     <ClInclude Include="Object\FireAttackBackEffect.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Item.h">
+      <Filter>02. Object\10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HPYellowItem.h">
+      <Filter>02. Object\10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HPGreenItem.h">
+      <Filter>02. Object\10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HPRedItem.h">
+      <Filter>02. Object\10. Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

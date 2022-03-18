@@ -49,6 +49,9 @@
     <Filter Include="03. Object\07. Effect">
       <UniqueIdentifier>{1801276c-8f5c-4db6-bd18-f9315f0b763c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\08. Item">
+      <UniqueIdentifier>{e06c28b7-a354-42f6-8fa7-cc9538f9c92d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -143,6 +146,18 @@
     </ClCompile>
     <ClCompile Include="Object\FightMonster.cpp">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Item.cpp">
+      <Filter>03. Object\08. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HPYellowItem.cpp">
+      <Filter>03. Object\08. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HPRedItem.cpp">
+      <Filter>03. Object\08. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HPGreenItem.cpp">
+      <Filter>03. Object\08. Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +256,18 @@
     </ClInclude>
     <ClInclude Include="Object\FightMonster.h">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Item.h">
+      <Filter>03. Object\08. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HPYellowItem.h">
+      <Filter>03. Object\08. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HPGreenItem.h">
+      <Filter>03. Object\08. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HPRedItem.h">
+      <Filter>03. Object\08. Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

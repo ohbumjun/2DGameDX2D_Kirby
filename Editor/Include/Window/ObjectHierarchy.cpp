@@ -92,9 +92,12 @@ bool CObjectHierarchy::Init()
 	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStart, g_SceneChangeToGreen2,
 	g_SceneChangeToGreen1};
 
+	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem };
+
 	m_mapVecObject.insert(std::make_pair("NormalMonster", vecNormalMonsters));
 	m_mapVecObject.insert(std::make_pair("AbilityMonster", vecAbilityMonsters));
 	m_mapVecObject.insert(std::make_pair("EffectObject", vecEffectObjects));
+	m_mapVecObject.insert(std::make_pair("ItemObject", vecItemObjects));
 
 	// m_mapVecObject 의 Key 들을 m_ObjectList 에 추가
 	for (const auto & kv : m_mapVecObject)

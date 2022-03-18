@@ -14,6 +14,10 @@ const std::string g_FightMonsterName = "Fight";
 const std::string g_SceneChangeStart = "SceneChangeStart";
 const std::string g_SceneChangeToGreen2 = "SceneChangeToGreen2";
 const std::string g_SceneChangeToGreen1 = "SceneChangeToGreen1";
+// Item
+const std::string g_HPYellowItem = "HPYellowItem";
+const std::string g_HPRedItem    = "HPRedItem";
+const std::string g_HPGreenItem = "HPGreenItem";
 
 enum class Tile_EditMode {
 	Type,

@@ -228,3 +228,9 @@ enum class Line_DrawType {
 	LeftBottom,
 	LeftUp
 };
+
+enum class Item_Type {
+	HPYellowPotion,
+	HPRedPotion,
+	HPGreenPotion
+};

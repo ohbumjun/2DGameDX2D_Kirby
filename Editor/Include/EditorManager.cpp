@@ -48,6 +48,9 @@
 #include "Object/DragObject.h"
 #include "Object/LineObject.h"
 #include "Object/SpriteEditObject.h"
+#include "Object/HPYellowItem.h"
+#include "Object/HPRedItem.h"
+#include "Object/HPGreenItem.h"
 #include "Object/Line.h"
 #include "Object/LineContainer.h"
 #include "Object/EffectSceneChangeStar.h"
@@ -402,10 +405,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 			return;
 
 		// Object Hierarchy 의 m_SpecificObjectList 에서 선택된 Object 의 이름을 가져온다.
-		std::string SelectMonsterName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
+		std::string SelectObjectName = m_ObjectHierarchy->GetSpecificObjectListBox()->GetSelectItem();
 
 		// 생성될 Monster 이름을 Random 하게 만든다.
-		std::string NewMonsterName = SelectMonsterName + "_" + GetRandomString();
+		std::string NewMonsterName = SelectObjectName + "_" + GetRandomString();
 
 		// 혹시나 이미 만들어진 이름이라면 X
 		if (m_ObjectHierarchy->CheckDuplicateObject(NewMonsterName))
@@ -413,43 +416,55 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 
 		CGameObject* CreatedObject = nullptr;
 
-		if (strcmp(g_NormalBearName.c_str(), SelectMonsterName.c_str()) == 0)
+		if (strcmp(g_NormalBearName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CNormalBear>(NewMonsterName);
 		}
-		else if (strcmp(g_YellowBirdName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_YellowBirdName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CYellowBird>(NewMonsterName);
 		}
-		else if (strcmp(g_PurpleBeatlesName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_PurpleBeatlesName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CPurpleBeatle>(NewMonsterName);
 		}
-		else if (strcmp(g_MushRoomName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_MushRoomName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMushRoom>(NewMonsterName);
 		}
-		else if (strcmp(g_BeamMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_BeamMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBeamMonster>(NewMonsterName);
 		}
-		else if (strcmp(g_FireMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_FireMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFireMonster>(NewMonsterName);
 		}
-		else if (strcmp(g_FightMonsterName.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_FightMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFightMonster>(NewMonsterName);
 		}
-		else if (strcmp(g_SceneChangeStart.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_HPYellowItem.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CHPYellowItem>(NewMonsterName);
+		}
+		else if (strcmp(g_HPGreenItem.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CHPGreenItem>(NewMonsterName);
+		}
+		else if (strcmp(g_HPRedItem.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CHPRedItem>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeStart.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectSceneChangeStar>(NewMonsterName);
 		}
-		else if (strcmp(g_SceneChangeToGreen2.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_SceneChangeToGreen2.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen2>(NewMonsterName);
 		}
-		else if (strcmp(g_SceneChangeToGreen1.c_str(), SelectMonsterName.c_str()) == 0)
+		else if (strcmp(g_SceneChangeToGreen1.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen1>(NewMonsterName);
 		}
@@ -803,6 +818,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CHPYellowItem>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
