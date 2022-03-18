@@ -31,6 +31,7 @@ CPlayer2D::CPlayer2D() :
 	m_LeverMoveAccel(1.6f),
 	m_LeverVelocity(0.f),
 	m_LeverMaxMoveVelocity(270.f),
+	m_SlideAttackTimeMax(0.4f),
 	m_DashMoveAccel(2.0f),
 	m_DashVelocity(0.f),
 	m_DashMaxMoveVelocity(170.f),
@@ -41,6 +42,7 @@ CPlayer2D::CPlayer2D() :
 	m_Bounced(false),
 	m_ToLeftWhenRightMove(false),
 	m_RightMovePush(false),
+	m_SlideAttack(false),
 	m_LeftMove(false),
 	m_ToRightWhenLeftMove(false),
 	m_IsSpecialStateChanged(false),
@@ -164,7 +166,7 @@ void CPlayer2D::Start()
 	}
 
 	m_KirbyState->Start();
-	
+
 	SetRootComponent(m_KirbyState);
 
 	m_InitPlayerPos = m_KirbyState->GetWorldPos();
@@ -261,10 +263,9 @@ void CPlayer2D::Start()
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
 		KeyState_Down, this, &CPlayer2D::Attack);
-	/*
-	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack1", 
-		KeyState_Down, this, &CPlayer2D::Attack1);
-	*/
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SlideAttack", 
+		KeyState_Down, this, &CPlayer2D::SlideAttack);
+
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
 		KeyState_Down, this, &CPlayer2D::Skill1);
 
@@ -314,6 +315,8 @@ void CPlayer2D::Update(float DeltaTime)
 	UpdateBeingHit(DeltaTime);
 
 	UpdateAttackTime(DeltaTime);
+
+	UpdateSlideAttackTime(DeltaTime);
 
 	UpdateActionWhenReachGroundAfterFall();
 }
@@ -1264,6 +1267,38 @@ void CPlayer2D::UpdateAttackTime(float DeltaTime)
 	}
 }
 
+void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
+{
+	if (m_SlideAttackTime > 0.f)
+	{
+		m_SlideAttackTime -= DeltaTime;
+
+		// 왼쪽 
+		if (m_ObjectMoveDir.x < 0.f)
+		{
+			AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 500.f);
+		}
+		// 오른쪽
+		else
+		{
+			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 500.f);
+		}
+
+		m_Body->SetCollisionProfile("PlayerAttack");
+	}
+
+	if (m_SlideAttackTime <= 0.f)
+	{
+		m_SlideAttackTime = -1.f;
+
+		ChangePlayerIdleAnimation();
+
+		m_Body->SetCollisionProfile("Player");
+
+		m_SlideAttack = false;
+	}
+}
+
 void CPlayer2D::RotationZInv(float DeltaTime) //
 {
 	m_KirbyState->AddRelativeRotationZ(180.f * DeltaTime);
@@ -1853,6 +1888,14 @@ void CPlayer2D::ChangePlayerSpitOutAnimation()
 	// Effect 만들어내기 
 }
 
+void CPlayer2D::ChangePlayerSlideAttackAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftSlide");
+	else
+		ChangeAnimation("RightSlide");
+}
+
 void CPlayer2D::ChangePlayerEatIdleAnimation()
 {
 	if (m_IsAttacking)
@@ -2173,6 +2216,19 @@ void CPlayer2D::Attack(float DeltaTime)
 
 		m_KirbyState->Attack();
 	}
+}
+
+void CPlayer2D::SlideAttack(float DeltaTime)
+{
+	// 몬스터를 먹고 있는 상태라면 Xu
+	if (m_IsEatingMonster)
+		return;
+
+	m_SlideAttack = true;
+
+	m_SlideAttackTime = m_SlideAttackTimeMax;
+
+	ChangePlayerSlideAttackAnimation();
 }
 
 void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)

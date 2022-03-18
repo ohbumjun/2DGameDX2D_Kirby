@@ -12,7 +12,6 @@ protected:
     CBlock(const CBlock& Monster);
     virtual ~CBlock();
 protected:
-    Item_Type m_ItemType;
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
 public:
@@ -21,7 +20,6 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
 public:
-    virtual void Save(FILE* pFile) override;
     void MakeTileTypeAround(bool MakeBlock);
 };
 

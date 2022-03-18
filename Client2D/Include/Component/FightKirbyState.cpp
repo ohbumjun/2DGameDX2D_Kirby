@@ -1,4 +1,7 @@
 #include "FightKirbyState.h"
+
+#include <Component/ColliderBox2D.h>
+
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -120,11 +123,15 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			AddWorldPos(Vector3(0.3f * -1.f, 1.f, 0.f) * DeltaTime * 500.f);
 		}
 
+		m_Player->GetBodyCollider()->SetCollisionProfile("PlayerAttack");
+
 		if (m_GoUpTime <= 0.f)
 		{
 			m_GoUpState = false;
 
 			SetWorldScale(m_InitWorldScale);
+
+			m_Player->GetBodyCollider()->SetCollisionProfile("Player");
 		}
 	}
 }

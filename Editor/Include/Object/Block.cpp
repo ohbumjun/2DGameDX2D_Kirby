@@ -28,7 +28,7 @@ bool CBlock::Init()
 
 	m_Sprite = CreateComponent<CSpriteComponent>("ItemSprite");
 	SetRootComponent(m_Sprite);
-	SetWorldScale(50.f, 50.f, 1.f); //
+	SetWorldScale(70.f, 70.f, 1.f); //
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
@@ -56,13 +56,6 @@ void CBlock::Update(float DeltaTime)
 void CBlock::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
-}
-
-void CBlock::Save(FILE* pFile)
-{
-	CGameObject::Save(pFile);
-
-	fwrite(&m_ItemType, sizeof(Item_Type), 1, pFile);
 }
 
 void CBlock::MakeTileTypeAround(bool MakeBlock)

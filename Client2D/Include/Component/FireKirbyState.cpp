@@ -5,6 +5,7 @@
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
 #include "../Object/FireAttackBackEffect.h"
+#include "Component/ColliderBox2D.h"
 
 class CFightMonsterAttack;
 
@@ -83,6 +84,8 @@ void CFireKirbyState::GoUpAttack()
 
 	m_GoUpTime = m_GoUpTimeMax;
 
+	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
+
 	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
 	BackEffect->SetWorldPos(GetWorldPos());
 	BackEffect->SetWorldScale(150.f, 150.f, 1.f);
@@ -113,6 +116,8 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			AddWorldPos(Vector3(1.0f * -1.f, 0.f, 0.f) * DeltaTime * 900.f);
 		}
 
+		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.f, m_InitColliderLength.y * 1.3f);
+
 		if (m_GoUpTime <= 0.f)
 		{
 			m_GoUpState = false;
@@ -122,6 +127,8 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			m_Player->ChangePlayerFallAnimation();
 
 			m_Player->SetAttackEnable(false);
+
+			m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
 		}
 	}
 }

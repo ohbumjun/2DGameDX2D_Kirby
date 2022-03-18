@@ -107,9 +107,18 @@ private :
 	float m_AttackTimeLimit;
 	float m_AttackTime;
 
+	// Slide Attack
+	bool m_SlideAttack;
+	float m_SlideAttackTime;
+	float m_SlideAttackTimeMax;
+
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
 public :
+	bool IsAttacking() const
+{
+		return m_IsAttacking;
+}
 	Vector3 GetInitWorldPos() const
 {
 		return m_InitPlayerPos;
@@ -157,6 +166,7 @@ private :
 	void UpdateBeingHit(float DeltaTime);
 private :
 	void UpdateAttackTime(float DeltaTime);
+	void UpdateSlideAttackTime(float DeltaTime);
 private :
 	// Rotation
 	void RotationZInv(float DeltaTime);
@@ -198,6 +208,7 @@ private:
 	void ChangePlayerJumpAnimation();
 	void ChangePlayerFallAnimation();
 	void ChangePlayerSpitOutAnimation();
+	void ChangePlayerSlideAttackAnimation();
 private :
 	// Spit Out & Pull
 	void SpitOut(float DeltaTime);
@@ -221,6 +232,7 @@ public :
 private :
 	// Special Action
 	void Attack(float DeltaTime);
+	void SlideAttack(float DeltaTime);
 private :
 	void MovePointDown(float DeltaTime);
 public :

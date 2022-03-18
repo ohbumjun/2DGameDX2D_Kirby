@@ -22,6 +22,7 @@
 #include "Object/FireMonster.h"
 #include "Object/FightMonster.h"
 #include "Object/LineContainer.h"
+#include "Object/Block.h"
 #include "GameObject/Line.h"
 #include "Object/HPYellowItem.h"
 #include "Object/HPGreenItem.h"
@@ -95,6 +96,8 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->SetShiftKey("SpecialChange", true);
 
 	CInput::GetInst()->CreateKey("Attack", 'F');
+	CInput::GetInst()->CreateKey("SlideAttack", 'C');
+
 	CInput::GetInst()->CreateKey("Jump", VK_SPACE);
 	CInput::GetInst()->CreateKey("JumpWhileDash", VK_SPACE);
 	CInput::GetInst()->SetCtrlKey("JumpWhileDash", true);
@@ -224,6 +227,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CLine).hash_code())
 	{
 		CLine* Obj = Scene->LoadGameObject<CLine>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CBlock).hash_code())
+	{
+		CBlock* Obj = Scene->LoadGameObject<CBlock>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CLineContainer).hash_code())
