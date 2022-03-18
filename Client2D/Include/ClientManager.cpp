@@ -191,6 +191,16 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 		CGameObject* Obj = Scene->LoadGameObject<CHPYellowItem>();
 		return Obj;
 	}
+	else if (GameObjectTypeID == typeid(CHPGreenItem).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CHPGreenItem>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CHPRedItem).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CHPRedItem>();
+		return Obj;
+	}
 	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CFightMonster>();

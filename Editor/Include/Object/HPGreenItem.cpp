@@ -32,8 +32,6 @@ bool CHPGreenItem::Init()
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("ItemRight");
 
-	SetWorldScale(50.f, 50.f, 1.f);
-
 	return true;
 }
 
