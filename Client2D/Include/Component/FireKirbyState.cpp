@@ -116,7 +116,7 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			AddWorldPos(Vector3(1.0f * -1.f, 0.f, 0.f) * DeltaTime * 900.f);
 		}
 
-		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.f, m_InitColliderLength.y * 1.3f);
+		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.3f, m_InitColliderLength.y * 1.3f);
 
 		if (m_GoUpTime <= 0.f)
 		{
