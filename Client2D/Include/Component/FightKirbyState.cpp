@@ -104,6 +104,8 @@ void CFightKirbyState::GoUpAttack()
 	m_GoUpState = true;
 
 	m_GoUpTime = m_GoUpTimeMax;
+
+	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
 }
 
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
@@ -123,7 +125,7 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			AddWorldPos(Vector3(0.3f * -1.f, 1.f, 0.f) * DeltaTime * 500.f);
 		}
 
-		m_Player->GetBodyCollider()->SetCollisionProfile("PlayerAttack");
+		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.f, m_InitColliderLength.y * 2.f);
 
 		if (m_GoUpTime <= 0.f)
 		{
@@ -131,7 +133,7 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 
 			SetWorldScale(m_InitWorldScale);
 
-			m_Player->GetBodyCollider()->SetCollisionProfile("Player");
+			m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
 		}
 	}
 }

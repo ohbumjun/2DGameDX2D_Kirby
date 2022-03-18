@@ -25,6 +25,8 @@ private :
     bool m_FallAttackState;
     float m_FallAttackTime;
     float m_FallAttackTimeMax;
+
+    Vector2 m_InitColliderLength;
 private :
     void UpdateAttackGoUpState(float DeltaTime);
     void UpdateFallAttack(float DeltaTime);
