@@ -211,6 +211,8 @@
     <ClCompile Include="Scene\BeginningScene.cpp" />
     <ClCompile Include="Scene\Green2Scene.cpp" />
     <ClCompile Include="Scene\Green3Scene.cpp" />
+    <ClCompile Include="Scene\Green4Scene.cpp" />
+    <ClCompile Include="Scene\Green5Scene.cpp" />
     <ClCompile Include="Scene\LoadingScene.cpp" />
     <ClCompile Include="Scene\LoadingThread.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
@@ -278,6 +280,8 @@
     <ClInclude Include="Scene\BeginningScene.h" />
     <ClInclude Include="Scene\Green2Scene.h" />
     <ClInclude Include="Scene\Green3Scene.h" />
+    <ClInclude Include="Scene\Green4Scene.h" />
+    <ClInclude Include="Scene\Green5Scene.h" />
     <ClInclude Include="Scene\LoadingScene.h" />
     <ClInclude Include="Scene\LoadingThread.h" />
     <ClInclude Include="Scene\MainScene.h" />

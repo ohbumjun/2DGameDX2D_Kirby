@@ -7,6 +7,8 @@
 #include "Scene/SceneResource.h"
 #include "Scene/ViewPort.h"
 // Object
+#include <Scene/CameraManager.h>
+
 #include "../Object/Player2D.h"
 #include "../Object/Monster.h"
 #include "../Object/TileMap.h"
@@ -65,6 +67,10 @@ void CMainScene::Start()
 
 	SetPlayerObject(Player2D);
 
+	// todo : 이게 문제가 되는 코드이다.
+	Player2D->SetWorldPos(100.f, 500.f, 0.f);
+	// Player2D->SetRelativePos(100.f, 500.f, 1.f);
+
 	// Line
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
@@ -72,6 +78,7 @@ void CMainScene::Start()
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
+	/*
 	if (CSceneManager::GetStaticPlayerInfo())
 	{
 		if (m_Scene->GetSceneChangeObject())
@@ -81,6 +88,7 @@ void CMainScene::Start()
 			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
 		}
 	}
+	*/
 
 	// 
 	CGameObject* DoorToGreen2Scene = m_Scene->FindGameObjectByTypeID(typeid(CEffectChangeToGreen2).hash_code());

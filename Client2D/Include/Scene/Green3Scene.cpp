@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Scene/SceneManager.h"
+#include "Scene/CameraManager.h"
 #include "../Object/Monster.h"
 #include "../Object/TileMap.h"
 #include "../Object/TileMapEmpty.h"
@@ -30,6 +31,10 @@ void CGreen3Scene::Start()
 	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
 
 	SetPlayerObject(Player2D);
+
+	Player2D->SetWorldPos(100.f, 500.f, 0.f);
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
 
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 

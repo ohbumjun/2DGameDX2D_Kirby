@@ -234,6 +234,8 @@ private :
 	void Attack(float DeltaTime);
 	void SlideAttack(float DeltaTime);
 private :
+	void PlayerAttackCollisionCallback(const CollisionResult& Result);
+private :
 	void MovePointDown(float DeltaTime);
 public :
 	void ResetPlayerCallback()

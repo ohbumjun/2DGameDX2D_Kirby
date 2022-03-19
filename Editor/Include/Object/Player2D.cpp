@@ -61,7 +61,7 @@ bool CPlayer2D::Init()
 
 	// Pivot 값이 없다면, 원래의 pos 인 왼쪽 하단 pos 를 중심으로
 	// Center 가 형성되게 될 것이다. 
-	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
+	m_KirbyState->SetRelativeScale(80.f, 80.f, 1.f);
 	m_KirbyState->SetRelativePos(100.f, 50.f, 0.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 

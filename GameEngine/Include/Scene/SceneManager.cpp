@@ -63,6 +63,8 @@ bool CSceneManager::ChangeScene()
 		{
 			m_StaticPlayer = m_Scene->GetPlayerObject();
 
+			m_NextScene->GetCameraManager()->SetCurrentCamera(m_Scene->GetCameraManager()->GetCurrentCamera());
+
 			// 어느정도 Delay를 준다.
 			Sleep(1000);
 
@@ -76,14 +78,6 @@ bool CSceneManager::ChangeScene()
 				m_Scene->SetPlayerObject(m_StaticPlayer);
 
 				m_StaticPlayer->SetScene(m_Scene);
-
-				CCameraComponent* Camera = m_StaticPlayer->FindComponentByType<CCameraComponent>();
-
-				Camera->SetName("DefaultCamera");
-
-				Camera->SetWorldPos(m_StaticPlayer->GetWorldPos());
-
-				m_Scene->GetCameraManager()->SetCurrentCamera(Camera);
 
 				// 현재 Scene 에서 Player2D 에 해당하는 GameObject를 지운다.
 				// m_Scene->DeletePlayerFromScene();

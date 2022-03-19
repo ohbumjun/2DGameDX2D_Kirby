@@ -34,10 +34,8 @@ void CGreen2Scene::Start()
 
 	SetPlayerObject(Player2D);
 
-	// m_Scene->GetCameraManager()->SetCurrentCamera(Player2D->FindComponentByType<CCameraComponent>());
-
-	// m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
-
+	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
+	
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
@@ -48,7 +46,7 @@ void CGreen2Scene::Start()
 		{
 			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
 
-			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
+			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, 0.f);
 		}
 	}
 }

@@ -36,6 +36,10 @@ void CSceneMode::SetSceneChangeObject(CGameObject* Obj)
 
 void CSceneMode::Start()
 {
+	if (m_Scene->GetPlayerObject())
+	{
+		m_Scene->GetPlayerObject()->Enable(true);
+	}
 }
 
 bool CSceneMode::Init()

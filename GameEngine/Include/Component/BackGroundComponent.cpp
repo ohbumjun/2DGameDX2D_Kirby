@@ -25,7 +25,7 @@ CBackGroundComponent::CBackGroundComponent()
 	
 }
 
-CBackGroundComponent::CBackGroundComponent(const CBackGroundComponent& Component)
+CBackGroundComponent::CBackGroundComponent(const CBackGroundComponent& Component) : CSceneComponent(Component)
 {
 	m_BackGroundMesh = Component.m_BackGroundMesh;
 

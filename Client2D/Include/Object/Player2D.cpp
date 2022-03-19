@@ -31,7 +31,7 @@ CPlayer2D::CPlayer2D() :
 	m_LeverMoveAccel(1.6f),
 	m_LeverVelocity(0.f),
 	m_LeverMaxMoveVelocity(270.f),
-	m_SlideAttackTimeMax(0.4f),
+	m_SlideAttackTimeMax(0.2f),
 	m_DashMoveAccel(2.0f),
 	m_DashVelocity(0.f),
 	m_DashMaxMoveVelocity(170.f),
@@ -139,6 +139,7 @@ void CPlayer2D::Start()
 	m_Body->SetExtend(GetWorldScale().x * 0.4f, GetWorldScale().y * 0.4f);
 
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttackCallback);
+	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PlayerAttackCollisionCallback);
 
 	// todo : 이게 왜 안되는 거지 ? 원래 가리키고 있는 녀석은 NormalKirbyState 가 맞을 텐데 ?
 	// 한편, 기존 Kirby State 정보는 유지하기 위해서, Static Player가 없을 때만
@@ -1116,7 +1117,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	// 레버를 누르고 있지 않다면, 레버 속도를 감속 시킨다.
 	if (!m_IsLeverMoving)
 	{
-		m_LeverVelocity -= m_LeverMoveAccel ;
+		m_LeverVelocity -= m_LeverMoveAccel * 0.5f ;
 
 		if (m_LeverVelocity <= 0.f)
 			m_LeverVelocity = 0.f;
@@ -1125,7 +1126,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	// 대쉬를 진행하고 있지 않다면, 대쉬 속도도 감속 시킨다.
 	if (!m_IsDashMoving)
 	{
-		m_DashVelocity -= m_DashMoveAccel ;
+		m_DashVelocity -= m_DashMoveAccel * 0.5f;
 
 		if (m_DashVelocity <= 0.f)
 			m_DashVelocity = 0.f;
@@ -1276,12 +1277,12 @@ void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 		// 왼쪽 
 		if (m_ObjectMoveDir.x < 0.f)
 		{
-			AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 800.f);
 		}
 		// 오른쪽
 		else
 		{
-			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 800.f);
 		}
 
 		m_Body->SetCollisionProfile("PlayerAttack");
@@ -1291,11 +1292,11 @@ void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 	{
 		m_SlideAttackTime = -1.f;
 
-		ChangePlayerIdleAnimation();
-
 		m_Body->SetCollisionProfile("Player");
 
 		m_SlideAttack = false;
+
+		m_IsAttacking = false;
 	}
 }
 
@@ -1720,7 +1721,6 @@ void CPlayer2D::ChangePlayerNormalIdleAnimation()
 
 void CPlayer2D::ChangePlayerWalkAnimation()
 {
-
 	if (m_IsAttacking)
 		return;
 
@@ -2224,11 +2224,51 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 	if (m_IsEatingMonster)
 		return;
 
+	m_IsAttacking = true;
+
 	m_SlideAttack = true;
 
 	m_SlideAttackTime = m_SlideAttackTimeMax;
 
 	ChangePlayerSlideAttackAnimation();
+}
+
+void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
+{
+	if (m_IsAttacking)
+	{
+		CGameObject* Owner = Result.Dest->GetGameObject();
+
+		CWidgetComponent* ObjectWindow = nullptr;
+
+		if (Owner)
+		{
+			CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+
+			if (!DestMonster)
+				return;
+
+			// HP Bar 달게 하기
+			DestMonster->SetBeingHit(true);
+
+			DestMonster->SetAIState(Monster_AI::Hit);
+
+			if (m_ObjectMoveDir.x < 0)
+				DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
+			else
+				DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+
+			// DestMonster->Damage(2.f);
+
+			// Create Damage Font
+			ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
+			if (ObjectWindow)
+			{
+				CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+			}
+		}
+	}
 }
 
 void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)

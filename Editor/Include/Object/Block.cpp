@@ -32,7 +32,7 @@ bool CBlock::Init()
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"GreenItem", TEXT("Item_Block.anim"));
+		"BlockItem", TEXT("Item_Block.anim"));
 
 	// Clone 해서 세팅해줘야 한다.
 	m_Sprite->SetAnimationInstance(AnimationInstance);

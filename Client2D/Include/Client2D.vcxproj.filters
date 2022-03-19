@@ -273,6 +273,12 @@
     <ClCompile Include="Object\Block.cpp">
       <Filter>02. Object\10. Item</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Green4Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Green5Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -469,6 +475,12 @@
     </ClInclude>
     <ClInclude Include="Object\Block.h">
       <Filter>02. Object\10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Green4Scene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Green5Scene.h">
+      <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
