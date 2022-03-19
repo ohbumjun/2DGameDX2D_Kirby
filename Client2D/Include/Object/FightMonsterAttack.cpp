@@ -10,7 +10,6 @@
 #include "UI/UIDamageFont.h"
 
 CFightMonsterAttack::CFightMonsterAttack() :
-	m_AttackDir(1.f),
 	m_AttackDistLimit(0.f),
 	m_AttackDistLimitMax(1000.f)
 {}
@@ -21,18 +20,16 @@ CFightMonsterAttack::CFightMonsterAttack(const CFightMonsterAttack& Attack) : CA
 CFightMonsterAttack::~CFightMonsterAttack()
 {}
 
-void CFightMonsterAttack::SetRightAttackDir()
+void CFightMonsterAttack::SetRightAttackDir(float YDir)
 {
-	m_AttackDir = 1.f;
-
-	m_Sprite->GetAnimationInstance()->ChangeAnimation("EffectRight");
+	CAttackEffect::SetRightAttackDir(YDir);
+	m_MainSprite->GetAnimationInstance()->ChangeAnimation("EffectRight");
 }
 
-void CFightMonsterAttack::SetLeftAttackDir()
+void CFightMonsterAttack::SetLeftAttackDir(float YDir)
 {
-	m_AttackDir = -1.f;
-
-	m_Sprite->GetAnimationInstance()->ChangeAnimation("EffectLeft");
+	CAttackEffect::SetLeftAttackDir(YDir);
+	m_MainSprite->GetAnimationInstance()->ChangeAnimation("EffectLeft");
 }
 
 void CFightMonsterAttack::Start()
@@ -51,14 +48,14 @@ bool CFightMonsterAttack::Init()
 	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
 		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
 
-	m_Sprite = CreateComponent<CSpriteComponent>("MainSprite");
-	m_Sprite->SetAnimationInstance(AnimationInstance);
-	m_Sprite->SetWorldScale(200.f, 200.f, 1.f);
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
+	m_MainSprite->SetAnimationInstance(AnimationInstance);
+	m_MainSprite->SetWorldScale(200.f, 200.f, 1.f);
+	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
-	m_Sprite->AddChild(ColliderCirle);
+	m_MainSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
-	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.3f);
+	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.3f);
 	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CFightMonsterAttack::CollisionCallback);
 
 	return true;
@@ -68,9 +65,9 @@ void CFightMonsterAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = std::abs(m_AttackDir) * DeltaTime * 500.f;
+	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
 
-	AddWorldPos(Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * 500.f);
+	AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * 500.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{
@@ -102,10 +99,10 @@ void CFightMonsterAttack::CollisionCallback(const CollisionResult& Result)
 		// HP Bar 달게 하기
 		Player->SetIsBeingHit();
 
-		if (m_AttackDir > 0)
-			Player->SetBeingHitDirection(m_AttackDir);
+		if (m_AttackDir.x > 0)
+			Player->SetBeingHitDirection(m_AttackDir.x);
 		else
-			Player->SetBeingHitDirection(m_AttackDir);
+			Player->SetBeingHitDirection(m_AttackDir.x);
 
 		// DestMonster->Damage(2.f);
 

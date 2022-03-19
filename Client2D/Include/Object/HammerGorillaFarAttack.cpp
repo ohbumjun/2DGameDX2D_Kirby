@@ -10,7 +10,6 @@
 #include "UI/UIDamageFont.h"
 
 CHammerGorillaFarAttack::CHammerGorillaFarAttack() :
-	m_AttackDir(1.f, 0.f),
 	m_AttackDistLimit(0.f),
 	m_AttackDistLimitMax(550.f),
 	m_CreateMultipleAfter(false)
@@ -24,16 +23,14 @@ CHammerGorillaFarAttack::~CHammerGorillaFarAttack()
 
 void CHammerGorillaFarAttack::SetRightAttackDir(float YDir)
 {
-	m_AttackDir.x = 1.f;
-	m_AttackDir.y = YDir;
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+	CAttackEffect::SetRightAttackDir(YDir);
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
 void CHammerGorillaFarAttack::SetLeftAttackDir(float YDir)
 {
-	m_AttackDir.x = -1.f;
-	m_AttackDir.y = YDir;
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
+	CAttackEffect::SetLeftAttackDir(YDir);
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
 void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
@@ -115,16 +112,16 @@ bool CHammerGorillaFarAttack::Init()
 	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
 		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
 
-	m_Sprite = CreateComponent<CSpriteComponent>("MainSprite");
-	m_Sprite->SetAnimationInstance(AnimationInstance);
-	m_Sprite->SetWorldScale(80.f, 80.f, 1.f);
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
-	m_Sprite->GetMaterial()->SetRenderState("AlphaBlend");
+	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
+	m_MainSprite->SetAnimationInstance(AnimationInstance);
+	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
+	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_MainSprite->GetMaterial()->SetRenderState("AlphaBlend");
 
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
-	m_Sprite->AddChild(ColliderCirle);
+	m_MainSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
-	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CHammerGorillaFarAttack::CollisionCallback);
 
 	return true;

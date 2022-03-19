@@ -1,33 +1,24 @@
 #pragma once
 #include "AttackEffect.h"
 
-class CHammerGorillaFarAttack :
+class CHammerGorillaCloseAttack :
     public CAttackEffect
 {
     friend class CMiddleBossHammer;
 public:
-    CHammerGorillaFarAttack();
-    CHammerGorillaFarAttack(const CHammerGorillaFarAttack& Attack);
-    virtual ~CHammerGorillaFarAttack() override;
+    CHammerGorillaCloseAttack();
+    CHammerGorillaCloseAttack(const CHammerGorillaCloseAttack& Attack);
+    virtual ~CHammerGorillaCloseAttack() override;
 private:
     class CMiddleBossHammer* m_MiddleBossHammer;
-private:
-    float m_AttackDistLimit;
-    float m_AttackDistLimitMax;
-    bool m_CreateMultipleAfter;
 protected:
     void SetFireOwner(class CMiddleBossHammer* Owner)
     {
         m_MiddleBossHammer = Owner;
     }
-    void SetCreateMultileAfter(bool Enable)
-    {
-        m_CreateMultipleAfter = Enable;
-    }
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
-    void MakeMultipleAttackEffect();
 public:
     virtual void Start() override;
     virtual bool Init() override;

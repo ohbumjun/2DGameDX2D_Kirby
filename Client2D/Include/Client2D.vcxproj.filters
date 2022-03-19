@@ -297,6 +297,9 @@
     <ClCompile Include="Object\HammerGorillaFarAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\HammerGorillaCloseAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -513,6 +516,9 @@
       <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
     <ClInclude Include="Object\HammerGorillaFarAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HammerGorillaCloseAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,7 +11,6 @@
 #include "UI/UIDamageFont.h"
 
 CKirbyAttackEffect::CKirbyAttackEffect() :
-	m_AttackDir(1.f, 0.f),
 	m_AttackDistLimit(0.f),
 	m_AttackDistLimitMax(500.f),
 	m_AttackObjectSpeed(500.f)
@@ -25,16 +24,14 @@ CKirbyAttackEffect::~CKirbyAttackEffect()
 
 void CKirbyAttackEffect::SetRightAttackDir(float YDir)
 {
-	m_AttackDir.x = 1.f;
-	m_AttackDir.y = YDir;
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+	CAttackEffect::SetRightAttackDir(YDir);
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
 void CKirbyAttackEffect::SetLeftAttackDir(float YDir)
 {
-	m_AttackDir.x = -1.f;
-	m_AttackDir.y = YDir;
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
+	CAttackEffect::SetLeftAttackDir(YDir);
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
 void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
@@ -53,12 +50,12 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_AttackDistLimitMax = 1000.f;
 		m_AttackObjectSpeed = 500.f;
 
-		m_Sprite->SetWorldScale(170.f, 170.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+		m_MainSprite->SetWorldScale(170.f, 170.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyNormalFireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
-		m_Sprite->SetAnimationInstance(AnimationInstance);
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
 		}
 		break;
 	case KirbyAttackEffect_Type::Fight:
@@ -66,18 +63,18 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_AttackDistLimitMax = 500.f;
 		m_AttackObjectSpeed = 1200.f;
 
-		m_Sprite->SetWorldScale(140.f, 140.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+		m_MainSprite->SetWorldScale(140.f, 140.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyNormalFightAttackEffect", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
-		m_Sprite->SetAnimationInstance(AnimationInstance);
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
 	}
 		break;
 	case KirbyAttackEffect_Type::Beam:
 	{
-		m_Sprite->SetWorldScale(40.f, 40.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+		m_MainSprite->SetWorldScale(40.f, 40.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 700.f;
 		m_AttackObjectSpeed = 400.f;
@@ -85,15 +82,15 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyNormalBeamAttackEffect", TEXT("Kirby_Beam_Effect_NormalAttack.anim"));
 
-		m_Sprite->SetAnimationInstance(AnimationInstance);
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
 
 		m_SideCollisionApplied = false;
 	}
 		break;
 	case KirbyAttackEffect_Type::BeamSpark:
 	{
-		m_Sprite->SetWorldScale(30.f, 30.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+		m_MainSprite->SetWorldScale(30.f, 30.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 400.f;
 		m_AttackObjectSpeed = 200.f;
@@ -101,17 +98,17 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyBeamFallAttackEffect", TEXT("Kirby_Beam_Effect_UpAttackEffect.anim"));
 
-		m_Sprite->SetAnimationInstance(AnimationInstance);
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
 
-		m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayScale(3.f);
+		m_MainSprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayScale(3.f);
 
 		m_SideCollisionApplied = false;
 	}
 	break;
 	case KirbyAttackEffect_Type::FightFall:
 	{
-		m_Sprite->SetWorldScale(90.f, 90.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+		m_MainSprite->SetWorldScale(90.f, 90.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 1000.f;
 		m_AttackObjectSpeed = 600.f;
@@ -119,15 +116,15 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyFightFallAttackEffect", TEXT("Kirby_Fight_Effect_FallDownAttack.anim"));
 
-		m_Sprite->SetAnimationInstance(AnimationInstance);
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
 
 		m_SideCollisionApplied = false;
 	}
 	break;
 	case KirbyAttackEffect_Type::FireFall:
 	{
-		m_Sprite->SetWorldScale(50.f, 50.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.6f);
+		m_MainSprite->SetWorldScale(50.f, 50.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
 
 		m_AttackDistLimitMax = 1000.f;
 		m_AttackObjectSpeed = 800.f;
@@ -135,7 +132,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyFireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
 
-		m_Sprite->SetAnimationInstance(AnimationInstance);
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
 	}
 	break;
 	}
@@ -176,16 +173,16 @@ bool CKirbyAttackEffect::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"FireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
 
-	m_Sprite = CreateComponent<CSpriteComponent>("MainSprite");
-	m_Sprite->SetAnimationInstance(AnimationInstance);
-	m_Sprite->SetWorldScale(170.f, 170.f, 1.f);
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
-	m_Sprite->SetRenderState("AlphaBlend");
+	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
+	m_MainSprite->SetAnimationInstance(AnimationInstance);
+	m_MainSprite->SetWorldScale(170.f, 170.f, 1.f);
+	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_MainSprite->SetRenderState("AlphaBlend");
 
 	m_Collider = CreateComponent<CColliderCircle>("FirstCollider");
-	m_Sprite->AddChild(m_Collider);
+	m_MainSprite->AddChild(m_Collider);
 	m_Collider->SetCollisionProfile("PlayerAttack");
-	m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
+	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CKirbyAttackEffect::CollisionCallback);
 
 	return true;

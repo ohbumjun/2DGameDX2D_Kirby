@@ -12,7 +12,6 @@ public :
 private :
     class CBeamMonster* m_BeamOwner;
 private:
-    CSharedPtr<class CSpriteComponent> m_FirstSprite;
     CSharedPtr<class CSpriteComponent> m_SecondSprite;
     CSharedPtr<class CSpriteComponent> m_ThirdSprite;
     CSharedPtr<class CSpriteComponent> m_FourthSprite;
@@ -26,8 +25,8 @@ protected:
         m_BeamOwner = Owner;
     }
 protected:
-    void SetRightAttackDir();
-    void SetLeftAttackDir();
+    virtual void SetRightAttackDir(float YDir = 0.f) override;
+    virtual void SetLeftAttackDir(float YDir = 0.f) override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

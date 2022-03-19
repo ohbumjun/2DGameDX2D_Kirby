@@ -22,21 +22,19 @@ CBeamMonsterAttack::CBeamMonsterAttack(const CBeamMonsterAttack& Attack) : CAtta
 CBeamMonsterAttack::~CBeamMonsterAttack()
 {}
 
-void CBeamMonsterAttack::SetRightAttackDir()
+void CBeamMonsterAttack::SetRightAttackDir(float YDir)
 {
-	m_AttackDir = 1.f;
-
-	m_FirstSprite->SetWorldRotationZ(70.f);
+	CAttackEffect::SetRightAttackDir(YDir);
+	m_MainSprite->SetWorldRotationZ(70.f);
 	m_SecondSprite->SetRelativePos(m_AttackImageSize, 0.f, 0.f);
 	m_ThirdSprite->SetRelativePos(m_AttackImageSize * 2.f, 0.f, 0.f);
 	m_FourthSprite->SetRelativePos(m_AttackImageSize * 3.f, 0.f, 0.f);
 }
 
-void CBeamMonsterAttack::SetLeftAttackDir()
+void CBeamMonsterAttack::SetLeftAttackDir(float YDir)
 {
-	m_AttackDir = -1.f;
-
-	m_FirstSprite->SetWorldRotationZ(-70.f);
+	CAttackEffect::SetLeftAttackDir(YDir);
+	m_MainSprite->SetWorldRotationZ(-70.f);
 	m_SecondSprite->SetRelativePos(m_AttackImageSize * -1.f, 0.f, 0.f);
 	m_ThirdSprite->SetRelativePos(m_AttackImageSize * 2.f * -1.f, 0.f, 0.f);
 	m_FourthSprite->SetRelativePos(m_AttackImageSize * 3.f * -1.f, 0.f, 0.f);
@@ -60,14 +58,14 @@ bool CBeamMonsterAttack::Init()
 	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
 	/	AnimationInstance->GetCurrentAnimation()->GetFrameCount();
 
-	m_FirstSprite = CreateComponent<CSpriteComponent>("MainSprite");
-	m_FirstSprite->SetAnimationInstance(AnimationInstance);
-	m_FirstSprite->SetWorldScale(m_AttackImageSize, m_AttackImageSize, 1.f);
-	m_FirstSprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
+	m_MainSprite->SetAnimationInstance(AnimationInstance);
+	m_MainSprite->SetWorldScale(m_AttackImageSize, m_AttackImageSize, 1.f);
+	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
-	m_FirstSprite->AddChild(ColliderCirle);
+	m_MainSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
-	ColliderCirle->SetInfo(Vector2(0.f ,0.f), m_FirstSprite->GetWorldScale().x * 0.3f);
+	ColliderCirle->SetInfo(Vector2(0.f ,0.f), m_MainSprite->GetWorldScale().x * 0.3f);
 	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CBeamMonsterAttack::CollisionCallback);
 
 	m_SecondSprite = CreateComponent<CSpriteComponent>("SecondSprite");
@@ -110,11 +108,11 @@ bool CBeamMonsterAttack::Init()
 	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CBeamMonsterAttack::CollisionCallback);
 
 
-	m_FirstSprite->AddChild(m_SecondSprite);
-	m_FirstSprite->AddChild(m_ThirdSprite);
-	m_FirstSprite->AddChild(m_FourthSprite);
+	m_MainSprite->AddChild(m_SecondSprite);
+	m_MainSprite->AddChild(m_ThirdSprite);
+	m_MainSprite->AddChild(m_FourthSprite);
 
-	m_FirstSprite->SetWorldRotationZ(70.f);
+	m_MainSprite->SetWorldRotationZ(70.f);
 
 	m_RotateLimit = 70.f * 2;
 
@@ -128,14 +126,14 @@ void CBeamMonsterAttack::Update(float DeltaTime)
 	// 오른쪽 공격
 	if (m_AttackDir > 0.f)
 	{
-		m_FirstSprite->AddRelativeRotationZ(m_RotationSpeed * DeltaTime * -1.f);
+		m_MainSprite->AddRelativeRotationZ(m_RotationSpeed * DeltaTime * -1.f);
 
 		m_RotateLimit += (m_RotationSpeed * DeltaTime * -1.f);
 	}
 	// 왼쪽 공격
 	else
 	{
-		m_FirstSprite->AddRelativeRotationZ(m_RotationSpeed * DeltaTime);
+		m_MainSprite->AddRelativeRotationZ(m_RotationSpeed * DeltaTime);
 
 		m_RotateLimit -= m_RotationSpeed * DeltaTime;
 	}

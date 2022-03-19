@@ -1,5 +1,6 @@
 #include "AttackEffect.h"
 #include "Component/TileEmptyComponent.h"
+#include "Component/SpriteComponent.h"
 #include "Scene/Scene.h"
 
 CAttackEffect::CAttackEffect()  :
@@ -7,7 +8,8 @@ CAttackEffect::CAttackEffect()  :
 	m_BottomCollisionApplied(false),
 	m_Jump(false),
 	m_JumpVelocity(20.f),
-	m_PhysicsSimulate(false)
+	m_PhysicsSimulate(false),
+	m_AttackDir(1.f, 0.f)
 {
 }
 
@@ -20,6 +22,18 @@ CAttackEffect::~CAttackEffect()
 void CAttackEffect::BottomCollisionSpecificAction()
 {
 	Destroy();
+}
+
+void CAttackEffect::SetRightAttackDir(float YDir)
+{
+	m_AttackDir.x = 1.f;
+	m_AttackDir.y = YDir;
+}
+
+void CAttackEffect::SetLeftAttackDir(float YDir)
+{
+	m_AttackDir.x = -1.f;
+	m_AttackDir.y = YDir;
 }
 
 bool CAttackEffect::CheckSideCollision()

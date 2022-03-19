@@ -12,8 +12,6 @@ public:
 private:
     class CFireMonster* m_FireMonsterOwner;
 private:
-    CSharedPtr<class CSpriteComponent> m_Sprite;
-    Vector2 m_AttackDir;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
 protected:
@@ -22,8 +20,8 @@ protected:
         m_FireMonsterOwner = Owner;
     }
 protected:
-    void SetRightAttackDir(float YDir);
-    void SetLeftAttackDir(float YDir);
+    virtual void SetRightAttackDir(float YDir = 0.f) override;
+    virtual void SetLeftAttackDir(float YDir = 0.f) override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

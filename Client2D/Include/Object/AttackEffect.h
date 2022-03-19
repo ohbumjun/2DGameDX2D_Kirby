@@ -16,6 +16,8 @@ protected :
 	bool m_PhysicsSimulate;
 	float m_FallTime;
 	float m_FallStartY;
+	Vector2 m_AttackDir;
+	CSharedPtr<class CSpriteComponent> m_MainSprite;
 public :
 	void SetJumpVelocity(float Velocity)
 {
@@ -37,6 +39,8 @@ public :
 }
 protected :
 	virtual void BottomCollisionSpecificAction();
+	virtual void SetRightAttackDir(float YDir = 0.f);
+	virtual void SetLeftAttackDir(float YDir = 0.f);
 protected:
 	virtual bool CheckSideCollision();
 	virtual bool CheckBottomCollision();

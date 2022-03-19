@@ -190,6 +190,7 @@
     <ClCompile Include="Object\FireAttackBackEffect.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
     <ClCompile Include="Object\FireMonsterAttack.cpp" />
+    <ClCompile Include="Object\HammerGorillaCloseAttack.cpp" />
     <ClCompile Include="Object\HammerGorillaFarAttack.cpp" />
     <ClCompile Include="Object\HPGreenItem.cpp" />
     <ClCompile Include="Object\HPRedItem.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="Object\FireAttackBackEffect.h" />
     <ClInclude Include="Object\FireMonster.h" />
     <ClInclude Include="Object\FireMonsterAttack.h" />
+    <ClInclude Include="Object\HammerGorillaCloseAttack.h" />
     <ClInclude Include="Object\HammerGorillaFarAttack.h" />
     <ClInclude Include="Object\HPGreenItem.h" />
     <ClInclude Include="Object\HPRedItem.h" />

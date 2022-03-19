@@ -9,6 +9,8 @@ protected:
     CBossMonster();
     CBossMonster(const CBossMonster& Monster);
     virtual ~CBossMonster();
+protected:
+    virtual void AIDeathSpecific(float DeltaTime) {}
 public:
     virtual void Start() override;
     virtual bool Init() override;

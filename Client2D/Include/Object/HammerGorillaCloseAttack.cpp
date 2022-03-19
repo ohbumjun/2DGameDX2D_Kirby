@@ -1,103 +1,83 @@
-#include "FireMonsterAttack.h"
+#include "HammerGorillaCloseAttack.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
-#include "FireMonster.h"
+#include "MiddleBossHammer.h"
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
 
-CFireMonsterAttack::CFireMonsterAttack() :
-	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(1000.f)
+CHammerGorillaCloseAttack::CHammerGorillaCloseAttack() 
 {}
 
-CFireMonsterAttack::CFireMonsterAttack(const CFireMonsterAttack& Attack) : CAttackEffect(Attack)
+CHammerGorillaCloseAttack::CHammerGorillaCloseAttack(const CHammerGorillaCloseAttack& Attack) : CAttackEffect(Attack)
 {}
 
-CFireMonsterAttack::~CFireMonsterAttack()
+CHammerGorillaCloseAttack::~CHammerGorillaCloseAttack()
 {}
 
-void CFireMonsterAttack::SetRightAttackDir(float YDir)
+void CHammerGorillaCloseAttack::SetRightAttackDir(float YDir)
 {
 	CAttackEffect::SetRightAttackDir(YDir);
 	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
-void CFireMonsterAttack::SetLeftAttackDir(float YDir)
+void CHammerGorillaCloseAttack::SetLeftAttackDir(float YDir)
 {
 	CAttackEffect::SetLeftAttackDir(YDir);
 	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
-void CFireMonsterAttack::Start()
+
+void CHammerGorillaCloseAttack::Start()
 {
 	CGameObject::Start();
 }
 
-bool CFireMonsterAttack::Init()
+bool CHammerGorillaCloseAttack::Init()
 {
 	if (!CGameObject::Init())
 		return false;
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"FireAttackEffect", TEXT("Ability_Fire_AttackEffect.anim"));
-
-	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
-		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
+		"KirbyNormalFireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
 
 	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
 	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_MainSprite->GetMaterial()->SetRenderState("AlphaBlend");
 
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
 	m_MainSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
 	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CFireMonsterAttack::CollisionCallback);
+	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CHammerGorillaCloseAttack::CollisionCallback);
 
 	return true;
 }
 
-void CFireMonsterAttack::Update(float DeltaTime)
+void CHammerGorillaCloseAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
-
-	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 500.f);
-
-	if (m_AttackDistLimit < m_AttackDistLimitMax)
-	{
-		m_AttackDistLimit += MoveDist;
-	}
-
-	if (m_AttackDistLimit >= m_AttackDistLimitMax)
-	{
-		Destroy();
-
-		if (m_FireMonsterOwner)
-		{
-			m_FireMonsterOwner->SetAttackEnd();
-		}
-	}
+	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 350.f);
 }
 
-void CFireMonsterAttack::PostUpdate(float DeltaTime)
+void CHammerGorillaCloseAttack::PostUpdate(float DeltaTime)
 {
 	CAttackEffect::PostUpdate(DeltaTime);
 }
 
-void CFireMonsterAttack::CollisionCallback(const CollisionResult& Result)
+void CHammerGorillaCloseAttack::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
-	if (m_FireMonsterOwner)
+	if (m_MiddleBossHammer)
 	{
-		m_FireMonsterOwner->SetAttackEnd();
+		m_MiddleBossHammer->SetAttackEnd();
 	}
 
 	CColliderComponent* CollisionDest = Result.Dest;

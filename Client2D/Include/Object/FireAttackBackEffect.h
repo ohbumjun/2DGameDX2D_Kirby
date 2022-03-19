@@ -9,11 +9,11 @@ protected:
     CFireAttackBackEffect();
     CFireAttackBackEffect(const CFireAttackBackEffect& Dash);
     virtual ~CFireAttackBackEffect();
-private:
-    CSharedPtr<class CSpriteComponent> m_Sprite;
 public :
-    void SetRightAttackDir();
-    void SetLeftAttackDir();
+    // void SetRightAttackDir();
+    // void SetLeftAttackDir();
+    virtual void SetRightAttackDir(float YDir = 0.f) override;
+    virtual void SetLeftAttackDir(float YDir = 0.f) override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

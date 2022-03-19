@@ -12,8 +12,6 @@ public:
 private:
     class CFightMonster* m_FightOwner;
 private:
-    CSharedPtr<class CSpriteComponent> m_Sprite;
-    float m_AttackDir;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
 protected:
@@ -22,8 +20,8 @@ protected:
         m_FightOwner = Owner;
     }
 protected:
-    void SetRightAttackDir();
-    void SetLeftAttackDir();
+    virtual void SetRightAttackDir(float YDir = 0.f) override;
+    virtual void SetLeftAttackDir(float YDir = 0.f) override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

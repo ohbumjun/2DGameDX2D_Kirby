@@ -13,20 +13,18 @@ public:
     CKirbyAttackEffect(const CKirbyAttackEffect& Attack);
     virtual ~CKirbyAttackEffect() override;
 private:
-    CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_Collider;
-    Vector2 m_AttackDir;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
     float m_AttackObjectSpeed;
     KirbyAttackEffect_Type m_AttackType;
 protected:
-    void SetRightAttackDir(float YDir);
-    void SetLeftAttackDir(float YDir);
     void SetAttackType(KirbyAttackEffect_Type Type);
     void SetAttackDirX(float XDir);
 protected :
     virtual void BottomCollisionSpecificAction() override;
+    virtual void SetRightAttackDir(float YDir = 0.f) override;
+    virtual void SetLeftAttackDir(float YDir = 0.f) override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

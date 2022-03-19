@@ -24,21 +24,25 @@ CFireAttackBackEffect::CFireAttackBackEffect(const CFireAttackBackEffect& Beatle
 CFireAttackBackEffect::~CFireAttackBackEffect()
 {}
 
-void CFireAttackBackEffect::SetRightAttackDir()
+void CFireAttackBackEffect::SetRightAttackDir(float YDir)
 {
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+	CAttackEffect::SetRightAttackDir(YDir);
+
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 }
 
-void CFireAttackBackEffect::SetLeftAttackDir()
+void CFireAttackBackEffect::SetLeftAttackDir(float YDir)
 {
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
+	CAttackEffect::SetLeftAttackDir(YDir);
+
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
 void CFireAttackBackEffect::Start()
 {
 	CAttackEffect::Start();
 
-	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
+	m_MainSprite = (CSpriteComponent*)FindComponent("EffectSprite");
 }
 
 bool CFireAttackBackEffect::Init()
@@ -46,21 +50,21 @@ bool CFireAttackBackEffect::Init()
 	if (!CGameObject::Init())
 		return false;
 
-	m_Sprite = CreateComponent<CSpriteComponent>("EffectSprite");
+	m_MainSprite = CreateComponent<CSpriteComponent>("EffectSprite");
 
-	SetRootComponent(m_Sprite);
+	SetRootComponent(m_MainSprite);
 
-	m_Sprite->SetRenderState("AlphaBlend");
+	m_MainSprite->SetRenderState("AlphaBlend");
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"BackFireEffect", TEXT("Kirby_Fire_Effect_BackFireEffect.anim"));
 
 	// Clone 해서 세팅해줘야 한다.
-	m_Sprite->SetAnimationInstance(AnimationInstance);
+	m_MainSprite->SetAnimationInstance(AnimationInstance);
 
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
+	m_MainSprite->SetPivot(0.5f, 0.5f, 0.0f);
 
 	return true;
 }
