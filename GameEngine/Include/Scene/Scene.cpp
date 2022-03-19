@@ -72,6 +72,15 @@ void CScene::Start()
 		if (Camera)
 		{
 			m_CameraManager->SetCurrentCamera(Camera);
+
+			Resolution RS = CEngine::GetInst()->GetResolution();
+
+			Vector3 CameraPos = Vector3(
+				m_Mode->GetPlayerObject()->GetWorldPos().x - 0.5f * (float)RS.Width,
+				m_Mode->GetPlayerObject()->GetWorldPos().y - 0.5f * (float)RS.Height,
+				0.f);
+
+			Camera->SetWorldPos(CameraPos);
 		}
 	}
 }

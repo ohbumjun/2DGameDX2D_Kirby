@@ -114,10 +114,10 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 		m_FallVelocity = 0.5f * GRAVITY * m_FallTime * m_FallTime * m_JumpAccel;
 
 		// 최대 낙하 속도를 조절한다.
-		if (Velocity - m_FallVelocity < m_FallVelocityMax * -1.f)
-		{
-			m_FallVelocity = Velocity + m_FallVelocityMax;
-		}
+		// if (Velocity - m_FallVelocity < m_FallVelocityMax * -1.f)
+		//{
+			//m_FallVelocity = Velocity + m_FallVelocityMax;
+		//}
 
 		float CurrentYPos = m_FallStartY + (Velocity - m_FallVelocity);
 

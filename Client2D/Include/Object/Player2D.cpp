@@ -1629,6 +1629,42 @@ void CPlayer2D::JumpDownDistUpdate(float DeltaTime)
 
 		if (m_JumpDownDist > GetWorldScale().y * 0.6f)
 		{
+			bool IsBlockExist = false;
+
+			// Block이 아니라면
+			CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+			float Top = GetWorldPos().y + GetWorldScale().y * GetPivot().y;
+			float Bottom = GetWorldPos().y - GetWorldScale().y * GetPivot().y;
+			float Left = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+			float Right = GetWorldPos().x + GetWorldScale().x * GetPivot().x;
+
+			Vector3 LT = Vector3(Left, Top, 0.f);
+			Vector3 RB = Vector3(Right, Bottom, 0.f);
+
+			int StartX = TileMap->GetTileEmptyIndexX(LT);
+			int StartY = TileMap->GetTileEmptyIndexY(LT);
+
+			int EndX = TileMap->GetTileEmptyIndexX(RB);
+			int EndY = TileMap->GetTileEmptyIndexY(RB);
+
+			for (int row = StartY; row <= EndY; row++)
+			{
+				for (int col = StartX; col <= EndX; col++)
+				{
+					if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block)
+					{
+						IsBlockExist = true;
+						break;
+					}
+				}
+				if (IsBlockExist)
+					break;
+			}
+
+			if (IsBlockExist)
+				return;
+
 			m_JumpDown = false;
 		}
 	}

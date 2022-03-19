@@ -5,6 +5,7 @@
 // Scene
 #include "Scene/MainScene.h"
 #include "Scene/StartScene.h"
+#include "Scene/StartScene.h"
 #include "Scene/SceneManager.h"
 // UI
 #include "UI/MouseNormal.h"

@@ -40,7 +40,7 @@ bool CEffectChangeToGreen4::Init()
 	if (!CGameObject::Init())
 		return false;
 
-	m_ColliderBody = CreateComponent<CColliderBox2D>("EffectSceneChangeToGreen2Body");
+	m_ColliderBody = CreateComponent<CColliderBox2D>("EffectSceneChangeToGreen4Body");
 
 	SetRootComponent(m_ColliderBody);
 

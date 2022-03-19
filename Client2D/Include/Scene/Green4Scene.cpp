@@ -35,8 +35,6 @@ void CGreen4Scene::Start()
 
 	Player2D->SetWorldPos(400.f, 500.f, 0.f);
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
-
 	if (CSceneManager::GetStaticPlayerInfo())
 	{
 		if (m_Scene->GetSceneChangeObject())
