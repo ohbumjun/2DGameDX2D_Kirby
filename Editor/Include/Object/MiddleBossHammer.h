@@ -1,8 +1,8 @@
 #pragma once
-#include "Object\Monster.h"
+#include "Object\BossMonster.h"
 
 class CMiddleBossHammer :
-    public CMonster
+    public CBossMonster
 {
     friend class CScene;
 protected:

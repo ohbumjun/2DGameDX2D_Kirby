@@ -7,7 +7,8 @@ CMiddleBossHammer::CMiddleBossHammer()
 	SetTypeID<CMiddleBossHammer>();
 }
 
-CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster)
+CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) :
+	CBossMonster(Monster)
 {}
 
 CMiddleBossHammer::~CMiddleBossHammer()
@@ -15,15 +16,15 @@ CMiddleBossHammer::~CMiddleBossHammer()
 
 void CMiddleBossHammer::Start()
 {
-	CMonster::Start();
+	CBossMonster::Start();
 }
 
 bool CMiddleBossHammer::Init()
 {
-	if (!CMonster::Init())
+	if (!CBossMonster::Init())
 		return false;
 
-	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
+	LoadAnimationInstance("MiddleHammer", TEXT("MiddleBoss_Hammer.anim"));
 	SetCurrentAnimation("RightIdle");
 
 	return true;
@@ -31,12 +32,12 @@ bool CMiddleBossHammer::Init()
 
 void CMiddleBossHammer::Update(float DeltaTime)
 {
-	CMonster::Update(DeltaTime);
+	CBossMonster::Update(DeltaTime);
 }
 
 void CMiddleBossHammer::PostUpdate(float DeltaTime)
 {
-	CMonster::PostUpdate(DeltaTime);
+	CBossMonster::PostUpdate(DeltaTime);
 }
 
 CMiddleBossHammer* CMiddleBossHammer::Clone()
