@@ -17,7 +17,7 @@ CMonster::CMonster() :
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
 	m_IsBeingHit(false),
-	m_BeginPulledAccel(2.f),
+	m_BeginPulledAccel(3.f),
 	m_BeginPulledAccelSum(0.f),
 	m_AttackDistance(150.f),
 	m_DashDistance(500.f),
@@ -569,6 +569,28 @@ void CMonster::CreateDamageFont(const CollisionResult& Result)
 
 void CMonster::OnCollisionBegin(const CollisionResult& Result)
 {
+	// Player가 삼키고 있는 동안 Player 와 부딪히면, Player 에게 먹히는 상태로 세팅한다.
+	if (Result.Dest->GetGameObject() == m_Scene->GetPlayerObject())
+	{
+		// 당겨지지 않고 있는 상태라면 X
+		if (!m_IsBeingPulled)
+			return;
+
+		m_IsBeingPulled = false;
+
+		Enable(false);
+
+		// Destroy();
+
+		CPlayer2D* Player2D = dynamic_cast<CPlayer2D*>(Result.Dest->GetGameObject());
+
+		if (!Player2D)
+			return;
+
+		Player2D->SetIsEatingMonster(true);
+		Player2D->SetEatenMonster(this);
+	}
+
   	// --m_HP;
 	if (m_HP <= 0)
 	{
