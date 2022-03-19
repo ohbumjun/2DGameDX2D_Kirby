@@ -82,6 +82,13 @@ bool CMiddleBossHammer::Init()
 void CMiddleBossHammer::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
+
+	m_DeathTime += DeltaTime * 1.f;
+
+	if (m_DeathTime >= 30.f)
+	{
+		m_HP = 0.f;
+	}
 }
 
 void CMiddleBossHammer::PostUpdate(float DeltaTime)

@@ -10,8 +10,11 @@ protected:
     virtual ~CBossMonster();
 protected:
     bool m_StartBossStage;
+    Vector2 m_InitWorldResolution;
 protected:
     void MakeBossStartEffect();
+protected:
+    virtual void AIDeathSpecific(float DeltaTime) override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

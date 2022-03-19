@@ -37,11 +37,18 @@ void CBossMonster::MakeBossStartEffect()
 	// World ¸Ê Å©±â Á¦ÇÑ
 	Resolution RS = CEngine::GetInst()->GetResolution();
 
+	m_InitWorldResolution = m_Scene->GetWorldResolution();
+
 	float WorldRightEnd = GetWorldPos().x + (float)RS.Width * 0.5f;
 
 	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
 	m_StartBossStage = true;
+}
+
+void CBossMonster::AIDeathSpecific(float DeltaTime)
+{
+	m_Scene->SetWorldResolution(m_InitWorldResolution.x, m_InitWorldResolution.y);
 }
 
 void CBossMonster::Update(float DeltaTime)
