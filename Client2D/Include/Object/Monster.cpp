@@ -432,12 +432,16 @@ void CMonster::UpdateBeingHit(float DeltaTime)
 	{
 		AddWorldPos(m_ObjectMoveDir * DeltaTime * m_MonsterMoveVelocity * 2.f);
 
+		m_Sprite->SetOpacity(0.7f);
+
 		m_HitLimitTime -= DeltaTime;
 
 		if (m_HitLimitTime < 0)
 		{
 			m_HitLimitTime = m_HitLimitTimeMax;
 			m_IsBeingHit = false;
+
+			m_Sprite->SetOpacity(1.f);
 		}
 	}
 }

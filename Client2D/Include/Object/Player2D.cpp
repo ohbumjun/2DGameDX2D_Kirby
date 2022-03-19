@@ -1246,6 +1246,8 @@ void CPlayer2D::UpdateBeingHit(float DeltaTime)
 	{
 		m_BeingHitTime -= DeltaTime;
 
+		m_KirbyState->SetOpacity(0.7f);
+
 		AddWorldPos(Vector3(m_ObjectMoveDir.x, 0.f, 0.f) * DeltaTime * 450.f);
 
 		ChangePlayerHitAnimation();
@@ -1253,6 +1255,8 @@ void CPlayer2D::UpdateBeingHit(float DeltaTime)
 		if (m_BeingHitTime < 0.f)
 		{
 			m_IsBeingHit = false;
+
+			m_KirbyState->SetOpacity(1.f);
 		}
 	}
 }
