@@ -57,7 +57,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"FireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
+			"KirbyNormalFireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 		}
 		break;
@@ -70,7 +70,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_Sprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"FightAttackEffect", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
+			"KirbyNormalFightAttackEffect", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 	}
 		break;
@@ -83,7 +83,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_AttackObjectSpeed = 400.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"BeamAttackEffect", TEXT("Kirby_Beam_Effect_NormalAttack.anim"));
+			"KirbyNormalBeamAttackEffect", TEXT("Kirby_Beam_Effect_NormalAttack.anim"));
 
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 
@@ -99,7 +99,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_AttackObjectSpeed = 200.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"FightFallAttackEffect", TEXT("Kirby_Beam_Effect_UpAttackEffect.anim"));
+			"KirbyBeamFallAttackEffect", TEXT("Kirby_Beam_Effect_UpAttackEffect.anim"));
 
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 
@@ -117,7 +117,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_AttackObjectSpeed = 600.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"FightFallAttackEffect", TEXT("Kirby_Fight_Effect_FallDownAttack.anim"));
+			"KirbyFightFallAttackEffect", TEXT("Kirby_Fight_Effect_FallDownAttack.anim"));
 
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 
@@ -133,7 +133,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_AttackObjectSpeed = 800.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"FireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
+			"KirbyFireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
 
 		m_Sprite->SetAnimationInstance(AnimationInstance);
 	}

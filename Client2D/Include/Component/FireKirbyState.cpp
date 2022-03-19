@@ -239,7 +239,7 @@ void CFireKirbyState::NormalAttackCallback()
 	if (PlayerMoveDir.x < 0.f)
 	{
 		// 가운데
-		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(0.f);
@@ -247,7 +247,7 @@ void CFireKirbyState::NormalAttackCallback()
 	// 오른쪽으로 보고 있다면 
 	else
 	{
-		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(0.f);
