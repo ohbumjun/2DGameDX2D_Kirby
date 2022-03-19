@@ -28,9 +28,8 @@ void CTileEmpty::Update(float DeltaTime)
 	// m_Pos 는 상대적인 Position에 해당한다.
 	m_Center = m_Pos + (m_Size) * 0.5f;
 
-	// Vector3 Pos = m_Center + m_Owner->GetWorldPos();
-	// Vector3 Pos = m_Pos + m_Owner->GetWorldPos();
 	Vector3 Pos = m_Center + m_Owner->GetWorldPos();
+	// Vector3 Pos = m_Pos + m_Owner->GetWorldPos();
 
 	Vector3 OwnerPos = m_Owner->GetWorldPos();
 

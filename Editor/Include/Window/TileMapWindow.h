@@ -13,16 +13,16 @@ private: // todo : World Info
 	class CIMGUIText* m_WorldSizeY;
 private: // todo : Tile Info
 	// class CIMGUIComboBox* m_TileShapeCombo;
-	class CIMGUITextInput* m_TileCountX;
-	class CIMGUITextInput* m_TileCountY;
-	class CIMGUITextInput* m_TileSizeX;
-	class CIMGUITextInput* m_TileSizeY;
+	class CIMGUITextInput* m_TileCountCol;
+	class CIMGUITextInput* m_TileCountRow;
+	class CIMGUITextInput* m_TileSizeCol;
+	class CIMGUITextInput* m_TileSizeRow;
 	class CIMGUIComboBox* m_TileType;
 private:
-	class CIMGUIText* m_CurrentTileCountX;
-	class CIMGUIText* m_CurrentTileCountY;
-	class CIMGUIText* m_CurrentTileSizeX;
-	class CIMGUIText* m_CurrentTileSizeY;
+	class CIMGUIText* m_CurrentTileCountCol;
+	class CIMGUIText* m_CurrentTileCountRow;
+	class CIMGUIText* m_CurrentTileSizeCol;
+	class CIMGUIText* m_CurrentTileSizeRow;
 private: // todo :  Tile Base Info
 	// Material을 기본적으로 세팅해두고 --> 불러온 Texture만 바꿔끼는 개념을 사용할 것이다.
 	class CIMGUIButton* m_TileImageLoadButton;

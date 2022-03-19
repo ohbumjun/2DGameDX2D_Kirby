@@ -30,19 +30,19 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 
 	char CurrentCountX[MAX_PATH] = {};
 	sprintf_s(CurrentCountX, "%.1d", m_TileMapEmpty->GetTileCountX());
-	m_CurrentTileCountX->SetText(CurrentCountX);
+	m_CurrentTileCountCol->SetText(CurrentCountX);
 
 	char CurrentCountY[MAX_PATH] = {};
 	sprintf_s(CurrentCountY, "%.1d", m_TileMapEmpty->GetTileCountY());
-	m_CurrentTileCountY->SetText(CurrentCountY);
+	m_CurrentTileCountRow->SetText(CurrentCountY);
 
 	char CurrentSizeX[MAX_PATH] = {};
 	sprintf_s(CurrentCountY, "%.1f", m_TileMapEmpty->GetTileEmptySize().x);
-	m_CurrentTileSizeX->SetText(CurrentCountY);
+	m_CurrentTileSizeCol->SetText(CurrentCountY);
 
 	char CurrentSizeY[MAX_PATH] = {};
 	sprintf_s(CurrentSizeY, "%.1f", m_TileMapEmpty->GetTileEmptySize().y);
-	m_CurrentTileSizeY->SetText(CurrentSizeY);
+	m_CurrentTileSizeRow->SetText(CurrentSizeY);
 
 	// 1) Tile Map Image 정보 세팅
 	if (!m_TileMapEmpty->GetTileImageMaterial()->EmptyTexture())
@@ -67,24 +67,24 @@ void CTileMapWindow::SetTileMap(CTileEmptyComponent* TileMap)
 	// -- Tile Count
 	char TileCountX[MAX_PATH] = {};
 	sprintf_s(TileCountX, "%.1d", m_TileMapEmpty->GetTileCountX());
-	m_CurrentTileCountX->SetText(TileCountX);
-	m_TileCountX->SetInt(m_TileMapEmpty->GetTileCountX());
+	m_CurrentTileCountCol->SetText(TileCountX);
+	m_TileCountCol->SetInt(m_TileMapEmpty->GetTileCountX());
 
 	char TileCountY[MAX_PATH] = {};
 	sprintf_s(TileCountY, "%.1d", m_TileMapEmpty->GetTileCountY());
-	m_CurrentTileCountY->SetText(TileCountY);
-	m_TileCountY->SetInt(m_TileMapEmpty->GetTileCountY());
+	m_CurrentTileCountRow->SetText(TileCountY);
+	m_TileCountRow->SetInt(m_TileMapEmpty->GetTileCountY());
 
 	// -- Tile  Size
 	char TileSizeX[MAX_PATH] = {};
 	sprintf_s(TileSizeX, "%.1f", m_TileMapEmpty->GetTileEmptySize().x);
-	m_CurrentTileSizeX->SetText(TileSizeX);
-	m_TileSizeX->SetFloat(m_TileMapEmpty->GetTileEmptySize().x);
+	m_CurrentTileSizeCol->SetText(TileSizeX);
+	m_TileSizeCol->SetFloat(m_TileMapEmpty->GetTileEmptySize().x);
 
 	char TileSizeY[MAX_PATH] = {};
 	sprintf_s(TileSizeY, "%.1f", m_TileMapEmpty->GetTileEmptySize().y);
-	m_CurrentTileSizeY->SetText(TileSizeY);
-	m_TileSizeY->SetFloat(m_TileMapEmpty->GetTileEmptySize().y);
+	m_CurrentTileSizeRow->SetText(TileSizeY);
+	m_TileSizeRow->SetFloat(m_TileMapEmpty->GetTileEmptySize().y);
 }
 
 void CTileMapWindow::SetTileMapComponentEditMode(bool Enable)
@@ -141,16 +141,16 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_CurrentTileCountX = AddWidget<CIMGUIText>("CurCountX");
-	m_CurrentTileCountX->SetSize(80.f, 40.f);
-	m_CurrentTileCountX->SetHideName(true);
+	m_CurrentTileCountCol = AddWidget<CIMGUIText>("CurCountX");
+	m_CurrentTileCountCol->SetSize(80.f, 40.f);
+	m_CurrentTileCountCol->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
 
-	m_CurrentTileCountY = AddWidget<CIMGUIText>("CurCountY");
-	m_CurrentTileCountY->SetSize(80.f, 40.f);
-	m_CurrentTileCountY->SetHideName(true);
+	m_CurrentTileCountRow = AddWidget<CIMGUIText>("CurCountY");
+	m_CurrentTileCountRow->SetSize(80.f, 40.f);
+	m_CurrentTileCountRow->SetHideName(true);
 
 	// ==============================
 
@@ -161,16 +161,16 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_CurrentTileSizeX = AddWidget<CIMGUIText>("CurSizeX");
-	m_CurrentTileSizeX->SetSize(80.f, 40.f);
-	m_CurrentTileSizeX->SetHideName(true);
+	m_CurrentTileSizeCol = AddWidget<CIMGUIText>("CurSizeX");
+	m_CurrentTileSizeCol->SetSize(80.f, 40.f);
+	m_CurrentTileSizeCol->SetHideName(true);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(230.f);
 
-	m_CurrentTileSizeY = AddWidget<CIMGUIText>("CurSizeY");
-	m_CurrentTileSizeY->SetSize(80.f, 40.f);
-	m_CurrentTileSizeY->SetHideName(true);
+	m_CurrentTileSizeRow = AddWidget<CIMGUIText>("CurSizeY");
+	m_CurrentTileSizeRow->SetSize(80.f, 40.f);
+	m_CurrentTileSizeRow->SetHideName(true);
 
 	Label = AddWidget<CIMGUILabel>("", 0.f, 0.f);
 	Label->SetColor(0, 0, 0);
@@ -184,11 +184,11 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileCountX = AddWidget<CIMGUITextInput>("TileCountX");
-	m_TileCountX->SetSize(80.f, 40.f);
-	m_TileCountX->SetInt(100);
-	m_TileCountX->SetHideName(true);
-	m_TileCountX->SetTextType(ImGuiText_Type::Int);
+	m_TileCountCol = AddWidget<CIMGUITextInput>("TileCountX");
+	m_TileCountCol->SetSize(80.f, 40.f);
+	m_TileCountCol->SetInt(100);
+	m_TileCountCol->SetHideName(true);
+	m_TileCountCol->SetTextType(ImGuiText_Type::Int);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
@@ -200,11 +200,11 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(320.f);
 
-	m_TileCountY = AddWidget<CIMGUITextInput>("TileCountY");
-	m_TileCountY->SetSize(80.f, 40.f);
-	m_TileCountY->SetInt(100);
-	m_TileCountY->SetHideName(true);
-	m_TileCountY->SetTextType(ImGuiText_Type::Int);
+	m_TileCountRow = AddWidget<CIMGUITextInput>("TileCountY");
+	m_TileCountRow->SetSize(80.f, 40.f);
+	m_TileCountRow->SetInt(100);
+	m_TileCountRow->SetHideName(true);
+	m_TileCountRow->SetTextType(ImGuiText_Type::Int);
 
 	// ==============================
 
@@ -215,11 +215,11 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(120.f);
 
-	m_TileSizeX = AddWidget<CIMGUITextInput>("SizeX");
-	m_TileSizeX->SetSize(80.f, 40.f);
-	m_TileSizeX->SetInt(100);
-	m_TileSizeX->SetHideName(true);
-	m_TileSizeX->SetTextType(ImGuiText_Type::Float);
+	m_TileSizeCol = AddWidget<CIMGUITextInput>("SizeX");
+	m_TileSizeCol->SetSize(80.f, 40.f);
+	m_TileSizeCol->SetInt(100);
+	m_TileSizeCol->SetHideName(true);
+	m_TileSizeCol->SetTextType(ImGuiText_Type::Float);
 
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(210.f);
@@ -231,11 +231,11 @@ bool CTileMapWindow::Init()
 	Line = AddWidget<CIMGUISameLine>("Line");
 	Line->SetOffsetX(320.f);
 
-	m_TileSizeY = AddWidget<CIMGUITextInput>("SizeY");
-	m_TileSizeY->SetSize(80.f, 40.f);
-	m_TileSizeY->SetInt(100);
-	m_TileSizeY->SetHideName(true);
-	m_TileSizeY->SetTextType(ImGuiText_Type::Float);
+	m_TileSizeRow = AddWidget<CIMGUITextInput>("SizeY");
+	m_TileSizeRow->SetSize(80.f, 40.f);
+	m_TileSizeRow->SetInt(100);
+	m_TileSizeRow->SetHideName(true);
+	m_TileSizeRow->SetTextType(ImGuiText_Type::Float);
 
 	// ==============================
 
@@ -410,27 +410,27 @@ bool CTileMapWindow::Init()
 	m_WorldSizeY->SetText(SizeY);
 
 	// Default Value 들 세팅
-	m_TileCountX->SetInt(100);
-	m_TileCountY->SetInt(100);
-	m_TileSizeX->SetFloat(160.f);
-	m_TileSizeY->SetFloat(80.f);
+	m_TileCountCol->SetInt(100);
+	m_TileCountRow->SetInt(100);
+	m_TileSizeCol->SetFloat(160.f);
+	m_TileSizeRow->SetFloat(80.f);
 
 	// Tile Count Info Display
 	char CurrentCountX[MAX_PATH] = {};
 	sprintf_s(CurrentCountX, "%.1d", 100);
-	m_CurrentTileCountX->SetText(CurrentCountX);
+	m_CurrentTileCountCol->SetText(CurrentCountX);
 
 	char CurrentCountY[MAX_PATH] = {};
 	sprintf_s(CurrentCountY, "%.1d", 100);
-	m_CurrentTileCountY->SetText(CurrentCountY);
+	m_CurrentTileCountRow->SetText(CurrentCountY);
 
 	char CurrentSizeX[MAX_PATH] = {};
 	sprintf_s(CurrentSizeX, "%.1f", 160.f);
-	m_CurrentTileSizeX->SetText(CurrentSizeX);
+	m_CurrentTileSizeCol->SetText(CurrentSizeX);
 
 	char CurrentSizeY[MAX_PATH] = {};
 	sprintf_s(CurrentSizeY, "%.1f", 80.f);
-	m_CurrentTileSizeY->SetText(CurrentSizeY);
+	m_CurrentTileSizeRow->SetText(CurrentSizeY);
 
 	// Tile Base Info Display
 	char TileBaseSizeX[MAX_PATH] = {};
@@ -488,41 +488,41 @@ void CTileMapWindow::CreateTile()
 		return;
 
 	// CountX, CountY
-	int CountX = m_TileCountX->GetValueInt();
-	int CountY = m_TileCountY->GetValueInt();
+	int CountCol = m_TileCountCol->GetValueInt();
+	int CountRow = m_TileCountRow->GetValueInt();
 
-	if (CountX <= 0 || CountY <= 0)
+	if (CountCol <= 0 || CountRow <= 0)
 		return;
 
 	// Size
-	float SizeX = m_TileSizeX->GetValueFloat();
-	float SizeY = m_TileSizeY->GetValueFloat();
+	float SizeRow = m_TileSizeCol->GetValueFloat();
+	float SizeCol = m_TileSizeRow->GetValueFloat();
 
-	if (SizeX <= 0 || SizeY <= 0)
+	if (SizeRow <= 0 || SizeCol <= 0)
 		return;
 
 	// 현재 정보 Update
 
 	char CurrentCountX[MAX_PATH] = {};
-	sprintf_s(CurrentCountX, "%.1d", CountX);
-	m_CurrentTileCountX->SetText(CurrentCountX);
+	sprintf_s(CurrentCountX, "%.1d", CountCol);
+	m_CurrentTileCountCol->SetText(CurrentCountX);
 
 	char CurrentCountY[MAX_PATH] = {};
-	sprintf_s(CurrentCountY, "%.1d", CountY);
-	m_CurrentTileCountY->SetText(CurrentCountY);
+	sprintf_s(CurrentCountY, "%.1d", CountRow);
+	m_CurrentTileCountRow->SetText(CurrentCountY);
 
 	char CurrentSizeX[MAX_PATH] = {};
-	sprintf_s(CurrentCountY, "%.1f", SizeX);
-	m_CurrentTileSizeX->SetText(CurrentCountY);
+	sprintf_s(CurrentCountY, "%.1f", CountCol);
+	m_CurrentTileSizeCol->SetText(CurrentCountY);
 
 	char CurrentSizeY[MAX_PATH] = {};
-	sprintf_s(CurrentSizeY, "%.1f", SizeY);
-	m_CurrentTileSizeY->SetText(CurrentSizeY);
+	sprintf_s(CurrentSizeY, "%.1f", CountRow);
+	m_CurrentTileSizeRow->SetText(CurrentSizeY);
 
 
 	// Tile 생성
 	// m_TileMapEmpty->CreateTile(Shape,CountX, CountY, Vector3(SizeX, SizeY, 1.f));
-	m_TileMapEmpty->CreateTileEmpty(CountX, CountY, Vector3(SizeX, SizeY, 1.f));
+	m_TileMapEmpty->CreateTileEmpty(CountCol, CountRow, Vector3(SizeCol, SizeRow, 1.f));
 
 }
 
@@ -548,18 +548,18 @@ void CTileMapWindow::SetTileMapSizeToTileBaseImage()
 
 	Vector2 BackGroundSize = Vector2(m_TileMapEmpty->GetWorldScale().x, m_TileMapEmpty->GetWorldScale().y);
 
-	float TileSizeX = BackGroundSize.x /(float) m_TileMapEmpty->GetTileCountX();
-	float TileSizeY = BackGroundSize.y /(float) m_TileMapEmpty->GetTileCountY();
+	float TileSizeX = BackGroundSize.x /(float) m_TileMapEmpty->GetTileCountX(); // 가로
+	float TileSizeY = BackGroundSize.y /(float) m_TileMapEmpty->GetTileCountY(); // 세로
 
 	// 현재 정보 Update
 
 	char CurrentSizeX[MAX_PATH] = {};
 	sprintf_s(CurrentSizeX, "%.1f", TileSizeX);
-	m_CurrentTileSizeX->SetText(CurrentSizeX);
+	m_CurrentTileSizeCol->SetText(CurrentSizeX);
 
 	char CurrentSizeY[MAX_PATH] = {};
 	sprintf_s(CurrentSizeY, "%.1f", TileSizeY);
-	m_CurrentTileSizeY->SetText(CurrentSizeY);
+	m_CurrentTileSizeRow->SetText(CurrentSizeY);
 
 	m_TileMapEmpty->SetTileDefaultSize(TileSizeX, TileSizeY);
 }

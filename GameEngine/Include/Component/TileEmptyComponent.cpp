@@ -217,7 +217,7 @@ void CTileEmptyComponent::SetTileImageTexture(int Index, int Register, int Shade
 	m_TileImageMaterial->SetTexture(Index, Register, ShaderType, Name, vecFileName, PathName);
 }
 
-void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3& Size)
+void CTileEmptyComponent::CreateTileEmpty(int CountCol, int CountRow, const Vector3& Size)
 {
 	// 기존 Tile 들을 지워준다.
 	for (int i = 0; i < m_Count; i++)
@@ -227,8 +227,8 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 
 	m_vecTileEmpty.clear();
 
-	m_CountX = CountX;
-	m_CountY = CountY;
+	m_CountX = CountCol;
+	m_CountY = CountRow;
 
 	m_TileEmptySize = Size;
 	m_Count = m_CountX * m_CountY;
@@ -265,6 +265,7 @@ void CTileEmptyComponent::CreateTileEmpty(int CountX, int CountY, const Vector3&
 		{
 			Pos.x = col * m_TileEmptySize.x;
 
+			// int Index = row * m_CountY + col;
 			int Index = row * m_CountX + col;
 
 			m_vecTileEmpty[Index]->SetPos(Pos);
@@ -423,7 +424,7 @@ int CTileEmptyComponent::GetTileEmptyRenderIndexY(const Vector3& Pos)
 	if (IndexY < 0)
 		return 0;
 
-	if (IndexY >= m_CountX)
+	if (IndexY >= m_CountY)
 		return m_CountX - 1;
 
 	return IndexY;
