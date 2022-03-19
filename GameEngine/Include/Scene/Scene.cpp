@@ -325,7 +325,7 @@ bool CScene::Load(const char* FileName, const std::string& PathName)
 
 void CScene::ClearGameObjects()
 {
-	// m_ObjList.clear();
+	m_ObjList.clear();
 }
 
 void CScene::DeleteGameObject(const std::string& Name)
