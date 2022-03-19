@@ -120,7 +120,6 @@ public :
 	void GatherObjectsNames(std::vector<std::string>& vecObjNames);
 	template<typename T>
 	void GatherSpecificTypeObjectsName(std::vector<std::string>& vecObjNames);
-
 public:
 	void Start();
 	void Update(float DeltaTime);

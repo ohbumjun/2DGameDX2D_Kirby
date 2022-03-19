@@ -144,7 +144,7 @@ void CMiddleBossHammer::FarAttack()
 
 	AttackEffect->SetFireOwner(this);
 
-	AttackEffect->SetJumpVelocity(70.f);
+	AttackEffect->SetJumpVelocity(80.f);
 
 	AttackEffect->SetPhysicsSimulate(true);
 

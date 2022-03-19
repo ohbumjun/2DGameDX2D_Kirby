@@ -8,6 +8,10 @@ protected:
     CBossMonster();
     CBossMonster(const CBossMonster& Monster);
     virtual ~CBossMonster();
+protected:
+    bool m_StartBossStage;
+protected:
+    void MakeBossStartEffect();
 public:
     virtual void Start() override;
     virtual bool Init() override;

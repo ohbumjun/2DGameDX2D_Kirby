@@ -1,6 +1,11 @@
 #include "BossMonster.h"
 
-CBossMonster::CBossMonster()
+#include <Scene/Scene.h>
+
+#include "Engine.h"
+
+CBossMonster::CBossMonster() :
+	m_StartBossStage(false)
 {
 	m_MonsterType = Monster_Type::Boss;
 }
@@ -24,9 +29,32 @@ bool CBossMonster::Init()
 	return true;
 }
 
+void CBossMonster::MakeBossStartEffect()
+{
+	if (m_StartBossStage)
+		return;
+
+	// World 甘 农扁 力茄
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	float WorldRightEnd = GetWorldPos().x + (float)RS.Width * 0.5f;
+
+	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
+
+	m_StartBossStage = true;
+}
+
 void CBossMonster::Update(float DeltaTime)
 {
 	CMonster::Update(DeltaTime);
+
+	// World 甘 农扁 力茄
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	if (m_Scene->GetPlayerObject()->GetWorldPos().x + (float)RS.Width * 0.5f < GetWorldPos().x)
+	{
+		MakeBossStartEffect();
+	}
 }
 
 void CBossMonster::PostUpdate(float DeltaTime)
