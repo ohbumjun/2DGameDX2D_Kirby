@@ -576,13 +576,18 @@ void CMonster::OnCollisionBegin(const CollisionResult& Result)
 		if (!m_IsBeingPulled)
 			return;
 
+		CPlayer2D* Player2D = dynamic_cast<CPlayer2D*>(Result.Dest->GetGameObject());
+
+		// Player의 몸통 충돌체가 아니라면
+		if (Result.Dest != Player2D->GetBodyCollider())
+			return;
+
 		m_IsBeingPulled = false;
 
 		Enable(false);
 
 		// Destroy();
 
-		CPlayer2D* Player2D = dynamic_cast<CPlayer2D*>(Result.Dest->GetGameObject());
 
 		if (!Player2D)
 			return;

@@ -2175,9 +2175,7 @@ void CPlayer2D::SpecialChange()
 
 	m_KirbyState->SetScene(m_Scene);
 
-	Vector3 OriginalPos = GetWorldPos();
-
-	m_KirbyState->SetWorldPos(OriginalPos);
+	m_KirbyState->SetWorldPos(GetWorldPos());
 
 	m_KirbyState->AddChild(m_Camera);
 	m_KirbyState->AddChild(m_SimpleHUDWidget);
@@ -2239,15 +2237,12 @@ void CPlayer2D::SpecialChangeEffect()
 {
 	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
 
-	SpecialChangeParticle->SetWorldPos(m_KirbyState->GetWorldPos().x, 
-		m_KirbyState->GetWorldPos().y + m_KirbyState->GetWorldScale().y, 
-		m_KirbyState->GetWorldPos().z);
+	// m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
 
-	m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
-
+	SpecialChangeParticle->SetWorldPos(GetWorldPos());
 	/*
 	CBubbleParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CBubbleParticle>("Special Change");
-	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z);
+	SpecialChangeParticle->SetRelativePos(0.f, m_KirbyState->GetWorldPos().y + m_KirbyState->GetWorldScale().y, 0.f);
 	*/
 }
 
