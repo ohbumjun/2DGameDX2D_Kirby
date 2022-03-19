@@ -176,6 +176,8 @@
     <ClCompile Include="Object\AttackEffect.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
+    <ClCompile Include="Object\EffectChangeToGreen4.cpp" />
+    <ClCompile Include="Object\EffectChangeToGreen5.cpp" />
     <ClCompile Include="Object\EffectDash.cpp" />
     <ClCompile Include="Object\EffectKirbyRide.cpp" />
     <ClCompile Include="Object\EffectRandomStar.cpp" />
@@ -244,6 +246,8 @@
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />
+    <ClInclude Include="Object\EffectChangeToGreen4.h" />
+    <ClInclude Include="Object\EffectChangeToGreen5.h" />
     <ClInclude Include="Object\EffectDash.h" />
     <ClInclude Include="Object\EffectKirbyRide.h" />
     <ClInclude Include="Object\EffectRandomStar.h" />

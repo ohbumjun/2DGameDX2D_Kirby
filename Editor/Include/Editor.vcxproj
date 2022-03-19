@@ -178,6 +178,8 @@
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
+    <ClCompile Include="Object\EffectChangeToGreen4.cpp" />
+    <ClCompile Include="Object\EffectChangeToGreen5.cpp" />
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
@@ -216,6 +218,8 @@
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />
+    <ClInclude Include="Object\EffectChangeToGreen4.h" />
+    <ClInclude Include="Object\EffectChangeToGreen5.h" />
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FireMonster.h" />

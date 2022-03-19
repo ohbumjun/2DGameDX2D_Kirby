@@ -78,19 +78,16 @@ void CMainScene::Start()
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
 
-	/*
 	if (CSceneManager::GetStaticPlayerInfo())
 	{
 		if (m_Scene->GetSceneChangeObject())
 		{
 			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
 
-			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
+			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, 0.f);
 		}
 	}
-	*/
-
-	// 
+	
 	CGameObject* DoorToGreen2Scene = m_Scene->FindGameObjectByTypeID(typeid(CEffectChangeToGreen2).hash_code());
 
 	if (DoorToGreen2Scene)
@@ -100,7 +97,7 @@ void CMainScene::Start()
 		MoonAboveParticle->SetWorldPos(
 			DoorToGreen2Scene->GetWorldPos().x, 
 			DoorToGreen2Scene->GetWorldPos().y + DoorToGreen2Scene->GetWorldScale().y * 2.f,
-			DoorToGreen2Scene->GetWorldPos().z);
+			0.f);
 	}
 	/*
 	

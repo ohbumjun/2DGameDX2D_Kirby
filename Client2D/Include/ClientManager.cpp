@@ -30,6 +30,8 @@
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
+#include "Object/EffectChangeToGreen4.h"
+#include "Object/EffectChangeToGreen5.h"
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
@@ -252,6 +254,16 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CEffectChangeToGreen1).hash_code())
 	{
 		CEffectChangeToGreen1* Obj = Scene->LoadGameObject<CEffectChangeToGreen1>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectChangeToGreen4).hash_code())
+	{
+		CEffectChangeToGreen4* Obj = Scene->LoadGameObject<CEffectChangeToGreen4>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectChangeToGreen5).hash_code())
+	{
+		CEffectChangeToGreen5* Obj = Scene->LoadGameObject<CEffectChangeToGreen5>();
 		return Obj;
 	}
 

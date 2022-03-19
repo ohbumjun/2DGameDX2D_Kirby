@@ -279,6 +279,12 @@
     <ClCompile Include="Scene\Green5Scene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen4.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen5.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -481,6 +487,12 @@
     </ClInclude>
     <ClInclude Include="Scene\Green5Scene.h">
       <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen4.h">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen5.h">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

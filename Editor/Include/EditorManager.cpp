@@ -57,6 +57,8 @@
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
+#include "Object/EffectChangeToGreen4.h"
+#include "Object/EffectChangeToGreen5.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -472,6 +474,14 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_SceneChangeToGreen1.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen1>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToGreen4.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen4>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToGreen5.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen5>(NewMonsterName);
 		}
 
 		if (!CreatedObject)
