@@ -114,6 +114,8 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 	{
 		m_GoUpTime -= DeltaTime;
 
+		m_Player->SetAttackEnable(true);
+
 		SetWorldScale(Vector3(m_InitWorldScale.x * 2.f, m_InitWorldScale.y * 2.f, m_InitWorldScale.z));
 
 		if (m_Player->GetObjectMoveDir().x > 0)

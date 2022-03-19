@@ -132,15 +132,12 @@ public :
 	void SetIsBeingHit();
 private:
 	void SetAttackEnable(bool Enable);
-	;
 public:
 	virtual bool       Init() override;
 	virtual void		Start() override;
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;
-	virtual void UpdateWhileOffGround(float DeltaTime) override;
-
 private:
 	// Move 
 	void MoveUp(float DeltaTime);

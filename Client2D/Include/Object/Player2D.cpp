@@ -382,12 +382,6 @@ void CPlayer2D::SetAttackEnable(bool Enable)
 	m_IsAttacking = Enable;
 }
 
-
-void CPlayer2D::UpdateWhileOffGround(float DeltaTime)
-{
-	CLifeObject::UpdateWhileOffGround(DeltaTime);
-}
-
 void CPlayer2D::MoveUp(float DeltaTime)
 {
 	if (m_GamePlayDelayTime > 0.f)
@@ -1252,6 +1246,7 @@ void CPlayer2D::UpdateBeingHit(float DeltaTime)
 
 void CPlayer2D::UpdateAttackTime(float DeltaTime)
 {
+	/*
 	if (m_IsAttacking)
 	{
 		if (m_AttackTime < m_AttackTimeLimit)
@@ -1266,37 +1261,41 @@ void CPlayer2D::UpdateAttackTime(float DeltaTime)
 			}
 		}
 	}
+	*/
 }
 
 void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 {
-	if (m_SlideAttackTime > 0.f)
+	if (m_SlideAttack)
 	{
-		m_SlideAttackTime -= DeltaTime;
-
-		// 왼쪽 
-		if (m_ObjectMoveDir.x < 0.f)
+		if (m_SlideAttackTime > 0.f)
 		{
-			AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 800.f);
+			m_SlideAttackTime -= DeltaTime;
+
+			// 왼쪽 
+			if (m_ObjectMoveDir.x < 0.f)
+			{
+				AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 800.f);
+			}
+			// 오른쪽
+			else
+			{
+				AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 800.f);
+			}
+
+			m_Body->SetCollisionProfile("PlayerAttack");
 		}
-		// 오른쪽
-		else
+
+		if (m_SlideAttackTime <= 0.f)
 		{
-			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 800.f);
+			m_SlideAttackTime = -1.f;
+
+			m_Body->SetCollisionProfile("Player");
+
+			m_SlideAttack = false;
+
+			m_IsAttacking = false;
 		}
-
-		m_Body->SetCollisionProfile("PlayerAttack");
-	}
-
-	if (m_SlideAttackTime <= 0.f)
-	{
-		m_SlideAttackTime = -1.f;
-
-		m_Body->SetCollisionProfile("Player");
-
-		m_SlideAttack = false;
-
-		m_IsAttacking = false;
 	}
 }
 
@@ -1318,6 +1317,9 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 	}
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	// 일단 한번 뛴 상태에서 날아야 한다.

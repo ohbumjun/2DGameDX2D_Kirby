@@ -140,6 +140,8 @@ void CBeamKirbyState::UpdateAttackGoUpState(float DeltaTime)
 	{
 		m_GoUpTime -= DeltaTime;
 
+		m_Player->SetAttackEnable(true);
+
 		if (m_GoUpTime <= 0.f)
 		{
 			m_GoUpState = false;

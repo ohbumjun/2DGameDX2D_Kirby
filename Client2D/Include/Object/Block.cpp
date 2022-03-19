@@ -21,6 +21,8 @@ void CBlock::Start()
 
 	m_ColliderBody = FindComponentByType<CColliderCircle>();
 
+	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.5f);
+
 	if (m_ColliderBody)
 	{
 		m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CBlock::SetCollisionCallback);

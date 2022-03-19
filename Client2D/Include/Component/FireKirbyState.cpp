@@ -87,9 +87,11 @@ void CFireKirbyState::GoUpAttack()
 	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
 
 	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+
 	BackEffect->SetWorldPos(GetWorldPos());
 	BackEffect->SetWorldScale(150.f, 150.f, 1.f);
 	BackEffect->SetLifeTime(0.3f);
+
 
 	// ¿ÞÂÊ
 	if (m_Player->GetObjectMoveDir().x < 0)
@@ -105,16 +107,14 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 	{
 		m_GoUpTime -= DeltaTime;
 
+		m_Player->SetAttackEnable(true);
+
 		SetWorldScale(Vector3(m_InitWorldScale.x * 3.f, m_InitWorldScale.y * 3.f, m_InitWorldScale.z));
 
 		if (m_Player->GetObjectMoveDir().x > 0)
-		{
 			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 900.f);
-		}
 		else
-		{
 			AddWorldPos(Vector3(1.0f * -1.f, 0.f, 0.f) * DeltaTime * 900.f);
-		}
 
 		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.3f, m_InitColliderLength.y * 1.3f);
 
