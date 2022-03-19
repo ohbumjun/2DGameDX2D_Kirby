@@ -4,8 +4,12 @@
 
 CAttackEffect::CAttackEffect()  :
 	m_SideCollisionApplied(true),
-	m_BottomCollisionApplied(false)
-{}
+	m_BottomCollisionApplied(false),
+	m_Jump(false),
+	m_JumpVelocity(20.f),
+	m_PhysicsSimulate(false)
+{
+}
 
 CAttackEffect::CAttackEffect(const CAttackEffect& obj)
 {}
@@ -256,6 +260,26 @@ bool CAttackEffect::CheckBottomCollision()
 	return false;
 }
 
+void CAttackEffect::UpdateGravityEffect(float DeltaTime)
+{
+	if (m_PhysicsSimulate)
+	{
+		float Velocity = 0.f;
+
+		m_FallTime += DeltaTime * 10.f;
+
+		if (m_Jump)
+		{
+			Velocity = m_JumpVelocity * m_FallTime;
+		}
+
+		// float FallDistance = GRAVITY * 0.5f * m_FallTime * m_FallTime;
+		float FallDistance = GRAVITY * 0.5f * m_FallTime * m_FallTime;
+
+		SetWorldPos(GetWorldPos().x, m_FallStartY + (Velocity - FallDistance), GetWorldPos().z);
+	}
+}
+
 void CAttackEffect::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
@@ -269,6 +293,8 @@ void CAttackEffect::Update(float DeltaTime)
 	{
 		BottomCollisionSpecificAction();
 	}
+
+	UpdateGravityEffect(DeltaTime);
 
 	m_PrevPos = GetWorldPos();
 

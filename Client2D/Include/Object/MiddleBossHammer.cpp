@@ -8,16 +8,17 @@ class CAnimationSequence2DInstance;
 
 CMiddleBossHammer::CMiddleBossHammer() :
 	m_IsAttacking(false),
+	m_JumpEnable(false),
 	m_AttackResetTime(0.f),
-	m_AttackResetTimeMax(2.f)
+	m_AttackResetTimeMax(2.f),
+	m_JumpLimitTimeMax(5.f),
+	m_CloseAttackDistance(350.f),
+	m_FarAttackDistance(700.f)
 {
 	SetTypeID<CMiddleBossHammer>();
-
-	m_DashDistance = 800.f;
-
-	m_AttackDistance = 450.f;
-
+	m_DashDistance = 900.f;
 	m_JumpVelocity = 50.f;
+	m_AttackDistance = 700.f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -36,15 +37,30 @@ void CMiddleBossHammer::Start()
 
 	m_IsGroundObject = true;
 
-	// Ready의 경우, 매우 긴 PlayTime 을 세팅하고
 	m_Sprite->GetAnimationInstance()->Play();
 
-	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetPlayTime(2.f);
-	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(this, &CMiddleBossHammer::Attack);
+	// Close Attack
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
-	// EndCallback도 세팅한다.
-	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(2.f);
-	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(this, &CMiddleBossHammer::Attack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
+
+	// Far Attack
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
+
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
+
+	// Hit 이후에는, 바로 Idle 로 넘어가게 세팅한다.
+	/*
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightHit")->SetEndFunction(this,
+		&CMonster::ChangeIdleAnimation);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftHit")->SetEndFunction(this,
+		&CMonster::ChangeIdleAnimation);
+		*/
+
 
 	m_IsAttacking = false;
 }
@@ -92,7 +108,7 @@ CMiddleBossHammer* CMiddleBossHammer::Clone()
 	return new CMiddleBossHammer(*this);
 }
 
-void CMiddleBossHammer::Attack()
+void CMiddleBossHammer::FarAttack()
 {
 	if (m_IsAttacking)
 		return;
@@ -101,65 +117,92 @@ void CMiddleBossHammer::Attack()
 
 	Vector3 PlayerPos = m_Scene->GetPlayerObject()->GetWorldPos();
 
-	// 위
-	Vector3 TraceUpDir = Vector3(PlayerPos.x, PlayerPos.y + 100.f, PlayerPos.z) - GetWorldPos();
-	TraceUpDir.Normalize();
-
-	// 아래
-	Vector3 TraceDownDir = Vector3(PlayerPos.x, PlayerPos.y - 100.f, PlayerPos.z) - GetWorldPos();
-	TraceDownDir.Normalize();
-
+	CHammerGorillaFarAttack* AttackEffect = nullptr;
 
 	// 왼쪽을 보고 있다면 
 	if (m_ObjectMoveDir.x < 0.f)
 	{
-		// 위 
-		CHammerGorillaFarAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
-		AttackEffect->SetLeftAttackDir(TraceUpDir.y);
-
 		// 가운데
 		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
+
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+
 		AttackEffect->SetLeftAttackDir(0.f);
-
-		// 아래
-		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
-		AttackEffect->SetLeftAttackDir(TraceDownDir.y);
-
 	}
 	// 오른쪽으로 보고 있다면 
 	else
 	{
-		CHammerGorillaFarAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
-		AttackEffect->SetRightAttackDir(TraceUpDir.y);
-
 		// 가운데
 		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
-		AttackEffect->SetRightAttackDir(0.f);
 
-		// 아래
-		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
-		AttackEffect->SetRightAttackDir(TraceDownDir.y);
+
+		AttackEffect->SetRightAttackDir(0.f);
 	}
+
+	AttackEffect->SetFireOwner(this);
+
+	AttackEffect->SetJumpVelocity(70.f);
+
+	AttackEffect->SetPhysicsSimulate(true);
+
+	AttackEffect->JumpStart();
+
+	AttackEffect->SetCreateMultileAfter(true);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
 }
+
+void CMiddleBossHammer::CloseAttack()
+{}
+
+void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)
+{
+	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
+
+	if (DistToPlayer > m_CloseAttackDistance && DistToPlayer < m_FarAttackDistance)
+	{
+		ChangeFarAttackAnimation();
+	}
+	else if (DistToPlayer <= m_CloseAttackDistance)
+	{
+		ChangeCloseAttackAnimation();
+	}
+}
+
+void CMiddleBossHammer::AITraceSpecific(float DeltaTime)
+{
+	if (m_IsBottomCollided)
+	{
+		m_Jump = true;
+		m_IsGround = false;
+
+		m_FallTime = 0.f;
+		m_FallStartY = GetWorldPos().y;
+
+		m_JumpStart = true;
+	}
+}
+
+void CMiddleBossHammer::ChangeFarAttackAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttackFar");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttackFar");
+}
+
+void CMiddleBossHammer::ChangeCloseAttackAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttackClose");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttackClose");
+}
+
+void CMiddleBossHammer::ChangeToIdleAfterHit()
+{}
 

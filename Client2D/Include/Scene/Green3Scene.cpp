@@ -33,9 +33,10 @@ void CGreen3Scene::Start()
 
 	SetPlayerObject(Player2D);
 
-	Player2D->SetWorldPos(100.f, 500.f, 0.f);
-
-	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
+	if (Player2D)
+	{
+		Player2D->SetWorldPos(100.f, 500.f, 0.f);
+	}
 
 	// Line ¼¼ÆÃ 
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());

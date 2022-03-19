@@ -39,7 +39,7 @@ void CBeamKirbyState::FallDownAttack()
 	// 왼쪽을 보고 있다면
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 	
-	for (int i = 0; i < 8.f; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		Vector3 TargetPos = {};
 		Vector3 TraceDir = {};

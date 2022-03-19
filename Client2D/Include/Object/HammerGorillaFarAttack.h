@@ -16,14 +16,20 @@ private:
     Vector2 m_AttackDir;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
+    bool m_CreateMultipleAfter;
 protected:
     void SetFireOwner(class CMiddleBossHammer* Owner)
     {
         m_MiddleBossHammer = Owner;
     }
+    void SetCreateMultileAfter(bool Enable)
+    {
+        m_CreateMultipleAfter = Enable;
+    }
 protected:
     void SetRightAttackDir(float YDir);
     void SetLeftAttackDir(float YDir);
+    void MakeMultipleAttackEffect();
 public:
     virtual void Start() override;
     virtual bool Init() override;

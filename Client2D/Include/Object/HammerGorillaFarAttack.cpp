@@ -12,7 +12,8 @@
 CHammerGorillaFarAttack::CHammerGorillaFarAttack() :
 	m_AttackDir(1.f, 0.f),
 	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(1000.f)
+	m_AttackDistLimitMax(550.f),
+	m_CreateMultipleAfter(false)
 {}
 
 CHammerGorillaFarAttack::CHammerGorillaFarAttack(const CHammerGorillaFarAttack& Attack) : CAttackEffect(Attack)
@@ -35,6 +36,69 @@ void CHammerGorillaFarAttack::SetLeftAttackDir(float YDir)
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
 }
 
+void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
+{
+	if (!m_CreateMultipleAfter)
+		return;
+
+	CHammerGorillaFarAttack* AttackEffect = nullptr;
+
+	// 오른쪽 2개
+	for (int i = 0; i < 3;i++)
+	{
+		Vector3 TargetPos = {};
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f - 35.f * i)) * 30.f;
+		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(90.f - 35.f * i) * 30.f);
+
+		Vector3 TraceDir = TargetPos - GetWorldPos();
+
+		TraceDir.Normalize();
+
+		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
+
+		AttackEffect->SetRightAttackDir(TraceDir.y);
+		// AttackEffect->SetRightAttackDir(0.f);
+
+		AttackEffect->SetJumpVelocity(10.f + i * 30.f);
+
+		AttackEffect->SetWorldScale(30.f, 30.f, 1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos());
+
+		AttackEffect->JumpStart();
+
+		AttackEffect->SetPhysicsSimulate(true);
+	}
+
+	// 왼쪽 2개
+	for (int i = 0; i < 3; i++)
+	{
+		Vector3 TargetPos = {};
+
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f + 35.f * i)) * 30.f;
+		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(90.f + 30.f * i)) * 30.f;
+
+		Vector3 TraceDir = TargetPos - GetWorldPos();
+
+		TraceDir.Normalize();
+
+		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
+
+		AttackEffect->SetLeftAttackDir(TraceDir.y);
+		// AttackEffect->SetLeftAttackDir(0.f);
+
+		AttackEffect->SetJumpVelocity(10.f + i * 30.f);
+
+		AttackEffect->SetWorldScale(30.f, 30.f, 1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos());
+
+		AttackEffect->JumpStart();
+
+		AttackEffect->SetPhysicsSimulate(true);
+	}
+}
+
 void CHammerGorillaFarAttack::Start()
 {
 	CGameObject::Start();
@@ -55,6 +119,7 @@ bool CHammerGorillaFarAttack::Init()
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 	m_Sprite->SetWorldScale(80.f, 80.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
+	m_Sprite->GetMaterial()->SetRenderState("AlphaBlend");
 
 	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
 	m_Sprite->AddChild(ColliderCirle);
@@ -69,9 +134,9 @@ void CHammerGorillaFarAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
+	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 350.f;
 
-	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 500.f);
+	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 350.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{
@@ -86,6 +151,8 @@ void CHammerGorillaFarAttack::Update(float DeltaTime)
 		{
 			m_MiddleBossHammer->SetAttackEnd();
 		}
+
+		MakeMultipleAttackEffect();
 	}
 }
 

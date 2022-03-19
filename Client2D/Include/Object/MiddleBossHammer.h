@@ -13,6 +13,11 @@ private:
     bool m_IsAttacking;
     float m_AttackResetTime;
     float m_AttackResetTimeMax;
+    float m_CloseAttackDistance;
+    float m_FarAttackDistance;
+    bool m_JumpEnable;
+    float m_JumpLimitTime;
+    float m_JumpLimitTimeMax;
 public:
     void SetAttackEnd()
     {
@@ -25,6 +30,13 @@ public:
     virtual void PostUpdate(float DeltaTime);
     virtual CMiddleBossHammer* Clone() override;
 private:
-    void Attack();
+    void FarAttack();
+    void CloseAttack();
+    void ChangeFarAttackAnimation();
+    void ChangeCloseAttackAnimation();
+    void ChangeToIdleAfterHit();
+private :
+    virtual void AIAttackSpecific(float DeltaTime) override;
+    virtual void AITraceSpecific(float DeltaTime) override;
 };
 
