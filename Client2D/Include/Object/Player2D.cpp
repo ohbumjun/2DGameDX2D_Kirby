@@ -943,6 +943,8 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 	SpitOutStar->SetWorldPos(GetWorldPos());
 
+	SpitOutStar->SetIsRotate(true);
+
 	if (m_ObjectMoveDir.x > 0)
 		SpitOutStar->SetSpitOutDir(Vector2(1.f, 0.f));
 	else

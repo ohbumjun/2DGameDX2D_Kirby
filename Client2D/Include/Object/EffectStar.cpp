@@ -15,7 +15,8 @@
 
 CEffectStar::CEffectStar() :
 	m_AliveTime(3.f),
-	m_StarMoveSpeed(600.f)
+	m_StarMoveSpeed(600.f),
+	m_IsRotate(false)
 {
 	SetTypeID<CEffectStar>();
 }
@@ -100,6 +101,11 @@ void CEffectStar::Update(float DeltaTime)
 		{
 			Destroy();
 		}
+	}
+
+	if (m_IsRotate)
+	{
+		AddRelativeRotationZ(360.f * DeltaTime);
 	}
 }
 

@@ -15,7 +15,12 @@ private:
     Vector2 m_SpitOutDir;
     float m_AliveTime;
     float m_StarMoveSpeed;
+    bool m_IsRotate;
 public :
+    void SetIsRotate(bool Enable)
+{
+        m_IsRotate = Enable;
+}
     void SetStarMoveSpeed(float Speed)
 {
         m_StarMoveSpeed = Speed;
