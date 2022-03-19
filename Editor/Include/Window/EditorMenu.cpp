@@ -722,6 +722,28 @@ void CEditorMenu::LoadObject()
 
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
+
+		if (LoadedObject->CheckType<CLine>())
+		{
+			// Line 을 Load 한 경우, 현재 Scene 에 Line Container가 존재하는지 확인하고
+		// 존재한다면, 해당 Line Container 의 자식으로 넣어주고
+			CGameObject* FoundLineContainer = CSceneManager::GetInst()->GetScene()->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
+			
+			if (FoundLineContainer)
+			{
+				FoundLineContainer->AddChildGameObject(LoadedObject);
+			}
+			else
+			{
+				// 없다면, 새롭게 Line Container Game Object 을 만들어준 다음
+				// Line Container 자식으로 넣어준다.
+				CLineContainer* LineContainer = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLineContainer>("LineContainer");
+
+				LineContainer->AddChildGameObject(LoadedObject);
+
+				Hierarchy->GetCreatedObjectListBox()->AddItem(LineContainer->GetName());
+			}
+		}
 	}
 }
 
