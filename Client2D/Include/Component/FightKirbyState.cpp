@@ -116,15 +116,15 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 
 		m_Player->SetAttackEnable(true);
 
-		SetWorldScale(Vector3(m_InitWorldScale.x * 2.f, m_InitWorldScale.y * 2.f, m_InitWorldScale.z));
+		SetWorldScale(Vector3(m_InitWorldScale.x * 3.f, m_InitWorldScale.y * 3.f, m_InitWorldScale.z));
 
 		if (m_Player->GetObjectMoveDir().x > 0)
 		{
-			AddWorldPos(Vector3(0.3f, 1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(0.5f, 1.f, 0.f) * DeltaTime * 500.f);
 		}
 		else
 		{
-			AddWorldPos(Vector3(0.3f * -1.f, 1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(0.5f * -1.f, 1.f, 0.f) * DeltaTime * 500.f);
 		}
 
 		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.f, m_InitColliderLength.y * 2.f);
@@ -136,6 +136,8 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			SetWorldScale(m_InitWorldScale);
 
 			m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
+
+			m_Player->SetAttackEnable(false);
 		}
 	}
 }

@@ -385,9 +385,7 @@ void CPlayer2D::SetAttackEnable(bool Enable)
 void CPlayer2D::MoveUp(float DeltaTime)
 {
 	if (m_GamePlayDelayTime > 0.f)
-	{
 		return;
-	}
 
 	if (m_IsBeingHit)
 		return;
@@ -970,7 +968,6 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 		m_KirbyState->SetTransparency(true);
 
-		m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
 		m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
 		m_IsSpecialStateChanged = false;
@@ -1312,9 +1309,7 @@ void CPlayer2D::RotationZ(float DeltaTime)
 void CPlayer2D:: FlyAfterJump(float DeltaTime)
 {
 	if (m_GamePlayDelayTime > 0.f)
-	{
 		return;
-	}
 
 	if (m_IsBeingHit)
 		return;
@@ -1722,6 +1717,7 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 			}
 		}
 
+		// SetObjectLand(
 
 		m_IsFalling = false;
 	}

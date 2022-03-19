@@ -10,7 +10,7 @@
 #include "../Object/FireAttackBackEffect.h"
 
 CBeamKirbyState::CBeamKirbyState() :
-	m_GoUpTimeMax(0.4f),
+	m_GoUpTimeMax(1.5f),
 	m_GoUpTime(0.f),
 	m_FallAttackTime(0.f),
 	m_FallAttackTimeMax(0.4f),

@@ -77,7 +77,9 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 	bool IsFalling = false;
 
-	if ((!m_IsGround && m_PhysicsSimulate) || (!m_IsBottomCollided && m_PhysicsSimulate && m_IsGroundObject))
+	if ((!m_IsGround && m_PhysicsSimulate) || 
+		(!m_IsBottomCollided && m_PhysicsSimulate && m_IsGroundObject) ||
+		(m_Jump && m_PhysicsSimulate))
 	{
 		// 떨어지는 시간 누적 
 		m_FallTime += DeltaTime * m_GravityAccel;
@@ -98,16 +100,6 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 		if (m_Jump)
 		{
 			Velocity = m_JumpVelocity * m_FallTime;
-
-			// 만약 점프 중에 화면 밖으로 벗어난다면 Velocity는 별도로 처리해야 한다.
-			float ObjectHeadPosY = GetWorldPos().y + GetWorldScale().y;
-
-			float WorldResolutionY = m_Scene->GetWorldResolution().y;
-
-			if (WorldResolutionY - ObjectHeadPosY < 1.f)
-			{
-				// Velocity = 0.f;
-			}
 		}
 
 		// 내려간 거리
@@ -125,6 +117,8 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 		IsFalling = true;
 	}
+
+	m_FallVelocity = 0.f;
 
 	m_IsFalling = IsFalling;
 }

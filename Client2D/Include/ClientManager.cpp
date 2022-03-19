@@ -4,7 +4,7 @@
 #include "resource.h"
 // Scene
 #include "Scene/MainScene.h"
-#include "Scene/StartScene.h"
+#include "Scene/Green5Scene.h"
 #include "Scene/StartScene.h"
 #include "Scene/SceneManager.h"
 // UI
@@ -129,12 +129,6 @@ void CClientManager::CreateDefaultSceneMode()
 
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
-
-	/*
-	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerWithBackTestCamera.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonster.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("TestTileMapSceneWithPlayerManyMonsterMushRoom.scn", SCENE_PATH);
-	*/
 
 	// CSceneManager::GetInst()->GetScene()->Load("Green1_OnlyBear.scn", SCENE_PATH);
 	CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
