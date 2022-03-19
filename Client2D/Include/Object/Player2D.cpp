@@ -2136,6 +2136,8 @@ void CPlayer2D::SpecialChange()
 
 	Ability_State State = AbilityMonster->GetAbilityState();
 
+	Vector3 BeforeChangePos = GetWorldPos();
+
 	switch (AbilityMonster->GetAbilityState())
 	{
 	case Ability_State::Beam:
@@ -2175,7 +2177,7 @@ void CPlayer2D::SpecialChange()
 
 	m_KirbyState->SetScene(m_Scene);
 
-	m_KirbyState->SetWorldPos(GetWorldPos());
+	m_KirbyState->SetWorldPos(BeforeChangePos);
 
 	m_KirbyState->AddChild(m_Camera);
 	m_KirbyState->AddChild(m_SimpleHUDWidget);
@@ -2188,6 +2190,8 @@ void CPlayer2D::SpecialChange()
 	m_KirbyState->SetTransparency(true);
 
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
+
+	m_IsChanging = false;
 
 	ChangePlayerIdleAnimation();
 }
