@@ -186,13 +186,17 @@ void CScene::SaveFullPath(const char* FullPath)
 	fwrite(&ObjectCount, sizeof(size_t), 1, pFile);
 
 	iter = m_ObjList.begin();
+	iterEnd = m_ObjList.end();
 
 	for (;iter != iterEnd; ++iter)
 	{
 		if ((*iter)->GetName() == "SceneEditObject")
 			continue;
-		size_t TypeID = (*iter)->GetTypeID();
-		fwrite(&TypeID, sizeof(size_t), 1, pFile);
+
+		size_t ObjectTypeID = (*iter)->GetTypeID();
+
+		fwrite(&ObjectTypeID, sizeof(size_t), 1, pFile);
+
 		(*iter)->Save(pFile);
 	}
 
@@ -220,9 +224,11 @@ bool CScene::LoadFullPath(const char* FullPath)
 
 	for (size_t i = 0; i < ObjectCount; i++)
 	{
-		fread(&TypeID, sizeof(size_t), 1, pFile);
+		size_t ObjectTypeID = -1;
 
-		CGameObject* Object = CSceneManager::GetInst()->CallCreateObjectFunc(this, TypeID);
+		fread(&ObjectTypeID, sizeof(size_t), 1, pFile);
+
+		CGameObject* Object = CSceneManager::GetInst()->CallCreateObjectFunc(this, ObjectTypeID);
 
 		if (!Object)
 		{

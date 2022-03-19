@@ -17,5 +17,6 @@ public:
     virtual CHPRedItem* Clone() override;
 public :
     virtual void Save(FILE* pFile) override;
+    virtual void Load(FILE* pFile) override;
 };
 

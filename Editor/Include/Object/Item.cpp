@@ -53,3 +53,10 @@ void CItem::Save(FILE* pFile)
 
 	fwrite(&m_ItemType, sizeof(Item_Type), 1, pFile);
 }
+
+void CItem::Load(FILE* pFile)
+{
+	CGameObject::Load(pFile);
+
+	fread(&m_ItemType, sizeof(Item_Type), 1, pFile);
+}

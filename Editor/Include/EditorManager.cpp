@@ -905,6 +905,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 		CEffectChangeToGreen1* Obj = Scene->LoadGameObject<CEffectChangeToGreen1>();
 		return Obj;
 	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToGreen4).hash_code())
+	{
+	CEffectChangeToGreen4* Obj = Scene->LoadGameObject<CEffectChangeToGreen4>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToGreen5).hash_code())
+	{
+	CEffectChangeToGreen5* Obj = Scene->LoadGameObject<CEffectChangeToGreen5>();
+	return Obj;
+	}
 	
 	return nullptr;
 }

@@ -86,11 +86,11 @@ void CEffectKirbyRide::Update(float DeltaTime)
 	{
 		m_GetOutOfOriginalWorldTime -= DeltaTime;
 
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 500.f);
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 450.f);
 	}
 	else
 	{
-		AddWorldPos(Vector3(1.f, m_YToggleDir, 0.f) * DeltaTime * 500.f);
+		AddWorldPos(Vector3(1.f, m_YToggleDir, 0.f) * DeltaTime * 450.f);
 
 		if (GetWorldPos().y - (float)m_RS.Height * 0.5f <= 0.f)
 		{

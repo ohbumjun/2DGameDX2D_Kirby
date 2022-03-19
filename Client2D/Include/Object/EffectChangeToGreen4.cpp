@@ -88,7 +88,7 @@ void CEffectChangeToGreen4::ChangeSceneToGreen4Scene(const CollisionResult& Resu
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen4Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-	if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Green4.scn", SCENE_PATH))
 	{
 		CSceneManager::GetInst()->ChangeNextScene();
 	}

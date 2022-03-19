@@ -54,3 +54,8 @@ void  CHPGreenItem::Save(FILE* pFile)
 {
 	CItem::Save(pFile);
 }
+
+void  CHPGreenItem::Load(FILE* pFile)
+{
+	CItem::Load(pFile);
+}
