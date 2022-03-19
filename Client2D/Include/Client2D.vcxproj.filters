@@ -289,7 +289,13 @@
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
     <ClCompile Include="Object\BossMonster.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\MiddleBossHammer.cpp">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\HammerGorillaFarAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -501,7 +507,13 @@
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
     <ClInclude Include="Object\BossMonster.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MiddleBossHammer.h">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\HammerGorillaFarAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

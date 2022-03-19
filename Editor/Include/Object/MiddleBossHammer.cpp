@@ -27,6 +27,8 @@ bool CMiddleBossHammer::Init()
 	LoadAnimationInstance("MiddleHammer", TEXT("MiddleBoss_Hammer.anim"));
 	SetCurrentAnimation("RightIdle");
 
+	SetWorldScale(200.f, 200.f, 1.f);
+
 	return true;
 }
 

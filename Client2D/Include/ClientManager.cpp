@@ -28,6 +28,7 @@
 #include "Object/HPYellowItem.h"
 #include "Object/HPGreenItem.h"
 #include "Object/HPRedItem.h"
+#include "Object/MiddleBossHammer.h"
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
@@ -184,6 +185,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CFireMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CMiddleBossHammer).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossHammer>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())

@@ -10,6 +10,9 @@ const std::string g_MushRoomName = "MushRoom";
 const std::string g_BeamMonsterName = "Beam";
 const std::string g_FireMonsterName    = "Fire";
 const std::string g_FightMonsterName = "Fight";
+// Boss
+// Middle Boss
+const std::string g_MiddleHammerName = "MiddleHammerGorilla";
 // Effect
 const std::string g_SceneChangeStart = "SceneChangeStart";
 const std::string g_SceneChangeToGreen2 = "SceneChangeToGreen2";

@@ -45,6 +45,7 @@ CPlayer2D::CPlayer2D() :
 	m_SlideAttack(false),
 	m_LeftMove(false),
 	m_ToRightWhenLeftMove(false),
+	m_IsChanging(false),
 	m_IsSpecialStateChanged(false),
 	m_LeftMovePush(false),
 	m_JumpDown(false),
@@ -59,6 +60,8 @@ CPlayer2D::CPlayer2D() :
 	m_PullDistance(100.f),
 	m_MoveDashEffectLimitTimeMax(0.2f),
 	m_MoveDashEffectLimitTime(0.2f),
+	m_ChangeTimeMax(1.0f),
+	m_ChangeTime(0.f),
 	m_SceneChangeCallback(nullptr),
 	m_IsBeingHit(false),
 	m_BeingHitTime(0.f),
@@ -260,7 +263,7 @@ void CPlayer2D::Start()
 		KeyState_Up, this, &CPlayer2D::PullLeftEnd);
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialChange",
-		KeyState_Down, this, &CPlayer2D::SpecialChange);
+		KeyState_Down, this, &CPlayer2D::SpecialChangeStart);
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Attack", 
 		KeyState_Down, this, &CPlayer2D::Attack);
@@ -294,12 +297,14 @@ void CPlayer2D::Start()
 	}
 
 	// Animation Loop 여부 세팅
-	/*
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetLoop(false);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetLoop(false);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetLoop(false);
+
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetEndFunction(this, &CPlayer2D::SpecialChange);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetEndFunction(this, &CPlayer2D::SpecialChange);
 
 	// Jump 가 다 끝난 이후에는, Animation 을 Fall 상태로 바꿔라
-	*/
+	
 	SetBasicSettingToChangedState();
 
 	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
@@ -316,6 +321,8 @@ void CPlayer2D::Update(float DeltaTime)
 	UpdateBeingHit(DeltaTime);
 
 	UpdateAttackTime(DeltaTime);
+
+	UpdateChangeState(DeltaTime);
 
 	UpdateSlideAttackTime(DeltaTime);
 
@@ -964,6 +971,8 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		m_KirbyState->AddChild(m_PullRightCollider);
 		m_KirbyState->AddChild(m_PullLeftCollider);
 
+		m_KirbyState->SetWorldScale(80.f, 80.f, 1.f);
+
 		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 		m_KirbyState->SetTransparency(true);
@@ -1219,6 +1228,13 @@ void CPlayer2D::CheckBelowWorldResolution()
 	m_FallTime = 0.f;
 
 	m_FallStartY = m_InitPlayerPos.y;
+}
+
+void CPlayer2D::StopPlayer()
+{
+	m_LeverVelocity = 0.f;
+	m_DashVelocity = 0.f;
+	m_MoveVelocity = 0.f;
 }
 
 void CPlayer2D::UpdateBeingHit(float DeltaTime)
@@ -1728,6 +1744,9 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (!m_Jump && !m_IsFlying)
 	{
 		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
@@ -1930,6 +1949,14 @@ void CPlayer2D::ChangePlayerSlideAttackAnimation()
 		ChangeAnimation("RightSlide");
 }
 
+void CPlayer2D::ChangePlayerChangeAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftChange");
+	else
+		ChangeAnimation("RightChange");
+}
+
 void CPlayer2D::ChangePlayerEatIdleAnimation()
 {
 	if (m_IsAttacking)
@@ -2023,6 +2050,8 @@ void CPlayer2D::PullRight(float DeltaTime)
 	if (m_IsBeingHit)
 		return;
 
+	StopPlayer();
+
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("RightPull");
 
 	// 오른쪽 범위 안에 있는지 확인하기
@@ -2101,37 +2130,23 @@ void CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut()
 	}
 }
 
-void CPlayer2D::SpecialChange(float DeltaTime)
+void CPlayer2D::SpecialChange()
 {
-	// 먹고 있는 녀석이 없으면 X
-	if (!m_IsEatingMonster)
-		return;
-
-	if (m_IsBeingHit)
-		return;
-
-	// 능력 몬스터가 아니라면 Return
-	if (!m_EatenMonster->IsAbilityMonster())
-		return;
-
-	if (m_IsSpecialStateChanged)
-		return;
-
 	CAbilityMonster* AbilityMonster = (CAbilityMonster*)m_EatenMonster;
 
 	Ability_State State = AbilityMonster->GetAbilityState();
 
 	switch (AbilityMonster->GetAbilityState())
 	{
-	case Ability_State::Beam :
-		{
-			m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
+	case Ability_State::Beam:
+	{
+		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
-			m_KirbyState->SetPlayer(this);
+		m_KirbyState->SetPlayer(this);
 
-			m_IsSpecialStateChanged = true;
-		}
-		break;
+		m_IsSpecialStateChanged = true;
+	}
+	break;
 	case Ability_State::Fire:
 	{
 		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
@@ -2139,6 +2154,8 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 		m_KirbyState->SetPlayer(this);
 
 		m_IsSpecialStateChanged = true;
+
+		m_KirbyState->SetWorldScale(120.f, 120.f, 1.f);
 	}
 	break;
 	case Ability_State::Fight:
@@ -2152,16 +2169,13 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	break;
 	}
 
-	// Special Change Effect
-	SpecialChangeEffect();
-
-	Vector3 OriginalPos = GetWorldPos();
-
 	SetRootComponent(m_KirbyState);
 
 	SetBasicSettingToChangedState();
 
 	m_KirbyState->SetScene(m_Scene);
+
+	Vector3 OriginalPos = GetWorldPos();
 
 	m_KirbyState->SetWorldPos(OriginalPos);
 
@@ -2174,10 +2188,35 @@ void CPlayer2D::SpecialChange(float DeltaTime)
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_KirbyState->SetTransparency(true);
-	m_KirbyState->SetRelativeScale(100.f, 100.f, 1.f);
+
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
 	ChangePlayerIdleAnimation();
+}
+
+void CPlayer2D::SpecialChangeStart(float DeltaTime)
+{
+	// 먹고 있는 녀석이 없으면 X
+	if (!m_IsEatingMonster)
+		return;
+
+	if (m_IsBeingHit)
+		return;
+
+	// 능력 몬스터가 아니라면 Return
+	if (m_EatenMonster->GetMonsterType() != Monster_Type::Ability)
+		return;
+
+	if (m_IsSpecialStateChanged)
+		return;
+
+	m_IsChanging = true;
+
+	SpecialChangeEffect();
+
+	StopPlayer();
+
+	ChangePlayerChangeAnimation();
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -2200,7 +2239,9 @@ void CPlayer2D::SpecialChangeEffect()
 {
 	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
 
-	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, GetWorldPos().z);
+	SpecialChangeParticle->SetWorldPos(m_KirbyState->GetWorldPos().x, 
+		m_KirbyState->GetWorldPos().y + m_KirbyState->GetWorldScale().y, 
+		m_KirbyState->GetWorldPos().z);
 
 	m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
 
@@ -2208,6 +2249,22 @@ void CPlayer2D::SpecialChangeEffect()
 	CBubbleParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CBubbleParticle>("Special Change");
 	SpecialChangeParticle->SetRelativePos(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z);
 	*/
+}
+
+void CPlayer2D::UpdateChangeState(float DeltaTime)
+{
+	if (m_IsChanging)
+	{
+		if (m_ChangeTime > 0)
+		{
+			m_ChangeTime -= DeltaTime;
+
+			if (m_ChangeTime < 0)
+			{
+				m_IsChanging = false;
+			}
+		}
+	}
 }
 
 void CPlayer2D::Attack(float DeltaTime)
@@ -2225,9 +2282,7 @@ void CPlayer2D::Attack(float DeltaTime)
 
 	ResetMoveInfo();
 
-	m_LeverVelocity = 0.f;
-	m_DashVelocity = 0.f;
-	m_MoveVelocity = 0.f;
+	StopPlayer();
 
 	float YDiff = GetWorldPos().y - m_PrevPos.y;
 
@@ -2370,6 +2425,8 @@ void CPlayer2D::PullLeft(float DeltaTime)
 
 	if (m_IsBeingHit)
 		return;
+
+	StopPlayer();
 
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("LeftPull");
 

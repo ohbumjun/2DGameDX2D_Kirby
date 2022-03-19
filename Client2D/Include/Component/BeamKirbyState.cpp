@@ -44,15 +44,18 @@ void CBeamKirbyState::FallDownAttack()
 		Vector3 TargetPos = {};
 		Vector3 TraceDir = {};
 
-		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(45 * (float)i)) * (90.f);
-		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(45 * (float)i)) * (90.f);
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(45 * (float)i)) * (150.f);
+		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(45 * (float)i)) * (150.f);
 
 		TraceDir = TargetPos - GetWorldPos();
 
 		TraceDir.Normalize();
 
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
 		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Beam);
+
+		AttackEffect->SetWorldScale(60.f, 60.f, 1.f);
 
 		AttackEffect->SetLeftAttackDir(-1.f);
 

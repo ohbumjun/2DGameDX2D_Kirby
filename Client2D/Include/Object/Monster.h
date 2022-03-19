@@ -45,10 +45,14 @@ protected:
     float m_RandomMoveTime;
     float m_RandomMoveTimeMax;
 
-    // Ability
-    bool m_IsAbilityMonster;
+    // Monster Type
+    Monster_Type m_MonsterType;
 
 public :
+    Monster_Type GetMonsterType() const
+{
+        return m_MonsterType;
+}
     Monster_AI GetAIState() const
 {
         return m_AI;
@@ -60,10 +64,6 @@ public :
     bool IsBeingHit () const
 {
         return m_IsBeingHit;
-}
-    bool IsAbilityMonster () const
-{
-	return m_IsAbilityMonster;
 }
 public :
     void SetAIState(Monster_AI State)

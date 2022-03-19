@@ -504,19 +504,19 @@ void CTileMapWindow::CreateTile()
 	// 현재 정보 Update
 
 	char CurrentCountX[MAX_PATH] = {};
-	sprintf_s(CurrentCountX, "%.1d", CountCol);
+	sprintf_s(CurrentCountX, "%.1d", (int)CountCol);
 	m_CurrentTileCountCol->SetText(CurrentCountX);
 
 	char CurrentCountY[MAX_PATH] = {};
-	sprintf_s(CurrentCountY, "%.1d", CountRow);
+	sprintf_s(CurrentCountY, "%.1d", (int)CountRow);
 	m_CurrentTileCountRow->SetText(CurrentCountY);
 
 	char CurrentSizeX[MAX_PATH] = {};
-	sprintf_s(CurrentCountY, "%.1f", CountCol);
+	sprintf_s(CurrentCountY, "%.1f", (double)CountCol);
 	m_CurrentTileSizeCol->SetText(CurrentCountY);
 
 	char CurrentSizeY[MAX_PATH] = {};
-	sprintf_s(CurrentSizeY, "%.1f", CountRow);
+	sprintf_s(CurrentSizeY, "%.1f", (double)CountRow);
 	m_CurrentTileSizeRow->SetText(CurrentSizeY);
 
 

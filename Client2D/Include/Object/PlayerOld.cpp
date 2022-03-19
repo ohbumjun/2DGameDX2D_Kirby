@@ -1645,7 +1645,7 @@ void CPlayerOld::SpecialChange(float DeltaTime)
 		return;
 
 	// 능력 몬스터가 아니라면 Return
-	if (!m_EatenMonster->IsAbilityMonster())
+	if (m_EatenMonster->GetMonsterType() != Monster_Type::Ability)
 		return;
 
 }

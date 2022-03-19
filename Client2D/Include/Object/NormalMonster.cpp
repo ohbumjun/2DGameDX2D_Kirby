@@ -4,7 +4,7 @@ CNormalMonster::CNormalMonster()
 {
 	// SetTypeID<CNormalMonster>();
 
-	m_IsAbilityMonster = false;
+	m_MonsterType = Monster_Type::Normal;
 }
 
 CNormalMonster::CNormalMonster(const CNormalMonster& Monster) : CMonster(Monster)

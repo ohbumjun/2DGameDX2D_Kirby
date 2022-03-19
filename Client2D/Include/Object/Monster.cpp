@@ -17,7 +17,7 @@ CMonster::CMonster() :
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
 	m_IsBeingHit(false),
-	m_BeginPulledAccel(3.f),
+	m_BeginPulledAccel(2.2f),
 	m_BeginPulledAccelSum(0.f),
 	m_AttackDistance(150.f),
 	m_DashDistance(500.f),
@@ -26,11 +26,11 @@ CMonster::CMonster() :
 	m_RandomMoveTimeMax(5.f),
 	m_IsBeingSpitOut(false),
 	m_SpitOutDistanceMax(500.f),
-	m_IsAbilityMonster(false),
 	m_HitLimitTime(1.f),
 	m_HitLimitTimeMax(1.f)
 {
 	SetTypeID<CMonster>();
+	m_MonsterType = Monster_Type::Normal;
 }
 
 CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)

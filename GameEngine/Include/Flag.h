@@ -123,6 +123,12 @@ enum Collision_Channel
 	End
 };
 
+enum class Monster_Type {
+	Normal,
+	Ability,
+	Boss
+};
+
 enum class Collision_Interaction
 {
 	Ignore,
@@ -215,6 +221,7 @@ enum class Tile_Shape {
 	Rhombus,
 	End
 };
+
 
 enum class Nav_Node_Type {
 	None,

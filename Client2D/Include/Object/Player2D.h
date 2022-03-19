@@ -112,6 +112,10 @@ private :
 	float m_SlideAttackTime;
 	float m_SlideAttackTimeMax;
 
+	// Change
+	bool m_IsChanging;
+	float m_ChangeTime;
+	float m_ChangeTimeMax;
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
 public :
@@ -158,6 +162,8 @@ private:
 	void ResetMoveInfo();
 	void ResetCameraInfoToPlayer();
 	virtual void CheckBelowWorldResolution() override;
+	void StopPlayer();
+	
 private :
 	// Hit
 	void UpdateBeingHit(float DeltaTime);
@@ -206,6 +212,7 @@ private:
 	void ChangePlayerFallAnimation();
 	void ChangePlayerSpitOutAnimation();
 	void ChangePlayerSlideAttackAnimation();
+	void ChangePlayerChangeAnimation();
 private :
 	// Spit Out & Pull
 	void SpitOut(float DeltaTime);
@@ -220,9 +227,11 @@ private :
 	void ChangeToAfterWardsAnimationAfterSpitOut();
 private :
 	// Special Change
-	void SpecialChange(float DeltaTime);
+	void SpecialChangeStart(float DeltaTime);
+	void SpecialChange();
 	void SetBasicSettingToChangedState();
 	void SpecialChangeEffect();
+	void UpdateChangeState(float DeltaTime);
 public :
 	void SetIsEatingMonster(bool Enable);
 	void SetEatenMonster(class CMonster* Monster);
