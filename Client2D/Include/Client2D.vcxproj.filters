@@ -79,6 +79,9 @@
     <Filter Include="02. Object\10. Item">
       <UniqueIdentifier>{db6918bc-6df6-4d6c-a733-cb5b07c574b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\03. Monster\03. Boss">
+      <UniqueIdentifier>{25bba7f1-6485-4720-ab62-08da4a459511}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -284,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="Object\EffectChangeToGreen5.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BossMonster.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen5.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossMonster.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

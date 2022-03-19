@@ -52,6 +52,9 @@
     <Filter Include="03. Object\08. Item">
       <UniqueIdentifier>{e06c28b7-a354-42f6-8fa7-cc9538f9c92d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\03. Monster\03. Boss">
+      <UniqueIdentifier>{e1822814-e085-4dad-9544-5a85c29a2dd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="Object\EffectChangeToGreen4.cpp">
       <Filter>03. Object\07. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\MiddleBossHammer.cpp">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\BossMonster.cpp">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToGreen5.h">
       <Filter>03. Object\07. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MiddleBossHammer.h">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossMonster.h">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
