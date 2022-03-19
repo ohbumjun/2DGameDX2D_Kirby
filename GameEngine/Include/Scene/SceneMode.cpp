@@ -1,6 +1,7 @@
 #include "SceneMode.h"
 #include "../GameObject/GameObject.h"
 #include "../Scene/Scene.h"
+#include "../GameObject/Line.h"
 
 CSceneMode::CSceneMode() :
 m_Scene(nullptr),

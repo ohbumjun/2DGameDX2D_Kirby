@@ -11,6 +11,7 @@
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
 #include "../Object/LineContainer.h"
+#include "GameObject/Line.h"
 
 CGreen3Scene::CGreen3Scene()
 {}
@@ -36,9 +37,21 @@ void CGreen3Scene::Start()
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
 
+	// Line 세팅 
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
+	// LineContainer 는 없지만, 현재 Scene에 Line이 존재한다면
+	if (LineContainer == nullptr && m_Scene->FindGameObjectByTypeID(typeid(CLine).hash_code()))
+	{
+		// 없다면, 새롭게 Line Container Game Object 을 만들어준 다음
+		// Line Container 자식으로 넣어준다.
+		LineContainer = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLineContainer>("LineContainer");
+
+		LineContainer->AddChildGameObject(m_Scene->FindGameObjectByTypeID(typeid(CLine).hash_code()));
+	}
+
 	SetLineContainerObject(LineContainer);
+
 
 	if (CSceneManager::GetStaticPlayerInfo())
 	{

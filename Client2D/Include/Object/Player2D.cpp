@@ -536,7 +536,7 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	// 여기로 들어온 것은 Dash Move 중은 아니라는 것이므로
 	if (m_DashVelocity > 0.f)
 	{
-		m_DashVelocity -= m_DashMoveAccel;
+		m_DashVelocity -= m_DashMoveAccel * 0.3f;
 
 		if (m_DashVelocity < 0.f)
 			m_DashVelocity = 0.f;
@@ -735,7 +735,7 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	// 대쉬 속도 Update
 	if (m_DashVelocity > 0.f)
 	{
-		m_DashVelocity -= m_DashMoveAccel;
+		m_DashVelocity -= m_DashMoveAccel * 0.3f;
 
 		if (m_DashVelocity < 0.f)
 			m_DashVelocity = 0.f;
@@ -1117,7 +1117,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	// 레버를 누르고 있지 않다면, 레버 속도를 감속 시킨다.
 	if (!m_IsLeverMoving)
 	{
-		m_LeverVelocity -= m_LeverMoveAccel * 0.5f ;
+		m_LeverVelocity -= m_LeverMoveAccel * 0.3f ;
 
 		if (m_LeverVelocity <= 0.f)
 			m_LeverVelocity = 0.f;
@@ -1126,7 +1126,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 	// 대쉬를 진행하고 있지 않다면, 대쉬 속도도 감속 시킨다.
 	if (!m_IsDashMoving)
 	{
-		m_DashVelocity -= m_DashMoveAccel * 0.5f;
+		m_DashVelocity -= m_DashMoveAccel * 0.3f;
 
 		if (m_DashVelocity <= 0.f)
 			m_DashVelocity = 0.f;

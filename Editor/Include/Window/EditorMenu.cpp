@@ -18,10 +18,25 @@
 #include "../Object/TileMapEmpty.h"
 #include "../Object/BackGround.h"
 #include "../Object/LineContainer.h"
+#include "../Object/Line.h"
+/*
 #include "../Object/YellowBird.h"
 #include "../Object/PurpleBeatle.h"
 #include "../Object/NormalBear.h"
-#include "../Object/Line.h"
+#include "../Object/MushRoom.h"
+#include "../Object/HPYellowItem.h"
+#include "../Object/HPGreenItem.h"
+#include "../Object/HPRedItem.h"
+#include "../Object/Block.h"
+#include "../Object/BeamMonster.h"
+#include "../Object/FireMonster.h"
+#include "../Object/FightMonster.h"
+#include "../Object/EffectChangeToGreen2.h"
+#include "../Object/EffectChangeToGreen1.h"
+#include "../Object/EffectChangeToGreen5.h"
+#include "../Object/EffectChangeToGreen4.h"
+#include "../Object/EffectSceneChangeStar.h"
+*/
 // Component
 #include "Component/SpriteComponent.h"
 #include "Component/StaticMeshComponent.h"
@@ -640,6 +655,99 @@ void CEditorMenu::LoadObject()
 		LoadedObject->LoadFullPath(FilePathMultibyte);
 
 
+		/*
+		< 문제점  > 여기서만 Type 변환을 해주는 것이 아니라
+		실제 Object 안에서 Type 변환을 해줘야만 한다 ...
+		
+		size_t GameObjectTypeID = LoadedObject->GetTypeID();
+		
+		if (GameObjectTypeID == typeid(CPlayer2D).hash_code())
+		{
+			LoadedObject = (CPlayer2D*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CYellowBird).hash_code())
+		{
+			LoadedObject = (CYellowBird*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CPurpleBeatle).hash_code())
+		{
+			LoadedObject = (CPurpleBeatle*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CNormalBear).hash_code())
+		{
+			LoadedObject = (CNormalBear*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
+		{
+			LoadedObject = (CMushRoom*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())
+		{
+			LoadedObject = (CHPYellowItem*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CHPGreenItem).hash_code())
+		{
+			LoadedObject = (CHPGreenItem*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CHPRedItem).hash_code())
+		{
+			LoadedObject = (CHPRedItem*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CBlock).hash_code())
+		{
+			LoadedObject = (CBlock*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())
+		{
+			LoadedObject = (CBeamMonster*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CFireMonster).hash_code())
+		{
+			LoadedObject = (CFireMonster*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CFightMonster).hash_code())
+		{
+			LoadedObject = (CFightMonster*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CTileMapEmpty).hash_code())
+		{
+			LoadedObject = (CTileMapEmpty*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CBackGround).hash_code())
+		{
+			LoadedObject = (CBackGround*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CEffectSceneChangeStar).hash_code())
+		{
+			LoadedObject = (CEffectSceneChangeStar*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CEffectChangeToGreen2).hash_code())
+		{
+			LoadedObject = (CEffectChangeToGreen2*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CEffectChangeToGreen1).hash_code())
+		{
+			LoadedObject = (CEffectChangeToGreen1*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CEffectChangeToGreen4).hash_code())
+		{
+			LoadedObject = (CEffectChangeToGreen4*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CEffectChangeToGreen5).hash_code())
+		{
+			LoadedObject = (CEffectChangeToGreen5*)LoadedObject;
+		}
+		if (GameObjectTypeID == typeid(CLine).hash_code())
+		{
+			LoadedObject = (CLine*)LoadedObject;
+		}
+		else if (GameObjectTypeID == typeid(CLineContainer).hash_code())
+		{
+			LoadedObject = (CLineContainer*)LoadedObject;
+		}
+		*/
+		
+
 		// 중복 방지 
 		if (Hierarchy->GetCreatedObjectListBox()->CheckItem(LoadedObject->GetName()))
 		{
@@ -723,7 +831,10 @@ void CEditorMenu::LoadObject()
 		ShowObject->SetStartPos(StartPos);
 		ShowObject->SetEndPos(EndPos);
 
-		if (LoadedObject->CheckType<CLine>())
+		/*
+		아래의 과정은 각 Scene 에서의 Change 과정에서 세팅한다. 
+		
+		 if (LoadedObject->CheckType<CLine>())
 		{
 			// Line 을 Load 한 경우, 현재 Scene 에 Line Container가 존재하는지 확인하고
 		// 존재한다면, 해당 Line Container 의 자식으로 넣어주고
@@ -739,11 +850,14 @@ void CEditorMenu::LoadObject()
 				// Line Container 자식으로 넣어준다.
 				CLineContainer* LineContainer = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLineContainer>("LineContainer");
 
-				LineContainer->AddChildGameObject(LoadedObject);
+				LineContainer->AddChildGameObject((CLine*)LoadedObject);
 
 				Hierarchy->GetCreatedObjectListBox()->AddItem(LineContainer->GetName());
 			}
 		}
+		 */
+
+		
 	}
 }
 
