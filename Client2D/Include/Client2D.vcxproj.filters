@@ -306,6 +306,9 @@
     <ClCompile Include="Object\Apple.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Tornado.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -531,6 +534,9 @@
       <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
     <ClInclude Include="Object\Apple.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Tornado.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>

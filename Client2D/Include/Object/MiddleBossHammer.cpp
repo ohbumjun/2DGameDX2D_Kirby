@@ -42,16 +42,20 @@ void CMiddleBossHammer::Start()
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
 	// Far Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
 
 	// Hit 이후에는, 바로 Idle 로 넘어가게 세팅한다.
@@ -126,7 +130,7 @@ void CMiddleBossHammer::FarAttack()
 		// 가운데
 		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
 
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
+		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 
 		AttackEffect->SetRightAttackDir(0.f);
@@ -143,6 +147,8 @@ void CMiddleBossHammer::FarAttack()
 	AttackEffect->SetCreateMultipleEffectAfterWards(true);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
+	m_IsAttacking = false;
+
 	ChangeIdleAnimation();
 }
 
@@ -154,23 +160,29 @@ void CMiddleBossHammer::CloseAttack()
 	if (m_ObjectMoveDir.x < 0.f)
 	{
 		AttackEffect->SetWorldPos(
-			GetWorldPos().x - GetWorldScale().x * 0.3f,
+			GetWorldPos().x - GetWorldScale().x * 0.7f,
 				GetWorldPos().y - GetWorldScale().y * 0.3f,
 			0.f);
+
+		AttackEffect->SetLeftAttackDir();
 	}
 	else
 	{
 		AttackEffect->SetWorldPos(
-			GetWorldPos().x + GetWorldScale().x * 0.3f,
+			GetWorldPos().x + GetWorldScale().x * 0.7f,
 			GetWorldPos().y - GetWorldScale().y * 0.3f,
 			0.f);
+
+		AttackEffect->SetRightAttackDir();
 	}
 
 	AttackEffect->AddRelativeRotationZ(90.f);
 
 	AttackEffect->SetLifeTime(0.5f);
 
-	AttackEffect->SetAttackDirX(0.f);
+	m_IsAttacking = false;
+
+	ChangeIdleAnimation();
 }
 
 void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)

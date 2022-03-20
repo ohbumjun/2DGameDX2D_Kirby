@@ -5,8 +5,8 @@
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
 	m_AttackResetTimeMax(2.f),
-	m_FarAttackLimitTimeMax(6.f),
-	m_CloseAttackLimitTimeMax(5.f)
+	m_FarAttackLimitTimeMax(4.5f),
+	m_CloseAttackLimitTimeMax(3.5f)
 {
 	m_MonsterType = Monster_Type::Boss;
 }
