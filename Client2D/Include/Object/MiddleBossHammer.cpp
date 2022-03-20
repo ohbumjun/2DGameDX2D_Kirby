@@ -106,6 +106,11 @@ void CMiddleBossHammer::FarAttack()
 	if (m_IsAttacking)
 		return;
 
+	if (m_FarAttackLimitTime > 0.f)
+		return;
+
+	m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
+
 	m_IsAttacking = true;
 
 	Vector3 PlayerPos = m_Scene->GetPlayerObject()->GetWorldPos();
@@ -151,6 +156,11 @@ void CMiddleBossHammer::FarAttack()
 
 void CMiddleBossHammer::CloseAttack()
 {
+	if (m_CloseAttackLimitTime > 0.f)
+		return;
+
+	m_CloseAttackLimitTime = m_CloseAttackLimitTimeMax;
+
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
 	//

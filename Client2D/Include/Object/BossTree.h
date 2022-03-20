@@ -8,9 +8,6 @@ protected:
     CBossTree();
     CBossTree(const CBossTree& Monster);
     virtual ~CBossTree() override;
-private :
-    float m_FarAttackLimitTime;
-    float m_FarAttackLimitTimeMax;
 public:
     virtual void Start() override;
     virtual bool Init() override;

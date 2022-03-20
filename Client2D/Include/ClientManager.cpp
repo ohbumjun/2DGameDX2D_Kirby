@@ -131,8 +131,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
-	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
 	// CSceneManager::GetInst()->GetScene()->Load("Green1_OnlyBear.scn", SCENE_PATH);

@@ -4,7 +4,9 @@
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
-	m_AttackResetTimeMax(2.f)
+	m_AttackResetTimeMax(2.f),
+	m_FarAttackLimitTimeMax(4.f),
+	m_CloseAttackLimitTimeMax(3.f)
 {
 	m_MonsterType = Monster_Type::Boss;
 }
@@ -50,6 +52,35 @@ void CBossMonster::MakeBossStartEffect()
 	m_StartBossStage = true;
 }
 
+void CBossMonster::UpdateAttackResetTime(float DeltaTime)
+{
+	if (m_AttackResetTime < m_AttackResetTimeMax)
+	{
+		m_AttackResetTime += DeltaTime;
+	}
+	else
+	{
+		if (m_IsAttacking)
+		{
+			m_IsAttacking = false;
+		}
+		m_AttackResetTime -= m_AttackResetTimeMax;
+	}
+}
+
+void CBossMonster::UpdateAttackLimitTimes(float DeltaTime)
+{
+	if (m_FarAttackLimitTime > 0.f)
+	{
+		m_FarAttackLimitTime -= DeltaTime;
+	}
+
+	if (m_CloseAttackLimitTime > 0.f)
+	{
+		m_CloseAttackLimitTime -= DeltaTime;
+	}
+}
+
 void CBossMonster::AIDeathSpecific(float DeltaTime)
 {
 	m_Scene->SetWorldResolution(m_InitWorldResolution.x, m_InitWorldResolution.y);
@@ -67,18 +98,9 @@ void CBossMonster::Update(float DeltaTime)
 		MakeBossStartEffect();
 	}
 
-	if (m_AttackResetTime < m_AttackResetTimeMax)
-	{
-		m_AttackResetTime += DeltaTime;
-	}
-	else
-	{
-		if (m_IsAttacking)
-		{
-			m_IsAttacking = false;
-		}
-		m_AttackResetTime -= m_AttackResetTimeMax;
-	}
+	UpdateAttackResetTime(DeltaTime);
+
+	UpdateAttackLimitTimes(DeltaTime);
 }
 
 void CBossMonster::PostUpdate(float DeltaTime)

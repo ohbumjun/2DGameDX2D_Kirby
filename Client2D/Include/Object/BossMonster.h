@@ -18,6 +18,12 @@ protected:
     float m_AttackResetTimeMax;
     float m_CloseAttackDistance;
     float m_FarAttackDistance;
+protected:
+    float m_FarAttackLimitTime;
+    float m_FarAttackLimitTimeMax;
+protected:
+    float m_CloseAttackLimitTime;
+    float m_CloseAttackLimitTimeMax;
 public:
     void SetAttackEnd()
     {
@@ -25,6 +31,8 @@ public:
     }
 protected:
     void MakeBossStartEffect();
+    void UpdateAttackResetTime(float DeltaTime);
+    void UpdateAttackLimitTimes(float DeltaTime);
 protected:
     virtual void AIDeathSpecific(float DeltaTime) override;
 public:

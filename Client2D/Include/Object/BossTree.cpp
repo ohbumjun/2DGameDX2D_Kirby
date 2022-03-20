@@ -9,9 +9,7 @@
 
 class CAnimationSequence2DInstance;
 
-CBossTree::CBossTree()  :
-	m_FarAttackLimitTime(0.f),
-	m_FarAttackLimitTimeMax(5.f)
+CBossTree::CBossTree()  
 {
 
 	SetTypeID<CBossTree>();
@@ -23,6 +21,9 @@ CBossTree::CBossTree()  :
 	m_AttackDistance = 900.f;
 	m_CloseAttackDistance = 350.f;
 	m_FarAttackDistance = 900.f;
+
+	m_FarAttackLimitTime = 0.f;
+	m_FarAttackLimitTimeMax = 5.f;
 }
 
 CBossTree::CBossTree(const CBossTree& Monster) : CBossMonster(Monster)
@@ -85,11 +86,6 @@ void CBossTree::Update(float DeltaTime)
 	m_MonsterMoveVelocity = 0.f;
 
 	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
-
-	if (m_FarAttackLimitTime > 0.f)
-	{
-		m_FarAttackLimitTime -= DeltaTime;
-	}
 }
 
 void CBossTree::PostUpdate(float DeltaTime)
@@ -110,6 +106,8 @@ void CBossTree::FarAttack()
 	if (m_FarAttackLimitTime > 0.f)
 		return;
 
+	m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
+
 	m_IsAttacking = true;
 
 	for (int i = 0; i < 3; i++)
@@ -124,7 +122,6 @@ void CBossTree::FarAttack()
 		AttackEffect->SetPhysicsSimulate(true);
 	}
 
-	m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
