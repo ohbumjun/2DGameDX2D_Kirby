@@ -94,20 +94,6 @@ void CMiddleBossHammer::Update(float DeltaTime)
 void CMiddleBossHammer::PostUpdate(float DeltaTime)
 {
 	CBossMonster::PostUpdate(DeltaTime);
-
-	if (m_AttackResetTime < m_AttackResetTimeMax)
-	{
-		m_AttackResetTime += DeltaTime;
-
-		if (m_AttackResetTime >= m_AttackResetTimeMax)
-		{
-			if (m_IsAttacking)
-			{
-				m_IsAttacking = false;
-			}
-			m_AttackResetTime -= m_AttackResetTimeMax;
-		}
-	}
 }
 
 CMiddleBossHammer* CMiddleBossHammer::Clone()

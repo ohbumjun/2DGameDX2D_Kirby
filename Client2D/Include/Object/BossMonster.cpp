@@ -62,6 +62,20 @@ void CBossMonster::Update(float DeltaTime)
 	{
 		MakeBossStartEffect();
 	}
+
+	if (m_AttackResetTime < m_AttackResetTimeMax)
+	{
+		m_AttackResetTime += DeltaTime;
+
+		if (m_AttackResetTime >= m_AttackResetTimeMax)
+		{
+			if (m_IsAttacking)
+			{
+				m_IsAttacking = false;
+			}
+			m_AttackResetTime -= m_AttackResetTimeMax;
+		}
+	}
 }
 
 void CBossMonster::PostUpdate(float DeltaTime)

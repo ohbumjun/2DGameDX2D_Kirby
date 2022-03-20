@@ -13,7 +13,8 @@ CBossTree::CBossTree()
 	m_DashDistance = 1000.f;
 	m_JumpVelocity = 50.f;
 	m_AttackDistance = 500.f;
-	m_IsGroundObject = true;
+	m_IsGroundObject = false;
+	m_PhysicsSimulate = false;
 }
 
 CBossTree::CBossTree(const CBossTree& Monster) : CBossMonster(Monster)
@@ -26,11 +27,11 @@ void CBossTree::Start()
 {
 	CBossMonster::Start();
 
-	m_PhysicsSimulate = true;
+	m_PhysicsSimulate = false;
 
-	m_IsGround = true;
+	m_IsGround = false;
 
-	m_IsGroundObject = true;
+	m_IsGroundObject = false;
 
 	m_Sprite->GetAnimationInstance()->Play();
 
@@ -64,38 +65,21 @@ bool CBossTree::Init()
 	if (!CBossMonster::Init())
 		return false;
 
-	// LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
-
-	// SetCurrentAnimation("RightIdle");
-
-	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
-
-
 	return true;
 }
 
 void CBossTree::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
+
+	m_MonsterMoveVelocity = 0.f;
+
+	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
 }
 
 void CBossTree::PostUpdate(float DeltaTime)
 {
 	CBossMonster::PostUpdate(DeltaTime);
-
-	if (m_AttackResetTime < m_AttackResetTimeMax)
-	{
-		m_AttackResetTime += DeltaTime;
-
-		if (m_AttackResetTime >= m_AttackResetTimeMax)
-		{
-			if (m_IsAttacking)
-			{
-				m_IsAttacking = false;
-			}
-			m_AttackResetTime -= m_AttackResetTimeMax;
-		}
-	}
 }
 
 CBossTree* CBossTree::Clone()

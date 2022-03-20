@@ -152,7 +152,7 @@ void CAnimationSequence2DInstance::EditSequence2DName(const std::string& PrevNam
 
 	NewAnimation->m_Sequence = Animation->m_Sequence;
 	NewAnimation->m_Sequence->SetName(NewName);
-	NewAnimation->m_Name = Animation->m_Name;
+	NewAnimation->m_Name = NewName;
 	NewAnimation->m_Loop = Animation->m_Loop;
 	NewAnimation->m_PlayTime = Animation->m_PlayTime;
 	NewAnimation->m_PlayScale = Animation->m_PlayScale;
