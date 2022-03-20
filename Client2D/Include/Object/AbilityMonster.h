@@ -8,7 +8,7 @@ class CAbilityMonster :
     friend class CScene;
 protected:
     CAbilityMonster();
-    CAbilityMonster(const CAbilityMonster& Monster);
+    CAbilityMonster(const CAbilityMonster& Monster); //
     virtual ~CAbilityMonster();
 protected :
     Ability_State m_AbilityState;
