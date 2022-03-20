@@ -31,3 +31,4 @@ enum class KirbyAttackEffect_Type {
 	FightFall,
 	FireFall
 };
+

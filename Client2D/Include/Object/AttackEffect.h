@@ -27,6 +27,7 @@ public :
 	void SetPhysicsSimulate(bool Enable)
 {
 		m_PhysicsSimulate = Enable;
+		m_FallStartY = GetWorldPos().y;
 }
 	void JumpStart()
 {

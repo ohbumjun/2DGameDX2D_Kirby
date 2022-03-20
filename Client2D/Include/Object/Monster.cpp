@@ -9,6 +9,7 @@
 #include "Player2D.h"
 #include "../UI/SimpleHUD.h"
 
+
 CMonster::CMonster() :
 	m_HPMax(5.f),
 	m_HP(5.f),

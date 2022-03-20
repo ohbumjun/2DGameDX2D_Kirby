@@ -2,19 +2,27 @@
 #include "HammerGorillaFarAttack.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
+#include "Engine.h"
 #include "Animation/AnimationSequence2DInstance.h"
-#include "HammerGorillaCloseAttack.h"
+#include "Apple.h"
+#include "Component/ColliderCircle.h"
 
 class CAnimationSequence2DInstance;
 
-CBossTree::CBossTree() 
+CBossTree::CBossTree()  :
+	m_FarAttackLimitTime(0.f),
+	m_FarAttackLimitTimeMax(5.f)
 {
+
 	SetTypeID<CBossTree>();
 	m_DashDistance = 1000.f;
 	m_JumpVelocity = 50.f;
-	m_AttackDistance = 500.f;
 	m_IsGroundObject = false;
 	m_PhysicsSimulate = false;
+
+	m_AttackDistance = 900.f;
+	m_CloseAttackDistance = 350.f;
+	m_FarAttackDistance = 900.f;
 }
 
 CBossTree::CBossTree(const CBossTree& Monster) : CBossMonster(Monster)
@@ -57,6 +65,8 @@ void CBossTree::Start()
 		&CMonster::ChangeIdleAnimation);
 		*/
 
+	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.7f);
+
 	m_IsAttacking = false;
 }
 
@@ -75,6 +85,11 @@ void CBossTree::Update(float DeltaTime)
 	m_MonsterMoveVelocity = 0.f;
 
 	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
+
+	if (m_FarAttackLimitTime > 0.f)
+	{
+		m_FarAttackLimitTime -= DeltaTime;
+	}
 }
 
 void CBossTree::PostUpdate(float DeltaTime)
@@ -92,44 +107,24 @@ void CBossTree::FarAttack()
 	if (m_IsAttacking)
 		return;
 
+	if (m_FarAttackLimitTime > 0.f)
+		return;
+
 	m_IsAttacking = true;
 
-	Vector3 PlayerPos = m_Scene->GetPlayerObject()->GetWorldPos();
-
-	CHammerGorillaFarAttack* AttackEffect = nullptr;
-
-	// 왼쪽을 보고 있다면 
-	if (m_ObjectMoveDir.x < 0.f)
+	for (int i = 0; i < 3; i++)
 	{
-		// 가운데
-		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
+		float XPos = ((float)(rand()) / (float)(RAND_MAX)) * (float)CEngine::GetInst()->GetResolution().Width;
+		float YPos = (float)CEngine::GetInst()->GetResolution().Height;
 
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
+		CApple* AttackEffect = m_Scene->CreateGameObject<CApple>("Attack");
 
-		// AttackEffect->SetLeftAttackDir(0.f);
-	}
-	// 오른쪽으로 보고 있다면 
-	else
-	{
-		// 가운데
-		AttackEffect = m_Scene->CreateGameObject<CHammerGorillaFarAttack>("Attack");
+		AttackEffect->SetWorldPos(XPos, YPos, GetWorldPos().z);
 
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-
-		// AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetPhysicsSimulate(true);
 	}
 
-	// AttackEffect->SetFireOwner(this);
-
-	AttackEffect->SetJumpVelocity(80.f);
-
-	AttackEffect->SetPhysicsSimulate(true);
-
-	AttackEffect->JumpStart();
-
-	// AttackEffect->SetCreateMultileAfter(true);
+	m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
@@ -137,6 +132,7 @@ void CBossTree::FarAttack()
 
 void CBossTree::CloseAttack()
 {
+	/*
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
 	//
@@ -160,6 +156,7 @@ void CBossTree::CloseAttack()
 	AttackEffect->SetLifeTime(0.5f);
 
 	// AttackEffect->SetAttackDirX(0.f);
+	*/
 }
 
 void CBossTree::AIAttackSpecific(float DeltaTime)

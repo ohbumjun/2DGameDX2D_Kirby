@@ -1,11 +1,10 @@
 #include "BossMonster.h"
-
 #include <Scene/Scene.h>
-
 #include "Engine.h"
 
 CBossMonster::CBossMonster() :
-	m_StartBossStage(false)
+	m_StartBossStage(false),
+	m_AttackResetTimeMax(2.f)
 {
 	m_MonsterType = Monster_Type::Boss;
 }
@@ -41,6 +40,11 @@ void CBossMonster::MakeBossStartEffect()
 
 	float WorldRightEnd = GetWorldPos().x + (float)RS.Width * 0.5f;
 
+	if (m_Scene->GetWorldResolution().x <= WorldRightEnd)
+	{
+		WorldRightEnd = m_Scene->GetWorldResolution().x;
+	}
+
 	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
 	m_StartBossStage = true;
@@ -66,15 +70,14 @@ void CBossMonster::Update(float DeltaTime)
 	if (m_AttackResetTime < m_AttackResetTimeMax)
 	{
 		m_AttackResetTime += DeltaTime;
-
-		if (m_AttackResetTime >= m_AttackResetTimeMax)
+	}
+	else
+	{
+		if (m_IsAttacking)
 		{
-			if (m_IsAttacking)
-			{
-				m_IsAttacking = false;
-			}
-			m_AttackResetTime -= m_AttackResetTimeMax;
+			m_IsAttacking = false;
 		}
+		m_AttackResetTime -= m_AttackResetTimeMax;
 	}
 }
 
