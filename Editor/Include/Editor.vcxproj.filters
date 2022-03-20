@@ -177,6 +177,9 @@
     <ClCompile Include="Object\BossMonster.cpp">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BossTree.cpp">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -300,6 +303,9 @@
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
     <ClInclude Include="Object\BossMonster.h">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossTree.h">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
   </ItemGroup>

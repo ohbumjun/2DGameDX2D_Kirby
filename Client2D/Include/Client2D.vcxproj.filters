@@ -300,6 +300,9 @@
     <ClCompile Include="Object\HammerGorillaCloseAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BossTree.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -520,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="Object\HammerGorillaCloseAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossTree.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

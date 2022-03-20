@@ -176,6 +176,7 @@
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\Block.cpp" />
     <ClCompile Include="Object\BossMonster.cpp" />
+    <ClCompile Include="Object\BossTree.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\Block.h" />
     <ClInclude Include="Object\BossMonster.h" />
+    <ClInclude Include="Object\BossTree.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />

@@ -7,7 +7,7 @@ class CMonster :
 public:
     CMonster();
     CMonster(const CMonster& Monster);
-    virtual ~CMonster();
+    virtual ~CMonster() override;
 private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
@@ -21,14 +21,21 @@ private:
 public:
     void LoadAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
     void SetCurrentAnimation(const std::string& Name);
+protected :
+    virtual void ChangeIdleAnimation(){}
+    virtual void ChangeWalkAnimation(){}
+    virtual void ChangeHitAnimation(){}
+    virtual void ChangeTraceAnimation(){}
+    virtual void ChangeDeathAnimation(){}
+    virtual void ChangeAttackAnimation(){}
 public:
     virtual void Start() override;
     virtual bool Init() override;
-    virtual void Update(float DeltaTime);
-    virtual void PostUpdate(float DeltaTime);
+    virtual void Update(float DeltaTime) override;
+    virtual void PostUpdate(float DeltaTime) override;
     virtual CMonster* Clone() override;
-    virtual void Save(FILE* pFile);
-    virtual void Load(FILE* pFile);
+    virtual void Save(FILE* pFile) override;
+    virtual void Load(FILE* pFile) override;
 };
 
 
