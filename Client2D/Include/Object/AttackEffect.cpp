@@ -37,6 +37,11 @@ void CAttackEffect::SetLeftAttackDir(float YDir)
 	m_AttackDir.y = YDir;
 }
 
+void CAttackEffect::SetAttackDirX(float XDir)
+{
+	m_AttackDir.x = XDir;
+}
+
 bool CAttackEffect::CheckSideCollision()
 {
 	if (!m_SideCollisionApplied)

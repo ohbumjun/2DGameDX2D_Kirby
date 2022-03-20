@@ -18,7 +18,6 @@ private:
     bool m_JumpEnable;
     float m_JumpLimitTime;
     float m_JumpLimitTimeMax;
-    float m_DeathTime;
 public:
     void SetAttackEnd()
     {

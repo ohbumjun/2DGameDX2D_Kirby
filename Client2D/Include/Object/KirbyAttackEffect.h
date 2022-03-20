@@ -19,7 +19,6 @@ private:
     KirbyAttackEffect_Type m_AttackType;
 protected:
     void SetAttackType(KirbyAttackEffect_Type Type);
-    void SetAttackDirX(float XDir);
 protected :
     virtual void BottomCollisionSpecificAction() override;
     virtual void SetRightAttackDir(float YDir = 0.f) override;

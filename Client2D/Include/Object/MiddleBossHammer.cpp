@@ -3,6 +3,7 @@
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
 #include "Animation/AnimationSequence2DInstance.h"
+#include "HammerGorillaCloseAttack.h"
 
 class CAnimationSequence2DInstance;
 
@@ -82,13 +83,6 @@ bool CMiddleBossHammer::Init()
 void CMiddleBossHammer::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
-
-	m_DeathTime += DeltaTime * 1.f;
-
-	if (m_DeathTime >= 30.f)
-	{
-		m_HP = 0.f;
-	}
 }
 
 void CMiddleBossHammer::PostUpdate(float DeltaTime)
@@ -164,7 +158,31 @@ void CMiddleBossHammer::FarAttack()
 }
 
 void CMiddleBossHammer::CloseAttack()
-{}
+{
+	// Attack Back Effect
+	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
+
+	if (m_ObjectMoveDir.x < 0.f)
+	{
+		AttackEffect->SetWorldPos(
+			GetWorldPos().x - GetWorldScale().x * 0.3f,
+				GetWorldPos().y - GetWorldScale().y * 0.3f,
+			0.f);
+	}
+	else
+	{
+		AttackEffect->SetWorldPos(
+			GetWorldPos().x + GetWorldScale().x * 0.3f,
+			GetWorldPos().y - GetWorldScale().y * 0.3f,
+			0.f);
+	}
+
+	AttackEffect->AddRelativeRotationZ(90.f);
+
+	AttackEffect->SetLifeTime(0.5f);
+
+	AttackEffect->SetAttackDirX(0.f);
+}
 
 void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)
 {

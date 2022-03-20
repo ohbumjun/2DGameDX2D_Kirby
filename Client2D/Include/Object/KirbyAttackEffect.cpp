@@ -138,11 +138,6 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 	}
 }
 
-void CKirbyAttackEffect::SetAttackDirX(float XDir)
-{
-	m_AttackDir.x = XDir;
-}
-
 void CKirbyAttackEffect::BottomCollisionSpecificAction()
 {
 	// Attack Back Effect

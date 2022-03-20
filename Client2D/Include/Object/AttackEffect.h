@@ -42,6 +42,8 @@ protected :
 	virtual void BottomCollisionSpecificAction();
 	virtual void SetRightAttackDir(float YDir = 0.f);
 	virtual void SetLeftAttackDir(float YDir = 0.f);
+	void SetAttackDirX(float XDir);
+
 protected:
 	virtual bool CheckSideCollision();
 	virtual bool CheckBottomCollision();
