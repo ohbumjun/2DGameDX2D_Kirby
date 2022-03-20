@@ -25,6 +25,10 @@ public :
 {
 		return A->m_ZOrder > B->m_ZOrder;
 }
+	void SetScene(class CScene* Scene)
+{
+		m_Scene = Scene;
+}
 public :
 	class CScene* GetScene() const
 {

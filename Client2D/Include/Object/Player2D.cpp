@@ -5,6 +5,7 @@
 #include "Ui/UIDamageFont.h"
 // Scene
 #include "Scene/Scene.h"
+#include "Scene/ViewPort.h"
 #include <Scene/CameraManager.h>
 #include <Scene/SceneManager.h>
 #include "Scene/NavigationManager.h"
@@ -204,8 +205,12 @@ void CPlayer2D::Start()
 	{
 		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-		// m_KirbyState->AddChild(m_SimpleHUDWidget);
 	}
+
+	// Scene 정보 다시 세팅
+	m_SimpleHUDWidget->GetWidgetWindow()->SetScene(m_Scene);
+
+	m_SimpleHUDWidget->GetWidgetWindow()->GetViewPort()->SetScene(m_Scene);
 
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
 
@@ -219,7 +224,6 @@ void CPlayer2D::Start()
 		m_KirbyState->AddChild(m_Camera);
 	}
 	*/
-
 
 	// Key Input 세팅 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp", 

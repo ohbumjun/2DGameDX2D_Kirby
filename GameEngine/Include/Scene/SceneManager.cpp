@@ -80,7 +80,7 @@ bool CSceneManager::ChangeScene()
 				m_StaticPlayer->SetScene(m_Scene);
 
 				// 현재 Scene 에서 Player2D 에 해당하는 GameObject를 지운다.
-				// m_Scene->DeletePlayerFromScene();
+				m_Scene->DeletePlayerFromScene();
 
 				// 해당 m_StaticPlayer를 Obj List에 추가한다. 
 				m_Scene->m_ObjList.push_back(m_StaticPlayer);

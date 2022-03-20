@@ -183,7 +183,7 @@ void CHammerGorillaFarAttack::CollisionCallback(const CollisionResult& Result)
 		// DestMonster->Damage(2.f);
 
 		// Create Damage Font
-		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+		ObjectWindow = Player->FindComponentByType<CWidgetComponent>();
 
 		if (ObjectWindow)
 		{
