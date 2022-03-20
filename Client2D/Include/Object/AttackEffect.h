@@ -18,6 +18,7 @@ protected :
 	float m_FallStartY;
 	Vector2 m_AttackDir;
 	CSharedPtr<class CSpriteComponent> m_MainSprite;
+	CSharedPtr<class CColliderCircle> m_Collider;
 public :
 	void SetJumpVelocity(float Velocity)
 {
@@ -46,6 +47,8 @@ protected:
 	virtual bool CheckBottomCollision();
 	void UpdateGravityEffect(float DeltaTime);
 protected:
+	virtual void Start() override;
+	virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
     virtual void PostUpdate(float DeltaTime) override;
 };

@@ -160,12 +160,12 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 
 void CKirbyAttackEffect::Start()
 {
-	CGameObject::Start();
+	CAttackEffect::Start();
 }
 
 bool CKirbyAttackEffect::Init()
 {
-	if (!CGameObject::Init())
+	if (!CAttackEffect::Init())
 		return false;
 
 	m_AttackType = KirbyAttackEffect_Type::Fire;
@@ -173,14 +173,9 @@ bool CKirbyAttackEffect::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"FireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
 
-	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(170.f, 170.f, 1.f);
-	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
-	m_MainSprite->SetRenderState("AlphaBlend");
 
-	m_Collider = CreateComponent<CColliderCircle>("FirstCollider");
-	m_MainSprite->AddChild(m_Collider);
 	m_Collider->SetCollisionProfile("PlayerAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CKirbyAttackEffect::CollisionCallback);

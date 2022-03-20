@@ -98,12 +98,12 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 
 void CHammerGorillaFarAttack::Start()
 {
-	CGameObject::Start();
+	CAttackEffect::Start();
 }
 
 bool CHammerGorillaFarAttack::Init()
 {
-	if (!CGameObject::Init())
+	if (!CAttackEffect::Init())
 		return false;
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
@@ -112,17 +112,12 @@ bool CHammerGorillaFarAttack::Init()
 	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
 		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
 
-	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
-	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
-	m_MainSprite->GetMaterial()->SetRenderState("AlphaBlend");
 
-	CColliderCircle* ColliderCirle = CreateComponent<CColliderCircle>("FirstCollider");
-	m_MainSprite->AddChild(ColliderCirle);
-	ColliderCirle->SetCollisionProfile("MonsterAttack");
-	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CHammerGorillaFarAttack::CollisionCallback);
+	m_Collider->SetCollisionProfile("MonsterAttack");
+	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CHammerGorillaFarAttack::CollisionCallback);
 
 	return true;
 }

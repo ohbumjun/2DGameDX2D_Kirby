@@ -2,6 +2,7 @@
 #include "Component/TileEmptyComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Scene/Scene.h"
+#include "Component/ColliderCircle.h"
 
 CAttackEffect::CAttackEffect()  :
 	m_SideCollisionApplied(true),
@@ -292,6 +293,27 @@ void CAttackEffect::UpdateGravityEffect(float DeltaTime)
 
 		SetWorldPos(GetWorldPos().x, m_FallStartY + (Velocity - FallDistance), GetWorldPos().z);
 	}
+}
+
+void CAttackEffect::Start()
+{
+	CGameObject::Start();
+}
+
+bool CAttackEffect::Init()
+{
+	if (!CGameObject::Init())
+		return false;
+
+	m_MainSprite = CreateComponent<CSpriteComponent>("MainSprite");
+	m_MainSprite->SetRenderState("AlphaBlend");
+	SetRootComponent(m_MainSprite);
+	m_MainSprite->SetPivot(0.5f, 0.5f, 0.0f);
+
+	m_Collider = CreateComponent<CColliderCircle>("FirstCollider");
+	m_MainSprite->AddChild(m_Collider);
+
+	return true;
 }
 
 void CAttackEffect::Update(float DeltaTime)

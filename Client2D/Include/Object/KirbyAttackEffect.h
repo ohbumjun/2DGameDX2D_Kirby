@@ -13,7 +13,6 @@ public:
     CKirbyAttackEffect(const CKirbyAttackEffect& Attack);
     virtual ~CKirbyAttackEffect() override;
 private:
-    CSharedPtr<class CColliderCircle> m_Collider;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
     float m_AttackObjectSpeed;
