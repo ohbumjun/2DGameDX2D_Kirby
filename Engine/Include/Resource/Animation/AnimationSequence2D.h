@@ -58,6 +58,9 @@ public :
 
 	void DeleteFrame(int Index)
 	{
+		if (Index >= m_vecFrameData.size())
+			return;
+
 		m_vecFrameData.erase(m_vecFrameData.begin() + Index);
 	}
 

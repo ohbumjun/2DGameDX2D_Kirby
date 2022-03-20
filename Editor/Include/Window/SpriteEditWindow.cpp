@@ -1830,6 +1830,12 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 	std::string           ChangedSequenceName    = m_AnimationList->GetItem(Index);
 
 	// CAnimationSequence2D* ChangedSequence        = Resource->FindAnimationSequence2DData(ChangedSequenceName);
+	if (!m_Animation->FindAnimationSequence2DData(ChangedSequenceName))
+	{
+		assert("Selected Animation Does Not Exist");
+		return;
+	}
+
 	CAnimationSequence2D* ChangedSequence        = m_Animation->FindAnimationSequence2DData(ChangedSequenceName)->GetAnimationSequence();
 
 	if (!ChangedSequence)

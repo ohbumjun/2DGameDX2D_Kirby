@@ -11,6 +11,7 @@ const std::string g_BeamMonsterName = "Beam";
 const std::string g_FireMonsterName    = "Fire";
 const std::string g_FightMonsterName = "Fight";
 // Boss
+const std::string g_BossTree = "BossTree";
 // Middle Boss
 const std::string g_MiddleHammerName = "MiddleHammerGorilla";
 // Effect

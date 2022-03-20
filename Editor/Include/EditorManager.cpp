@@ -60,6 +60,7 @@
 #include "Object/EffectChangeToGreen4.h"
 #include "Object/EffectChangeToGreen5.h"
 #include "Object/MiddleBossHammer.h"
+#include "Object/BossTree.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -451,6 +452,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_MiddleHammerName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMiddleBossHammer>(NewMonsterName);
+		}
+		else if (strcmp(g_BossTree.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossTree>(NewMonsterName);
 		}
 		else if (strcmp(g_HPYellowItem.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -873,6 +878,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CMiddleBossHammer).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossHammer>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBossTree).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBossTree>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())

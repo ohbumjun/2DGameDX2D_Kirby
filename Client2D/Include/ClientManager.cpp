@@ -5,6 +5,7 @@
 // Scene
 #include "Scene/MainScene.h"
 #include "Scene/Green3Scene.h"
+#include "Scene/Green5Scene.h"
 #include "Scene/StartScene.h"
 #include "Scene/SceneManager.h"
 // UI
@@ -29,6 +30,7 @@
 #include "Object/HPGreenItem.h"
 #include "Object/HPRedItem.h"
 #include "Object/MiddleBossHammer.h"
+#include "Object/BossTree.h"
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
@@ -129,12 +131,14 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
 	// CSceneManager::GetInst()->GetScene()->Load("Green1_OnlyBear.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
 }
 
@@ -192,6 +196,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CMiddleBossHammer).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossHammer>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBossTree).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBossTree>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())

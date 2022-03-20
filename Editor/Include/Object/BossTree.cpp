@@ -24,10 +24,10 @@ bool CBossTree::Init()
 	if (!CBossMonster::Init())
 		return false;
 
-	LoadAnimationInstance("MiddleHammer", TEXT("MiddleBoss_Hammer.anim"));
-	SetCurrentAnimation("RightIdle");
+	LoadAnimationInstance("BossTree", TEXT("Boss_Tree.anim"));
+	SetCurrentAnimation("LeftIdle");
 
-	SetWorldScale(200.f, 200.f, 1.f);
+	SetWorldScale(250.f, 250.f, 1.f);
 
 	return true;
 }

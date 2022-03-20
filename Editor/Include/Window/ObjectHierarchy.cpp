@@ -96,7 +96,7 @@ bool CObjectHierarchy::Init()
 
 	std::vector<std::string>  vecMiddleBossObjects = { g_MiddleHammerName };
 
-	std::vector<std::string>  vecBossObjects = {  };
+	std::vector<std::string>  vecBossObjects = { g_BossTree };
 
 	m_mapVecObject.insert(std::make_pair("NormalMonster", vecNormalMonsters));
 	m_mapVecObject.insert(std::make_pair("AbilityMonster", vecAbilityMonsters));

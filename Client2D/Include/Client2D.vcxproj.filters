@@ -301,7 +301,7 @@
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
     <ClCompile Include="Object\BossTree.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -525,7 +525,7 @@
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
     <ClInclude Include="Object\BossTree.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
