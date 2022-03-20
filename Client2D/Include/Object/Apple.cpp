@@ -45,7 +45,7 @@ bool CApple::Init()
 		"BossTreeApple", TEXT("Boss_Tree_AttackFar_Apple.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
-	m_MainSprite->SetWorldScale(150.f, 150.f, 1.f);
+	m_MainSprite->SetWorldScale(120.f, 120.f, 1.f);
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);

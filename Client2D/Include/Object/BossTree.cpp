@@ -1,5 +1,5 @@
 #include "BossTree.h"
-#include "HammerGorillaFarAttack.h"
+#include "Tornado.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
 #include "Engine.h"
@@ -11,16 +11,16 @@ class CAnimationSequence2DInstance;
 
 CBossTree::CBossTree()  
 {
-
 	SetTypeID<CBossTree>();
+
 	m_DashDistance = 1000.f;
 	m_JumpVelocity = 50.f;
 	m_IsGroundObject = false;
 	m_PhysicsSimulate = false;
 
-	m_AttackDistance = 900.f;
-	m_CloseAttackDistance = 350.f;
-	m_FarAttackDistance = 900.f;
+	m_AttackDistance = 1100.f;
+	m_CloseAttackDistance = 550.f;
+	m_FarAttackDistance = 1100.f;
 
 	m_FarAttackLimitTime = 0.f;
 	m_FarAttackLimitTimeMax = 5.f;
@@ -46,16 +46,20 @@ void CBossTree::Start()
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetEndFunction(this, &CBossTree::CloseAttack);
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CBossTree::CloseAttack);
 
 	// Far Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CBossTree::FarAttack);
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CBossTree::FarAttack);
 
 	// Hit 이후에는, 바로 Idle 로 넘어가게 세팅한다.
@@ -100,14 +104,6 @@ CBossTree* CBossTree::Clone()
 
 void CBossTree::FarAttack()
 {
-	if (m_IsAttacking)
-		return;
-
-	if (m_FarAttackLimitTime > 0.f)
-		return;
-
-	m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
-
 	m_IsAttacking = true;
 
 	for (int i = 0; i < 3; i++)
@@ -122,6 +118,7 @@ void CBossTree::FarAttack()
 		AttackEffect->SetPhysicsSimulate(true);
 	}
 
+	m_IsAttacking = false;
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
@@ -129,31 +126,23 @@ void CBossTree::FarAttack()
 
 void CBossTree::CloseAttack()
 {
-	/*
+	m_IsAttacking = true;
+
 	// Attack Back Effect
-	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
-	//
-	if (m_ObjectMoveDir.x < 0.f)
-	{
-		AttackEffect->SetWorldPos(
-			GetWorldPos().x - GetWorldScale().x * 0.3f,
-			GetWorldPos().y - GetWorldScale().y * 0.3f,
-			0.f);
-	}
-	else
-	{
-		AttackEffect->SetWorldPos(
-			GetWorldPos().x + GetWorldScale().x * 0.3f,
-			GetWorldPos().y - GetWorldScale().y * 0.3f,
-			0.f);
-	}
+	CTornado* AttackEffect = m_Scene->CreateGameObject<CTornado>("AttackEffect");
 
-	AttackEffect->AddRelativeRotationZ(90.f);
+	AttackEffect->SetWorldPos(
+		GetWorldPos().x - GetWorldScale().x * 0.7f,
+		GetWorldPos().y - GetWorldScale().y * 0.7f,
+		0.f);
 
-	AttackEffect->SetLifeTime(0.5f);
+	AttackEffect->SetLeftAttackDir();
 
-	// AttackEffect->SetAttackDirX(0.f);
-	*/
+	AttackEffect->SetLifeTime(3.0f);
+
+	m_IsAttacking = false;
+
+	ChangeIdleAnimation();
 }
 
 void CBossTree::AIAttackSpecific(float DeltaTime)
@@ -161,14 +150,27 @@ void CBossTree::AIAttackSpecific(float DeltaTime)
 	if (m_Jump)
 		return;
 
+	if (m_IsAttacking)
+		return;
+
 	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
 
 	if (DistToPlayer > m_CloseAttackDistance && DistToPlayer < m_FarAttackDistance)
 	{
+		if (m_FarAttackLimitTime > 0.f)
+			return;
+
+		m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
+
 		ChangeFarAttackAnimation();
 	}
 	else if (DistToPlayer <= m_CloseAttackDistance)
 	{
+		if (m_CloseAttackLimitTime > 0.f)
+			return;
+
+		m_CloseAttackLimitTime = m_CloseAttackLimitTimeMax;
+
 		ChangeCloseAttackAnimation();
 	}
 }

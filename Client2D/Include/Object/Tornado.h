@@ -16,7 +16,7 @@ protected:
     {
         m_BossTree = Owner;
     }
-protected:
+public:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
 public:

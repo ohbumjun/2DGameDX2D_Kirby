@@ -45,7 +45,7 @@ bool CTornado::Init()
 		"BossTreeTornado", TEXT("Boss_Tree_AttackClose_Tornaido.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
-	m_MainSprite->SetWorldScale(150.f, 150.f, 1.f);
+	m_MainSprite->SetWorldScale(300.f, 300.f, 1.f);
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
@@ -57,6 +57,8 @@ bool CTornado::Init()
 void CTornado::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
+
+	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 200.f);
 }
 
 void CTornado::PostUpdate(float DeltaTime)

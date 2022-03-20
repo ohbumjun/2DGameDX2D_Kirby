@@ -154,6 +154,8 @@ void CMiddleBossHammer::FarAttack()
 
 void CMiddleBossHammer::CloseAttack()
 {
+	m_IsAttacking = true;
+
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
 	//
