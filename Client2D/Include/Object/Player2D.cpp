@@ -286,23 +286,6 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpitOut",
 		KeyState_Push, this, &CPlayer2D::SpitOut);
 
-	// Animation Play Scale 세팅
-	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle"))
-	{
-		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
-	}
-	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle"))
-	{
-		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
-	}
-
-	// Animation Loop 여부 세팅
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetLoop(false);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetLoop(false);
-
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetEndFunction(this, &CPlayer2D::SpecialChange);
-	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetEndFunction(this, &CPlayer2D::SpecialChange);
-
 	// Jump 가 다 끝난 이후에는, Animation 을 Fall 상태로 바꿔라
 	
 	SetBasicSettingToChangedState();
@@ -982,6 +965,8 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
 		m_IsSpecialStateChanged = false;
+
+		SetBasicSettingToChangedState();
 	}
 }
 
@@ -2241,6 +2226,30 @@ void CPlayer2D::SetBasicSettingToChangedState()
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetEndFunction(
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
+
+	// Animation Play Scale 세팅
+	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle"))
+	{
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle")->SetPlayTime(2.f);
+	}
+	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle"))
+	{
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftEatIdle")->SetPlayTime(2.f);
+	}
+
+	// Animation Loop 여부 세팅
+	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange"))
+	{
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetLoop(false);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetEndFunction(
+			this, &CPlayer2D::SpecialChange);
+	}
+	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange"))
+	{
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetLoop(false);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetEndFunction(
+			this, &CPlayer2D::SpecialChange);
+	}
 }
 
 void CPlayer2D::SpecialChangeEffect()
