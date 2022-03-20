@@ -255,7 +255,9 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 		TraceDir.y = 0.f;
 	}
 
-	AddWorldPos(Vector3(TraceDir) * DeltaTime * m_MonsterMoveVelocity);
+	m_TraceDir = TraceDir;
+
+	AddWorldPos(Vector3(m_TraceDir) * DeltaTime * m_MonsterMoveVelocity);
 
 	if (TraceDir.x < 0.f)
 	{

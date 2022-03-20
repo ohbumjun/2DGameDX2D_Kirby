@@ -22,6 +22,7 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_DashDistance = 1000.f;
 	m_JumpVelocity = 50.f;
 	m_AttackDistance = 500.f;
+	m_IsGroundObject = true;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -64,6 +65,9 @@ void CMiddleBossHammer::Start()
 		&CMonster::ChangeIdleAnimation);
 		*/
 
+	m_InitMoveVelocity = m_MonsterMoveVelocity;
+
+	m_InitJumpAccel = m_JumpAccel;
 
 	m_IsAttacking = false;
 }
@@ -79,12 +83,15 @@ bool CMiddleBossHammer::Init()
 
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
+
 	return true;
 }
 
 void CMiddleBossHammer::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
+
+	UpdateJumpAction(DeltaTime);
 }
 
 void CMiddleBossHammer::PostUpdate(float DeltaTime)
@@ -103,11 +110,6 @@ void CMiddleBossHammer::PostUpdate(float DeltaTime)
 			}
 			m_AttackResetTime -= m_AttackResetTimeMax;
 		}
-	}
-
-	if (m_JumpLimitTime >= 0.f)
-	{
-		m_JumpLimitTime -= DeltaTime;
 	}
 }
 
@@ -193,6 +195,9 @@ void CMiddleBossHammer::CloseAttack()
 
 void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)
 {
+	if (m_Jump)
+		return;
+
 	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
 
 	if (DistToPlayer > m_CloseAttackDistance && DistToPlayer < m_FarAttackDistance)
@@ -218,10 +223,12 @@ void CMiddleBossHammer::AITraceSpecific(float DeltaTime)
 			m_FallTime = 0.f;
 			m_FallStartY = GetWorldPos().y;
 			m_JumpStart = true;
-			m_JumpVelocity = 130.f;
+			m_JumpVelocity = 115.f;
 			m_JumpLimitTime = m_JumpLimitTimeMax;
-			m_MonsterMoveVelocity = 300.f;
+			m_MonsterMoveVelocity = 200.f;
+			m_JumpAccel = 1.5f;
 			ChangeJumpAttackAnimation();
+			m_InitTraceDir = m_TraceDir;
 		}
 	}
 	else if (DistToPlayer < m_DashRunDistance)
@@ -259,6 +266,32 @@ void CMiddleBossHammer::ChangeJumpEndAttackAnimation()
 
 void CMiddleBossHammer::ChangeToIdleAfterHit()
 {}
+
+void CMiddleBossHammer::UpdateJumpAction(float DeltaTime)
+{
+	// 설령 점프 중이 아니라고 하더라도,
+	// Trace Dir 만큼 계속 이동 시킨다.
+	if (m_Jump)
+	{
+		AddWorldPos(Vector3(m_InitTraceDir.x, 0.f, 0.f) * DeltaTime * m_MonsterMoveVelocity);
+	}
+
+	if (m_JumpLimitTime >= 0.f)
+	{
+		m_JumpLimitTime -= DeltaTime;
+	}
+}
+
+void CMiddleBossHammer::SetObjectLand()
+{
+	CBossMonster::SetObjectLand();
+
+	m_MonsterMoveVelocity = m_InitMoveVelocity;
+
+	m_Jump = false;
+
+	m_JumpAccel = m_InitJumpAccel;
+}
 
 void CMiddleBossHammer::ChangeTraceAnimation()
 {

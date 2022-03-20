@@ -45,6 +45,9 @@ protected:
     float m_RandomMoveTime;
     float m_RandomMoveTimeMax;
 
+    // Trace
+    Vector3 m_TraceDir;
+
     // Monster Type
     Monster_Type m_MonsterType;
 
