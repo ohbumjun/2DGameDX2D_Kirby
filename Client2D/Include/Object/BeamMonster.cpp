@@ -78,10 +78,7 @@ CBeamMonster* CBeamMonster::Clone()
 
 void CBeamMonster::Attack()
 {
-	if (m_IsAttacking)
-		return;
-
-	m_IsAttacking = true;
+	CAbilityMonster::Attack();
 
 	// 왼쪽을 보고 있다면 
 	if (m_ObjectMoveDir.x < 0.f)

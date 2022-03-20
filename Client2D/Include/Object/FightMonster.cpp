@@ -93,6 +93,8 @@ CFightMonster* CFightMonster::Clone()
 
 void CFightMonster::Attack()
 {
+	CAbilityMonster::Attack();
+
 	// 왼쪽을 보고 있다면 
 	if (m_ObjectMoveDir.x < 0.f)
 	{

@@ -16,10 +16,10 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	SetTypeID<CMiddleBossHammer>();
 	m_DashDistance = 1000.f;
 	m_JumpVelocity = 50.f;
-	m_AttackDistance = 500.f;
+	m_AttackDistance = 600.f;
 	m_IsGroundObject = true;
 	m_CloseAttackDistance = 250.f;
-	m_FarAttackDistance = 500.f;
+	m_FarAttackDistance = 600.f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -103,14 +103,6 @@ CMiddleBossHammer* CMiddleBossHammer::Clone()
 
 void CMiddleBossHammer::FarAttack()
 {
-	if (m_IsAttacking)
-		return;
-
-	if (m_FarAttackLimitTime > 0.f)
-		return;
-
-	m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
-
 	m_IsAttacking = true;
 
 	Vector3 PlayerPos = m_Scene->GetPlayerObject()->GetWorldPos();
@@ -156,11 +148,6 @@ void CMiddleBossHammer::FarAttack()
 
 void CMiddleBossHammer::CloseAttack()
 {
-	if (m_CloseAttackLimitTime > 0.f)
-		return;
-
-	m_CloseAttackLimitTime = m_CloseAttackLimitTimeMax;
-
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
 	//
@@ -191,14 +178,27 @@ void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)
 	if (m_Jump)
 		return;
 
+	if (m_IsAttacking)
+		return;
+
 	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
 
 	if (DistToPlayer > m_CloseAttackDistance && DistToPlayer < m_FarAttackDistance)
 	{
+		if (m_FarAttackLimitTime > 0.f)
+			return;
+
+		m_FarAttackLimitTime = m_FarAttackLimitTimeMax;
+
 		ChangeFarAttackAnimation();
 	}
 	else if (DistToPlayer <= m_CloseAttackDistance)
 	{
+		if (m_CloseAttackLimitTime > 0.f)
+			return;
+
+		m_CloseAttackLimitTime = m_CloseAttackLimitTimeMax;
+
 		ChangeCloseAttackAnimation();
 	}
 }

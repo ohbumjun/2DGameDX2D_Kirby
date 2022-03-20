@@ -93,10 +93,7 @@ CFireMonster* CFireMonster::Clone()
 
 void CFireMonster::Attack()
 {
-	if (m_IsAttacking)
-		return;
-
-	m_IsAttacking = true;
+	CAbilityMonster::Attack();
 
 	Vector3 PlayerPos = m_Scene->GetPlayerObject()->GetWorldPos();
 

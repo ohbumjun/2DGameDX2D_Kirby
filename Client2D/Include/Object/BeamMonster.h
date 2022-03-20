@@ -19,6 +19,6 @@ public:
     virtual void PostUpdate(float DeltaTime);
     virtual CBeamMonster* Clone() override;
 private :
-    void Attack();
+    virtual void Attack() override;
 };
 

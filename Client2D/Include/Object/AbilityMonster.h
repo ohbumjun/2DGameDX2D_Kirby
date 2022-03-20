@@ -31,6 +31,10 @@ public :
     {
         m_AbilityState = State;
     }
+protected :
+    void UpdateAttackLimitTime(float DeltaTime);
+    virtual void Attack();
+    virtual void ChangeAttackAnimation() override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

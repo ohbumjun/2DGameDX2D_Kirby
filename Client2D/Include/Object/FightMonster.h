@@ -16,6 +16,6 @@ public:
     virtual void PostUpdate(float DeltaTime);
     virtual CFightMonster* Clone() override;
 private:
-    void Attack();
+    virtual void Attack() override;
 };
 
