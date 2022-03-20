@@ -1,6 +1,9 @@
 #include "AbilityMonster.h"
 
-CAbilityMonster::CAbilityMonster()
+CAbilityMonster::CAbilityMonster():
+	m_IsAttacking(false),
+	m_AttackResetTime(0.f),
+	m_AttackResetTimeMax(2.f)
 {
 	m_AbilityState = Ability_State::End;
 

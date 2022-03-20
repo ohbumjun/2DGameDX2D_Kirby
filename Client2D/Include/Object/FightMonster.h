@@ -9,15 +9,6 @@ protected:
     CFightMonster();
     CFightMonster(const CFightMonster& Monster);
     virtual ~CFightMonster();
-private:
-    bool m_IsAttacking;
-    float m_AttackResetTime;
-    float m_AttackResetTimeMax;
-public:
-    void SetAttackEnd()
-    {
-        m_IsAttacking = false;
-    }
 public:
     virtual void Start() override;
     virtual bool Init() override;

@@ -10,12 +10,6 @@ protected:
     CMiddleBossHammer(const CMiddleBossHammer& Monster);
     virtual ~CMiddleBossHammer();
 private:
-    // Attack
-    bool m_IsAttacking;
-    float m_AttackResetTime;
-    float m_AttackResetTimeMax;
-    float m_CloseAttackDistance;
-    float m_FarAttackDistance;
     // Jump
     bool m_JumpEnable;
     float m_JumpLimitTime;
@@ -26,11 +20,7 @@ private:
     float m_InitMoveVelocity;
     float m_InitJumpAccel;
     Vector3 m_InitTraceDir;
-public:
-    void SetAttackEnd()
-    {
-        m_IsAttacking = false;
-    }
+
 public:
     virtual void Start() override;
     virtual bool Init() override;

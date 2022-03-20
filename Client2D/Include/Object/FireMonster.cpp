@@ -6,10 +6,7 @@
 
 class CAnimationSequence2DInstance;
 
-CFireMonster::CFireMonster() :
-	m_IsAttacking(false),
-	m_AttackResetTime(0.f),
-	m_AttackResetTimeMax(2.f)
+CFireMonster::CFireMonster() 
 {
 	SetTypeID<CFireMonster>();
 

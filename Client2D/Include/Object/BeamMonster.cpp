@@ -7,8 +7,7 @@
 
 class CAnimationSequence2DInstance;
 
-CBeamMonster::CBeamMonster() :
-	m_IsAttacking(false)
+CBeamMonster::CBeamMonster() 
 {
 	SetTypeID<CBeamMonster>();
 

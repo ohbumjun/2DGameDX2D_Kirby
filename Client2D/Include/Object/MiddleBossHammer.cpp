@@ -8,13 +8,8 @@
 class CAnimationSequence2DInstance;
 
 CMiddleBossHammer::CMiddleBossHammer() :
-	m_IsAttacking(false),
 	m_JumpEnable(false),
-	m_AttackResetTime(0.f),
-	m_AttackResetTimeMax(2.f),
 	m_JumpLimitTimeMax(8.f),
-	m_CloseAttackDistance(250.f),
-	m_FarAttackDistance(500.f),
 	m_JumpDistance(1000.f),
 	m_DashRunDistance(800.f)
 {
@@ -23,6 +18,8 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_JumpVelocity = 50.f;
 	m_AttackDistance = 500.f;
 	m_IsGroundObject = true;
+	m_CloseAttackDistance = 250.f;
+	m_FarAttackDistance = 500.f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -160,7 +157,7 @@ void CMiddleBossHammer::FarAttack()
 
 	AttackEffect->JumpStart();
 
-	AttackEffect->SetCreateMultileAfter(true);
+	AttackEffect->SetCreateMultipleEffectAfterWards(true);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();

@@ -11,13 +11,7 @@ protected:
     CBeamMonster(const CBeamMonster& Monster);
     virtual ~CBeamMonster();
 private :
-    bool m_IsAttacking;
     CSharedPtr<class CBeamMonsterAttack> m_AttackEffect;
-public :
-    void SetAttackEnd()
-{
-        m_IsAttacking = false;
-}
 public:
     virtual void Start() override;
     virtual bool Init() override;

@@ -20,7 +20,7 @@ protected:
     {
         m_MiddleBossHammer = Owner;
     }
-    void SetCreateMultileAfter(bool Enable)
+    void SetCreateMultipleEffectAfterWards(bool Enable)
     {
         m_CreateMultipleAfter = Enable;
     }

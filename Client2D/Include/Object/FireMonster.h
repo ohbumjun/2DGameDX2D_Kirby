@@ -9,15 +9,6 @@ protected:
     CFireMonster();
     CFireMonster(const CFireMonster& Monster);
     virtual ~CFireMonster();
-private:
-    bool m_IsAttacking;
-    float m_AttackResetTime;
-    float m_AttackResetTimeMax;
-public:
-    void SetAttackEnd()
-    {
-        m_IsAttacking = false;
-    }
 public:
     virtual void Start() override;
     virtual bool Init() override;
