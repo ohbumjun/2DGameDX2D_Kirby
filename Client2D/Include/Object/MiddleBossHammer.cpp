@@ -161,7 +161,7 @@ void CMiddleBossHammer::CloseAttack()
 {
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
-
+	//
 	if (m_ObjectMoveDir.x < 0.f)
 	{
 		AttackEffect->SetWorldPos(
