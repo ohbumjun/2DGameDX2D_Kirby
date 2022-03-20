@@ -135,12 +135,12 @@ protected:
     void CreateDamageFont(const CollisionResult& Result);
     void OnCollisionBegin(const CollisionResult& Result);
 protected: // Animation
-    void ChangeIdleAnimation();
-    void ChangeWalkAnimation();
-    void ChangeHitAnimation();
-    void ChangeTraceAnimation();
-    void ChangeDeathAnimation();
-    void ChangeAttackAnimation();
+    virtual void ChangeIdleAnimation();
+    virtual void ChangeWalkAnimation();
+    virtual void ChangeHitAnimation();
+    virtual void ChangeTraceAnimation();
+    virtual void ChangeDeathAnimation();
+    virtual void ChangeAttackAnimation();
 protected:
     void PaperBurnEnd();
 public :

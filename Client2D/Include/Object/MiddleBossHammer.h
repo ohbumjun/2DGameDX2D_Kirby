@@ -18,6 +18,8 @@ private:
     bool m_JumpEnable;
     float m_JumpLimitTime;
     float m_JumpLimitTimeMax;
+    float m_JumpDistance;
+    float m_DashRunDistance;
 public:
     void SetAttackEnd()
     {
@@ -34,7 +36,11 @@ private:
     void CloseAttack();
     void ChangeFarAttackAnimation();
     void ChangeCloseAttackAnimation();
+    void ChangeJumpAttackAnimation();
+    void ChangeJumpEndAttackAnimation();
     void ChangeToIdleAfterHit();
+protected :
+    virtual void ChangeTraceAnimation() override;
 private :
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;

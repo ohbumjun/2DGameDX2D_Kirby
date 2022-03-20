@@ -12,14 +12,16 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_JumpEnable(false),
 	m_AttackResetTime(0.f),
 	m_AttackResetTimeMax(2.f),
-	m_JumpLimitTimeMax(5.f),
-	m_CloseAttackDistance(350.f),
-	m_FarAttackDistance(700.f)
+	m_JumpLimitTimeMax(8.f),
+	m_CloseAttackDistance(250.f),
+	m_FarAttackDistance(500.f),
+	m_JumpDistance(1000.f),
+	m_DashRunDistance(800.f)
 {
 	SetTypeID<CMiddleBossHammer>();
-	m_DashDistance = 900.f;
+	m_DashDistance = 1000.f;
 	m_JumpVelocity = 50.f;
-	m_AttackDistance = 700.f;
+	m_AttackDistance = 500.f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -101,6 +103,11 @@ void CMiddleBossHammer::PostUpdate(float DeltaTime)
 			}
 			m_AttackResetTime -= m_AttackResetTimeMax;
 		}
+	}
+
+	if (m_JumpLimitTime >= 0.f)
+	{
+		m_JumpLimitTime -= DeltaTime;
 	}
 }
 
@@ -200,15 +207,26 @@ void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)
 
 void CMiddleBossHammer::AITraceSpecific(float DeltaTime)
 {
-	if (m_IsBottomCollided)
+	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
+
+	if (DistToPlayer > m_DashRunDistance && DistToPlayer <= m_JumpDistance)
 	{
-		m_Jump = true;
-		m_IsGround = false;
-
-		m_FallTime = 0.f;
-		m_FallStartY = GetWorldPos().y;
-
-		m_JumpStart = true;
+		if (m_IsBottomCollided && m_JumpLimitTime <= 0.f)
+		{
+			m_Jump = true;
+			m_IsGround = false;
+			m_FallTime = 0.f;
+			m_FallStartY = GetWorldPos().y;
+			m_JumpStart = true;
+			m_JumpVelocity = 130.f;
+			m_JumpLimitTime = m_JumpLimitTimeMax;
+			m_MonsterMoveVelocity = 300.f;
+			ChangeJumpAttackAnimation();
+		}
+	}
+	else if (DistToPlayer < m_DashRunDistance)
+	{
+		// 그냥 계속 그대로 진행 (ChangeTraceAnimation)
 	}
 }
 
@@ -228,6 +246,25 @@ void CMiddleBossHammer::ChangeCloseAttackAnimation()
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttackClose");
 }
 
+void CMiddleBossHammer::ChangeJumpAttackAnimation()
+{
+	if (m_ObjectMoveDir.x < 0.f)
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftJump");
+	else
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightJump");
+}
+
+void CMiddleBossHammer::ChangeJumpEndAttackAnimation()
+{}
+
 void CMiddleBossHammer::ChangeToIdleAfterHit()
 {}
+
+void CMiddleBossHammer::ChangeTraceAnimation()
+{
+	if (m_Jump)
+		return;
+
+	CBossMonster::ChangeTraceAnimation();
+}
 
