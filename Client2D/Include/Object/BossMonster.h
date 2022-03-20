@@ -18,6 +18,9 @@ protected:
     float m_AttackResetTimeMax;
     float m_CloseAttackDistance;
     float m_FarAttackDistance;
+protected :
+    // Attack Start
+    bool m_IsRoundStarted;
 protected:
     float m_FarAttackLimitTime;
     float m_FarAttackLimitTimeMax;

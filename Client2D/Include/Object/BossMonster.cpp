@@ -6,7 +6,8 @@ CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
 	m_AttackResetTimeMax(2.f),
 	m_FarAttackLimitTimeMax(3.5f),
-	m_CloseAttackLimitTimeMax(2.5f)
+	m_CloseAttackLimitTimeMax(2.5f),
+	m_IsRoundStarted(false)
 {
 	m_MonsterType = Monster_Type::Boss;
 }
@@ -34,6 +35,8 @@ void CBossMonster::MakeBossStartEffect()
 {
 	if (m_StartBossStage)
 		return;
+
+	m_IsRoundStarted = true;
 
 	// World 甘 农扁 力茄
 	Resolution RS = CEngine::GetInst()->GetResolution();
@@ -88,8 +91,6 @@ void CBossMonster::AIDeathSpecific(float DeltaTime)
 
 void CBossMonster::Update(float DeltaTime)
 {
-	CMonster::Update(DeltaTime);
-
 	// World 甘 农扁 力茄
 	Resolution RS = CEngine::GetInst()->GetResolution();
 
@@ -97,6 +98,11 @@ void CBossMonster::Update(float DeltaTime)
 	{
 		MakeBossStartEffect();
 	}
+
+	if (!m_IsRoundStarted)
+		return;
+
+	CMonster::Update(DeltaTime);
 
 	UpdateAttackResetTime(DeltaTime);
 
