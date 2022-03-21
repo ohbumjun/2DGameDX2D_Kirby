@@ -315,6 +315,9 @@
     <ClCompile Include="Object\WaterFloat1.cpp">
       <Filter>02. Object\07. Effect\06. Water</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Float1Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -547,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="Object\WaterFloat1.h">
       <Filter>02. Object\07. Effect\06. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Float1Scene.h">
+      <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

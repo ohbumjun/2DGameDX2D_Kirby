@@ -7,6 +7,7 @@
 #include "Scene/Green3Scene.h"
 #include "Scene/Green5Scene.h"
 #include "Scene/StartScene.h"
+#include "Scene/Float1Scene.h"
 #include "Scene/SceneManager.h"
 // UI
 #include "UI/MouseNormal.h"
@@ -31,6 +32,7 @@
 #include "Object/HPRedItem.h"
 #include "Object/MiddleBossHammer.h"
 #include "Object/BossTree.h"
+#include "Object/WaterFloat1.h"
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
@@ -130,13 +132,15 @@ void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();//
 
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
 
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
-	CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
@@ -276,6 +280,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CEffectChangeToGreen5).hash_code())
 	{
 		CEffectChangeToGreen5* Obj = Scene->LoadGameObject<CEffectChangeToGreen5>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CWaterFloat1).hash_code())
+	{
+		CWaterFloat1* Obj = Scene->LoadGameObject<CWaterFloat1>();
 		return Obj;
 	}
 

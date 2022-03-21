@@ -219,6 +219,7 @@
     <ClCompile Include="Object\WaterFloat1.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\BeginningScene.cpp" />
+    <ClCompile Include="Scene\Float1Scene.cpp" />
     <ClCompile Include="Scene\Green2Scene.cpp" />
     <ClCompile Include="Scene\Green3Scene.cpp" />
     <ClCompile Include="Scene\Green4Scene.cpp" />
@@ -298,6 +299,7 @@
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\BeginningScene.h" />
+    <ClInclude Include="Scene\Float1Scene.h" />
     <ClInclude Include="Scene\Green2Scene.h" />
     <ClInclude Include="Scene\Green3Scene.h" />
     <ClInclude Include="Scene\Green4Scene.h" />

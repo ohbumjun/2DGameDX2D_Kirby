@@ -115,7 +115,7 @@ bool CObjectHierarchy::Init()
 	m_ObjectList->SetSelectIndex(0);
 
 	// m_SpecificObjectList 에 Normal Monster 들 종류 나열 하기
-	for (size_t i = 0; i < vecNormalMonsters.size(); i++)
+	for (size_t i = 0; i < vecBossObjects.size(); i++)
 	{
 		m_SpecificObjectList->AddItem(vecBossObjects[i]);
 	}
