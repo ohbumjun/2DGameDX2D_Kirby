@@ -16,7 +16,6 @@ private:
     float m_AttackImageSize;
     float m_RotationSpeed;
     float m_RotateLimit;
-    float m_AttackDir;
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;

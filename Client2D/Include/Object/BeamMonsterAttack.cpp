@@ -11,8 +11,7 @@
 
 CBeamMonsterAttack::CBeamMonsterAttack() :
 	m_AttackImageSize(65.f),
-	m_RotationSpeed(120.f),
-	m_AttackDir(1.f)
+	m_RotationSpeed(120.f)
 {
 }
 
@@ -123,7 +122,7 @@ void CBeamMonsterAttack::Update(float DeltaTime)
 	CAttackEffect::Update(DeltaTime);
 
 	// 오른쪽 공격
-	if (m_AttackDir > 0.f)
+	if (m_AttackDir.x > 0.f)
 	{
 		m_MainSprite->AddRelativeRotationZ(m_RotationSpeed * DeltaTime * -1.f);
 
