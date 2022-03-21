@@ -342,9 +342,6 @@ void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result
 	}
 }
 
-void CAttackEffect::PlayerAttackCollisionCallback(const CollisionResult& Result)
-{}
-
 void CAttackEffect::Start()
 {
 	CGameObject::Start();

@@ -107,18 +107,16 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 	break;
 	case KirbyAttackEffect_Type::FightFall:
 	{
-		m_MainSprite->SetWorldScale(90.f, 90.f, 1.f);
+		m_MainSprite->SetWorldScale(110.f, 110.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 1000.f;
-		m_AttackObjectSpeed = 600.f;
+		m_AttackObjectSpeed = 800.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyFightFallAttackEffect", TEXT("Kirby_Fight_Effect_FallDownAttack.anim"));
 
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
-
-		m_SideCollisionApplied = false;
 	}
 	break;
 	case KirbyAttackEffect_Type::FireFall:

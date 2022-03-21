@@ -19,9 +19,14 @@ protected :
 	float m_FallStartY;
 	Vector2 m_AttackDir;
 	class CLifeObject* m_MonsterOwner;
-	class CKirbyState* m_KirbyOwner;
+	// class CKirbyState* m_KirbyOwner;
 	CSharedPtr<class CSpriteComponent> m_MainSprite;
 	CSharedPtr<class CColliderCircle> m_Collider;
+public :
+	CColliderCircle* GetColliderBody() const
+{
+		return m_Collider;
+}
 public :
 	void SetMonsterOwner(class CLifeObject* Owner)
 {
@@ -57,7 +62,7 @@ protected:
 	void UpdateGravityEffect(float DeltaTime);
 public :
 	void MonsterAttackCollisionCallback(const CollisionResult& Result);
-	void PlayerAttackCollisionCallback(const CollisionResult& Result);
+	// void PlayerAttackCollisionCallback(const CollisionResult& Result);
 protected:
 	virtual void Start() override;
 	virtual bool Init() override;
