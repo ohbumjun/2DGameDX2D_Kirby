@@ -85,39 +85,3 @@ void CFireMonsterAttack::PostUpdate(float DeltaTime)
 {
 	CAttackEffect::PostUpdate(DeltaTime);
 }
-
-void CFireMonsterAttack::CollisionCallback(const CollisionResult& Result)
-{
-	Destroy();
-
-	m_MonsterOwner->SetAttackEnd();
-	
-	CColliderComponent* CollisionDest = Result.Dest;
-
-	CGameObject* Owner = CollisionDest->GetGameObject();
-
-	CWidgetComponent* ObjectWindow = nullptr;
-
-	if (Owner == m_Scene->GetPlayerObject())
-	{
-		CPlayer2D* Player = (CPlayer2D*)Owner;
-
-		// HP Bar 달게 하기
-		Player->SetIsBeingHit();
-
-		if (m_AttackDir.x > 0)
-			Player->SetBeingHitDirection(m_AttackDir.x);
-		else
-			Player->SetBeingHitDirection(m_AttackDir.x);
-
-		// DestMonster->Damage(2.f);
-
-		// Create Damage Font
-		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
-
-		if (ObjectWindow)
-		{
-			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
-		}
-	}
-}

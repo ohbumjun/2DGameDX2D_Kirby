@@ -15,7 +15,7 @@ CBeamMonster::CBeamMonster()
 
 	m_DashDistance = 550.f;
 
-	m_AttackDistance = 400.f;
+	m_AttackDistance = 450.f;
 }
 
 CBeamMonster::CBeamMonster(const CBeamMonster& Monster) : CAbilityMonster(Monster)
@@ -38,10 +38,12 @@ void CBeamMonster::Start()
 	m_Sprite->GetAnimationInstance()->Play();
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetPlayTime(2.f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(this, &CBeamMonster::Attack);
 
 	// EndCallback도 세팅한다.
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(2.f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(this, &CBeamMonster::Attack);
 
 	m_IsAttacking = false;
@@ -78,7 +80,15 @@ CBeamMonster* CBeamMonster::Clone()
 
 void CBeamMonster::Attack()
 {
-	CAbilityMonster::Attack();
+	if (m_IsAttacking)
+		return;
+
+	if (m_AttackLimitTime > 0.f)
+		return;
+
+	m_IsAttacking = true;
+
+	m_AttackLimitTime = m_AttackLimitTimeMax;
 
 	// 왼쪽을 보고 있다면 
 	if (m_ObjectMoveDir.x < 0.f)

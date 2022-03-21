@@ -63,7 +63,7 @@ bool CBeamMonsterAttack::Init()
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f ,0.f), m_MainSprite->GetWorldScale().x * 0.3f);
-	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CBeamMonsterAttack::CollisionCallback);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
 	m_SecondSprite = CreateComponent<CSpriteComponent>("SecondSprite");
 	m_SecondSprite->SetAnimationInstance(AnimationInstance);
@@ -77,7 +77,8 @@ bool CBeamMonsterAttack::Init()
 	m_SecondSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
 	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_SecondSprite->GetWorldScale().x * 0.3f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CBeamMonsterAttack::CollisionCallback);
+	ColliderCirle->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
+
 
 	m_ThirdSprite = CreateComponent<CSpriteComponent>("ThirdSprite");
 	m_ThirdSprite->SetAnimationInstance(AnimationInstance);
@@ -89,7 +90,7 @@ bool CBeamMonsterAttack::Init()
 	m_ThirdSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
 	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_ThirdSprite->GetWorldScale().x * 0.3f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CBeamMonsterAttack::CollisionCallback);
+	ColliderCirle->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
 
 	m_FourthSprite = CreateComponent<CSpriteComponent>("FourthSprite");
@@ -103,7 +104,7 @@ bool CBeamMonsterAttack::Init()
 	m_FourthSprite->AddChild(ColliderCirle);
 	ColliderCirle->SetCollisionProfile("MonsterAttack");
 	ColliderCirle->SetInfo(Vector2(0.f, 0.f), m_FourthSprite->GetWorldScale().x * 0.3f);
-	ColliderCirle->AddCollisionCallback(Collision_State::Begin, this, &CBeamMonsterAttack::CollisionCallback);
+	ColliderCirle->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
 
 	m_MainSprite->AddChild(m_SecondSprite);
@@ -147,36 +148,4 @@ void CBeamMonsterAttack::Update(float DeltaTime)
 void CBeamMonsterAttack::PostUpdate(float DeltaTime)
 {
 	CAttackEffect::PostUpdate(DeltaTime);
-}
-
-void CBeamMonsterAttack::CollisionCallback(const CollisionResult& Result)
-{
-	CColliderComponent* CollisionDest = Result.Dest;
-
-	CGameObject* Owner = CollisionDest->GetGameObject();
-
-	CWidgetComponent* ObjectWindow = nullptr;
-
-	if (Owner == m_Scene->GetPlayerObject())
-	{
-		CPlayer2D* Player = (CPlayer2D*)Owner;
-
-		// HP Bar 달게 하기
-		Player->SetIsBeingHit();
-
-		if (m_AttackDir > 0)
-			Player->SetBeingHitDirection(m_AttackDir);
-		else
-			Player->SetBeingHitDirection(m_AttackDir);
-
-		// DestMonster->Damage(2.f);
-
-		// Create Damage Font
-		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
-
-		if (ObjectWindow)
-		{
-			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
-		}
-	}
 }

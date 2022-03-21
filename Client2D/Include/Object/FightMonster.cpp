@@ -102,7 +102,6 @@ void CFightMonster::Attack()
 		CFightMonsterAttack* AttackEffect = m_Scene->CreateGameObject<CFightMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetMonsterOwner();
 		AttackEffect->SetMonsterOwner(this);
 	}
 	// 오른쪽으로 보고 있다면 
