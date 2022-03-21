@@ -7,8 +7,6 @@
 #include "Animation/AnimationSequence2dInstance.h"
 
 CMonster::CMonster() :
-	m_HPMax(5.f),
-	m_HP(5.f),
 	m_DeathAccTime(0.f),
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false)

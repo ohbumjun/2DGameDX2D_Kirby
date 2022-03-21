@@ -24,6 +24,9 @@ CBossMonster::~CBossMonster()
 void CBossMonster::Start()
 {
 	CMonster::Start();
+
+	m_MonsterType = Monster_Type::Boss;
+	m_AttackAbility = 60.f;
 }
 
 bool CBossMonster::Init()

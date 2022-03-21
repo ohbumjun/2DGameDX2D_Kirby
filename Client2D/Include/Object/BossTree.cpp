@@ -25,8 +25,8 @@ CBossTree::CBossTree()
 	m_FarAttackLimitTime = 0.f;
 	m_FarAttackLimitTimeMax = 5.f;
 
-	m_HP = 2000.f;
-	m_HPMax = 2000.f;
+	m_HP = 1500.f;
+	m_HPMax = 1500.f;
 
 	m_CameraFollowMaxTime = 6.f;
 }
@@ -48,6 +48,10 @@ void CBossTree::Start()
 	m_IsGroundObject = false;
 
 	m_Sprite->GetAnimationInstance()->Play();
+
+	m_HP = 1500.f;
+
+	m_HPMax = 1500.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);

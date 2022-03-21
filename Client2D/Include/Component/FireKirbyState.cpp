@@ -60,6 +60,8 @@ void CFireKirbyState::FallDownAttack()
 
 		AttackEffect->SetBottomCollisionEnable(true);
 
+		AttackEffect->SetKirbyOwner(this);
+
 		// Attack Back Effect
 		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
 
@@ -251,6 +253,7 @@ void CFireKirbyState::NormalAttackCallback()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetKirbyOwner(this);
 	}
 	// 오른쪽으로 보고 있다면 
 	else
@@ -259,6 +262,7 @@ void CFireKirbyState::NormalAttackCallback()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetKirbyOwner(this);
 	}
 	m_Player->SetAttackEnable(false);
 

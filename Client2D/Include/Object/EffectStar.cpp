@@ -54,6 +54,7 @@ void CEffectStar::SideCollisionSpecificAction()
 		m_FallTime = 0.f;
 		m_AttackDir.x = -1.f * m_AttackDir.x;
 		m_FallStartY = GetWorldPos().y;
+
 		// m_FallStartY = GetWorldPos().y + GetWorldScale().y;
 	}
 }

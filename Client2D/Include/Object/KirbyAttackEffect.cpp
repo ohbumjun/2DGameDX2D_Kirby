@@ -126,7 +126,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
 
 		m_AttackDistLimitMax = 900.f;
-		m_AttackObjectSpeed = 300.f;
+		m_AttackObjectSpeed = 750.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyFireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
@@ -239,7 +239,12 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 		if (!DestMonster)
 			return;
 
+		// Player 의 Attack + KirbyOwner 의 Attack
+		float DamageAmount = m_KirbyOwner->GetExtraAttackAbility() + m_KirbyOwner->GetPlayer()->GetAttackAbility();
+
 		// HP Bar 달게 하기
+		DestMonster->Damage(DamageAmount);
+
 		DestMonster->SetBeingHit(true);
 
 		DestMonster->SetAIState(Monster_AI::Hit);
@@ -257,6 +262,8 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+
+			DamageFont->SetDamage((int)DamageAmount);
 		}
 	}
 }

@@ -21,6 +21,11 @@ void CNormalMonster::Start()
 {
 	CMonster::Start();
 
+	m_MonsterType = Monster_Type::Normal;
+
+	m_AttackAbility = 20.f;
+	m_HPMax = 100.f;
+	m_HP = 100.f;
 }
 
 bool CNormalMonster::Init()

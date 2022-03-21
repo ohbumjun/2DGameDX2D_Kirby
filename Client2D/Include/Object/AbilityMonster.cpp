@@ -23,6 +23,11 @@ CAbilityMonster::~CAbilityMonster()
 void CAbilityMonster::Start()
 {
 	CMonster::Start();
+
+	m_HP = 200.f;
+	m_HPMax = 200.f;
+	m_AttackAbility = 40.f;
+	m_MonsterType = Monster_Type::Ability;
 }
 
 bool CAbilityMonster::Init()

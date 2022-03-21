@@ -17,7 +17,12 @@ private:
     float m_AttackDistLimitMax;
     float m_AttackObjectSpeed;
     KirbyAttackEffect_Type m_AttackType;
+    class CKirbyState* m_KirbyOwner;
 protected:
+    void SetKirbyOwner(class CKirbyState* Owner)
+    {
+        m_KirbyOwner = Owner;
+    }
     void SetAttackType(KirbyAttackEffect_Type Type);
 protected :
     virtual void BottomCollisionSpecificAction() override;

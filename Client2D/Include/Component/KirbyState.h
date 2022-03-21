@@ -18,10 +18,19 @@ protected:
 protected :
    class  CPlayer2D* m_Player;
    float m_ExtraAttackAbility;
-protected :
+public :
+    class  CPlayer2D* GetPlayer() const
+{
+        return m_Player;
+}
+public :
     void SetPlayer(class CPlayer2D* Player)
 {
         m_Player = Player;
+}
+    float GetExtraAttackAbility() const
+{
+        return m_ExtraAttackAbility;
 }
 protected:
     virtual void              Start() override;

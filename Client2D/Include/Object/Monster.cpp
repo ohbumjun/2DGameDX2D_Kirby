@@ -300,6 +300,9 @@ void CMonster::Start()
 {
 	CLifeObject::Start();
 
+	m_HPMax = 100.f;
+	m_HP = 100.f;
+
 	m_Sprite = (CSpriteComponent*)FindComponent("MonsterSprite");
 
 	// Collider 
