@@ -9,13 +9,6 @@ public:
     CHammerGorillaCloseAttack();
     CHammerGorillaCloseAttack(const CHammerGorillaCloseAttack& Attack);
     virtual ~CHammerGorillaCloseAttack() override;
-private:
-    class CMiddleBossHammer* m_MiddleBossHammer;
-protected:
-    void SetFireOwner(class CMiddleBossHammer* Owner)
-    {
-        m_MiddleBossHammer = Owner;
-    }
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;

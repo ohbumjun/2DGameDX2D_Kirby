@@ -39,7 +39,6 @@ CPlayer2D::CPlayer2D() :
 	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_RightMove(false),
-	m_IsAttacking(false),
 	m_Bounced(false),
 	m_ToLeftWhenRightMove(false),
 	m_RightMovePush(false),
@@ -72,8 +71,10 @@ CPlayer2D::CPlayer2D() :
 	m_SolW      = false;
 	m_WDistance = 0.f;
 	m_Opacity   = 1.f;
+
 	m_HP = 800.f;
 	m_HPMax = 800.f;
+	m_AttackAbility = 50.f;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
 }
@@ -1246,6 +1247,22 @@ void CPlayer2D::StopPlayer()
 	m_LeverVelocity = 0.f;
 	m_DashVelocity = 0.f;
 	m_MoveVelocity = 0.f;
+}
+
+void CPlayer2D::Damage(float Damage)
+{
+	// 실제 데미지
+	m_HP -= Damage;
+
+	if (m_HP < 0.f)
+	{
+		Destroy();
+		return;
+	}
+
+	// Widget HP Bar 조정하기
+	CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+	HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);
 }
 
 void CPlayer2D::UpdateBeingHit(float DeltaTime)

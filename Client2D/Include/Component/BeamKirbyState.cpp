@@ -16,7 +16,9 @@ CBeamKirbyState::CBeamKirbyState() :
 	m_FallAttackTimeMax(0.4f),
 	m_FallAttackState(false),
 	m_GoUpState(false)
-{}
+{
+	m_ExtraAttackAbility = 5.f;
+}
 
 CBeamKirbyState::CBeamKirbyState(const CBeamKirbyState& Kirby) : CKirbyState(Kirby)
 {}
@@ -58,6 +60,8 @@ void CBeamKirbyState::FallDownAttack()
 		AttackEffect->SetWorldScale(60.f, 60.f, 1.f);
 
 		AttackEffect->SetLeftAttackDir(-1.f);
+
+		// AttackEffect->SetOwner(this);
 
 		AttackEffect->SetWorldPos(TargetPos);
 

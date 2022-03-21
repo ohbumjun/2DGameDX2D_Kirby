@@ -53,7 +53,9 @@ bool CFireMonsterAttack::Init()
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
-	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CFireMonsterAttack::CollisionCallback);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
+
+	// m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CFireMonsterAttack::CollisionCallback);
 
 	return true;
 }
@@ -75,10 +77,7 @@ void CFireMonsterAttack::Update(float DeltaTime)
 	{
 		Destroy();
 
-		if (m_FireMonsterOwner)
-		{
-			m_FireMonsterOwner->SetAttackEnd();
-		}
+		m_MonsterOwner->SetAttackEnd();
 	}
 }
 
@@ -91,11 +90,8 @@ void CFireMonsterAttack::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
-	if (m_FireMonsterOwner)
-	{
-		m_FireMonsterOwner->SetAttackEnd();
-	}
-
+	m_MonsterOwner->SetAttackEnd();
+	
 	CColliderComponent* CollisionDest = Result.Dest;
 
 	CGameObject* Owner = CollisionDest->GetGameObject();

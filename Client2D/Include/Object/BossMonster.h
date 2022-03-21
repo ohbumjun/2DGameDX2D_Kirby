@@ -13,7 +13,6 @@ protected:
     bool m_StartBossStage;
     Vector2 m_InitWorldResolution;
     // Attack
-    bool m_IsAttacking;
     float m_AttackResetTime;
     float m_AttackResetTimeMax;
     float m_CloseAttackDistance;
@@ -28,10 +27,6 @@ protected:
     float m_CloseAttackLimitTime;
     float m_CloseAttackLimitTimeMax;
 public:
-    void SetAttackEnd()
-    {
-        m_IsAttacking = false;
-    }
 protected:
     void MakeBossStartEffect();
     void UpdateAttackResetTime(float DeltaTime);

@@ -5,6 +5,7 @@
 #include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
 #include "BeamMonster.h"
+#include "FightMonster.h"
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
@@ -53,7 +54,7 @@ bool CFightMonsterAttack::Init()
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.3f);
-	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CFightMonsterAttack::CollisionCallback);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
 	return true;
 }
@@ -73,6 +74,7 @@ void CFightMonsterAttack::Update(float DeltaTime)
 	if (m_AttackDistLimit >= m_AttackDistLimitMax)
 	{
 		Destroy();
+		m_MonsterOwner->SetAttackEnd();
 	}
 }
 
@@ -94,6 +96,8 @@ void CFightMonsterAttack::CollisionCallback(const CollisionResult& Result)
 		CPlayer2D* Player = (CPlayer2D*)Owner;
 
 		// HP Bar 달게 하기
+		Player->Damage(m_MonsterOwner->GetAttackAbility());
+
 		Player->SetIsBeingHit();
 
 		if (m_AttackDir.x > 0)
@@ -109,6 +113,7 @@ void CFightMonsterAttack::CollisionCallback(const CollisionResult& Result)
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+			DamageFont->SetDamage((int)m_MonsterOwner->GetAttackAbility());
 		}
 	}
 }

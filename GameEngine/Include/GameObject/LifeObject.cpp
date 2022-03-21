@@ -9,6 +9,7 @@ CLifeObject::CLifeObject():
 	m_HP(100.f),
 	m_HPMax(100.f),
 	m_AttackAbility(50.f),
+	m_IsAttacking(false),
 	// m_IsGround(true),
 	// m_PhysicsSimulate(true),
 	m_PhysicsSimulate(true),

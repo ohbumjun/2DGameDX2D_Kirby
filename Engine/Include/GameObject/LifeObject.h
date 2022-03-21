@@ -43,6 +43,8 @@ protected: // Ability
 	float m_HP;
 	float m_HPMax;
 	float m_AttackAbility;
+protected : // Attack
+	bool m_IsAttacking;
 protected :
 	Vector3 m_ObjectMoveDir;
 protected :
@@ -93,6 +95,10 @@ public :
 		return m_ObjectMoveDir;
 }
 public :
+	void SetAttackEnd()
+	{
+		m_IsAttacking = false;
+	}
 	void SetCollisionDisable(bool Enable)
 {
 		m_CollisionDisabled = Enable;

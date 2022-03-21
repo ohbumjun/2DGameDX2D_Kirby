@@ -10,8 +10,6 @@ protected:
     CBeamMonster();
     CBeamMonster(const CBeamMonster& Monster);
     virtual ~CBeamMonster();
-private :
-    CSharedPtr<class CBeamMonsterAttack> m_AttackEffect;
 public:
     virtual void Start() override;
     virtual bool Init() override;

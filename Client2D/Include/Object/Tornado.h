@@ -9,13 +9,6 @@ public:
     CTornado();
     CTornado(const CTornado& Attack);
     virtual ~CTornado() override;
-private:
-    class CBossTree* m_BossTree;
-protected:
-    void SetFireOwner(class CBossTree* Owner)
-    {
-        m_BossTree = Owner;
-    }
 public:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;

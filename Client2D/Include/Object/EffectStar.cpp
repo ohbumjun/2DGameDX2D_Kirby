@@ -158,7 +158,7 @@ void CEffectStar::StarCollision(const CollisionResult& Result)
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
-			DamageFont->SetDamage(AttackSourceObject->GetAttackAbility());
+			DamageFont->SetDamage((int)AttackSourceObject->GetAttackAbility());
 		}
 	}
 }

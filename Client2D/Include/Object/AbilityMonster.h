@@ -12,7 +12,6 @@ protected:
     virtual ~CAbilityMonster();
 protected :
     Ability_State m_AbilityState;
-    bool m_IsAttacking;
     float m_AttackResetTime;
     float m_AttackResetTimeMax;
     float m_AttackLimitTime;
@@ -23,10 +22,6 @@ public:
         return m_AbilityState;
     }
 public :
-    void SetAttackEnd()
-    {
-        m_IsAttacking = false;
-    }
     void SetAbilityState(Ability_State State)
     {
         m_AbilityState = State;

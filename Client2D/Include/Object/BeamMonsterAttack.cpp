@@ -140,11 +140,7 @@ void CBeamMonsterAttack::Update(float DeltaTime)
 	if (m_RotateLimit < 0.f)
 	{
 		Destroy();
-
-		if (m_BeamOwner)
-		{
-			m_BeamOwner->SetAttackEnd();
-		}
+		m_MonsterOwner->SetAttackEnd();
 	}
 }
 

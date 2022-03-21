@@ -103,7 +103,6 @@ private :
 	float m_BeingHitTimeMax;
 
 	// Attack
-	bool m_IsAttacking;
 	float m_AttackTimeLimit;
 	float m_AttackTime;
 
@@ -164,9 +163,11 @@ private:
 	void ResetCameraInfoToPlayer();
 	virtual void CheckBelowWorldResolution() override;
 	void StopPlayer();
-	
-private :
+
+public :
 	// Hit
+	void Damage(float Damage);
+private :
 	void UpdateBeingHit(float DeltaTime);
 private :
 	void UpdateAttackTime(float DeltaTime);

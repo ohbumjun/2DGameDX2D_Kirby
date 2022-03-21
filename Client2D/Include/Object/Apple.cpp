@@ -68,10 +68,7 @@ void CApple::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
-	if (m_BossTree)
-	{
-		m_BossTree->SetAttackEnd();
-	}
+	m_MonsterOwner->SetAttackEnd();
 
 	CColliderComponent* CollisionDest = Result.Dest;
 

@@ -102,7 +102,8 @@ void CFightMonster::Attack()
 		CFightMonsterAttack* AttackEffect = m_Scene->CreateGameObject<CFightMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetLeftAttackDir();
+		AttackEffect->SetMonsterOwner();
+		AttackEffect->SetMonsterOwner(this);
 	}
 	// 오른쪽으로 보고 있다면 
 	else
@@ -111,6 +112,7 @@ void CFightMonster::Attack()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir();
+		AttackEffect->SetMonsterOwner(this);
 	}
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.

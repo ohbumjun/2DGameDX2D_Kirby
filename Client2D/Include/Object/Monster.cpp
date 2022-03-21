@@ -94,6 +94,7 @@ void CMonster::Damage(float Damage)
 {
 	// 실제 데미지
 	m_HP -= Damage;
+
  	if (m_HP < 0.f)
 	{
 		Destroy();

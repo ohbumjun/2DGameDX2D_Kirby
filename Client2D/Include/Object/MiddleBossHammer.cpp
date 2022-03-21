@@ -138,7 +138,7 @@ void CMiddleBossHammer::FarAttack()
 		AttackEffect->SetRightAttackDir(0.f);
 	}
 
-	AttackEffect->SetFireOwner(this);
+	AttackEffect->SetMonsterOwner(this);
 
 	AttackEffect->SetJumpVelocity(80.f);
 

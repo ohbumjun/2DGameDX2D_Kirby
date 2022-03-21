@@ -9,13 +9,6 @@ public:
     CApple();
     CApple(const CApple& Attack);
     virtual ~CApple() override;
-private:
-    class CBossTree* m_BossTree;
-protected:
-    void SetFireOwner(class CBossTree* Owner)
-    {
-        m_BossTree = Owner;
-    }
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;

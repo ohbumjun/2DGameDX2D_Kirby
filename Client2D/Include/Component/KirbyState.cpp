@@ -1,6 +1,7 @@
 #include "KirbyState.h"
 
-CKirbyState::CKirbyState()
+CKirbyState::CKirbyState() :
+	m_ExtraAttackAbility(0.f)
 {}
 
 CKirbyState::CKirbyState(const CKirbyState& Kirby) : CSpriteComponent(Kirby)

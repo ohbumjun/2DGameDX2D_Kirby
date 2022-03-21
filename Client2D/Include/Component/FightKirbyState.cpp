@@ -16,6 +16,7 @@ CFightKirbyState::CFightKirbyState() :
 	m_FallAttackState(false),
 	m_GoUpState(false)
 {
+	m_ExtraAttackAbility = 15.f;
 }
 
 CFightKirbyState::CFightKirbyState(const CFightKirbyState& Kirby) : CKirbyState(Kirby)

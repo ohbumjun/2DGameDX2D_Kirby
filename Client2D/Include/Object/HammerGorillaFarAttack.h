@@ -10,16 +10,10 @@ public:
     CHammerGorillaFarAttack(const CHammerGorillaFarAttack& Attack);
     virtual ~CHammerGorillaFarAttack() override;
 private:
-    class CMiddleBossHammer* m_MiddleBossHammer;
-private:
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
     bool m_CreateMultipleAfter;
 protected:
-    void SetFireOwner(class CMiddleBossHammer* Owner)
-    {
-        m_MiddleBossHammer = Owner;
-    }
     void SetCreateMultipleEffectAfterWards(bool Enable)
     {
         m_CreateMultipleAfter = Enable;

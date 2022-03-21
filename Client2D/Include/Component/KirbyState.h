@@ -17,6 +17,7 @@ protected:
     virtual void GoUpAttack() = 0;
 protected :
    class  CPlayer2D* m_Player;
+   float m_ExtraAttackAbility;
 protected :
     void SetPlayer(class CPlayer2D* Player)
 {

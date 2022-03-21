@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject\GameObject.h"
+
 class CAttackEffect :
     public CGameObject
 {
@@ -17,9 +18,15 @@ protected :
 	float m_FallTime;
 	float m_FallStartY;
 	Vector2 m_AttackDir;
+	class CLifeObject* m_MonsterOwner;
+	class CKirbyState* m_KirbyOwner;
 	CSharedPtr<class CSpriteComponent> m_MainSprite;
 	CSharedPtr<class CColliderCircle> m_Collider;
 public :
+	void SetMonsterOwner(class CLifeObject* Owner)
+{
+		m_MonsterOwner = Owner;
+}
 	void SetJumpVelocity(float Velocity)
 {
 		m_JumpVelocity = Velocity;
@@ -44,11 +51,13 @@ protected :
 	virtual void SetRightAttackDir(float YDir = 0.f);
 	virtual void SetLeftAttackDir(float YDir = 0.f);
 	void SetAttackDirX(float XDir);
-
 protected:
 	virtual bool CheckSideCollision();
 	virtual bool CheckBottomCollision();
 	void UpdateGravityEffect(float DeltaTime);
+public :
+	void MonsterAttackCollisionCallback(const CollisionResult& Result);
+	void PlayerAttackCollisionCallback(const CollisionResult& Result);
 protected:
 	virtual void Start() override;
 	virtual bool Init() override;

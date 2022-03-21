@@ -10,15 +10,8 @@ public:
     CFireMonsterAttack(const CFireMonsterAttack& Attack);
     virtual ~CFireMonsterAttack() override;
 private:
-    class CFireMonster* m_FireMonsterOwner;
-private:
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
-protected:
-    void SetFireOwner(class CFireMonster* Owner)
-    {
-        m_FireMonsterOwner = Owner;
-    }
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;

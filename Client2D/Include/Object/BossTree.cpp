@@ -117,7 +117,7 @@ void CBossTree::FarAttack()
 		CApple* AttackEffect = m_Scene->CreateGameObject<CApple>("Attack");
 
 		AttackEffect->SetWorldPos(XPos, YPos, GetWorldPos().z);
-
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetPhysicsSimulate(true);
 	}
 
@@ -140,7 +140,7 @@ void CBossTree::CloseAttack()
 		0.f);
 
 	AttackEffect->SetLeftAttackDir();
-
+	AttackEffect->SetMonsterOwner(this);
 	AttackEffect->SetLifeTime(3.0f);
 
 	m_IsAttacking = false;

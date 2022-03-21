@@ -1,8 +1,11 @@
 #include "AttackEffect.h"
+#include "Player2D.h"
+#include "GameObject/LifeObject.h"
 #include "Component/TileEmptyComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Scene/Scene.h"
 #include "Component/ColliderCircle.h"
+#include "UI/UIDamageFont.h"
 
 CAttackEffect::CAttackEffect()  :
 	m_SideCollisionApplied(true),
@@ -299,6 +302,46 @@ void CAttackEffect::UpdateGravityEffect(float DeltaTime)
 		SetWorldPos(GetWorldPos().x, m_FallStartY + (Velocity - FallDistance), GetWorldPos().z);
 	}
 }
+
+void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result)
+{
+	CColliderComponent* CollisionDest = Result.Dest;
+
+	CGameObject* Owner = CollisionDest->GetGameObject();
+
+	CWidgetComponent* ObjectWindow = nullptr;
+
+	if (Owner == m_Scene->GetPlayerObject())
+	{
+		CPlayer2D* Player = (CPlayer2D*)Owner;
+
+		// HP Bar 달게 하기
+		float DamageFloat = m_MonsterOwner->GetAttackAbility();
+
+		Player->Damage(m_MonsterOwner->GetAttackAbility());
+
+		Player->SetIsBeingHit();
+
+		if (m_AttackDir.x > 0)
+			Player->SetBeingHitDirection(m_AttackDir.x);
+		else
+			Player->SetBeingHitDirection(m_AttackDir.x);
+
+		// DestMonster->Damage(2.f);
+
+		// Create Damage Font
+		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
+		if (ObjectWindow)
+		{
+			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+			DamageFont->SetDamage((int)m_MonsterOwner->GetAttackAbility());
+		}
+	}
+}
+
+void CAttackEffect::PlayerAttackCollisionCallback(const CollisionResult& Result)
+{}
 
 void CAttackEffect::Start()
 {

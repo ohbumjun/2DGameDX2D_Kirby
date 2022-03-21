@@ -139,10 +139,7 @@ void CHammerGorillaFarAttack::Update(float DeltaTime)
 	{
 		Destroy();
 
-		if (m_MiddleBossHammer)
-		{
-			m_MiddleBossHammer->SetAttackEnd();
-		}
+		m_MonsterOwner->SetAttackEnd();
 
 		MakeMultipleAttackEffect();
 	}
@@ -157,11 +154,8 @@ void CHammerGorillaFarAttack::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
 
-	if (m_MiddleBossHammer)
-	{
-		m_MiddleBossHammer->SetAttackEnd();
-	}
-
+	m_MonsterOwner->SetAttackEnd();
+	
 	CColliderComponent* CollisionDest = Result.Dest;
 
 	CGameObject* Owner = CollisionDest->GetGameObject();

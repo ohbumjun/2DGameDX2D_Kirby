@@ -16,7 +16,9 @@ CFireKirbyState::CFireKirbyState() :
 	m_FallAttackTimeMax(0.4f),
 	m_FallAttackState(false),
 	m_GoUpState(false)
-{}
+{
+	m_ExtraAttackAbility = 5.f;
+}
 
 CFireKirbyState::CFireKirbyState(const CFireKirbyState& Kirby) : CKirbyState(Kirby)
 {}

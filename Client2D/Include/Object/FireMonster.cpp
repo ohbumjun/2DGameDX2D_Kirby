@@ -113,21 +113,21 @@ void CFireMonster::Attack()
 		CFireMonsterAttack* AttackEffect = m_Scene->CreateGameObject<CFireMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetLeftAttackDir(TraceUpDir.y);
 
 		// 가운데
 		AttackEffect = m_Scene->CreateGameObject<CFireMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetLeftAttackDir(0.f);
 
 		// 아래
 		AttackEffect = m_Scene->CreateGameObject<CFireMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetLeftAttackDir(TraceDownDir.y);
 
 	}
@@ -137,21 +137,21 @@ void CFireMonster::Attack()
 		CFireMonsterAttack* AttackEffect = m_Scene->CreateGameObject<CFireMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetRightAttackDir(TraceUpDir.y);
 
 		// 가운데
 		AttackEffect = m_Scene->CreateGameObject<CFireMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetRightAttackDir(0.f);
 
 		// 아래
 		AttackEffect = m_Scene->CreateGameObject<CFireMonsterAttack>("Attack");
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetFireOwner(this);
+		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetRightAttackDir(TraceDownDir.y);
 	}
 

@@ -9,8 +9,6 @@ public :
     CBeamMonsterAttack();
     CBeamMonsterAttack(const CBeamMonsterAttack& Attack);
     virtual ~CBeamMonsterAttack() override;
-private :
-    class CBeamMonster* m_BeamOwner;
 private:
     CSharedPtr<class CSpriteComponent> m_SecondSprite;
     CSharedPtr<class CSpriteComponent> m_ThirdSprite;
@@ -19,11 +17,6 @@ private:
     float m_RotationSpeed;
     float m_RotateLimit;
     float m_AttackDir;
-protected:
-    void SetBeamOwner(class CBeamMonster* Owner)
-    {
-        m_BeamOwner = Owner;
-    }
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
