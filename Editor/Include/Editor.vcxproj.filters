@@ -55,6 +55,12 @@
     <Filter Include="03. Object\03. Monster\03. Boss">
       <UniqueIdentifier>{e1822814-e085-4dad-9544-5a85c29a2dd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\07. Effect\01. SceneChange">
+      <UniqueIdentifier>{9b568d56-476a-43f3-97d1-69b450b88b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Object\07. Effect\02. Water">
+      <UniqueIdentifier>{8fe61a6a-eb7b-478c-8a9f-f125c37eee73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,15 +141,6 @@
     <ClCompile Include="Object\Line.cpp">
       <Filter>03. Object\06. Line</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectSceneChangeStar.cpp">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\EffectChangeToGreen2.cpp">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\EffectChangeToGreen1.cpp">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Object\FireMonster.cpp">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClCompile>
@@ -165,12 +162,6 @@
     <ClCompile Include="Object\Block.cpp">
       <Filter>03. Object\08. Item</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectChangeToGreen5.cpp">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\EffectChangeToGreen4.cpp">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Object\MiddleBossHammer.cpp">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClCompile>
@@ -179,6 +170,24 @@
     </ClCompile>
     <ClCompile Include="Object\BossTree.cpp">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen1.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen2.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen4.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToGreen5.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectSceneChangeStar.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\WaterFloat1.cpp">
+      <Filter>03. Object\07. Effect\02. Water</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,15 +272,6 @@
     <ClInclude Include="Object\Line.h">
       <Filter>03. Object\06. Line</Filter>
     </ClInclude>
-    <ClInclude Include="Object\EffectSceneChangeStar.h">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectChangeToGreen2.h">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectChangeToGreen1.h">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Object\FireMonster.h">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClInclude>
@@ -293,12 +293,6 @@
     <ClInclude Include="Object\Block.h">
       <Filter>03. Object\08. Item</Filter>
     </ClInclude>
-    <ClInclude Include="Object\EffectChangeToGreen4.h">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\EffectChangeToGreen5.h">
-      <Filter>03. Object\07. Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Object\MiddleBossHammer.h">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
@@ -307,6 +301,24 @@
     </ClInclude>
     <ClInclude Include="Object\BossTree.h">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen1.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen2.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen4.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToGreen5.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectSceneChangeStar.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\WaterFloat1.h">
+      <Filter>03. Object\07. Effect\02. Water</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

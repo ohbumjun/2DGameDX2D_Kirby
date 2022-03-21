@@ -90,7 +90,7 @@ bool CObjectHierarchy::Init()
 	g_FightMonsterName };
 
 	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStart, g_SceneChangeToGreen2,
-	g_SceneChangeToGreen1, g_SceneChangeToGreen4 , g_SceneChangeToGreen5};
+	g_SceneChangeToGreen1, g_SceneChangeToGreen4 , g_SceneChangeToGreen5, g_WaterFloatIsland1};
 
 	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem, g_Block };
 
@@ -117,7 +117,7 @@ bool CObjectHierarchy::Init()
 	// m_SpecificObjectList 에 Normal Monster 들 종류 나열 하기
 	for (size_t i = 0; i < vecNormalMonsters.size(); i++)
 	{
-		m_SpecificObjectList->AddItem(vecNormalMonsters[i]);
+		m_SpecificObjectList->AddItem(vecBossObjects[i]);
 	}
 
 	return true;

@@ -48,6 +48,7 @@
 #include "Object/DragObject.h"
 #include "Object/Block.h"
 #include "Object/LineObject.h"
+#include "Object/WaterFloat1.h"
 #include "Object/SpriteEditObject.h"
 #include "Object/HPYellowItem.h"
 #include "Object/HPRedItem.h"
@@ -493,6 +494,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen5>(NewMonsterName);
 		}
+		else if (strcmp(g_WaterFloatIsland1.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CWaterFloat1>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -522,7 +527,6 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		CSceneComponent* SelectRootComponent = ClickedComponent->GetGameObject()->GetRootComponent();
 
 		m_DetailInfoWindow->SetClickedObjectInfo(SelectRootComponent);
-
 
 		// 2) Show Object 도 해당 위치를 가리키게 세팅해둔다.
 		SetSceneEditObjectPos(ClickedObject);
@@ -933,6 +937,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CEffectChangeToGreen5).hash_code())
 	{
 	CEffectChangeToGreen5* Obj = Scene->LoadGameObject<CEffectChangeToGreen5>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CWaterFloat1).hash_code())
+	{
+	CWaterFloat1* Obj = Scene->LoadGameObject<CWaterFloat1>();
 	return Obj;
 	}
 	

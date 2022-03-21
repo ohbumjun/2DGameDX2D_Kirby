@@ -82,6 +82,9 @@
     <Filter Include="02. Object\03. Monster\03. Boss">
       <UniqueIdentifier>{25bba7f1-6485-4720-ab62-08da4a459511}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect\06. Water">
+      <UniqueIdentifier>{153a555a-b53a-4e99-ba36-2d6fc90688d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -308,6 +311,9 @@
     </ClCompile>
     <ClCompile Include="Object\Tornado.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\WaterFloat1.cpp">
+      <Filter>02. Object\07. Effect\06. Water</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -538,6 +544,9 @@
     </ClInclude>
     <ClInclude Include="Object\Tornado.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\WaterFloat1.h">
+      <Filter>02. Object\07. Effect\06. Water</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

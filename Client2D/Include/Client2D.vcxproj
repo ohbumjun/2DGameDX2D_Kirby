@@ -216,6 +216,7 @@
     <ClCompile Include="Object\TileMap.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\Tornado.cpp" />
+    <ClCompile Include="Object\WaterFloat1.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\BeginningScene.cpp" />
     <ClCompile Include="Scene\Green2Scene.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Object\TileMap.h" />
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\Tornado.h" />
+    <ClInclude Include="Object\WaterFloat1.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\BeginningScene.h" />
