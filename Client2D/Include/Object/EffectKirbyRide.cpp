@@ -148,11 +148,11 @@ void CEffectKirbyRide::PostUpdate(float DeltaTime)
 
 			SpitOutStar->SetWorldPos(GetWorldPos());
 
-			SpitOutStar->SetSpitOutDir(Vector2(-1.f, -1.f));
+			SpitOutStar->SetLeftAttackDir();
 
 			SpitOutStar->SetLifeTime(0.2f);
 
-			SpitOutStar->SetStarMoveSpeed(200.f);
+			SpitOutStar->SetEffectMoveSpeed(200.f);
 
 			Vector3 StarScale =  SpitOutStar->GetWorldScale();
 

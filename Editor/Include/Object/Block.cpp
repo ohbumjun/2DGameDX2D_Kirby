@@ -39,7 +39,7 @@ bool CBlock::Init()
 
 	// m_ColliderBody = CreateComponent<CColliderBox2D>("ColliderBody");
 	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
-	m_ColliderBody->SetCollisionProfile("Monster");
+	m_ColliderBody->SetCollisionProfile("MonsterAttack");
 
 	m_Sprite->AddChild(m_ColliderBody);
 

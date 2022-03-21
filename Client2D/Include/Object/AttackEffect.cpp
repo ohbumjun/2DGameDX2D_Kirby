@@ -12,6 +12,7 @@ CAttackEffect::CAttackEffect()  :
 	m_BottomCollisionApplied(false),
 	m_Jump(false),
 	m_JumpVelocity(20.f),
+	m_EffectMoveSpeed(500.f),
 	m_PhysicsSimulate(false),
 	m_AttackDir(1.f, 0.f)
 {
@@ -24,6 +25,11 @@ CAttackEffect::~CAttackEffect()
 {}
 
 void CAttackEffect::BottomCollisionSpecificAction()
+{
+	Destroy();
+}
+
+void CAttackEffect::SideCollisionSpecificAction()
 {
 	Destroy();
 }
@@ -126,8 +132,8 @@ bool CAttackEffect::CheckSideCollision()
 						CurRT.y >= TilePos.y
 						)
 					{
-						if (TilePos.y + TileSize.y - 150.f <= ResultLB.y &&
-							ResultLB.y <= TilePos.y + TileSize.y + 150.f)
+						if (TilePos.y + TileSize.y - GetWorldScale().y <= ResultLB.y &&
+							ResultLB.y <= TilePos.y + TileSize.y + GetWorldScale().y)
 							continue;
 						
 						return true;
@@ -179,8 +185,8 @@ bool CAttackEffect::CheckSideCollision()
 						CurLB.y <= TilePos.y + TileSize.y &&
 						CurRT.y >= TilePos.y)
 					{
-						if (TilePos.y + TileSize.y - 150.f <= ResultLB.y &&
-							ResultLB.y <= TilePos.y + TileSize.y + 150.f)
+						if (TilePos.y + TileSize.y - GetWorldScale().y <= ResultLB.y &&
+							ResultLB.y <= TilePos.y + TileSize.y + GetWorldScale().y)
 							continue;
 
 						return true;
@@ -369,7 +375,7 @@ void CAttackEffect::Update(float DeltaTime)
 
 	if (CheckSideCollision())
 	{
-		Destroy();
+		SideCollisionSpecificAction();
 	}
 
 	if (CheckBottomCollision())
@@ -378,6 +384,7 @@ void CAttackEffect::Update(float DeltaTime)
 	}
 
 	UpdateGravityEffect(DeltaTime);
+
 
 	m_PrevPos = GetWorldPos();
 

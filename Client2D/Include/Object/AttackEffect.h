@@ -17,6 +17,7 @@ protected :
 	bool m_PhysicsSimulate;
 	float m_FallTime;
 	float m_FallStartY;
+	float m_EffectMoveSpeed;
 	Vector2 m_AttackDir;
 	class CLifeObject* m_MonsterOwner;
 	// class CKirbyState* m_KirbyOwner;
@@ -28,6 +29,10 @@ public :
 		return m_Collider;
 }
 public :
+	void SetEffectMoveSpeed(float Speed)
+{
+		m_EffectMoveSpeed = Speed;
+}
 	void SetMonsterOwner(class CLifeObject* Owner)
 {
 		m_MonsterOwner = Owner;
@@ -53,6 +58,7 @@ public :
 }
 protected :
 	virtual void BottomCollisionSpecificAction();
+	virtual void SideCollisionSpecificAction();
 	virtual void SetRightAttackDir(float YDir = 0.f);
 	virtual void SetLeftAttackDir(float YDir = 0.f);
 	void SetAttackDirX(float XDir);

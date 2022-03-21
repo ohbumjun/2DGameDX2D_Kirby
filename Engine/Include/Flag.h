@@ -105,7 +105,7 @@ enum Collision_Channel
 	Monster,
 	MonsterAttack,
 	PlayerEffect,
-	Channel2,
+	Block,
 	Channel3,
 	Channel4,
 	Channel5,

@@ -918,7 +918,28 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	if (m_IsBeingHit)
 		return;
 
+	CEffectStar* SpitOutStar = m_Scene->CreateGameObject<CEffectStar>("SpitOutStar");
+
+	SpitOutStar->SetWorldPos(GetWorldPos());
+
+	SpitOutStar->SetIsRotate(true);
+
+	if (m_ObjectMoveDir.x > 0)
+		SpitOutStar->SetRightAttackDir();
+	else
+		SpitOutStar->SetLeftAttackDir();
+
 	m_IsEatingMonster = false;
+
+	if (m_EatenMonster->GetMonsterType() == Monster_Type::Ability)
+	{
+		// Star 세팅 추가
+		SpitOutStar->SetIsSpecialKirbyStar(true);
+		SpitOutStar->SetJumpVelocity(80.f);
+		SpitOutStar->SetPhysicsSimulate(true);
+		SpitOutStar->JumpStart();
+		SpitOutStar->SetLifeTime(10.f);
+	}
 
 	m_EatenMonster->Destroy();
 
@@ -940,16 +961,6 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		m_EatenMonster->SetObjectMoveDir(Vector3(1.f * -1, 0.f, 0.f));
 	}
 	*/
-	CEffectStar* SpitOutStar = m_Scene->CreateGameObject<CEffectStar>("SpitOutStar");
-
-	SpitOutStar->SetWorldPos(GetWorldPos());
-
-	SpitOutStar->SetIsRotate(true);
-
-	if (m_ObjectMoveDir.x > 0)
-		SpitOutStar->SetSpitOutDir(Vector2(1.f, 0.f));
-	else
-		SpitOutStar->SetSpitOutDir(Vector2(- 1.f, 0.f));
 
 	m_EatenMonster = nullptr;
 
@@ -2217,6 +2228,8 @@ void CPlayer2D::SpecialChange()
 	break;
 	}
 
+	SpecialChangeEffect();
+
 	SetRootComponent(m_KirbyState);
 
 	SetBasicSettingToChangedState();
@@ -2259,8 +2272,6 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 		return;
 
 	m_IsChanging = true;
-
-	SpecialChangeEffect();
 
 	StopPlayer();
 

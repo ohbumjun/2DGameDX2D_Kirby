@@ -1,34 +1,31 @@
 #pragma once
-#include "GameObject\GameObject.h"
+#include "AttackEffect.h"
 
 class CEffectStar :
-    public CGameObject
+    public CAttackEffect
 {
     friend class CScene;
+    friend class CPlayer2D;
+    friend class CEffectKirbyRide;
 protected:
     CEffectStar();
     CEffectStar(const CEffectStar& Dash);
     virtual ~CEffectStar();
 private:
-    CSharedPtr<class CSpriteComponent> m_Sprite;
-    CSharedPtr<class CColliderCircle> m_ColliderBody;
-    Vector2 m_SpitOutDir;
-    float m_AliveTime;
-    float m_StarMoveSpeed;
     bool m_IsRotate;
+    bool m_IsSpecialKirbyStar;
 public :
+    void SetIsSpecialKirbyStar(bool Enable)
+{
+        m_IsSpecialKirbyStar = Enable;
+}
     void SetIsRotate(bool Enable)
 {
         m_IsRotate = Enable;
 }
-    void SetStarMoveSpeed(float Speed)
-{
-        m_StarMoveSpeed = Speed;
-}
-    void SetSpitOutDir(const Vector2& Dir)
-{
-        m_SpitOutDir = Dir;
-}
+protected:
+    virtual void BottomCollisionSpecificAction() override;
+    virtual void SideCollisionSpecificAction() override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

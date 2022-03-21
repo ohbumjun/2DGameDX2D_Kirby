@@ -14,93 +14,81 @@
 #include "Component/WidgetComponent.h"
 
 CEffectStar::CEffectStar() :
-	m_AliveTime(3.f),
-	m_StarMoveSpeed(600.f),
-	m_IsRotate(false)
+	m_IsRotate(false),
+	m_IsSpecialKirbyStar(false)
 {
 	SetTypeID<CEffectStar>();
 }
 
-CEffectStar::CEffectStar(const CEffectStar& Beatle) : CGameObject(Beatle)
+CEffectStar::CEffectStar(const CEffectStar& Beatle) : CAttackEffect(Beatle)
 {}
 
 CEffectStar::~CEffectStar()
 {}
 
+void CEffectStar::BottomCollisionSpecificAction()
+{
+	if (m_IsSpecialKirbyStar)
+	{
+		m_Jump = true;
+		m_FallTime = 0.f;
+		m_FallStartY = GetWorldPos().y;
+	}
+}
+
+void CEffectStar::SideCollisionSpecificAction()
+{
+	if (m_IsSpecialKirbyStar)
+	{
+		m_Jump = true;
+		m_FallTime = 0.f;
+		m_FallStartY = GetWorldPos().y;
+	}
+}
+
 void CEffectStar::Start()
 {
-	CGameObject::Start();
+	CAttackEffect::Start();
 
-	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
-	// m_Sprite = (CSpriteComponent*)m_RootComponent.Get();
-	// m_ColliderBody = (CColliderCircle*)FindComponent("EffectChangeStarColliderBody");
-	m_ColliderBody = (CColliderCircle*)m_RootComponent->FindComponent("EffectChangeStarColliderBody");
-	m_ColliderBody->SetCollisionProfile("PlayerAttack");
+	m_Collider->SetCollisionProfile("PlayerAttack");
 }
 
 bool CEffectStar::Init()
 {
-	if (!CGameObject::Init())
+	if (!CAttackEffect::Init())
 		return false;
-
-	m_Sprite = CreateComponent<CSpriteComponent>("EffectSprite");
-
-	SetRootComponent(m_Sprite);
-
-	m_Sprite->SetRenderState("AlphaBlend");
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"CSceneChangeStarEffect", TEXT("Effect_SceneChangeStar.anim"));
 
-
-	if (!AnimationInstance)
-	{
-		assert(false);
-		return false;
-	}
-
 	// Clone 해서 세팅해줘야 한다.
-	m_Sprite->SetAnimationInstance(AnimationInstance);
-
-	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+	m_MainSprite->SetAnimationInstance(AnimationInstance);
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 
 	SetWorldScale(GetWorldScale().x * 0.8f, GetWorldScale().y * 0.8f, 1.f);
+	
+	m_Collider->SetCollisionProfile("PlayerAttack");
+	m_Collider->SetInfo(Vector2(0.f, 0.f), GetWorldScale().x * 0.4f);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CEffectStar::StarCollision);
 
-	m_Sprite->SetPivot(0.5f, 0.5f, 0.0f);
-
-	// Collider
-	m_ColliderBody = CreateComponent<CColliderCircle>("EffectChangeStarColliderBody");
-
-	Vector2 ColliderCenter = Vector2(
-		m_Sprite->GetWorldPos().x + m_Sprite->GetWorldScale().x * m_Sprite->GetPivot().x,
-		m_Sprite->GetWorldPos().y + m_Sprite->GetWorldScale().y * m_Sprite->GetPivot().y
-	);
-
-	m_ColliderBody->SetInfo(ColliderCenter, m_Sprite->GetWorldScale().x * 0.4f);
-
-	m_ColliderBody->SetCollisionProfile("PlayerAttack");
-
-	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectStar::StarCollision);
-
-	m_Sprite->AddChild(m_ColliderBody);
+	m_BottomCollisionApplied = true;
 
 	return true;
 }
 
 void CEffectStar::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CAttackEffect::Update(DeltaTime);
 
-	AddWorldPos(Vector3(m_SpitOutDir.x, m_SpitOutDir.y, 0.f) * DeltaTime * m_StarMoveSpeed);
-
-	if (m_AliveTime > 0.f)
+	// 일반 Monster를 내뱉은 Star 라면
+	if (!m_IsSpecialKirbyStar)
 	{
-		m_AliveTime -= DeltaTime;
-
-		if (m_AliveTime < 0)
-		{
-			Destroy();
-		}
+		AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * m_EffectMoveSpeed);
+	}
+	// 그게 아니라, Ability Monster 를 내뱉은 Star 라면
+	else
+	{
+		AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * m_EffectMoveSpeed * 0.1f);
 	}
 
 	if (m_IsRotate)
@@ -111,7 +99,7 @@ void CEffectStar::Update(float DeltaTime)
 
 void CEffectStar::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CAttackEffect::PostUpdate(DeltaTime);
 }
 
 CEffectStar* CEffectStar::Clone()
@@ -145,7 +133,7 @@ void CEffectStar::StarCollision(const CollisionResult& Result)
 
 		DestMonster->SetAIState(Monster_AI::Hit);
 
-		if (m_SpitOutDir.x > 0)
+		if (m_AttackDir.x > 0)
 			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
 		else
 			DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));

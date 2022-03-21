@@ -26,6 +26,7 @@ void CBlock::Start()
 	if (m_ColliderBody)
 	{
 		m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CBlock::SetCollisionCallback);
+		m_ColliderBody->SetCollisionProfile("Block");
 	}
 }
 

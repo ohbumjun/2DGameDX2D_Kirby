@@ -1,4 +1,5 @@
 #include "FireKirbyState.h"
+#include "Component/ColliderCircle.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -64,11 +65,16 @@ void CFireKirbyState::FallDownAttack()
 
 		BackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
 			GetWorldPos().y, GetWorldPos().z);
+
 		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
 
 		BackEffect->AddRelativeRotationZ(-90.f);
 
 		BackEffect->SetLifeTime(0.3f);
+
+		BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.5f);
+
+		BackEffect->GetColliderBody()->SetCollisionProfile("PlayerAttack");
 	}
 }
 

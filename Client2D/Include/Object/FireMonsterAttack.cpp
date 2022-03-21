@@ -11,8 +11,10 @@
 
 CFireMonsterAttack::CFireMonsterAttack() :
 	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(1000.f)
-{}
+	m_AttackDistLimitMax(900.f)
+{
+	m_SideCollisionApplied = true;
+}
 
 CFireMonsterAttack::CFireMonsterAttack(const CFireMonsterAttack& Attack) : CAttackEffect(Attack)
 {}
@@ -61,7 +63,7 @@ void CFireMonsterAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
-	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
+	float MoveDist = m_AttackDir.Length() * DeltaTime * 500.f;
 
 	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 500.f);
 
@@ -81,4 +83,5 @@ void CFireMonsterAttack::Update(float DeltaTime)
 void CFireMonsterAttack::PostUpdate(float DeltaTime)
 {
 	CAttackEffect::PostUpdate(DeltaTime);
+
 }

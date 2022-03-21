@@ -6,6 +6,7 @@
 #include <Component/SpriteComponent.h>
 #include "FireMonster.h"
 #include "Player2D.h"
+#include "Block.h"
 #include "FireAttackBackEffect.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
@@ -124,13 +125,15 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->SetWorldScale(50.f, 50.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
 
-		m_AttackDistLimitMax = 1000.f;
-		m_AttackObjectSpeed = 800.f;
+		m_AttackDistLimitMax = 900.f;
+		m_AttackObjectSpeed = 300.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyFireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
 
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
+
+		m_BottomCollisionApplied = true;
 	}
 	break;
 	}
@@ -142,7 +145,10 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
 
 	BackEffect->SetWorldPos(GetWorldPos());
+
 	BackEffect->SetWorldScale(60.f, 60.f, 1.f);
+
+	BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.5f);
 
 	BackEffect->AddRelativeRotationZ(90.f);
 
@@ -202,6 +208,23 @@ void CKirbyAttackEffect::PostUpdate(float DeltaTime)
 void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 {
 	Destroy();
+
+	// 현재 충돌한 물체가 Block 이라면
+	if (Result.Dest->GetGameObject()->CheckType<CBlock>())
+	{
+		// Attack Back Effect
+		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+
+		BackEffect->SetWorldPos(GetWorldPos());
+
+		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
+
+		BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.5f);
+
+		BackEffect->AddRelativeRotationZ(90.f);
+
+		BackEffect->SetLifeTime(0.4f);
+	}
 
 	CColliderComponent* CollisionDest = Result.Dest;
 
