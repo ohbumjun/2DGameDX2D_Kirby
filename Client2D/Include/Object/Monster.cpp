@@ -95,11 +95,13 @@ void CMonster::Damage(float Damage)
 	// 실제 데미지
 	m_HP -= Damage;
 
+	/*
  	if (m_HP < 0.f)
 	{
 		Destroy();
 		return;
 	}
+	*/
 
 	// Widget HP Bar 조정하기
 	CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
@@ -286,6 +288,12 @@ void CMonster::AIDeath(float DeltaTime)
 {
 	ChangeDeathAnimation();
 
+	m_DeathFinishTime = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetPlayTime();
+	
+	m_ColliderBody->Enable(false);
+
+	DeathStart();
+
 	AIDeathSpecific(DeltaTime);
 }
 
@@ -315,6 +323,7 @@ void CMonster::Start()
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
 
 	float ParentWorldScaleX = m_ColliderBody->GetTransform()->GetTransformParent()->GetWorldScale().x;
+
 	if (ParentWorldScaleX != 0.f)
 	{
 		m_ColliderBody->SetInfo(Vector2(GetWorldPos().x, GetWorldPos().y), ParentWorldScaleX * 0.5f * 0.8f);
@@ -606,15 +615,6 @@ void CMonster::OnCollisionBegin(const CollisionResult& Result)
 
 		Player2D->SetIsEatingMonster(true);
 		Player2D->SetEatenMonster(this);
-	}
-
-  	// --m_HP;
-	if (m_HP <= 0)
-	{
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightDeath");
-		m_DeathFinishTime = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetPlayTime();
-		m_ColliderBody->Enable(false);
-		DeathStart();
 	}
 }
 

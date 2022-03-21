@@ -9,7 +9,7 @@ class CAnimationSequence2DInstance;
 
 CMiddleBossHammer::CMiddleBossHammer() :
 	m_JumpEnable(false),
-	m_JumpLimitTimeMax(8.f),
+	m_JumpLimitTimeMax(6.f),
 	m_JumpDistance(1000.f),
 	m_DashRunDistance(800.f)
 {

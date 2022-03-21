@@ -2148,7 +2148,7 @@ void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
 
 	// 현재 끌어당기는 대상이 Monster 라면
-	if (DestMonster)
+	if (DestMonster && DestMonster->GetMonsterType() != Monster_Type::Boss)
 	{
 		m_PullingMonster = DestMonster;
 
@@ -2510,7 +2510,7 @@ void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 	{
 		m_PullingMonster = DestMonster;
 
-		if (!DestMonster->IsBeingPulled())
+		if (!DestMonster->IsBeingPulled() && DestMonster->GetMonsterType() != Monster_Type::Boss)
 		{
 			DestMonster->SetIsBeingPulled(true);
 			DestMonster->SetBeingHit(true);

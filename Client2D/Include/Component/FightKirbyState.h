@@ -19,6 +19,7 @@ private :
     bool m_GoUpState;
     float m_GoUpTime;
 	float m_GoUpTimeMax;
+    float m_InitAttackAbility;
     bool m_InitScaleSet;
     Vector3 m_InitWorldScale;
     // Fall Attack
