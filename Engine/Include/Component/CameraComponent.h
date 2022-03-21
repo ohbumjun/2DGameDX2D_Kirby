@@ -25,7 +25,7 @@ protected:
 	bool			m_AdjustRatio;
 
 	// Camera Follow
-	class CGameObject* m_FollowTargetObject;
+	class CGameObject* m_FollowTargetBoss;
 	bool			m_FollowPlayer;
 	bool          m_FollowTarget;
 	float			m_FollowTargetTime;
@@ -71,7 +71,7 @@ public:
 	}
 	void SetFollowTargetObject(class CGameObject* Object)
 	{
-		m_FollowTargetObject = Object;
+		m_FollowTargetBoss = Object;
 	}
 	void SetFollowTarget(bool Enable)
 	{

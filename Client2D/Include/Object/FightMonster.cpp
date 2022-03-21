@@ -103,6 +103,7 @@ void CFightMonster::Attack()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetMonsterOwner(this);
+		AttackEffect->SetLeftAttackDir();
 	}
 	// 오른쪽으로 보고 있다면 
 	else

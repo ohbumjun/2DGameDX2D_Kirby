@@ -305,6 +305,8 @@ void CAttackEffect::UpdateGravityEffect(float DeltaTime)
 
 void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result)
 {
+	Destroy();
+
 	CColliderComponent* CollisionDest = Result.Dest;
 
 	CGameObject* Owner = CollisionDest->GetGameObject();

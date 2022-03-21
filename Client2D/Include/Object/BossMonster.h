@@ -26,7 +26,6 @@ protected:
 protected:
     float m_CloseAttackLimitTime;
     float m_CloseAttackLimitTimeMax;
-public:
 protected:
     void MakeBossStartEffect();
     void UpdateAttackResetTime(float DeltaTime);

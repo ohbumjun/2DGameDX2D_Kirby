@@ -45,9 +45,6 @@ bool CFireMonsterAttack::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"FireAttackEffect", TEXT("Ability_Fire_AttackEffect.anim"));
 
-	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
-		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
-
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
 

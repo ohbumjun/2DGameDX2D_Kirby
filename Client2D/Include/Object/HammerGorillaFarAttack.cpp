@@ -109,15 +109,12 @@ bool CHammerGorillaFarAttack::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"HammerMiddleBossFarAttack", TEXT("Effect_MiddleBossHammerFarAttack.anim"));
 
-	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
-		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
-
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
-	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CHammerGorillaFarAttack::CollisionCallback);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
 	return true;
 }
@@ -148,40 +145,4 @@ void CHammerGorillaFarAttack::Update(float DeltaTime)
 void CHammerGorillaFarAttack::PostUpdate(float DeltaTime)
 {
 	CAttackEffect::PostUpdate(DeltaTime);
-}
-
-void CHammerGorillaFarAttack::CollisionCallback(const CollisionResult& Result)
-{
-	Destroy();
-
-	m_MonsterOwner->SetAttackEnd();
-	
-	CColliderComponent* CollisionDest = Result.Dest;
-
-	CGameObject* Owner = CollisionDest->GetGameObject();
-
-	CWidgetComponent* ObjectWindow = nullptr;
-
-	if (Owner == m_Scene->GetPlayerObject())
-	{
-		CPlayer2D* Player = (CPlayer2D*)Owner;
-
-		// HP Bar 달게 하기
-		Player->SetIsBeingHit();
-
-		if (m_AttackDir.x > 0)
-			Player->SetBeingHitDirection(m_AttackDir.x);
-		else
-			Player->SetBeingHitDirection(m_AttackDir.x);
-
-		// DestMonster->Damage(2.f);
-
-		// Create Damage Font
-		ObjectWindow = Player->FindComponentByType<CWidgetComponent>();
-
-		if (ObjectWindow)
-		{
-			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
-		}
-	}
 }

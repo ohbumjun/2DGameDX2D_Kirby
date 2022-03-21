@@ -49,7 +49,7 @@ bool CTornado::Init()
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
-	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CTornado::CollisionCallback);
+	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
 	return true;
 }

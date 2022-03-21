@@ -7,8 +7,8 @@ CCameraComponent::CCameraComponent()  :
 	m_AdjustRatio(true),
 	m_FollowPlayer(false),
 	m_FollowTarget(false),
-	m_FollowTargetTime(0.f),
-	m_FollowTargetTimeMax(2.f)
+	m_FollowTargetTime(3.0f),
+	m_FollowTargetTimeMax(3.0f)
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -254,9 +254,9 @@ void CCameraComponent::FollowPlayerPos(float DeltaTime)
 
 void CCameraComponent::FollowTarget(float DeltaTime)
 {
-	if (m_FollowTarget && m_FollowTargetObject)
+	if (m_FollowTarget && m_FollowTargetBoss)
 	{
-		Vector3  TargetWorldPos = m_FollowTargetObject->GetWorldPos();
+		Vector3  TargetWorldPos = m_FollowTargetBoss->GetWorldPos();
 
 		Resolution RS = CEngine::GetInst()->GetResolution();
 
@@ -276,7 +276,9 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 
 		AddWorldPos(Vector3(TraceDir * DeltaTime * 500.f));
 
-		if (DistDiff < 1.f)
+		bool IsOutOfRange = LimitCameraAreaInsideWorld();
+
+		if (DistDiff < 1.f || IsOutOfRange)
 		{
 			if (m_FollowTargetTime > 0)
 			{
@@ -287,7 +289,7 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 				// 다시 Player로 돌아가게 세팅한다.
 				m_FollowTargetTime = m_FollowTargetTimeMax;
 
-				m_FollowTargetObject = nullptr;
+				m_FollowTargetBoss = nullptr;
 				m_FollowTarget = false;
 
 				m_FollowPlayer = true;
