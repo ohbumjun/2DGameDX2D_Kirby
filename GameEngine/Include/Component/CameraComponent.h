@@ -22,9 +22,14 @@ protected:
 	Vector3     m_PrevRelativePos;
 	Vector3     m_PrevWorldPos;
 	float         m_RatioAdjustOffSet;
-
-	bool			m_FollowPlayer;
 	bool			m_AdjustRatio;
+
+	// Camera Follow
+	class CGameObject* m_FollowTargetObject;
+	bool			m_FollowPlayer;
+	bool          m_FollowTarget;
+	float			m_FollowTargetTime;
+	float			m_FollowTargetTimeMax;
 
 public:
 	Resolution GetResolution()	const
@@ -63,6 +68,14 @@ public:
 	void SetAdjustRatio(bool Ratio)
 	{
 		m_AdjustRatio = Ratio;
+	}
+	void SetFollowTargetObject(class CGameObject* Object)
+	{
+		m_FollowTargetObject = Object;
+	}
+	void SetFollowTarget(bool Enable)
+	{
+		m_FollowTarget = Enable;
 	}
 	void SetFollowPlayer (bool Enable)
 	{
@@ -121,6 +134,7 @@ private:
 	bool LimitCameraAreaInsideWorld();
 	void AdjustCameraPosToRatio();
 	void FollowPlayerPos(float DeltaTime);
+	void FollowTarget(float DeltaTime);
 public :
 	virtual void Save(FILE* pFile) override;
 	virtual void Load(FILE* pFile) override;

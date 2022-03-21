@@ -68,10 +68,6 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 	// 중력 적용 효과를 얼마 시간 이후에 적용한다. 
 	if (m_GamePlayDelayTime >= 0.f)
 	{
-		m_GamePlayDelayTime -= DeltaTime;
-
-		m_IsFalling = false;
-
 		return;
 	}
 
@@ -640,6 +636,16 @@ void CLifeObject::CheckOutsideWorldResolution()
 	}
 }
 
+void CLifeObject::UpdateGameDelayTime(float DeltaTime)
+{
+	if (m_GamePlayDelayTime >= 0.f)
+	{
+		m_GamePlayDelayTime -= DeltaTime;
+
+		m_IsFalling = false;
+	}
+}
+
 void CLifeObject::CheckBelowWorldResolution()
 {
 	Vector3 OriginalPos = GetWorldPos();
@@ -807,6 +813,8 @@ void CLifeObject::Update(float DeltaTime)
 	UpdateWhileOffGround(DeltaTime);
 
 	CheckOutsideWorldResolution();
+
+	UpdateGameDelayTime(DeltaTime);
 }
 
 void CLifeObject::PostUpdate(float DeltaTime)

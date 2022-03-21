@@ -131,9 +131,10 @@ public :
 {
 		return m_Body;
 }
-public :
+public : // public 
 	void SetBeingHitDirection(float Dir);
 	void SetIsBeingHit();
+	void SetCameraFollowBossMonster(class CGameObject* Boss);
 private:
 	void SetAttackEnable(bool Enable);
 public:

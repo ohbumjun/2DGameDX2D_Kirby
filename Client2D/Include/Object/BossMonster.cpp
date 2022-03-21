@@ -1,6 +1,7 @@
 #include "BossMonster.h"
 #include <Scene/Scene.h>
 #include "Engine.h"
+#include "Player2D.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
@@ -36,9 +37,9 @@ void CBossMonster::MakeBossStartEffect()
 	if (m_StartBossStage)
 		return;
 
+	// 1) World 맵 크기 제한
 	m_IsRoundStarted = true;
 
-	// World 맵 크기 제한
 	Resolution RS = CEngine::GetInst()->GetResolution();
 
 	m_InitWorldResolution = m_Scene->GetWorldResolution();
@@ -53,6 +54,14 @@ void CBossMonster::MakeBossStartEffect()
 	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
 	m_StartBossStage = true;
+
+	// 2) 카메라 이동 효과
+	CPlayer2D* Player = dynamic_cast<CPlayer2D*>(m_Scene->GetPlayerObject());
+
+	if (!Player)
+		return;
+
+	Player->SetCameraFollowBossMonster(this);
 }
 
 void CBossMonster::UpdateAttackResetTime(float DeltaTime)
@@ -91,6 +100,12 @@ void CBossMonster::AIDeathSpecific(float DeltaTime)
 
 void CBossMonster::Update(float DeltaTime)
 {
+	if (m_GamePlayDelayTime > 0)
+	{
+		m_GamePlayDelayTime -= DeltaTime;
+		return;
+	}
+
 	// World 맵 크기 제한
 	Resolution RS = CEngine::GetInst()->GetResolution();
 

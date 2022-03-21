@@ -388,7 +388,8 @@ void CMonster::Update(float DeltaTime)
 	// 2) 해당 Animation의 Time 저장하고
 	// 3) Animation Time을 감소시켜서 0이 되면 그때 가서 
 	// 2) Animation 끝날 때까지 기다린 다음 PaperBurn
-
+	if (m_GamePlayDelayTime > 0)
+		return;
 
 	if (m_DeathStart)
 	{

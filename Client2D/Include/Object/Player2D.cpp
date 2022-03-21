@@ -1221,6 +1221,18 @@ void CPlayer2D::CheckBelowWorldResolution()
 	m_FallStartY = m_InitPlayerPos.y;
 }
 
+void CPlayer2D::SetCameraFollowBossMonster(class CGameObject* Boss)
+{
+	if (m_GamePlayDelayTime > 0)
+		return;
+
+	m_Camera->SetFollowTarget(true);
+
+	m_Camera->SetFollowTargetObject(Boss);
+
+	m_Camera->SetInheritParentWorldPosChange(false);
+}
+
 void CPlayer2D::StopPlayer()
 {
 	m_LeverVelocity = 0.f;

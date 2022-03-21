@@ -5,7 +5,10 @@
 
 CCameraComponent::CCameraComponent()  :
 	m_AdjustRatio(true),
-	m_FollowPlayer(false)
+	m_FollowPlayer(false),
+	m_FollowTarget(false),
+	m_FollowTargetTime(0.f),
+	m_FollowTargetTimeMax(2.f)
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -144,6 +147,9 @@ void CCameraComponent::AdjustCameraPosToRatio()
 	if (m_FollowPlayer)
 		return;
 
+	if (m_FollowTarget)
+		return;
+
 	if (!m_AdjustRatio)
 		return;
 
@@ -246,6 +252,50 @@ void CCameraComponent::FollowPlayerPos(float DeltaTime)
 	}
 }
 
+void CCameraComponent::FollowTarget(float DeltaTime)
+{
+	if (m_FollowTarget && m_FollowTargetObject)
+	{
+		Vector3  TargetWorldPos = m_FollowTargetObject->GetWorldPos();
+
+		Resolution RS = CEngine::GetInst()->GetResolution();
+
+		Vector3 TargetMovePos = Vector3(TargetWorldPos.x - (float)RS.Width * 0.5f, TargetWorldPos.y - (float)RS.Height * 0.5f, 0.f);
+
+		if (TargetMovePos.x < 0.f)
+			TargetMovePos.x = 0.f;
+
+		if (TargetMovePos.y < 0.f)
+			TargetMovePos.y = 0.f;
+
+		Vector3 TraceDir = TargetMovePos - GetWorldPos();
+
+		float DistDiff = TraceDir.Length();
+
+		TraceDir.Normalize();
+
+		AddWorldPos(Vector3(TraceDir * DeltaTime * 500.f));
+
+		if (DistDiff < 1.f)
+		{
+			if (m_FollowTargetTime > 0)
+			{
+				m_FollowTargetTime -= DeltaTime;
+			}
+			else
+			{
+				// 다시 Player로 돌아가게 세팅한다.
+				m_FollowTargetTime = m_FollowTargetTimeMax;
+
+				m_FollowTargetObject = nullptr;
+				m_FollowTarget = false;
+
+				m_FollowPlayer = true;
+			}
+		}
+	}
+}
+
 void CCameraComponent::Save(FILE* pFile)
 {
 	CSceneComponent::Save(pFile);
@@ -304,6 +354,8 @@ void CCameraComponent::Update(float DeltaTime)
 	LimitCameraAreaInsideWorld();
 
 	FollowPlayerPos(DeltaTime);
+
+	FollowTarget(DeltaTime);
 }
 
 void CCameraComponent::PostUpdate(float DeltaTime)

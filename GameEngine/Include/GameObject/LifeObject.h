@@ -46,6 +46,7 @@ protected :
 protected :
 	virtual void UpdateWhileOffGround(float DeltaTime);
 	void CheckOutsideWorldResolution();
+	void UpdateGameDelayTime(float DeltaTime);
 	virtual void CheckBelowWorldResolution();
 public :
 	virtual void CheckLineCollision(float DeltaTime);
