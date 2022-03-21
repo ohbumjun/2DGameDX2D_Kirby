@@ -72,7 +72,7 @@ protected :
 protected:
 	virtual bool CheckSideCollision();
 	virtual bool CheckBottomCollision();
-	void UpdateGravityEffect(float DeltaTime);
+	bool UpdateGravityEffect(float DeltaTime);
 public :
 	void MonsterAttackCollisionCallback(const CollisionResult& Result);
 	// void PlayerAttackCollisionCallback(const CollisionResult& Result);

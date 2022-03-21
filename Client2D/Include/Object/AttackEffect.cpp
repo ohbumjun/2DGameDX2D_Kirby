@@ -283,11 +283,11 @@ bool CAttackEffect::CheckBottomCollision()
 				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall ||
 					TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block)
 				{
-					CTileEmpty* Tile =  TileMap->GetTileEmpty(col, row);
+					// CTileEmpty* Tile =  TileMap->GetTileEmpty(col, row);
 
-					float NewYPos = Tile->GetWorldPos().y + TileSize.y * Pivot.y;
+					// float NewYPos = Tile->GetWorldPos().y + TileSize.y * Pivot.y;
 
-					SetWorldPos(m_Pos.x, NewYPos, m_Pos.z);
+					// SetWorldPos(m_Pos.x, NewYPos, m_Pos.z);
 
 					return true;
 				}
@@ -298,7 +298,7 @@ bool CAttackEffect::CheckBottomCollision()
 	return false;
 }
 
-void CAttackEffect::UpdateGravityEffect(float DeltaTime)
+bool CAttackEffect::UpdateGravityEffect(float DeltaTime)
 {
 	if (m_PhysicsSimulate)
 	{
@@ -314,8 +314,16 @@ void CAttackEffect::UpdateGravityEffect(float DeltaTime)
 		// float FallDistance = GRAVITY * 0.5f * m_FallTime * m_FallTime;
 		float FallDistance = GRAVITY * 0.5f * m_FallTime * m_FallTime;
 
+		Vector3 TempPrevPos = GetWorldPos();
+
 		SetWorldPos(GetWorldPos().x, m_FallStartY + (Velocity - FallDistance), GetWorldPos().z);
+
+		m_PrevPos = TempPrevPos;
+
+		return true;
 	}
+
+	return false;
 }
 
 void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result)
@@ -392,11 +400,14 @@ void CAttackEffect::Update(float DeltaTime)
 		BottomCollisionSpecificAction();
 	}
 
-	UpdateGravityEffect(DeltaTime);
+	// Bottom Collsion을 조사하기 전에, 중력 효과 먼저 적용
+	bool GravityApplied = UpdateGravityEffect(DeltaTime);
 
-
-	m_PrevPos = GetWorldPos();
-
+	// UpdateGravityEffect 에서 PrevPos를 세팅해주기도 하기 때문이다.
+	if (!GravityApplied)
+	{
+		m_PrevPos = GetWorldPos();
+	}
 }
 
 void CAttackEffect::PostUpdate(float DeltaTime)

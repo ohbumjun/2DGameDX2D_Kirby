@@ -16,6 +16,7 @@ protected :
     float m_AttackResetTimeMax;
     float m_AttackLimitTime;
     float m_AttackLimitTimeMax;
+    
 public:
     Ability_State GetAbilityState() const
     {

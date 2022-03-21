@@ -9,15 +9,23 @@
 #include "EffectKirbyRide.h"
 #include "Engine.h"
 #include "BulletCamera.h"
+#include "Player2D.h"
 #include "Monster.h"
 #include "UI/UIDamageFont.h"
 #include "Component/WidgetComponent.h"
 
 CEffectStar::CEffectStar() :
 	m_IsRotate(false),
-	m_IsSpecialKirbyStar(false)
+	m_IsBeingPulled(false),
+	m_IsSpecialKirbyStar(false),
+	m_IsPulledAgainStar(false),
+	m_BeginPulledAccel(2.2f),
+	m_BeginPulledAccelSum(0.f),
+	m_ColliderProfileChangeTimeMax(1.f)
 {
 	SetTypeID<CEffectStar>();
+
+	m_AbilityState = Ability_State::End;
 }
 
 CEffectStar::CEffectStar(const CEffectStar& Beatle) : CAttackEffect(Beatle)
@@ -30,6 +38,7 @@ void CEffectStar::BottomCollisionSpecificAction()
 {
 	if (m_IsSpecialKirbyStar)
 	{
+		m_JumpVelocity = m_JumpVelocity * 0.95f;
 		m_Jump = true;
 		m_FallTime = 0.f;
 		m_FallStartY = GetWorldPos().y;
@@ -46,6 +55,44 @@ void CEffectStar::SideCollisionSpecificAction()
 		m_AttackDir.x = -1.f * m_AttackDir.x;
 		m_FallStartY = GetWorldPos().y;
 		// m_FallStartY = GetWorldPos().y + GetWorldScale().y;
+	}
+}
+
+void CEffectStar::UpdateBeingPulled(float DeltaTime)
+{
+	if (m_IsPulledAgainStar)
+	{
+		if (m_ColliderProfileChangeTime < m_ColliderProfileChangeTimeMax)
+		{
+			m_ColliderProfileChangeTime += DeltaTime;
+		}
+		else
+		{
+			// Profile을 Monster로 바꿔서, Player에 의해 Pull 될 수 있게 한다.
+			m_Collider->SetCollisionProfile("Monster");
+			m_IsPulledAgainStar = false;
+		}
+	}
+
+	if (!m_IsBeingPulled)
+		return;
+
+	Vector3 PulledDir = m_Scene->GetPlayerObject()->GetWorldPos() - GetWorldPos();
+
+	PulledDir.Normalize();
+
+	m_BeginPulledAccelSum += m_BeginPulledAccel;
+
+	AddWorldPos(Vector3(PulledDir) * DeltaTime * m_BeginPulledAccelSum);
+
+	if (GetWorldPos().Distance(m_Scene->GetPlayerObject()->GetWorldPos()) <= 5.f)
+	{
+		m_IsBeingPulled = false;
+
+		CPlayer2D* Player = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+		Player->SetIsEatingMonster(true);
+		Player->SetEatenMonsterAsPrevEatenMonster();
 	}
 }
 
@@ -81,12 +128,17 @@ bool CEffectStar::Init()
 
 void CEffectStar::Update(float DeltaTime)
 {
-	if (CheckBottomCollision())
+	CAttackEffect::Update(DeltaTime);
+
+	if (m_IsRotate)
 	{
-		BottomCollisionSpecificAction();
+		AddRelativeRotationZ(360.f * DeltaTime);
 	}
 
-	CAttackEffect::Update(DeltaTime);
+	UpdateBeingPulled(DeltaTime);
+
+	if (m_IsBeingPulled)
+		return;
 
 	// 일반 Monster를 내뱉은 Star 라면
 	if (!m_IsSpecialKirbyStar)
@@ -99,10 +151,6 @@ void CEffectStar::Update(float DeltaTime)
 		AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * m_EffectMoveSpeed * 0.2f);
 	}
 
-	if (m_IsRotate)
-	{
-		AddRelativeRotationZ(360.f * DeltaTime);
-	}
 }
 
 void CEffectStar::PostUpdate(float DeltaTime)
@@ -117,44 +165,68 @@ CEffectStar* CEffectStar::Clone()
 
 void CEffectStar::StarCollision(const CollisionResult& Result)
 {
-	Destroy();
-
-	CColliderComponent* CollisionDest = Result.Dest;
-
-	CGameObject* Owner = CollisionDest->GetGameObject();
-
-	CLifeObject* AttackSourceObject = (CLifeObject*)Result.Src->GetGameObject();
-
-	CWidgetComponent* ObjectWindow = nullptr;
-
-	if (Owner)
+	if (Result.Dest->GetGameObject() == m_Scene->GetPlayerObject())
 	{
-		CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
-
-		if (!DestMonster)
+		// 당겨지지 않고 있는 상태라면 X
+		if (!m_IsBeingPulled)
 			return;
 
-		// HP Bar 달게 하기
-		DestMonster->Damage(AttackSourceObject->GetAttackAbility());
+		CPlayer2D* Player2D = dynamic_cast<CPlayer2D*>(Result.Dest->GetGameObject());
 
-		DestMonster->SetBeingHit(true);
+		// Player의 몸통 충돌체가 아니라면
+		if ((CColliderBox2D*)Result.Dest != Player2D->GetBodyCollider())
+			return;
 
-		DestMonster->SetAIState(Monster_AI::Hit);
+		m_IsBeingPulled = false;
 
-		if (m_AttackDir.x > 0)
-			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
-		else
-			DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+		Enable(false);
 
-		// DestMonster->Damage(2.f);
+		// Destroy();
 
-		// Create Damage Font
-		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+		Player2D->SetIsEatingMonster(true);
+		Player2D->SetEatenMonsterAsPrevEatenMonster();
+	}
+	else
+	{
+		Destroy();
 
-		if (ObjectWindow)
+		CColliderComponent* CollisionDest = Result.Dest;
+
+		CGameObject* Owner = CollisionDest->GetGameObject();
+
+		CLifeObject* AttackSourceObject = (CLifeObject*)Result.Src->GetGameObject();
+
+		CWidgetComponent* ObjectWindow = nullptr;
+
+		if (Owner)
 		{
-			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
-			DamageFont->SetDamage((int)AttackSourceObject->GetAttackAbility());
+			CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+
+			if (!DestMonster)
+				return;
+
+			// HP Bar 달게 하기
+			DestMonster->Damage(AttackSourceObject->GetAttackAbility());
+
+			DestMonster->SetBeingHit(true);
+
+			DestMonster->SetAIState(Monster_AI::Hit);
+
+			if (m_AttackDir.x > 0)
+				DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
+			else
+				DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+
+			// DestMonster->Damage(2.f);
+
+			// Create Damage Font
+			ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
+			if (ObjectWindow)
+			{
+				CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+				DamageFont->SetDamage((int)AttackSourceObject->GetAttackAbility());
+			}
 		}
 	}
 }

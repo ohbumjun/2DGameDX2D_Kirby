@@ -11,6 +11,7 @@
 #include "Scene/NavigationManager.h"
 // Component
 #include "Component/ColliderBox2D.h"
+#include "Component/ColliderCircle.h"
 #include "Component/CameraComponent.h"
 #include "Component/TileEmptyComponent.h"
 // Object
@@ -931,8 +932,11 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 	m_IsEatingMonster = false;
 
+	// 특별 몬스터를 내뱉는 것이라면, 
 	if (m_EatenMonster->GetMonsterType() == Monster_Type::Ability)
 	{
+		CAbilityMonster* AbilityMonster = (CAbilityMonster*)m_EatenMonster.Get();
+
 		// Star 세팅 추가
 		SpitOutStar->SetIsSpecialKirbyStar(true);
 		SpitOutStar->SetJumpVelocity(100.f);
@@ -940,9 +944,15 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		SpitOutStar->JumpStart();
 		SpitOutStar->SetLifeTime(10.f);
 		SpitOutStar->SetNormalBottomCollision(true);
+		SpitOutStar->SetIsPulledAgainStar(true);
+		SpitOutStar->SetAbilityState(AbilityMonster->GetAbilityState());
+
+		// Prev Eaten Monster에 정보세팅
+		m_PrevAbilityEatenMonster = m_EatenMonster;
 	}
 
-	m_EatenMonster->Destroy();
+	// todo : 이거는 필요할 수도 있다.
+	// m_EatenMonster->Destroy();
 
 	/*
 	m_EatenMonster->Enable(true);
@@ -2137,18 +2147,35 @@ void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
 
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
 
-	if (!DestMonster)
-		return;
-
-	m_PullingMonster = DestMonster;
-
-	if (!DestMonster->IsBeingPulled())
+	// 현재 끌어당기는 대상이 Monster 라면
+	if (DestMonster)
 	{
-		DestMonster->SetIsBeingPulled(true);
-		DestMonster->SetBeingHit(true);
-		DestMonster->SetAIState(Monster_AI::Hit);
-		DestMonster->SetCollisionDisable(true);
-		DestMonster->SetPulledDestPos(GetWorldPos());
+		m_PullingMonster = DestMonster;
+
+		if (!DestMonster->IsBeingPulled())
+		{
+			DestMonster->SetIsBeingPulled(true);
+			DestMonster->SetBeingHit(true);
+			DestMonster->SetAIState(Monster_AI::Hit);
+			DestMonster->SetCollisionDisable(true);
+			DestMonster->SetPulledDestPos(GetWorldPos());
+		}
+	}
+	// 그게 아니라면 EffectStart 여야 한다. 자기가 내뱉은 Start
+	else 
+	{
+		CEffectStar* EffectStar = dynamic_cast<CEffectStar*>(CollisionDest->GetGameObject());
+
+		if (EffectStar)
+		{
+			// Ability Monster를 내뱉은 Star가 아니라면
+			if (EffectStar->IsSpecialKirbyStar() == false)
+				return;
+
+			EffectStar->SetIsBeingPulled(true);
+
+			m_PullingStar = EffectStar;
+		}
 	}
 }
 
@@ -2162,6 +2189,11 @@ void CPlayer2D::PullRightCollisionEndCallback(const CollisionResult& Result)
 		m_PullingMonster->SetCollisionDisable(false);
 		m_PullingMonster = nullptr;
 	}
+	else if (m_PullingStar)
+	{
+		m_PullingStar->SetIsBeingPulled(false);
+		m_PullingStar = nullptr;
+	}
 }
 
 void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
@@ -2173,6 +2205,11 @@ void CPlayer2D::PullLeftCollisionEndCallback(const CollisionResult& Result)
 		m_PullingMonster->SetCollisionDisable(false);
 		m_PullingMonster->SetBeingHit(false);
 		m_PullingMonster = nullptr;
+	}
+	else if (m_PullingStar)
+	{
+		m_PullingStar->SetIsBeingPulled(false);
+		m_PullingStar = nullptr;
 	}
 }
 
@@ -2188,9 +2225,19 @@ void CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut()
 	}
 }
 
+void CPlayer2D::SetEatenMonsterAsPrevEatenMonster()
+{
+	m_EatenMonster = m_PrevAbilityEatenMonster;
+
+	m_IsEatingMonster = true;
+
+	// Animation Change
+	ChangePlayerIdleAnimation();
+}
+
 void CPlayer2D::SpecialChange()
 {
-	CAbilityMonster* AbilityMonster = (CAbilityMonster*)m_EatenMonster;
+	CAbilityMonster* AbilityMonster = (CAbilityMonster*)m_EatenMonster.Get();
 
 	Ability_State State = AbilityMonster->GetAbilityState();
 
@@ -2458,18 +2505,35 @@ void CPlayer2D::PullLeftCollisionBeginCallback(const CollisionResult& Result)
 
 	CMonster* DestMonster = dynamic_cast<CMonster*>(CollisionDest->GetGameObject());
 
-	if (!DestMonster)
-		return;
-
-	m_PullingMonster = DestMonster;
-
-	if (!DestMonster->IsBeingPulled())
+	// 현재 끌어당기는 대상이 Monster 라면
+	if (DestMonster)
 	{
-		DestMonster->SetIsBeingPulled(true);
-		DestMonster->SetCollisionDisable(true);
-		DestMonster->SetBeingHit(true);
-		DestMonster->SetAIState(Monster_AI::Hit);
-		DestMonster->SetPulledDestPos(GetWorldPos());
+		m_PullingMonster = DestMonster;
+
+		if (!DestMonster->IsBeingPulled())
+		{
+			DestMonster->SetIsBeingPulled(true);
+			DestMonster->SetBeingHit(true);
+			DestMonster->SetAIState(Monster_AI::Hit);
+			DestMonster->SetCollisionDisable(true);
+			DestMonster->SetPulledDestPos(GetWorldPos());
+		}
+	}
+	// 그게 아니라면 EffectStart 여야 한다. 자기가 내뱉은 Start
+	else
+	{
+		CEffectStar* EffectStar = dynamic_cast<CEffectStar*>(CollisionDest->GetGameObject());
+
+		if (EffectStar)
+		{
+			// Ability Monster를 내뱉은 Star가 아니라면
+			if (EffectStar->IsSpecialKirbyStar() == false)
+				return;
+
+			EffectStar->SetIsBeingPulled(true);
+
+			m_PullingStar = EffectStar;
+		}
 	}
 }
 

@@ -86,7 +86,9 @@ private :
 	bool m_IsPulling;
 	float m_PullDistance;
 	class CMonster* m_PullingMonster;
-	class CMonster* m_EatenMonster;
+	class CEffectStar* m_PullingStar;
+	CSharedPtr<class CMonster> m_EatenMonster;
+	CSharedPtr<class CMonster> m_PrevAbilityEatenMonster;
 
 	// Change ¿©ºÎ
 	bool m_IsSpecialStateChanged;
@@ -228,6 +230,8 @@ private :
 	void PullLeftCollisionBeginCallback(const CollisionResult& Result);
 	void PullLeftCollisionEndCallback(const CollisionResult& Result);
 	void ChangeToAfterWardsAnimationAfterSpitOut();
+public :
+	void SetEatenMonsterAsPrevEatenMonster();
 private :
 	// Special Change
 	void SpecialChangeStart(float DeltaTime);
