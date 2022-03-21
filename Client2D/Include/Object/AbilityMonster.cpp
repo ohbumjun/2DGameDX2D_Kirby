@@ -8,7 +8,9 @@ CAbilityMonster::CAbilityMonster():
 	m_AttackLimitTimeMax(4.f)
 {
 	m_AbilityState = Ability_State::End;
-
+	m_HP = 200.f;
+	m_HPMax = 200.f;
+	m_AttackAbility = 40.f;
 	m_MonsterType = Monster_Type::Ability;
 }
 

@@ -11,8 +11,6 @@
 
 
 CMonster::CMonster() :
-	m_HPMax(5.f),
-	m_HP(5.f),
 	m_DeathAccTime(0.f),
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false),
@@ -32,6 +30,8 @@ CMonster::CMonster() :
 {
 	SetTypeID<CMonster>();
 	m_MonsterType = Monster_Type::Normal;
+	m_HPMax = 100.f;
+	m_HP = 100.f;
 }
 
 CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)

@@ -20,6 +20,8 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_IsGroundObject = true;
 	m_CloseAttackDistance = 250.f;
 	m_FarAttackDistance = 600.f;
+	m_HPMax = 1000.f;
+	m_HPMax = 1000.f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)

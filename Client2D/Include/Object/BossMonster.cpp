@@ -11,6 +11,7 @@ CBossMonster::CBossMonster() :
 	m_IsRoundStarted(false)
 {
 	m_MonsterType = Monster_Type::Boss;
+	m_AttackAbility = 60.f;
 }
 
 CBossMonster::CBossMonster(const CBossMonster& Monster) : CMonster(Monster)

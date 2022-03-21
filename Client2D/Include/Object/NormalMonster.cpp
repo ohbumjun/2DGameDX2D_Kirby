@@ -5,6 +5,10 @@ CNormalMonster::CNormalMonster()
 	// SetTypeID<CNormalMonster>();
 
 	m_MonsterType = Monster_Type::Normal;
+
+	m_AttackAbility = 20.f;
+	m_HPMax = 100.f;
+	m_HP = 100.f;
 }
 
 CNormalMonster::CNormalMonster(const CNormalMonster& Monster) : CMonster(Monster)

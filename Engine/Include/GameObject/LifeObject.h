@@ -39,6 +39,10 @@ protected:
 	bool m_IsCeilingCollided;
 	bool m_ApplyBottomCollision;
 	bool m_LineCollided;
+protected: // Ability
+	float m_HP;
+	float m_HPMax;
+	float m_AttackAbility;
 protected :
 	Vector3 m_ObjectMoveDir;
 protected :
@@ -56,6 +60,18 @@ public :
 public :
 	virtual void SetObjectLand();
 public :
+	float GetAttackAbility() const
+{
+		return m_AttackAbility;
+}
+	float GetHP() const
+{
+		return m_HP;
+}
+	float GetHPMax() const
+{
+		return m_HPMax;
+}
 	bool IsSideCollided() const
 {
 		return m_IsSideCollided;

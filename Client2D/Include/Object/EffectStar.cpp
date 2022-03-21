@@ -127,6 +127,8 @@ void CEffectStar::StarCollision(const CollisionResult& Result)
 
 	CGameObject* Owner = CollisionDest->GetGameObject();
 
+	CLifeObject* AttackSourceObject = (CLifeObject*)Result.Src->GetGameObject();
+
 	CWidgetComponent* ObjectWindow = nullptr;
 
 	if (Owner)
@@ -137,6 +139,8 @@ void CEffectStar::StarCollision(const CollisionResult& Result)
 			return;
 
 		// HP Bar 달게 하기
+		DestMonster->Damage(AttackSourceObject->GetAttackAbility());
+
 		DestMonster->SetBeingHit(true);
 
 		DestMonster->SetAIState(Monster_AI::Hit);
@@ -154,6 +158,7 @@ void CEffectStar::StarCollision(const CollisionResult& Result)
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+			DamageFont->SetDamage(AttackSourceObject->GetAttackAbility());
 		}
 	}
 }

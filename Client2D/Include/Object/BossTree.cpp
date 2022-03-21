@@ -24,6 +24,9 @@ CBossTree::CBossTree()
 
 	m_FarAttackLimitTime = 0.f;
 	m_FarAttackLimitTimeMax = 5.f;
+
+	m_HP = 2000.f;
+	m_HPMax = 2000.f;
 }
 
 CBossTree::CBossTree(const CBossTree& Monster) : CBossMonster(Monster)

@@ -72,6 +72,8 @@ CPlayer2D::CPlayer2D() :
 	m_SolW      = false;
 	m_WDistance = 0.f;
 	m_Opacity   = 1.f;
+	m_HP = 800.f;
+	m_HPMax = 800.f;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
 }
@@ -2272,12 +2274,14 @@ void CPlayer2D::SetBasicSettingToChangedState()
 	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange"))
 	{
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetLoop(false);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetPlayTime(0.8f);
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetEndFunction(
 			this, &CPlayer2D::SpecialChange);
 	}
 	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange"))
 	{
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetLoop(false);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetPlayTime(0.8f);
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetEndFunction(
 			this, &CPlayer2D::SpecialChange);
 	}

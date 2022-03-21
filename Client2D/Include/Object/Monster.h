@@ -15,8 +15,6 @@ protected:
     CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
     CSharedPtr<class CUIProgressBar> m_HpBar;
     CSharedPtr<class CPaperBurnComponent> m_PaperBurn;
-    float m_HPMax;
-    float m_HP;
     float m_DeathAccTime;
     float m_DeathFinishTime;
     bool m_DeathStart;
