@@ -128,7 +128,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 void CClientManager::CreateDefaultSceneMode()
 {
-	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();
+	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();//
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
