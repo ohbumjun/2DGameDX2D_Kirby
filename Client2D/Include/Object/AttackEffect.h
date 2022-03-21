@@ -25,7 +25,7 @@ protected :
 	CSharedPtr<class CColliderCircle> m_Collider;
 	// 현재 Attack Effect가 나아가는 와중에, 없어지는 것을 방지하기 위해서 Side Collision 과정에서 Y 정도를 더 아래로 파고들게 허용
 	// 이것을 막기 위한 것
-	bool m_NormalBottomCheckApplied;
+	bool m_NormalBottomCheckApplied; //
 public :
 	CColliderCircle* GetColliderBody() const
 {
