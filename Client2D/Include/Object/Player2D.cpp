@@ -2247,6 +2247,8 @@ void CPlayer2D::SpecialChange()
 	{
 	case Ability_State::Beam:
 	{
+		m_KirbyState = nullptr;
+
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
 		m_KirbyState->SetPlayer(this);
@@ -2256,6 +2258,8 @@ void CPlayer2D::SpecialChange()
 	break;
 	case Ability_State::Fire:
 	{
+		m_KirbyState = nullptr;
+
 		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
 
 		m_KirbyState->SetPlayer(this);
@@ -2267,6 +2271,8 @@ void CPlayer2D::SpecialChange()
 	break;
 	case Ability_State::Fight:
 	{
+		m_KirbyState = nullptr;
+
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
 
 		m_KirbyState->SetPlayer(this);

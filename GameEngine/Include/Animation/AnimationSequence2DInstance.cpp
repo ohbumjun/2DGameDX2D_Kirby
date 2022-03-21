@@ -752,9 +752,6 @@ void CAnimationSequence2DInstance::Update(float DeltaTime)
 				m_CurrentAnimation->m_Frame = m_CurrentAnimation->m_Sequence->GetFrameCount() - 1;
 		}
 
-		if (m_CurrentAnimation->m_EndFunction)
-			m_CurrentAnimation->m_EndFunction();
-
 		if (m_CurrentAnimation->m_Loop)
 		{
 			size_t Size = m_CurrentAnimation->m_vecNotify.size();
@@ -764,6 +761,9 @@ void CAnimationSequence2DInstance::Update(float DeltaTime)
 				m_CurrentAnimation->m_vecNotify[i]->Call = false;
 			}
 		}
+
+		if (m_CurrentAnimation->m_EndFunction)
+			m_CurrentAnimation->m_EndFunction();
 	}
 }
 

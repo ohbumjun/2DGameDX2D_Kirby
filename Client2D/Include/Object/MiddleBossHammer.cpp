@@ -9,13 +9,13 @@ class CAnimationSequence2DInstance;
 
 CMiddleBossHammer::CMiddleBossHammer() :
 	m_JumpEnable(false),
-	m_JumpLimitTimeMax(6.f),
+	m_JumpLimitTimeMax(5.f),
 	m_JumpDistance(1000.f),
 	m_DashRunDistance(800.f)
 {
 	SetTypeID<CMiddleBossHammer>();
 	m_DashDistance = 1000.f;
-	m_JumpVelocity = 50.f;
+	m_JumpVelocity = 60.f;
 	m_AttackDistance = 600.f;
 	m_IsGroundObject = true;
 	m_CloseAttackDistance = 250.f;
@@ -47,20 +47,20 @@ void CMiddleBossHammer::Start()
 	m_Sprite->GetAnimationInstance()->Play();
 
 	// Close Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(0.7f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(0.7f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
 	// Far Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(0.7f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(1.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(0.7f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
 
