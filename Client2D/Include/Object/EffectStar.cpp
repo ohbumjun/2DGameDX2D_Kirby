@@ -40,9 +40,12 @@ void CEffectStar::SideCollisionSpecificAction()
 {
 	if (m_IsSpecialKirbyStar)
 	{
+		m_JumpVelocity = m_JumpVelocity * 0.95f;
 		m_Jump = true;
 		m_FallTime = 0.f;
+		m_AttackDir.x = -1.f * m_AttackDir.x;
 		m_FallStartY = GetWorldPos().y;
+		// m_FallStartY = GetWorldPos().y + GetWorldScale().y;
 	}
 }
 
@@ -65,7 +68,7 @@ bool CEffectStar::Init()
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 
-	SetWorldScale(GetWorldScale().x * 0.8f, GetWorldScale().y * 0.8f, 1.f);
+	// SetWorldScale(GetWorldScale().x * 0.8f, GetWorldScale().y * 0.8f, 1.f);
 	
 	m_Collider->SetCollisionProfile("PlayerAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), GetWorldScale().x * 0.4f);
@@ -78,6 +81,11 @@ bool CEffectStar::Init()
 
 void CEffectStar::Update(float DeltaTime)
 {
+	if (CheckBottomCollision())
+	{
+		BottomCollisionSpecificAction();
+	}
+
 	CAttackEffect::Update(DeltaTime);
 
 	// 일반 Monster를 내뱉은 Star 라면
@@ -88,7 +96,7 @@ void CEffectStar::Update(float DeltaTime)
 	// 그게 아니라, Ability Monster 를 내뱉은 Star 라면
 	else
 	{
-		AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * m_EffectMoveSpeed * 0.1f);
+		AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * m_EffectMoveSpeed * 0.2f);
 	}
 
 	if (m_IsRotate)

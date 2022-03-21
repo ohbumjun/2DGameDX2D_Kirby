@@ -935,10 +935,11 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	{
 		// Star 세팅 추가
 		SpitOutStar->SetIsSpecialKirbyStar(true);
-		SpitOutStar->SetJumpVelocity(80.f);
+		SpitOutStar->SetJumpVelocity(100.f);
 		SpitOutStar->SetPhysicsSimulate(true);
 		SpitOutStar->JumpStart();
 		SpitOutStar->SetLifeTime(10.f);
+		SpitOutStar->SetNormalBottomCollision(true);
 	}
 
 	m_EatenMonster->Destroy();

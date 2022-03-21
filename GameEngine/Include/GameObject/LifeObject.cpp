@@ -475,7 +475,7 @@ void CLifeObject::CheckSideCollision()
 			RTIndexX = RTIndexX >= TileMap->GetTileCountX() ? TileMap->GetTileCountX() - 1 : RTIndexX;
 			RTIndexY = RTIndexY >= TileMap->GetTileCountY() ? TileMap->GetTileCountY() - 1 : RTIndexY;
 
-			for (int row = LBIndexY; row <= RTIndexY; row++)
+			for (int row = RTIndexY; row >= LBIndexY; row--)
 			{
 				for (int col = LBIndexX; col <= RTIndexX; col++)
 				{
@@ -556,7 +556,7 @@ void CLifeObject::CheckSideCollision()
 			RTIndexY = RTIndexY >= TileMap->GetTileCountY() ? TileMap->GetTileCountY() - 1 : RTIndexY;
 
 			// 오른쪽에서 왼쪽 순으로 타일을 조사한다.
-			for (int row = LBIndexY; row <= RTIndexY; row++)
+			for (int row = RTIndexY; row >= LBIndexY; row--)
 			{
 				for (int col = RTIndexX; col >= LBIndexX; col--)
 				{
@@ -591,6 +591,8 @@ void CLifeObject::CheckSideCollision()
 						m_Pos.x += MoveX;
 
 						SetWorldPos(m_Pos);
+
+						// 여기는 YPos도 같이 처리해준다 ( Bottom Collision
 
 						break;
 					}

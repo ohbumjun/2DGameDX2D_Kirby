@@ -10,6 +10,7 @@
 CAttackEffect::CAttackEffect()  :
 	m_SideCollisionApplied(true),
 	m_BottomCollisionApplied(false),
+	m_NormalBottomCheckApplied(false),
 	m_Jump(false),
 	m_JumpVelocity(20.f),
 	m_EffectMoveSpeed(500.f),
@@ -132,7 +133,8 @@ bool CAttackEffect::CheckSideCollision()
 						CurRT.y >= TilePos.y
 						)
 					{
-						if (TilePos.y + TileSize.y - GetWorldScale().y <= ResultLB.y &&
+						if (m_NormalBottomCheckApplied == false &&
+							TilePos.y + TileSize.y - GetWorldScale().y <= ResultLB.y &&
 							ResultLB.y <= TilePos.y + TileSize.y + GetWorldScale().y)
 							continue;
 						
@@ -185,7 +187,8 @@ bool CAttackEffect::CheckSideCollision()
 						CurLB.y <= TilePos.y + TileSize.y &&
 						CurRT.y >= TilePos.y)
 					{
-						if (TilePos.y + TileSize.y - GetWorldScale().y <= ResultLB.y &&
+						if (m_NormalBottomCheckApplied == false &&
+							TilePos.y + TileSize.y - GetWorldScale().y <= ResultLB.y &&
 							ResultLB.y <= TilePos.y + TileSize.y + GetWorldScale().y)
 							continue;
 
@@ -280,6 +283,12 @@ bool CAttackEffect::CheckBottomCollision()
 				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Wall ||
 					TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block)
 				{
+					CTileEmpty* Tile =  TileMap->GetTileEmpty(col, row);
+
+					float NewYPos = Tile->GetWorldPos().y + TileSize.y * Pivot.y;
+
+					SetWorldPos(m_Pos.x, NewYPos, m_Pos.z);
+
 					return true;
 				}
 			}
