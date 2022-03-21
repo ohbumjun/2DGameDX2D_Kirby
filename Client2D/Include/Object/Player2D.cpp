@@ -466,6 +466,9 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	if (m_IsBeingHit)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_IsAttacking)
 		return;
 
@@ -659,6 +662,9 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	}
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsChanging)
 		return;
 
 	if (m_IsAttacking)
@@ -1784,6 +1790,9 @@ void CPlayer2D::ChangePlayerWalkAnimation()
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (!m_Jump && !m_IsFlying)
 	{
 		std::string CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
@@ -1907,6 +1916,9 @@ void CPlayer2D::ChangePlayerFlyAnimation()
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftFly");
 	else
@@ -1950,6 +1962,9 @@ void CPlayer2D::ChangePlayerSpitOutAnimation()
 
 void CPlayer2D::ChangePlayerSlideAttackAnimation()
 {
+	if (m_IsChanging)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftSlide");
 	else
