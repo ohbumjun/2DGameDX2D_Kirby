@@ -374,6 +374,11 @@ void CPlayer2D::SetIsBeingHit()
 	m_DashVelocity = 0.f;
 }
 
+void CPlayer2D::SetCameraFollowMaxTime(float Time)
+{
+	m_Camera->SetFollowTargetCameraTime(Time);
+}
+
 void CPlayer2D::SetAttackEnable(bool Enable)
 {
 	m_IsAttacking = Enable;

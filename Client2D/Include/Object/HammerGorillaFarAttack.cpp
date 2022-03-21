@@ -65,6 +65,8 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 		AttackEffect->JumpStart();
 
 		AttackEffect->SetPhysicsSimulate(true);
+
+		AttackEffect->SetMonsterOwner(m_MonsterOwner);
 	}
 
 	// ¿ÞÂÊ 2°³
@@ -93,6 +95,8 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 		AttackEffect->JumpStart();
 
 		AttackEffect->SetPhysicsSimulate(true);
+
+		AttackEffect->SetMonsterOwner(m_MonsterOwner);
 	}
 }
 

@@ -169,6 +169,7 @@ void CMiddleBossHammer::CloseAttack()
 			0.f);
 
 		AttackEffect->SetLeftAttackDir();
+
 	}
 	else
 	{
@@ -179,6 +180,8 @@ void CMiddleBossHammer::CloseAttack()
 
 		AttackEffect->SetRightAttackDir();
 	}
+
+	AttackEffect->SetMonsterOwner(this);
 
 	AttackEffect->AddRelativeRotationZ(90.f);
 

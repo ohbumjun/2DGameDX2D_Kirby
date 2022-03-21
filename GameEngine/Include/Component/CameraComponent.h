@@ -65,6 +65,10 @@ public:
 	Matrix GetRatioViewMatrix(float ScrollRatio);
 
 public:
+	void SetFollowTargetCameraTime(float Time)
+	{
+		m_FollowTargetTime = Time;
+	}
 	void SetAdjustRatio(bool Ratio)
 	{
 		m_AdjustRatio = Ratio;

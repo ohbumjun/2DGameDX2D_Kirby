@@ -51,6 +51,8 @@ bool CApple::Init()
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
+	SetBottomCollisionEnable(true);
+
 	return true;
 }
 

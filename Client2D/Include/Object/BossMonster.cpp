@@ -8,6 +8,7 @@ CBossMonster::CBossMonster() :
 	m_AttackResetTimeMax(2.f),
 	m_FarAttackLimitTimeMax(3.5f),
 	m_CloseAttackLimitTimeMax(2.5f),
+	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
 	m_IsRoundStarted(false)
 {
 	m_MonsterType = Monster_Type::Boss;
@@ -62,6 +63,8 @@ void CBossMonster::MakeBossStartEffect()
 	if (!Player)
 		return;
 
+	Player->SetCameraFollowMaxTime(m_CameraFollowMaxTime);
+
 	Player->SetCameraFollowBossMonster(this);
 }
 
@@ -107,10 +110,9 @@ void CBossMonster::Update(float DeltaTime)
 		return;
 	}
 
-	// World 맵 크기 제한
-	Resolution RS = CEngine::GetInst()->GetResolution();
-
-	if (m_Scene->GetPlayerObject()->GetWorldPos().x + (float)RS.Width * 0.5f < GetWorldPos().x)
+	// 카메라 Boss 따라가기 
+	if (m_Scene->GetPlayerObject()->GetWorldPos().x + m_Scene->GetWorldResolution().x > GetWorldPos().x ||
+		m_Scene->GetPlayerObject()->GetWorldPos().y + (- 1.f) * m_Scene->GetWorldResolution().y < GetWorldPos().y)
 	{
 		MakeBossStartEffect();
 	}
