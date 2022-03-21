@@ -299,6 +299,9 @@ void CPlayer2D::Start()
 	SetBasicSettingToChangedState();
 
 	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
+
+	// Player를 한번 멈춘다.
+	StopPlayer();
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -396,7 +399,7 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
-	if (m_SceneChangeCallback && m_FallTime < 0.1f)
+	if (m_SceneChangeCallback && m_FallTime < 0.1f && !m_IsFlying)
 	{
 		CollisionResult Result;
 		m_SceneChangeCallback(Result);

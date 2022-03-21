@@ -31,6 +31,7 @@ protected :
     void UpdateAttackLimitTime(float DeltaTime);
     virtual void Attack();
     virtual void ChangeAttackAnimation() override;
+    virtual void AIDeathSpecific(float DeltaTime);
 public:
     virtual void Start() override;
     virtual bool Init() override;

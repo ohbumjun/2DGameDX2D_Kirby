@@ -23,10 +23,10 @@ CBossTree::CBossTree()
 	m_FarAttackDistance = 1100.f;
 
 	m_FarAttackLimitTime = 0.f;
-	m_FarAttackLimitTimeMax = 5.f;
+	m_FarAttackLimitTimeMax = 3.f;
 
-	m_HP = 1500.f;
-	m_HPMax = 1500.f;
+	m_HP = 5000.f;
+	m_HPMax = 5000.f;
 
 	m_CameraFollowMaxTime = 6.f;
 }
@@ -49,9 +49,8 @@ void CBossTree::Start()
 
 	m_Sprite->GetAnimationInstance()->Play();
 
-	m_HP = 1500.f;
-
-	m_HPMax = 1500.f;
+	m_HP = 5000.f;
+	m_HPMax = 5000.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
@@ -142,7 +141,7 @@ void CBossTree::CloseAttack()
 
 	AttackEffect->SetWorldPos(
 		GetWorldPos().x - GetWorldScale().x * 0.7f,
-		GetWorldPos().y - GetWorldScale().y * 0.7f,
+		GetWorldPos().y - GetWorldScale().y * 0.4f,
 		0.f);
 
 	AttackEffect->SetLeftAttackDir();

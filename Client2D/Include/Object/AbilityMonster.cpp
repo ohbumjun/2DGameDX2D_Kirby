@@ -70,6 +70,11 @@ void CAbilityMonster::ChangeAttackAnimation()
 	CMonster::ChangeAttackAnimation();
 }
 
+void CAbilityMonster::AIDeathSpecific(float DeltaTime)
+{
+	Destroy();
+}
+
 void CAbilityMonster::Update(float DeltaTime)
 {
 	CMonster::Update(DeltaTime);

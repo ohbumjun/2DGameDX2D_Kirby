@@ -292,7 +292,7 @@ void CMonster::AIDeath(float DeltaTime)
 	
 	m_ColliderBody->Enable(false);
 
-	DeathStart();
+	// DeathStart();
 
 	AIDeathSpecific(DeltaTime);
 }

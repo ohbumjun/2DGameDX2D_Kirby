@@ -21,8 +21,8 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_CloseAttackDistance = 250.f;
 	m_FarAttackDistance = 600.f;
 
-	m_HPMax = 1000.f;
-	m_HPMax = 1000.f;
+	m_HPMax = 3000.f;
+	m_HPMax = 3000.f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -35,8 +35,8 @@ void CMiddleBossHammer::Start()
 {
 	CBossMonster::Start();
 
-	m_HPMax = 1000.f;
-	m_HPMax = 1000.f;
+	m_HPMax = 3000.f;
+	m_HPMax = 3000.f;
 
 	m_PhysicsSimulate = true;
 
@@ -47,20 +47,20 @@ void CMiddleBossHammer::Start()
 	m_Sprite->GetAnimationInstance()->Play();
 
 	// Close Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(0.7f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(0.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(0.7f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(0.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CMiddleBossHammer::CloseAttack);
 
 	// Far Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(0.7f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(0.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(0.7f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(0.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CMiddleBossHammer::FarAttack);
 
@@ -144,7 +144,7 @@ void CMiddleBossHammer::FarAttack()
 
 	AttackEffect->SetMonsterOwner(this);
 
-	AttackEffect->SetJumpVelocity(80.f);
+	AttackEffect->SetJumpVelocity(90.f);
 
 	AttackEffect->SetPhysicsSimulate(true);
 
@@ -189,7 +189,7 @@ void CMiddleBossHammer::CloseAttack()
 
 	AttackEffect->AddRelativeRotationZ(90.f);
 
-	AttackEffect->SetLifeTime(0.5f);
+	AttackEffect->SetLifeTime(2.f);
 
 	m_IsAttacking = false;
 
