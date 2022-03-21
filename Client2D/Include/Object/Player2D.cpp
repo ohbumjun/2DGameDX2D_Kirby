@@ -2474,6 +2474,8 @@ void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
 				return;
 
 			// HP Bar 달게 하기
+			DestMonster->Damage(m_AttackAbility);
+
 			DestMonster->SetBeingHit(true);
 
 			DestMonster->SetAIState(Monster_AI::Hit);
@@ -2491,6 +2493,8 @@ void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
 			if (ObjectWindow)
 			{
 				CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+
+				DamageFont->SetDamage(m_AttackAbility);
 			}
 		}
 	}

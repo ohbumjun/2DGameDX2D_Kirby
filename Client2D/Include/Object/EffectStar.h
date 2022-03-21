@@ -22,6 +22,11 @@ private:
     bool m_IsPulledAgainStar;
     float m_ColliderProfileChangeTime;
     float m_ColliderProfileChangeTimeMax;
+private :
+    // ¹ÝÂ¦ÀÓ
+    bool m_SpecialStarLightToggle;
+    float m_SpecialStarLightTime;
+    float m_SpecialStarLightTimeMax;
 public :
     Ability_State GetAbilityState() const
 {
@@ -57,6 +62,7 @@ protected:
     virtual void SideCollisionSpecificAction() override;
 protected :
     void UpdateBeingPulled(float DeltaTime);
+    void UpdateLightToggle(float DeltaTime);
  public:
     virtual void Start() override;
     virtual bool Init() override;

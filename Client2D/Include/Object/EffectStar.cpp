@@ -19,6 +19,9 @@ CEffectStar::CEffectStar() :
 	m_IsBeingPulled(false),
 	m_IsSpecialKirbyStar(false),
 	m_IsPulledAgainStar(false),
+	m_SpecialStarLightToggle(false),
+	m_SpecialStarLightTime(0.f),
+	m_SpecialStarLightTimeMax(0.1f),
 	m_BeginPulledAccel(2.2f),
 	m_BeginPulledAccelSum(0.f),
 	m_ColliderProfileChangeTimeMax(1.f)
@@ -97,6 +100,31 @@ void CEffectStar::UpdateBeingPulled(float DeltaTime)
 	}
 }
 
+void CEffectStar::UpdateLightToggle(float DeltaTime)
+{
+	if (m_IsSpecialKirbyStar)
+	{
+		if (m_SpecialStarLightTime < m_SpecialStarLightTimeMax)
+		{
+			m_SpecialStarLightTime += DeltaTime;
+		}
+		else
+		{
+			if (m_SpecialStarLightToggle)
+			{
+				m_MainSprite->SetOpacity(1.f);
+				m_SpecialStarLightToggle = false;
+			}
+			else
+			{
+				m_MainSprite->SetOpacity(0.8f);
+				m_SpecialStarLightToggle = true;
+			}
+			m_SpecialStarLightTime -= m_SpecialStarLightTimeMax;
+		}
+	}
+}
+
 void CEffectStar::Start()
 {
 	CAttackEffect::Start();
@@ -137,6 +165,8 @@ void CEffectStar::Update(float DeltaTime)
 	}
 
 	UpdateBeingPulled(DeltaTime);
+
+	UpdateLightToggle(DeltaTime);
 
 	if (m_IsBeingPulled)
 		return;
