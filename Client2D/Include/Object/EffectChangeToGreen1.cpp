@@ -29,8 +29,6 @@ void CEffectChangeToGreen1::Start()
 	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer);
 	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToGreen1::ResetSceneChangeCallbackToPlayer);
-
-
 }
 
 bool CEffectChangeToGreen1::Init()

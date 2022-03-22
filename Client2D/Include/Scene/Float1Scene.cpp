@@ -12,6 +12,7 @@
 #include "../UI/MainWidget.h"
 #include "../Object/LineContainer.h"
 #include "GameObject/Line.h"
+#include "../Object/EffectSceneChangeAlpha.h"
 
 CFloat1Scene::CFloat1Scene()
 {}
@@ -22,6 +23,9 @@ CFloat1Scene::~CFloat1Scene()
 void CFloat1Scene::Start()
 {
 	CSceneMode::Start();
+
+	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+	Alpha->SetWorldPos(300.f, 300.f, 0.f);
 
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 

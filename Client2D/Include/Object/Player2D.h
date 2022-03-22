@@ -80,6 +80,7 @@ private :
 	// 날기 
 	bool m_IsFlying;
 	float m_FlySpeed;
+	bool m_SceneChange;
 
 	// 몬스터 먹기
 	bool m_IsEatingMonster;

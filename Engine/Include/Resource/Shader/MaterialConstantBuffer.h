@@ -17,7 +17,11 @@ public:
 	virtual bool                     Init() override;
 	virtual void                     UpdateCBuffer() override;
 	virtual CMaterialConstantBuffer* Clone() override;
-
+public :
+	float GetOpacity() const
+{
+		return m_BufferData.Opacity;
+}
 public:
 	void SetPaperBurnEnable(bool Enable)
 	{

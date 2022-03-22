@@ -85,6 +85,10 @@ protected:
 	CSharedPtr<class CRenderState>   m_RenderStateArray[static_cast<int>(RenderState_Type::Max)];
 	std::list<RenderCallback*> m_RenderCallbackList;
 public:
+	float GetOpacity() const
+	{
+		return m_CBuffer->GetOpacity();
+	}
 	bool EmptyTexture() const
 	{
 		return m_TextureInfo.empty();

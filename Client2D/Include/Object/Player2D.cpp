@@ -46,6 +46,7 @@ CPlayer2D::CPlayer2D() :
 	m_SlideAttack(false),
 	m_LeftMove(false),
 	m_ToRightWhenLeftMove(false),
+	m_SceneChange(false),
 	m_IsChanging(false),
 	m_IsSpecialStateChanged(false),
 	m_LeftMovePush(false),
@@ -302,6 +303,8 @@ void CPlayer2D::Start()
 
 	// Player를 한번 멈춘다.
 	StopPlayer();
+
+	m_SceneChange = false;
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -404,9 +407,13 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		CollisionResult Result;
 		m_SceneChangeCallback(Result);
 		m_SceneChangeCallback = nullptr;
+		m_SceneChange = true;
 	}
 	else
 	{
+		if (m_SceneChange)
+			return;
+
 		FlyAfterJump(DeltaTime);
 		// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
 	}
