@@ -119,20 +119,6 @@ void CEffectSceneChangeStar::CreateKirbyRideAndChangeToNextScene(const Collision
 		// Player는 화면에서 안보이게 하고
 		DestObject->Enable(false);
 
-		/*
-		Vector2  WorldMapScale = m_Scene->GetWorldResolution();
-
-		Resolution RS = CEngine::GetInst()->GetResolution();
-
-		Vector3 OriginalScale = GetWorldScale();
-
-		float XOutDiff = GetWorldPos().x + (float)RS.Width * 0.5f - WorldMapScale.x;
-		
-		float YOutDiff = GetWorldPos().y + (float)RS.Height * 0.5f - WorldMapScale.y;
-		*/
-
-		// KirbyRide->SetWorldPos(Vector3(GetWorldPos().x - XOutDiff, GetWorldPos().y - YOutDiff, GetWorldPos().z));
-
 		KirbyRide->SetWorldPos(DestObject->GetWorldPos());
 
 		// World Scale을 가로 2배로 늘린다.

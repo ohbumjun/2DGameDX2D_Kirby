@@ -12,6 +12,8 @@ public:
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
+private :
+    virtual void BottomCollisionSpecificAction() override;
 public:
     virtual void Start() override;
     virtual bool Init() override;

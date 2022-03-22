@@ -24,7 +24,7 @@
 #include "../Object/LineContainer.h"
 #include "../Object/MoonAboveParticle.h"
 #include "../Object/EffectChangeToGreen2.h"
-#include "../Object/BeamMonsterAttack.h"
+#include "../Object/EffectSceneChangeAlpha.h"
 
 CMainScene::CMainScene()
 {
@@ -38,22 +38,10 @@ void CMainScene::Start()
 {
 	CSceneMode::Start();
 
-	/*
-	CBeamMonsterAttack* Attack = m_Scene->CreateGameObject<CBeamMonsterAttack>("Attack");
-	Attack->SetWorldPos(400.f, 600.f, 1.f);
-	*/
+	// Scene Change 효과
+	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
 
-	/*
-	< 아래의 과정들은, PrepareScene 함수에서 미리 처리해준다. >
-	
-	CreateMaterial();
-
-	CreateAnimationSequence();
-
-	CreateParticle();
-
-	CreateSound();
-	*/
+	Alpha->SetSceneStart(true);
 
 	// TileMapEmpty Type 의 GameObject를 찾는다
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());

@@ -7,6 +7,7 @@
 #include "Component/SpriteComponent.h"
 #include "../Scene/Green5Scene.h"
 #include "Player2D.h"
+#include "../Object/EffectSceneChangeAlpha.h"
 
 class CLoadingScene;
 
@@ -67,7 +68,16 @@ CEffectChangeToGreen5* CEffectChangeToGreen5::Clone()
 	return new CEffectChangeToGreen5(*this);
 }
 
-void CEffectChangeToGreen5::ChangeSceneToGreen5Scene(const CollisionResult& Result)
+void CEffectChangeToGreen5::MakeSceneChangeEffect(const CollisionResult& Result)
+{
+	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	Alpha->SetSceneStart(false);
+
+	Alpha->SetSceneChangeCallback(this, &CEffectChangeToGreen5::ChangeSceneToGreen5Scene);
+}
+
+void CEffectChangeToGreen5::ChangeSceneToGreen5Scene()
 {
 	/*
 	CGameObject* DestObject = Result.Dest->GetGameObject();
@@ -103,7 +113,7 @@ void CEffectChangeToGreen5::SetSceneChangeCallbackToPlayer(const CollisionResult
 		CPlayer2D* Player = (CPlayer2D*)DestObject;
 		if (!Player)
 			return;
-		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen5::ChangeSceneToGreen5Scene);
+		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen5::MakeSceneChangeEffect);
 	}
 }
 

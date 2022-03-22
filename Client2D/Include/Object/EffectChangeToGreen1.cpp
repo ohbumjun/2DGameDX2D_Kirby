@@ -7,6 +7,7 @@
 #include "Component/SpriteComponent.h"
 #include "../Scene/MainScene.h"
 #include "Player2D.h"
+#include "EffectSceneChangeAlpha.h"
 
 CEffectChangeToGreen1::CEffectChangeToGreen1()
 {
@@ -63,7 +64,7 @@ CEffectChangeToGreen1* CEffectChangeToGreen1::Clone()
 	return new CEffectChangeToGreen1(*this);
 }
 
-void CEffectChangeToGreen1::ChangeSceneToGreen1Scene(const CollisionResult& Result)
+void CEffectChangeToGreen1::ChangeSceneToGreen1Scene()
 {
 	/*
 	CGameObject* DestObject = Result.Dest->GetGameObject();
@@ -90,6 +91,15 @@ void CEffectChangeToGreen1::ChangeSceneToGreen1Scene(const CollisionResult& Resu
 }
 
 
+void CEffectChangeToGreen1::MakeSceneChangeEffect(const CollisionResult& Result)
+{
+	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	Alpha->SetSceneStart(false);
+
+	Alpha->SetSceneChangeCallback(this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
+}
+
 void CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer(const CollisionResult& Result)
 {
 	CGameObject* DestObject = Result.Dest->GetGameObject();
@@ -97,7 +107,7 @@ void CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer(const CollisionResult
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		CPlayer2D* Player = (CPlayer2D*)DestObject;
-		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
+		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen1::MakeSceneChangeEffect);
 	}
 }
 

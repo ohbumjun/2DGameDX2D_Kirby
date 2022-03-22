@@ -25,6 +25,8 @@ CBossTree::CBossTree()
 	m_FarAttackLimitTime = 0.f;
 	m_FarAttackLimitTimeMax = 3.f;
 
+	m_HitLimitTimeMax = 0.4f;
+
 	m_HP = 5000.f;
 	m_HPMax = 5000.f;
 

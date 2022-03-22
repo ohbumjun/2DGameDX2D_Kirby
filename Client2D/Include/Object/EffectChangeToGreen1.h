@@ -18,7 +18,8 @@ public:
     virtual void PostUpdate(float DeltaTime);
     virtual CEffectChangeToGreen1* Clone() override;
 private:
-    void ChangeSceneToGreen1Scene(const CollisionResult& Result);
+    void MakeSceneChangeEffect(const CollisionResult& Result);
+    void ChangeSceneToGreen1Scene();
     void SetSceneChangeCallbackToPlayer(const CollisionResult& Result);
     void ResetSceneChangeCallbackToPlayer(const CollisionResult& Result);
 public:

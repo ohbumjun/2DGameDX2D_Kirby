@@ -8,6 +8,7 @@
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
+#include "FireAttackBackEffect.h"
 
 CApple::CApple()
 {}
@@ -28,6 +29,24 @@ void CApple::SetLeftAttackDir(float YDir)
 {
 	CAttackEffect::SetLeftAttackDir(YDir);
 	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
+}
+
+void CApple::BottomCollisionSpecificAction()
+{
+	// Attack Back Effect
+	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+
+	BackEffect->SetWorldPos(GetWorldPos());
+
+	BackEffect->SetWorldScale(150.f,150.f, 1.f);
+
+	BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.5f);
+
+	BackEffect->AddRelativeRotationZ(90.f);
+
+	BackEffect->SetLifeTime(0.4f);
+
+	Destroy();
 }
 
 
