@@ -98,15 +98,7 @@ void CMonster::Damage(float Damage)
 {
 	// 실제 데미지
 	m_HP -= Damage;
-
-	/*
- 	if (m_HP < 0.f)
-	{
-		Destroy();
-		return;
-	}
-	*/
-
+	
 	// Widget HP Bar 조정하기
 	CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
 	HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);
@@ -708,19 +700,30 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 
 void CMonster::CheckWithinBossWorldResolution()
 {
-
-	if (m_MonsterType == Monster_Type::Boss)
-		return;
-
-	// Boss Monster 가 세팅하지 않았다면
-	// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 )
 	if (m_Scene->GetBossWorldResolution().x > 0.f)
 	{
-		float LeftPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
-
-		if (LeftPosX <= m_Scene->GetBossWorldResolution().x)
+		if (m_MonsterType == Monster_Type::Boss)
 		{
-			SetWorldPos(m_Scene->GetBossWorldResolution().x + 300.f, GetWorldPos().y, GetWorldPos().z);
+			// Boss Monster 가 세팅하지 않았다면
+		// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 )
+			float RightPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+
+			if (RightPosX >= m_Scene->GetBossWorldResolution().x)
+			{
+				SetWorldPos(m_Scene->GetBossWorldResolution().x - GetWorldScale().x * GetPivot().x - 0.01f, 
+					GetWorldPos().y, GetWorldPos().z);
+			}
+		}
+		else
+		{
+			// Boss Monster 가 세팅하지 않았다면
+		// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 )
+			float LeftPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+
+			if (LeftPosX <= m_Scene->GetBossWorldResolution().x)
+			{
+				SetWorldPos(m_Scene->GetBossWorldResolution().x + 300.f, GetWorldPos().y, GetWorldPos().z);
+			}
 		}
 	}
 }

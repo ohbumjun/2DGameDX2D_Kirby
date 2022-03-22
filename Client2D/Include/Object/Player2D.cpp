@@ -2108,11 +2108,15 @@ void CPlayer2D::FallDownAttackCallback(const CollisionResult& Result)
 		// 2) Sound
 
 		// 3) Damage Font 작성
+		OwnerMonster->Damage(m_AttackAbility);
+
 		CWidgetComponent*  ObjectWindow = OwnerMonster->FindComponentByType<CWidgetComponent>();
 
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+
+			DamageFont->SetDamage((int)m_AttackAbility);
 		}
 
 		// 4) Hit 상태로 변경

@@ -21,7 +21,7 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_CloseAttackDistance = 250.f;
 	m_FarAttackDistance = 600.f;
 
-	m_HPMax = 3000.f;
+	m_HP = 3000.f;
 	m_HPMax = 3000.f;
 }
 
@@ -35,7 +35,7 @@ void CMiddleBossHammer::Start()
 {
 	CBossMonster::Start();
 
-	m_HPMax = 3000.f;
+	m_HP = 3000.f;
 	m_HPMax = 3000.f;
 
 	m_PhysicsSimulate = true;
