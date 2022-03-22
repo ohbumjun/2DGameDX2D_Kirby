@@ -19,14 +19,16 @@ void CEffectSceneChangeAlpha::UpdateSceneChangeTime(float DeltaTime)
 	// 서서히 Opacity를 감소시킨다.
 	if (m_SceneStart)
 	{
-		NewOpacity = m_Sprite->GetMaterial()->GetOpacity() - DeltaTime * 1.2f;
+		float CurrentOpacity = m_Sprite->GetMaterial()->GetOpacity();
 
-		if (NewOpacity <= 001.f)
+		NewOpacity = m_Sprite->GetMaterial()->GetOpacity() - DeltaTime * 0.4f;
+
+		if (NewOpacity <= 00.1f)
 			End = true;
 	}
 	else
 	{
-		NewOpacity = m_Sprite->GetMaterial()->GetOpacity() + DeltaTime * 1.2f;
+		NewOpacity = m_Sprite->GetMaterial()->GetOpacity() + DeltaTime * 1.4f;
 
 		if (NewOpacity >= 0.99f)
 			End = true;
@@ -38,6 +40,8 @@ void CEffectSceneChangeAlpha::UpdateSceneChangeTime(float DeltaTime)
 	{
 		if (m_SceneChangeCallback)
 			m_SceneChangeCallback();
+
+		Destroy();
 	}
 }
 
@@ -60,6 +64,8 @@ bool CEffectSceneChangeAlpha::Init()
 
 	m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeAlpha",
 		TEXT("Project/Item/WhiteBack.png"));
+
+	m_Sprite->SetLayerName("SceneChange");
 
 	m_Sprite->SetTransparency(true);
 

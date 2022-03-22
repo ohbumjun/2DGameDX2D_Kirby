@@ -87,7 +87,7 @@ protected:
 public:
 	float GetOpacity() const
 	{
-		return m_CBuffer->GetOpacity();
+		return m_Opacity;
 	}
 	bool EmptyTexture() const
 	{

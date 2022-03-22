@@ -24,8 +24,11 @@ void CFloat1Scene::Start()
 {
 	CSceneMode::Start();
 
+	// Scene Change È¿°ú
 	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
-	Alpha->SetWorldPos(300.f, 300.f, 0.f);
+
+	Alpha->SetSceneStart(true);
+
 
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 

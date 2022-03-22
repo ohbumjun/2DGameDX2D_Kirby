@@ -41,6 +41,7 @@ CPlayer2D::CPlayer2D() :
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_RightMove(false),
 	m_Bounced(false),
+	m_IsSwimming(false),
 	m_ToLeftWhenRightMove(false),
 	m_RightMovePush(false),
 	m_SlideAttack(false),
@@ -408,6 +409,7 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		m_SceneChangeCallback(Result);
 		m_SceneChangeCallback = nullptr;
 		m_SceneChange = true;
+		StopPlayer();
 	}
 	else
 	{
@@ -1324,6 +1326,24 @@ void CPlayer2D::UpdateBeingHit(float DeltaTime)
 			m_KirbyState->SetOpacity(1.f);
 		}
 	}
+}
+
+void CPlayer2D::CheckPlayerWaterCollision()
+{
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+		return;
+
+	float PrevLeft = m_PrevPos.x - GetWorldScale().x - GetPivot().x;
+	float PrevRight = m_PrevPos.x + GetWorldScale().x - GetPivot().x;
+	float PrevTop = m_PrevPos.y + GetWorldScale().y - GetPivot().y;
+	float PrevBottom = m_PrevPos.x - GetWorldScale().x - GetPivot().x;
+
+	float CurLeft= m_PrevPos.x - GetWorldScale().x - GetPivot().x;
+	float CurRight= m_PrevPos.x - GetWorldScale().x - GetPivot().x;
+	float CurTop = m_PrevPos.x - GetWorldScale().x - GetPivot().x;
+	float CurBottom = m_PrevPos.x - GetWorldScale().x - GetPivot().x;
 }
 
 void CPlayer2D::UpdateAttackTime(float DeltaTime)

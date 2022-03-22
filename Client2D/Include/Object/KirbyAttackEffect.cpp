@@ -55,7 +55,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"KirbyNormalFireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
+			"KirbyNormalFireAttack", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
 		}
 		break;
@@ -68,7 +68,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"KirbyNormalFightAttackEffect", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
+			"KirbyNormalFightAttack", TEXT("Kirby_Fight_Effect_NormalAttack.anim"));
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
 	}
 		break;
@@ -170,7 +170,7 @@ bool CKirbyAttackEffect::Init()
 	m_AttackType = KirbyAttackEffect_Type::Fire;
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"FireAttackEffect", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
+		"KirbyNormalFireAttack", TEXT("Kirby_Fire_Effect_NormalAttack.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(170.f, 170.f, 1.f);

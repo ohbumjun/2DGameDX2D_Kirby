@@ -12,6 +12,7 @@
 #include "../UI/MainWidget.h"
 #include "../Object/LineContainer.h"
 #include "GameObject/Line.h"
+#include "../Object/EffectSceneChangeAlpha.h"
 
 CGreen3Scene::CGreen3Scene()
 {}
@@ -22,6 +23,11 @@ CGreen3Scene::~CGreen3Scene()
 void CGreen3Scene::Start()
 {
 	CSceneMode::Start();
+
+	// Scene Change È¿°ú
+	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	Alpha->SetSceneStart(true);
 
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 

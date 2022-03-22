@@ -13,6 +13,7 @@
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
 #include "../Object/LineContainer.h"
+#include "../Object/EffectSceneChangeAlpha.h"
 
 CGreen2Scene::CGreen2Scene()
 {}
@@ -23,6 +24,11 @@ CGreen2Scene::~CGreen2Scene()
 void CGreen2Scene::Start()
 {
 	CSceneMode::Start();
+
+	// Scene Change È¿°ú
+	CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	Alpha->SetSceneStart(true);
 
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 

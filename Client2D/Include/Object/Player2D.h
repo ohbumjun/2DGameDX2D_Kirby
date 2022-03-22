@@ -77,6 +77,9 @@ private :
 	bool m_JumpDown;
 	float m_JumpDownDist;
 
+	// 수영
+	bool m_IsSwimming;
+
 	// 날기 
 	bool m_IsFlying;
 	float m_FlySpeed;
@@ -173,6 +176,8 @@ public :
 	void Damage(float Damage);
 private :
 	void UpdateBeingHit(float DeltaTime);
+private :
+	void CheckPlayerWaterCollision();
 private :
 	void UpdateAttackTime(float DeltaTime);
 	void UpdateSlideAttackTime(float DeltaTime);

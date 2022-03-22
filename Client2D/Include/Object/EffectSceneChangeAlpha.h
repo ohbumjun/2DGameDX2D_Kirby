@@ -22,11 +22,11 @@ public :
 
     if (Enable)
     {
-        m_Sprite->SetOpacity(0.f);
+        m_Sprite->SetOpacity(1.f);
     }
     else
     {
-        m_Sprite->SetOpacity(1.f);
+        m_Sprite->SetOpacity(0.f);
     }
 }
 private :
