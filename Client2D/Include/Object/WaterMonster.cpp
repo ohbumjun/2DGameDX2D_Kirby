@@ -1,4 +1,5 @@
 #include "WaterMonster.h"
+#include "Component/SpriteComponent.h"
 
 CWaterMonster::CWaterMonster()  :
 	m_WaterGoUpTimeMax(3.f),
@@ -55,6 +56,7 @@ void CWaterMonster::CheckBelowWorldResolution()
 
 void CWaterMonster::UpdateSwimEffect(float DeltaTime)
 {
+	// 위 아래 이동
 	if (m_WaterGoUpTime >= 0.f)
 	{
 		if (m_GoUp)
@@ -75,6 +77,27 @@ void CWaterMonster::UpdateSwimEffect(float DeltaTime)
 		{
 			m_WaterGoUpTime = (m_WaterGoUpTimeMax * 3 * rand()) + 1;
 			m_GoUp = true;
+		}
+	}
+
+
+	// 좌우 회전
+	if (m_ObjectMoveDir.x < 0.f)
+	{
+		m_RootComponent->AddRelativeRotationZ(20.f * DeltaTime);
+
+		if (m_RootComponent->GetWorldRot().z > 240.f)
+		{
+			m_RootComponent->SetWorldRotationZ(90.f);
+		}
+	}
+	else
+	{
+		m_RootComponent->AddRelativeRotationZ(-20.f * DeltaTime);
+
+		if (m_RootComponent->GetWorldRot().z < -60.f)
+		{
+			m_RootComponent->SetWorldRotationZ(-60.f);
 		}
 	}
 }

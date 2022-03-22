@@ -36,7 +36,7 @@ void CApple::BottomCollisionSpecificAction()
 	// Attack Back Effect
 	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
 
-	BackEffect->SetWorldPos(GetWorldPos());
+	BackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y - 40.f, GetWorldPos().z);
 
 	BackEffect->SetWorldScale(150.f,150.f, 1.f);
 

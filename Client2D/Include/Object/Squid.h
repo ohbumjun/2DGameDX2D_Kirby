@@ -15,6 +15,8 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CSquid* Clone() override;
+private :
+    virtual void ChangeIdleAnimation() override;
 private:
     virtual void Attack() override;
 };

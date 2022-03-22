@@ -14,18 +14,19 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
     virtual CBossTree* Clone() override;
+private :
+    float m_SceneChangeLimitTime;
 private:
     void FarAttack();
     void CloseAttack();
     void ChangeFarAttackAnimation();
     void ChangeCloseAttackAnimation();
-    void ChangeJumpAttackAnimation();
-    void ChangeJumpEndAttackAnimation();
-    void ChangeToIdleAfterHit();
+    void UpdateSceneChangeLimitTime(float DeltaTime);
 protected:
     virtual void ChangeTraceAnimation() override;
 private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;
+    virtual void AIDeathSpecific(float DeltaTime) override;
 };
 

@@ -9,7 +9,8 @@
 
 class CAnimationSequence2DInstance;
 
-CBossTree::CBossTree()  
+CBossTree::CBossTree()  :
+	m_SceneChangeLimitTime(-1.f)
 {
 	SetTypeID<CBossTree>();
 
@@ -190,6 +191,11 @@ void CBossTree::AITraceSpecific(float DeltaTime)
 	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
 }
 
+void CBossTree::AIDeathSpecific(float DeltaTime)
+{
+	m_SceneChangeLimitTime = 5.f;
+}
+
 void CBossTree::ChangeFarAttackAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
@@ -206,19 +212,18 @@ void CBossTree::ChangeCloseAttackAnimation()
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttackClose");
 }
 
-void CBossTree::ChangeJumpAttackAnimation()
+void CBossTree::UpdateSceneChangeLimitTime(float DeltaTime)
 {
-	if (m_ObjectMoveDir.x < 0.f)
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftJump");
-	else
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightJump");
+	if (m_SceneChangeLimitTime > 0.f)
+	{
+		m_SceneChangeLimitTime -= DeltaTime;
+
+		if (m_SceneChangeLimitTime <= 0.f)
+		{
+			// Scene Change 를 진행하는 Object를 만들어낸다.
+		}
+	}
 }
-
-void CBossTree::ChangeJumpEndAttackAnimation()
-{}
-
-void CBossTree::ChangeToIdleAfterHit()
-{}
 
 void CBossTree::ChangeTraceAnimation()
 {

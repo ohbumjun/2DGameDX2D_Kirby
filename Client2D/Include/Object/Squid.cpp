@@ -67,6 +67,11 @@ CSquid* CSquid::Clone()
 	return new CSquid(*this);
 }
 
+void CSquid::ChangeIdleAnimation()
+{
+	CMonster::ChangeTraceAnimation();
+}
+
 void CSquid::Attack()
 {
 	if (m_IsAttacking)
