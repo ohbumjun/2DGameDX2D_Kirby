@@ -327,6 +327,9 @@
     <ClCompile Include="Object\Squid.cpp">
       <Filter>02. Object\03. Monster\04. Water</Filter>
     </ClCompile>
+    <ClCompile Include="Object\SquidAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -568,6 +571,9 @@
     </ClInclude>
     <ClInclude Include="Object\Squid.h">
       <Filter>02. Object\03. Monster\04. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SquidAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

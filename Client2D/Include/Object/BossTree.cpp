@@ -140,7 +140,7 @@ void CBossTree::CloseAttack()
 	CTornado* AttackEffect = m_Scene->CreateGameObject<CTornado>("AttackEffect");
 
 	AttackEffect->SetWorldPos(
-		GetWorldPos().x - GetWorldScale().x * 0.7f,
+		GetWorldPos().x + GetWorldScale().x * 0.3f,
 		GetWorldPos().y - GetWorldScale().y * 0.4f,
 		0.f);
 

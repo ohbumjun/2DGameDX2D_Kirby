@@ -429,6 +429,8 @@ void CMonster::Update(float DeltaTime)
 
 	UpdateAttackResetTime(DeltaTime);
 
+	UpdateAttackLimitTime(DeltaTime);
+
 	CheckWaterCollision(DeltaTime);
 
 	AIStateUpdate(DeltaTime);
@@ -615,13 +617,84 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 	if (!TileMap)
 		return;
 
+	// 일반 Monster는 바닥이 물에 닿으면 죽게 하고
+
+	// Water Monster는 위가 물 밖에 닿으면, 다시 아래로 내려가게 한다. 
+
+	float PrevLeft   = m_PrevPos.x - GetPivot().x * GetWorldScale().x;
+	float PrevRight = m_PrevPos.x + GetPivot().x * GetWorldScale().x;
+	float PrevTop      = m_PrevPos.y + GetPivot().y * GetWorldScale().y;
+	float PrevBottom = m_PrevPos.y - GetPivot().y * GetWorldScale().y;
+
+	float CurLeft = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
+	float CurRight = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
+	float CurTop = GetWorldPos().y + GetPivot().y * GetWorldScale().y;
+	float CurBottom = GetWorldPos().y - GetPivot().y * GetWorldScale().y;
+
+	float ResultLeft = CurLeft < PrevLeft ? CurLeft : PrevLeft;
+	float ResultRight = CurRight > PrevRight ? CurRight : PrevRight;
+	float ResultBottom = -1, ResultTop = -1;
+
 	if (m_MonsterType != Monster_Type::Water)
 	{
-		
+		// 내려가고 있을 때만 적용한다
+		if (PrevTop < CurTop)
+			return;
+
+		ResultBottom = CurBottom < PrevBottom ? CurBottom : PrevBottom;
+		ResultTop = CurBottom < PrevBottom ? CurBottom : PrevBottom;
+
+		int StartX = TileMap->GetTileEmptyIndexX(ResultLeft);
+		int EndX = TileMap->GetTileEmptyIndexX(ResultRight);
+
+		int TopY = TileMap->GetTileEmptyIndexY(ResultTop);
+		int BottomY = TileMap->GetTileEmptyIndexY(ResultBottom);
+
+		for (int row = TopY; row >= BottomY; row--)
+		{
+			for (int col = StartX; col <= EndX; col++)
+			{
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Water)
+				{
+					// 그대로 죽게 한다.
+					m_HP = -1.f;
+					return;
+				}
+			}
+		}
 	}
 	else
 	{
-		// 위로 튀어오르게 하기 
+		// 올라가고 있을 때만 적용한다
+		if (PrevTop > CurTop)
+			return;
+
+		ResultBottom = CurTop < PrevTop ? CurTop : PrevTop;
+		ResultTop = CurTop < PrevTop ? CurTop : PrevTop;
+
+		int StartX = TileMap->GetTileEmptyIndexX(ResultLeft);
+		int EndX = TileMap->GetTileEmptyIndexX(ResultRight);
+
+		int TopY = TileMap->GetTileEmptyIndexY(ResultTop);
+		int BottomY = TileMap->GetTileEmptyIndexY(ResultBottom);
+
+		for (int row = TopY; row >= BottomY; row--)
+		{
+			for (int col = StartX; col <= EndX; col++)
+			{
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() != Tile_Type::Water)
+				{
+					// 위로 못올라가게 막는다
+					CTileEmpty* Tile = TileMap->GetTileEmpty(col, row);
+
+					float NYPos = Tile->GetCenter().y - Tile->GetSize().y * 0.5f - 0.1f;;
+
+					SetWorldPos(GetWorldPos().x, NYPos, GetWorldPos().z);
+
+					return;
+				}
+			}
+		}
 	}
 }
 

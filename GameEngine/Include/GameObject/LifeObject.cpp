@@ -664,6 +664,8 @@ void CLifeObject::CheckBelowWorldResolution()
 	// OriginalPos.y = WorldScale.y * Pivot.y;
 
 	SetWorldPos(Vector3(OriginalPos.x, GetWorldScale().y + GetPivot().y, OriginalPos.z));
+
+	Destroy();
 }
 
 void CLifeObject::CheckLineCollision(float DeltaTime)

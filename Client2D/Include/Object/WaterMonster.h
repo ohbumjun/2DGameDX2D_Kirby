@@ -7,10 +7,16 @@ class CWaterMonster :
     friend class CScene;
 protected:
     CWaterMonster();
-    CWaterMonster(const CWaterMonster& Monster); //
+    CWaterMonster(const CWaterMonster& Monster);
     virtual ~CWaterMonster();
+private :
+    float m_WaterGoUpTime;
+    float m_WaterGoUpTimeMax;
+    bool m_GoUp;
 protected:
-    void UpdateAttackLimitTime(float DeltaTime);
+    void UpdateWaterGoUpTime(float DeltaTime);
+    void CheckBelowWorldResolution() override;
+    void UpdateSwimEffect(float DeltaTime);
     virtual void Attack();
     virtual void ChangeAttackAnimation() override;
     virtual void AIDeathSpecific(float DeltaTime);
