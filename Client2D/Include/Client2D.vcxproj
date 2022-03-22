@@ -213,10 +213,12 @@
     <ClCompile Include="Object\PlayerOld.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
     <ClCompile Include="Object\SpecialChangeParticle.cpp" />
+    <ClCompile Include="Object\Squid.cpp" />
     <ClCompile Include="Object\TileMap.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\Tornado.cpp" />
     <ClCompile Include="Object\WaterFloat1.cpp" />
+    <ClCompile Include="Object\WaterMonster.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\BeginningScene.cpp" />
     <ClCompile Include="Scene\Float1Scene.cpp" />
@@ -292,10 +294,12 @@
     <ClInclude Include="Object\PlayerOld.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
     <ClInclude Include="Object\SpecialChangeParticle.h" />
+    <ClInclude Include="Object\Squid.h" />
     <ClInclude Include="Object\TileMap.h" />
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Object\WaterFloat1.h" />
+    <ClInclude Include="Object\WaterMonster.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\BeginningScene.h" />

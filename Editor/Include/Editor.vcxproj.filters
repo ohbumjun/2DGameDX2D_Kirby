@@ -61,6 +61,9 @@
     <Filter Include="03. Object\07. Effect\02. Water">
       <UniqueIdentifier>{8fe61a6a-eb7b-478c-8a9f-f125c37eee73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\03. Monster\04. Water">
+      <UniqueIdentifier>{69a73ab5-b92e-41df-ae55-56a2284d2a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -188,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="Object\WaterFloat1.cpp">
       <Filter>03. Object\07. Effect\02. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Squid.cpp">
+      <Filter>03. Object\03. Monster\04. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\WaterMonster.cpp">
+      <Filter>03. Object\03. Monster\04. Water</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +328,12 @@
     </ClInclude>
     <ClInclude Include="Object\WaterFloat1.h">
       <Filter>03. Object\07. Effect\02. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Squid.h">
+      <Filter>03. Object\03. Monster\04. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\WaterMonster.h">
+      <Filter>03. Object\03. Monster\04. Water</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

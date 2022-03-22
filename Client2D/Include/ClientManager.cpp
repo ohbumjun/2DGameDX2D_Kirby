@@ -33,6 +33,7 @@
 #include "Object/MiddleBossHammer.h"
 #include "Object/BossTree.h"
 #include "Object/WaterFloat1.h"
+#include "Object/Squid.h"
 #include "Object/EffectSceneChangeStar.h"
 #include "Object/EffectChangeToGreen2.h"
 #include "Object/EffectChangeToGreen1.h"
@@ -185,6 +186,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CSquid).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CSquid>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())

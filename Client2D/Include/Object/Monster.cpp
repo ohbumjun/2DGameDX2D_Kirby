@@ -7,6 +7,7 @@
 #include "MonsterAnimation.h"
 #include "Engine.h"
 #include "Player2D.h"
+#include "../../../GameEngine/Include/Component/TileEmptyComponent.h"
 #include "../UI/SimpleHUD.h"
 
 
@@ -423,9 +424,12 @@ void CMonster::Update(float DeltaTime)
 
 	UpdateBeingOutOfPlayer(DeltaTime);
 
+	CheckWaterCollision(DeltaTime);
+
 	AIStateUpdate(DeltaTime);
 
 	AIActionUpdate(DeltaTime);
+
 }
 
 void CMonster::PostUpdate(float DeltaTime)
@@ -573,6 +577,23 @@ void CMonster::SetRandomTargetDir()
 
 	m_ObjectMoveDir.Normalize();
 
+}
+
+void CMonster::CheckWaterCollision(float DeltaTime)
+{
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+		return;
+
+	if (m_MonsterType != Monster_Type::Water)
+	{
+		
+	}
+	else
+	{
+		// 위로 튀어오르게 하기 
+	}
 }
 
 void CMonster::OnMouseBegin(const CollisionResult& Result)

@@ -6,6 +6,7 @@ const std::string g_NormalBearName = "NormalBear";
 const std::string g_PurpleBeatlesName = "PurpleBeatles";
 const std::string g_YellowBirdName = "YellowBird";
 const std::string g_MushRoomName = "MushRoom";
+const std::string g_Squid = "Squid";
 // Ability
 const std::string g_BeamMonsterName = "Beam";
 const std::string g_FireMonsterName    = "Fire";

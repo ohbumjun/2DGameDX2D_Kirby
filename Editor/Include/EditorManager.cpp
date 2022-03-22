@@ -39,6 +39,7 @@
 #include "Object/YellowBird.h"
 #include "Object/PurpleBeatle.h"
 #include "Object/NormalBear.h"
+#include "Object/Squid.h"
 #include "Object/TileMapEmpty.h"
 #include "Object/MushRoom.h"
 #include "Object/BackGround.h"
@@ -437,6 +438,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_MushRoomName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMushRoom>(NewMonsterName);
+		}
+		else if (strcmp(g_Squid.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSquid>(NewMonsterName);
 		}
 		else if (strcmp(g_BeamMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -847,6 +852,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CSquid).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CSquid>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())

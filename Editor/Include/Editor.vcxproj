@@ -200,8 +200,10 @@
     <ClCompile Include="Object\PurpleBeatle.cpp" />
     <ClCompile Include="Object\ShowObject.cpp" />
     <ClCompile Include="Object\SpriteEditObject.cpp" />
+    <ClCompile Include="Object\Squid.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\WaterFloat1.cpp" />
+    <ClCompile Include="Object\WaterMonster.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\DefaultScene.cpp" />
     <ClCompile Include="Window\BackGroundWindow.cpp" />
@@ -244,8 +246,10 @@
     <ClInclude Include="Object\PurpleBeatle.h" />
     <ClInclude Include="Object\ShowObject.h" />
     <ClInclude Include="Object\SpriteEditObject.h" />
+    <ClInclude Include="Object\Squid.h" />
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\WaterFloat1.h" />
+    <ClInclude Include="Object\WaterMonster.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\DefaultScene.h" />

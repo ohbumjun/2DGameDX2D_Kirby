@@ -126,6 +126,7 @@ enum Collision_Channel
 enum class Monster_Type {
 	Normal,
 	Ability,
+	Water,
 	Boss
 };
 

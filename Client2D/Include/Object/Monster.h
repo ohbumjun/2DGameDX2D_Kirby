@@ -101,7 +101,8 @@ public :
     void Damage(float Damage);
     void SetHPMax(float HPMax);
     void DeathStart();
-protected : // AI
+protected :
+	// AI
     void AIStateUpdate(float DeltaTime);
     void AIActionUpdate(float DeltaTime);
 protected:
@@ -127,9 +128,9 @@ protected:
     void UpdateBeingHit(float DeltaTime);
     void UpdateBeingPulled(float DeltaTime);
     void UpdateBeingOutOfPlayer(float DeltaTime);
-protected:
     void UpdateMonsterMove(float DeltaTime);
     void SetRandomTargetDir();
+    void CheckWaterCollision(float DeltaTime);
 protected:
     void OnMouseBegin(const CollisionResult& Result);
     void OnMouseEnd(const CollisionResult& Result);
