@@ -84,7 +84,7 @@ void CWaterMonster::UpdateSwimEffect(float DeltaTime)
 	// ÁÂ¿ì È¸Àü
 	if (m_ObjectMoveDir.x < 0.f)
 	{
-		m_RootComponent->AddRelativeRotationZ(20.f * DeltaTime);
+		m_RootComponent->AddRelativeRotationZ(30.f * DeltaTime);
 
 		if (m_RootComponent->GetWorldRot().z > 240.f)
 		{

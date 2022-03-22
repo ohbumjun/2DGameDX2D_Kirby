@@ -433,6 +433,8 @@ void CMonster::Update(float DeltaTime)
 
 	CheckWaterCollision(DeltaTime);
 
+	CheckWithinBossWorldResolution();
+
 	AIStateUpdate(DeltaTime);
 
 	AIActionUpdate(DeltaTime);
@@ -650,6 +652,9 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 		int TopY = TileMap->GetTileEmptyIndexY(ResultTop);
 		int BottomY = TileMap->GetTileEmptyIndexY(ResultBottom);
 
+		if (StartX == -1 || EndX == -1 || TopY == -1 || BottomY == -1)
+			return;
+
 		for (int row = TopY; row >= BottomY; row--)
 		{
 			for (int col = StartX; col <= EndX; col++)
@@ -678,6 +683,9 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 		int TopY = TileMap->GetTileEmptyIndexY(ResultTop);
 		int BottomY = TileMap->GetTileEmptyIndexY(ResultBottom);
 
+		if (StartX == -1 || EndX == -1 || TopY == -1 || BottomY == -1)
+			return;
+
 		for (int row = TopY; row >= BottomY; row--)
 		{
 			for (int col = StartX; col <= EndX; col++)
@@ -694,6 +702,25 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 					return;
 				}
 			}
+		}
+	}
+}
+
+void CMonster::CheckWithinBossWorldResolution()
+{
+
+	if (m_MonsterType == Monster_Type::Boss)
+		return;
+
+	// Boss Monster 가 세팅하지 않았다면
+	// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 )
+	if (m_Scene->GetBossWorldResolution().x > 0.f)
+	{
+		float LeftPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+
+		if (LeftPosX <= m_Scene->GetBossWorldResolution().x)
+		{
+			SetWorldPos(m_Scene->GetBossWorldResolution().x + 300.f, GetWorldPos().y, GetWorldPos().z);
 		}
 	}
 }

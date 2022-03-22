@@ -25,8 +25,13 @@ private:
 	bool m_Change;
 	size_t m_PlayerTypeID;
 private :
+	Vector2 m_BossWorldResolution;
 	Vector2 m_WorldResolution;
 public :
+	void SetBossWorldResolution(float x, float y)
+{
+		m_BossWorldResolution = Vector2(x, y);
+}
 	void SetPlayerTypeID(size_t TypeID)
 {
 		m_PlayerTypeID = TypeID;
@@ -51,6 +56,10 @@ public:
 	bool IsEditMode () const
 	{
 		return m_Mode->IsEditMode();
+	}
+	Vector2 GetBossWorldResolution() const
+	{
+		return m_BossWorldResolution;
 	}
 	Vector2 GetWorldResolution() const
 	{

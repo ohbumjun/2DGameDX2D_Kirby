@@ -57,6 +57,8 @@ void CBossMonster::MakeBossStartEffect()
 
 	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
+	m_Scene->SetBossWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
+
 	m_StartBossStage = true;
 
 	// 2) 카메라 이동 효과
@@ -86,6 +88,8 @@ void CBossMonster::UpdateAttackLimitTimes(float DeltaTime)
 void CBossMonster::AIDeathSpecific(float DeltaTime)
 {
 	m_Scene->SetWorldResolution(m_InitWorldResolution.x, m_InitWorldResolution.y);
+
+	m_Scene->SetBossWorldResolution(0.f, m_InitWorldResolution.y);
 }
 
 void CBossMonster::Update(float DeltaTime)

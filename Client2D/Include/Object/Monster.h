@@ -139,6 +139,8 @@ protected:
     void UpdateMonsterMove(float DeltaTime);
     void SetRandomTargetDir();
     void CheckWaterCollision(float DeltaTime);
+    // Boss Monster가 아닌 Monster 들은, Boss Fight  영역에 들어갈 수 없게 세팅한다.
+    void CheckWithinBossWorldResolution();
 protected:
     void OnMouseBegin(const CollisionResult& Result);
     void OnMouseEnd(const CollisionResult& Result);
