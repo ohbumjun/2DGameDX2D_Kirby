@@ -2,10 +2,13 @@
 #include "Tornado.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
+#include "Scene/SceneManager.h"
 #include "Engine.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Apple.h"
 #include "Component/ColliderCircle.h"
+#include "EffectSceneChangeAlpha.h"
+#include "../Scene/Float1Scene.h"
 
 class CAnimationSequence2DInstance;
 
@@ -52,8 +55,10 @@ void CBossTree::Start()
 
 	m_Sprite->GetAnimationInstance()->Play();
 
-	m_HP = 5000.f;
-	m_HPMax = 5000.f;
+	// m_HP = 5000.f;
+	m_HP = 50.f;
+	// m_HPMax = 5000.f;
+	m_HPMax = 50.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
@@ -101,6 +106,8 @@ void CBossTree::Update(float DeltaTime)
 	m_MonsterMoveVelocity = 0.f;
 
 	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
+
+	UpdateSceneChangeLimitTime(DeltaTime);
 }
 
 void CBossTree::PostUpdate(float DeltaTime)
@@ -193,6 +200,11 @@ void CBossTree::AITraceSpecific(float DeltaTime)
 
 void CBossTree::AIDeathSpecific(float DeltaTime)
 {
+	if (m_SceneChangeLimitTime > 0.f)
+		return;
+
+	CBossMonster::AIDeathSpecific(DeltaTime);
+
 	m_SceneChangeLimitTime = 5.f;
 }
 
@@ -221,9 +233,26 @@ void CBossTree::UpdateSceneChangeLimitTime(float DeltaTime)
 		if (m_SceneChangeLimitTime <= 0.f)
 		{
 			// Scene Change 를 진행하는 Object를 만들어낸다.
+			CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+			Alpha->SetSceneStart(false);
+
+			Alpha->SetSceneChangeCallback(this, &CBossTree::ChangeSceneToFloat1Scene);
 		}
 	}
 }
+
+void CBossTree::ChangeSceneToFloat1Scene()
+{
+	CSceneManager::GetInst()->CreateNewScene(false);
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
+	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Float1.scn", SCENE_PATH))
+	{
+		CSceneManager::GetInst()->ChangeNextScene();
+	}
+}
+
 
 void CBossTree::ChangeTraceAnimation()
 {

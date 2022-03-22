@@ -22,6 +22,7 @@ private:
     void ChangeFarAttackAnimation();
     void ChangeCloseAttackAnimation();
     void UpdateSceneChangeLimitTime(float DeltaTime);
+    void ChangeSceneToFloat1Scene();
 protected:
     virtual void ChangeTraceAnimation() override;
 private:

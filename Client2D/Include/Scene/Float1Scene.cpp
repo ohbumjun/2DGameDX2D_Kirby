@@ -42,7 +42,7 @@ void CFloat1Scene::Start()
 	if (Player2D)
 	{
 		SetPlayerObject(Player2D);
-		Player2D->SetWorldPos(400.f, 3400.f, 0.f);
+		Player2D->SetWorldPos(200.f, 900.f, 0.f);
 	}
 
 	if (CSceneManager::GetStaticPlayerInfo())
