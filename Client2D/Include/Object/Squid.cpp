@@ -13,7 +13,7 @@ CSquid::CSquid()
 
 	m_DashDistance = 550.f;
 
-	m_AttackDistance = 450.f;
+	m_AttackDistance = 200.f;
 }
 
 CSquid::CSquid(const CSquid& Monster) : CWaterMonster(Monster)

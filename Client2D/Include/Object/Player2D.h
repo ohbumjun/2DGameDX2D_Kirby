@@ -124,6 +124,10 @@ private :
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
 public :
+	bool IsSwimming() const
+{
+		return m_IsSwimming;
+}
 	bool IsAttacking() const
 {
 		return m_IsAttacking;

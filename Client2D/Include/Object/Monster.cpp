@@ -257,20 +257,47 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 
 	m_TraceDir = TraceDir;
 
-	AddWorldPos(Vector3(m_TraceDir) * DeltaTime * m_MonsterMoveVelocity);
+	bool Trace = false;
 
-	if (TraceDir.x < 0.f)
+	// Water Monster가 아니라면, 그냥 무조건 따라가고
+	if (m_MonsterType != Monster_Type::Water)
 	{
-		m_ObjectMoveDir.x = -1.f;
+		AddWorldPos(Vector3(m_TraceDir) * DeltaTime * m_MonsterMoveVelocity);
+
+		Trace = true;
 	}
-	else if (TraceDir.x > 0.f)
+	// Water Monster 라면, Player가 Swimming 중일 때만 따라간다.
+	else
 	{
-		m_ObjectMoveDir.x = 1.f;
+		CPlayer2D* Player = dynamic_cast<CPlayer2D*>(m_Scene->GetPlayerObject());
+
+		if (!Player)
+			return;
+
+		if (!Player->IsSwimming())
+			return;
+
+		AddWorldPos(Vector3(m_TraceDir) * DeltaTime * m_MonsterMoveVelocity);
+
+		Trace = true;
 	}
 
-	ChangeTraceAnimation();
+	if (Trace)
+	{
+		if (TraceDir.x < 0.f)
+		{
+			m_ObjectMoveDir.x = -1.f;
+		}
+		else if (TraceDir.x > 0.f)
+		{
+			m_ObjectMoveDir.x = 1.f;
+		}
 
-	AITraceSpecific(DeltaTime);
+		ChangeTraceAnimation();
+
+		AITraceSpecific(DeltaTime);
+	}
+
 }
 
 void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
@@ -687,9 +714,11 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 					// 위로 못올라가게 막는다
 					CTileEmpty* Tile = TileMap->GetTileEmpty(col, row);
 
-					float NYPos = Tile->GetCenter().y - Tile->GetSize().y * 0.5f - 0.1f;;
+					float CurYPos = GetWorldPos().y;
 
-					SetWorldPos(GetWorldPos().x, NYPos, GetWorldPos().z);
+					float NYPos = Tile->GetWorldPos().y - Tile->GetSize().y * 2;
+
+					SetWorldPos(GetWorldPos().x, NYPos - 0.01f, GetWorldPos().z);
 
 					return;
 				}
