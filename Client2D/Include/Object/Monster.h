@@ -28,6 +28,12 @@ protected:
     float m_SpitOutDistance;
     float m_SpitOutDistanceMax;
 
+    // Attack
+    float m_AttackResetTime;
+    float m_AttackResetTimeMax;
+    float m_AttackLimitTime;
+    float m_AttackLimitTimeMax;
+
     // AI
     Monster_AI m_AI;
     float m_AttackDistance;
@@ -128,6 +134,8 @@ protected:
     void UpdateBeingHit(float DeltaTime);
     void UpdateBeingPulled(float DeltaTime);
     void UpdateBeingOutOfPlayer(float DeltaTime);
+    void UpdateAttackLimitTime(float DeltaTime);
+    void UpdateAttackResetTime(float DeltaTime);
     void UpdateMonsterMove(float DeltaTime);
     void SetRandomTargetDir();
     void CheckWaterCollision(float DeltaTime);

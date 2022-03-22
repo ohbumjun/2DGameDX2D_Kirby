@@ -12,10 +12,6 @@ protected:
     virtual ~CAbilityMonster();
 protected :
     Ability_State m_AbilityState;
-    float m_AttackResetTime;
-    float m_AttackResetTimeMax;
-    float m_AttackLimitTime;
-    float m_AttackLimitTimeMax;
     
 public:
     Ability_State GetAbilityState() const
@@ -28,7 +24,6 @@ public :
         m_AbilityState = State;
     }
 protected :
-    void UpdateAttackLimitTime(float DeltaTime);
     virtual void Attack();
     virtual void ChangeAttackAnimation() override;
     virtual void AIDeathSpecific(float DeltaTime);

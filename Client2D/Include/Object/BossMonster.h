@@ -13,8 +13,6 @@ protected:
     bool m_StartBossStage;
     Vector2 m_InitWorldResolution;
     // Attack
-    float m_AttackResetTime;
-    float m_AttackResetTimeMax;
     float m_CloseAttackDistance;
     float m_FarAttackDistance;
 protected :
@@ -30,7 +28,6 @@ protected : // Boss 에 따라서 Camera Follow Time을 세팅할 수 있게 한다.
     float m_CameraFollowMaxTime;
 protected:
     void MakeBossStartEffect();
-    void UpdateAttackResetTime(float DeltaTime);
     void UpdateAttackLimitTimes(float DeltaTime);
 protected:
     virtual void AIDeathSpecific(float DeltaTime) override;

@@ -2497,7 +2497,7 @@ void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
 			{
 				CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
 
-				DamageFont->SetDamage(m_AttackAbility);
+				DamageFont->SetDamage((int)m_AttackAbility);
 			}
 		}
 	}

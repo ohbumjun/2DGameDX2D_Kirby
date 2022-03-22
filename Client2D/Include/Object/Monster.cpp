@@ -7,12 +7,15 @@
 #include "MonsterAnimation.h"
 #include "Engine.h"
 #include "Player2D.h"
-#include "../../../GameEngine/Include/Component/TileEmptyComponent.h"
+#include "Component/TileEmptyComponent.h"
 #include "../UI/SimpleHUD.h"
 
 
 CMonster::CMonster() :
+	m_AttackLimitTime(0.f),
+	m_AttackLimitTimeMax(4.f),
 	m_DeathAccTime(0.f),
+	m_AttackResetTimeMax(2.f),
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
@@ -424,6 +427,8 @@ void CMonster::Update(float DeltaTime)
 
 	UpdateBeingOutOfPlayer(DeltaTime);
 
+	UpdateAttackResetTime(DeltaTime);
+
 	CheckWaterCollision(DeltaTime);
 
 	AIStateUpdate(DeltaTime);
@@ -521,6 +526,30 @@ void CMonster::UpdateBeingOutOfPlayer(float DeltaTime)
 		{
 			m_IsBeingSpitOut = false;
 		}
+	}
+}
+
+void CMonster::UpdateAttackLimitTime(float DeltaTime)
+{
+	if (m_AttackLimitTime > 0.f)
+	{
+		m_AttackLimitTime -= DeltaTime;
+	}
+}
+
+void CMonster::UpdateAttackResetTime(float DeltaTime)
+{
+	if (m_AttackResetTime < m_AttackResetTimeMax)
+	{
+		m_AttackResetTime += DeltaTime;
+	}
+	else
+	{
+		if (m_IsAttacking)
+		{
+			m_IsAttacking = false;
+		}
+		m_AttackResetTime -= m_AttackResetTimeMax;
 	}
 }
 

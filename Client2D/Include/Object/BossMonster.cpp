@@ -5,7 +5,6 @@
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
-	m_AttackResetTimeMax(2.f),
 	m_FarAttackLimitTimeMax(3.5f),
 	m_CloseAttackLimitTimeMax(2.5f),
 	m_CameraFollowMaxTime(3.f), // ½ÇÁ¦ Camera ComponentÀÇ Max Time
@@ -71,22 +70,6 @@ void CBossMonster::MakeBossStartEffect()
 	Player->SetCameraFollowBossMonster(this);
 }
 
-void CBossMonster::UpdateAttackResetTime(float DeltaTime)
-{
-	if (m_AttackResetTime < m_AttackResetTimeMax)
-	{
-		m_AttackResetTime += DeltaTime;
-	}
-	else
-	{
-		if (m_IsAttacking)
-		{
-			m_IsAttacking = false;
-		}
-		m_AttackResetTime -= m_AttackResetTimeMax;
-	}
-}
-
 void CBossMonster::UpdateAttackLimitTimes(float DeltaTime)
 {
 	if (m_FarAttackLimitTime > 0.f)
@@ -124,8 +107,6 @@ void CBossMonster::Update(float DeltaTime)
 		return;
 
 	CMonster::Update(DeltaTime);
-
-	UpdateAttackResetTime(DeltaTime);
 
 	UpdateAttackLimitTimes(DeltaTime);
 }

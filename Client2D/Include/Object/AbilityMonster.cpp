@@ -1,12 +1,11 @@
 #include "AbilityMonster.h"
 
-CAbilityMonster::CAbilityMonster():
-	m_AttackResetTime(0.f),
-	m_AttackResetTimeMax(2.f),
-	m_AttackLimitTime(0.f),
-	m_AttackLimitTimeMax(4.f)
+CAbilityMonster::CAbilityMonster()
 {
 	m_AbilityState = Ability_State::End;
+
+	m_AttackLimitTime = 0.f;
+	m_AttackLimitTimeMax = 4.f;
 
 	m_HP = 200.f;
 	m_HPMax = 200.f;
@@ -37,15 +36,6 @@ bool CAbilityMonster::Init()
 
 	return true;
 }
-
-void CAbilityMonster::UpdateAttackLimitTime(float DeltaTime)
-{
-	if (m_AttackLimitTime > 0.f)
-	{
-		m_AttackLimitTime -= DeltaTime;
-	}
-}
-
 void CAbilityMonster::Attack()
 {
 	if (m_IsAttacking)
@@ -78,8 +68,6 @@ void CAbilityMonster::AIDeathSpecific(float DeltaTime)
 void CAbilityMonster::Update(float DeltaTime)
 {
 	CMonster::Update(DeltaTime);
-
-	UpdateAttackLimitTime(DeltaTime);
 }
 
 void CAbilityMonster::PostUpdate(float DeltaTime)
