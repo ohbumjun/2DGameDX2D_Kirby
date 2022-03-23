@@ -169,6 +169,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CEffectChangeToFloat2_1.cpp" />
+    <ClCompile Include="CEffectChangeToFloat2_2.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
@@ -216,6 +218,8 @@
     <ClCompile Include="Window\TileMapWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CEffectChangeToFloat2_1.h" />
+    <ClInclude Include="CEffectChangeToFloat2_2.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="Object\AbilityMonster.h" />

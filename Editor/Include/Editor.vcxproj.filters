@@ -201,6 +201,12 @@
     <ClCompile Include="Object\WaterFloat2_2.cpp">
       <Filter>03. Object\07. Effect\02. Water</Filter>
     </ClCompile>
+    <ClCompile Include="CEffectChangeToFloat2_1.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffectChangeToFloat2_2.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -340,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="Object\WaterFloat2_2.h">
       <Filter>03. Object\07. Effect\02. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffectChangeToFloat2_1.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffectChangeToFloat2_2.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
