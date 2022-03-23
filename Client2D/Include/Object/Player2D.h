@@ -174,7 +174,9 @@ private:
 	void ResetCameraInfoToPlayer();
 	virtual void CheckBelowWorldResolution() override;
 	void StopPlayer();
-
+private :
+	// Swim
+	void CheckIsSwimming();
 public :
 	// Hit
 	void Damage(float Damage);

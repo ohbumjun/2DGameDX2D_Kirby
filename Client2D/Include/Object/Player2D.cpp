@@ -316,6 +316,8 @@ void CPlayer2D::Update(float DeltaTime)
 
 	FallFromCliff();
 
+	CheckIsSwimming();
+
 	UpdateBeingHit(DeltaTime);
 
 	UpdateAttackTime(DeltaTime);
@@ -1286,6 +1288,111 @@ void CPlayer2D::StopPlayer()
 	m_LeverVelocity = 0.f;
 	m_DashVelocity = 0.f;
 	m_MoveVelocity = 0.f;
+}
+
+void CPlayer2D::CheckIsSwimming()
+{
+	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
+
+	if (!TileMap)
+		return;
+
+	if (m_PrevPos.y == GetWorldPos().y)
+		return;
+
+	float ResultLeft = -1, ResultRight = -1, ResultTop = -1, ResultBottom = -1;
+	int StartX = -1, EndX = -1, TopY = -1, BottomY = -1;
+
+	float PrevLeft = m_PrevPos.x - GetWorldScale().x * GetPivot().x;
+	float PrevRight = m_PrevPos.x + GetWorldScale().x * GetPivot().x;
+	float PrevBottom = m_PrevPos.y - GetWorldScale().y * GetPivot().y;
+	float PrevTop = m_PrevPos.y + GetWorldScale().y * GetPivot().y;
+
+	float CurLeft = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+	float CurRight = GetWorldPos().x + GetWorldScale().x * GetPivot().x;
+	float CurBottom = GetWorldPos().y - GetWorldScale().x * GetPivot().x;
+	float CurTop = GetWorldPos().y + GetWorldScale().y * GetPivot().y;
+
+	if (m_PrevPos.y > GetWorldPos().y)
+	{
+		// 내려갈 때
+		// 이 경우는, 물 이 아닌 곳에서 내려오는 상황 밖에 없다.
+		// 따라서 현재 수영 중이라면 검사하지 않는다.
+		if (m_IsSwimming)
+			return;
+
+		// 나는 중이 아닐 때 --> 그냥 확 떨어질 때만 검사한다.
+		if (!m_IsFlying)
+
+		ResultLeft = CurLeft < PrevLeft ? CurLeft : PrevLeft;
+		ResultRight = CurRight > PrevRight ? CurRight : PrevRight;
+		ResultBottom = CurBottom < PrevBottom ? CurBottom : PrevBottom;
+		ResultTop = CurBottom > PrevBottom ? CurBottom : PrevBottom;
+
+		StartX = TileMap->GetTileEmptyIndexX(ResultLeft);
+		EndX = TileMap->GetTileEmptyIndexX(ResultRight);
+
+		TopY = TileMap->GetTileEmptyIndexY(ResultTop);
+		BottomY = TileMap->GetTileEmptyIndexY(ResultBottom);
+
+		if (StartX == -1 || EndX == -1 || TopY == -1 || BottomY == -1)
+			return;
+
+		// 아래에서 위로 검사한다.
+		for (int row = BottomY; row <= TopY; row++)
+		{
+			for (int col = StartX; col <= EndX; col++)
+			{
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Water)
+				{
+					m_IsSwimming = true;
+
+					return;
+				}
+			}
+		}
+	}
+	else if (m_PrevPos.y < GetWorldPos().y)
+	{
+		// 올라갈 때 확인
+		// 이 경우는 수영 중 , 물 밖으로 나가는 경우를 조사하는 것이므로
+		// 수영중이 아닐 때는 검사하지 않는다.
+		if (!m_IsSwimming)
+			return;
+
+		ResultLeft = CurLeft < PrevLeft ? CurLeft : PrevLeft;
+		ResultRight = CurRight < PrevRight ? CurRight : PrevRight;
+
+		// 대신 검사 기준은 Bottom을 기준으로 한다.
+		// 물에서 완전히 나왔을 때를 조사하기 위해서이다.
+		ResultBottom = CurBottom < PrevBottom ? CurBottom : PrevBottom;
+		ResultTop = CurBottom > PrevBottom ? CurBottom : PrevBottom;
+
+		StartX = TileMap->GetTileEmptyIndexX(ResultLeft);
+		EndX = TileMap->GetTileEmptyIndexX(ResultRight);
+
+		TopY = TileMap->GetTileEmptyIndexY(ResultTop);
+		BottomY = TileMap->GetTileEmptyIndexY(ResultBottom);
+
+		if (StartX == -1 || EndX == -1 || TopY == -1 || BottomY == -1)
+			return;
+
+		// 위에서 아래로 검사한다.
+		for (int row = TopY; row >= BottomY; row--)
+		{
+			for (int col = StartX; col <= EndX; col++)
+			{
+				if (TileMap->GetTileEmpty(col, row)->GetTileType() != Tile_Type::Water)
+				{
+					m_IsSwimming = false;
+
+					return;
+				}
+			}
+		}
+	}
+
+	
 }
 
 void CPlayer2D::Damage(float Damage)
