@@ -73,9 +73,6 @@
     <Filter Include="02. Object\07. Effect\04. MonsterAttack">
       <UniqueIdentifier>{648a2537-61c3-4e20-ae53-c300829a6f11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Object\07. Effect\05. SpecialPlayer">
-      <UniqueIdentifier>{3d91dd58-f160-4c4d-9040-72e7b6470910}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Object\10. Item">
       <UniqueIdentifier>{db6918bc-6df6-4d6c-a733-cb5b07c574b2}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,9 @@
     </Filter>
     <Filter Include="02. Object\03. Monster\04. Water">
       <UniqueIdentifier>{64d4b5e1-d9bd-4c14-83e7-1e52dba34940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Object\07. Effect\05. SpecialPlayerAttack">
+      <UniqueIdentifier>{3d91dd58-f160-4c4d-9040-72e7b6470910}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -259,13 +259,13 @@
       <Filter>02. Object\01. Player\01. State</Filter>
     </ClCompile>
     <ClCompile Include="Object\KirbyAttackEffect.cpp">
-      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClCompile>
     <ClCompile Include="Object\AttackEffect.cpp">
       <Filter>02. Object\07. Effect</Filter>
     </ClCompile>
     <ClCompile Include="Object\FireAttackBackEffect.cpp">
-      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClCompile>
     <ClCompile Include="Object\Item.cpp">
       <Filter>02. Object\10. Item</Filter>
@@ -335,6 +335,9 @@
     </ClCompile>
     <ClCompile Include="Object\EffectChangeToFloat1.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectWaterAttack.cpp">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -510,13 +513,13 @@
       <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
     <ClInclude Include="Object\KirbyAttackEffect.h">
-      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClInclude>
     <ClInclude Include="Object\AttackEffect.h">
       <Filter>02. Object\07. Effect</Filter>
     </ClInclude>
     <ClInclude Include="Object\FireAttackBackEffect.h">
-      <Filter>02. Object\07. Effect\05. SpecialPlayer</Filter>
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClInclude>
     <ClInclude Include="Object\Item.h">
       <Filter>02. Object\10. Item</Filter>
@@ -586,6 +589,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToFloat1.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectWaterAttack.h">
+      <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

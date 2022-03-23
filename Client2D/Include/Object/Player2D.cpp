@@ -27,6 +27,7 @@
 #include "EffectStar.h"
 #include "BubbleParticle.h"
 #include "../Object/Monster.h"
+#include "EffectWaterAttack.h"
 
 CPlayer2D::CPlayer2D() :
 	m_MoveVelocity(0.f),
@@ -2341,6 +2342,9 @@ void CPlayer2D::PullRight(float DeltaTime)
 	if (m_IsBeingHit)
 		return;
 
+	if (m_IsSwimming)
+		return;
+
 	StopPlayer();
 
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("RightPull");
@@ -2631,38 +2635,66 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (!m_KirbyState)
 		return;
 
-	if (!m_IsSpecialStateChanged)
-		return;
-
 	if (m_IsAttacking)
 		return;
 
 	m_IsAttacking = true;
 
-	ResetMoveInfo();
-
-	StopPlayer();
-
-	float YDiff = GetWorldPos().y - m_PrevPos.y;
-
-	// 내려가고 있을 때
-	if (m_IsFalling && !m_Jump && !m_IsFlying)
+	if (m_IsSwimming)
 	{
-		ChangePlayerFallDownAttackAnimation();
+		CEffectWaterAttack* WaterAttack = m_Scene->CreateGameObject<CEffectWaterAttack>("Attack");
 
-		m_KirbyState->FallDownAttack();
-	}
-	else if (YDiff > 0)
-	{
-		ChangePlayerGoUpAttackAnimation();
+		if (m_ObjectMoveDir.x < 0.f)
+		{
+			WaterAttack->SetLeftAttackDir();
 
-		m_KirbyState->GoUpAttack();
+			WaterAttack->SetWorldPos(Vector3(GetWorldPos().x - GetWorldScale().x * GetPivot().x,
+				GetWorldPos().y, GetWorldPos().z));
+
+			WaterAttack->GetColliderBody()->AddCollisionCallback(Collision_State::Begin,
+				this, &CPlayer2D::PlayerAttackCollisionCallback);
+		}
+		else
+		{
+			WaterAttack->SetRightAttackDir();
+
+			WaterAttack->SetWorldPos(Vector3(GetWorldPos().x + GetWorldScale().x * GetPivot().x,
+				GetWorldPos().y, GetWorldPos().z));
+
+			WaterAttack->GetColliderBody()->AddCollisionCallback(Collision_State::Begin,
+				this, &CPlayer2D::PlayerAttackCollisionCallback);
+		}
 	}
 	else
 	{
-		ChangePlayerAttackAnimation();
+		if (!m_IsSpecialStateChanged)
+			return;
 
-		m_KirbyState->Attack();
+		ResetMoveInfo();
+
+		StopPlayer();
+
+		float YDiff = GetWorldPos().y - m_PrevPos.y;
+
+		// 내려가고 있을 때
+		if (m_IsFalling && !m_Jump && !m_IsFlying)
+		{
+			ChangePlayerFallDownAttackAnimation();
+
+			m_KirbyState->FallDownAttack();
+		}
+		else if (YDiff > 0)
+		{
+			ChangePlayerGoUpAttackAnimation();
+
+			m_KirbyState->GoUpAttack();
+		}
+		else
+		{
+			ChangePlayerAttackAnimation();
+
+			m_KirbyState->Attack();
+		}
 	}
 }
 
@@ -2720,6 +2752,8 @@ void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
 				DamageFont->SetDamage((int)m_AttackAbility);
 			}
 		}
+
+		m_IsAttacking = false;
 	}
 }
 
@@ -2804,6 +2838,9 @@ void CPlayer2D::PullLeft(float DeltaTime)
 		return;
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsSwimming)
 		return;
 
 	StopPlayer();

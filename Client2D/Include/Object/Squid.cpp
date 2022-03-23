@@ -20,7 +20,8 @@ CSquid::CSquid(const CSquid& Monster) : CWaterMonster(Monster)
 {}
 
 CSquid::~CSquid()
-{}
+{
+}
 
 void CSquid::Start()
 {
