@@ -64,6 +64,9 @@
     <Filter Include="03. Object\03. Monster\04. Water">
       <UniqueIdentifier>{69a73ab5-b92e-41df-ae55-56a2284d2a2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Object\09. SceneObject">
+      <UniqueIdentifier>{c24f66df-6d3d-45be-ae81-1cdb577a141c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,9 +165,6 @@
     <ClCompile Include="Object\HPGreenItem.cpp">
       <Filter>03. Object\08. Item</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Block.cpp">
-      <Filter>03. Object\08. Item</Filter>
-    </ClCompile>
     <ClCompile Include="Object\MiddleBossHammer.cpp">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClCompile>
@@ -213,6 +213,15 @@
     <ClCompile Include="Object\EffectChangeToFloat4.cpp">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Block.cpp">
+      <Filter>03. Object\09. SceneObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Ladder.cpp">
+      <Filter>03. Object\09. SceneObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Awl.cpp">
+      <Filter>03. Object\09. SceneObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -238,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="Window\TileMapWindow.h">
       <Filter>02. Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Window\BackGroundWindow.h">
       <Filter>02. Editor</Filter>
@@ -314,9 +320,6 @@
     <ClInclude Include="Object\HPRedItem.h">
       <Filter>03. Object\08. Item</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Block.h">
-      <Filter>03. Object\08. Item</Filter>
-    </ClInclude>
     <ClInclude Include="Object\MiddleBossHammer.h">
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
@@ -364,6 +367,18 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToFloat4.h">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Block.h">
+      <Filter>03. Object\09. SceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>03. Object\09. SceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Awl.h">
+      <Filter>03. Object\09. SceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Ladder.h">
+      <Filter>03. Object\09. SceneObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

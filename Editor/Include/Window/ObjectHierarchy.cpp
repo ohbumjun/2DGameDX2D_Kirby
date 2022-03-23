@@ -17,7 +17,6 @@
 #include "Component/TileEmptyComponent.h"
 #include "Component/BackGroundComponent.h"
 
-
 CObjectHierarchy::CObjectHierarchy()
 {
 }
