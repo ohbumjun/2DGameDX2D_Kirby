@@ -179,6 +179,8 @@
     <ClCompile Include="Object\AttackEffect.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_1.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_2.cpp" />
+    <ClCompile Include="Object\EffectChangeToFloat3.cpp" />
+    <ClCompile Include="Object\EffectChangeToFloat4.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen4.cpp" />
@@ -231,6 +233,8 @@
     <ClCompile Include="Scene\Float1Scene.cpp" />
     <ClCompile Include="Scene\Float2_1Scene.cpp" />
     <ClCompile Include="Scene\Float2_2Scene.cpp" />
+    <ClCompile Include="Scene\Float3Scene.cpp" />
+    <ClCompile Include="Scene\Float4Scene.cpp" />
     <ClCompile Include="Scene\Green2Scene.cpp" />
     <ClCompile Include="Scene\Green3Scene.cpp" />
     <ClCompile Include="Scene\Green4Scene.cpp" />
@@ -269,6 +273,8 @@
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_1.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_2.h" />
+    <ClInclude Include="Object\EffectChangeToFloat3.h" />
+    <ClInclude Include="Object\EffectChangeToFloat4.h" />
     <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />
     <ClInclude Include="Object\EffectChangeToGreen4.h" />
@@ -321,6 +327,8 @@
     <ClInclude Include="Scene\Float1Scene.h" />
     <ClInclude Include="Scene\Float2_1Scene.h" />
     <ClInclude Include="Scene\Float2_2Scene.h" />
+    <ClInclude Include="Scene\Float3Scene.h" />
+    <ClInclude Include="Scene\Float4Scene.h" />
     <ClInclude Include="Scene\Green2Scene.h" />
     <ClInclude Include="Scene\Green3Scene.h" />
     <ClInclude Include="Scene\Green4Scene.h" />

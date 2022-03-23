@@ -64,6 +64,8 @@
 #include "Object/EffectChangeToGreen5.h"
 #include "Object/EffectChangeToFloat2_1.h"
 #include "Object/EffectChangeToFloat2_2.h"
+#include "Object/EffectChangeToFloat3.h"
+#include "Object/EffectChangeToFloat4.h"
 #include "Object/MiddleBossHammer.h"
 #include "Object/BossTree.h"
 
@@ -482,7 +484,7 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBlock>(NewMonsterName);
 		}
-		else if (strcmp(g_SceneChangeStart.c_str(), SelectObjectName.c_str()) == 0)
+		else if (strcmp(g_SceneChangeStarToGreen3.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectSceneChangeStar>(NewMonsterName);
 		}
@@ -509,6 +511,14 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_SceneChangeToFloat2_2.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat2_2>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToFloat3.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat3>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToFloat4.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat4>(NewMonsterName);
 		}
 		else if (strcmp(g_WaterFloatIsland1.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -972,6 +982,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CEffectChangeToFloat2_2).hash_code())
 	{
 	CEffectChangeToFloat2_2* Obj = Scene->LoadGameObject<CEffectChangeToFloat2_2>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToFloat3).hash_code())
+	{
+	CEffectChangeToFloat3* Obj = Scene->LoadGameObject<CEffectChangeToFloat3>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToFloat4).hash_code())
+	{
+	CEffectChangeToFloat4* Obj = Scene->LoadGameObject<CEffectChangeToFloat4>();
 	return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CWaterFloat1).hash_code())

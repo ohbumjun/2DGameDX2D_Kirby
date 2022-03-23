@@ -89,7 +89,7 @@ bool CObjectHierarchy::Init()
 	std::vector<std::string>  vecAbilityMonsters = { g_BeamMonsterName, g_FireMonsterName,
 	g_FightMonsterName };
 
-	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStart, g_SceneChangeToGreen2,
+	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStarToGreen3, g_SceneChangeToGreen2,
 		g_SceneChangeToGreen1, g_SceneChangeToGreen4 , g_SceneChangeToGreen5,
 		g_SceneChangeToFloat2_1, g_SceneChangeToFloat2_2,
 		g_WaterFloatIsland1, g_WaterFloatIsland2_2 };
