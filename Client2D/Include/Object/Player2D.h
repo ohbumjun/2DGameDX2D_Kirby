@@ -85,6 +85,9 @@ private :
 	float m_FlySpeed;
 	bool m_SceneChange;
 
+	// 사다리 타기
+	bool m_IsLadderGoingUp;
+
 	// 몬스터 먹기
 	bool m_IsEatingMonster;
 	bool m_IsPulling;
@@ -139,6 +142,24 @@ public :
 	CColliderBox2D* GetBodyCollider () const
 {
 		return m_Body;
+}
+public :
+	void SetLadderState(bool Enable)
+{
+		m_IsLadderGoingUp = Enable;
+
+		if (Enable)
+		{
+			ChangeAnimation("LadderGoUp");
+			m_PhysicsSimulate = false;
+		}
+		else
+		{
+			ChangeAnimation("RightIdle");
+			m_PhysicsSimulate = true;
+			m_FallTime = 0.f;
+			m_FallStartY = GetWorldPos().y;
+		}
 }
 public : // public 
 	void SetBeingHitDirection(float Dir);

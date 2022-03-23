@@ -17,6 +17,8 @@ CLadder::~CLadder()
 void CLadder::Start()
 {
 	CGameObject::Start();
+
+	m_ColliderBody = FindComponentByType<CColliderBox2D>();
 }
 
 bool CLadder::Init()

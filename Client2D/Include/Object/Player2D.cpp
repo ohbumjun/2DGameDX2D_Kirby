@@ -59,6 +59,7 @@ CPlayer2D::CPlayer2D() :
 	m_IsDashMoving(false),
 	m_TriangleJump(false),
 	m_IsEatingMonster(false),
+	m_IsLadderGoingUp(false),
 	m_DeltaTime(0.f),
 	m_IsFlying(false),
 	m_FlySpeed(300.f),
@@ -426,11 +427,20 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		{
 			ChangeAnimation("SwimUp");
 
-			AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 200.f);
+			AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 350.f);
 		}
 		else
 		{
-			FlyAfterJump(DeltaTime); 
+			if (m_IsLadderGoingUp)
+			{
+				ChangeAnimation("LadderUp");
+
+				AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 300.f);
+			}
+			else
+			{
+				FlyAfterJump(DeltaTime); 
+			}
 		}
 	}
 }
@@ -478,10 +488,16 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 
 void CPlayer2D::MoveDown(float DeltaTime)
 {
-	if (!m_IsSwimming)
-		return;
+	if (m_IsSwimming)
+	{
+		m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 100.f * DeltaTime * -1.f);
+	}
+	else if (m_IsLadderGoingUp)
+	{
+		ChangeAnimation("LadderDown");
 
-	m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 100.f * DeltaTime * -1.f);
+		AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 300.f * -1.f);
+	}
 }
 
 void CPlayer2D::MoveLeft(float DeltaTime) //
@@ -588,6 +604,10 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 		{
 			ChangePlayerSwimAnimation();
 		}
+		else if (m_IsLadderGoingUp)
+		{
+			ChangeAnimation("LadderUp");
+		}
 		else
 		{
 			ChangePlayerWalkAnimation();
@@ -605,6 +625,9 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 		return;
 
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	// 범위 제한 하기
@@ -701,9 +724,7 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 void CPlayer2D::MoveRight(float DeltaTime)
 {
 	if (m_GamePlayDelayTime > 0.f)
-	{
 		return;
-	}
 
 	if (m_IsBeingHit)
 		return;
@@ -713,7 +734,7 @@ void CPlayer2D::MoveRight(float DeltaTime)
 
 	if (m_IsAttacking)
 		return;
-
+	
 	// 왼쪽 키를 누르고 있었다면 안먹게 한다
 	if (m_LeftMovePush)
 		return;
@@ -803,6 +824,10 @@ void CPlayer2D::MoveRight(float DeltaTime)
 		{
 			ChangePlayerSwimAnimation();
 		}
+		else if (m_IsLadderGoingUp)
+		{
+			ChangeAnimation("LadderUp");
+		}
 		else
 		{
 			ChangePlayerWalkAnimation();
@@ -819,6 +844,9 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 		return;
 
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
@@ -969,6 +997,9 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		return;
 
 	if (m_IsSwimming)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	CEffectStar* SpitOutStar = m_Scene->CreateGameObject<CEffectStar>("SpitOutStar");
@@ -1231,7 +1262,7 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 				m_ToLeftWhenRightMove = false;
 			}
 
-			if (!m_IsSwimming)
+			if (!m_IsSwimming && !m_IsLadderGoingUp)
 			{
 				ChangePlayerIdleAnimation();
 			}
@@ -1683,6 +1714,9 @@ void CPlayer2D::Jump(float DeltaTime)
 	if (m_IsSwimming)
 		return;
 
+	if (m_IsLadderGoingUp)
+		return;
+
 	// 삼각 충돌 적용하기
 	bool SideCollision = false;
 
@@ -1958,6 +1992,9 @@ void CPlayer2D::FallFromCliff()
 	if (m_IsSwimming)
 		return;
 
+	if (m_IsLadderGoingUp)
+		return;
+
 	// 절벽에서 막 떨어졌을 때
 	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided && !m_IsFlying)
 	{
@@ -1973,6 +2010,9 @@ void CPlayer2D::FallFromCliff()
 void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 {
 	if (m_IsSwimming)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	if (m_IsBottomCollided)
@@ -2021,6 +2061,9 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 		return;
 
 	if (m_IsChanging)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	if (!m_Jump && !m_IsFlying)
@@ -2360,6 +2403,9 @@ void CPlayer2D::PullRight(float DeltaTime)
 	if (m_IsSwimming)
 		return;
 
+	if (m_IsLadderGoingUp)
+		return;
+
 	StopPlayer();
 
 	m_KirbyState->GetAnimationInstance()->ChangeAnimation("RightPull");
@@ -2653,6 +2699,9 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsLadderGoingUp)
+		return;
+
 	m_IsAttacking = true;
 
 	if (m_IsSwimming)
@@ -2720,6 +2769,9 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 		return;
 
 	if (m_IsSwimming)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	m_IsAttacking = true;
@@ -2859,6 +2911,9 @@ void CPlayer2D::PullLeft(float DeltaTime)
 		return;
 
 	if (m_IsSwimming)
+		return;
+
+	if (m_IsLadderGoingUp)
 		return;
 
 	StopPlayer();

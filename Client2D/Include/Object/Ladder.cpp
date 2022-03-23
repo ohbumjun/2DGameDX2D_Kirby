@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Component/ColliderBox2D.h"
 #include "Player2D.h"
+#include "UI/UIDamageFont.h"
 
 class CColliderCircle;
 
@@ -25,7 +26,8 @@ void CLadder::Start()
 
 	if (m_ColliderBody)
 	{
-		m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CLadder::SetCollisionCallback);
+		m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CLadder::SetBeginCollisionCallback);
+		m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CLadder::SetEndCollisionCallback);
 		m_ColliderBody->SetCollisionProfile("Monster");
 	}
 }
@@ -50,20 +52,35 @@ void CLadder::PostUpdate(float DeltaTime)
 	CGameObject::PostUpdate(DeltaTime);
 }
 
-void CLadder::SetCollisionCallback(const CollisionResult& Result)
+void CLadder::SetBeginCollisionCallback(const CollisionResult& Result)
 {
-	CGameObject* OwnerObject = Result.Dest->GetGameObject();
+	CColliderComponent* CollisionDest = Result.Dest;
 
-	if (OwnerObject == m_Scene->GetPlayerObject())
+	CGameObject* Owner = CollisionDest->GetGameObject();
+
+	CWidgetComponent* ObjectWindow = nullptr;
+
+	if (Owner == m_Scene->GetPlayerObject())
 	{
-		CPlayer2D* PlayerObject = dynamic_cast<CPlayer2D*>(OwnerObject);
+		CPlayer2D* Player = (CPlayer2D*)Owner;
 
-		if (!PlayerObject)
-			return;
+		Player->SetLadderState(true);
+	}
+}
 
-		if (PlayerObject->IsAttacking())
-		{
-			Destroy();
-		}
+void CLadder::SetEndCollisionCallback(const CollisionResult& Result)
+{
+	CColliderComponent* CollisionDest = Result.Dest;
+
+	CGameObject* Owner = CollisionDest->GetGameObject();
+
+	CWidgetComponent* ObjectWindow = nullptr;
+
+	if (Owner == m_Scene->GetPlayerObject())
+	{
+		CPlayer2D* Player = (CPlayer2D*)Owner;
+
+		Player->SetLadderState(false);
+		
 	}
 }

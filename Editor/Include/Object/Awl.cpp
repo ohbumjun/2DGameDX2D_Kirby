@@ -17,6 +17,8 @@ CAwl::~CAwl()
 void CAwl::Start()
 {
 	CGameObject::Start();
+
+	m_ColliderBody = FindComponentByType<CColliderBox2D>();
 }
 
 bool CAwl::Init()
@@ -38,7 +40,10 @@ void CAwl::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	m_ColliderBody->SetExtend(m_RootComponent->GetWorldScale().x * 0.5f, m_RootComponent->GetWorldScale().y * 0.5f);
+	if (m_ColliderBody)
+	{
+		m_ColliderBody->SetExtend(m_RootComponent->GetWorldScale().x * 0.5f, m_RootComponent->GetWorldScale().y * 0.5f);
+	}
 }
 
 void CAwl::PostUpdate(float DeltaTime)

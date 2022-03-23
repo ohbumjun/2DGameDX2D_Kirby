@@ -17,6 +17,7 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
 private:
-    void SetCollisionCallback(const CollisionResult& Result);
+    void SetBeginCollisionCallback(const CollisionResult& Result);
+    void SetEndCollisionCallback(const CollisionResult& Result);
 };
 
