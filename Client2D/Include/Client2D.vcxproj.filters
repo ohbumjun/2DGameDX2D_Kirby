@@ -333,7 +333,7 @@
     <ClCompile Include="Object\EffectSceneChangeAlpha.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectChangeToFloat1.cpp">
+    <ClCompile Include="Object\EffectChangeToFloat2_1.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
     <ClCompile Include="Object\EffectWaterAttack.cpp">
@@ -347,6 +347,12 @@
     </ClCompile>
     <ClCompile Include="Scene\Float2_2Scene.cpp">
       <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\WaterFloat2_2.cpp">
+      <Filter>02. Object\07. Effect\06. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToFloat2_2.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,7 +599,7 @@
     <ClInclude Include="Object\EffectSceneChangeAlpha.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
-    <ClInclude Include="Object\EffectChangeToFloat1.h">
+    <ClInclude Include="Object\EffectChangeToFloat2_1.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectWaterAttack.h">
@@ -607,6 +613,12 @@
     </ClInclude>
     <ClInclude Include="Scene\Float2_2Scene.h">
       <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\WaterFloat2_2.h">
+      <Filter>02. Object\07. Effect\06. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToFloat2_2.h">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

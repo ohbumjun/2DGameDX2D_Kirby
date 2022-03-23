@@ -177,7 +177,8 @@
     <ClCompile Include="Object\BulletCamera.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\AttackEffect.cpp" />
-    <ClCompile Include="Object\EffectChangeToFloat1.cpp" />
+    <ClCompile Include="Object\EffectChangeToFloat2_1.cpp" />
+    <ClCompile Include="Object\EffectChangeToFloat2_2.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen4.cpp" />
@@ -223,6 +224,7 @@
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\Tornado.cpp" />
     <ClCompile Include="Object\WaterFloat1.cpp" />
+    <ClCompile Include="Object\WaterFloat2_2.cpp" />
     <ClCompile Include="Object\WaterMonster.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\BeginningScene.cpp" />
@@ -265,7 +267,8 @@
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
-    <ClInclude Include="Object\EffectChangeToFloat1.h" />
+    <ClInclude Include="Object\EffectChangeToFloat2_1.h" />
+    <ClInclude Include="Object\EffectChangeToFloat2_2.h" />
     <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />
     <ClInclude Include="Object\EffectChangeToGreen4.h" />
@@ -311,6 +314,7 @@
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Object\WaterFloat1.h" />
+    <ClInclude Include="Object\WaterFloat2_2.h" />
     <ClInclude Include="Object\WaterMonster.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="Scene\BeginningScene.h" />
