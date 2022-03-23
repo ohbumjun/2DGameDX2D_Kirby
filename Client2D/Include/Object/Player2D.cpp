@@ -28,6 +28,7 @@
 #include "BubbleParticle.h"
 #include "../Object/Monster.h"
 #include "EffectWaterAttack.h"
+#include "EffectWaterBlast.h"
 
 CPlayer2D::CPlayer2D() :
 	m_MoveVelocity(0.f),
@@ -1393,6 +1394,12 @@ void CPlayer2D::CheckIsSwimming()
 
 					m_PhysicsSimulate = false;
 
+					CEffectWaterBlast* BlastEffect = m_Scene->CreateGameObject<CEffectWaterBlast>("WaterBlast");
+
+					BlastEffect->SetWorldPos(GetWorldPos().x,
+						GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+						GetWorldPos().z);
+
 					return;
 				}
 			}
@@ -1434,7 +1441,11 @@ void CPlayer2D::CheckIsSwimming()
 
 					m_PhysicsSimulate = true;
 
-					// ChangePlayerSwimAnimation();
+					CEffectWaterBlast* BlastEffect = m_Scene->CreateGameObject<CEffectWaterBlast>("WaterBlast");
+
+					BlastEffect->SetWorldPos(GetWorldPos().x,
+						GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+						GetWorldPos().z);
 
 					return;
 				}
@@ -1450,7 +1461,7 @@ void CPlayer2D::UpdateSwimMoveDown(float DeltaTime)
 	if (!m_IsSwimming)
 		return;
 
-	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 80.f);
+	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 100.f);
 }
 
 void CPlayer2D::Damage(float Damage)

@@ -339,11 +339,11 @@
     <ClCompile Include="Object\EffectWaterAttack.cpp">
       <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectWaterBlast.cpp">
+      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\MainScene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
@@ -592,6 +592,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectWaterAttack.h">
       <Filter>02. Object\07. Effect\02. PlayerEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectWaterBlast.h">
+      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
