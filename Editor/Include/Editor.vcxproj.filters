@@ -371,14 +371,14 @@
     <ClInclude Include="Object\Block.h">
       <Filter>03. Object\09. SceneObject</Filter>
     </ClInclude>
-    <ClInclude Include="Editor.h">
-      <Filter>03. Object\09. SceneObject</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Awl.h">
       <Filter>03. Object\09. SceneObject</Filter>
     </ClInclude>
     <ClInclude Include="Object\Ladder.h">
       <Filter>03. Object\09. SceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

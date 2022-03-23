@@ -29,6 +29,7 @@ bool CAwl::Init()
 	m_ColliderBody->SetCollisionProfile("MonsterAttack");
 	SetWorldScale(100.f, 100.f, 1.f); //
 	m_ColliderBody->SetExtend(50.f, 50.f);
+	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.f);
 
 	return true;
 }

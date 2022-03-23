@@ -28,6 +28,8 @@
 #include "Object/FightMonster.h"
 #include "Object/LineContainer.h"
 #include "Object/Block.h"
+#include "Object/Awl.h"
+#include "Object/Ladder.h"
 #include "GameObject/Line.h"
 #include "Object/HPYellowItem.h"
 #include "Object/HPGreenItem.h"
@@ -138,7 +140,8 @@ void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();//
 
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
@@ -147,7 +150,8 @@ void CClientManager::CreateDefaultSceneMode()
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
@@ -263,6 +267,16 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CBlock).hash_code())
 	{
 		CBlock* Obj = Scene->LoadGameObject<CBlock>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CAwl).hash_code())
+	{
+		CAwl* Obj = Scene->LoadGameObject<CAwl>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CLadder).hash_code())
+	{
+		CLadder* Obj = Scene->LoadGameObject<CLadder>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CLineContainer).hash_code())

@@ -165,6 +165,7 @@
     <ClCompile Include="Component\NormalKirbyState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
+    <ClCompile Include="Object\Awl.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\BeamMonsterAttack.cpp" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Object\HPYellowItem.cpp" />
     <ClCompile Include="Object\Item.cpp" />
     <ClCompile Include="Object\KirbyAttackEffect.cpp" />
+    <ClCompile Include="Object\Ladder.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\MiddleBossHammer.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
@@ -260,6 +262,7 @@
     <ClInclude Include="Component\NormalKirbyState.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
     <ClInclude Include="Object\AttackEffect.h" />
+    <ClInclude Include="Object\Awl.h" />
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\BeamMonsterAttack.h" />
@@ -300,6 +303,7 @@
     <ClInclude Include="Object\HPYellowItem.h" />
     <ClInclude Include="Object\Item.h" />
     <ClInclude Include="Object\KirbyAttackEffect.h" />
+    <ClInclude Include="Object\Ladder.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\MiddleBossHammer.h" />
     <ClInclude Include="Object\Monster.h" />

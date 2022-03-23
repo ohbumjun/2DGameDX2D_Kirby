@@ -68,6 +68,8 @@
 #include "Object/EffectChangeToFloat4.h"
 #include "Object/MiddleBossHammer.h"
 #include "Object/BossTree.h"
+#include "Object/Ladder.h"
+#include "Object/Awl.h"
 
 DEFINITION_SINGLE(CEditorManager)
 
@@ -483,6 +485,14 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_Block.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBlock>(NewMonsterName);
+		}
+		else if (strcmp(g_Ladder.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CLadder>(NewMonsterName);
+		}
+		else if (strcmp(g_Awl.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CAwl>(NewMonsterName);
 		}
 		else if (strcmp(g_SceneChangeStarToGreen3.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -902,6 +912,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CBlock).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBlock>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CAwl).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CAwl>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CLadder).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CLadder>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CBeamMonster).hash_code())

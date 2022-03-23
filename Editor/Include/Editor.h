@@ -32,6 +32,8 @@ const std::string g_HPYellowItem = "HPYellowItem";
 const std::string g_HPRedItem    = "HPRedItem";
 const std::string g_HPGreenItem = "HPGreenItem";
 const std::string g_Block             = "BlockItem";
+const std::string g_Ladder           = "LadderItem";
+const std::string g_Awl                = "AwlItem";
 
 enum class Tile_EditMode {
 	Type,

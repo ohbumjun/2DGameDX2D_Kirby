@@ -93,7 +93,8 @@ bool CObjectHierarchy::Init()
 		g_SceneChangeToFloat2_1, g_SceneChangeToFloat2_2,
 		g_WaterFloatIsland1, g_WaterFloatIsland2_2 };
 
-	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem, g_Block };
+	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem,
+		g_Block, g_Ladder, g_Awl };
 
 	std::vector<std::string>  vecMiddleBossObjects = { g_MiddleHammerName };
 
