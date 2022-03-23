@@ -198,6 +198,9 @@
     <ClCompile Include="Object\WaterMonster.cpp">
       <Filter>03. Object\03. Monster\04. Water</Filter>
     </ClCompile>
+    <ClCompile Include="Object\WaterFloat2_2.cpp">
+      <Filter>03. Object\07. Effect\02. Water</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="Object\WaterMonster.h">
       <Filter>03. Object\03. Monster\04. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\WaterFloat2_2.h">
+      <Filter>03. Object\07. Effect\02. Water</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

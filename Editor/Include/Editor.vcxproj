@@ -203,6 +203,7 @@
     <ClCompile Include="Object\Squid.cpp" />
     <ClCompile Include="Object\TileMapEmpty.cpp" />
     <ClCompile Include="Object\WaterFloat1.cpp" />
+    <ClCompile Include="Object\WaterFloat2_2.cpp" />
     <ClCompile Include="Object\WaterMonster.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\DefaultScene.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="Object\Squid.h" />
     <ClInclude Include="Object\TileMapEmpty.h" />
     <ClInclude Include="Object\WaterFloat1.h" />
+    <ClInclude Include="Object\WaterFloat2_2.h" />
     <ClInclude Include="Object\WaterMonster.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="resource.h" />

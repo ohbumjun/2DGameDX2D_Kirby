@@ -2715,6 +2715,9 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 	if (m_IsEatingMonster)
 		return;
 
+	if (m_IsSwimming)
+		return;
+
 	m_IsAttacking = true;
 
 	m_SlideAttack = true;

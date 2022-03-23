@@ -22,6 +22,7 @@ const std::string g_SceneChangeToGreen1 = "SceneChangeToGreen1";
 const std::string g_SceneChangeToGreen4 = "SceneChangeToGreen4";
 const std::string g_SceneChangeToGreen5 = "SceneChangeToGreen5";
 const std::string g_WaterFloatIsland1 = "WaterFloatIsland1";
+const std::string g_WaterFloatIsland2_2 = "WaterFloatIsland2_2";
 // Item
 const std::string g_HPYellowItem = "HPYellowItem";
 const std::string g_HPRedItem    = "HPRedItem";

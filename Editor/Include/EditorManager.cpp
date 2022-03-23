@@ -50,6 +50,7 @@
 #include "Object/Block.h"
 #include "Object/LineObject.h"
 #include "Object/WaterFloat1.h"
+#include "Object/WaterFloat2_2.h"
 #include "Object/SpriteEditObject.h"
 #include "Object/HPYellowItem.h"
 #include "Object/HPRedItem.h"
@@ -503,6 +504,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CWaterFloat1>(NewMonsterName);
 		}
+		else if (strcmp(g_WaterFloatIsland2_2.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CWaterFloat2_2>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -952,6 +957,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CWaterFloat1).hash_code())
 	{
 	CWaterFloat1* Obj = Scene->LoadGameObject<CWaterFloat1>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CWaterFloat2_2).hash_code())
+	{
+	CWaterFloat2_2* Obj = Scene->LoadGameObject<CWaterFloat2_2>();
 	return Obj;
 	}
 	
