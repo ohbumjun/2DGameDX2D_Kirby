@@ -177,6 +177,7 @@ private:
 private :
 	// Swim
 	void CheckIsSwimming();
+	void UpdateSwimMoveDown(float DeltaTime);
 public :
 	// Hit
 	void Damage(float Damage);
@@ -230,6 +231,7 @@ private:
 	void ChangePlayerSpitOutAnimation();
 	void ChangePlayerSlideAttackAnimation();
 	void ChangePlayerChangeAnimation();
+	void ChangePlayerSwimAnimation();
 private :
 	// Spit Out & Pull
 	void SpitOut(float DeltaTime);

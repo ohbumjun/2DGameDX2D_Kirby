@@ -326,6 +326,8 @@ void CPlayer2D::Update(float DeltaTime)
 
 	UpdateSlideAttackTime(DeltaTime);
 
+	UpdateSwimMoveDown(DeltaTime);
+
 	UpdateActionWhenReachGroundAfterFall();
 }
 
@@ -418,8 +420,16 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		if (m_SceneChange)
 			return;
 
-		FlyAfterJump(DeltaTime);
-		// m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime);
+		if (m_IsSwimming)
+		{
+			ChangeAnimation("SwimUp");
+
+			AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 200.f);
+		}
+		else
+		{
+			FlyAfterJump(DeltaTime); 
+		}
 	}
 }
 
@@ -478,9 +488,7 @@ void CPlayer2D::MoveDown(float DeltaTime)
 void CPlayer2D::MoveLeft(float DeltaTime) //
 {
 	if (m_GamePlayDelayTime > 0.f)
-	{
 		return;
-	}
 
 	// 오른쪽 버튼을 누른 상태라면 X
 	if (m_RightMovePush)
@@ -577,7 +585,14 @@ void CPlayer2D::MoveLeft(float DeltaTime) //
 	if (m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "RightSpitOut" &&
 		m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "LeftSpitOut")
 	{
-		ChangePlayerWalkAnimation();
+		if (m_IsSwimming)
+		{
+			ChangePlayerSwimAnimation();
+		}
+		else
+		{
+			ChangePlayerWalkAnimation();
+		}
 	}
 }
 
@@ -656,24 +671,31 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	}
 
 	// Animation 전환
-	ChangePlayerRunAnimation();
-
-	// Effect 생성
-	if (!m_MoveDashEffectMade && !m_Jump && m_MoveDashEffectLimitTime >= m_MoveDashEffectLimitTimeMax)
+	if (m_IsSwimming)
 	{
-		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
+		ChangePlayerSwimAnimation();
+	}
+	else
+	{
+		ChangePlayerRunAnimation();
 
-		Vector3 EffectPos = Vector3(GetWorldPos().x,
-			GetWorldPos().y - GetWorldScale().y * GetPivot().y,
-			GetWorldPos().z);
+		// Effect 생성
+		if (!m_MoveDashEffectMade && !m_Jump && m_MoveDashEffectLimitTime >= m_MoveDashEffectLimitTimeMax)
+		{
+			CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
 
-		EffectDash->SetWorldPos(EffectPos);
+			Vector3 EffectPos = Vector3(GetWorldPos().x,
+				GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+				GetWorldPos().z);
 
-		EffectDash->SetDirGoRight(true);
+			EffectDash->SetWorldPos(EffectPos);
 
-		m_MoveDashEffectMade = true;
+			EffectDash->SetDirGoRight(true);
 
-		m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
+			m_MoveDashEffectMade = true;
+
+			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
+		}
 	}
 }
 
@@ -778,7 +800,14 @@ void CPlayer2D::MoveRight(float DeltaTime)
 	if (m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "RightSpitOut" &&
 		m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName() != "LeftSpitOut")
 	{
-		ChangePlayerWalkAnimation();
+		if (m_IsSwimming)
+		{
+			ChangePlayerSwimAnimation();
+		}
+		else
+		{
+			ChangePlayerWalkAnimation();
+		}
 	}
 }
 
@@ -852,24 +881,31 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	}
 
 	// Animation 전환
-	ChangePlayerRunAnimation();
-
-	// Effect 생성
-	if (!m_MoveDashEffectMade && !m_Jump && m_MoveDashEffectLimitTime >= m_MoveDashEffectLimitTimeMax)
+	if (m_IsSwimming)
 	{
-		CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
+		ChangePlayerSwimAnimation();
+	}
+	else
+	{
+		ChangePlayerRunAnimation();
 
-		Vector3 EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2, 
-												GetWorldPos().y - GetWorldScale().y * GetPivot().y, 
-													GetWorldPos().z);
+		// Effect 생성
+		if (!m_MoveDashEffectMade && !m_Jump && m_MoveDashEffectLimitTime >= m_MoveDashEffectLimitTimeMax)
+		{
+			CEffectDash* EffectDash = m_Scene->CreateGameObject<CEffectDash>("DashEffect");
 
-		EffectDash->SetWorldPos(EffectPos);
+			Vector3 EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2,
+				GetWorldPos().y - GetWorldScale().y * GetPivot().y,
+				GetWorldPos().z);
 
-		EffectDash->SetDirGoRight(false);
+			EffectDash->SetWorldPos(EffectPos);
 
-		m_MoveDashEffectMade = true;
+			EffectDash->SetDirGoRight(false);
 
-		m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
+			m_MoveDashEffectMade = true;
+
+			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
+		}
 	}
 }
 
@@ -931,6 +967,9 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		return;
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsSwimming)
 		return;
 
 	CEffectStar* SpitOutStar = m_Scene->CreateGameObject<CEffectStar>("SpitOutStar");
@@ -1193,8 +1232,10 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 				m_ToLeftWhenRightMove = false;
 			}
 
-			// 공격중 이라면 Idle Animation으로 바꾸지 않는다
-			ChangePlayerIdleAnimation();
+			if (!m_IsSwimming)
+			{
+				ChangePlayerIdleAnimation();
+			}
 
 			m_MoveVelocity = 0.f;
 		}
@@ -1347,6 +1388,10 @@ void CPlayer2D::CheckIsSwimming()
 				{
 					m_IsSwimming = true;
 
+					ChangePlayerSwimAnimation();
+
+					m_PhysicsSimulate = false;
+
 					return;
 				}
 			}
@@ -1386,6 +1431,10 @@ void CPlayer2D::CheckIsSwimming()
 				{
 					m_IsSwimming = false;
 
+					m_PhysicsSimulate = true;
+
+					// ChangePlayerSwimAnimation();
+
 					return;
 				}
 			}
@@ -1393,6 +1442,14 @@ void CPlayer2D::CheckIsSwimming()
 	}
 
 	
+}
+
+void CPlayer2D::UpdateSwimMoveDown(float DeltaTime)
+{
+	if (!m_IsSwimming)
+		return;
+
+	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 80.f);
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -1599,14 +1656,15 @@ void CPlayer2D::SimpleJump()
 void CPlayer2D::Jump(float DeltaTime)
 {
 	if (m_GamePlayDelayTime > 0.f)
-	{
 		return;
-	}
 
 	if (m_IsBeingHit)
 		return;
 
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsSwimming)
 		return;
 
 	// 삼각 충돌 적용하기
@@ -1881,6 +1939,9 @@ void CPlayer2D::JumpDownDistUpdate(float DeltaTime)
 
 void CPlayer2D::FallFromCliff()
 {
+	if (m_IsSwimming)
+		return;
+
 	// 절벽에서 막 떨어졌을 때
 	if (m_FallStartY - GetWorldPos().y > 5.f && !m_IsBottomCollided && !m_IsFlying)
 	{
@@ -1895,6 +1956,9 @@ void CPlayer2D::FallFromCliff()
 
 void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 {
+	if (m_IsSwimming)
+		return;
+
 	if (m_IsBottomCollided)
 	{
 		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 1.5f)
@@ -1950,10 +2014,17 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 		if (CurAnimName == "RightFall" || CurAnimName == "LeftFall")
 			return;
 
-		if (m_IsEatingMonster && !m_IsSpecialStateChanged)
-			ChangePlayerEatIdleAnimation();
+		if (m_IsSwimming)
+		{
+			ChangePlayerSwimAnimation();
+		}
 		else
-			ChangePlayerNormalIdleAnimation();
+		{
+			if (m_IsEatingMonster && !m_IsSpecialStateChanged)
+				ChangePlayerEatIdleAnimation();
+			else
+				ChangePlayerNormalIdleAnimation();
+		}
 	}
 }
 
@@ -2160,6 +2231,17 @@ void CPlayer2D::ChangePlayerChangeAnimation()
 		ChangeAnimation("LeftChange");
 	else
 		ChangeAnimation("RightChange");
+}
+
+void CPlayer2D::ChangePlayerSwimAnimation()
+{
+	if (!m_IsSwimming)
+		return;
+
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftSwim");
+	else
+		ChangeAnimation("RightSwim");
 }
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
