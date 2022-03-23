@@ -62,6 +62,8 @@
 #include "Object/EffectChangeToGreen1.h"
 #include "Object/EffectChangeToGreen4.h"
 #include "Object/EffectChangeToGreen5.h"
+#include "Object/EffectChangeToFloat2_1.h"
+#include "Object/EffectChangeToFloat2_2.h"
 #include "Object/MiddleBossHammer.h"
 #include "Object/BossTree.h"
 
@@ -499,6 +501,14 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_SceneChangeToGreen5.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToGreen5>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToFloat2_1.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat2_1>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToFloat2_2.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat2_2>(NewMonsterName);
 		}
 		else if (strcmp(g_WaterFloatIsland1.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -952,6 +962,16 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CEffectChangeToGreen5).hash_code())
 	{
 	CEffectChangeToGreen5* Obj = Scene->LoadGameObject<CEffectChangeToGreen5>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToFloat2_1).hash_code())
+	{
+	CEffectChangeToFloat2_1* Obj = Scene->LoadGameObject<CEffectChangeToFloat2_1>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToFloat2_2).hash_code())
+	{
+	CEffectChangeToFloat2_2* Obj = Scene->LoadGameObject<CEffectChangeToFloat2_2>();
 	return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CWaterFloat1).hash_code())

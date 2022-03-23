@@ -169,8 +169,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CEffectChangeToFloat2_1.cpp" />
-    <ClCompile Include="CEffectChangeToFloat2_2.cpp" />
+    <ClCompile Include="EffectChangeToFloat2_1.cpp" />
+    <ClCompile Include="EffectChangeToFloat2_2.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
@@ -180,6 +180,8 @@
     <ClCompile Include="Object\BossMonster.cpp" />
     <ClCompile Include="Object\BossTree.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
+    <ClCompile Include="Object\EffectChangeToFloat3.cpp" />
+    <ClCompile Include="Object\EffectChangeToFloat4.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen1.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen2.cpp" />
     <ClCompile Include="Object\EffectChangeToGreen4.cpp" />
@@ -218,8 +220,8 @@
     <ClCompile Include="Window\TileMapWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CEffectChangeToFloat2_1.h" />
-    <ClInclude Include="CEffectChangeToFloat2_2.h" />
+    <ClInclude Include="EffectChangeToFloat2_1.h" />
+    <ClInclude Include="EffectChangeToFloat2_2.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
@@ -229,6 +231,8 @@
     <ClInclude Include="Object\BossMonster.h" />
     <ClInclude Include="Object\BossTree.h" />
     <ClInclude Include="Object\DragObject.h" />
+    <ClInclude Include="Object\EffectChangeToFloat3.h" />
+    <ClInclude Include="Object\EffectChangeToFloat4.h" />
     <ClInclude Include="Object\EffectChangeToGreen1.h" />
     <ClInclude Include="Object\EffectChangeToGreen2.h" />
     <ClInclude Include="Object\EffectChangeToGreen4.h" />

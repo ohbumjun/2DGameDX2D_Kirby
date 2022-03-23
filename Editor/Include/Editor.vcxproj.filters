@@ -201,10 +201,16 @@
     <ClCompile Include="Object\WaterFloat2_2.cpp">
       <Filter>03. Object\07. Effect\02. Water</Filter>
     </ClCompile>
-    <ClCompile Include="CEffectChangeToFloat2_1.cpp">
+    <ClCompile Include="EffectChangeToFloat2_1.cpp">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
-    <ClCompile Include="CEffectChangeToFloat2_2.cpp">
+    <ClCompile Include="EffectChangeToFloat2_2.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToFloat3.cpp">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToFloat4.cpp">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
   </ItemGroup>
@@ -347,10 +353,16 @@
     <ClInclude Include="Object\WaterFloat2_2.h">
       <Filter>03. Object\07. Effect\02. Water</Filter>
     </ClInclude>
-    <ClInclude Include="CEffectChangeToFloat2_1.h">
+    <ClInclude Include="EffectChangeToFloat2_1.h">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
-    <ClInclude Include="CEffectChangeToFloat2_2.h">
+    <ClInclude Include="EffectChangeToFloat2_2.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToFloat3.h">
+      <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToFloat4.h">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
   </ItemGroup>

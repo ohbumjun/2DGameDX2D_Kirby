@@ -405,13 +405,17 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
-	if (m_SceneChangeCallback && m_FallTime < 0.1f && !m_IsFlying)
+	// if (m_SceneChangeCallback && m_FallTime < 0.1f && !m_IsFlying)
+	// if (m_SceneChangeCallback && m_FallTime < 0.1f)
+	if (m_SceneChangeCallback)
 	{
 		CollisionResult Result;
 		m_SceneChangeCallback(Result);
 		m_SceneChangeCallback = nullptr;
 		m_SceneChange = true;
 		StopPlayer();
+
+		m_PhysicsSimulate = false;
 	}
 	else
 	{

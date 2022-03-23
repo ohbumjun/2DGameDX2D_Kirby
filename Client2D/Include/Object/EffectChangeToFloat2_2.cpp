@@ -6,7 +6,7 @@
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
-#include "../Scene/Green5Scene.h"
+#include "../Scene/Float2_2Scene.h"
 #include "Player2D.h"
 #include "../Object/EffectSceneChangeAlpha.h"
 
@@ -89,9 +89,9 @@ void CEffectChangeToFloat2_2::ChangeSceneToFloat2_2Scene()
 	*/
 	// Next Scene 에 세팅해둔다.
 	CSceneManager::GetInst()->CreateNewScene(false);
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>(false);
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-	if (CSceneManager::GetInst()->GetNextScene()->Load("Green5.scn", SCENE_PATH))
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Float2_2.scn", SCENE_PATH))
 	{
 		CSceneManager::GetInst()->ChangeNextScene();
 	}

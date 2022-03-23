@@ -91,6 +91,7 @@ bool CObjectHierarchy::Init()
 
 	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStart, g_SceneChangeToGreen2,
 		g_SceneChangeToGreen1, g_SceneChangeToGreen4 , g_SceneChangeToGreen5,
+		g_SceneChangeToFloat2_1, g_SceneChangeToFloat2_2,
 		g_WaterFloatIsland1, g_WaterFloatIsland2_2 };
 
 	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem, g_Block };
@@ -259,6 +260,9 @@ void CObjectHierarchy::SelectCreatedComponent(int Index, const char* ComponentNa
 		return;
 
 	m_SelectComponent = (CSceneComponent*)m_SelectObject->FindComponent(ComponentName);
+
+	if (!m_SelectComponent)
+		return;
 
 	CTileMapWindow* TileMapWindow = (CTileMapWindow*)CIMGUIManager::GetInst()->FindIMGUIWindow("TileMapWindow");
 

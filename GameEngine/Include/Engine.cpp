@@ -287,7 +287,6 @@ bool CEngine::Render(float DeltaTime)
 
 	CIMGUIManager::GetInst()->Render();
 
-
 	CDevice::GetInst()->Flip();
 
 	return true;
