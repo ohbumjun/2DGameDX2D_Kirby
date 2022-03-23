@@ -1295,21 +1295,28 @@ void CPlayer2D::CheckBelowWorldResolution()
 	if (m_GamePlayDelayTime > 0)
 		return;
 
-	Vector3 WorldPos = GetWorldPos();
+	if (m_IsSwimming)
+	{
+		SetWorldPos(GetWorldPos().x, GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+	}
+	else
+	{
+		Vector3 WorldPos = GetWorldPos();
 
-	m_Camera->SetFollowPlayer(true);
+		m_Camera->SetFollowPlayer(true);
 
-	m_Camera->SetInheritParentWorldPosChange(false);
+		m_Camera->SetInheritParentWorldPosChange(false);
 
-	// 이것이 true 면, While Off Ground 처리로 인해 X Pos가 계속 현재로 유지되어 버린다.
-	m_PhysicsSimulate = false;
+		// 이것이 true 면, While Off Ground 처리로 인해 X Pos가 계속 현재로 유지되어 버린다.
+		m_PhysicsSimulate = false;
 
-	SetWorldPos(m_InitPlayerPos);
-	// SetWorldPos(Vector3(WorldPos.x - 300.f, WorldPos.y + 500.f, WorldPos.z));
+		SetWorldPos(m_InitPlayerPos);
+		// SetWorldPos(Vector3(WorldPos.x - 300.f, WorldPos.y + 500.f, WorldPos.z));
 
-	m_FallTime = 0.f;
+		m_FallTime = 0.f;
 
-	m_FallStartY = m_InitPlayerPos.y;
+		m_FallStartY = m_InitPlayerPos.y;
+	}
 }
 
 void CPlayer2D::SetCameraFollowBossMonster(class CGameObject* Boss)
