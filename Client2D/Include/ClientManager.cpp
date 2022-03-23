@@ -83,7 +83,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 
 	CInput::GetInst()->CreateKey("MoveUp", 'W');
-	// CInput::GetInst()->CreateKey("MoveDown", 'S');
+	CInput::GetInst()->CreateKey("MoveDown", 'S');
 	// CInput::GetInst()->CreateKey("RotationZInv", 'A');
 	// CInput::GetInst()->CreateKey("RotationZ", 'D');
 	CInput::GetInst()->CreateKey("MoveRight", 'D');

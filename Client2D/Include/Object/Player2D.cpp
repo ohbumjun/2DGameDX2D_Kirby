@@ -236,12 +236,8 @@ void CPlayer2D::Start()
 		KeyState_Push, this, &CPlayer2D::MoveUp);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveUp",
 		KeyState_Up, this, &CPlayer2D::MoveUpEnd);
-
-	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveDown", 
 		KeyState_Push, this, &CPlayer2D::MoveDown);
-	*/
-
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft", 
 		KeyState_Push, this, &CPlayer2D::MoveLeft);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MoveLeft",
@@ -476,13 +472,10 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 
 void CPlayer2D::MoveDown(float DeltaTime)
 {
-	if (m_IsBeingHit)
+	if (!m_IsSwimming)
 		return;
 
-	if (m_IsAttacking)
-		return;
-
-	m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 300.f * DeltaTime * -1.f);
+	m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_Y) * 100.f * DeltaTime * -1.f);
 }
 
 void CPlayer2D::MoveLeft(float DeltaTime) //
