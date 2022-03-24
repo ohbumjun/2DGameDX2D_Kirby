@@ -20,6 +20,7 @@
 #include "Object/YellowBird.h"
 #include "Object/NormalBear.h"
 #include "Object/MushRoom.h"
+#include "Object/Kabu.h"
 #include "Object/PurpleBeatle.h"
 #include "Object/TileMapEmpty.h"
 #include "Object/BackGround.h"
@@ -272,6 +273,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CAwl).hash_code())
 	{
 		CAwl* Obj = Scene->LoadGameObject<CAwl>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CKabu).hash_code())
+	{
+		CKabu* Obj = Scene->LoadGameObject<CKabu>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CLadder).hash_code())

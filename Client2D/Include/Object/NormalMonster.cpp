@@ -1,4 +1,6 @@
 #include "NormalMonster.h"
+#include "Animation/AnimationSequence2DInstance.h"
+#include "Component/SpriteComponent.h"
 
 CNormalMonster::CNormalMonster()
 {
@@ -26,6 +28,12 @@ void CNormalMonster::Start()
 	m_AttackAbility = 20.f;
 	m_HPMax = 100.f;
 	m_HP = 100.f;
+
+	// Death Animation 이후 바로 Destroy 세팅한다
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetPlayTime(1.5f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetEndFunction((CRef*)this, &CRef::Destroy);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetPlayTime(1.5f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetEndFunction((CRef*)this, &CRef::Destroy);
 }
 
 bool CNormalMonster::Init()

@@ -368,7 +368,6 @@ void CMonster::Start()
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	SetRandomTargetDir();
-
 }
 
 bool CMonster::Init()
