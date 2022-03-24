@@ -14,8 +14,8 @@ protected:
 	float m_FallVelocity;
 	float m_SideWallCheck;
 	float m_GamePlayDelayTime;
-	// Jump & Fall
 protected:
+	// Jump & Fall
 	bool m_PhysicsSimulate;
 	float m_GravityAccel;
 	bool m_IsGround;
@@ -28,6 +28,8 @@ protected:
 	float m_JumpAccelAccTime;
 	float m_GroundOffSet;
 	bool m_IsFalling;
+	float m_PrevJumpDistDiff;
+	float m_JumpDistDiff;
 protected :
 	bool m_IsGroundObject;
 	// Collision
@@ -39,11 +41,13 @@ protected:
 	bool m_IsCeilingCollided;
 	bool m_ApplyBottomCollision;
 	bool m_LineCollided;
-protected: // Ability
+protected:
+	// Ability
 	float m_HP;
 	float m_HPMax;
 	float m_AttackAbility;
-protected : // Attack
+protected :
+	// Attack
 	bool m_IsAttacking;
 protected :
 	Vector3 m_ObjectMoveDir;

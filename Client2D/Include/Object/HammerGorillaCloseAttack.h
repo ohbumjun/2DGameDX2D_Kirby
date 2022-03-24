@@ -5,6 +5,7 @@ class CHammerGorillaCloseAttack :
     public CAttackEffect
 {
     friend class CMiddleBossHammer;
+    friend class CMiddleBossScissorBug;
 public:
     CHammerGorillaCloseAttack();
     CHammerGorillaCloseAttack(const CHammerGorillaCloseAttack& Attack);

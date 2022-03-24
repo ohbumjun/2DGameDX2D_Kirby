@@ -8,6 +8,7 @@
 #include "Scene/Green5Scene.h"
 #include "Scene/StartScene.h"
 #include "Scene/Float1Scene.h"
+#include "Scene/Float4Scene.h"
 #include "Scene/Float2_1Scene.h"
 #include "Scene/Float2_2Scene.h"
 #include "Scene/SceneManager.h"
@@ -36,6 +37,7 @@
 #include "Object/HPGreenItem.h"
 #include "Object/HPRedItem.h"
 #include "Object/MiddleBossHammer.h"
+#include "Object/MiddleBossScissorBug.h"
 #include "Object/BossTree.h"
 #include "Object/WaterFloat1.h"
 #include "Object/WaterFloat2_2.h"
@@ -47,6 +49,7 @@
 #include "Object/EffectChangeToGreen5.h"
 #include "Object/EffectChangeToFloat2_1.h"
 #include "Object/EffectChangeToFloat2_2.h"
+#include "Object/EffectChangeToFloat4.h"
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
@@ -144,7 +147,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
 
@@ -153,7 +157,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
@@ -218,6 +223,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CMiddleBossHammer).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossHammer>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CMiddleBossScissorBug).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossScissorBug>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CBossTree).hash_code())

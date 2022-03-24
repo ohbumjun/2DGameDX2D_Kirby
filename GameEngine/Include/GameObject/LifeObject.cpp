@@ -111,11 +111,15 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 			//m_FallVelocity = Velocity + m_FallVelocityMax;
 		//}
 
+		m_JumpDistDiff = Velocity - m_FallVelocity;
+
 		float CurrentYPos = m_FallStartY + (Velocity - m_FallVelocity);
 
 		SetWorldPos(GetWorldPos().x, CurrentYPos, GetWorldPos().z);
 
 		IsFalling = true;
+
+		m_PrevJumpDistDiff = m_JumpDistDiff;
 	}
 
 	m_FallVelocity = 0.f;
