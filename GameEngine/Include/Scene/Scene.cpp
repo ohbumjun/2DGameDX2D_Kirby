@@ -75,12 +75,25 @@ void CScene::Start()
 
 			Resolution RS = CEngine::GetInst()->GetResolution();
 
+			float LeftEnd = m_Mode->GetPlayerObject()->GetWorldPos().x - 0.5f * (float)RS.Width;
+			float BottomEnd = m_Mode->GetPlayerObject()->GetWorldPos().y - 0.5f * (float)RS.Height;
+
+			if (BottomEnd + RS.Height > GetWorldResolution().y)
+			{
+				BottomEnd = GetWorldResolution().y - RS.Height;
+			}
+
 			Vector3 CameraPos = Vector3(
-				m_Mode->GetPlayerObject()->GetWorldPos().x - 0.5f * (float)RS.Width,
-				m_Mode->GetPlayerObject()->GetWorldPos().y - 0.5f * (float)RS.Height,
+				LeftEnd,
+				BottomEnd,
 				0.f);
 
+			// Float2_1 같은 경우에는 왼쪽 최상단에서 시작한다.
+			// 이 경우, 제일 왼쪽 위 까지 세팅한다.
+
 			Camera->SetWorldPos(CameraPos);
+
+
 		}
 	}
 }

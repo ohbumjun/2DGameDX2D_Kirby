@@ -32,6 +32,10 @@ protected:
 	float			m_FollowTargetTimeMax;
 
 public:
+	bool IsAdjustRatio() const
+	{
+		return m_AdjustRatio;
+	}
 	Resolution GetResolution()	const
 	{
 		return m_RS;

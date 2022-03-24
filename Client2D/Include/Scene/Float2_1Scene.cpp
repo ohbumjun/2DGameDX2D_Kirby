@@ -38,7 +38,7 @@ void CFloat2_1Scene::Start()
 
 	SetPlayerObject(Player2D);
 
-	Player2D->SetWorldPos(150.f, 2800.f, 0.f);
+	Player2D->SetWorldPos(150.f, 2500.f, 0.f);
 
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 

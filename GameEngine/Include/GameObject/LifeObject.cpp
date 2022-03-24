@@ -3,6 +3,7 @@
 #include "../Scene/Scene.h"
 #include "../Scene/SceneMode.h"
 #include "Line.h"
+#include "../Scene/CameraManager.h"
 
 CLifeObject::CLifeObject():
 	m_MoveSpeed(200.f),
@@ -292,6 +293,7 @@ void CLifeObject::CheckCeilingCollision(float DeltaTime)
 		return;
 	}
 
+	// 올라갈 때만 조사한다.
 	if (m_Pos.y - m_PrevPos.y > 0.f)
 	{
 		CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
@@ -380,10 +382,13 @@ void CLifeObject::CheckCeilingCollision(float DeltaTime)
 
 					SetWorldPos(m_Pos);
 
-					// 위치 정보 세팅
-					// float NewPosY = TilePos.y - Pivot.y * WorldScale.y;
+					// Player 라면 --> 천장에 Collision 하는 순간 만큼은 잠시 카메라 Adjust Ratio를 멈춘다.
+					// 그리고 바로 다시 충돌하지 않는 순간, 다시 Adjust Ratio를 수행하게 한다.
+					if (this == m_Scene->GetPlayerObject())
+					{
+						m_Scene->GetCameraManager()->GetCurrentCamera()->SetAdjustRatio(false);
+					}
 
-					// SetWorldPos(m_Pos.x, NewPosY, m_Pos.z);
 
 					CeilingCollision = true;
 
@@ -394,27 +399,17 @@ void CLifeObject::CheckCeilingCollision(float DeltaTime)
 			if (Check)
 				break;
 		}
-
-		/*
-		// 만약 바닥에 닿지 않았다면
-		if (!Check)
-		{
-			// 그런데 m_IsGround는 true 라면
-			// 이제 막 다시 떨어지기 시작하는 것이다
-			if (m_IsGround)
-			{
-				m_FallTime = 0.f;
-				m_FallStartY = GetWorldPos().y;
-			}
-
-			m_IsGround = false;
-
-			CeilingCollision = false;
-		}
-		*/
 	}
 
 	m_IsCeilingCollided = CeilingCollision;
+
+	if (!m_IsCeilingCollided && this == m_Scene->GetPlayerObject())
+	{
+		if (!m_Scene->GetCameraManager()->GetCurrentCamera()->IsAdjustRatio())
+		{
+			m_Scene->GetCameraManager()->GetCurrentCamera()->SetAdjustRatio(true);
+		}
+	}
 }
 
 void CLifeObject::CheckSideCollision()
