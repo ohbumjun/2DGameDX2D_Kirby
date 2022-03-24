@@ -200,6 +200,7 @@
     <ClCompile Include="Object\Line.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\MiddleBossHammer.cpp" />
+    <ClCompile Include="Object\MiddleBossScissorBug.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalBear.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="Object\Line.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\MiddleBossHammer.h" />
+    <ClInclude Include="Object\MiddleBossScissorBug.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalBear.h" />

@@ -387,6 +387,9 @@
     <ClCompile Include="Scene\Float6Scene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
+    <ClCompile Include="Object\MiddleBossScissorBug.cpp">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -682,6 +685,9 @@
     </ClInclude>
     <ClInclude Include="Scene\Float6Scene.h">
       <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MiddleBossScissorBug.h">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

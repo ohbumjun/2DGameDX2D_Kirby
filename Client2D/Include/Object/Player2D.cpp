@@ -2553,8 +2553,6 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState->SetPlayer(this);
 
 		m_IsSpecialStateChanged = true;
-
-		m_KirbyState->SetWorldScale(120.f, 120.f, 1.f);
 	}
 	break;
 	case Ability_State::Fight:

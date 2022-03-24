@@ -97,7 +97,7 @@ bool CObjectHierarchy::Init()
 	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem,
 		g_Block, g_Ladder, g_Awl };
 
-	std::vector<std::string>  vecMiddleBossObjects = { g_MiddleHammerName };
+	std::vector<std::string>  vecMiddleBossObjects = { g_MiddleHammerName, g_MiddleScissorName };
 
 	std::vector<std::string>  vecBossObjects = { g_BossTree };
 

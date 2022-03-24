@@ -69,6 +69,7 @@
 #include "Object/EffectChangeToFloat4.h"
 #include "Object/EffectChangeToFloat6.h"
 #include "Object/MiddleBossHammer.h"
+#include "Object/MiddleBossScissorBug.h"
 #include "Object/BossTree.h"
 #include "Object/Ladder.h"
 #include "Object/Awl.h"
@@ -471,6 +472,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_MiddleHammerName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMiddleBossHammer>(NewMonsterName);
+		}
+		else if (strcmp(g_MiddleScissorName.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CMiddleBossScissorBug>(NewMonsterName);
 		}
 		else if (strcmp(g_BossTree.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -952,6 +957,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CMiddleBossHammer).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossHammer>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CMiddleBossScissorBug).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CMiddleBossScissorBug>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CBossTree).hash_code())

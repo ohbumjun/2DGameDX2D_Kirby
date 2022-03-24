@@ -41,7 +41,6 @@ CLifeObject::CLifeObject():
 CLifeObject::CLifeObject(const CLifeObject& obj) : CGameObject(obj)
 {
 	*this = obj;
-
 	m_PrevPos.y = -1.f;
 }
 

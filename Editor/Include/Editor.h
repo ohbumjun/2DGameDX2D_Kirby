@@ -16,6 +16,7 @@ const std::string g_FightMonsterName = "Fight";
 const std::string g_BossTree = "BossTree";
 // Middle Boss
 const std::string g_MiddleHammerName = "MiddleHammerGorilla";
+const std::string g_MiddleScissorName = "MiddleScissorBug";
 // Effect
 const std::string g_SceneChangeStarToGreen3 = "SceneChangeToGreen3";
 const std::string g_SceneChangeToGreen1 = "SceneChangeToGreen1";

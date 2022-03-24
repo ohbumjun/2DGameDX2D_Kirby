@@ -212,6 +212,7 @@
     <ClCompile Include="Object\Ladder.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\MiddleBossHammer.cpp" />
+    <ClCompile Include="Object\MiddleBossScissorBug.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
     <ClCompile Include="Object\MonsterAnimation.cpp" />
     <ClCompile Include="Object\MoonAboveParticle.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="Object\Ladder.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\MiddleBossHammer.h" />
+    <ClInclude Include="Object\MiddleBossScissorBug.h" />
     <ClInclude Include="Object\Monster.h" />
     <ClInclude Include="Object\MonsterAnimation.h" />
     <ClInclude Include="Object\MoonAboveParticle.h" />
