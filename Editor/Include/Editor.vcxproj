@@ -194,6 +194,7 @@
     <ClCompile Include="Object\HPRedItem.cpp" />
     <ClCompile Include="Object\HPYellowItem.cpp" />
     <ClCompile Include="Object\Item.cpp" />
+    <ClCompile Include="Object\Kabu.cpp" />
     <ClCompile Include="Object\Ladder.cpp" />
     <ClCompile Include="Object\Line.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="Object\HPRedItem.h" />
     <ClInclude Include="Object\HPYellowItem.h" />
     <ClInclude Include="Object\Item.h" />
+    <ClInclude Include="Object\Kabu.h" />
     <ClInclude Include="Object\Ladder.h" />
     <ClInclude Include="Object\Line.h" />
     <ClInclude Include="Object\LineContainer.h" />

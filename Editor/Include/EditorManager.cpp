@@ -42,6 +42,7 @@
 #include "Object/Squid.h"
 #include "Object/TileMapEmpty.h"
 #include "Object/MushRoom.h"
+#include "Object/Kabu.h"
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
 #include "Object/FireMonster.h"
@@ -449,6 +450,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_Squid.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSquid>(NewMonsterName);
+		}
+		else if (strcmp(g_Kabu.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CKabu>(NewMonsterName);
 		}
 		else if (strcmp(g_BeamMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -917,6 +922,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CAwl).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CAwl>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CKabu).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CKabu>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CLadder).hash_code())

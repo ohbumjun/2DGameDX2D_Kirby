@@ -222,6 +222,9 @@
     <ClCompile Include="Object\Awl.cpp">
       <Filter>03. Object\09. SceneObject</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Kabu.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -379,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Kabu.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

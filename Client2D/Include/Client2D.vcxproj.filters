@@ -375,6 +375,9 @@
     <ClCompile Include="Object\Awl.cpp">
       <Filter>02. Object\11. SceneObject</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Kabu.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -658,6 +661,9 @@
     </ClInclude>
     <ClInclude Include="Object\Awl.h">
       <Filter>02. Object\11. SceneObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Kabu.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
