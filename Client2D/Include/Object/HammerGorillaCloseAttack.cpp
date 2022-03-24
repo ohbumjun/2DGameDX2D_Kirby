@@ -34,6 +34,9 @@ void CHammerGorillaCloseAttack::SetLeftAttackDir(float YDir)
 void CHammerGorillaCloseAttack::Start()
 {
 	CAttackEffect::Start();
+
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(1.5f);
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(1.5f);
 }
 
 bool CHammerGorillaCloseAttack::Init()
@@ -46,6 +49,8 @@ bool CHammerGorillaCloseAttack::Init()
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(150.f, 150.f, 1.f);
+
+	SetLifeTime(1.5f);
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);

@@ -9,10 +9,6 @@ protected:
     CMiddleBossScissorBug();
     virtual ~CMiddleBossScissorBug();
 private:
-    // Jump
-    bool m_JumpEnable;
-    float m_JumpLimitTime;
-    float m_JumpLimitTimeMax;
     // Reset Init Info
     float m_InitMoveVelocity;
     float m_InitJumpAccel;
@@ -20,6 +16,9 @@ private:
     Vector3 m_GrabTraceDir;
     // Grab
     bool m_AttemptGrab;
+    // Time
+    float m_GrabLimitTime;
+    float m_GrabLimitTimeMax;
 public:
     virtual void Start() override;
     virtual bool Init() override;
@@ -28,7 +27,6 @@ public:
 private:
     // Attack
     void CloseAttack();
-    void ChangeFarAttackAnimation();
     void ChangeCloseAttackAnimation();
     // Grab
     void ChangePrepareGrabAnimation();
