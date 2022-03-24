@@ -90,7 +90,8 @@ bool CObjectHierarchy::Init()
 
 	std::vector<std::string>  vecEffectObjects = { g_SceneChangeStarToGreen3, g_SceneChangeToGreen2,
 		g_SceneChangeToGreen1, g_SceneChangeToGreen4 , g_SceneChangeToGreen5,
-		g_SceneChangeToFloat2_1, g_SceneChangeToFloat2_2,
+		g_SceneChangeToFloat2_1, g_SceneChangeToFloat2_2, g_SceneChangeToFloat3, g_SceneChangeToFloat4,
+		g_SceneChangeToFloat6,
 		g_WaterFloatIsland1, g_WaterFloatIsland2_2 };
 
 	std::vector<std::string>  vecItemObjects = { g_HPYellowItem, g_HPGreenItem, g_HPRedItem,

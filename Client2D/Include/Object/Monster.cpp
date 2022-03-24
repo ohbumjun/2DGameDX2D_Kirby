@@ -774,7 +774,7 @@ void CMonster::OnCollisionBegin(const CollisionResult& Result)
 	// Player가 삼키고 있는 동안 Player 와 부딪히면, Player 에게 먹히는 상태로 세팅한다.
 	if (Result.Dest->GetGameObject() == m_Scene->GetPlayerObject())
 	{
-		// 당겨지지 않고 있는 상태라면 X
+		// 당겨지지 않고 있는 상태라면 X --> 그냥 바로 Player 에게 데미지를 준다.
 		if (!m_IsBeingPulled)
 			return;
 

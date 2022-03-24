@@ -17,5 +17,7 @@ public :
     virtual CNormalMonster* Clone() override;
     virtual void Save(FILE* pFile)override;
     virtual void Load(FILE* pFile)override;
+private :
+    void OnNormalMonsterBodyCollisionBegin(const CollisionResult& Result);
 };
 

@@ -378,6 +378,15 @@
     <ClCompile Include="Object\Kabu.cpp">
       <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectChangeToFloat6.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Float5Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Float6Scene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -664,6 +673,15 @@
     </ClInclude>
     <ClInclude Include="Object\Kabu.h">
       <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToFloat6.h">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Float5Scene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Float6Scene.h">
+      <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

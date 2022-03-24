@@ -67,6 +67,7 @@
 #include "Object/EffectChangeToFloat2_2.h"
 #include "Object/EffectChangeToFloat3.h"
 #include "Object/EffectChangeToFloat4.h"
+#include "Object/EffectChangeToFloat6.h"
 #include "Object/MiddleBossHammer.h"
 #include "Object/BossTree.h"
 #include "Object/Ladder.h"
@@ -534,6 +535,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_SceneChangeToFloat4.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat4>(NewMonsterName);
+		}
+		else if (strcmp(g_SceneChangeToFloat6.c_str(), SelectObjectName.c_str()) == 0)
+		{
+		CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToFloat6>(NewMonsterName);
 		}
 		else if (strcmp(g_WaterFloatIsland1.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -1020,6 +1025,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CEffectChangeToFloat4).hash_code())
+	{
+	CEffectChangeToFloat4* Obj = Scene->LoadGameObject<CEffectChangeToFloat4>();
+	return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToFloat6).hash_code())
 	{
 	CEffectChangeToFloat4* Obj = Scene->LoadGameObject<CEffectChangeToFloat4>();
 	return Obj;
