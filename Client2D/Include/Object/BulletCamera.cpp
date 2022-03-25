@@ -47,7 +47,6 @@ bool CBulletCamera::Init()
 	m_Sprite->AddChild(m_Camera);
 	m_Sprite->AddChild(m_Body);
 
-
 	m_Body->SetCollisionProfile("PlayerAttack");
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CBulletCamera::CollisionCallback);
 

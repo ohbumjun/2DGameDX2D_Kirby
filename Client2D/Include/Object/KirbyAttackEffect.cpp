@@ -1,6 +1,8 @@
 #include "KirbyAttackEffect.h"
+#include "../Component/BombKirbyState.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
+#include "Scene/CameraManager.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
@@ -42,6 +44,34 @@ void CKirbyAttackEffect::ApplyJumpEffect()
 	m_JumpVelocity = 60.f;
 	m_FallStartY = GetWorldPos().y;
 	m_FallTime = 0.f;
+}
+
+void CKirbyAttackEffect::ApplyFallEffect()
+{
+	m_PhysicsSimulate = true;
+	m_Jump = true;
+	m_FallStartY = GetWorldPos().y;
+	m_FallTime = 0.f;
+}
+
+void CKirbyAttackEffect::ApplyBombFallAttackEnd()
+{
+	// BombFall의 경우, Player 에게
+		// 1) 카메라 돌려주고
+		// 2) Physics 다시 세팅한다.
+	if (m_AttackType == KirbyAttackEffect_Type::BombFall)
+	{
+		m_Scene->GetCameraManager()->ReturnCamera();
+
+		m_Camera = nullptr;
+
+		CBombKirbyState* OwnerKirby = dynamic_cast<CBombKirbyState*>(m_KirbyOwner);
+
+		if (!OwnerKirby)
+			return;
+
+		OwnerKirby->SetFallAttackEnd();
+	}
 }
 
 void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
@@ -164,20 +194,38 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 
 	case KirbyAttackEffect_Type::BombFall:
 	{
-		m_MainSprite->SetWorldScale(50.f, 50.f, 1.f);
+		m_MainSprite->SetWorldScale(250.f, 250.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
 
-		m_AttackDistLimitMax = 750.f;
+		m_AttackDistLimitMax = 900.f;
 		m_AttackObjectSpeed = 600.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"KirbyFireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
+			"KirbyFireFallAttackEffect", TEXT("Kirby_Bomb_BombThrowAttack.anim"));
 
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
 
 		m_BottomCollisionApplied = true;
+
+		/*
+		m_Camera = CreateComponent<CCameraComponent>("BombFallCamera");
+
+		m_MainSprite->AddChild(m_Camera);
+
+		m_Camera->OnViewportCenter();
+		*/
+
 	}
 	break;
+	}
+}
+
+void CKirbyAttackEffect::ApplyCameraMove()
+{
+	if (m_Camera)
+	{
+		m_Scene->GetCameraManager()->KeepCamera();
+		m_Scene->GetCameraManager()->SetCurrentCamera(m_Camera);
 	}
 }
 
@@ -197,6 +245,11 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 		AttackEffect->SetKirbyOwner(m_KirbyOwner);
 		AttackEffect->m_Collider->Enable(false);
 		AttackEffect->SetLifeTime(0.5f);
+
+		// BombFall의 경우, Player 에게
+		// 1) 카메라 돌려주고
+		// 2) Physics 다시 세팅한다.
+		ApplyBombFallAttackEnd();
 	}
 	else
 	{
@@ -215,6 +268,7 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 	}
 
 	Destroy();
+
 }
 
 void CKirbyAttackEffect::Start()
@@ -239,6 +293,12 @@ bool CKirbyAttackEffect::Init()
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CKirbyAttackEffect::CollisionCallback);
 
+	m_Camera = CreateComponent<CCameraComponent>("BombFallCamera");
+
+	m_MainSprite->AddChild(m_Camera);
+
+	m_Camera->OnViewportCenter();
+
 	return true;
 }
 
@@ -256,6 +316,8 @@ void CKirbyAttackEffect::Update(float DeltaTime)
 	}
 	if (m_AttackDistLimit >= m_AttackDistLimitMax)
 	{
+		ApplyBombFallAttackEnd();
+
 		Destroy();
 	}
 }
@@ -267,6 +329,8 @@ void CKirbyAttackEffect::PostUpdate(float DeltaTime)
 
 void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 {
+	ApplyBombFallAttackEnd();
+
 	Destroy();
 
 	// 현재 충돌한 물체가 Block 이라면

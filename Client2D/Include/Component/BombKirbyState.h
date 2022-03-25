@@ -13,6 +13,8 @@ protected:
     virtual void Attack();
     virtual void FallDownAttack();
     virtual void GoUpAttack();
+protected :
+    void MakeFallDownBomb();
 private:
     // Go Up
     bool m_GoUpState;
@@ -25,8 +27,10 @@ private:
     bool m_FallAttackState;
     float m_FallAttackTime;
     float m_FallAttackTimeMax;
-
     Vector2 m_InitColliderLength;
+    bool m_FallDownBombMade;
+public :
+    void SetFallAttackEnd();
 private:
     void UpdateAttackGoUpState(float DeltaTime);
     void UpdateFallAttack(float DeltaTime);

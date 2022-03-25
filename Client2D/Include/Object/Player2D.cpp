@@ -2362,8 +2362,6 @@ void CPlayer2D::FallDownAttackCallback(const CollisionResult& Result)
 		if (!OwnerMonster)
 			return;
 
-		// 1) Hit Effect
-
 		// 2) Sound
 
 		// 3) Damage Font 작성

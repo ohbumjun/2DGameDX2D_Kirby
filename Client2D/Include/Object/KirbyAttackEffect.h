@@ -20,17 +20,21 @@ private:
     float m_AttackObjectSpeed;
     KirbyAttackEffect_Type m_AttackType;
     class CKirbyState* m_KirbyOwner;
+    CSharedPtr<class CCameraComponent> m_Camera;
 protected:
     void SetKirbyOwner(class CKirbyState* Owner)
     {
         m_KirbyOwner = Owner;
     }
     void SetAttackType(KirbyAttackEffect_Type Type);
+    void ApplyCameraMove();
 protected :
     virtual void BottomCollisionSpecificAction() override;
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
     void ApplyJumpEffect();
+    void ApplyFallEffect();
+    void ApplyBombFallAttackEnd();
 public:
     virtual void Start() override;
     virtual bool Init() override;
