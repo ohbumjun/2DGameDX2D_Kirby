@@ -152,7 +152,6 @@ void CMiddleBossScissorBug::CloseAttack()
 			0.f);
 
 		AttackEffect->SetLeftAttackDir();
-
 	}
 	else
 	{
@@ -175,7 +174,6 @@ void CMiddleBossScissorBug::CloseAttack()
 
 void CMiddleBossScissorBug::AIAttackSpecific(float DeltaTime)
 {
-
 	if (m_Jump)
 		return;
 

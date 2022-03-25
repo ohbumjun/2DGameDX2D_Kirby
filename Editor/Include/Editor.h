@@ -14,6 +14,7 @@ const std::string g_FireMonsterName    = "Fire";
 const std::string g_FightMonsterName = "Fight";
 // Boss
 const std::string g_BossTree = "BossTree";
+const std::string g_BossPenguin = "BossPenguin";
 // Middle Boss
 const std::string g_MiddleHammerName = "MiddleHammerGorilla";
 const std::string g_MiddleScissorName = "MiddleScissorBug";

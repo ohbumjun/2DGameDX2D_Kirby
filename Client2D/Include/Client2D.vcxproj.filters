@@ -396,6 +396,12 @@
     <ClCompile Include="Object\EffectChangeToFloat7.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BossPenguin.cpp">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\PenguinCloseAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -700,6 +706,12 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToFloat7.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossPenguin.h">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PenguinCloseAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

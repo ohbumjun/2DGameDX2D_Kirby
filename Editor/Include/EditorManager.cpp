@@ -72,6 +72,7 @@
 #include "Object/MiddleBossHammer.h"
 #include "Object/MiddleBossScissorBug.h"
 #include "Object/BossTree.h"
+#include "Object/BossPenguin.h"
 #include "Object/Ladder.h"
 #include "Object/Awl.h"
 
@@ -481,6 +482,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_BossTree.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossTree>(NewMonsterName);
+		}
+		else if (strcmp(g_BossPenguin.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossPenguin>(NewMonsterName);
 		}
 		else if (strcmp(g_HPYellowItem.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -973,6 +978,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBossTree>();
 		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBossPenguin).hash_code())
+	{
+	CGameObject* Obj = Scene->LoadGameObject<CBossPenguin>();
+	return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())
 	{

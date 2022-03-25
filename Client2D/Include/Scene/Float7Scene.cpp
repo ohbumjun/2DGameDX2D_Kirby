@@ -38,8 +38,6 @@ void CFloat7Scene::Start()
 
 	SetPlayerObject(Player2D);
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
-
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);

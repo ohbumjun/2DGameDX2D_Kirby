@@ -171,6 +171,7 @@
     <ClCompile Include="Object\BeamMonsterAttack.cpp" />
     <ClCompile Include="Object\Block.cpp" />
     <ClCompile Include="Object\BossMonster.cpp" />
+    <ClCompile Include="Object\BossPenguin.cpp" />
     <ClCompile Include="Object\BossTree.cpp" />
     <ClCompile Include="Object\Apple.cpp" />
     <ClCompile Include="Object\BubbleParticle.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalBear.cpp" />
     <ClCompile Include="Object\NormalMonster.cpp" />
+    <ClCompile Include="Object\PenguinCloseAttack.cpp" />
     <ClCompile Include="Object\PixelTest.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
@@ -275,6 +277,7 @@
     <ClInclude Include="Object\BeamMonsterAttack.h" />
     <ClInclude Include="Object\Block.h" />
     <ClInclude Include="Object\BossMonster.h" />
+    <ClInclude Include="Object\BossPenguin.h" />
     <ClInclude Include="Object\BossTree.h" />
     <ClInclude Include="Object\Apple.h" />
     <ClInclude Include="Object\BubbleParticle.h" />
@@ -323,6 +326,7 @@
     <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalBear.h" />
     <ClInclude Include="Object\NormalMonster.h" />
+    <ClInclude Include="Object\PenguinCloseAttack.h" />
     <ClInclude Include="Object\PixelTest.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PlayerAnimation2D.h" />
