@@ -53,5 +53,6 @@ private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;
     virtual void AIDeathSpecific(float DeltaTime) override;
+
 };
 

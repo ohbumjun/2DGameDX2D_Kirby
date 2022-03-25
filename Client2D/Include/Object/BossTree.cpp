@@ -34,7 +34,7 @@ CBossTree::CBossTree()  :
 	m_HP = 5000.f;
 	m_HPMax = 5000.f;
 
-	m_CameraFollowMaxTime = 6.f;
+	m_CameraFollowMaxTime = 8.f;
 }
 
 CBossTree::CBossTree(const CBossTree& Monster) : CBossMonster(Monster)

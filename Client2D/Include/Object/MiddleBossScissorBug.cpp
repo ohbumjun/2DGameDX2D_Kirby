@@ -6,6 +6,9 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "HammerGorillaCloseAttack.h"
 #include "EffectSceneChangeAlpha.h"
+#include "Component/ColliderCircle.h"
+#include "Player2D.h"
+#include "UI/UIDamageFont.h"
 
 class CAnimationSequence2DInstance;
 
@@ -24,9 +27,12 @@ CMiddleBossScissorBug::CMiddleBossScissorBug() :
 	m_FarAttackDistance = 1000.f;
 	m_FarAttackLimitTimeMax = 4.f;
 
-	// m_HP = 3000.f;
-	m_HP = 30.f;
+	m_HP = 3000.f;
 	m_HPMax = 3000.f;
+
+	m_HitLimitTimeMax = 0.4f;
+
+	m_CameraFollowMaxTime = 6.f;
 }
 
 CMiddleBossScissorBug::~CMiddleBossScissorBug()
@@ -36,8 +42,7 @@ void CMiddleBossScissorBug::Start()
 {
 	CBossMonster::Start();
 
-	// m_HP = 3000.f;
-	m_HP = 30.f;
+	m_HP = 3000.f;
 	m_HPMax = 3000.f;
 
 	m_PhysicsSimulate = true;
@@ -97,6 +102,9 @@ void CMiddleBossScissorBug::Start()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	// Collider Body Collision Callback 적용하기
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, (CMonster*)this, &CMiddleBossScissorBug::OnMonsterBodyCollisionBegin);
 }
 
 bool CMiddleBossScissorBug::Init()
@@ -270,7 +278,7 @@ void CMiddleBossScissorBug::ChangePrepareGrabAnimation()
 
 void CMiddleBossScissorBug::GrabActionStart()
 {
-	m_MonsterMoveVelocity = 600.f;
+	m_MonsterMoveVelocity = 700.f;
 
 	m_AttemptGrab = true;
 

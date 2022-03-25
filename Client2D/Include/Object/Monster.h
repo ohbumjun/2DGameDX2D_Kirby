@@ -154,6 +154,9 @@ protected: // Animation
     virtual void ChangeDeathAnimation();
     virtual void ChangeAttackAnimation();
 protected:
+    // Body Collider Collision Callback
+    void OnMonsterBodyCollisionBegin(const CollisionResult& Result);
+protected:
     void PaperBurnEnd();
 public :
     virtual void Save(FILE* pFile)override;

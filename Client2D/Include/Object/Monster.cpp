@@ -9,7 +9,7 @@
 #include "Player2D.h"
 #include "Component/TileEmptyComponent.h"
 #include "../UI/SimpleHUD.h"
-
+#include "UI/UIDamageFont.h"
 
 CMonster::CMonster() :
 	m_AttackLimitTime(0.f),
@@ -857,6 +857,55 @@ void CMonster::ChangeAttackAnimation()
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
 	else
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");
+}
+
+void CMonster::OnMonsterBodyCollisionBegin(const CollisionResult& Result)
+{
+	CGameObject* Owner = Result.Dest->GetGameObject();
+
+	CWidgetComponent* ObjectWindow = nullptr;
+
+	CPlayer2D* Player = dynamic_cast<CPlayer2D*>(Result.Dest->GetGameObject());
+
+	if (!Player)
+		return;
+
+	// Player가 위에서 떨어지는 경우는 X --> Player Fall Attack 만을 적용해야 하기 때문이다.
+	if (GetWorldPos().y + m_ColliderBody->GetInfo().Radius < Player->GetWorldPos().y)
+		return;
+
+	// Player 가 Slide Attack 중에는 X
+	if (Player->IsSlideAttacking())
+		return;
+
+	// Scene Change 가 일어나고 있다면
+	if (Player->IsSceneChanging())
+		return;
+
+	// 이미 맞아서 데미지 받아 이동중이라면
+	if (Player->IsBeingHit())
+		return;
+
+	Player->Damage(m_AttackAbility);
+
+	Player->SetIsBeingHit();
+
+	if (m_ObjectMoveDir.x > 0)
+		Player->SetBeingHitDirection(m_ObjectMoveDir.x);
+	else
+		Player->SetBeingHitDirection(m_ObjectMoveDir.x);
+
+	// DestMonster->Damage(2.f);
+
+	// Create Damage Font
+	ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
+	if (ObjectWindow)
+	{
+		CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+
+		DamageFont->SetDamage((int)m_AttackAbility);
+	}
 }
 
 void CMonster::PaperBurnEnd()
