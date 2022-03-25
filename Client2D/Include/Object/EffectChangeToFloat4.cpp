@@ -25,7 +25,7 @@ void CEffectChangeToFloat4::Start()
 
 	// m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen2Body");
 	m_ColliderBody = (CColliderBox2D*)m_RootComponent.Get();
-
+	m_ColliderBody->SetCollisionProfile("Monster");
 	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToFloat4::ChangeSceneToGreen2Scene);
 
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToFloat4::SetSceneChangeCallbackToPlayer);
@@ -42,9 +42,8 @@ bool CEffectChangeToFloat4::Init()
 
 	SetRootComponent(m_ColliderBody);
 
-	m_ColliderBody->SetCollisionProfile("PlayerEffect");
+	m_ColliderBody->SetCollisionProfile("Monster");
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
-
 
 	return true;
 }
@@ -71,21 +70,7 @@ void CEffectChangeToFloat4::MakeSceneChangeEffect(const CollisionResult& Result)
 
 void CEffectChangeToFloat4::ChangeSceneToFloat4Scene()
 {
-	/*
-	CGameObject* DestObject = Result.Dest->GetGameObject();
-
-	if (m_Scene->GetPlayerObject() == DestObject)
-	{
-		// Next Scene 에 세팅해둔다.
-		CSceneManager::GetInst()->CreateNewScene(false);
-		CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);
-		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
-		{
-			CSceneManager::GetInst()->ChangeNextScene();
-		}
-	}
-	*/
+	
 	// Next Scene 에 세팅해둔다.
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>(false);

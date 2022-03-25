@@ -83,6 +83,10 @@ void CNormalMonster::OnNormalMonsterBodyCollisionBegin(const CollisionResult& Re
 	if (GetWorldPos().y + m_ColliderBody->GetInfo().Radius < Player->GetWorldPos().y)
 		return;
 
+	// Player 가 Slide Attack 중에는 X
+	if (Player->IsSlideAttacking())
+		return;
+
 	Player->Damage(m_AttackAbility);
 
 	Player->SetIsBeingHit();
