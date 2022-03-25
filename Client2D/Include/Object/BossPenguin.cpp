@@ -1,9 +1,10 @@
 #include "BossPenguin.h"
-#include "HammerGorillaFarAttack.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
 #include "Animation/AnimationSequence2DInstance.h"
 #include "PenguinCloseAttack.h"
+#include "Component/ColliderCircle.h"
+#include "EffectJumpAir.h"
 
 class CAnimationSequence2DInstance;
 
@@ -18,10 +19,10 @@ CBossPenguin::CBossPenguin() :
 	SetTypeID<CBossPenguin>();
 	m_DashDistance = 1200.f;
 	m_JumpVelocity = 60.f;
-	m_AttackDistance = 750.f;
+	m_AttackDistance = 700.f;
 	m_IsGroundObject = true;
 	m_CloseAttackDistance = 450.f;
-	m_FarAttackDistance = 750.f;
+	m_FarAttackDistance = 700.f;
 
 	m_FarAttackLimitTimeMax = 6.0f;
 
@@ -68,6 +69,10 @@ void CBossPenguin::Start()
 	// Jump
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetPlayTime(1.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetPlayTime(1.5f);
+
+	// Collider Body Collision Callback 적용하기
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, (CMonster*)this, &CBossPenguin::OnMonsterBodyCollisionBegin);
+
 
 	m_InitMoveVelocity = m_MonsterMoveVelocity;
 
@@ -132,6 +137,8 @@ void CBossPenguin::FarAttack()
 	m_FarAttackTraceDir = m_Scene->GetPlayerObject()->GetWorldPos() - GetWorldPos();
 
 	m_FarAttackTraceDir.Normalize();
+
+	MakeJumpAirEffect();
 }
 
 void CBossPenguin::CloseAttack()
@@ -223,6 +230,8 @@ void CBossPenguin::AITraceSpecific(float DeltaTime)
 		if (m_IsBottomCollided && m_JumpLimitTime <= 0.f)
 		{
 			JumpStart();
+
+			MakeJumpAirEffect();
 		}
 	}
 	else if (DistToPlayer < m_DashRunDistance)
@@ -289,6 +298,17 @@ void CBossPenguin::UpdateFarAttackAction(float DeltaTime)
 			m_MonsterMoveVelocity = m_InitMoveVelocity;
 		}
 	}
+}
+
+void CBossPenguin::MakeJumpAirEffect()
+{
+	CEffectJumpAir* Effect = m_Scene->CreateGameObject<CEffectJumpAir>("JumpAir");
+	Effect->SetRightEffect();
+	Effect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * GetPivot().x, GetWorldPos().y - GetPivot().y * GetWorldScale().y, GetWorldPos().z);
+
+	Effect = m_Scene->CreateGameObject<CEffectJumpAir>("JumpAir");
+	Effect->SetLeftEffect();
+	Effect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * GetPivot().x, GetWorldPos().y - GetPivot().y * GetWorldScale().y, GetWorldPos().z);
 }
 
 void CBossPenguin::SetObjectLand()

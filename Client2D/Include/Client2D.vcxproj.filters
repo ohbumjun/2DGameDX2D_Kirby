@@ -402,6 +402,9 @@
     <ClCompile Include="Object\PenguinCloseAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectJumpAir.cpp">
+      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -712,6 +715,9 @@
     </ClInclude>
     <ClInclude Include="Object\PenguinCloseAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectJumpAir.h">
+      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

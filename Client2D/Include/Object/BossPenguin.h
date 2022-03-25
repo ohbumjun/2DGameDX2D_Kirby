@@ -38,6 +38,7 @@ private:
     void ChangeJumpAttackAnimation();
     void UpdateJumpAction(float DeltaTime);
     void UpdateFarAttackAction(float DeltaTime);
+    void MakeJumpAirEffect();
 protected:
     virtual void SetObjectLand() override;
     virtual void ChangeTraceAnimation() override;

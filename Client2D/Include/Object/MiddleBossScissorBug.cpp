@@ -105,6 +105,7 @@ void CMiddleBossScissorBug::Start()
 
 	// Collider Body Collision Callback 적용하기
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, (CMonster*)this, &CMiddleBossScissorBug::OnMonsterBodyCollisionBegin);
+
 }
 
 bool CMiddleBossScissorBug::Init()
