@@ -21,8 +21,8 @@ private:
     Vector3 m_InitTraceDir;
     // Far Attack
     bool m_IsFarAttacking;
-    float m_FarAttackLimitTime;
-    float m_FarAttackLimitTimeMax;
+    float m_FarAttackTime;
+    float m_FarAttackTimeMax;
     Vector3 m_FarAttackTraceDir;
 public:
     virtual void Start() override;
@@ -30,6 +30,7 @@ public:
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
 private:
+    void JumpStart();
     void FarAttack();
     void CloseAttack();
     void ChangeFarAttackAnimation();

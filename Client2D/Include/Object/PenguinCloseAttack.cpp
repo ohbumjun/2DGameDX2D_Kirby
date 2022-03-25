@@ -48,7 +48,7 @@ bool CPenguinCloseAttack::Init()
 		"PenguinCloseAttack", TEXT("Boss_Penguin_CloseStarAttack.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
-	m_MainSprite->SetWorldScale(180.f, 180.f, 1.f);
+	m_MainSprite->SetWorldScale(160.f, 160.f, 1.f);
 
 	SetLifeTime(1.5f);
 
@@ -64,6 +64,8 @@ void CPenguinCloseAttack::Update(float DeltaTime)
 	CAttackEffect::Update(DeltaTime);
 
 	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 350.f);
+
+	AddRelativeRotationZ(360.f * DeltaTime);
 }
 
 void CPenguinCloseAttack::PostUpdate(float DeltaTime)
