@@ -390,10 +390,10 @@
     <ClCompile Include="Scene\Float7Scene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
-    <ClCompile Include="Object\EffectChangeToFloat7.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="ClientManager.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectChangeToFloat7.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
   </ItemGroup>
@@ -699,7 +699,7 @@
       <Filter>01. SceneMode</Filter>
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToFloat7.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

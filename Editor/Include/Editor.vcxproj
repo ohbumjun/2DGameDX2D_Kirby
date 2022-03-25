@@ -179,6 +179,7 @@
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\Block.cpp" />
     <ClCompile Include="Object\BossMonster.cpp" />
+    <ClCompile Include="Object\BossPenguin.cpp" />
     <ClCompile Include="Object\BossTree.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat3.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\Block.h" />
     <ClInclude Include="Object\BossMonster.h" />
+    <ClInclude Include="Object\BossPenguin.h" />
     <ClInclude Include="Object\BossTree.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\EffectChangeToFloat3.h" />

@@ -1,7 +1,26 @@
 #pragma once
-#include "C:\Users\dhsys\Desktop\DX_Project\Engine\Include\GameObject\GameObject.h"
+#include "GameObject\GameObject.h"
+
 class CEffectChangeToFloat7 :
     public CGameObject
 {
+    friend class CScene;
+protected:
+    CEffectChangeToFloat7();
+    virtual ~CEffectChangeToFloat7();
+private:
+    CSharedPtr<class CColliderBox2D> m_ColliderBody;
+public:
+    virtual void Start() override;
+    virtual bool Init() override;
+    virtual void Update(float DeltaTime);
+    virtual void PostUpdate(float DeltaTime);
+private:
+    void MakeSceneChangeEffect(const CollisionResult& Result);
+    void ChangeSceneToFloat7Scene();
+    void SetSceneChangeCallbackToPlayer(const CollisionResult& Result);
+    void ResetSceneChangeCallbackToPlayer(const CollisionResult& Result);
+public:
+    virtual void Load(FILE* pFile) override;
 };
 

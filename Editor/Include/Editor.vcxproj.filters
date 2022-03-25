@@ -234,6 +234,9 @@
     <ClCompile Include="Object\EffectChangeToFloat7.cpp">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BossPenguin.cpp">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToFloat7.h">
       <Filter>03. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossPenguin.h">
+      <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
