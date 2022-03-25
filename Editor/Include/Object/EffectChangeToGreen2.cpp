@@ -30,7 +30,7 @@ bool CEffectChangeToGreen2::Init()
 
 	SetRootComponent(m_ColliderBody);
 
-	m_ColliderBody->SetCollisionProfile("PlayerEffect");
+	m_ColliderBody->SetCollisionProfile("PlayerEffect"); //
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
 
 	return true;
