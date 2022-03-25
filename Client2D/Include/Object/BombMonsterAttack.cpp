@@ -12,7 +12,7 @@
 
 CBombMonsterAttack::CBombMonsterAttack() :
 	m_AttackDistLimit(0.f),
-	m_AttackDistLimitMax(1000.f)
+	m_AttackDistLimitMax(550.f)
 {}
 
 CBombMonsterAttack::CBombMonsterAttack(const CBombMonsterAttack& Attack) : CAttackEffect(Attack)
@@ -44,10 +44,17 @@ bool CBombMonsterAttack::Init()
 		return false;
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"BombAttackEffect", TEXT("Ability_Bomb_ThrowBomb.anim"));
+		"BombAttack", TEXT("Ability_Bomb_ThrowBomb.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
-	m_MainSprite->SetWorldScale(200.f, 200.f, 1.f);
+	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
+	m_MainSprite->GetAnimationInstance()->Play();
+	m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("Explode")->SetLoop(true);
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.4f);
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.4f);
+
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.3f);
@@ -76,6 +83,7 @@ void CBombMonsterAttack::Update(float DeltaTime)
 		m_MonsterOwner->SetAttackEnd();
 
 		CollisionResult Result;
+
 		ExplodeEffect(Result);
 	}
 }
@@ -86,7 +94,19 @@ void CBombMonsterAttack::PostUpdate(float DeltaTime)
 }
 
 void CBombMonsterAttack::SetExplodeAnimation()
-{}
+{
+	m_MainSprite->GetAnimationInstance()->ChangeAnimation("Explode");
+}
+
+void CBombMonsterAttack::ApplyJumpEffect()
+{
+	// Jump
+	m_PhysicsSimulate = true;
+	m_Jump = true;
+	m_JumpVelocity = 40.f;
+	m_FallStartY = GetWorldPos().y;
+	m_FallTime = 0.f;
+}
 
 void CBombMonsterAttack::ExplodeEffect(const CollisionResult& Result)
 {
@@ -94,5 +114,8 @@ void CBombMonsterAttack::ExplodeEffect(const CollisionResult& Result)
 	ExplodeEffect->SetRightAttackDir();
 	ExplodeEffect->SetAttackDirX(0.f);
 	ExplodeEffect->SetWorldPos(GetWorldPos());
-	ExplodeEffect->SetLifeTime(0.2f);
+	ExplodeEffect->SetWorldScale(180.f, 180.f, 1.f);
+	ExplodeEffect->SetLifeTime(0.5f);
+	ExplodeEffect->SetExplodeAnimation();
+	ExplodeEffect->m_Collider->Enable(false);
 }

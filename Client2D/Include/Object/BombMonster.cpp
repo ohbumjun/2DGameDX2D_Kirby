@@ -1,8 +1,7 @@
 #include "BombMonster.h"
-#include "BeamMonsterAttack.h"
+#include "BombMonsterAttack.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
-
 #include "Animation/AnimationSequence2DInstance.h"
 
 class CAnimationSequence2DInstance;
@@ -98,6 +97,7 @@ void CBombMonster::Attack()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetLeftAttackDir();
+		AttackEffect->ApplyJumpEffect();
 	}
 	// 오른쪽으로 보고 있다면 
 	else
@@ -107,5 +107,6 @@ void CBombMonster::Attack()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetRightAttackDir();
+		AttackEffect->ApplyJumpEffect();
 	}
 }

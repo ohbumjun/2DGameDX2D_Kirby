@@ -9,6 +9,7 @@
 #include "Scene/StartScene.h"
 #include "Scene/Float1Scene.h"
 #include "Scene/Float4Scene.h"
+#include "Scene/Float5Scene.h"
 #include "Scene/Float6Scene.h"
 #include "Scene/Float7Scene.h"
 #include "Scene/Float2_1Scene.h"
@@ -29,6 +30,7 @@
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
 #include "Object/FireMonster.h"
+#include "Object/BombMonster.h"
 #include "Object/FightMonster.h"
 #include "Object/LineContainer.h"
 #include "Object/Block.h"
@@ -156,7 +158,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat7Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat7Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat5Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
 
@@ -167,7 +170,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Float7_SecondBoss.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Float7_SecondBoss.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
@@ -267,6 +271,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CFightMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CFightMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBombMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBombMonster>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CTileMap).hash_code())

@@ -3,7 +3,7 @@
 class CBombMonsterAttack :
     public CAttackEffect
 {
-    friend class CFightMonster;
+    friend class CBombMonster;
 public:
     CBombMonsterAttack();
     CBombMonsterAttack(const CBombMonsterAttack& Attack);
@@ -21,6 +21,7 @@ public:
     virtual void PostUpdate(float DeltaTime) override;
 private :
     void SetExplodeAnimation();
+    void ApplyJumpEffect();
 private :
     void ExplodeEffect(const CollisionResult& Result);
 };
