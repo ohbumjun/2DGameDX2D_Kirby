@@ -8,6 +8,8 @@ class CKirbyAttackEffect :
     friend class CFireKirbyState;
     friend class CFightKirbyState;
     friend class CBeamKirbyState;
+    friend class CBombKirbyState;
+    friend class CSwordKirbyState;
 public:
     CKirbyAttackEffect();
     CKirbyAttackEffect(const CKirbyAttackEffect& Attack);

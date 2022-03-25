@@ -15,6 +15,8 @@ class CPlayer2D :
 	friend class CFireKirbyState;
 	friend class CBeamKirbyState;
 	friend class CFightKirbyState;
+	friend class CBombKirbyState;
+	friend class CSwordKirbyState;
 
 protected:
 	CPlayer2D();

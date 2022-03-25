@@ -411,6 +411,9 @@
     <ClCompile Include="Object\BombMonsterAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Component\BombKirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -730,6 +733,9 @@
     </ClInclude>
     <ClInclude Include="Object\BombMonsterAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\BombKirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="Component\BeamKirbyState.cpp" />
+    <ClCompile Include="Component\BombKirbyState.cpp" />
     <ClCompile Include="Component\FightKirbyState.cpp" />
     <ClCompile Include="Component\FireKirbyState.cpp" />
     <ClCompile Include="Component\KirbyState.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Component\BeamKirbyState.h" />
+    <ClInclude Include="Component\BombKirbyState.h" />
     <ClInclude Include="Component\FightKirbyState.h" />
     <ClInclude Include="Component\FireKirbyState.h" />
     <ClInclude Include="Component\KirbyState.h" />
