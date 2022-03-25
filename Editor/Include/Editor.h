@@ -11,7 +11,9 @@ const std::string g_Kabu = "Kabu";
 // Ability
 const std::string g_BeamMonsterName = "Beam";
 const std::string g_FireMonsterName    = "Fire";
-const std::string g_FightMonsterName = "Fight";
+const std::string g_FightMonsterName  = "Fight";
+const std::string g_BombMonsterName = "Bomb";
+const std::string g_SwordMonsterName = "Sword";
 // Boss
 const std::string g_BossTree = "BossTree";
 const std::string g_BossPenguin = "BossPenguin";

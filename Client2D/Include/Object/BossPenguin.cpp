@@ -13,7 +13,7 @@ CBossPenguin::CBossPenguin() :
 	m_JumpLimitTimeMax(5.f),
 	m_JumpDistance(1200.f),
 	m_DashRunDistance(900.f),
-	m_FarAttackTimeMax(2.0f),
+	m_FarAttackTimeMax(4.5f),
 	m_FarAttackTime(-1.f)
 {
 	SetTypeID<CBossPenguin>();
@@ -58,11 +58,11 @@ void CBossPenguin::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CBossPenguin::CloseAttack);
 
 	// Far Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(2.0f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(4.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetLoop(false);
 	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CBossPenguin::FarAttack);
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(2.0f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(4.5f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetLoop(false);
 	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CBossPenguin::FarAttack);
 
@@ -129,10 +129,10 @@ void CBossPenguin::FarAttack()
 	m_IsGround = false;
 	m_FallTime = 0.f;
 	m_FallStartY = GetWorldPos().y;
-	m_JumpVelocity = 75.f;
+	m_JumpVelocity = 90.f;
 	m_JumpLimitTime = m_JumpLimitTimeMax;
 	
-	m_MonsterMoveVelocity = 550.f;
+	m_MonsterMoveVelocity = 450.f;
 
 	m_FarAttackTraceDir = m_Scene->GetPlayerObject()->GetWorldPos() - GetWorldPos();
 

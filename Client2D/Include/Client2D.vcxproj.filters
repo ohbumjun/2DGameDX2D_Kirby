@@ -405,6 +405,9 @@
     <ClCompile Include="Object\EffectJumpAir.cpp">
       <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BombMonster.cpp">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -718,6 +721,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectJumpAir.h">
       <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BombMonster.h">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
