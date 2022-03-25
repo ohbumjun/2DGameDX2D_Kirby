@@ -237,7 +237,7 @@ void CCameraComponent::FollowPlayerPos(float DeltaTime)
 
 		TraceDir.Normalize();
 
-		AddWorldPos(Vector3(TraceDir * DeltaTime * 700.f));
+		AddWorldPos(Vector3(TraceDir * DeltaTime * 550.f));
 
 		if (DistDiff < 1.f)
 		{
@@ -274,7 +274,7 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 
 		TraceDir.Normalize();
 
-		AddWorldPos(Vector3(TraceDir * DeltaTime * 700.f));
+		AddWorldPos(Vector3(TraceDir * DeltaTime * 550.f));
 
 		bool IsOutOfRange = LimitCameraAreaInsideWorld();
 

@@ -19,6 +19,8 @@ private:
     // Time
     float m_GrabLimitTime;
     float m_GrabLimitTimeMax;
+    // Scene Change
+    float m_SceneChangeLimitTime;
 public:
     virtual void Start() override;
     virtual bool Init() override;
@@ -41,11 +43,15 @@ private:
     void UpdateJumpAction(float DeltaTime);
     // Physics
     void EnablePhysics();
+    // Scene Change
+    void UpdateSceneChangeLimitTime(float DeltaTime);
+    void ChangeSceneToFloat5Scene();
 protected:
     virtual void SetObjectLand() override;
     virtual void ChangeTraceAnimation() override;
 private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;
+    virtual void AIDeathSpecific(float DeltaTime) override;
 };
 

@@ -1,15 +1,19 @@
 #include "MiddleBossScissorBug.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
+#include "Scene/SceneManager.h"
+#include "../Scene/Float5Scene.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "HammerGorillaCloseAttack.h"
+#include "EffectSceneChangeAlpha.h"
 
 class CAnimationSequence2DInstance;
 
 CMiddleBossScissorBug::CMiddleBossScissorBug() :
 	m_GrabLimitTimeMax(1.5f),
 	m_AttemptGrab(false),
-	m_GrabLimitTime(-1.f)
+	m_GrabLimitTime(-1.f),
+	m_SceneChangeLimitTime(-1.f)
 {
 	SetTypeID<CMiddleBossScissorBug>();
 	m_DashDistance = 1400.f;
@@ -20,7 +24,8 @@ CMiddleBossScissorBug::CMiddleBossScissorBug() :
 	m_FarAttackDistance = 1000.f;
 	m_FarAttackLimitTimeMax = 4.f;
 
-	m_HP = 3000.f;
+	// m_HP = 3000.f;
+	m_HP = 30.f;
 	m_HPMax = 3000.f;
 }
 
@@ -31,7 +36,8 @@ void CMiddleBossScissorBug::Start()
 {
 	CBossMonster::Start();
 
-	m_HP = 3000.f;
+	// m_HP = 3000.f;
+	m_HP = 30.f;
 	m_HPMax = 3000.f;
 
 	m_PhysicsSimulate = true;
@@ -114,6 +120,8 @@ void CMiddleBossScissorBug::Update(float DeltaTime)
 	UpdateJumpAction(DeltaTime);
 
 	UpdateGrabAction(DeltaTime);
+
+	UpdateSceneChangeLimitTime(DeltaTime);
 }
 
 void CMiddleBossScissorBug::PostUpdate(float DeltaTime)
@@ -218,6 +226,16 @@ void CMiddleBossScissorBug::AITraceSpecific(float DeltaTime)
 		m_ObjectMoveDir.x = -1.f;
 	else
 		m_ObjectMoveDir.x = 1.f;
+}
+
+void CMiddleBossScissorBug::AIDeathSpecific(float DeltaTime)
+{
+	if (m_SceneChangeLimitTime > 0.f)
+		return;
+
+	CBossMonster::AIDeathSpecific(DeltaTime);
+
+	m_SceneChangeLimitTime = 5.f;
 }
 
 void CMiddleBossScissorBug::ChangeCloseAttackAnimation()
@@ -347,6 +365,35 @@ void CMiddleBossScissorBug::EnablePhysics()
 	m_FallTime = 0.f;
 
 	m_FallStartY = GetWorldPos().y;
+}
+
+void CMiddleBossScissorBug::UpdateSceneChangeLimitTime(float DeltaTime)
+{
+	if (m_SceneChangeLimitTime > 0.f)
+	{
+		m_SceneChangeLimitTime -= DeltaTime;
+
+		if (m_SceneChangeLimitTime <= 0.f)
+		{
+			// Scene Change 를 진행하는 Object를 만들어낸다.
+			CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+			Alpha->SetSceneStart(false);
+
+			Alpha->SetSceneChangeCallback(this, &CMiddleBossScissorBug::ChangeSceneToFloat5Scene);
+		}
+	}
+}
+
+void CMiddleBossScissorBug::ChangeSceneToFloat5Scene()
+{
+	CSceneManager::GetInst()->CreateNewScene(false);
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat5Scene>(false);
+	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH))
+	{
+		CSceneManager::GetInst()->ChangeNextScene();
+	}
 }
 
 void CMiddleBossScissorBug::SetObjectLand()
