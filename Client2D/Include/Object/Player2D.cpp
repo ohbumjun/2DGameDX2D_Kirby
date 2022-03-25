@@ -2577,6 +2577,17 @@ void CPlayer2D::SpecialChange()
 		m_IsSpecialStateChanged = true;
 	}
 	break;
+	case Ability_State::Bomb:
+	{
+		m_KirbyState = nullptr;
+
+		m_KirbyState = CreateComponent<CBombKirbyState>("BombKirbyState");
+
+		m_KirbyState->SetPlayer(this);
+
+		m_IsSpecialStateChanged = true;
+	}
+	break;
 	}
 
 	SpecialChangeEffect();

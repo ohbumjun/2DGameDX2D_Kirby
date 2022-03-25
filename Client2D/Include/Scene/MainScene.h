@@ -16,7 +16,7 @@ public:
 	virtual bool Init() override;
 
 private:
-	void CreateMaterial();
+	virtual void CreateMaterial();
 	void CreateAnimationSequence();
 	void CreateSound();
 	void CreateParticle();

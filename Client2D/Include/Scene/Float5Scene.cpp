@@ -65,35 +65,7 @@ bool CFloat5Scene::Init()
 
 void CFloat5Scene::CreateMaterial()
 {
-	// Particle 
-	m_Scene->GetResource()->CreateMaterial<CMaterial>("BubbleParticleMaterial");
-	CMaterial* BubbleParticleMaterial = m_Scene->GetResource()->FindMaterial("BubbleParticleMaterial");
-	BubbleParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "BubbleParticleTexture", TEXT("Particle/Bubbles99px.png"));
-	BubbleParticleMaterial->SetShader("ParticleRenderShader");
-	BubbleParticleMaterial->SetRenderState("AlphaBlend");
-
-
-	m_Scene->GetResource()->CreateMaterial<CMaterial>("SpecialChangeMaterial");
-	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
-	SpecialChangeParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SpecialChangeParticleTexture", TEXT("Particle/Sparks.png"));
-	SpecialChangeParticleMaterial->SetShader("ParticleRenderShader");
-	SpecialChangeParticleMaterial->SetRenderState("AlphaBlend");
-
-
-	// TileMap
-	m_Scene->GetResource()->CreateMaterial<CMaterial>("DiabloTileMap");
-	CMaterial* TileMapMaterial = m_Scene->GetResource()->FindMaterial("DiabloTileMap");
-	TileMapMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "DiabloTile", TEXT("Diablos_Lair_Floor_TRS/Diablos_Lair_Floor.png"));
-
-	TileMapMaterial->SetShader("TileMapShader");
-	TileMapMaterial->SetRenderState("AlphaBlend");
-
-	// Back Material
-	m_Scene->GetResource()->CreateMaterial<CMaterial>("BackMaterial");
-	CMaterial* BackMaterial = m_Scene->GetResource()->FindMaterial("BackMaterial");
-	BackMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SampleBack", TEXT("LoadingBack.jpg"));
-
-	BackMaterial->SetShader("Mesh2DShader");
+	CSceneMode::CreateMaterial();
 }
 
 void CFloat5Scene::CreateAnimationSequence()
@@ -103,7 +75,9 @@ void CFloat5Scene::CreateSound()
 {}
 
 void CFloat5Scene::CreateParticle()
-{}
+{
+	CSceneMode::CreateParticle();
+}
 
 void CFloat5Scene::PrepareResources()
 {

@@ -30,6 +30,7 @@ protected :
     virtual void BottomCollisionSpecificAction() override;
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
+    void ApplyJumpEffect();
 public:
     virtual void Start() override;
     virtual bool Init() override;

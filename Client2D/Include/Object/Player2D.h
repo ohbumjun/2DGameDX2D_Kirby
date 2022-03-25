@@ -6,6 +6,7 @@
 #include "../Component/KirbyState.h"
 #include "../Component/BeamKirbyState.h"
 #include "../Component/FireKirbyState.h"
+#include "../Component/BombKirbyState.h"
 #include "../Component/NormalKirbyState.h"
 
 class CPlayer2D :

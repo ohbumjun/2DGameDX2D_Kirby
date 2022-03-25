@@ -241,7 +241,8 @@ bool CBombKirbyState::Init()
 	if (!CKirbyState::Init())
 		return false;
 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Bomb", 
+		TEXT("Kirby_Bomb.anim"));
 
 	SetAnimationInstance(AnimationInstance);
 
@@ -302,26 +303,32 @@ void CBombKirbyState::NormalAttackCallback()
 	{
 		// 가운데
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Fight);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Bomb);
 		AttackEffect->SetLeftAttackDir(0.f);
 		// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
 		// AttackEffect->SetLeftAttackDir(0.f);
 
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
+
+		AttackEffect->ApplyJumpEffect();
+
 		AttackEffect->SetKirbyOwner(this);
 	}
 	// 오른쪽으로 보고 있다면 
 	else
 	{
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Fight);
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Bomb);
 		AttackEffect->SetRightAttackDir(0.f);
 		// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
 		// AttackEffect->SetRightAttackDir(0.f);
 
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
+
+		AttackEffect->ApplyJumpEffect();
+
 		AttackEffect->SetKirbyOwner(this);
 	}
 

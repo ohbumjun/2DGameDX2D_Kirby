@@ -20,12 +20,14 @@ protected:
 	CSharedPtr<class CGameObject> m_SceneChangeObject;
 protected:
 	bool m_IsEditMode;
-
 public:
 	void SetPlayerObject(class CGameObject* Obj);
 	void SetTileMapEmptyObject(class CGameObject* Obj);
 	void SetLineContainerObject(class CGameObject* Obj);
 	void SetSceneChangeObject(class CGameObject* Obj);
+protected :
+	virtual void CreateMaterial();
+	virtual void CreateParticle();
 public :
 	void SetIsEditMode (bool Enable)
 {

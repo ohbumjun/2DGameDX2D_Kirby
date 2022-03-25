@@ -10,7 +10,7 @@ CBombMonster::CBombMonster()
 {
 	SetTypeID<CBombMonster>();
 
-	m_AbilityState = Ability_State::Beam;
+	m_AbilityState = Ability_State::Bomb;
 
 	m_DashDistance = 550.f;
 
@@ -53,7 +53,7 @@ bool CBombMonster::Init()
 	if (!CAbilityMonster::Init())
 		return false;
 
-	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
+	LoadAnimationInstance("Bomb", TEXT("Ability_Bomb.anim"));
 
 	SetCurrentAnimation("RightIdle");
 
