@@ -33,7 +33,7 @@ void CEffectChangeToGreen2::Start()
 
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen2::SetSceneChangeCallbackToPlayer);
 	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToGreen2::ResetSceneChangeCallbackToPlayer);
-
+	
 }
 
 bool CEffectChangeToGreen2::Init()
@@ -79,21 +79,7 @@ void CEffectChangeToGreen2::MakeSceneChangeEffect(const CollisionResult& Result)
 
 void CEffectChangeToGreen2::ChangeSceneToGreen2Scene()
 {
-	/*
-	CGameObject* DestObject = Result.Dest->GetGameObject();
-
-	if (m_Scene->GetPlayerObject() == DestObject)
-	{
-		// Next Scene 에 세팅해둔다.
-		CSceneManager::GetInst()->CreateNewScene(false);
-		CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);
-		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
-		{
-			CSceneManager::GetInst()->ChangeNextScene();
-		}
-	}
-	*/
+	
 	// Next Scene 에 세팅해둔다.
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);

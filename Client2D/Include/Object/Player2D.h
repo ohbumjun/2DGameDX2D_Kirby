@@ -106,6 +106,9 @@ private :
 	// 초기 Player 위치 
 	Vector3 m_InitPlayerPos;
 
+	// Scene Change 이후, 해당 Door 로 다시 돌아올 것인지
+	bool m_IsBackToSceneChangeDoorPos;
+
 	// HIt
 	bool m_IsBeingHit;
 	float m_BeingHitTime;
@@ -143,6 +146,10 @@ public :
 {
 		return m_Body;
 }
+	bool IsBackToSceneChangeDoorPos() const
+{
+		return m_IsBackToSceneChangeDoorPos;
+}
 public :
 	void SetLadderState(bool Enable)
 {
@@ -161,7 +168,11 @@ public :
 			m_FallStartY = GetWorldPos().y;
 		}
 }
-public : // public 
+	void SetIsBackToSceneChangeDoorPos(bool Enable)
+{
+		m_IsBackToSceneChangeDoorPos = Enable;
+}
+public :
 	void SetBeingHitDirection(float Dir);
 	void SetIsBeingHit();
 	void SetCameraFollowMaxTime(float Time);

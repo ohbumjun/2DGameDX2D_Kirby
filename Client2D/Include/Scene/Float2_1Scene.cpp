@@ -46,11 +46,15 @@ void CFloat2_1Scene::Start()
 
 	if (CSceneManager::GetStaticPlayerInfo())
 	{
-		if (m_Scene->GetSceneChangeObject())
+		CPlayer2D* Player = dynamic_cast<CPlayer2D*>(CSceneManager::GetStaticPlayerInfo());
+
+		if (m_Scene->GetSceneChangeObject() && Player->IsBackToSceneChangeDoorPos())
 		{
 			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
 
 			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, 0.f);
+
+			Player->SetIsBackToSceneChangeDoorPos(false);
 		}
 	}
 }

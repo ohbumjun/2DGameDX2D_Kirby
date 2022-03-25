@@ -42,6 +42,7 @@ CPlayer2D::CPlayer2D() :
 	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_RightMove(false),
+	m_IsBackToSceneChangeDoorPos(false),
 	m_Bounced(false),
 	m_IsSwimming(false),
 	m_ToLeftWhenRightMove(false),
@@ -300,6 +301,10 @@ void CPlayer2D::Start()
 	SetBasicSettingToChangedState();
 
 	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
+
+	// Swim Animation 은 Loop 처리
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSwim")->SetLoop(true);
+	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSwim")->SetLoop(true);
 
 	// Player를 한번 멈춘다.
 	StopPlayer();

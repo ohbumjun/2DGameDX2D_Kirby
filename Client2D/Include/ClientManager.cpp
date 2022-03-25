@@ -47,6 +47,8 @@
 #include "Object/EffectChangeToGreen1.h"
 #include "Object/EffectChangeToGreen4.h"
 #include "Object/EffectChangeToGreen5.h"
+#include "Object/EffectChangeToFloat3.h"
+#include "Object/EffectChangeToFloat4.h"
 #include "Object/EffectChangeToFloat2_1.h"
 #include "Object/EffectChangeToFloat2_2.h"
 #include "Object/EffectChangeToFloat4.h"
@@ -144,21 +146,21 @@ void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CMainScene>();//
 
-	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
 
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
@@ -333,6 +335,16 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CEffectChangeToFloat2_2).hash_code())
 	{
 		CEffectChangeToFloat2_2* Obj = Scene->LoadGameObject<CEffectChangeToFloat2_2>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectChangeToFloat3).hash_code())
+	{
+		CEffectChangeToFloat3* Obj = Scene->LoadGameObject<CEffectChangeToFloat3>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectChangeToFloat4).hash_code())
+	{
+		CEffectChangeToFloat4* Obj = Scene->LoadGameObject<CEffectChangeToFloat4>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CWaterFloat1).hash_code())

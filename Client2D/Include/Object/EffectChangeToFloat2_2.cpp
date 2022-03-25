@@ -46,7 +46,6 @@ bool CEffectChangeToFloat2_2::Init()
 	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
 
-
 	return true;
 }
 
@@ -68,25 +67,14 @@ void CEffectChangeToFloat2_2::MakeSceneChangeEffect(const CollisionResult& Resul
 	Alpha->SetSceneStart(false);
 
 	Alpha->SetSceneChangeCallback(this, &CEffectChangeToFloat2_2::ChangeSceneToFloat2_2Scene);
+
+	CPlayer2D* Player = dynamic_cast<CPlayer2D*>(m_Scene->GetPlayerObject());
+
+	Player->SetIsBackToSceneChangeDoorPos(true);
 }
 
 void CEffectChangeToFloat2_2::ChangeSceneToFloat2_2Scene()
 {
-	/*
-	CGameObject* DestObject = Result.Dest->GetGameObject();
-
-	if (m_Scene->GetPlayerObject() == DestObject)
-	{
-		// Next Scene 에 세팅해둔다.
-		CSceneManager::GetInst()->CreateNewScene(false);
-		CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);
-		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
-		{
-			CSceneManager::GetInst()->ChangeNextScene();
-		}
-	}
-	*/
 	// Next Scene 에 세팅해둔다.
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>(false);
@@ -128,4 +116,8 @@ void CEffectChangeToFloat2_2::ResetSceneChangeCallbackToPlayer(const CollisionRe
 void CEffectChangeToFloat2_2::Load(FILE* pFile)
 {
 	CGameObject::Load(pFile);
+
+
+	// 여기서 해줘야 한다. !! Start 에서 X
+	m_Scene->SetSceneChangeObject(this);
 }
