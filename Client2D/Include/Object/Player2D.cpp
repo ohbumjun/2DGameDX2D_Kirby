@@ -2586,6 +2586,8 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState->SetPlayer(this);
 
 		m_IsSpecialStateChanged = true;
+
+		m_KirbyState->SetWorldScale(75.f, 75.f, 1.f);
 	}
 	break;
 	}
