@@ -87,6 +87,10 @@ void CNormalMonster::OnNormalMonsterBodyCollisionBegin(const CollisionResult& Re
 	if (Player->IsSlideAttacking())
 		return;
 
+	// Scene Change 가 일어나고 있다면
+	if (Player->IsSceneChanging())
+		return;
+
 	Player->Damage(m_AttackAbility);
 
 	Player->SetIsBeingHit();

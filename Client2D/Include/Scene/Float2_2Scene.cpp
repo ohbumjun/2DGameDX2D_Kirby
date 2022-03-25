@@ -38,7 +38,7 @@ void CFloat2_2Scene::Start()
 
 	SetPlayerObject(Player2D);
 
-	Player2D->SetWorldPos(450.f, 800.f, 0.f);
+	Player2D->SetWorldPos(450.f, 1200.f, 0.f);
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
 

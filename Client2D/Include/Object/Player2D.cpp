@@ -152,6 +152,7 @@ void CPlayer2D::Start()
 
 	m_Body->SetExtend(GetWorldScale().x * 0.4f, GetWorldScale().y * 0.4f);
 
+	m_Body->EmptyCollisionCallback(Collision_State::Begin);
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::FallDownAttackCallback);
 	m_Body->AddCollisionCallback(Collision_State::Begin, this, &CPlayer2D::PlayerAttackCollisionCallback);
 
@@ -1501,7 +1502,7 @@ void CPlayer2D::UpdateSwimMoveDown(float DeltaTime)
 	if (!m_IsSwimming)
 		return;
 
-	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 100.f);
+	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 200.f);
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -1945,6 +1946,7 @@ void CPlayer2D::JumpDown(float DeltaTime)
 
 void CPlayer2D::JumpDownDistUpdate(float DeltaTime)
 {
+
 	if (m_JumpDown)
 	{
 		m_JumpDownDist = m_FallStartY - GetWorldPos().y;

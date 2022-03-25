@@ -143,6 +143,11 @@ public :
     virtual bool Collision(CColliderComponent* Dest) = 0;
     virtual bool CollisionMouse(const Vector2& MousePos) = 0;
 public :
+    void EmptyCollisionCallback(Collision_State State)
+{
+        m_CollisionListCallback[(int)State].clear();
+}
+public :
     template<typename T>
     void AddCollisionCallback(Collision_State State, T* Obj, void (T::*Func)(const CollisionResult&))
 	{

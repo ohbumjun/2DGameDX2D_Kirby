@@ -26,7 +26,7 @@ bool CEffectWaterBlast::Init()
 
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 	m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayTime(0.5f);
-	m_Sprite->SetRelativeScale(140.f, 90.f, 1.f);
+	m_Sprite->SetRelativeScale(180.f, 120.f, 1.f);
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	SetLifeTime(0.5f);
