@@ -34,10 +34,13 @@ private:
     void ChangeAttemptGrabAnimation();
     void AttemptGrabEndCallback();
     void UpdateGrabAction(float DeltaTime);
+    void ChangeAnimationAfterGrab();
     // Jump & Fly
     void ChangeJumpAttackAnimation();
     void ChangeFlyAnimation();
     void UpdateJumpAction(float DeltaTime);
+    // Physics
+    void EnablePhysics();
 protected:
     virtual void SetObjectLand() override;
     virtual void ChangeTraceAnimation() override;

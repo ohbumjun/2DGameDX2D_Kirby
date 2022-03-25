@@ -296,112 +296,106 @@ void CLifeObject::CheckCeilingCollision(float DeltaTime)
 		return;
 	}
 
-	// 올라갈 때만 조사한다.
-	if (m_Pos.y - m_PrevPos.y > 0.f)
+	Vector3 Pivot = GetPivot();
+	Vector3 WorldScale = GetWorldScale();
+	Vector3 TileSize = TileMap->GetTileEmptySize();
+
+	float PrevUp = m_PrevPos.y + Pivot.y * WorldScale.y;
+	float CurUp = m_Pos.y + Pivot.y * WorldScale.y;
+
+	float PrevLeft = m_PrevPos.x - Pivot.x * WorldScale.x;
+	float CurLeft = m_Pos.x - Pivot.x * WorldScale.x;
+
+	float PrevRight = PrevLeft + WorldScale.x;
+	float CurRight = CurLeft + WorldScale.x;
+
+	float ResultLeft = PrevLeft < CurLeft ? PrevLeft : CurLeft;
+	float ResultRight = PrevRight > CurRight ? PrevRight : CurRight;
+
+	float ResultTop = CurUp > PrevUp ? CurUp : PrevUp;
+	float ResultBottom = CurUp < PrevUp ? CurUp : PrevUp;
+
+	// 해당 위치의 Tile을 구해온다.
+	int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
+
+	Vector3 LB = Vector3(ResultLeft, ResultBottom, 0.f);
+	Vector3 RT = Vector3(ResultRight, ResultTop, 0.f);
+
+	// LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
+	LeftIdx = TileMap->GetTileEmptyIndexX(LB);
+	// RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
+	RightIdx = TileMap->GetTileEmptyIndexX(RT);
+
+	// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
+	TopIdx = TileMap->GetTileEmptyIndexY(RT);
+
+	// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
+	BottomIdx = TileMap->GetTileEmptyIndexY(LB);
+
+	if (LeftIdx < 0)
+		LeftIdx = 0;
+
+	if (BottomIdx < 0)
+		BottomIdx = 0;
+
+	if (RightIdx >= TileMap->GetTileCountX())
+		RightIdx = TileMap->GetTileCountX() - 1;
+
+	if (TopIdx >= TileMap->GetTileCountY())
+		TopIdx = TileMap->GetTileCountY() - 1;
+
+	bool Check = false;
+
+	// 아래에서 위로 반복한다
+	for (int row = BottomIdx; row <= TopIdx; row++)
 	{
-		CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
-
-		Vector3 Pivot = GetPivot();
-		Vector3 WorldScale = GetWorldScale();
-		Vector3 TileSize = TileMap->GetTileEmptySize();
-
-		float PrevUp = m_PrevPos.y + Pivot.y * WorldScale.y;
-		float CurUp = m_Pos.y + Pivot.y * WorldScale.y;
-
-		float PrevLeft = m_PrevPos.x - Pivot.x * WorldScale.x;
-		float CurLeft = m_Pos.x - Pivot.x * WorldScale.x;
-
-		float PrevRight = PrevLeft + WorldScale.x;
-		float CurRight = CurLeft + WorldScale.x;
-
-		float ResultLeft = PrevLeft < CurLeft ? PrevLeft : CurLeft;
-		float ResultRight = PrevRight > CurRight ? PrevRight : CurRight;
-
-		float ResultTop = CurUp > PrevUp ? CurUp : PrevUp;
-		float ResultBottom = CurUp < PrevUp ? CurUp : PrevUp;
-
-		// 해당 위치의 Tile을 구해온다.
-		int LeftIdx = -1, TopIdx = -1, RightIdx = -1, BottomIdx = -1;
-
-		Vector3 LB = Vector3(ResultLeft, ResultBottom, 0.f);
-		Vector3 RT = Vector3(ResultRight, ResultTop, 0.f);
-
-		// LeftIdx = TileMap->GetTileEmptyIndexX(ResultLeft);
-		LeftIdx = TileMap->GetTileEmptyIndexX(LB);
-		// RightIdx = TileMap->GetTileEmptyIndexX(ResultRight);
-		RightIdx = TileMap->GetTileEmptyIndexX(RT);
-
-		// TopIdx = TileMap->GetTileEmptyIndexX(ResultTop);
-		TopIdx = TileMap->GetTileEmptyIndexY(RT);
-
-		// BottomIdx = TileMap->GetTileEmptyIndexX(ResultBottom);
-		BottomIdx = TileMap->GetTileEmptyIndexY(LB);
-
-		if (LeftIdx < 0)
-			LeftIdx = 0;
-
-		if (BottomIdx < 0)
-			BottomIdx = 0;
-
-		if (RightIdx >= TileMap->GetTileCountX())
-			RightIdx = TileMap->GetTileCountX() - 1;
-
-		if (TopIdx >= TileMap->GetTileCountY())
-			TopIdx = TileMap->GetTileCountY() - 1;
-
-		bool Check = false;
-
-		// 아래에서 위로 반복한다
-		for (int row = BottomIdx; row <= TopIdx; row++)
+		for (int col = LeftIdx; col <= RightIdx; col++)
 		{
-			for (int col = LeftIdx; col <= RightIdx; col++)
+			// 이전 위치의 Bottom이, 타일의 Top 보다 클 경우 무시한다
+			// 즉, 내가 점프하는데, 그 위에 Tile이 존재하는 것
+			// 바닥 체크는 내려갈 때만 체크하기 위함이다.
+			/*
+			if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block &&
+				TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
+				continue;
+			*/
+
+			// 못가는 곳이라면. 즉, 천장에 닿는 다면
+			if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Ceiling)
 			{
-				// 이전 위치의 Bottom이, 타일의 Top 보다 클 경우 무시한다
-				// 즉, 내가 점프하는데, 그 위에 Tile이 존재하는 것
-				// 바닥 체크는 내려갈 때만 체크하기 위함이다.
-				/*
-				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Block &&
-					TileMap->GetTileEmpty(col, row)->GetPos().y + TileSize.y > PrevBottom)
-					continue;
-				*/
+				// 천장에 닿음
+				Check = true;
 
-				// 못가는 곳이라면. 즉, 천장에 닿는 다면
-				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Ceiling)
+				// 땅에 닿음으로써 초기화 해줘야 할 변수들
+				// SetObjectLand();
+
+				// m_JumpAccelAccTime = 0.f;
+
+				// Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos() - TileSize;
+				Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos();
+
+				float PosDiff = ResultTop - TilePos.y;
+
+				m_Pos.y -= (PosDiff + 0.001f);
+
+				SetWorldPos(m_Pos);
+
+				// Player 라면 --> 천장에 Collision 하는 순간 만큼은 잠시 카메라 Adjust Ratio를 멈춘다.
+				// 그리고 바로 다시 충돌하지 않는 순간, 다시 Adjust Ratio를 수행하게 한다.
+				if (this == m_Scene->GetPlayerObject())
 				{
-					// 천장에 닿음
-					Check = true;
-
-					// 땅에 닿음으로써 초기화 해줘야 할 변수들
-					// SetObjectLand();
-
-					// m_JumpAccelAccTime = 0.f;
-					
-					// Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos() - TileSize;
-					Vector3 TilePos = TileMap->GetTileEmpty(col, row)->GetWorldPos();
-
-					float PosDiff = ResultTop - TilePos.y;
-
-					m_Pos.y -= (PosDiff + 0.001f);
-
-					SetWorldPos(m_Pos);
-
-					// Player 라면 --> 천장에 Collision 하는 순간 만큼은 잠시 카메라 Adjust Ratio를 멈춘다.
-					// 그리고 바로 다시 충돌하지 않는 순간, 다시 Adjust Ratio를 수행하게 한다.
-					if (this == m_Scene->GetPlayerObject())
-					{
-						m_Scene->GetCameraManager()->GetCurrentCamera()->SetAdjustRatio(false);
-					}
-
-
-					CeilingCollision = true;
-
-					break;
+					m_Scene->GetCameraManager()->GetCurrentCamera()->SetAdjustRatio(false);
 				}
-			}
 
-			if (Check)
+
+				CeilingCollision = true;
+
 				break;
+			}
 		}
+
+		if (Check)
+			break;
 	}
 
 	m_IsCeilingCollided = CeilingCollision;
@@ -661,7 +655,7 @@ void CLifeObject::CheckBelowWorldResolution()
 
 	// OriginalPos.y = WorldScale.y * Pivot.y;
 
-	SetWorldPos(Vector3(OriginalPos.x, GetWorldScale().y + GetPivot().y, OriginalPos.z));
+	// SetWorldPos(Vector3(OriginalPos.x, GetWorldScale().y + GetPivot().y, OriginalPos.z));
 
 	Destroy();
 }

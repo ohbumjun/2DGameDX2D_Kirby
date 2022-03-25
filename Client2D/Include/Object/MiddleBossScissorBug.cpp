@@ -18,7 +18,7 @@ CMiddleBossScissorBug::CMiddleBossScissorBug() :
 	m_IsGroundObject = true;
 	m_CloseAttackDistance = 450.f;
 	m_FarAttackDistance = 1000.f;
-	m_FarAttackLimitTimeMax = 6.f;
+	m_FarAttackLimitTimeMax = 4.f;
 
 	m_HP = 3000.f;
 	m_HPMax = 3000.f;
@@ -58,11 +58,11 @@ void CMiddleBossScissorBug::Start()
 	// - 공중에서, RightPrepareGrab
 	// - 그대로, AttemptGrab으로 직선 방향 돌진
 	// Far Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetPlayTime(0.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetPlayTime(0.2f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(this, &CMiddleBossScissorBug::ChangeFlyAnimation);
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetPlayTime(0.3f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetPlayTime(0.2f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftJump")->SetEndFunction(this, &CMiddleBossScissorBug::ChangeFlyAnimation);
 
@@ -74,20 +74,23 @@ void CMiddleBossScissorBug::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftPrepareGrab")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftPrepareGrab")->SetEndFunction(this, &CMiddleBossScissorBug::GrabActionStart);
 
-
-	// Attempt Grab
-	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttemptGrab")->SetPlayTime(0.7f);
-	// m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttemptGrab")->SetPlayTime(0.7f);
+	// Attempt  Grab
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttemptGrab")->SetPlayTime(m_GrabLimitTimeMax);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttemptGrab")->SetPlayTime(m_GrabLimitTimeMax);
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttemptGrab")->SetLoop(true);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttemptGrab")->SetLoop(true);
-	
 
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttemptGrab")->SetEndFunction(this, &CMiddleBossScissorBug::ChangeAnimationAfterGrab);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttemptGrab")->SetEndFunction(this, &CMiddleBossScissorBug::ChangeAnimationAfterGrab);
+	
 	m_InitMoveVelocity = m_MonsterMoveVelocity;
 
 	m_InitJumpAccel = m_JumpAccel;
 
 	m_IsAttacking = false;
+
+	ChangeIdleAnimation();
 }
 
 bool CMiddleBossScissorBug::Init()
@@ -100,7 +103,6 @@ bool CMiddleBossScissorBug::Init()
 	// SetCurrentAnimation("RightIdle");
 
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
-
 
 	return true;
 }
@@ -220,6 +222,11 @@ void CMiddleBossScissorBug::AITraceSpecific(float DeltaTime)
 
 void CMiddleBossScissorBug::ChangeCloseAttackAnimation()
 {
+	// 혹시나 공중에 떠올랐는데, 그 사이에 Close Attack을 하게 되는 경우
+	if (!m_PhysicsSimulate)
+	{
+		EnablePhysics();
+	}
 
 	if (m_ObjectMoveDir.x < 0.f)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttackClose");
@@ -245,7 +252,7 @@ void CMiddleBossScissorBug::ChangePrepareGrabAnimation()
 
 void CMiddleBossScissorBug::GrabActionStart()
 {
-	m_MonsterMoveVelocity = 800.f;
+	m_MonsterMoveVelocity = 600.f;
 
 	m_AttemptGrab = true;
 
@@ -268,31 +275,39 @@ void CMiddleBossScissorBug::ChangeAttemptGrabAnimation()
 
 void CMiddleBossScissorBug::AttemptGrabEndCallback()
 {
+	m_IsAttacking = false;
+
 	m_AttemptGrab = false;
 
-	m_MonsterMoveVelocity = m_InitMoveVelocity;
-
-	ChangeIdleAnimation();
+	EnablePhysics();
 }
 
 void CMiddleBossScissorBug::UpdateGrabAction(float DeltaTime)
 {
-	if (m_GrabLimitTime >= 0.f)
+	if (m_AttemptGrab && m_GrabLimitTime >= 0.f)
 	{
 		m_IsAttacking = true;
 
 		m_GrabLimitTime -= DeltaTime;
 
-		AddWorldPos(m_GrabTraceDir * DeltaTime * m_MonsterMoveVelocity);
+		AddWorldPos(Vector3(m_GrabTraceDir.x, m_GrabTraceDir.y, 0.f) * DeltaTime * m_MonsterMoveVelocity);
 
-		if (m_GrabLimitTime < 0.f)
+		if (m_GrabLimitTime < 0.01f)
 		{
-			m_IsAttacking = false;
-
-			m_AttemptGrab = false;
-
 			AttemptGrabEndCallback();
 		}
+	}
+}
+
+void CMiddleBossScissorBug::ChangeAnimationAfterGrab()
+{
+	if (!m_IsBottomCollided)
+	{
+		ChangeFlyAnimation();
+	}
+	else
+	{
+		ChangeIdleAnimation();
 	}
 }
 
@@ -323,6 +338,17 @@ void CMiddleBossScissorBug::UpdateJumpAction(float DeltaTime)
 	}
 }
 
+void CMiddleBossScissorBug::EnablePhysics()
+{
+	m_PhysicsSimulate = true;
+
+	m_MonsterMoveVelocity = m_InitMoveVelocity;
+
+	m_FallTime = 0.f;
+
+	m_FallStartY = GetWorldPos().y;
+}
+
 void CMiddleBossScissorBug::SetObjectLand()
 {
 	CBossMonster::SetObjectLand();
@@ -341,8 +367,8 @@ void CMiddleBossScissorBug::ChangeTraceAnimation()
 	if (m_Jump)
 		return;
 
-	if (m_AttemptGrab)
-		return;
+	// if (m_AttemptGrab)
+	//	return;
 
 	CBossMonster::ChangeTraceAnimation();
 }
