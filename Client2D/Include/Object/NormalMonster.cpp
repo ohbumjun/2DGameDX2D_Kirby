@@ -91,6 +91,10 @@ void CNormalMonster::OnNormalMonsterBodyCollisionBegin(const CollisionResult& Re
 	if (Player->IsSceneChanging())
 		return;
 
+	// 이미 맞아서 데미지 받아 이동중이라면
+	if (Player->IsBeingHit())
+		return;
+
 	Player->Damage(m_AttackAbility);
 
 	Player->SetIsBeingHit();

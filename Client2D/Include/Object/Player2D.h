@@ -130,6 +130,10 @@ private :
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
 
 public :
+	bool IsBeingHit() const
+{
+		return m_IsBeingHit;
+}
 	bool IsSceneChanging() const
 {
 		return m_SceneChange;
