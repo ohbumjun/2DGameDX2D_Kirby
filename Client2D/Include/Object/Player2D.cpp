@@ -417,9 +417,13 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	if (m_SceneChangeCallback)
 	{
 		CollisionResult Result;
+
 		m_SceneChangeCallback(Result);
+
 		m_SceneChangeCallback = nullptr;
+
 		m_SceneChange = true;
+
 		StopPlayer();
 
 		m_PhysicsSimulate = false;
