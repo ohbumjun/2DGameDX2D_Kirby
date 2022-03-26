@@ -423,6 +423,9 @@
     <ClCompile Include="ClientManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Component\SwordKirbyState.cpp">
+      <Filter>02. Object\01. Player\01. State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -754,6 +757,9 @@
     </ClInclude>
     <ClInclude Include="Object\SwordMonsterAttack.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\SwordKirbyState.h">
+      <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -44,6 +44,7 @@ bool CSwordMonsterAttack::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"SwordAttackEffect", TEXT("Ability_Sword_AttackEffect.anim"));
 
+	AnimationInstance->Play();
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
 
@@ -51,8 +52,8 @@ bool CSwordMonsterAttack::Init()
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 	m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
-	// m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CSwordMonsterAttack::CollisionCallback);
-
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.3f);
+	m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.3f);
 	return true;
 }
 

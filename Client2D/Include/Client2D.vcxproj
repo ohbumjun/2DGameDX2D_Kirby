@@ -164,6 +164,7 @@
     <ClCompile Include="Component\FireKirbyState.cpp" />
     <ClCompile Include="Component\KirbyState.cpp" />
     <ClCompile Include="Component\NormalKirbyState.cpp" />
+    <ClCompile Include="Component\SwordKirbyState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
     <ClCompile Include="Object\Awl.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="Component\FireKirbyState.h" />
     <ClInclude Include="Component\KirbyState.h" />
     <ClInclude Include="Component\NormalKirbyState.h" />
+    <ClInclude Include="Component\SwordKirbyState.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
     <ClInclude Include="Object\AttackEffect.h" />
     <ClInclude Include="Object\Awl.h" />

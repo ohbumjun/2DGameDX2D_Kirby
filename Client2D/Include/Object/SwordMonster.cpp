@@ -14,7 +14,7 @@ CSwordMonster::CSwordMonster()
 
 	m_DashDistance = 800.f;
 
-	m_AttackDistance = 450.f;
+	m_AttackDistance = 550.f;
 
 	m_JumpVelocity = 50.f;
 }
