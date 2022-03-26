@@ -12,17 +12,17 @@ CBossPenguin::CBossPenguin() :
 	m_JumpEnable(false),
 	m_JumpLimitTimeMax(5.f),
 	m_JumpDistance(1200.f),
-	m_DashRunDistance(900.f),
+	m_DashRunDistance(700.f),
 	m_FarAttackTimeMax(4.5f),
 	m_FarAttackTime(-1.f)
 {
 	SetTypeID<CBossPenguin>();
 	m_DashDistance = 1200.f;
 	m_JumpVelocity = 60.f;
-	m_AttackDistance = 700.f;
+	m_AttackDistance = 600.f;
 	m_IsGroundObject = true;
-	m_CloseAttackDistance = 450.f;
-	m_FarAttackDistance = 700.f;
+	m_CloseAttackDistance = 400.f;
+	m_FarAttackDistance = 600.f;
 
 	m_FarAttackLimitTimeMax = 6.0f;
 
@@ -132,13 +132,22 @@ void CBossPenguin::FarAttack()
 	m_JumpVelocity = 90.f;
 	m_JumpLimitTime = m_JumpLimitTimeMax;
 	
-	m_MonsterMoveVelocity = 450.f;
+	m_MonsterMoveVelocity = 400.f;
 
 	m_FarAttackTraceDir = m_Scene->GetPlayerObject()->GetWorldPos() - GetWorldPos();
 
 	m_FarAttackTraceDir.Normalize();
 
 	MakeJumpAirEffect();
+}
+
+void CBossPenguin::FarAttackEnd()
+{
+	m_FarAttackTime = -1.f;
+
+	m_IsAttacking = false;
+
+	m_MonsterMoveVelocity = m_InitMoveVelocity;
 }
 
 void CBossPenguin::CloseAttack()
@@ -215,6 +224,12 @@ void CBossPenguin::AIAttackSpecific(float DeltaTime)
 		m_CloseAttackLimitTime = m_CloseAttackLimitTimeMax;
 
 		ChangeCloseAttackAnimation();
+
+		// 원거리 점프 이후, 계속 이동 중이었다면  --> FarAttack을 종료시켜 준다.
+		if (m_FarAttackTime > 0.f)
+		{
+			FarAttackEnd();
+		}
 	}
 }
 
@@ -291,11 +306,7 @@ void CBossPenguin::UpdateFarAttackAction(float DeltaTime)
 
 		if (m_FarAttackTime < 0.01f)
 		{
-			m_FarAttackTime = -1.f;
-
-			m_IsAttacking = false;
-
-			m_MonsterMoveVelocity = m_InitMoveVelocity;
+			FarAttackEnd();
 		}
 	}
 }

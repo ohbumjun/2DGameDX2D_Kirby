@@ -32,6 +32,7 @@ public:
 private:
     void JumpStart();
     void FarAttack();
+    void FarAttackEnd();
     void CloseAttack();
     void ChangeFarAttackAnimation();
     void ChangeCloseAttackAnimation();
