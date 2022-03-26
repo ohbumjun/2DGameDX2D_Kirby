@@ -61,6 +61,7 @@ CPlayer2D::CPlayer2D() :
 	m_IsLeverMoving(false),
 	m_IsDashMoving(false),
 	m_TriangleJump(false),
+	m_ChangeTimeMax(0.8f),
 	m_IsEatingMonster(false),
 	m_IsLadderGoingUp(false),
 	m_DeltaTime(0.f),
@@ -69,7 +70,6 @@ CPlayer2D::CPlayer2D() :
 	m_PullDistance(100.f),
 	m_MoveDashEffectLimitTimeMax(0.2f),
 	m_MoveDashEffectLimitTime(0.2f),
-	m_ChangeTimeMax(1.0f),
 	m_ChangeTime(0.f),
 	m_SceneChangeCallback(nullptr),
 	m_IsBeingHit(false),
@@ -285,8 +285,10 @@ void CPlayer2D::Start()
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SlideAttack", 
 		KeyState_Down, this, &CPlayer2D::SlideAttack);
 
+	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
 		KeyState_Down, this, &CPlayer2D::Skill1);
+	*/
 
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("MovePoint", 
 		KeyState_Down, this, &CPlayer2D::MovePointDown);
@@ -2095,11 +2097,6 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 		}
 
 		// 혹시나, Player Change 이후, Black 배경이 사라지지 않았다면, 사라지게 한다.
-		if (m_ChangeBlackBackGround && !m_IsChanging)
-		{
-			m_ChangeBlackBackGround->Destroy();
-			m_ChangeBlackBackGround = nullptr;
-		}
 	}
 }
 
@@ -2108,10 +2105,10 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 	if (m_IsAttacking)
 		return;
 
-	if (m_IsChanging)
+	if (m_IsLadderGoingUp)
 		return;
 
-	if (m_IsLadderGoingUp)
+	if (m_IsChanging)
 		return;
 
 	if (!m_Jump && !m_IsFlying)
@@ -2138,6 +2135,9 @@ void CPlayer2D::ChangePlayerIdleAnimation()
 void CPlayer2D::ChangePlayerNormalIdleAnimation()
 {
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsChanging)
 		return;
 
 	if (m_ObjectMoveDir.x < 0.f)
@@ -2654,11 +2654,13 @@ void CPlayer2D::SpecialChange()
 	m_RootComponent->SetLayerName("Default");
 
 	// Change 할 때 생긴 Black BackGround를 제거한다.
+	/*
 	if (m_ChangeBlackBackGround)
 	{
 		m_ChangeBlackBackGround->Destroy();
 		// m_ChangeBlackBackGround = nullptr;
 	}
+	*/
 
 	ChangePlayerIdleAnimation();
 }
@@ -2679,17 +2681,19 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 	if (m_IsSpecialStateChanged)
 		return;
 
+	ChangePlayerChangeAnimation();
+
 	m_IsChanging = true;
 
 	StopPlayer();
 
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
 
-	ChangePlayerChangeAnimation();
-
 	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
 
 	m_ChangeBlackBackGround->SetBlackTexture();
+
+	m_ChangeBlackBackGround->SetLifeTime(m_ChangeTimeMax);
 
 	m_ChangeBlackBackGround->SetOpacity(0.7f);
 
@@ -2697,6 +2701,8 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 
 	// 화면 가장 앞에 보이게 세팅한다.
 	m_RootComponent->SetLayerName("PlayerChange");
+
+	m_ChangeTime = m_ChangeTimeMax + 0.001f;
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -2728,14 +2734,14 @@ void CPlayer2D::SetBasicSettingToChangedState()
 	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange"))
 	{
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetLoop(false);
-		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetPlayTime(0.8f);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetPlayTime(m_ChangeTimeMax);
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange")->SetEndFunction(
 			this, &CPlayer2D::SpecialChange);
 	}
 	if (m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange"))
 	{
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetLoop(false);
-		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetPlayTime(0.8f);
+		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetPlayTime(m_ChangeTimeMax);
 		m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange")->SetEndFunction(
 			this, &CPlayer2D::SpecialChange);
 	}
@@ -2756,18 +2762,26 @@ void CPlayer2D::SpecialChangeEffect()
 
 void CPlayer2D::UpdateChangeState(float DeltaTime)
 {
+	/*
 	if (m_IsChanging)
 	{
 		if (m_ChangeTime > 0)
 		{
 			m_ChangeTime -= DeltaTime;
+		}
 
-			if (m_ChangeTime < 0)
+		if (m_ChangeTime < 0)
+		{
+			// 여기에 도달하기 전에, 이미 Change 가 시작된 상태여서
+			// m_IsChanging이 false가 되어야 한다.
+			// 그런데 혹시나, 바뀌지 않았을 경우
+			if (m_IsChanging)
 			{
-				m_IsChanging = false;
+				SpecialChange();
 			}
 		}
 	}
+	*/
 }
 
 void CPlayer2D::Attack(float DeltaTime)
@@ -3039,9 +3053,11 @@ void CPlayer2D::MovePointDown(float DeltaTime)
 
 void CPlayer2D::Skill1(float DeltaTime)
 {
+	/*
 	CBulletCamera* Bullet = m_Scene->CreateGameObject<CBulletCamera>("Bullet");
 
 	//Bullet->SetWorldPos(GetWorldPos() + GetWorldAxis(AXIS_Y) * 75.f);
 	Bullet->SetWorldPos(GetWorldPos());
 	Bullet->SetWorldRotation(GetWorldRot());
+	*/
 }

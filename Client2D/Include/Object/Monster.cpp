@@ -520,7 +520,7 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 
 	if (MonsterPos.Distance(m_PulledDestPos) <= PullLimitDist + 5.f)
 	{
-		// m_IsBeingPulled = false;//
+		// m_IsBeingPulled = false;
 
 		Enable(false);
 

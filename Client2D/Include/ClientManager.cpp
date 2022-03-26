@@ -122,8 +122,8 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 	CInput::GetInst()->CreateKey("SpitOut", 'Q');
 
-	CInput::GetInst()->CreateKey("SpecialChange", 'S');
-	CInput::GetInst()->SetShiftKey("SpecialChange", true);
+	CInput::GetInst()->CreateKey("SpecialChange", '1');
+	// CInput::GetInst()->SetShiftKey("SpecialChange", true);
 
 	CInput::GetInst()->CreateKey("Attack", 'F');
 	CInput::GetInst()->CreateKey("SlideAttack", 'C');
@@ -135,9 +135,8 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CInput::GetInst()->CreateKey("JumpDown", 'S');
 	CInput::GetInst()->SetCtrlKey("JumpDown", true);
 
-
+	// CInput::GetInst()->CreateKey("Skill1", '1');
 	CInput::GetInst()->CreateKey("Attack1", VK_LBUTTON);
-	CInput::GetInst()->CreateKey("Skill1", '1');
 	CInput::GetInst()->CreateKey("MovePoint", VK_RBUTTON);
 
 	// Sound
