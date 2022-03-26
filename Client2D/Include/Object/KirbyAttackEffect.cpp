@@ -177,16 +177,19 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 	break;
 	case KirbyAttackEffect_Type::Bomb:
 	{
-		m_MainSprite->SetWorldScale(110.f, 110.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
+		m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 750.f;
 		m_AttackObjectSpeed = 600.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"KirbyNormalBombAttackEffect", TEXT("Kirby_Bomb_BombThrowAttack.anim"));
+			"KirbyNormalBombAttackEffect", TEXT("Ability_Bomb_ThrowBomb.anim"));
 
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
+
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.1f);
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.1f);
 
 		m_BottomCollisionApplied = true;
 	}
@@ -195,15 +198,18 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 	case KirbyAttackEffect_Type::BombFall:
 	{
 		m_MainSprite->SetWorldScale(250.f, 250.f, 1.f);
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 900.f;
 		m_AttackObjectSpeed = 600.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-			"KirbyFireFallAttackEffect", TEXT("Kirby_Bomb_BombThrowAttack.anim"));
+			"KirbyFallBombAttackEffect", TEXT("Ability_Bomb_ThrowBomb.anim"));
 
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
+
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.1f);
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.1f);
 
 		m_BottomCollisionApplied = true;
 

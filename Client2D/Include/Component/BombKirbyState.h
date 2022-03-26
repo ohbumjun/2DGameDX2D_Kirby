@@ -29,6 +29,9 @@ private:
     float m_FallAttackTimeMax;
     Vector2 m_InitColliderLength;
     bool m_FallDownBombMade;
+    // Attack
+    bool m_AttackReady;
+    CSharedPtr<class CBombKirbyThrowBomb> m_ThrowReadyBomb;
 public :
     void SetFallAttackEnd();
 private:

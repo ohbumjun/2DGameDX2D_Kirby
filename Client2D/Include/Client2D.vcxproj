@@ -171,6 +171,7 @@
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\BeamMonsterAttack.cpp" />
     <ClCompile Include="Object\Block.cpp" />
+    <ClCompile Include="Object\BombKirbyThrowBomb.cpp" />
     <ClCompile Include="Object\BombMonster.cpp" />
     <ClCompile Include="Object\BombMonsterAttack.cpp" />
     <ClCompile Include="Object\BossMonster.cpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\BeamMonsterAttack.h" />
     <ClInclude Include="Object\Block.h" />
+    <ClInclude Include="Object\BombKirbyThrowBomb.h" />
     <ClInclude Include="Object\BombMonster.h" />
     <ClInclude Include="Object\BombMonsterAttack.h" />
     <ClInclude Include="Object\BossMonster.h" />

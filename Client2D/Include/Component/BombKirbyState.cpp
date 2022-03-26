@@ -6,6 +6,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
+#include "../Object/BombKirbyThrowBomb.h"
 
 CBombKirbyState::CBombKirbyState() :
 	m_GoUpTimeMax(0.4f),
@@ -13,7 +14,8 @@ CBombKirbyState::CBombKirbyState() :
 	m_FallAttackTime(0.f),
 	m_FallAttackTimeMax(0.4f),
 	m_FallAttackState(false),
-	m_GoUpState(false)
+	m_GoUpState(false),
+	m_AttackReady(false)
 {
 	m_ExtraAttackAbility = 15.f;
 }
@@ -23,7 +25,48 @@ CBombKirbyState::~CBombKirbyState()
 {}
 
 void CBombKirbyState::Attack()
-{}
+{
+	if (!m_AttackReady)
+	{
+		if (m_Player->GetObjectMoveDir().x < 0.f)
+		{
+			m_Player->ChangeAnimation("LeftAttackReady");
+
+			m_ThrowReadyBomb = m_Scene->CreateGameObject<CBombKirbyThrowBomb>("ThrowBombCenter");
+
+			m_ThrowReadyBomb->SetLeft();
+
+			m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
+		}
+		else
+		{
+			m_Player->ChangeAnimation("RightAttackReady");
+
+			m_ThrowReadyBomb = m_Scene->CreateGameObject<CBombKirbyThrowBomb>("ThrowBombCenter");
+
+			m_ThrowReadyBomb->SetRight();
+
+			m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
+		}
+
+		m_AttackReady = true;
+
+		// 다시 공격 버튼을 누를 수 있어야 하기 때문이다.
+		m_Player->SetAttackEnd();
+	}
+	else
+	{
+		m_Player->ChangePlayerAttackAnimation();
+
+		m_AttackReady = false;
+
+		if (m_ThrowReadyBomb)
+		{
+			m_ThrowReadyBomb->Destroy();
+			m_ThrowReadyBomb = nullptr;
+		}
+	}
+}
 
 void CBombKirbyState::FallDownAttack()
 {
@@ -69,18 +112,17 @@ void CBombKirbyState::MakeFallDownBomb()
 
 	AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombFall);
 
-	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+	// Damage 를 조금더 크게 세팅한다.
+	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
 
-	AttackEffect->SetLeftAttackDir(0.f);
+	AttackEffect->SetLeftAttackDir(-1.f);
 
 	AttackEffect->SetAttackDirX(0.f);
 	// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
-	// AttackEffect->SetLeftAttackDir(0.f);
 
-	AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-		GetWorldPos().y, GetWorldPos().z);
+	AttackEffect->SetWorldPos(GetWorldPos());
 
-	AttackEffect->ApplyJumpEffect();
+	// AttackEffect->ApplyJumpEffect();
 
 	AttackEffect->ApplyCameraMove();
 
@@ -170,8 +212,8 @@ bool CBombKirbyState::Init()
 		this, &CBombKirbyState::MakeFallDownBomb);
 	m_Animation->FindAnimationSequence2DData("LeftFallAttack")->SetEndFunction(
 		this, &CBombKirbyState::MakeFallDownBomb);
-	m_Animation->FindAnimationSequence2DData("RightFallAttack")->SetPlayTime(1.f);
-	m_Animation->FindAnimationSequence2DData("LeftFallAttack")->SetPlayTime(1.f);
+	m_Animation->FindAnimationSequence2DData("RightFallAttack")->SetPlayTime(0.5f);
+	m_Animation->FindAnimationSequence2DData("LeftFallAttack")->SetPlayTime(0.5f);
 
 	// Fall
 	m_Animation->FindAnimationSequence2DData("RightFall")->SetLoop(false);
@@ -181,11 +223,14 @@ bool CBombKirbyState::Init()
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetPlayTime(0.3f);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(0.3f);
 
-
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
 		this, &CBombKirbyState::NormalAttackCallback);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CBombKirbyState::NormalAttackCallback);
+
+	// AttackReady
+	m_Animation->FindAnimationSequence2DData("RightAttackReady")->SetPlayTime(0.3f);
+	m_Animation->FindAnimationSequence2DData("LeftAttackReady")->SetPlayTime(0.3f);
 
 	m_Animation->Play();
 
