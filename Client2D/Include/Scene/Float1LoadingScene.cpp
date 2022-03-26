@@ -1,36 +1,38 @@
-#include "Green1LoadingScene.h"
-#include <Scene/SceneManager.h>
+#include "Float1LoadingScene.h"
 #include "LoadingThread.h"
+#include "Scene/SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/ViewPort.h"
-#include "Thread.h"
 
-CGreen1LoadingScene::CGreen1LoadingScene()
-{}
 
-CGreen1LoadingScene::~CGreen1LoadingScene()
+CFloat1LoadingScene::CFloat1LoadingScene()
+{
+	SetTypeID<CFloat1LoadingScene>();
+}
+
+CFloat1LoadingScene::~CFloat1LoadingScene()
 {
 	SAFE_DELETE(m_LoadingThread);
 }
 
-bool CGreen1LoadingScene::Init()
+bool CFloat1LoadingScene::Init()
 {
-	if (!CSceneMode::Init())//
+	if (!CSceneMode::Init())
 		return false;
 
 	m_LoadingWidget = m_Scene->GetViewPort()->CreateUIWindow<CLoadingWidget>("LoadingWidget");
 
-	m_LoadingThread = CThread::CreateThread<CLoadingThread>("Loading");
+	// 로딩 쓰레드 생성
+	m_LoadingThread = CThread::CreateThread<CLoadingThread>("LoadingThread");
 
-	m_LoadingThread->SetLoadingSceneType(LoadingSceneType::Green1);
+	m_LoadingThread->SetLoadingSceneType(LoadingSceneType::Float1);
 
-	// Loading Thread 내에 지정된 Run 함수를 호출할 것이다.
 	m_LoadingThread->Start();
 
 	return true;
 }
 
-void CGreen1LoadingScene::Update(float DeltaTime)
+void CFloat1LoadingScene::Update(float DeltaTime)
 {
 	CSceneMode::Update(DeltaTime);
 
@@ -49,5 +51,4 @@ void CGreen1LoadingScene::Update(float DeltaTime)
 			CSceneManager::GetInst()->ChangeNextScene();
 		}
 	}
-
 }

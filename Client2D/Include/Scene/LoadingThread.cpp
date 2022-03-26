@@ -24,8 +24,7 @@ void CLoadingThread::Run()
 	{
 	case LoadingSceneType::Green1 :
 		{
-		CSceneManager::GetInst()->CreateNewScene(false);
-
+			CSceneManager::GetInst()->CreateNewScene(false);
 
 			CMainScene* MainScene = CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
 

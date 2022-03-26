@@ -246,6 +246,7 @@
     <ClCompile Include="Object\WaterMonster.cpp" />
     <ClCompile Include="Object\YellowBird.cpp" />
     <ClCompile Include="Scene\BeginningScene.cpp" />
+    <ClCompile Include="Scene\Float1LoadingScene.cpp" />
     <ClCompile Include="Scene\Float1Scene.cpp" />
     <ClCompile Include="Scene\Float2_1Scene.cpp" />
     <ClCompile Include="Scene\Float2_2Scene.cpp" />
@@ -359,6 +360,7 @@
     <ClInclude Include="Object\WaterMonster.h" />
     <ClInclude Include="Object\YellowBird.h" />
     <ClInclude Include="Scene\BeginningScene.h" />
+    <ClInclude Include="Scene\Float1LoadingScene.h" />
     <ClInclude Include="Scene\Float1Scene.h" />
     <ClInclude Include="Scene\Float2_1Scene.h" />
     <ClInclude Include="Scene\Float2_2Scene.h" />
