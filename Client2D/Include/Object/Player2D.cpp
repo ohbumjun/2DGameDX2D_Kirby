@@ -2547,10 +2547,6 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = nullptr;
 
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
-
-		m_KirbyState->SetPlayer(this);
-
-		m_IsSpecialStateChanged = true;
 	}
 	break;
 	case Ability_State::Fire:
@@ -2558,10 +2554,6 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = nullptr;
 
 		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
-
-		m_KirbyState->SetPlayer(this);
-
-		m_IsSpecialStateChanged = true;
 	}
 	break;
 	case Ability_State::Fight:
@@ -2569,10 +2561,6 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = nullptr;
 
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
-
-		m_KirbyState->SetPlayer(this);
-
-		m_IsSpecialStateChanged = true;
 	}
 	break;
 	case Ability_State::Bomb:
@@ -2581,14 +2569,23 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState = CreateComponent<CBombKirbyState>("BombKirbyState");
 
-		m_KirbyState->SetPlayer(this);
+		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
+	}
+	break;
+	case Ability_State::Sword:
+	{
+		m_KirbyState = nullptr;
 
-		m_IsSpecialStateChanged = true;
+		m_KirbyState = CreateComponent<CSwordKirbyState>("SwordKirbyState");
 
-		m_KirbyState->SetWorldScale(75.f, 75.f, 1.f);
+		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
 	}
 	break;
 	}
+
+	m_KirbyState->SetPlayer(this);
+
+	m_IsSpecialStateChanged = true;
 
 	SpecialChangeEffect();
 

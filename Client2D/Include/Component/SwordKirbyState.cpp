@@ -186,7 +186,8 @@ bool CSwordKirbyState::Init()
 	if (!CKirbyState::Init())
 		return false;
 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fire", TEXT("Kirby_Fire.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+		"Kirby_Sword", TEXT("Kirby_Cutter.anim"));
 
 	SetAnimationInstance(AnimationInstance);
 
@@ -245,6 +246,7 @@ void CSwordKirbyState::NormalAttackCallback()
 	{
 		// °¡¿îµ¥
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Sword);
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(0.f);
@@ -255,6 +257,7 @@ void CSwordKirbyState::NormalAttackCallback()
 	else
 	{
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Sword);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(0.f);

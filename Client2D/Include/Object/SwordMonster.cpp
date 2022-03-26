@@ -10,7 +10,7 @@ CSwordMonster::CSwordMonster()
 {
 	SetTypeID<CSwordMonster>();
 
-	m_AbilityState = Ability_State::Fire;
+	m_AbilityState = Ability_State::Sword;
 
 	m_DashDistance = 800.f;
 

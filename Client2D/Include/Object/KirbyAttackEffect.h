@@ -23,6 +23,10 @@ private:
     float m_AttackDamage;
     CSharedPtr<class CCameraComponent> m_Camera;
 protected:
+    void SetKirbyAttackEffectMoveSpeed(float Speed)
+    {
+        m_AttackObjectSpeed = Speed;
+    }
     void SetAttackDamage(float AttackDamage)
     {
         m_AttackDamage = AttackDamage;
