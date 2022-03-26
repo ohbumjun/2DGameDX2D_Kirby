@@ -10,6 +10,7 @@
 #include "Component/ColliderCircle.h"
 #include "EffectSceneChangeAlpha.h"
 #include "../Scene/Float1Scene.h"
+#include "../Scene/Green1LoadingScene.h"
 
 class CAnimationSequence2DInstance;
 
@@ -247,6 +248,10 @@ void CBossTree::ChangeSceneToFloat1Scene()
 {
 	Destroy();
 
+	CSceneManager::GetInst()->CreateNewScene();
+	CSceneManager::GetInst()->CreateSceneMode<CGreen1LoadingScene>(false);
+
+	/*
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
@@ -254,6 +259,7 @@ void CBossTree::ChangeSceneToFloat1Scene()
 	{
 		CSceneManager::GetInst()->ChangeNextScene();
 	}
+	*/
 }
 
 

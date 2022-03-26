@@ -14,7 +14,6 @@
 // 생성자와 소멸자에 세팅해두게 되면, 임계영역에 나올 때 LeaveCriticalSection를
 // 반드시 해주므로 DeadLock에 걸릴 일이 없다.
 
-
 // CRITICAL_SECTION crt;
 // CSync sync(&crt);
 

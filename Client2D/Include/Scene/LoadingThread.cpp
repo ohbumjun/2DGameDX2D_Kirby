@@ -1,8 +1,10 @@
 #include "LoadingThread.h"
 #include "Scene/SceneManager.h"
 #include "MainScene.h"
+#include "Float1Scene.h"
 
-CLoadingThread::CLoadingThread()
+CLoadingThread::CLoadingThread() :
+	m_LoadingSceneType(LoadingSceneType::Green1)
 {}
 
 CLoadingThread::~CLoadingThread()
@@ -10,7 +12,6 @@ CLoadingThread::~CLoadingThread()
 
 bool CLoadingThread::Init()
 {
-	// 쓰레드 생성
 	if (!CThread::Init())
 		return false;
 
@@ -19,16 +20,40 @@ bool CLoadingThread::Init()
 
 void CLoadingThread::Run()
 {
-	CSceneManager::GetInst()->CreateNewScene(false);
-	CMainScene* MainScene = CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
+	switch (m_LoadingSceneType)
+	{
+	case LoadingSceneType::Green1 :
+		{
+		CSceneManager::GetInst()->CreateNewScene(false);
 
-	MainScene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
 
-	MainScene->Init();
+			CMainScene* MainScene = CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
 
-	AddMessage(false, 1.f);
+			MainScene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
 
-	Sleep(1000);
+			MainScene->Init();
 
-	AddMessage(true, 1.f);
+			AddMessage(true, 1.f);
+		}
+		break;
+
+	case LoadingSceneType::Float1:
+	{
+		CSceneManager::GetInst()->CreateNewScene(false);
+
+		CFloat1Scene* Float1Scene = CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
+
+		Float1Scene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
+
+		// CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+		Float1Scene->PrepareResources();
+
+		if (CSceneManager::GetInst()->GetNextScene()->Load("Float1.scn", SCENE_PATH))
+		{
+			AddMessage(true, 1.f);
+			// CSceneManager::GetInst()->ChangeNextScene();
+		}
+	}
+		break;
+	}
 }

@@ -6,40 +6,37 @@ class CThread
 {
 protected:
 	CThread();
-	virtual ~CThread() = 0;
+	virtual ~CThread();
+private :
+	std::string m_Name;
+	HANDLE m_Thread;
+	HANDLE m_StartEvent;
 
-private:
-	std::string	m_Name;
-	HANDLE		m_Thread;
-	HANDLE		m_StartEvent;
+protected :
+	bool m_Loop;
 
-protected:
-	bool		m_Loop;
-
-public:
+public :
 	void SetLoop(bool Loop)
-	{
+{
 		m_Loop = Loop;
-	}
-
-public:
+}
+public :
 	bool Init();
-	virtual void Run() = 0;
-
-public:
+	virtual void Run();
+public :
 	void Start();
 	void Pause();
 	void Resume();
 
-private:
+private :
 	void WaitStartEvent();
-	// 멀티스레드 함수 형태
+	// 멀티 쓰레드 함수 형태
 	static unsigned int __stdcall ThreadFunction(void* Arg);
 
-public:
-	template <typename T>
+public :
+	template<typename T>
 	static T* CreateThread(const std::string& Name)
-	{
+{
 		T* Thread = new T;
 
 		Thread->m_Name = Name;
@@ -47,10 +44,11 @@ public:
 		if (!Thread->Init())
 		{
 			SAFE_DELETE(Thread);
+
 			return nullptr;
 		}
 
 		return Thread;
-	}
+}
 };
 

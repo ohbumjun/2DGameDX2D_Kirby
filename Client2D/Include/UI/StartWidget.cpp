@@ -2,7 +2,7 @@
 #include "Device.h"
 #include "Engine.h"
 #include "Scene/SceneManager.h"
-#include "../Scene/LoadingScene.h"
+#include "../Scene/Green1LoadingScene.h"
 
 CStartWidget::CStartWidget() :
 	m_StartButton(nullptr),
@@ -75,7 +75,7 @@ CStartWidget* CStartWidget::Clone()
 void CStartWidget::StartButtonClick()
 {
 	CSceneManager::GetInst()->CreateNewScene();
-	CSceneManager::GetInst()->CreateSceneMode<CLoadingScene>(false);
+	CSceneManager::GetInst()->CreateSceneMode<CGreen1LoadingScene>(false);
 
 }
 

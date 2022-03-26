@@ -138,7 +138,7 @@
     <ClCompile Include="Scene\StartScene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\LoadingScene.cpp">
+    <ClCompile Include="Scene\Green1LoadingScene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
     <ClCompile Include="UI\LoadingWidget.cpp">
@@ -473,7 +473,7 @@
     <ClInclude Include="Scene\StartScene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\LoadingScene.h">
+    <ClInclude Include="Scene\Green1LoadingScene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
     <ClInclude Include="UI\LoadingWidget.h">

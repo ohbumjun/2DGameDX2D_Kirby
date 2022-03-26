@@ -7,6 +7,11 @@ struct LoadingMessage {
 	float Percent;
 };
 
+enum class LoadingSceneType {
+	Green1,
+	Float1
+};
+
 enum class Monster_AI {
 	Idle,
 	Walk,

@@ -82,13 +82,23 @@ void CFloat1Scene::CreateParticle()
 
 void CFloat1Scene::PrepareResources()
 {
+	// Material을 세팅한다.
 	CSceneMode::PrepareResources();
+
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.3f);
 
 	CreateMaterial();
 
 	CreateAnimationSequence();
 
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.6f);
+
 	CreateParticle();
+
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.8f);
 
 	CreateSound();
 }
