@@ -11,8 +11,6 @@
 class CFightMonsterAttack;
 
 CSwordKirbyState::CSwordKirbyState() :
-	m_GoUpTimeMax(0.4f),
-	m_GoUpTime(0.f),
 	m_FallAttackTime(0.f),
 	m_FallAttackTimeMax(0.4f),
 	m_FallAttackState(false),
@@ -26,7 +24,11 @@ CSwordKirbyState::~CSwordKirbyState()
 
 void CSwordKirbyState::Attack()
 {
+	SetWorldScale(Vector3(m_InitWorldScale.x * 1.8f, m_InitWorldScale.y * 1.8f, m_InitWorldScale.z));
+
 	m_Player->ChangePlayerAttackAnimation();
+
+	m_Player->WeakJump();
 }
 
 void CSwordKirbyState::FallDownAttack()
@@ -85,60 +87,68 @@ void CSwordKirbyState::GoUpAttack()
 	if (m_FallAttackState)
 		return;
 
-	if (!m_GoUpState)
-	{
-		m_InitWorldScale = GetWorldScale();
-	}
-
+	if (m_GoUpState)
+		return;
+	
 	m_GoUpState = true;
 
-	m_GoUpTime = m_GoUpTimeMax;
+	SetWorldScale(Vector3(m_InitWorldScale.x * 3.5f, m_InitWorldScale.y * 2.5f, m_InitWorldScale.z));
 
 	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
 
-	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+	m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 3.5f, m_InitColliderLength.y * 2.0f);
 
-	BackEffect->SetWorldPos(GetWorldPos());
-	BackEffect->SetWorldScale(150.f, 150.f, 1.f);
-	BackEffect->SetLifeTime(0.3f);
+	m_Player->GetBodyCollider()->SetCollisionProfile("PlayerAttack");
 
+	m_GoUpReachedTop = false;
 
-	// 왼쪽
-	if (m_Player->GetObjectMoveDir().x < 0)
-		BackEffect->SetLeftAttackDir();
-	// 오른쪽
-	else
-		BackEffect->SetRightAttackDir();
+	m_GoUpDist = 0.f;
+
+	m_Player->SetPhysicsSimulate(false);
 }
 
 void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
-	if (m_GoUpTime > 0.f)
+	if (m_GoUpState)
 	{
-		m_GoUpTime -= DeltaTime;
+		const float Dist = DeltaTime * 1000.f;
 
 		m_Player->SetAttackEnable(true);
 
-		SetWorldScale(Vector3(m_InitWorldScale.x * 3.f, m_InitWorldScale.y * 3.f, m_InitWorldScale.z));
-
-		if (m_Player->GetObjectMoveDir().x > 0)
-			AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 900.f);
-		else
-			AddWorldPos(Vector3(1.0f * -1.f, 0.f, 0.f) * DeltaTime * 900.f);
-
-		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 2.3f, m_InitColliderLength.y * 1.3f);
-
-		if (m_GoUpTime <= 0.f)
+		if (!m_GoUpReachedTop)
 		{
-			m_GoUpState = false;
+			AddWorldPos(Vector3(0.f, 1.f, 0.f) * Dist);
 
-			SetWorldScale(m_InitWorldScale);
+			m_GoUpDist += Dist;
 
-			m_Player->ChangePlayerFallAnimation();
+			if (m_GoUpDist >= 500.f)
+			{
+				m_GoUpReachedTop = true;
+			}
+		}
+		else
+		{
+			AddWorldPos(Vector3(0.f, -1.f, 0.f) * Dist);
 
-			m_Player->SetAttackEnable(false);
+			if (m_Player->IsBottomCollided())
+			{
+				m_GoUpState = false;
 
-			m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
+				m_Player->SetAttackEnd();
+
+				m_Player->ChangePlayerWalkAnimation();
+
+				m_Player->GetBodyCollider()->SetCollisionProfile("Player");
+
+				m_Player->SetPhysicsSimulate(true);
+
+				SetWorldScale(m_InitWorldScale);
+
+				m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
+
+				// 한번 더 공격 
+				NormalAttackCallback();
+			}
 		}
 	}
 }
@@ -169,6 +179,8 @@ void CSwordKirbyState::UpdateFallAttack(float DeltaTime)
 			m_Player->SetAttackEnable(false);
 
 			m_Player->ChangePlayerFallAnimation();
+
+			SetWorldScale(m_InitWorldScale);
 		}
 	}
 }
@@ -191,6 +203,8 @@ bool CSwordKirbyState::Init()
 
 	SetAnimationInstance(AnimationInstance);
 
+	m_Animation->Play();
+
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
 
@@ -204,6 +218,9 @@ bool CSwordKirbyState::Init()
 		this, &CSwordKirbyState::NormalAttackCallback);
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CSwordKirbyState::NormalAttackCallback);
+
+	// m_InitWorldScale = GetWorldScale();
+	m_InitWorldScale = Vector3(77.f, 77.f, 1.f);
 
 	return true;
 }
@@ -242,6 +259,8 @@ void CSwordKirbyState::NormalAttackCallback()
 	// 왼쪽을 보고 있다면
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
+	SetWorldScale(m_InitWorldScale);
+
 	if (PlayerMoveDir.x < 0.f)
 	{
 		// 가운데
@@ -264,8 +283,9 @@ void CSwordKirbyState::NormalAttackCallback()
 		AttackEffect->SetKirbyOwner(this);
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
+
 	m_Player->SetAttackEnable(false);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
-	m_Player->ChangePlayerIdleAnimation();
+	m_Player->ChangePlayerFallAnimation();
 }

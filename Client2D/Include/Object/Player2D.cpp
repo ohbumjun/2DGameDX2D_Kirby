@@ -47,6 +47,7 @@ CPlayer2D::CPlayer2D() :
 	m_IsSwimming(false),
 	m_ToLeftWhenRightMove(false),
 	m_RightMovePush(false),
+	m_IsWeakJump(false),
 	m_SlideAttack(false),
 	m_LeftMove(false),
 	m_ToRightWhenLeftMove(false),
@@ -82,6 +83,8 @@ CPlayer2D::CPlayer2D() :
 	m_HP = 800.f;
 	m_HPMax = 800.f;
 	m_AttackAbility = 50.f;
+
+	m_InitJumpVelocity = m_JumpVelocity;
 
 	m_MoveVelocityMax = m_LeverMaxMoveVelocity + m_DashMaxMoveVelocity;
 }
@@ -1706,7 +1709,28 @@ void CPlayer2D::SimpleJump()
 			ChangePlayerWalkAnimation();
 		else
 			ChangePlayerJumpAnimation();
+	}
+}
 
+void CPlayer2D::WeakJump()
+{
+	if (!m_Jump)
+	{
+		m_Jump = true;
+
+		m_IsWeakJump = true;
+
+		m_IsGround = false;
+
+		m_FallTime = 0.f;
+
+		m_FallStartY = GetWorldPos().y;
+
+		m_IsBottomCollided = false;
+
+		m_JumpStart = true;
+
+		m_JumpVelocity = 30.f;
 	}
 }
 
@@ -2060,9 +2084,14 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 			}
 		}
 
-		// SetObjectLand(
-
 		m_IsFalling = false;
+
+		// Sword Kirby의 Normal Attack시 살짝 점프하여 공격할 것이다.
+		if (m_IsWeakJump)
+		{
+			m_IsWeakJump = false;
+			m_JumpVelocity = m_InitJumpVelocity;
+		}
 	}
 }
 
@@ -2719,7 +2748,6 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (m_IsLadderGoingUp)
 		return;
 
-	m_IsAttacking = true;
 
 	if (m_IsSwimming)
 	{
@@ -2750,6 +2778,8 @@ void CPlayer2D::Attack(float DeltaTime)
 	{
 		if (!m_IsSpecialStateChanged)
 			return;
+
+		m_IsAttacking = true;
 
 		ResetMoveInfo();
 

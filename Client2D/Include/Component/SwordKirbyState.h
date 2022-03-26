@@ -15,9 +15,8 @@ protected:
 private:
     // Go Up
     bool m_GoUpState;
-    float m_GoUpTime;
-    float m_GoUpTimeMax;
-    bool m_InitScaleSet;
+    bool m_GoUpReachedTop;
+    float m_GoUpDist;
     Vector3 m_InitWorldScale;
     // Fall Attack
     bool m_FallAttackState;

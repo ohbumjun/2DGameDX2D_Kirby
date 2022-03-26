@@ -77,6 +77,10 @@ private :
 	bool m_TriangleJump;
 	float m_TriangleJumpVelocityRatio;
 
+	// 약한 점프
+	bool m_IsWeakJump;
+	float m_InitJumpVelocity;
+
 	// 하단 점프
 	bool m_JumpDown;
 	float m_JumpDownDist;
@@ -244,6 +248,7 @@ private :
 	// Fly & Jump
 	void FlyAfterJump(float DeltaTime);
 	void SimpleJump();
+	void WeakJump();
 	void Jump(float DeltaTime);
 	void TriangleJumpLeft(float DeltaTime);
 	void TriangleJumpRight(float DeltaTime);
