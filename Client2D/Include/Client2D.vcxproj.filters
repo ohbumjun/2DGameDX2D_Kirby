@@ -390,9 +390,6 @@
     <ClCompile Include="Scene\Float7Scene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
-    <ClCompile Include="ClientManager.cpp">
-      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
-    </ClCompile>
     <ClCompile Include="Object\EffectChangeToFloat7.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
@@ -416,6 +413,15 @@
     </ClCompile>
     <ClCompile Include="Object\BombKirbyThrowBomb.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\SwordMonster.cpp">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\SwordMonsterAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -742,6 +748,12 @@
     </ClInclude>
     <ClInclude Include="Object\BombKirbyThrowBomb.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SwordMonster.h">
+      <Filter>02. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SwordMonsterAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

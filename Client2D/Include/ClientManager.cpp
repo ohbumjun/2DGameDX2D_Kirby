@@ -32,6 +32,7 @@
 #include "Object/FireMonster.h"
 #include "Object/BombMonster.h"
 #include "Object/FightMonster.h"
+#include "Object/SwordMonster.h"
 #include "Object/LineContainer.h"
 #include "Object/Block.h"
 #include "Object/Awl.h"
@@ -276,6 +277,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CBombMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBombMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CSwordMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CSwordMonster>();
 		return Obj;
 	}
 	if (GameObjectTypeID == typeid(CTileMap).hash_code())
