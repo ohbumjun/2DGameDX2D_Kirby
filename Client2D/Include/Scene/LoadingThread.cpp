@@ -43,7 +43,7 @@ void CLoadingThread::Run()
 		CFloat1Scene* Float1Scene = CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
 
 		Float1Scene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
-
+		
 		// CSceneManager::GetInst()->GetNextScene()->PrepareResources();
 		Float1Scene->PrepareResources();
 

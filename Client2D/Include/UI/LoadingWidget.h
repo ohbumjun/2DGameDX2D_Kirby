@@ -14,8 +14,10 @@ protected:
     ~CLoadingWidget();
 private :
     CSharedPtr<CUIProgressBar> m_ProgressBar;
-    CSharedPtr<CUIImage> m_Back;
+    CSharedPtr<CUIImage> m_FrontImage;
+    CSharedPtr<CUIImage> m_BackImage;
 public :
+    void SetTexture(const char* Name, const TCHAR* FileName);
     virtual bool Init() override;
 public :
     void SetLoadingPercent(float Percent)

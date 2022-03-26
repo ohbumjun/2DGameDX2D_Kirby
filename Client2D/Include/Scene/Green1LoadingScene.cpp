@@ -15,10 +15,12 @@ CGreen1LoadingScene::~CGreen1LoadingScene()
 
 bool CGreen1LoadingScene::Init()
 {
-	if (!CSceneMode::Init())//
+	if (!CSceneMode::Init())
 		return false;
 
 	m_LoadingWidget = m_Scene->GetViewPort()->CreateUIWindow<CLoadingWidget>("LoadingWidget");
+
+	m_LoadingWidget->SetTexture("Green1LoadingScene", TEXT("Project/Scene/Green1_LoadingScene.jpg"));
 
 	m_LoadingThread = CThread::CreateThread<CLoadingThread>("Loading");
 

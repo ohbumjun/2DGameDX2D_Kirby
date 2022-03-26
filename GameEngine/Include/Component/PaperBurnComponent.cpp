@@ -12,7 +12,7 @@ CPaperBurnComponent::CPaperBurnComponent()
 
 	m_CBuffer->Init();
 
-	m_FinishTime = 2.f;
+	m_FinishTime = 6.f;
 
 	m_StartPaperBurn = false;
 
