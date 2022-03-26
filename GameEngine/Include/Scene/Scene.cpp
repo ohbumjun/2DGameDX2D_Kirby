@@ -118,6 +118,11 @@ void CScene::Update(float DeltaTime)
 			++iter;
 			continue;
 		}
+		if ((*iter)->IsStop())
+		{
+			++iter;
+			continue;
+		}
 
 		(*iter)->Update(DeltaTime);
 		++iter;
@@ -144,6 +149,11 @@ void CScene::PostUpdate(float DeltaTime)
 			continue;
 		}
 		if (!(*iter)->IsEnable())
+		{
+			++iter;
+			continue;
+		}
+		if ((*iter)->IsStop())
 		{
 			++iter;
 			continue;
@@ -410,6 +420,20 @@ void CScene::RemoveDuplicateObject(const std::string& Name)
 			continue;
 		}
 		++iterFound;
+	}
+}
+
+void CScene::SetStopEnableObjectsExceptPlayer(size_t TypeID, bool Enable)
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter)->GetTypeID() == TypeID)
+			continue;
+
+		(*iter)->SetStop(Enable);
 	}
 }
 

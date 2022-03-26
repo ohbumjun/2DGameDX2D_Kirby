@@ -14,8 +14,12 @@ private :
     float m_SceneChangeTime;
     float m_SceneChangeTimeMax;
     std::function<void()> m_SceneChangeCallback;
-    
+    bool m_MaintainOpacity;
 public :
+    void SetMaintainOpacity(bool Enable)
+{
+        m_MaintainOpacity = Enable;
+}
     void SetSceneStart(bool Enable)
 {
         m_SceneStart = Enable;
@@ -29,6 +33,11 @@ public :
         m_Sprite->SetOpacity(0.f);
     }
 }
+    void SetOpacity(float Opacity)
+    {
+        m_Sprite->SetOpacity(Opacity);
+    }
+    void SetBlackTexture();
 private :
     void UpdateSceneChangeTime(float DeltaTime);
 public:

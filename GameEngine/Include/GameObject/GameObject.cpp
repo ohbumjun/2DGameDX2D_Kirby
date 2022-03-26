@@ -8,8 +8,9 @@
 CGameObject::CGameObject() :
 	m_Scene(nullptr),
 	m_Parent(nullptr),
-m_LifeTime(0.f),
-m_ParentName{}
+	m_Stop(false),
+	m_LifeTime(0.f),
+	m_ParentName{}
 {
 	SetTypeID<CGameObject>();
 }
@@ -326,11 +327,6 @@ void CGameObject::Save(FILE* pFile)
 
 	int ObjectCount = (int)m_vecObjectComponent.size();
 	fwrite(&ObjectCount, sizeof(int), 1, pFile);
-
-	if (ObjectCount > 10) // 디버그용 
-	{
-		int NewObjCount = ObjectCount;
-	}
 
 	for (int i = 0; i < ObjectCount; i++)
 	{

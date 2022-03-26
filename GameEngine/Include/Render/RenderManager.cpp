@@ -140,6 +140,12 @@ bool CRenderManager::Init()
 	Layer->LayerPriority = 0;
 	m_RenderLayerList.push_back(Layer);
 
+	// Player가 Change 하는 순간 !
+	Layer = new RenderLayer;
+	Layer->Name = "PlayerChange";
+	Layer->LayerPriority = INT_MAX;
+	m_RenderLayerList.push_back(Layer);
+
 	m_DepthDisable = FindRenderState("DepthDisable");
 	m_AlphaDisable = FindRenderState("AlphaBlend");
 

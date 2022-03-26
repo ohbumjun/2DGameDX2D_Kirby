@@ -42,13 +42,23 @@ protected:
 	std::string m_ParentName;
 	std::vector<CSharedPtr<CGameObject>> m_vecChildObject;
 protected:
+	bool m_Stop;
 	float m_LifeTime;
+public :
+	bool IsStop() const
+{
+		return m_Stop;
+}
 public:
 	void AddChildGameObject(CGameObject* Child)
 	{
 		Child->m_ParentName = m_Name;
 		Child->m_Parent = this;
 		m_vecChildObject.push_back(Child);
+	}
+	void SetStop(bool Enable)
+	{
+		m_Stop = Enable;
 	}
 	void SetLifeTime(float LifeTime)
 	{

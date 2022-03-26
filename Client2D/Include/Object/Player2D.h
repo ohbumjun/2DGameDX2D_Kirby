@@ -135,7 +135,9 @@ private :
 	bool m_IsChanging;
 	float m_ChangeTime;
 	float m_ChangeTimeMax;
+	CSharedPtr<class CEffectSceneChangeAlpha> m_ChangeBlackBackGround;
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
+	
 
 public :
 	bool IsBeingHit() const

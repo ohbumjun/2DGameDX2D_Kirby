@@ -4,14 +4,25 @@
 
 
 CEffectSceneChangeAlpha::CEffectSceneChangeAlpha() :
-	m_SceneStart(true)
+	m_SceneStart(true),
+	m_MaintainOpacity(false)
 {}
 
 CEffectSceneChangeAlpha::~CEffectSceneChangeAlpha()
 {}
 
+void CEffectSceneChangeAlpha::SetBlackTexture()
+{
+	m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
+		TEXT("Project/Item/BlackBack.jpg"));
+
+}
+
 void CEffectSceneChangeAlpha::UpdateSceneChangeTime(float DeltaTime)
 {
+	if (m_MaintainOpacity)
+		return;
+
 	// 서서히 Opacity를 증가시킨다.
 	float NewOpacity = -1.f;
 	bool End = false;
@@ -23,7 +34,7 @@ void CEffectSceneChangeAlpha::UpdateSceneChangeTime(float DeltaTime)
 
 		NewOpacity = m_Sprite->GetMaterial()->GetOpacity() - DeltaTime * 0.4f;
 
-		if (NewOpacity <= 00.1f)
+		if (NewOpacity <= 0.1f)
 			End = true;
 	}
 	else

@@ -26,6 +26,7 @@
 #include "SpecialChangeParticle.h"
 #include "EffectStar.h"
 #include "BubbleParticle.h"
+#include "EffectSceneChangeAlpha.h"
 #include "../Object/Monster.h"
 #include "EffectWaterAttack.h"
 #include "EffectWaterBlast.h"
@@ -2092,6 +2093,13 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 			m_IsWeakJump = false;
 			m_JumpVelocity = m_InitJumpVelocity;
 		}
+
+		// 혹시나, Player Change 이후, Black 배경이 사라지지 않았다면, 사라지게 한다.
+		if (m_ChangeBlackBackGround && !m_IsChanging)
+		{
+			m_ChangeBlackBackGround->Destroy();
+			m_ChangeBlackBackGround = nullptr;
+		}
 	}
 }
 
@@ -2640,6 +2648,18 @@ void CPlayer2D::SpecialChange()
 
 	m_IsChanging = false;
 
+	// Player 외 모든 Object 들을 멈춘다.
+	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
+
+	m_RootComponent->SetLayerName("Default");
+
+	// Change 할 때 생긴 Black BackGround를 제거한다.
+	if (m_ChangeBlackBackGround)
+	{
+		m_ChangeBlackBackGround->Destroy();
+		// m_ChangeBlackBackGround = nullptr;
+	}
+
 	ChangePlayerIdleAnimation();
 }
 
@@ -2663,7 +2683,20 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 
 	StopPlayer();
 
+	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
+
 	ChangePlayerChangeAnimation();
+
+	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	m_ChangeBlackBackGround->SetBlackTexture();
+
+	m_ChangeBlackBackGround->SetOpacity(0.7f);
+
+	m_ChangeBlackBackGround->SetMaintainOpacity(true);
+
+	// 화면 가장 앞에 보이게 세팅한다.
+	m_RootComponent->SetLayerName("PlayerChange");
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()

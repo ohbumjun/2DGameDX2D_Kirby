@@ -123,6 +123,8 @@ private :
 	template<typename T>
 	void DeleteGameObjectByType();
 public :
+	void SetStopEnableObjectsExceptPlayer(size_t TypeID, bool Enable);
+public :
 	CGameObject* FindGameObject(const char* ObjectName) const;
 	CGameObject* FindGameObjectByTypeID(size_t TypeID) const;
 	void SetAutoChange(bool Change);

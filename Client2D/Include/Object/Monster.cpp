@@ -505,24 +505,26 @@ void CMonster::UpdateBeingPulled(float DeltaTime)
 	Vector3 MonsterPos = GetWorldPos();
 
 	CPlayer2D* Player2D = (CPlayer2D*)m_Scene->GetPlayerObject();
-
-	if (!Player2D)
-		return;
-
+	
 	m_PulledDestPos = Player2D->GetWorldPos();
 
 	Vector3 PulledDir = m_PulledDestPos - MonsterPos;
+
 	PulledDir.Normalize();
 
 	m_BeginPulledAccelSum += m_BeginPulledAccel;
 
 	AddWorldPos(Vector3(PulledDir) * DeltaTime * m_BeginPulledAccelSum);
 
-	if (MonsterPos.Distance(m_PulledDestPos) <= 10.f)
+	float PullLimitDist = Player2D->GetWorldScale().x * 0.5f + GetWorldScale().x * 0.5f;
+
+	if (MonsterPos.Distance(m_PulledDestPos) <= PullLimitDist + 5.f)
 	{
-		m_IsBeingPulled = false;
+		// m_IsBeingPulled = false;
 
 		Enable(false);
+
+		m_ColliderBody->Enable(false);
 
 		// Destroy();
 
@@ -884,6 +886,14 @@ void CMonster::OnMonsterBodyCollisionBegin(const CollisionResult& Result)
 
 	// 이미 맞아서 데미지 받아 이동중이라면
 	if (Player->IsBeingHit())
+		return;
+
+	// 현재 자신이 당겨지고 있는 중이라면
+	if (m_IsBeingPulled)
+		return;
+
+	// Player 의 본체일 때만 Damage --> Pull Right, Left Collider 일 때는 X
+	if (Player->GetBodyCollider() != Result.Dest)
 		return;
 
 	Player->Damage(m_AttackAbility);
