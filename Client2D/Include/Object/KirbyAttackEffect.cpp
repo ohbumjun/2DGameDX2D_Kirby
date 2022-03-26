@@ -362,12 +362,9 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 
 		if (!DestMonster)
 			return;
-
-		// Player 의 Attack + KirbyOwner 의 Attack
-		float DamageAmount = m_KirbyOwner->GetExtraAttackAbility() + m_KirbyOwner->GetPlayer()->GetAttackAbility();
-
+		
 		// HP Bar 달게 하기
-		DestMonster->Damage(DamageAmount);
+		DestMonster->Damage(m_AttackDamage);
 
 		DestMonster->SetBeingHit(true);
 
@@ -387,7 +384,7 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
 
-			DamageFont->SetDamage((int)DamageAmount);
+			DamageFont->SetDamage((int)m_AttackDamage);
 		}
 	}
 }

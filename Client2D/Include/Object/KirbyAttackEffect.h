@@ -20,8 +20,13 @@ private:
     float m_AttackObjectSpeed;
     KirbyAttackEffect_Type m_AttackType;
     class CKirbyState* m_KirbyOwner;
+    float m_AttackDamage;
     CSharedPtr<class CCameraComponent> m_Camera;
 protected:
+    void SetAttackDamage(float AttackDamage)
+    {
+        m_AttackDamage = AttackDamage;
+    }
     void SetKirbyOwner(class CKirbyState* Owner)
     {
         m_KirbyOwner = Owner;

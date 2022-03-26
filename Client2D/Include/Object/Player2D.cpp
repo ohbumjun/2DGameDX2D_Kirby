@@ -2775,7 +2775,7 @@ void CPlayer2D::Attack(float DeltaTime)
 		}
 		else
 		{
-			ChangePlayerAttackAnimation();
+			// ChangePlayerAttackAnimation();
 
 			m_KirbyState->Attack();
 		}

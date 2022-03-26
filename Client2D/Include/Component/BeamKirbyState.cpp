@@ -27,7 +27,9 @@ CBeamKirbyState::~CBeamKirbyState()
 {}
 
 void CBeamKirbyState::Attack()
-{}
+{
+	m_Player->ChangePlayerAttackAnimation();
+}
 
 void CBeamKirbyState::FallDownAttack()
 {
@@ -60,6 +62,8 @@ void CBeamKirbyState::FallDownAttack()
 		AttackEffect->SetWorldScale(60.f, 60.f, 1.f);
 
 		AttackEffect->SetLeftAttackDir(-1.f);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// AttackEffect->SetOwner(this);
 
@@ -129,7 +133,10 @@ void CBeamKirbyState::GoUpAttack()
 			TraceDir.Normalize();
 
 			CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
 			AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpark);
+
+			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 			AttackEffect->SetRightAttackDir(TraceDir.y);
 
@@ -289,6 +296,7 @@ void CBeamKirbyState::NormalAttackCallback()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(TraceUpDir.y);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 가운데
 		 AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
@@ -297,6 +305,7 @@ void CBeamKirbyState::NormalAttackCallback()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(0.f);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 아래
 		TraceDownDir = Vector3(TraceLeftX, TraceDownY, GetWorldPos().z) - GetWorldPos();
@@ -307,6 +316,7 @@ void CBeamKirbyState::NormalAttackCallback()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetLeftAttackDir(TraceDownDir.y);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
 	// 오른쪽으로 보고 있다면 --> 오른쪽 공격
 	else
@@ -321,6 +331,7 @@ void CBeamKirbyState::NormalAttackCallback()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(TraceUpDir.y);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 가운데 
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
@@ -329,6 +340,7 @@ void CBeamKirbyState::NormalAttackCallback()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 아래
 		TraceDownDir = Vector3(TraceRightX, TraceDownY, GetWorldPos().z) - GetWorldPos();
@@ -340,6 +352,7 @@ void CBeamKirbyState::NormalAttackCallback()
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetRightAttackDir(TraceDownDir.y);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.

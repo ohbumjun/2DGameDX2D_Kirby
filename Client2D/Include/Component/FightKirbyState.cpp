@@ -25,7 +25,9 @@ CFightKirbyState::~CFightKirbyState()
 {}
 
 void CFightKirbyState::Attack()
-{}
+{
+	m_Player->ChangePlayerAttackAnimation();
+}
 
 void CFightKirbyState::FallDownAttack()
 {
@@ -48,6 +50,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x ,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 위
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -56,6 +59,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y + 50.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 위 * 2
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -64,6 +68,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x,
 			GetWorldPos().y + 100.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 아래
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -72,6 +77,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y - 50.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 아래 * 2
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -80,6 +86,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x,
 			GetWorldPos().y - 100.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
 	// 오른쪽으로 보고 있다면 
 	else
@@ -90,6 +97,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 위
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -98,6 +106,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y + 50.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 위 * 2
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -106,6 +115,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x,
 			GetWorldPos().y + 100.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 아래
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -114,6 +124,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y - 50.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		// 아래 * 2
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -122,6 +133,7 @@ void CFightKirbyState::FallDownAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x,
 			GetWorldPos().y - 100.f, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
 
 	m_Player->SetAttackEnable(false);
@@ -159,6 +171,7 @@ void CFightKirbyState::GoUpAttack()
 	AttackEffect->SetWorldScale(400.f, 400.f, 1.f);
 	AttackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), AttackEffect->GetWorldScale().x * 0.5f);
 	AttackEffect->SetKirbyOwner(this);
+	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 	AttackEffect->SetWorldPos(GetWorldPos().x,
 		GetWorldPos().y - GetWorldScale().y, GetWorldPos().z);
@@ -317,6 +330,7 @@ void CFightKirbyState::NormalAttackCallback()
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
 	// 오른쪽으로 보고 있다면 
 	else
@@ -330,6 +344,7 @@ void CFightKirbyState::NormalAttackCallback()
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 		GetWorldPos().y, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 	}
 
 	m_Player->SetAttackEnable(false);

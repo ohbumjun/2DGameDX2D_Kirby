@@ -69,6 +69,8 @@ void CBombKirbyState::MakeFallDownBomb()
 
 	AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombFall);
 
+	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+
 	AttackEffect->SetLeftAttackDir(0.f);
 
 	AttackEffect->SetAttackDirX(0.f);
@@ -233,6 +235,8 @@ void CBombKirbyState::NormalAttackCallback()
 
 		AttackEffect->SetLeftAttackDir(0.f);
 
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+
 		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
 
@@ -251,6 +255,8 @@ void CBombKirbyState::NormalAttackCallback()
 
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		AttackEffect->ApplyJumpEffect();
 
