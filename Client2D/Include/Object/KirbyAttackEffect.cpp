@@ -237,7 +237,24 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.3f);
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.3f);
 	}
-	break;
+		break;
+	case KirbyAttackEffect_Type::SwordFall:
+	{
+		m_AttackDistLimitMax = 1000.f;
+		m_AttackObjectSpeed = 900.f;
+
+		m_MainSprite->SetWorldScale(250.f, 250.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.5f);
+
+		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+			"KirbyFallSwordAttackEffect", TEXT("Kirby_Cutter_Boomerang.anim"));
+
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
+
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.5f);
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.5f);
+	}
+		break;
 	}
 }
 

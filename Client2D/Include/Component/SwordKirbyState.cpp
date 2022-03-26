@@ -36,50 +36,42 @@ void CSwordKirbyState::FallDownAttack()
 	if (m_GoUpState)
 		return;
 
+	SetWorldScale(Vector3(m_InitWorldScale.x * 1.8f, m_InitWorldScale.y * 1.8f, m_InitWorldScale.z));
+
 	m_FallAttackState = true;
 
 	m_FallAttackTime = m_FallAttackTimeMax;
 
-	// 총 10개의 Object를 만들어낸다.
-	float XLeftEnd = GetWorldPos().x - (GetWorldScale().x * 0.5f) * 6.f;
-	float XStepSize = (GetWorldScale().x * 0.5f);
+	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
-	for (int i = 0; i < 13; i++)
+	// 왼쪽을 보고 있다면
+	if (PlayerMoveDir.x < 0.f)
 	{
-		// Attack Effect
+		// 가운데
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-
-		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FireFall);
-
-		AttackEffect->SetRightAttackDir(-1.f); // 해당 Animation은 EffectRight 만이 존재한다.
-
-		AttackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::SwordFall);
+		AttackEffect->SetLeftAttackDir(-1.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x,
 			GetWorldPos().y, GetWorldPos().z);
-
-		AttackEffect->SetAttackDirX(0.f);
-
-		AttackEffect->SetBottomCollisionEnable(true);
-
 		AttackEffect->SetKirbyOwner(this);
-
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
-
-		// Attack Back Effect
-		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
-
-		BackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
-			GetWorldPos().y, GetWorldPos().z);
-
-		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
-
-		BackEffect->AddRelativeRotationZ(-90.f);
-
-		BackEffect->SetLifeTime(0.3f);
-
-		BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.5f);
-
-		BackEffect->GetColliderBody()->SetCollisionProfile("PlayerAttack");
 	}
+	// 오른쪽으로 보고 있다면 
+	else
+	{
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::SwordFall);
+		AttackEffect->SetRightAttackDir(-1.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+	}
+
+	m_Player->SetAttackEnable(false);
+
+	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
+	m_Player->ChangePlayerFallDownAttackAnimation();
 }
 
 void CSwordKirbyState::GoUpAttack()
