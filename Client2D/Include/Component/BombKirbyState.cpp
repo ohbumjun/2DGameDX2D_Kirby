@@ -37,6 +37,10 @@ void CBombKirbyState::Attack()
 			m_ThrowReadyBomb->SetLeft();
 
 			m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
+
+			m_Player->GetRootComponent()->AddChild(m_ThrowReadyBomb->GetRootComponent());
+
+			m_ThrowReadyBomb->GetRootComponent()->SetRelativePos(0.f, 0.f, 0.f);
 		}
 		else
 		{
@@ -47,6 +51,10 @@ void CBombKirbyState::Attack()
 			m_ThrowReadyBomb->SetRight();
 
 			m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
+
+			m_Player->GetRootComponent()->AddChild(m_ThrowReadyBomb->GetRootComponent());
+
+			m_ThrowReadyBomb->GetRootComponent()->SetRelativePos(0.f, 0.f, 0.f);
 		}
 
 		m_AttackReady = true;
@@ -59,27 +67,31 @@ void CBombKirbyState::Attack()
 		m_Player->ChangePlayerAttackAnimation();
 
 		m_AttackReady = false;
-
-		if (m_ThrowReadyBomb)
-		{
-			m_ThrowReadyBomb->Destroy();
-			m_ThrowReadyBomb = nullptr;
-		}
 	}
 }
 
 void CBombKirbyState::FallDownAttack()
 {
-	if (m_GoUpState)
-		return;
+	// 던지기 위한 폭탄을 현재 들고 있는 상태라면 
+	if (m_AttackReady)
+	{
+		m_Player->ChangePlayerAttackAnimation();
 
-	m_FallAttackState = true;
+		m_AttackReady = false;
+	}
+	else
+	{
+		if (m_GoUpState)
+			return;
 
-	m_FallAttackTime = m_FallAttackTimeMax;
+		m_FallAttackState = true;
 
-	m_Player->SetPhysicsSimulate(false);
+		m_FallAttackTime = m_FallAttackTimeMax;
 
-	m_Player->ChangePlayerFallDownAttackAnimation();
+		m_Player->SetPhysicsSimulate(false);
+
+		m_Player->ChangePlayerFallDownAttackAnimation();
+	}
 }
 
 void CBombKirbyState::GoUpAttack()
@@ -87,24 +99,16 @@ void CBombKirbyState::GoUpAttack()
 	if (m_FallAttackState)
 		return;
 
-	if (!m_GoUpState)
-	{
-		m_InitWorldScale = GetWorldScale();
-	}
-
 	m_GoUpState = true;
 
-	m_GoUpTime = m_GoUpTimeMax;
-
-	m_Player->SetPhysicsSimulate(false);
-
+	m_Player->ChangePlayerAttackAnimation();
 }
 
 void CBombKirbyState::MakeFallDownBomb()
 {
 	if (m_FallDownBombMade)
 		return;
-
+	
 	m_FallDownBombMade = true;
 
 	// 가운데
@@ -144,29 +148,7 @@ void CBombKirbyState::SetFallAttackEnd()
 
 void CBombKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
-	if (m_GoUpTime > 0.f)
-	{
-		m_GoUpTime -= DeltaTime;
 
-		m_Player->SetAttackEnable(true);
-
-		SetWorldScale(Vector3(m_InitWorldScale.x * 3.f, m_InitWorldScale.y * 3.f, m_InitWorldScale.z));
-
-		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 3.f, m_InitColliderLength.y * 2.f);
-
-		if (m_GoUpTime <= 0.f)
-		{
-			m_GoUpState = false;
-
-			SetWorldScale(m_InitWorldScale);
-
-			m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
-
-			m_Player->SetAttackEnable(false);
-
-			m_ExtraAttackAbility = m_InitAttackAbility;
-		}
-	}
 }
 
 void CBombKirbyState::UpdateFallAttack(float DeltaTime)
@@ -268,6 +250,19 @@ void CBombKirbyState::PostRender()
 
 void CBombKirbyState::NormalAttackCallback()
 {
+	if (m_ThrowReadyBomb)
+	{
+		m_Player->GetRootComponent()->DeleteChild(m_ThrowReadyBomb->GetRootComponent());
+		m_ThrowReadyBomb->Destroy();
+		m_ThrowReadyBomb = nullptr;
+	}
+
+	// 공중에서 던진 Bomb 일 경우
+	if (m_GoUpState)
+	{
+		m_GoUpState = false;
+	}
+
 	// 왼쪽을 보고 있다면
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
@@ -282,8 +277,7 @@ void CBombKirbyState::NormalAttackCallback()
 
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetWorldPos(GetWorldPos().x ,GetWorldPos().y + GetWorldScale().y * GetPivot().y, GetWorldPos().z);
 
 		AttackEffect->ApplyJumpEffect();
 
@@ -298,8 +292,7 @@ void CBombKirbyState::NormalAttackCallback()
 
 		AttackEffect->SetRightAttackDir(0.f);
 
-		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetWorldPos(GetWorldPos().x,GetWorldPos().y + GetWorldScale().y * GetPivot().y, GetWorldPos().z);
 
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 

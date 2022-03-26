@@ -69,7 +69,7 @@ void CBombKirbyThrowBomb::Update(float DeltaTime)
 
 	if (m_IsSetRight)
 	{
-		RotateAmount = DeltaTime * 360.f;
+		RotateAmount = DeltaTime * 450.f;
 
 		m_Root->AddRelativeRotationZ(RotateAmount);
 
@@ -82,7 +82,7 @@ void CBombKirbyThrowBomb::Update(float DeltaTime)
 	}
 	else
 	{
-		RotateAmount = DeltaTime * 360.f * -1.f;
+		RotateAmount = DeltaTime * 450.f * -1.f;
 
 		m_Root->AddRelativeRotationZ(RotateAmount);
 
