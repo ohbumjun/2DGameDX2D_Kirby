@@ -1,6 +1,7 @@
 #include "BossTree.h"
 #include "Tornado.h"
 #include <Component/SpriteComponent.h>
+#include "Component/PaperBurnComponent.h"
 #include <Scene/Scene.h>
 #include "Scene/SceneManager.h"
 #include "Engine.h"
@@ -34,7 +35,7 @@ CBossTree::CBossTree()  :
 	m_HP = 5000.f;
 	m_HPMax = 5000.f;
 
-	m_CameraFollowMaxTime = 8.f;
+	m_CameraFollowMaxTime = 7.f;
 }
 
 CBossTree::CBossTree(const CBossTree& Monster) : CBossMonster(Monster)
@@ -244,6 +245,8 @@ void CBossTree::UpdateSceneChangeLimitTime(float DeltaTime)
 
 void CBossTree::ChangeSceneToFloat1Scene()
 {
+	Destroy();
+
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();

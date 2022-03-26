@@ -31,6 +31,7 @@ protected:
     void UpdateAttackLimitTimes(float DeltaTime);
 protected:
     virtual void AIDeathSpecific(float DeltaTime) override;
+    void StartPaperBurnEffect();
 public:
     virtual void Start() override;
     virtual bool Init() override;

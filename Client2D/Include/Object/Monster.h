@@ -18,6 +18,7 @@ protected:
     float m_DeathAccTime;
     float m_DeathFinishTime;
     bool m_DeathStart;
+    bool m_IsDeathAfterPaperBurn;
 
     // Player 에게 끌어당겨지기 + 나오기
     bool m_IsBeingPulled;

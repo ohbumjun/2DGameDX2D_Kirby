@@ -19,6 +19,7 @@ CMonster::CMonster() :
 	m_DeathFinishTime(0.f),
 	m_DeathStart(false),
 	m_IsBeingPulled(false),
+	m_IsDeathAfterPaperBurn(true),
 	m_IsBeingHit(false),
 	m_BeginPulledAccel(2.2f),
 	m_BeginPulledAccelSum(0.f),
@@ -920,6 +921,8 @@ void CMonster::OnMonsterBodyCollisionBegin(const CollisionResult& Result)
 
 void CMonster::PaperBurnEnd()
 {
+	if (!m_IsDeathAfterPaperBurn)
+		return;
 	Destroy();
 }
 

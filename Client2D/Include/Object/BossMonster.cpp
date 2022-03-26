@@ -2,6 +2,9 @@
 #include <Scene/Scene.h>
 #include "Engine.h"
 #include "Player2D.h"
+#include "Animation/AnimationSequence2DInstance.h"
+#include "Component/ColliderCircle.h"
+#include "Component/PaperBurnComponent.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
@@ -26,6 +29,12 @@ void CBossMonster::Start()
 
 	m_MonsterType = Monster_Type::Boss;
 	m_AttackAbility = 60.f;
+
+	// PaperBurn이 끝나더라도, Destroy 되지 않게 세팅한다.
+	m_IsDeathAfterPaperBurn = false;
+
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetEndFunction(this, &CBossMonster::StartPaperBurnEffect);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetEndFunction(this, &CBossMonster::StartPaperBurnEffect);
 }
 
 bool CBossMonster::Init()
@@ -34,6 +43,11 @@ bool CBossMonster::Init()
 		return false;
 
 	return true;
+}
+
+void CBossMonster::StartPaperBurnEffect()
+{
+	m_PaperBurn->StartPaperBurn();
 }
 
 void CBossMonster::MakeBossStartEffect()
