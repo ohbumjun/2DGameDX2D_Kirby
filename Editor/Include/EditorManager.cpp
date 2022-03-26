@@ -48,6 +48,7 @@
 #include "Object/FireMonster.h"
 #include "Object/BombMonster.h"
 #include "Object/FightMonster.h"
+#include "Object/SwordMonster.h"
 #include "Object/DragObject.h"
 #include "Object/Block.h"
 #include "Object/LineObject.h"
@@ -475,6 +476,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		else if (strcmp(g_FightMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFightMonster>(NewMonsterName);
+		}
+		else if (strcmp(g_SwordMonsterName.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CSwordMonster>(NewMonsterName);
 		}
 		else if (strcmp(g_MiddleHammerName.c_str(), SelectObjectName.c_str()) == 0)
 		{
@@ -972,6 +977,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CFireMonster).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CFireMonster>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CSwordMonster).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CSwordMonster>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CMiddleBossHammer).hash_code())

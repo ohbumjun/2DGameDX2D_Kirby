@@ -240,6 +240,9 @@
     <ClCompile Include="Object\BombMonster.cpp">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClCompile>
+    <ClCompile Include="Object\SwordMonster.cpp">
+      <Filter>03. Object\03. Monster\02. Ability</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -414,6 +417,9 @@
       <Filter>03. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
     <ClInclude Include="Object\BombMonster.h">
+      <Filter>03. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SwordMonster.h">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClInclude>
   </ItemGroup>

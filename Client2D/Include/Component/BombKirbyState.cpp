@@ -226,6 +226,12 @@ void CBombKirbyState::Update(float DeltaTime)
 	UpdateAttackGoUpState(DeltaTime);
 
 	UpdateFallAttack(DeltaTime);
+
+	// 이미 Bomb 는 던져진 상태여야 하는데 여전히 Bomb가 남아 있을 수도 있다
+	if (!m_AttackReady && m_ThrowReadyBomb)
+	{
+		m_Player->GetRootComponent()->DeleteChild(m_ThrowReadyBomb->GetRootComponent());
+	}
 }
 
 void CBombKirbyState::PostUpdate(float DeltaTime)
@@ -304,6 +310,6 @@ void CBombKirbyState::NormalAttackCallback()
 	m_Player->SetAttackEnable(false);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
-	m_Player->ChangePlayerIdleAnimation();
+	m_Player->ChangePlayerNormalIdleAnimation();
 
 }
