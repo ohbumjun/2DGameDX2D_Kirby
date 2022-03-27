@@ -53,7 +53,7 @@ void CBossMonster::StartPaperBurnEffect()
 
 void CBossMonster::Damage(float Damage)
 {
-	CMonster::Damage(Damage);
+	CMonster::Damage(Damage); //
 
 	CBossHUD* HUD = dynamic_cast<CBossHUD*>(m_Scene->GetBossHUD());
 
