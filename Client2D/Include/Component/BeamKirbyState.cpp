@@ -152,6 +152,9 @@ void CBeamKirbyState::GoUpAttack()
 	}
 }
 
+void CBeamKirbyState::SpecialAttack()
+{}
+
 void CBeamKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpTime > 0.f)

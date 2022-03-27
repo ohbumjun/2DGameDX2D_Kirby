@@ -302,6 +302,7 @@ private:
 	void ChangePlayerSlideAttackAnimation();
 	void ChangePlayerChangeAnimation();
 	void ChangePlayerSwimAnimation();
+	void ChangePlayerSpecialAttackAnimation(float DeltaTime);
 private :
 	// Spit Out & Pull
 	void SpitOut(float DeltaTime);
@@ -330,6 +331,7 @@ private :
 	// Special Action
 	void Attack(float DeltaTime);
 	void SlideAttack(float DeltaTime);
+	void SpecialAttack();
 private :
 	void PlayerAttackCollisionCallback(const CollisionResult& Result);
 private :

@@ -12,6 +12,7 @@ protected:
     virtual void Attack();
     virtual void FallDownAttack();
     virtual void GoUpAttack();
+    virtual void SpecialAttack();
 private:
     // Go Up
     bool m_GoUpState;

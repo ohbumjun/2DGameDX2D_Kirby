@@ -199,7 +199,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->SetWorldScale(250.f, 250.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
-		m_AttackDistLimitMax = 900.f;
+		m_AttackDistLimitMax = 1300.f;
 		m_AttackObjectSpeed = 600.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
@@ -211,16 +211,29 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.1f);
 
 		m_BottomCollisionApplied = true;
-
-		/*
-		m_Camera = CreateComponent<CCameraComponent>("BombFallCamera");
-
-		m_MainSprite->AddChild(m_Camera);
-
-		m_Camera->OnViewportCenter();
-		*/
+		
 	}
 		break;
+	case KirbyAttackEffect_Type::BombSpecial:
+	{
+		m_MainSprite->SetWorldScale(350.f, 350.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
+
+		m_AttackDistLimitMax = 1000.f;
+		m_AttackObjectSpeed = 800.f;
+
+		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+			"KirbyFallBombAttackEffect", TEXT("Ability_Bomb_ThrowBomb.anim"));
+
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
+
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectRight")->SetPlayTime(0.1f);
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.1f);
+
+		m_BottomCollisionApplied = true;
+
+	}
+	break;
 	case KirbyAttackEffect_Type::Sword:
 	{
 		m_AttackDistLimitMax = 1000.f;
@@ -270,7 +283,9 @@ void CKirbyAttackEffect::ApplyCameraMove()
 void CKirbyAttackEffect::BottomCollisionSpecificAction()
 {
 	// Bomb 일 경우에는, 다른 Effect를 줄 것이다
-	if (m_AttackType == KirbyAttackEffect_Type::Bomb || m_AttackType == KirbyAttackEffect_Type::BombFall)
+	if (m_AttackType == KirbyAttackEffect_Type::Bomb || 
+		m_AttackType == KirbyAttackEffect_Type::BombFall || 
+		m_AttackType == KirbyAttackEffect_Type::BombSpecial)
 	{
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
 		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Bomb);
@@ -279,7 +294,7 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 		AttackEffect->m_MainSprite->GetAnimationInstance()->ChangeAnimation("Explode");
 		AttackEffect->m_MainSprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayTime(0.5f);
 		AttackEffect->SetWorldScale(160.f, 180.f, 1.f);
-		AttackEffect->SetWorldPos(GetWorldPos());
+		AttackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
 		AttackEffect->SetKirbyOwner(m_KirbyOwner);
 		AttackEffect->m_Collider->Enable(false);
 		AttackEffect->SetLifeTime(0.5f);

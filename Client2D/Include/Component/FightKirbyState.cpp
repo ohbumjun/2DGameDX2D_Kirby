@@ -177,6 +177,9 @@ void CFightKirbyState::GoUpAttack()
 		GetWorldPos().y - GetWorldScale().y, GetWorldPos().z);
 }
 
+void CFightKirbyState::SpecialAttack()
+{}
+
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpTime > 0.f)

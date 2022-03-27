@@ -35,6 +35,7 @@ enum class KirbyAttackEffect_Type {
 	Beam,
 	Fight,
 	Bomb,
+	BombSpecial,
 	BeamSpark,
 	FightFall,
 	FireFall,

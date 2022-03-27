@@ -104,6 +104,35 @@ void CBombKirbyState::GoUpAttack()
 	m_Player->ChangePlayerAttackAnimation();
 }
 
+void CBombKirbyState::SpecialAttack()
+{
+	// °¡¿îµ¥
+	CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+	AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
+	if (m_Player->GetObjectMoveDir().x < 0.f)
+	{
+		AttackEffect->SetLeftAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y + 400.f, 0.f);
+	}
+	else
+	{
+		AttackEffect->SetRightAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y + 400.f, 0.f);
+	}
+
+	AttackEffect->SetKirbyOwner(this);
+
+	m_Player->SetAttackEnd();
+
+	m_Player->ChangePlayerIdleAnimation();
+}
+
 void CBombKirbyState::MakeFallDownBomb()
 {
 	if (m_FallDownBombMade)
@@ -125,8 +154,6 @@ void CBombKirbyState::MakeFallDownBomb()
 	// CFightKirbyNormalAttack* AttackEffect = m_Scene->CreateGameObject<CFightKirbyNormalAttack>("Attack");
 
 	AttackEffect->SetWorldPos(GetWorldPos());
-
-	// AttackEffect->ApplyJumpEffect();
 
 	AttackEffect->ApplyCameraMove();
 

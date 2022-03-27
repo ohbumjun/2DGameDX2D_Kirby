@@ -99,6 +99,9 @@ void CSwordKirbyState::GoUpAttack()
 	m_Player->SetPhysicsSimulate(false);
 }
 
+void CSwordKirbyState::SpecialAttack()
+{}
+
 void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpState)

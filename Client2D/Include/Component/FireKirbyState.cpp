@@ -114,6 +114,9 @@ void CFireKirbyState::GoUpAttack()
 		BackEffect->SetRightAttackDir();
 }
 
+void CFireKirbyState::SpecialAttack()
+{}
+
 void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpTime > 0.f)

@@ -13,6 +13,7 @@ protected:
     virtual void Attack();
     virtual void FallDownAttack();
     virtual void GoUpAttack();
+    virtual void SpecialAttack();
 protected :
     void MakeFallDownBomb();
 private:

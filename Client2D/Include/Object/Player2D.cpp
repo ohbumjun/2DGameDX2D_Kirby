@@ -291,6 +291,8 @@ void CPlayer2D::Start()
 		KeyState_Down, this, &CPlayer2D::Attack);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SlideAttack", 
 		KeyState_Down, this, &CPlayer2D::SlideAttack);
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialAttack",
+		KeyState_Down, this, &CPlayer2D::ChangePlayerSpecialAttackAnimation);
 
 	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
@@ -2399,6 +2401,17 @@ void CPlayer2D::ChangePlayerSwimAnimation()
 		ChangeAnimation("RightSwim");
 }
 
+void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
+{
+	if (m_IsAttacking)
+		return;
+
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftSpecialAttack");
+	else
+		ChangeAnimation("RightSpecialAttack");
+}
+
 void CPlayer2D::ChangePlayerEatIdleAnimation()
 {
 	if (m_IsAttacking)
@@ -2811,12 +2824,16 @@ void CPlayer2D::SetBasicSettingToChangedState()
 	CAnimationSequence2DData* Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSwim");
 
 	if (Data)
+	{
 		Data->SetLoop(true);
+	}
 
 	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSwim");
 
 	if (Data)
+	{
 		Data->SetLoop(true);
+	}
 
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightJump")->SetEndFunction(
 		this, &CPlayer2D::ChangePlayerFallAnimation);
@@ -2830,6 +2847,21 @@ void CPlayer2D::SetBasicSettingToChangedState()
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
 	m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpitOut")->SetEndFunction(
 		this, &CPlayer2D::ChangeToAfterWardsAnimationAfterSpitOut);
+
+
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialAttack");
+
+	if (Data)
+	{
+		Data->SetEndFunction(this, &CPlayer2D::SpecialAttack);
+	}
+
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpecialAttack");
+
+	if (Data)
+	{
+		Data->SetEndFunction(this, &CPlayer2D::SpecialAttack);
+	}
 
 	// Animation Play Scale 세팅
 	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightEatIdle");
@@ -2996,6 +3028,32 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 	m_SlideAttackTime = m_SlideAttackTimeMax;
 
 	ChangePlayerSlideAttackAnimation();
+}
+
+void CPlayer2D::SpecialAttack()
+{
+	if (!m_KirbyState)
+		return;
+
+	if (m_IsAttacking)
+		return;
+
+	if (m_IsLadderGoingUp)
+		return;
+
+	if (m_IsSwimming)
+		return;
+
+	if (!m_IsSpecialStateChanged)
+		return;
+
+	m_IsAttacking = true;
+
+	ResetMoveInfo();
+
+	StopPlayer();
+
+	m_KirbyState->SpecialAttack();
 }
 
 void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
