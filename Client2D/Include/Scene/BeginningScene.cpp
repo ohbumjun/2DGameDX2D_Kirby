@@ -48,7 +48,7 @@ void CBeginningScene::Start()
 		}
 	}
 
-	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CIntroWidget>("IntroWidget");
+	// m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CIntroWidget>("IntroWidget");
 }
 
 bool CBeginningScene::Init()

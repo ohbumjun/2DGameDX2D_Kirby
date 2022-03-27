@@ -18,10 +18,8 @@ CIntroScene::CIntroScene()
 }
 
 CIntroScene::~CIntroScene()
-{}
-
-void CIntroScene::Start()
 {
+	// SAFE_DELETE(m_MainWidget);
 }
 
 bool CIntroScene::Init()
@@ -29,29 +27,12 @@ bool CIntroScene::Init()
 	if (!CSceneMode::Init()) //
 		return false;
 
+	CreateSound();
+
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CIntroWidget>("IntroWidget");
 
 	return true;
 }
 
-void CIntroScene::CreateMaterial()
-{
-	CSceneMode::CreateMaterial();
-}
-
 void CIntroScene::CreateSound()
 {}
-
-void CIntroScene::CreateParticle()
-{}
-
-void CIntroScene::PrepareResources()
-{
-	CSceneMode::PrepareResources();
-
-	CreateMaterial();
-
-	CreateParticle();
-
-	CreateSound();
-}
