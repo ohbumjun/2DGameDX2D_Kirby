@@ -269,6 +269,7 @@
     <ClCompile Include="UI\MainWidget.cpp" />
     <ClCompile Include="UI\MouseAttack.cpp" />
     <ClCompile Include="UI\MouseNormal.cpp" />
+    <ClCompile Include="UI\PlayerHUD.cpp" />
     <ClCompile Include="UI\SimpleHUD.cpp" />
     <ClCompile Include="UI\StartWidget.cpp" />
   </ItemGroup>
@@ -385,6 +386,7 @@
     <ClInclude Include="UI\MainWidget.h" />
     <ClInclude Include="UI\MouseAttack.h" />
     <ClInclude Include="UI\MouseNormal.h" />
+    <ClInclude Include="UI\PlayerHUD.h" />
     <ClInclude Include="UI\SimpleHUD.h" />
     <ClInclude Include="UI\StartWidget.h" />
   </ItemGroup>

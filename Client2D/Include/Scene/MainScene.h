@@ -14,7 +14,11 @@ private :
 public:
 	virtual void Start() override;
 	virtual bool Init() override;
-
+public :
+	CUIWindow* GetMainWidget() const
+{
+		return m_MainWidget;
+}
 private:
 	virtual void CreateMaterial();
 	void CreateAnimationSequence();

@@ -24,6 +24,7 @@ private:
 	bool                               m_Start;
 	bool m_Change;
 	size_t m_PlayerTypeID;
+	class CUIWindow* m_PlayerHUD;
 private :
 	Vector2 m_BossWorldResolution;
 	Vector2 m_WorldResolution;
@@ -48,14 +49,22 @@ public :
 {
 		m_Mode->SetSceneChangeObject(Object);
 }
-public:
 	void SetIsEditMode (bool Enable)
 	{
 		m_Mode->SetIsEditMode(Enable);
 	}
+	void SetPlayerHUD(class CUIWindow* Window)
+{
+		m_PlayerHUD = Window;
+}
+public:
 	bool IsEditMode () const
 	{
 		return m_Mode->IsEditMode();
+	}
+	class CUIWindow* GetPlayerHUD() const
+	{
+		return m_PlayerHUD;
 	}
 	CSceneMode* GetSceneMode() const
 	{

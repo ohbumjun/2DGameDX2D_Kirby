@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "../UI/MainWidget.h"
+#include "../UI/PlayerHUD.h"
 #include "Resource/Particle/Particle.h"
 // Scene
 #include <Scene/SceneManager.h>
@@ -8,7 +9,6 @@
 #include "Scene/ViewPort.h"
 // Object
 #include <Scene/CameraManager.h>
-
 #include "../Object/Player2D.h"
 #include "../Object/Monster.h"
 #include "../Object/TileMap.h"
@@ -43,7 +43,6 @@ void CMainScene::Start()
 
 	Alpha->SetSceneStart(true);
 
-	// TileMapEmpty Type 의 GameObject를 찾는다
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 
 	SetTileMapEmptyObject(TileMapEmtpyObject);
@@ -56,15 +55,18 @@ void CMainScene::Start()
 	SetPlayerObject(Player2D);
 
 	Player2D->SetWorldPos(100.f, 500.f, 0.f);
-	// Player2D->SetRelativePos(100.f, 500.f, 1.f);
 
 	// Line
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
 
-	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
-	
+	// Main Widget
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CPlayerHUD>("MainWidget");
+
+	m_Scene->SetPlayerHUD(m_MainWidget);
+
+	// Static Player
 	if (CSceneManager::GetStaticPlayerInfo())
 	{
 		CPlayer2D* Player = dynamic_cast<CPlayer2D*>(CSceneManager::GetStaticPlayerInfo());
@@ -158,7 +160,8 @@ bool CMainScene::Init()
 	BubbleParticle->SetRelativePos(-300.f, 0.f, 0.f);
 	*/
 
-	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
+	// m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CPlayerHUD>("MainWidget");
 
 	return true;
 }

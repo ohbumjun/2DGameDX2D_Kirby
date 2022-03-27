@@ -2,6 +2,7 @@
 #include "Input.h"
 // UI
 #include "../UI/SimpleHUD.h"
+#include "../UI/PlayerHUD.h"
 #include "Ui/UIDamageFont.h"
 // Scene
 #include "Scene/Scene.h"
@@ -1526,8 +1527,22 @@ void CPlayer2D::Damage(float Damage)
 	}
 
 	// Widget HP Bar 조정하기
-	CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
-	HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);
+	// CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+	// HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);
+
+	/*
+	CUIWindow * Window = m_Scene->GetPlayerHUD();
+
+	if (!Window)
+		return;
+
+	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(Window);
+
+	if (!Window)
+		return;
+	*/
+	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
+	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
 }
 
 void CPlayer2D::UpdateBeingHit(float DeltaTime)
