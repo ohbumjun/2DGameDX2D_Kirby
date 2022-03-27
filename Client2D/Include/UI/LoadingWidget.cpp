@@ -9,12 +9,18 @@ CLoadingWidget::CLoadingWidget(const CLoadingWidget& Widget)
 CLoadingWidget::~CLoadingWidget()
 {}
 
-void CLoadingWidget::SetTexture(const char* Name, const TCHAR* FileName)
+void CLoadingWidget::SetFrontTexture(const char* Name, const TCHAR* FileName)
 {
 	m_FrontImage->SetTexture(Name, FileName);
 	m_FrontImage->SetPos(200.f, 140.f);
 	// m_Back->SetSize(1280.f, 720.f);
 	m_FrontImage->SetSize(880, 440.f);
+}
+
+void CLoadingWidget::SetBackTexture(const char* Name, const TCHAR* FileName)
+{
+	m_BackImage->SetTexture(Name, FileName);
+	m_BackImage->SetSize(880, 440.f);
 }
 
 bool CLoadingWidget::Init()
