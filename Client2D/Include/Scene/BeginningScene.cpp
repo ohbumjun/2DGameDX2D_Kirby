@@ -9,6 +9,7 @@
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
+#include "../UI/IntroWidget.h"
 #include "../Object/LineContainer.h"
 
 CBeginningScene::CBeginningScene()
@@ -46,12 +47,15 @@ void CBeginningScene::Start()
 			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
 		}
 	}
+
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CIntroWidget>("IntroWidget");
 }
 
 bool CBeginningScene::Init()
 {
 	if (!CSceneMode::Init())
 		return false;
+
 
 	return true;
 }

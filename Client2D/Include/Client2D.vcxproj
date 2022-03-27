@@ -260,9 +260,11 @@
     <ClCompile Include="Scene\Green4Scene.cpp" />
     <ClCompile Include="Scene\Green5Scene.cpp" />
     <ClCompile Include="Scene\Green1LoadingScene.cpp" />
+    <ClCompile Include="Scene\IntroScene.cpp" />
     <ClCompile Include="Scene\LoadingThread.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
     <ClCompile Include="Scene\StartScene.cpp" />
+    <ClCompile Include="UI\IntroWidget.cpp" />
     <ClCompile Include="UI\LoadingWidget.cpp" />
     <ClCompile Include="UI\MainWidget.cpp" />
     <ClCompile Include="UI\MouseAttack.cpp" />
@@ -374,9 +376,11 @@
     <ClInclude Include="Scene\Green4Scene.h" />
     <ClInclude Include="Scene\Green5Scene.h" />
     <ClInclude Include="Scene\Green1LoadingScene.h" />
+    <ClInclude Include="Scene\IntroScene.h" />
     <ClInclude Include="Scene\LoadingThread.h" />
     <ClInclude Include="Scene\MainScene.h" />
     <ClInclude Include="Scene\StartScene.h" />
+    <ClInclude Include="UI\IntroWidget.h" />
     <ClInclude Include="UI\LoadingWidget.h" />
     <ClInclude Include="UI\MainWidget.h" />
     <ClInclude Include="UI\MouseAttack.h" />

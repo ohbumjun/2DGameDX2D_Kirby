@@ -36,6 +36,11 @@ public:
 		return m_Texture;
 	}
 
+	const std::vector<AnimationFrameData>& GetVectorFrameData() const
+	{
+		return m_vecFrameData;
+	}
+
 	const AnimationFrameData& GetFrameData(int Index) const
 	{
 		return m_vecFrameData[Index];

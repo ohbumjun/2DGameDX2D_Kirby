@@ -718,7 +718,7 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 				float ObjFinalYPos = (FinalTopYPos + (PosXLeft - FinalLeftXPos) * Slope) + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2;
 
 				// 차이가 5.f 이내
-				if (std::abs(GetWorldPos().y - ObjFinalYPos) < 10.f)
+				if (std::abs(GetWorldPos().y - ObjFinalYPos) < 15.f)
 				 {
 					// 하지만, 지금 막 점프하는 순간에는, 점프가 되도록 허용해야 하므로
 					// if (m_FallTime == 0.f && DiffFromFallStartYPos <= 0.f)
@@ -754,7 +754,7 @@ void CLifeObject::CheckLineCollision(float DeltaTime)
 				float ObjFinalYPos = (FinalBottomYPos + (PosXRight - FinalLeftXPos) * Slope) + GetWorldScale().y * GetPivot().y + m_CollisionOffset * 2;
 				float DiffFromFallStartYPos = std::abs(m_FallStartY - GetWorldPos().y);
 
-				if (std::abs(GetWorldPos().y - ObjFinalYPos < 10.f))
+				if (std::abs(GetWorldPos().y - ObjFinalYPos < 15.f))
 				{
 					// 하지만, 지금 막 점프하는 순간에는, 점프가 되도록 허용해야 하므로
 					// if (m_FallTime == 0.f && DiffFromFallStartYPos <= 0.f)

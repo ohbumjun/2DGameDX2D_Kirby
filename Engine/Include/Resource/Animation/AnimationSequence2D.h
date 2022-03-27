@@ -36,6 +36,11 @@ public:
 		return m_Texture;
 	}
 
+	const std::vector<AnimationFrameData>& GetVectorFrameData() const
+	{
+		return m_vecFrameData;
+	}
+
 	const AnimationFrameData& GetFrameData(int Index) const
 	{
 		return m_vecFrameData[Index];
@@ -58,10 +63,7 @@ public :
 
 	void DeleteFrame(int Index)
 	{
-		if (Index >= m_vecFrameData.size())
-			return;
-
-		m_vecFrameData.erase(m_vecFrameData.begin() + Index);
+		m_vecFrameData.erase(m_vecFrameData.begin(), m_vecFrameData.begin() + Index);
 	}
 
 public:

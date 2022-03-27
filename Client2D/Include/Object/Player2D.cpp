@@ -307,6 +307,8 @@ void CPlayer2D::Start()
 	
 	SetBasicSettingToChangedState();
 
+	m_KirbyState->SetWorldScale(80.f, 80.f, 1.f);
+
 	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
 
 
@@ -2050,7 +2052,7 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 	if (m_IsLadderGoingUp)
 		return;
 
-	if (m_IsBottomCollided)
+	if (m_IsBottomCollided && !m_IsChanging)
 	{
 		if (!m_Bounced && m_FallStartY > GetWorldPos().y + GetWorldScale().y * 1.5f)
 		{
@@ -2305,6 +2307,9 @@ void CPlayer2D::ChangePlayerFallAnimation()
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftFall");
 	else
@@ -2359,6 +2364,9 @@ void CPlayer2D::ChangePlayerEatIdleAnimation()
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftEatIdle");
 	else
@@ -2368,6 +2376,9 @@ void CPlayer2D::ChangePlayerEatIdleAnimation()
 void CPlayer2D::ChangePlayerEatWalkAnimation()
 {
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsChanging)
 		return;
 
 	if (m_ObjectMoveDir.x < 0.f)
@@ -2588,7 +2599,7 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
-		m_KirbyState->SetWorldScale(78.f, 78.f, 1.f);
+		m_KirbyState->SetWorldScale(85.f, 95.f, 1.f);
 	}
 	break;
 	case Ability_State::Fire:
@@ -2596,6 +2607,8 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = nullptr;
 
 		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
+
+		m_KirbyState->SetWorldScale(85.f, 100.f, 1.f);
 	}
 	break;
 	case Ability_State::Fight:
@@ -2604,7 +2617,7 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
 
-		m_KirbyState->SetWorldScale(78.f, 78.f, 1.f);
+		m_KirbyState->SetWorldScale(90.f, 90.f, 1.f);
 	}
 	break;
 	case Ability_State::Bomb:
@@ -2688,9 +2701,9 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 	if (m_IsSpecialStateChanged)
 		return;
 
-	ChangePlayerChangeAnimation();
-
 	m_IsChanging = true;
+
+	ChangePlayerChangeAnimation();
 
 	StopPlayer();
 

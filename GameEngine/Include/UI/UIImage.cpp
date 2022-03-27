@@ -3,6 +3,7 @@
 #include "../Resource/Shader/WidgetConstantBuffer.h"
 #include "../Scene/SceneResource.h"
 #include "../Scene/Scene.h"
+#include "../Scene/SceneManager.h"
 #include "../Scene/ViewPort.h"
 
 CUIImage::CUIImage() :
@@ -88,6 +89,25 @@ bool CUIImage::SetTexture(const std::string& Name,
 	}
 	
 	return true;
+}
+
+void CUIImage::SetAnimationFrameData(const char* AnimName, const TCHAR* FileName, const std::string& PathName)
+{
+	CAnimationSequence2DInstance* AnimationInstance = CSceneManager::GetInst()->GetScene()->GetResource()->LoadAnimationInstance(AnimName, FileName, PathName);
+
+	// 정상적으로 파일이 로드 되지 않았다는 의미
+	if (!AnimationInstance->GetCurrentAnimation())
+		return;
+
+	// FrameData 세팅
+	const std::vector<AnimationFrameData> VectorFrameData = AnimationInstance->GetCurrentAnimation()->GetAnimationSequence()->GetVectorFrameData();
+
+	size_t Size = VectorFrameData.size();
+
+	for (size_t  i = 0; i < Size; i++)
+	{
+		AddAnimationFrameData(VectorFrameData[i].Start, VectorFrameData[i].Size);
+	}
 }
 
 void CUIImage::AddAnimationFrameData(const Vector2& StartPos, const Vector2& Size)

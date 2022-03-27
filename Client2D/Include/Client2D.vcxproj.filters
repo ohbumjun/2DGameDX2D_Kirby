@@ -429,6 +429,12 @@
     <ClCompile Include="Scene\Float1LoadingScene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
+    <ClCompile Include="UI\IntroWidget.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\IntroScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -765,6 +771,12 @@
       <Filter>02. Object\01. Player\01. State</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Float1LoadingScene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\IntroWidget.h">
+      <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\IntroScene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
