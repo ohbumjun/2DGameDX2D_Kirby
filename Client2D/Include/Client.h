@@ -33,6 +33,7 @@ enum class Ability_State {
 enum class KirbyAttackEffect_Type {
 	Fire,
 	Beam,
+	BeamSpecial,
 	Fight,
 	Bomb,
 	BombSpecial,
