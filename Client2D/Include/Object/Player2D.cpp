@@ -43,6 +43,8 @@ CPlayer2D::CPlayer2D() :
 	m_DashMaxMoveVelocity(170.f),
 	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
+	m_MPMax(100.f),
+	m_MP(100.f),
 	m_RightMove(false),
 	m_IsBackToSceneChangeDoorPos(false),
 	m_Bounced(false),
@@ -98,7 +100,7 @@ CPlayer2D::CPlayer2D(const CPlayer2D& obj) :
 	m_KirbyState           = dynamic_cast<CKirbyState*>(FindComponent("PlayerSprite"));
 	m_Body = (CColliderBox2D*)FindComponent("Body");
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
-	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
+	// m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 }
@@ -116,8 +118,8 @@ bool CPlayer2D::Init()
 	m_Body->SetCollisionProfile("Player");
 
 	// Widget
-	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
-	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
+	// m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+	// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 
 	// Camera
 	m_Camera = CreateComponent<CCameraComponent>("Camera");
@@ -129,10 +131,10 @@ bool CPlayer2D::Init()
 	SetRootComponent(m_KirbyState);
 	m_KirbyState->AddChild(m_Body);
 	m_KirbyState->AddChild(m_Camera);
-	m_KirbyState->AddChild(m_SimpleHUDWidget);
+	// m_KirbyState->AddChild(m_SimpleHUDWidget);
 
 	// 반드시 이 위치에서 ( AddChild 이후에 위치 좌표 세팅 )
-	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	// 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_KirbyState->SetTransparency(true);
 
@@ -209,6 +211,7 @@ void CPlayer2D::Start()
 	m_NavAgent = dynamic_cast<CNavAgent*>(FindComponent("NavAgent"));
 
 	// Widget Component의 Widget 생성
+	/*
 	m_SimpleHUDWidget = (CWidgetComponent*)(FindComponent("SimpleHUD"));
 
 	if (!m_SimpleHUDWidget)
@@ -227,6 +230,7 @@ void CPlayer2D::Start()
 	m_SimpleHUDWidget->GetWidgetWindow()->SetScene(m_Scene);
 
 	m_SimpleHUDWidget->GetWidgetWindow()->GetViewPort()->SetScene(m_Scene);
+	*/
 
 	m_Camera = (CCameraComponent*)FindComponent("Camera");
 
@@ -340,6 +344,8 @@ void CPlayer2D::Update(float DeltaTime)
 	UpdateSwimMoveDown(DeltaTime);
 
 	UpdateActionWhenReachGroundAfterFall();
+
+	UpdateMP(DeltaTime);
 }
 
 void CPlayer2D::PostUpdate(float DeltaTime)
@@ -1090,14 +1096,14 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		m_KirbyState->SetWorldPos(OriginalPos);
 
 		m_KirbyState->AddChild(m_Camera);
-		m_KirbyState->AddChild(m_SimpleHUDWidget);
+		// m_KirbyState->AddChild(m_SimpleHUDWidget);
 		m_KirbyState->AddChild(m_Body);
 		m_KirbyState->AddChild(m_PullRightCollider);
 		m_KirbyState->AddChild(m_PullLeftCollider);
 
 		m_KirbyState->SetWorldScale(80.f, 80.f, 1.f);
 
-		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+		// m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 		m_KirbyState->SetTransparency(true);
 
@@ -1513,6 +1519,14 @@ void CPlayer2D::UpdateSwimMoveDown(float DeltaTime)
 		return;
 
 	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 200.f);
+}
+
+void CPlayer2D::UpdateMP(float DeltaTime)
+{
+	if (m_MP < m_MPMax)
+	{
+		m_MP += DeltaTime * 20.f;
+	}
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -2670,12 +2684,12 @@ void CPlayer2D::SpecialChange()
 	m_KirbyState->SetWorldPos(BeforeChangePos);
 
 	m_KirbyState->AddChild(m_Camera);
-	m_KirbyState->AddChild(m_SimpleHUDWidget);
+	// m_KirbyState->AddChild(m_SimpleHUDWidget);
 	m_KirbyState->AddChild(m_Body);
 	m_KirbyState->AddChild(m_PullRightCollider);
 	m_KirbyState->AddChild(m_PullLeftCollider);
 
-	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	// m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 
 	m_KirbyState->SetTransparency(true);
 

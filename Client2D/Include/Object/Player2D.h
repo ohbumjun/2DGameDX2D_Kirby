@@ -81,6 +81,10 @@ private :
 	bool m_IsWeakJump;
 	float m_InitJumpVelocity;
 
+	// MP
+	float m_MP;
+	float m_MPMax;
+
 	// 하단 점프
 	bool m_JumpDown;
 	float m_JumpDownDist;
@@ -140,7 +144,15 @@ private :
 	
 
 public :
-	bool IsBeingHit() const
+	float GetMP() const
+{
+		return m_MP;
+}
+	float GetMPMax() const
+{
+		return m_MPMax;
+}
+   	bool IsBeingHit() const
 {
 		return m_IsBeingHit;
 }
@@ -232,6 +244,9 @@ private :
 	// Swim
 	void CheckIsSwimming();
 	void UpdateSwimMoveDown(float DeltaTime);
+private :
+	// MP
+	void UpdateMP(float DeltaTime);
 public :
 	// Hit
 	void Damage(float Damage);

@@ -71,10 +71,13 @@ void CMainScene::Start()
 	{
 		CPlayer2D* Player = dynamic_cast<CPlayer2D*>(CSceneManager::GetStaticPlayerInfo());
 
-		CGameObject* SceneChangeObject = m_Scene->GetSceneChangeObject();
+		// 1) PlayerHUD 에 Player HP, MP 세팅하기
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_MainWidget;
 
-		bool BackToDoorPos = Player->IsBackToSceneChangeDoorPos();
+		PlayerHUD->GetHPProgressBar()->SetPercent(Player->GetHP() / Player->GetHPMax());
+		PlayerHUD->GetMPProgressBar()->SetPercent(Player->GetMP() / Player->GetMPMax());
 
+		// 2) Door 위에 Player 위치 시키기 
 		if (m_Scene->GetSceneChangeObject() && Player->IsBackToSceneChangeDoorPos())
 		{
 			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
