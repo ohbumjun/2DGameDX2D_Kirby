@@ -10,6 +10,7 @@
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
 #include "../UI/PlayerHUD.h"
+#include "../UI/BossHUD.h"
 #include "../Object/LineContainer.h"
 #include "../Object/EffectSceneChangeAlpha.h"
 
@@ -48,6 +49,24 @@ void CFloat4Scene::Start()
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CPlayerHUD>("MainWidget");
 
 	m_Scene->SetPlayerHUD(m_MainWidget);
+
+	// Boss Widget
+	m_BossWidget = m_Scene->GetViewPort()->CreateUIWindow<CBossHUD>("BossWidget");
+
+	// 처음에는 안보이게 세팅한다.
+	m_BossWidget->Enable(false);
+
+	m_Scene->SetBossHUD(m_BossWidget);
+
+	CBossHUD* BossWidget = (CBossHUD*)m_BossWidget;
+
+	BossWidget->GetIconImage()->SetTexture("ScissorBossIcon", TEXT("Project/UI/Icon_Scissor.png"));
+	BossWidget->GetIconImage()->SetSize(50.f, 50.f);
+
+	BossWidget->GetVSIconImage()->SetTexture("HammerVSBossIcon", TEXT("Project/UI/VsIcon_Scissor.png"));
+	BossWidget->GetVSIconImage()->SetSize(180.f, 80.f);
+
+	BossWidget->SetCallback();
 
 	if (CSceneManager::GetStaticPlayerInfo())
 	{

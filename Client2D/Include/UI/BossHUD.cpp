@@ -83,7 +83,7 @@ void CBossHUD::Update(float DeltaTime)
 	{
 		float HPPercent = m_HPProgressBar->GetPercent();
 
-		if (HPPercent >= 100.f)
+		if (HPPercent >= 1.f)
 		{
 			m_InitHPReachedEnd = true;
 

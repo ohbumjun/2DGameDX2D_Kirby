@@ -28,6 +28,7 @@ protected :
     virtual void ChangeTraceAnimation(){}
     virtual void ChangeDeathAnimation(){}
     virtual void ChangeAttackAnimation(){}
+    virtual void Damage(float Damage){}
 public:
     virtual void Start() override;
     virtual bool Init() override;

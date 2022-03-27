@@ -23,6 +23,8 @@ CMiddleBossHammer::CMiddleBossHammer() :
 
 	m_HP = 3000.f;
 	m_HPMax = 3000.f;
+
+	m_HitLimitTimeMax = 0.4f;
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
