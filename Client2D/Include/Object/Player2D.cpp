@@ -2406,6 +2406,10 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
+	StopPlayer();
+
+	PrepareSpecialAction(1.f);
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftSpecialAttack");
 	else
@@ -3037,7 +3041,8 @@ void CPlayer2D::SpecialAttack()
 
 	ResetMoveInfo();
 
-	StopPlayer();
+
+	UndoSpecialAction();
 
 	m_KirbyState->SpecialAttack();
 }

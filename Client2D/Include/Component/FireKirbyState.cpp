@@ -189,6 +189,7 @@ void CFireKirbyState::UpdateSpecialAttack(float DeltaTime)
 
 	m_SpecialAttackTime += DeltaTime;
 
+	// 총 1초가 걸리게 세팅한다.
 	if (m_SpecialAttackTime >= 0.2f)
 	{
 		m_SpecialAttackTime = 0.f;
