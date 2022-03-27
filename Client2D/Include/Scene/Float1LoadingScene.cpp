@@ -22,7 +22,8 @@ bool CFloat1LoadingScene::Init()
 
 	m_LoadingWidget = m_Scene->GetViewPort()->CreateUIWindow<CLoadingWidget>("LoadingWidget");
 
-	m_LoadingWidget->SetTexture("Float1LoadingScene", TEXT("Project/Scene/Float1_LoadingScene.png"));
+	m_LoadingWidget->SetFrontTexture("Float1LoadingScene", TEXT("Project/Scene/Float1_LoadingScene.png"));
+	m_LoadingWidget->SetBackTexture("Float1LoadingSceneBack", TEXT("Project/Scene/FloatIsland1_Back.png"));
 
 	// 로딩 쓰레드 생성
 	m_LoadingThread = CThread::CreateThread<CLoadingThread>("LoadingThread");

@@ -21,7 +21,8 @@ bool CGreen1LoadingScene::Init()
 
 	m_LoadingWidget = m_Scene->GetViewPort()->CreateUIWindow<CLoadingWidget>("LoadingWidget");
 
-	m_LoadingWidget->SetTexture("Green1LoadingScene", TEXT("Project/Scene/Green1_LoadingScene.png"));
+	m_LoadingWidget->SetFrontTexture("Green1LoadingScene", TEXT("Project/Scene/Green1_LoadingScene.png"));
+	m_LoadingWidget->SetBackTexture("Green1LoadingSceneBack", TEXT("Project/Scene/Green1_Back.png"));
 
 	m_LoadingThread = CThread::CreateThread<CLoadingThread>("Loading");
 

@@ -202,7 +202,7 @@ void CMainScene::PrepareResources()
 	CreateMaterial();
 
 	if (m_LoadingFunction)
-		m_LoadingFunction(false, 0.5f);
+		m_LoadingFunction(false, 0.6f);
 
 	Sleep(500);
 
@@ -211,7 +211,7 @@ void CMainScene::PrepareResources()
 	CreateParticle();
 
 	if (m_LoadingFunction)
-		m_LoadingFunction(false, 0.7f);
+		m_LoadingFunction(false, 0.85f);
 
 	Sleep(500);
 

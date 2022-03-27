@@ -2174,6 +2174,9 @@ void CPlayer2D::ChangePlayerNormalWalkAnimation()
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftWalk");
 	else
@@ -2183,6 +2186,9 @@ void CPlayer2D::ChangePlayerNormalWalkAnimation()
 void CPlayer2D::ChangePlayerHitAnimation()
 {
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsChanging)
 		return;
 
 	if (m_ObjectMoveDir.x < 0.f)
@@ -2581,6 +2587,8 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = nullptr;
 
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
+
+		m_KirbyState->SetWorldScale(78.f, 78.f, 1.f);
 	}
 	break;
 	case Ability_State::Fire:
@@ -2595,6 +2603,8 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = nullptr;
 
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
+
+		m_KirbyState->SetWorldScale(78.f, 78.f, 1.f);
 	}
 	break;
 	case Ability_State::Bomb:
@@ -2853,7 +2863,7 @@ void CPlayer2D::Attack(float DeltaTime)
 		float YDiff = GetWorldPos().y - m_PrevPos.y;
 
 		// 내려가고 있을 때
-		if (m_IsFalling && !m_Jump && !m_IsFlying)
+		if (m_IsFalling && (!m_Jump || m_Bounced) && !m_IsFlying)
 		{
 			ChangePlayerFallDownAttackAnimation();
 

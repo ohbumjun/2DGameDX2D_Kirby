@@ -92,7 +92,7 @@ void CFloat1Scene::PrepareResources()
 	CSceneMode::PrepareResources();
 
 	if (m_LoadingFunction)
-		m_LoadingFunction(false, 0.5f);
+		m_LoadingFunction(false, 0.6f);
 
 	CreateMaterial();
 
@@ -103,7 +103,7 @@ void CFloat1Scene::PrepareResources()
 	Sleep(500);
 
 	if (m_LoadingFunction)
-		m_LoadingFunction(false, 0.7f);
+		m_LoadingFunction(false, 0.85f);
 
 	Sleep(500); ////
 
