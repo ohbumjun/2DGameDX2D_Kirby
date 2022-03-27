@@ -28,9 +28,15 @@ private :
     float m_FallAttackTimeMax;
     // Init Collider Scale
     Vector2 m_InitColliderLength;
+    // Special Attack
+    int m_NumSpecialAttack;
+    bool m_IsSpecialAttack;
+    float m_SpecialAttackTime;
 private:
     void UpdateAttackGoUpState(float DeltaTime);
     void UpdateFallAttack(float DeltaTime);
+    void UpdateSpecialAttack(float DeltaTime);
+    void CreateAttackEffect();
 public:
     virtual void              Start() override;
     virtual bool              Init() override;

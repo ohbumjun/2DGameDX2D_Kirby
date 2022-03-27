@@ -332,6 +332,8 @@ private :
 	void Attack(float DeltaTime);
 	void SlideAttack(float DeltaTime);
 	void SpecialAttack();
+	void PrepareSpecialAction(float PrepareTime);
+	void UndoSpecialAction();
 private :
 	void PlayerAttackCollisionCallback(const CollisionResult& Result);
 private :

@@ -16,6 +16,7 @@ CFireKirbyState::CFireKirbyState() :
 	m_FallAttackTime(0.f),
 	m_FallAttackTimeMax(0.4f),
 	m_FallAttackState(false),
+	m_IsSpecialAttack(false),
 	m_GoUpState(false)
 {
 	m_ExtraAttackAbility = 5.f;
@@ -115,7 +116,9 @@ void CFireKirbyState::GoUpAttack()
 }
 
 void CFireKirbyState::SpecialAttack()
-{}
+{
+	m_IsSpecialAttack = true;
+}
 
 void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
@@ -179,6 +182,63 @@ void CFireKirbyState::UpdateFallAttack(float DeltaTime)
 	}
 }
 
+void CFireKirbyState::UpdateSpecialAttack(float DeltaTime)
+{
+	if (!m_IsSpecialAttack)
+		return;
+
+	m_SpecialAttackTime += DeltaTime;
+
+	if (m_SpecialAttackTime >= 0.2f)
+	{
+		m_SpecialAttackTime = 0.f;
+
+		CreateAttackEffect();
+
+		m_NumSpecialAttack += 1;
+
+		if (m_NumSpecialAttack >= 5)
+		{
+			m_NumSpecialAttack = 0;
+
+			m_SpecialAttackTime = 0.f;
+
+			m_IsSpecialAttack = false;
+
+			m_Player->SetAttackEnd();
+
+			m_Player->ChangePlayerIdleAnimation();
+		}
+	}
+}
+
+void CFireKirbyState::CreateAttackEffect()
+{
+	// 왼쪽을 보고 있다면
+	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
+
+	if (PlayerMoveDir.x < 0.f)
+	{
+		// 가운데
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
+		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+	}
+	// 오른쪽으로 보고 있다면 
+	else
+	{
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
+		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+	}
+}
+
 void CFireKirbyState::Start()
 {
 	CKirbyState::Start();
@@ -220,6 +280,8 @@ void CFireKirbyState::Update(float DeltaTime)
 	UpdateAttackGoUpState(DeltaTime);
 
 	UpdateFallAttack(DeltaTime);
+
+	UpdateSpecialAttack(DeltaTime);
 }
 
 void CFireKirbyState::PostUpdate(float DeltaTime)
@@ -249,29 +311,8 @@ CFireKirbyState* CFireKirbyState::Clone()
 
 void CFireKirbyState::NormalAttackCallback()
 {
-	// 왼쪽을 보고 있다면
-	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
-
-	if (PlayerMoveDir.x < 0.f)
-	{
-		// 가운데
-		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
-		AttackEffect->SetWorldPos(GetWorldPos().x - GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetLeftAttackDir(0.f);
-		AttackEffect->SetKirbyOwner(this);
-		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
-	}
-	// 오른쪽으로 보고 있다면 
-	else
-	{
-		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("NormalFireAttack");
-		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
-			GetWorldPos().y, GetWorldPos().z);
-		AttackEffect->SetRightAttackDir(0.f);
-		AttackEffect->SetKirbyOwner(this);
-		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
-	}
+	CreateAttackEffect();
+	
 	m_Player->SetAttackEnable(false);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.

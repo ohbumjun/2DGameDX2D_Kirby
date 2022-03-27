@@ -2762,9 +2762,8 @@ void CPlayer2D::SpecialChange()
 	m_IsChanging = false;
 
 	// Player 외 모든 Object 들을 멈춘다.
-	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
+	UndoSpecialAction();
 
-	m_RootComponent->SetLayerName("Default");
 
 	// Change 할 때 생긴 Black BackGround를 제거한다.
 	/*
@@ -2800,22 +2799,9 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 
 	StopPlayer();
 
-	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
+	PrepareSpecialAction(m_ChangeTimeMax);
 
-	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
 
-	m_ChangeBlackBackGround->SetBlackTexture();
-
-	m_ChangeBlackBackGround->SetLifeTime(m_ChangeTimeMax);
-
-	m_ChangeBlackBackGround->SetOpacity(0.7f);
-
-	m_ChangeBlackBackGround->SetMaintainOpacity(true);
-
-	// 화면 가장 앞에 보이게 세팅한다.
-	m_RootComponent->SetLayerName("PlayerChange");
-
-	m_ChangeTime = m_ChangeTimeMax + 0.001f;
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -3054,6 +3040,33 @@ void CPlayer2D::SpecialAttack()
 	StopPlayer();
 
 	m_KirbyState->SpecialAttack();
+}
+
+void CPlayer2D::PrepareSpecialAction(float PrepareTime)
+{
+	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
+
+	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	m_ChangeBlackBackGround->SetBlackTexture();
+
+	m_ChangeBlackBackGround->SetLifeTime(PrepareTime);
+
+	m_ChangeBlackBackGround->SetOpacity(0.7f);
+
+	m_ChangeBlackBackGround->SetMaintainOpacity(true);
+
+	// 화면 가장 앞에 보이게 세팅한다.
+	m_RootComponent->SetLayerName("PlayerChange");
+
+	m_ChangeTime = m_ChangeTimeMax + 0.001f;
+}
+
+void CPlayer2D::UndoSpecialAction()
+{
+	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
+
+	m_RootComponent->SetLayerName("Default");
 }
 
 void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
