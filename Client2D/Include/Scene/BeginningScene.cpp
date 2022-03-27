@@ -12,7 +12,9 @@
 #include "../Object/LineContainer.h"
 
 CBeginningScene::CBeginningScene()
-{}
+{
+	SetTypeID<CBeginningScene>();
+}
 
 CBeginningScene::~CBeginningScene()
 {}

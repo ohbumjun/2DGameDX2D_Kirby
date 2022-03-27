@@ -57,6 +57,10 @@ public:
 	{
 		return m_Mode->IsEditMode();
 	}
+	CSceneMode* GetSceneMode() const
+	{
+		return m_Mode;
+	}
 	Vector2 GetBossWorldResolution() const
 	{
 		return m_BossWorldResolution;

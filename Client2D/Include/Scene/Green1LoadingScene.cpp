@@ -4,6 +4,7 @@
 #include "Scene/Scene.h"
 #include "Scene/ViewPort.h"
 #include "Thread.h"
+#include "../Object/Player2D.h"
 
 CGreen1LoadingScene::CGreen1LoadingScene()
 {}
@@ -20,7 +21,7 @@ bool CGreen1LoadingScene::Init()
 
 	m_LoadingWidget = m_Scene->GetViewPort()->CreateUIWindow<CLoadingWidget>("LoadingWidget");
 
-	m_LoadingWidget->SetTexture("Green1LoadingScene", TEXT("Project/Scene/Green1_LoadingScene.jpg"));
+	m_LoadingWidget->SetTexture("Green1LoadingScene", TEXT("Project/Scene/Green1_LoadingScene.png"));
 
 	m_LoadingThread = CThread::CreateThread<CLoadingThread>("Loading");
 
@@ -49,6 +50,7 @@ void CGreen1LoadingScene::Update(float DeltaTime)
 		if (Msg.Complete)
 		{
 			CSceneManager::GetInst()->ChangeNextScene();
+			
 		}
 	}
 

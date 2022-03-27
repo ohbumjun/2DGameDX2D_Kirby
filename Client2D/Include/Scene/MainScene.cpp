@@ -55,7 +55,6 @@ void CMainScene::Start()
 
 	SetPlayerObject(Player2D);
 
-	// todo : 이게 문제가 되는 코드이다.
 	Player2D->SetWorldPos(100.f, 500.f, 0.f);
 	// Player2D->SetRelativePos(100.f, 500.f, 1.f);
 
@@ -65,27 +64,23 @@ void CMainScene::Start()
 	SetLineContainerObject(LineContainer);
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CMainWidget>("MainWidget");
-
+	
 	if (CSceneManager::GetStaticPlayerInfo())
 	{
-		if (m_Scene->GetSceneChangeObject())
+		CPlayer2D* Player = dynamic_cast<CPlayer2D*>(CSceneManager::GetStaticPlayerInfo());
+
+		CGameObject* SceneChangeObject = m_Scene->GetSceneChangeObject();
+
+		bool BackToDoorPos = Player->IsBackToSceneChangeDoorPos();
+
+		if (m_Scene->GetSceneChangeObject() && Player->IsBackToSceneChangeDoorPos())
 		{
 			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
 
 			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, 0.f);
+
+			Player->SetIsBackToSceneChangeDoorPos(false);
 		}
-	}
-	
-	CGameObject* DoorToGreen2Scene = m_Scene->FindGameObjectByTypeID(typeid(CEffectChangeToGreen2).hash_code());
-
-	if (DoorToGreen2Scene)
-	{
-		CMoonAboveParticle* MoonAboveParticle = m_Scene->CreateGameObject<CMoonAboveParticle>("MoonAboveParticle");
-
-		MoonAboveParticle->SetWorldPos(
-			DoorToGreen2Scene->GetWorldPos().x, 
-			DoorToGreen2Scene->GetWorldPos().y + DoorToGreen2Scene->GetWorldScale().y * 2.f,
-			0.f);
 	}
 	/*
 	
@@ -105,12 +100,6 @@ bool CMainScene::Init()
 	CreateAnimationSequence();
 
 	CreateParticle();
-
-	if (m_LoadingFunction)
-		m_LoadingFunction(false, 0.3f);
-
-
-	// CTileMapEmpty* TileMapEmpty = m_Scene->CreateGameObject<CTileMapEmpty>("TileMapEmptyObject");
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
 	TileMapEmpty->LoadByFileName("TileMapText.gobj", OBJECT_PATH);
 	TileMapEmpty->SetEditMode(false);
@@ -124,8 +113,6 @@ bool CMainScene::Init()
 	CBackGround* BackGround = m_Scene->LoadGameObject<CBackGround>();
 	BackGround->LoadByFileName("TestBackGround.gobj", OBJECT_PATH);
 
-	// Sleep(1000);
-		
 	CreateSound();
 
 	CPlayer2D* Player = m_Scene->CreateGameObject<CPlayer2D>("Player");
@@ -205,13 +192,28 @@ void CMainScene::CreateParticle()
 
 void CMainScene::PrepareResources()
 {
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.2f);
+
+	Sleep(500);
+
 	CSceneMode::PrepareResources();
 
 	CreateMaterial();
 
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.5f);
+
+	Sleep(500);
+
 	CreateAnimationSequence();
 
 	CreateParticle();
+
+	if (m_LoadingFunction)
+		m_LoadingFunction(false, 0.7f);
+
+	Sleep(500);
 
 	CreateSound();
 }

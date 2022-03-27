@@ -75,6 +75,13 @@ void CEffectChangeToGreen2::MakeSceneChangeEffect(const CollisionResult& Result)
 	Alpha->SetSceneStart(false);
 
 	Alpha->SetSceneChangeCallback(this, &CEffectChangeToGreen2::ChangeSceneToGreen2Scene);
+
+	CPlayer2D* Player = dynamic_cast<CPlayer2D*>(m_Scene->GetPlayerObject());
+
+	if (Player)
+	{
+		Player->SetIsBackToSceneChangeDoorPos(true);
+	}
 }
 
 void CEffectChangeToGreen2::ChangeSceneToGreen2Scene()

@@ -4,6 +4,7 @@
 #include "resource.h"
 // Scene
 #include "Scene/MainScene.h"
+#include "Scene/BeginningScene.h"
 #include "Scene/Green3Scene.h"
 #include "Scene/Green5Scene.h"
 #include "Scene/StartScene.h"
@@ -162,7 +163,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat6Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat5Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CBeginningScene>();
 
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
@@ -175,7 +177,8 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float6.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Beginning.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
 }
 

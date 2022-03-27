@@ -6,6 +6,8 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
 #include "../Scene/MainScene.h"
+#include "../Scene/BeginningScene.h"
+#include "../Scene/Green1LoadingScene.h"
 #include "Player2D.h"
 #include "EffectSceneChangeAlpha.h"
 
@@ -13,9 +15,6 @@ CEffectChangeToGreen1::CEffectChangeToGreen1()
 {
 	SetTypeID<CEffectChangeToGreen1>();
 }
-
-CEffectChangeToGreen1::CEffectChangeToGreen1(const CEffectChangeToGreen1& Beatle)
-{}
 
 CEffectChangeToGreen1::~CEffectChangeToGreen1()
 {}
@@ -59,19 +58,17 @@ void CEffectChangeToGreen1::PostUpdate(float DeltaTime)
 	CGameObject::PostUpdate(DeltaTime);
 }
 
-CEffectChangeToGreen1* CEffectChangeToGreen1::Clone()
-{
-	return new CEffectChangeToGreen1(*this);
-}
-
 void CEffectChangeToGreen1::ChangeSceneToGreen1Scene()
 {
-	/*
-	CGameObject* DestObject = Result.Dest->GetGameObject();
-
-	if (m_Scene->GetPlayerObject() == DestObject )
+	// 현재 Scene 이 Beginning Scene 이면 Loading Scene 을 띄우고
+	if (m_Scene->GetSceneMode()->CheckType<CBeginningScene>())
 	{
-		// Next Scene 에 세팅해둔다.
+		CSceneManager::GetInst()->CreateNewScene();
+		CSceneManager::GetInst()->CreateSceneMode<CGreen1LoadingScene>(false);
+	}
+	// 그게 아니라면 바로 로드 한다.
+	else
+	{
 		CSceneManager::GetInst()->CreateNewScene(false);
 		CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
 		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
@@ -80,14 +77,9 @@ void CEffectChangeToGreen1::ChangeSceneToGreen1Scene()
 			CSceneManager::GetInst()->ChangeNextScene();
 		}
 	}
+
+	/*
 	*/
-	CSceneManager::GetInst()->CreateNewScene(false);
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
-	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-	if (CSceneManager::GetInst()->GetNextScene()->Load("Green1.scn", SCENE_PATH))
-	{
-		CSceneManager::GetInst()->ChangeNextScene();
-	}
 }
 
 
@@ -98,6 +90,7 @@ void CEffectChangeToGreen1::MakeSceneChangeEffect(const CollisionResult& Result)
 	Alpha->SetSceneStart(false);
 
 	Alpha->SetSceneChangeCallback(this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
+
 }
 
 void CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer(const CollisionResult& Result)
@@ -107,6 +100,7 @@ void CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer(const CollisionResult
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		CPlayer2D* Player = (CPlayer2D*)DestObject;
+
 		Player->SetSceneChangeCallback(this, &CEffectChangeToGreen1::MakeSceneChangeEffect);
 	}
 }
@@ -118,6 +112,7 @@ void CEffectChangeToGreen1::ResetSceneChangeCallbackToPlayer(const CollisionResu
 	if (m_Scene->GetPlayerObject() == DestObject)
 	{
 		CPlayer2D* Player = (CPlayer2D*)DestObject;
+
 		Player->ResetPlayerCallback();
 	}
 }

@@ -30,9 +30,12 @@ void CLoadingThread::Run()
 
 			MainScene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
 
-			MainScene->Init();
+			MainScene->PrepareResources();
 
-			AddMessage(true, 1.f);
+			if (CSceneManager::GetInst()->GetNextScene()->Load("Green1.scn", SCENE_PATH))
+			{
+				AddMessage(true, 1.f);
+			}
 		}
 		break;
 

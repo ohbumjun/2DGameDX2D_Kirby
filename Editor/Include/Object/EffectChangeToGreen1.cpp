@@ -10,9 +10,6 @@ CEffectChangeToGreen1::CEffectChangeToGreen1()
 	SetTypeID<CEffectChangeToGreen1>();
 }
 
-CEffectChangeToGreen1::CEffectChangeToGreen1(const CEffectChangeToGreen1& Beatle) : CGameObject(Beatle)
-{}
-
 CEffectChangeToGreen1::~CEffectChangeToGreen1()
 {}
 
@@ -47,7 +44,3 @@ void CEffectChangeToGreen1::PostUpdate(float DeltaTime)
 	CGameObject::PostUpdate(DeltaTime);
 }
 
-CEffectChangeToGreen1* CEffectChangeToGreen1::Clone()
-{
-	return new CEffectChangeToGreen1(*this);
-}
