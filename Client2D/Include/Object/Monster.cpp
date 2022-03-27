@@ -305,6 +305,12 @@ void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
 {
 	ChangeAttackAnimation();
 
+	// Player가 왼쪽에 있다는 것
+	if (m_Scene->GetPlayerObject()->GetWorldPos().x - GetWorldPos().x < 0.f)
+		m_ObjectMoveDir.x = -1.f;
+	else
+		m_ObjectMoveDir.x = 1.f;
+
 	AIAttackSpecific(DeltaTime);
 }
 

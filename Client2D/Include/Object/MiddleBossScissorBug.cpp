@@ -184,12 +184,6 @@ void CMiddleBossScissorBug::AIAttackSpecific(float DeltaTime)
 	if (m_AttemptGrab)
 		return;
 
-	// Player가 왼쪽에 있다는 것
-	if (m_Scene->GetPlayerObject()->GetWorldPos().x - GetWorldPos().x < 0.f)
-		m_ObjectMoveDir.x = -1.f;
-	else
-		m_ObjectMoveDir.x = 1.f;
-
 	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
 
 	if (DistToPlayer > m_CloseAttackDistance && DistToPlayer <= m_FarAttackDistance)
