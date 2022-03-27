@@ -10,6 +10,7 @@
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
+#include "../UI/PlayerHUD.h"
 #include "../Object/LineContainer.h"
 #include "../Object/EffectSceneChangeAlpha.h"
 
@@ -40,11 +41,25 @@ void CFloat2_2Scene::Start()
 
 	Player2D->SetWorldPos(450.f, 1200.f, 0.f);
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->SetWorldPos(Player2D->GetWorldPos());
-
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
+
+	// Main Widget
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CPlayerHUD>("MainWidget");
+
+	m_Scene->SetPlayerHUD(m_MainWidget);
+
+	if (CSceneManager::GetStaticPlayerInfo())
+	{
+		CPlayer2D* Player = dynamic_cast<CPlayer2D*>(CSceneManager::GetStaticPlayerInfo());
+
+		// 1) PlayerHUD 에 Player HP, MP 세팅하기
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_MainWidget;
+
+		PlayerHUD->GetHPProgressBar()->SetPercent(Player->GetHP() / Player->GetHPMax());
+		PlayerHUD->GetMPProgressBar()->SetPercent(Player->GetMP() / Player->GetMPMax());
+	}
 }
 
 bool CFloat2_2Scene::Init()

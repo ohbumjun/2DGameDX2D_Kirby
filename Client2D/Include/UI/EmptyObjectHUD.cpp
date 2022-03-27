@@ -1,4 +1,5 @@
 #include "EmptyObjectHUD.h"
+
 CEmptyObjectHUD::CEmptyObjectHUD()
 {}
 
