@@ -9,7 +9,7 @@
 #include "../Object/TileMapEmpty.h"
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
-#include "../UI/MainWidget.h"
+#include "../UI/BossHUD.h"
 #include "../UI/PlayerHUD.h"
 #include "../Object/LineContainer.h"
 #include "GameObject/Line.h"
@@ -65,6 +65,23 @@ void CGreen3Scene::Start()
 
 	m_Scene->SetPlayerHUD(m_MainWidget);
 
+	// Boss Widget
+	m_BossWidget = m_Scene->GetViewPort()->CreateUIWindow<CBossHUD>("BossWidget");
+
+	// 처음에는 안보이게 세팅한다.
+	m_BossWidget->Enable(false);
+
+	m_Scene->SetBossHUD(m_BossWidget);
+
+	CBossHUD* BossWidget = (CBossHUD*)m_BossWidget;
+
+	BossWidget->GetIconImage()->SetTexture("HammerBossIcon", TEXT("Project/UI/Icon_Hammer.png"));
+	BossWidget->GetIconImage()->SetSize(50.f, 50.f);
+
+	BossWidget->GetVSIconImage()->SetTexture("HammerVSBossIcon", TEXT("Project/UI/VSIcon_Hammer.png"));
+	BossWidget->GetVSIconImage()->SetSize(180.f, 80.f);
+
+	BossWidget->SetCallback();
 
 	if (CSceneManager::GetStaticPlayerInfo())
 	{

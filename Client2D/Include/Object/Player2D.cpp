@@ -1114,6 +1114,14 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		m_IsSpecialStateChanged = false;
 
 		SetBasicSettingToChangedState();
+
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("NormalKirbyIconImage", TEXT("Project/UI/Icon_NormalKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 	}
 }
 
@@ -1558,6 +1566,7 @@ void CPlayer2D::Damage(float Damage)
 		return;
 	*/
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
+
 	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
 }
 
@@ -2631,6 +2640,14 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
 		m_KirbyState->SetWorldScale(85.f, 95.f, 1.f);
+
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("BEAM KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("BeamKirbyIconTexture", TEXT("Project/UI/Icon_BeamKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 	}
 	break;
 	case Ability_State::Fire:
@@ -2640,6 +2657,14 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
 
 		m_KirbyState->SetWorldScale(85.f, 100.f, 1.f);
+
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("FIRE KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("FireKirbyIconTexture", TEXT("Project/UI/Icon_FireKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 	}
 	break;
 	case Ability_State::Fight:
@@ -2649,6 +2674,14 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
 
 		m_KirbyState->SetWorldScale(90.f, 90.f, 1.f);
+
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("FIGHT KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("FightKirbyIconTexture", TEXT("Project/UI/Icon_FightKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 	}
 	break;
 	case Ability_State::Bomb:
@@ -2658,6 +2691,14 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CBombKirbyState>("BombKirbyState");
 
 		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
+
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("BOMB KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("BombKirbyIconTexture", TEXT("Project/UI/Icon_BombKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 	}
 	break;
 	case Ability_State::Sword:
@@ -2667,6 +2708,14 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CSwordKirbyState>("SwordKirbyState");
 
 		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
+
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("SWORD KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("SwordKirbyIconTexture", TEXT("Project/UI/Icon_SwordKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 	}
 	break;
 	}

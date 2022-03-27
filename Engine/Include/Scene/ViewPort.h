@@ -12,6 +12,18 @@ protected:
 private :
 	class CScene* m_Scene;
 	std::list<CSharedPtr<class CUIWindow>> m_WindowList;
+	class CUIWindow* m_BossHUD;
+	class CUIWindow* m_PlayerHUD;
+	std::function<void()> m_BossHUDStartCallback;
+public:
+	class CUIWindow* GetPlayerHUD() const
+	{
+		return m_PlayerHUD;
+	}
+	class CUIWindow* GetBossHUD() const
+	{
+		return m_BossHUD;
+	}
 public :
 	bool Init();
 	void Start();
@@ -21,6 +33,14 @@ public :
 	bool CollisionMouse();
 	void Collision();
 public :
+	void SetPlayerHUD(class CUIWindow* Window)
+	{
+		m_PlayerHUD = Window;
+	}
+	void SetBossHUD(class CUIWindow* Window)
+	{
+		m_BossHUD = Window;
+	}
 	static bool SortWindow(CSharedPtr<class CUIWindow>& A, CSharedPtr<class CUIWindow>& B)
 {
 		return A->m_ZOrder > B->m_ZOrder;
@@ -34,6 +54,7 @@ public :
 {
 		return m_Scene;
 }
+	void StartBossHUDCallback();
 public :
 	template<typename T>
 	T* FindUIWindow(const std::string& Name)
@@ -64,6 +85,11 @@ public :
 
 		m_WindowList.push_back(Window);
 		return Window;
+}
+	template<typename T>
+	void SetBossHUDStartCallback(T* Obj, void(T::*Func)())
+{
+		m_BossHUDStartCallback = std::bind(Func, Obj);
 }
 };
 

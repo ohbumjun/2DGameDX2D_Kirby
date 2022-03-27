@@ -9,6 +9,7 @@ public:
 	virtual ~CGreen3Scene() override;
 private:
 	class CUIWindow* m_MainWidget;
+	class CUIWindow* m_BossWidget;
 	std::function<void(bool, float)> m_LoadingFunction;
 public:
 	virtual void Start() override;

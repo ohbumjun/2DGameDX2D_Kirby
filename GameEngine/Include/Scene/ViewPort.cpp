@@ -153,3 +153,12 @@ bool CViewPort::CollisionMouse()
 
 void CViewPort::Collision()
 {}
+
+void CViewPort::StartBossHUDCallback()
+{
+	if (m_BossHUDStartCallback)
+	{
+		m_BossHUDStartCallback();
+		m_BossHUDStartCallback = nullptr;
+	}
+}

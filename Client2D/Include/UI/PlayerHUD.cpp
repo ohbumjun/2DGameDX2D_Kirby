@@ -27,16 +27,16 @@ bool CPlayerHUD::Init()
 	m_NameText = CreateUIWidget<CUIText>("NameText");
 
 	m_NameText->SetText(TEXT("KIRBY"));
-	m_NameText->SetPos(50.f, 300.f);
+	m_NameText->SetPos(70.f, 300.f);
 	m_NameText->SetSize(200.f, 60.f);
-	m_NameText->SetFontSize(40.f);
+	m_NameText->SetFontSize(33.f);
 	m_NameText->SetZOrder(1);
-	m_NameText->SetColor(0.8f, 0.8f, 0.8f);
+	m_NameText->SetColor(0.9f, 0.9f, 0.9f);
 	m_NameText->SetAlignH(TEXT_ALIGN_H::Center);
 
 	// Icon
 	m_IconImage = CreateUIWidget<CUIImage>("IconImage");
-	m_IconImage->SetTexture("PlayerIconImage", TEXT("Project/UI/Icon_NormalKirby.png"));
+	m_IconImage->SetTexture("NormalKirbyIconImage", TEXT("Project/UI/Icon_NormalKirby.png"));
 	m_IconImage->SetSize(50.f, 50.f);
 	m_IconImage->SetPos(20.f, 300.f);
 	m_IconImage->SetZOrder(1);
@@ -44,14 +44,14 @@ bool CPlayerHUD::Init()
 	// HP ProgressBar
 	m_HPProgressBar = CreateUIWidget<CUIProgressBar>("HPBar");
 	m_HPProgressBar->SetSize(600.f, 90.f);
-	m_HPProgressBar->SetPos(20.f, 250.f);
+	m_HPProgressBar->SetPos(20.f, 260.f);
 	m_HPProgressBar->SetTexture("PlayerHPProgressBar", TEXT("HPBar.png"));
 	// m_HPProgressBar->SetTextureTint(255, 0, 0, 255);
 
 	// MP ProgressBar
 	m_MPProgressBar = CreateUIWidget<CUIProgressBar>("MPBar");
 	m_MPProgressBar->SetSize(600.f, 90.f);
-	m_MPProgressBar->SetPos(20.f, 200.f);
+	m_MPProgressBar->SetPos(20.f, 220.f);
 	m_MPProgressBar->SetTexture("PlayerMPProgressBar", TEXT("MPBar.png"));
 	// m_MPProgressBar->SetTextureTint(255, 0, 0, 255);
 

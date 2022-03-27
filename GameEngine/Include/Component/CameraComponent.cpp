@@ -293,6 +293,9 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 				m_FollowTarget = false;
 
 				m_FollowPlayer = true;
+
+				// 그리고 이제는 BossHUD를 보이게 세팅한다.
+				m_Scene->GetViewPort()->StartBossHUDCallback();
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 
 #include "SceneMode.h"
 #include "SceneResource.h"
+#include "ViewPort.h"
 #include "../GameObject/GameObject.h"
 
 class CScene
@@ -24,7 +25,7 @@ private:
 	bool                               m_Start;
 	bool m_Change;
 	size_t m_PlayerTypeID;
-	class CUIWindow* m_PlayerHUD;
+	
 private :
 	Vector2 m_BossWorldResolution;
 	Vector2 m_WorldResolution;
@@ -54,9 +55,13 @@ public :
 		m_Mode->SetIsEditMode(Enable);
 	}
 	void SetPlayerHUD(class CUIWindow* Window)
-{
-		m_PlayerHUD = Window;
-}
+	{
+		m_ViewPort->SetPlayerHUD(Window);
+	}
+	void SetBossHUD(class CUIWindow* Window)
+	{
+		m_ViewPort->SetBossHUD(Window);
+	}
 public:
 	bool IsEditMode () const
 	{
@@ -64,7 +69,11 @@ public:
 	}
 	class CUIWindow* GetPlayerHUD() const
 	{
-		return m_PlayerHUD;
+		return m_ViewPort->GetPlayerHUD();
+	}
+	class CUIWindow* GetBossHUD() const
+	{
+		return m_ViewPort->GetBossHUD();
 	}
 	CSceneMode* GetSceneMode() const
 	{
@@ -102,7 +111,6 @@ public:
 	{
 		return m_Resource;
 	}
-
 	CGameObject* GetPlayerObject() const
 	{
 		return m_Mode->GetPlayerObject();

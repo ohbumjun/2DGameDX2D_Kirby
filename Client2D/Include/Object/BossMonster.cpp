@@ -5,6 +5,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/ColliderCircle.h"
 #include "Component/PaperBurnComponent.h"
+#include "../UI/BossHUD.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
@@ -48,6 +49,15 @@ bool CBossMonster::Init()
 void CBossMonster::StartPaperBurnEffect()
 {
 	m_PaperBurn->StartPaperBurn();
+}
+
+void CBossMonster::Damage(float Damage)
+{
+	CMonster::Damage(Damage);
+
+	CBossHUD* HUD = dynamic_cast<CBossHUD*>(m_Scene->GetBossHUD());
+
+	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
 }
 
 void CBossMonster::MakeBossStartEffect()

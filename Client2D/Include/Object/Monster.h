@@ -105,7 +105,7 @@ public :
     void LoadAnimationInstance(const std::string& Name, const TCHAR* FileName, const std::string& PathName = ENGINE_ANIMATION_PATH);
     void SetCurrentAnimation(const std::string& Name);
 public :
-    void Damage(float Damage);
+   virtual void Damage(float Damage);
     void SetHPMax(float HPMax);
     void DeathStart();
 protected :

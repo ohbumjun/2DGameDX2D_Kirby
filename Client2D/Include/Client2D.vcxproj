@@ -264,6 +264,7 @@
     <ClCompile Include="Scene\LoadingThread.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
     <ClCompile Include="Scene\StartScene.cpp" />
+    <ClCompile Include="UI\BossHUD.cpp" />
     <ClCompile Include="UI\EmptyObjectHUD.cpp" />
     <ClCompile Include="UI\IntroWidget.cpp" />
     <ClCompile Include="UI\LoadingWidget.cpp" />
@@ -382,6 +383,7 @@
     <ClInclude Include="Scene\LoadingThread.h" />
     <ClInclude Include="Scene\MainScene.h" />
     <ClInclude Include="Scene\StartScene.h" />
+    <ClInclude Include="UI\BossHUD.h" />
     <ClInclude Include="UI\EmptyObjectHUD.h" />
     <ClInclude Include="UI\IntroWidget.h" />
     <ClInclude Include="UI\LoadingWidget.h" />

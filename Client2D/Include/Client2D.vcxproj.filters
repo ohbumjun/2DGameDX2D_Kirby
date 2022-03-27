@@ -441,6 +441,9 @@
     <ClCompile Include="UI\EmptyObjectHUD.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="UI\BossHUD.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -789,6 +792,9 @@
       <Filter>03. UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\EmptyObjectHUD.h">
+      <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BossHUD.h">
       <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>
