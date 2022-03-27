@@ -438,6 +438,9 @@
     <ClCompile Include="UI\PlayerHUD.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="UI\EmptyObjectHUD.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -783,6 +786,9 @@
       <Filter>01. SceneMode</Filter>
     </ClInclude>
     <ClInclude Include="UI\PlayerHUD.h">
+      <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\EmptyObjectHUD.h">
       <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>

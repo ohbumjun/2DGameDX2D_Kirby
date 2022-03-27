@@ -93,7 +93,7 @@ void CUIWidget::Start()
 bool CUIWidget::Init()
 {
 	// GetScene 가 있다는 것은, 특정 Scene에 속하는 Widget 이라는 의미 
-	if (m_Owner->GetViewPort())
+	if (m_Owner && m_Owner->GetViewPort())
 	{
 		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("WidgetShader");
 		m_Mesh = m_Owner->GetViewPort()->GetScene()->GetResource()->FindMesh("WidgetMesh");
