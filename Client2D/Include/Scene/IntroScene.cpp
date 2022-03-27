@@ -26,7 +26,7 @@ void CIntroScene::Start()
 
 bool CIntroScene::Init()
 {
-	if (!CSceneMode::Init())
+	if (!CSceneMode::Init()) //
 		return false;
 
 	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CIntroWidget>("IntroWidget");
