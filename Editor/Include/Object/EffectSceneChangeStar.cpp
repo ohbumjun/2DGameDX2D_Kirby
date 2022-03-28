@@ -25,6 +25,23 @@ void CEffectSceneChangeStar::Start()
 	m_Sprite = (CSpriteComponent*)FindComponent("EffectSprite");
 	m_ColliderBody = (CColliderCircle*)FindComponent("EffectChangeStarColliderBody");
 
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		m_SimpleHUDWidget = Component;
+
+		if (!m_SimpleHUDWidget->GetWidgetWindow())
+		{
+			m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+			CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+
+			MonsterHUD->SetText(TEXT("Green3")); //
+		}
+	}
+
 }
 
 bool CEffectSceneChangeStar::Init()

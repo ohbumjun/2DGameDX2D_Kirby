@@ -15,6 +15,23 @@ CEffectChangeToGreen1::~CEffectChangeToGreen1()
 void CEffectChangeToGreen1::Start()
 {
 	CGameObject::Start();
+
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		m_SimpleHUDWidget = Component;
+
+		if (!m_SimpleHUDWidget->GetWidgetWindow())
+		{
+			m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+			CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+
+			MonsterHUD->SetText(TEXT("Green1")); //
+		}
+	}
 }
 
 bool CEffectChangeToGreen1::Init()

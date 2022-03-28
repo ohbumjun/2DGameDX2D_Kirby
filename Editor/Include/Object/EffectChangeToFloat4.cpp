@@ -15,6 +15,23 @@ CEffectChangeToFloat4::~CEffectChangeToFloat4()
 void CEffectChangeToFloat4::Start()
 {
 	CGameObject::Start();
+
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		m_SimpleHUDWidget = Component;
+
+		if (!m_SimpleHUDWidget->GetWidgetWindow())
+		{
+			m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+			CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+
+			MonsterHUD->SetText(TEXT("Float4")); //
+		}
+	}
 }
 
 bool CEffectChangeToFloat4::Init()

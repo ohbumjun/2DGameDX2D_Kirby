@@ -15,6 +15,23 @@ CEffectChangeToFloat7::~CEffectChangeToFloat7()
 void CEffectChangeToFloat7::Start()
 {
 	CGameObject::Start();
+
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		m_SimpleHUDWidget = Component;
+
+		if (!m_SimpleHUDWidget->GetWidgetWindow())
+		{
+			m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+			CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+
+			MonsterHUD->SetText(TEXT("Float7")); //
+		}
+	}
 }
 
 bool CEffectChangeToFloat7::Init()
