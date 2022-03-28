@@ -7,6 +7,7 @@
 #include "../Object/KirbyAttackEffect.h"
 #include "../Object/FireAttackBackEffect.h"
 #include "Component/ColliderBox2D.h"
+#include "../Object/SwordBoomerang.h"
 
 class CFightMonsterAttack;
 
@@ -100,7 +101,33 @@ void CSwordKirbyState::GoUpAttack()
 }
 
 void CSwordKirbyState::SpecialAttack()
-{}
+{
+	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
+
+	// 왼쪽 공격
+	if (PlayerMoveDir.x < 0.f)
+	{
+		CSwordBoomerang* AttackEffect = m_Scene->CreateGameObject<CSwordBoomerang>("Attack1");
+		AttackEffect->SetWorldPos(GetWorldPos().x - 50.f, GetWorldPos().y + 60.f, GetWorldPos().z);
+		AttackEffect->SetAttackDir(-1.f);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+	}
+	else
+	{
+		CSwordBoomerang* AttackEffect = m_Scene->CreateGameObject<CSwordBoomerang>("Attack1");
+		AttackEffect->SetWorldPos(GetWorldPos().x + 50.f, GetWorldPos().y + 60.f, GetWorldPos().z);
+		AttackEffect->SetAttackDir(1.f);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+	}
+
+	m_Player->SetAttackEnable(false);
+
+	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
+	m_Player->ChangePlayerIdleAnimation();
+
+	// 다시 원래의 Size 로 세팅하기 
+	SetWorldScale(80.f, 105.f, 1.f);
+}
 
 void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
@@ -178,6 +205,14 @@ void CSwordKirbyState::UpdateFallAttack(float DeltaTime)
 			SetWorldScale(m_InitWorldScale);
 		}
 	}
+}
+
+void CSwordKirbyState::UpdateSpecialAttack(float DeltaTime)
+{
+	if (!m_IsSpecialAttack)
+		return;
+
+	m_SpecialAttackTime += DeltaTime;
 }
 
 void CSwordKirbyState::Start()

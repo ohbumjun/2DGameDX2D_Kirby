@@ -14,10 +14,10 @@
 #include "FireAttackBackEffect.h"
 
 CSwordBoomerang::CSwordBoomerang() :
-	m_ThrowDirDistMax(700.f),
+	m_ThrowDirDistMax(1000.f),
 	m_Return(false),
-	m_SpeedAccel(1.1f),
-	m_InitSpeed(500.f),
+	m_SpeedAccel(0.8f),
+	m_InitSpeed(1200.f),
 	m_AttackDir(1.f)
 {
 }
@@ -53,15 +53,24 @@ bool CSwordBoomerang::Init()
 	m_MainSprite->SetRenderState("AlphaBlend");
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"KirbyNormalSwordAttackEffect", TEXT("Ability_Sword_AttackEffect.anim"));
+		"KirbySwordBoomerang", TEXT("Kirby_Cutter_Boomerang.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 
-	m_MainSprite->SetWorldScale(120.f, 120.f, 1.f);
+	m_MainSprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayTime(0.1f);
+
+	m_MainSprite->SetWorldScale(250.f, 250.f, 1.f);
 
 	m_MainSprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	m_Collider = CreateComponent<CColliderCircle>("Collider");
+
+	m_Collider->SetCollisionProfile("PlayerAttack");
+
+	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.5f);
+
+	m_Collider->AddCollisionCallback(Collision_State::Begin, this, &CSwordBoomerang::CollisionCallback);
+
 	m_MainSprite->AddChild(m_Collider);
 
 	m_CurrentSpeed = m_InitSpeed;
@@ -73,17 +82,17 @@ void CSwordBoomerang::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	float MoveDist = (Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * m_CurrentSpeed).Length();
-
 	if (!m_Return)
 	{
 		m_CurrentSpeed -= m_SpeedAccel;
+
+		float MoveDist = (Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * m_CurrentSpeed).Length();
 
 		AddWorldPos(Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * m_CurrentSpeed);
 
 		m_ThrowDirDist += MoveDist;
 
-		if (m_ThrowDirDist >= m_ThrowDirDistMax)
+		if (m_ThrowDirDist >= m_ThrowDirDistMax || m_CurrentSpeed <= 0.f)
 		{
 			m_ThrowDirDist = 0.f;
 
@@ -93,6 +102,8 @@ void CSwordBoomerang::Update(float DeltaTime)
 	else
 	{
 		m_CurrentSpeed += m_SpeedAccel;
+
+		float MoveDist = (Vector3(m_AttackDir, 0.f, 0.f) * DeltaTime * m_CurrentSpeed).Length();
 
 		AddWorldPos(Vector3(m_AttackDir * -1.f, 0.f, 0.f) * DeltaTime * m_CurrentSpeed);
 
@@ -138,6 +149,9 @@ void CSwordBoomerang::CollisionCallback(const CollisionResult& Result)
 		if (!DestMonster)
 			return;
 
+		if (DestMonster->IsBeingHit())
+			return;
+
 		// HP Bar 달게 하기
 		DestMonster->Damage(m_AttackDamage);
 
@@ -145,7 +159,7 @@ void CSwordBoomerang::CollisionCallback(const CollisionResult& Result)
 
 		DestMonster->SetAIState(Monster_AI::Hit);
 
-		if (m_AttackDir.x < 0)
+		if (m_AttackDir < 0)
 			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
 		else
 			DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));

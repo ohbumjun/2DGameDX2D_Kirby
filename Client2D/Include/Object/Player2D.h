@@ -9,6 +9,7 @@
 #include "../Component/BombKirbyState.h"
 #include "../Component/SwordKirbyState.h"
 #include "../Component/NormalKirbyState.h"
+#include "../Client.h"
 
 class CPlayer2D :
 	public CLifeObject
@@ -141,7 +142,7 @@ private :
 	float m_ChangeTimeMax;
 	CSharedPtr<class CEffectSceneChangeAlpha> m_ChangeBlackBackGround;
 	std::function<void(const CollisionResult& Result)> m_SceneChangeCallback;
-	
+	Ability_State m_SpecialAbilityState;
 
 public :
 	float GetMP() const
@@ -334,6 +335,7 @@ private :
 	void SpecialAttack();
 	void PrepareSpecialAction(float PrepareTime);
 	void UndoSpecialAction();
+	
 private :
 	void PlayerAttackCollisionCallback(const CollisionResult& Result);
 private :

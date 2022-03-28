@@ -4,6 +4,7 @@
 class CSwordBoomerang :
     public CGameObject
 {
+	friend class CScene;
 	friend class CSwordKirbyState;
 protected:
 	CSwordBoomerang();

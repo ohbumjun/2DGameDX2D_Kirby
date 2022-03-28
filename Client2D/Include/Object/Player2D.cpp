@@ -56,6 +56,7 @@ CPlayer2D::CPlayer2D() :
 	m_SlideAttack(false),
 	m_LeftMove(false),
 	m_ToRightWhenLeftMove(false),
+	m_SpecialAbilityState(Ability_State::End),
 	m_SceneChange(false),
 	m_IsChanging(false),
 	m_IsSpecialStateChanged(false),
@@ -1089,6 +1090,8 @@ void CPlayer2D::SpitOut(float DeltaTime)
 	// Special State 였다면 다시 원래 상태로 돌아가기
 	if (m_IsSpecialStateChanged)
 	{
+		m_SpecialAbilityState = Ability_State::End;
+
 		Vector3 OriginalPos = GetWorldPos();
 
 		m_KirbyState = CreateComponent<CNormalKirbyState>("NormalKirbyState");
@@ -2430,6 +2433,12 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 		ChangeAnimation("LeftSpecialAttack");
 	else
 		ChangeAnimation("RightSpecialAttack");
+
+	// Sword 의 경우, 크기를 잠시 키운다.
+	if (m_SpecialAbilityState == Ability_State::Sword)
+	{
+		m_KirbyState->SetWorldScale(110.f, 110.f, 1.f);
+	}
 }
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
@@ -2681,6 +2690,8 @@ void CPlayer2D::SpecialChange()
 		PlayerHUD->GetIconImage()->SetTexture("BeamKirbyIconTexture", TEXT("Project/UI/Icon_BeamKirby.png"));
 
 		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+
+		m_SpecialAbilityState = Ability_State::Beam;
 	}
 	break;
 	case Ability_State::Fire:
@@ -2698,6 +2709,8 @@ void CPlayer2D::SpecialChange()
 		PlayerHUD->GetIconImage()->SetTexture("FireKirbyIconTexture", TEXT("Project/UI/Icon_FireKirby.png"));
 
 		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+
+		m_SpecialAbilityState = Ability_State::Fire;
 	}
 	break;
 	case Ability_State::Fight:
@@ -2715,6 +2728,8 @@ void CPlayer2D::SpecialChange()
 		PlayerHUD->GetIconImage()->SetTexture("FightKirbyIconTexture", TEXT("Project/UI/Icon_FightKirby.png"));
 
 		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+
+		m_SpecialAbilityState = Ability_State::Fight;
 	}
 	break;
 	case Ability_State::Bomb:
@@ -2732,6 +2747,8 @@ void CPlayer2D::SpecialChange()
 		PlayerHUD->GetIconImage()->SetTexture("BombKirbyIconTexture", TEXT("Project/UI/Icon_BombKirby.png"));
 
 		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+
+		m_SpecialAbilityState = Ability_State::Bomb;
 	}
 	break;
 	case Ability_State::Sword:
@@ -2740,7 +2757,7 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState = CreateComponent<CSwordKirbyState>("SwordKirbyState");
 
-		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
+		m_KirbyState->SetWorldScale(80.f, 105.f, 1.f);
 
 		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
 
@@ -2749,6 +2766,8 @@ void CPlayer2D::SpecialChange()
 		PlayerHUD->GetIconImage()->SetTexture("SwordKirbyIconTexture", TEXT("Project/UI/Icon_SwordKirby.png"));
 
 		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+
+		m_SpecialAbilityState = Ability_State::Sword;
 	}
 	break;
 	}

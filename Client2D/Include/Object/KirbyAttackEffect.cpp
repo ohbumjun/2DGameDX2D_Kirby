@@ -305,7 +305,6 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpecialEffect")->SetPlayTime(2.0f);
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialEffect")->SetPlayTime(2.0f);
-
 	}
 	break;
 	}
