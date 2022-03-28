@@ -2418,6 +2418,10 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 	if (!m_IsSpecialStateChanged)
 		return;
 
+	m_IsChanging = true;
+
+	m_IsAttacking = true;
+
 	StopPlayer();
 
 	PrepareSpecialAction(1.f);
@@ -3034,7 +3038,7 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 
 void CPlayer2D::SpecialAttack()
 {
-	m_IsAttacking = true;
+	m_IsChanging = false;
 
 	ResetMoveInfo();
 
