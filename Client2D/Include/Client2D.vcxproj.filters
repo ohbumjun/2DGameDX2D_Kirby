@@ -444,6 +444,9 @@
     <ClCompile Include="UI\BossHUD.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="Object\SwordBoomerang.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -796,6 +799,9 @@
     </ClInclude>
     <ClInclude Include="UI\BossHUD.h">
       <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SwordBoomerang.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

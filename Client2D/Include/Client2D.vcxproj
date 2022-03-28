@@ -236,6 +236,7 @@
     <ClCompile Include="Object\SpecialChangeParticle.cpp" />
     <ClCompile Include="Object\Squid.cpp" />
     <ClCompile Include="Object\SquidAttack.cpp" />
+    <ClCompile Include="Object\SwordBoomerang.cpp" />
     <ClCompile Include="Object\SwordMonster.cpp" />
     <ClCompile Include="Object\SwordMonsterAttack.cpp" />
     <ClCompile Include="Object\TileMap.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="Object\SpecialChangeParticle.h" />
     <ClInclude Include="Object\Squid.h" />
     <ClInclude Include="Object\SquidAttack.h" />
+    <ClInclude Include="Object\SwordBoomerang.h" />
     <ClInclude Include="Object\SwordMonster.h" />
     <ClInclude Include="Object\SwordMonsterAttack.h" />
     <ClInclude Include="Object\TileMap.h" />
