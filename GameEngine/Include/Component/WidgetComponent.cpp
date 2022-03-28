@@ -56,6 +56,7 @@ void CWidgetComponent::Start()
 bool CWidgetComponent::Init()
 {
 	SetLayerName("ScreenWidgetComponent");
+
 	return true;
 }
 

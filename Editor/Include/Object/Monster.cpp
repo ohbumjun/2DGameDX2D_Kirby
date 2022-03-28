@@ -49,6 +49,13 @@ void CMonster::SetCurrentAnimation(const std::string& Name)
 void CMonster::Start()
 {
 	CLifeObject::Start();
+
+	// 처음 WidgetComponent 가 Load 되거나, 새로 세팅되고 나서
+	// m_RootComponent 를 기준으로 World Pos가 다시 세팅되게 하기 위한 코드이다.
+	if (m_RootComponent)
+	{
+		m_RootComponent->SetRelativePos(GetWorldPos());
+	}
 }
 
 bool CMonster::Init()
@@ -130,8 +137,16 @@ void CMonster::Load(FILE* pFile)
 	fread(&m_DeathStart, sizeof(bool), 1, pFile);
 
 	// Widget Component 는 존재하지만, 그 안에 Window 가 존재하지 않는다면
-	// 해당 Window를 다시 만들어낸다.
+	// 해당 Window 를 다시 만들어낸다.
 	// 그리고, 파생 클래스 들에서 다시 이름 등을 Start 에서 세팅해준다.
+	if (!FindComponentByType<CWidgetComponent>())
+	{
+		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
+		m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+		m_RootComponent->AddChild(m_SimpleHUDWidget);
+	}
+
 	if (!FindComponentByType<CWidgetComponent>()->GetWidgetWindow())
 	{
 		FindComponentByType<CWidgetComponent>()->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
