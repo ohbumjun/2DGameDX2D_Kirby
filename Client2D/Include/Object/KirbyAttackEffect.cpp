@@ -113,9 +113,9 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		break;
 	case KirbyAttackEffect_Type::Beam:
 	{
-		m_MainSprite->SetWorldScale(40.f, 40.f, 1.f);
+		m_MainSprite->SetWorldScale(60.f, 60.f, 1.f);
 
-		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
 
 		m_AttackDistLimitMax = 700.f;
 		m_AttackObjectSpeed = 400.f;
@@ -126,13 +126,16 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
 
 		m_SideCollisionApplied = false;
+
+		m_BottomCollisionApplied = false;
 	}
+	break;
 	case KirbyAttackEffect_Type::BeamSpecial:
 	{
 		m_MainSprite->SetWorldScale(200.f, 200.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
-		m_AttackDistLimitMax = 900.f;
+		m_AttackDistLimitMax = 1200.f;
 		m_AttackObjectSpeed = 900.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
@@ -179,11 +182,11 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		break;
 	case KirbyAttackEffect_Type::FireFall:
 	{
-		m_MainSprite->SetWorldScale(50.f, 50.f, 1.f);
+		m_MainSprite->SetWorldScale(70.f, 70.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.6f);
 
-		m_AttackDistLimitMax = 900.f;
-		m_AttackObjectSpeed = 750.f;
+		m_AttackDistLimitMax = 1100.f;
+		m_AttackObjectSpeed = 900.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyFireFallAttackEffect", TEXT("Kirby_Fire_Effect_ComeDownFireEffect.anim"));
@@ -285,6 +288,26 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("EffectLeft")->SetPlayTime(0.5f);
 	}
 		break;
+	case KirbyAttackEffect_Type::FightSpecial:
+	{
+		m_AttackDistLimitMax = 2100.f;
+		m_AttackObjectSpeed = 700.f;
+
+		m_MainSprite->SetWorldScale(85.f, 85.f, 1.f);
+		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.5f);
+
+		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+			"KirbyFightSpecialEffect", TEXT("Kirby_Fight.anim"));
+
+		m_MainSprite->SetAnimationInstance(AnimationInstance);
+
+		m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("RightSpecialEffect");
+
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpecialEffect")->SetPlayTime(2.0f);
+		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialEffect")->SetPlayTime(2.0f);
+
+	}
+	break;
 	}
 }
 
@@ -326,7 +349,7 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 		// Attack Back Effect
 		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
 
-		BackEffect->SetWorldPos(GetWorldPos());
+		BackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y , GetWorldPos().z);
 
 		BackEffect->SetWorldScale(GetWorldScale().x * 0.8f, GetWorldScale().y * 0.8f, 1.f);
 

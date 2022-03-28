@@ -43,10 +43,11 @@ void CFireKirbyState::FallDownAttack()
 	m_FallAttackTime = m_FallAttackTimeMax;
 
 	// 총 10개의 Object를 만들어낸다.
-	float XLeftEnd = GetWorldPos().x - (GetWorldScale().x * 0.5f) * 6.f;
-	float XStepSize = (GetWorldScale().x * 0.5f);
+	float XLeftEnd = GetWorldPos().x - (GetWorldScale().x * 0.8f) * 8.f;
 
-	for (int i = 0; i < 13; i++)
+	float XStepSize = (GetWorldScale().x * 0.8f);
+
+	for (int i = 0; i < 16; i++)
 	{
 		// Attack Effect
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -72,7 +73,7 @@ void CFireKirbyState::FallDownAttack()
 		BackEffect->SetWorldPos(XLeftEnd + XStepSize * i,
 			GetWorldPos().y, GetWorldPos().z);
 
-		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
+		BackEffect->SetWorldScale(80.f, 80.f, 1.f);
 
 		BackEffect->AddRelativeRotationZ(-90.f);
 
@@ -118,6 +119,8 @@ void CFireKirbyState::GoUpAttack()
 void CFireKirbyState::SpecialAttack()
 {
 	m_IsSpecialAttack = true;
+
+
 }
 
 void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)

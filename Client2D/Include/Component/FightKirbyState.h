@@ -23,15 +23,22 @@ private :
     float m_InitAttackAbility;
     bool m_InitScaleSet;
     Vector3 m_InitWorldScale;
-    // Fall Attack
+
+	// Fall Attack
     bool m_FallAttackState;
     float m_FallAttackTime;
     float m_FallAttackTimeMax;
-
     Vector2 m_InitColliderLength;
+
+    // Special Attack
+    bool m_IsSpecialAttack;
+    float m_SpecialAttackTime;
+    float m_SpecialAttackTimeMax;
+    float m_SpecialAttackDir;
 private :
     void UpdateAttackGoUpState(float DeltaTime);
     void UpdateFallAttack(float DeltaTime);
+    void UpdateSpecialAttack(float DeltaTime);
 public :
     virtual void              Start() override;
     virtual bool              Init() override;

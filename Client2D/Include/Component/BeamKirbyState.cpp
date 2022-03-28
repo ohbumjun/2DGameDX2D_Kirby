@@ -59,13 +59,11 @@ void CBeamKirbyState::FallDownAttack()
 
 		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Beam);
 
-		AttackEffect->SetWorldScale(60.f, 60.f, 1.f);
+		AttackEffect->GetMainSprite()->SetWorldScale(80.f, 80.f, 1.f);
 
 		AttackEffect->SetLeftAttackDir(-1.f);
 
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
-
-		// AttackEffect->SetOwner(this);
 
 		AttackEffect->SetWorldPos(TargetPos);
 

@@ -12,7 +12,9 @@ CFightKirbyState::CFightKirbyState() :
 	m_GoUpTime(0.f),
 	m_FallAttackTime(0.f),
 	m_FallAttackTimeMax(0.4f),
+	m_SpecialAttackTimeMax(2.0f),
 	m_FallAttackState(false),
+	m_IsSpecialAttack(false),
 	m_GoUpState(false)
 {
 	m_ExtraAttackAbility = 15.f;
@@ -147,20 +149,17 @@ void CFightKirbyState::GoUpAttack()
 	if (m_FallAttackState)
 		return;
 
-	if (!m_GoUpState)
-	{
-		m_InitWorldScale = GetWorldScale();
-	}
-
 	m_GoUpState = true;
 
 	m_GoUpTime = m_GoUpTimeMax;
 
-	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
-
 	m_InitAttackAbility = m_ExtraAttackAbility;
 
 	m_ExtraAttackAbility = 30.f;
+
+	m_InitWorldScale = GetWorldScale();
+
+	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
 
 	// 위 방향으로 크게 쏜다
 	CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
@@ -178,7 +177,122 @@ void CFightKirbyState::GoUpAttack()
 }
 
 void CFightKirbyState::SpecialAttack()
-{}
+{
+	if (m_Player->GetObjectMoveDir().x < 0.f)
+	{
+		m_Player->ChangeAnimation("LeftSpecialEffect");
+
+		m_SpecialAttackDir = -1.f;
+
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 150.f,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("LeftSpecialEffect");
+
+		// 위
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x -150.f,
+			GetWorldPos().y + 200.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("LeftSpecialEffect");
+
+		// 위 * 2
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 150.f,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("LeftSpecialEffect");
+
+		// 아래
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 150.f,
+			GetWorldPos().y + 200.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("LeftSpecialEffect");
+
+		// 아래 * 2
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetLeftAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x ,GetWorldPos().y + 100.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("LeftSpecialEffect");
+	}
+	else
+	{
+		m_Player->ChangeAnimation("RightSpecialEffect");
+
+		m_SpecialAttackDir = 1.f;
+
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 150.f,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("RightSpecialEffect");
+
+		// 위
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 150.f,
+			GetWorldPos().y + 200.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("RightSpecialEffect");
+
+		// 위 * 2
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 150.f,
+			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("RightSpecialEffect");
+
+		// 아래
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 150.f,
+			GetWorldPos().y + 200.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("RightSpecialEffect");
+
+		// 아래 * 2
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightSpecial);
+		AttackEffect->SetRightAttackDir(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y + 100.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+		AttackEffect->GetMainSprite()->GetAnimationInstance()->ChangeAnimation("RightSpecialEffect");
+	}
+
+	m_IsSpecialAttack = true;
+
+	m_SpecialAttackTime = 0.f;
+
+	m_InitWorldScale = GetWorldScale();
+}
 
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
@@ -244,14 +358,55 @@ void CFightKirbyState::UpdateFallAttack(float DeltaTime)
 	}
 }
 
+void CFightKirbyState::UpdateSpecialAttack(float DeltaTime)
+{
+	if (!m_IsSpecialAttack)
+		return;
+
+	m_SpecialAttackTime += DeltaTime;
+
+	if (m_SpecialAttackDir < 0.f)
+	{
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 700.f);
+	}
+	else
+	{
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 700.f);
+	}
+
+	SetWorldScale(Vector3(m_InitWorldScale.x * 1.2f, m_InitWorldScale.y * 1.2f, m_InitWorldScale.z));
+
+	if (m_SpecialAttackTime >= m_SpecialAttackTimeMax)
+	{
+		m_IsSpecialAttack = false;
+
+		m_SpecialAttackTime = 0.f;
+
+		m_Player->SetAttackEnd();
+
+		SetWorldScale(m_InitWorldScale);
+
+		m_Player->ChangePlayerIdleAnimation();
+
+		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x, m_InitColliderLength.y);
+	}
+}
+
 void CFightKirbyState::Start()
 {
 	CKirbyState::Start();
 
 	m_Animation->Play();
 
+	m_InitWorldScale = GetWorldScale();
+
+	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
+
 	m_Animation->FindAnimationSequence2DData("RightJump")->SetLoop(false);
 	m_Animation->FindAnimationSequence2DData("LeftJump")->SetLoop(false);
+
+	m_Animation->FindAnimationSequence2DData("LeftSpecialEffect")->SetPlayTime(2.5f);
+	m_Animation->FindAnimationSequence2DData("RightSpecialEffect")->SetPlayTime(2.5f);
 }
 
 bool CFightKirbyState::Init()
@@ -259,7 +414,8 @@ bool CFightKirbyState::Init()
 	if (!CKirbyState::Init())
 		return false;
 
-	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance("Kirby_Fight", TEXT("Kirby_Fight.anim"));
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+		"Kirby_Fight", TEXT("Kirby_Fight.anim"));
 
 	SetAnimationInstance(AnimationInstance);
 
@@ -289,6 +445,8 @@ void CFightKirbyState::Update(float DeltaTime)
 	UpdateAttackGoUpState(DeltaTime);
 
 	UpdateFallAttack(DeltaTime);
+
+	UpdateSpecialAttack(DeltaTime);
 }
 
 void CFightKirbyState::PostUpdate(float DeltaTime)
