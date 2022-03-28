@@ -1,4 +1,6 @@
 #include "BombMonster.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 class CAnimationSequence2DInstance;
 
@@ -25,6 +27,9 @@ bool CBombMonster::Init()
 
 	LoadAnimationInstance("BombMonster", TEXT("Ability_Bomb.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("Bomb"));
 
 	return true;
 }

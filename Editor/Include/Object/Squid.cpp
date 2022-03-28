@@ -1,4 +1,6 @@
 #include "Squid.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CSquid::CSquid()
 {
@@ -23,6 +25,9 @@ bool CSquid::Init()
 
 	LoadAnimationInstance("Squid", TEXT("Normal_Squid.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("Squid"));
 
 	return true;
 }

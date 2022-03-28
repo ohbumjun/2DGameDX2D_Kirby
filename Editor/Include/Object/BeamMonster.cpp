@@ -1,4 +1,6 @@
 #include "BeamMonster.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 class CAnimationSequence2DInstance;
 
@@ -25,6 +27,9 @@ bool CBeamMonster::Init()
 
 	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("Beam"));
 
 	return true;
 }

@@ -9,6 +9,7 @@
 #include "Player2D.h"
 #include "Component/TileEmptyComponent.h"
 #include "../UI/SimpleHUD.h"
+#include "UI/MonsterEditorHUD.h"
 #include "UI/UIDamageFont.h"
 
 CMonster::CMonster() :
@@ -365,14 +366,18 @@ void CMonster::Start()
 	m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
 
 	// UIWindow
-	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("SimpleHUD");
+	/*
+	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("MonsterHUD");
+
 	if (!m_SimpleHUDWidget)
 	{
-		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
+		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
 	}
-	m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
+
+	m_SimpleHUDWidget->CreateUIWindow<CMonster>("SimpleHUDWindow");
 	m_Sprite->AddChild(m_SimpleHUDWidget);
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	*/
 
 	SetRandomTargetDir();
 }

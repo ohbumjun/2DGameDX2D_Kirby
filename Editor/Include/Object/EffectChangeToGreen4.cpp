@@ -1,9 +1,8 @@
 #include "EffectChangeToGreen4.h"
 #include "Component/ColliderBox2D.h"
-#include "Scene/Scene.h"
-#include "Scene/SceneResource.h"
-#include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
+#include "UI/MonsterEditorHUD.h"
+#include "Component/WidgetComponent.h"
 
 CEffectChangeToGreen4::CEffectChangeToGreen4()
 {
@@ -32,6 +31,15 @@ bool CEffectChangeToGreen4::Init()
 
 	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
+
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
+	m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+	m_ColliderBody->AddChild(m_SimpleHUDWidget);
+
+	CMonsterEditorHUD* HUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	HUD->SetText(TEXT("Green4"));
+
 
 	return true;
 }

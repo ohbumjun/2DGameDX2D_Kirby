@@ -14,6 +14,7 @@ private:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
     CSharedPtr<CCameraComponent>     m_Camera;
+    CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
 public:
     virtual void Start() override;
     virtual bool Init() override;

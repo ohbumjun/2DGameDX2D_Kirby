@@ -8,11 +8,11 @@ public:
     CMonster();
     CMonster(const CMonster& Monster);
     virtual ~CMonster() override;
-private:
+protected:
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
     CSharedPtr<class CPaperBurnComponent> m_PaperBurn;
-    // CSharedPtr<class CColliderComponent> m_ColliderBody;
+    CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
     float m_HPMax;
     float m_HP;
     float m_DeathAccTime;

@@ -1,4 +1,6 @@
 #include "NormalMonster.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CNormalMonster::CNormalMonster()
 {}
@@ -18,6 +20,9 @@ bool CNormalMonster::Init()
 {
 	if (!CMonster::Init())
 		return false;
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("MushRoom"));
 
 	return true;
 }

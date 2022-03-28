@@ -1,4 +1,6 @@
 #include "PurpleBeatle.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CPurpleBeatle::CPurpleBeatle()
 {
@@ -20,6 +22,9 @@ bool CPurpleBeatle::Init()
 
 	LoadAnimationInstance("Normal_PurpleBeatle", TEXT("Normal_PurpleBeatle.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("Beatle"));
 
 	return true;
 }

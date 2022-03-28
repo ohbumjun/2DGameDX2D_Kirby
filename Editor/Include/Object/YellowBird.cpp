@@ -1,4 +1,6 @@
 #include "YellowBird.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CYellowBird::CYellowBird()
 {
@@ -21,6 +23,9 @@ bool CYellowBird::Init()
 	LoadAnimationInstance("Normal_YellowBird", TEXT("Normal_YellowBird.anim"));
 	// LoadAnimationInstance("Normal_YellowBird", TEXT("Kirby_Fight.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("Bird"));
 
 	return true;
 }

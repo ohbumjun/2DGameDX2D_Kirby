@@ -4,6 +4,8 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Component/SpriteComponent.h"
 #include "Component/ColliderCircle.h"
+#include "UI/MonsterEditorHUD.h"
+#include "Component/WidgetComponent.h"
 
 CEffectSceneChangeStar::CEffectSceneChangeStar()
 {
@@ -72,6 +74,14 @@ bool CEffectSceneChangeStar::Init()
 	m_Camera = CreateComponent<CCameraComponent>("DefaultCamera");
 	m_Camera->OnViewportCenter();
 	m_Sprite->AddChild(m_Camera);
+
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
+	m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+	m_RootComponent->AddChild(m_SimpleHUDWidget);
+
+	CMonsterEditorHUD* HUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	HUD->SetText(TEXT("Green3"));
 
 	return true;
 }

@@ -10,6 +10,7 @@ protected:
     virtual ~CEffectChangeToFloat7();
 private:
     CSharedPtr<class CColliderBox2D> m_ColliderBody;
+    CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
 public:
     virtual void Start() override;
     virtual bool Init() override;

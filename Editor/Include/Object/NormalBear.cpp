@@ -1,4 +1,6 @@
 #include "NormalBear.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CNormalBear::CNormalBear()
 {
@@ -22,6 +24,9 @@ bool CNormalBear::Init()
 	SetCurrentAnimation("RightIdle");
 
 	SetWorldScale(200.f, 200.f, 1.f);
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("NormalBear"));
 
 	return true;
 }

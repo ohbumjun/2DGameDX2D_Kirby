@@ -1,4 +1,6 @@
 #include "SwordMonster.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CSwordMonster::CSwordMonster()
 {
@@ -20,6 +22,9 @@ bool CSwordMonster::Init()
 
 	LoadAnimationInstance("SwordMonster", TEXT("Ability_Sword.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("Sword"));
 
 	return true;
 }

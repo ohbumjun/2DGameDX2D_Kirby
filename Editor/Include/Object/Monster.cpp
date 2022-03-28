@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Component/PaperBurnComponent.h"
 #include "Animation/AnimationSequence2dInstance.h"
+#include "UI/MonsterEditorHUD.h"
 
 CMonster::CMonster() :
 	m_DeathAccTime(0.f),
@@ -18,6 +19,7 @@ CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)
 {
 	m_Sprite = (CSpriteComponent*)const_cast<CMonster&>(Monster).FindComponent("MonsterSprite");
 	m_ColliderBody = (CColliderCircle*)const_cast<CMonster&>(Monster).FindComponent("ColliderBody");
+	m_SimpleHUDWidget = (CWidgetComponent*)const_cast<CMonster&>(Monster).FindComponent("MonsterHUD");
 }
 
 CMonster::~CMonster()
@@ -61,16 +63,17 @@ bool CMonster::Init()
 	m_ColliderBody = CreateComponent<CColliderCircle>("ColliderBody");
 	m_ColliderBody->SetCollisionProfile("Monster");
 
-	// m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("SimpleHUD");
-	// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
+	m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
+	m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
 
 	// m_HpBar = SimpleHUDWindow->CreateUIWidget<CUIProgressBar>("HPBar");
 	// m_HpBar->SetPos(0.f, -50.f);
 
-	m_PaperBurn = CreateComponent<CPaperBurnComponent>("PaperBurn");
-	m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
+	// m_PaperBurn = CreateComponent<CPaperBurnComponent>("PaperBurn");
+	// m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
 
 	m_Sprite->AddChild(m_ColliderBody);
+	m_Sprite->AddChild(m_SimpleHUDWidget);
 	m_Sprite->SetTransparency(true);
 
 	// Animation 
@@ -105,6 +108,9 @@ CMonster* CMonster::Clone()
 
 void CMonster::Save(FILE* pFile)
 {
+	// 저장은 하되, 실제 게임 상에서는 보이지 않게 세팅한다.
+	FindComponentByType<CWidgetComponent>()->Enable(false);
+
 	CLifeObject::Save(pFile);
 
 	fwrite(&m_HPMax, sizeof(float), 1, pFile);

@@ -6,21 +6,21 @@
 
 template<typename T, int SIZE = 200>
 class CThreadQueue {
-public :
+public:
 	CThreadQueue()
-{
+	{
 		m_Size = 0;
 		m_Head = 0;
 		m_Tail = 0;
 		m_Capacity = SIZE + 1;
 
 		InitializeCriticalSection(&m_Crt);
-}
+	}
 	~CThreadQueue()
-{
+	{
 		DeleteCriticalSection(&m_Crt);
-}
-private :
+	}
+private:
 	T m_Queue[SIZE + 1];
 	int m_Capacity;
 	int m_Size;
@@ -28,9 +28,9 @@ private :
 	int m_Tail;
 
 	CRITICAL_SECTION m_Crt;
-public :
-	void push (const T& data)
-{
+public:
+	void push(const T& data)
+	{
 		CSync sync(&m_Crt);
 
 		int Tail = (m_Tail + 1) % m_Capacity;
@@ -40,12 +40,14 @@ public :
 
 		m_Queue[Tail] = data;
 
+		// Tail 은 처음에는 Head 와 같은 곳에서 출발
+		// Tail은 한칸 이동 이후, Data 를 넣는 역할을 할 것이다.
 		m_Tail = Tail;
 
 		++m_Size;
-}
+	}
 	T& front()
-{
+	{
 		if (empty())
 			assert(false);
 
@@ -54,9 +56,9 @@ public :
 		int Head = (m_Head + 1) % m_Capacity;
 
 		return m_Queue[Head];
-}
+	}
 	void pop()
-{
+	{
 		if (empty())
 		{
 			assert(false);
@@ -67,25 +69,27 @@ public :
 
 		m_Head = (m_Head + 1) % m_Capacity;
 		m_Size -= 1;
-}
+	}
 
-	int size() 
-{
+	int size()
+	{
 		CSync sync(&m_Crt);
 		return m_Size;
-}
+	}
 	bool empty()
-{
+	{
 		CSync sync(&m_Crt);
 
 		return m_Size == 0;
-}
+	}
 	void clear()
-{
+	{
 		CSync sync(&m_Crt);
 
 		m_Head = 0;
 		m_Tail = 0;
 		m_Size = 0;
-}
+	}
 };
+
+// 시작은 같은 곳에서, 다음으로 이동 이후, 데이터 삽입

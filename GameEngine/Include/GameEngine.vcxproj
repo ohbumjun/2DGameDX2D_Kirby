@@ -306,6 +306,7 @@
     <ClInclude Include="Thread.h" />
     <ClInclude Include="ThreadQueue.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UI\MonsterEditorHUD.h" />
     <ClInclude Include="UI\UIButton.h" />
     <ClInclude Include="UI\UIDamageFont.h" />
     <ClInclude Include="UI\UIImage.h" />
@@ -437,6 +438,7 @@
     <ClCompile Include="Scene\ViewPort.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UI\MonsterEditorHUD.cpp" />
     <ClCompile Include="UI\UIButton.cpp" />
     <ClCompile Include="UI\UIDamageFont.cpp" />
     <ClCompile Include="UI\UIImage.cpp" />

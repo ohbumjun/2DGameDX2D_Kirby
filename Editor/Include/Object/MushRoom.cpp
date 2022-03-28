@@ -1,4 +1,6 @@
 #include "MushRoom.h"
+#include "Component/WidgetComponent.h"
+#include "UI/MonsterEditorHUD.h"
 
 CMushRoom::CMushRoom()
 {
@@ -29,6 +31,9 @@ bool CMushRoom::Init()
 
 	LoadAnimationInstance("Normal_MushRoom", TEXT("Normal_MushRoom.anim"));
 	SetCurrentAnimation("RightIdle");
+
+	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	MonsterHUD->SetText(TEXT("MushRoom"));
 
 	return true;
 }
