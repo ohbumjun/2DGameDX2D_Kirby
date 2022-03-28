@@ -22,6 +22,18 @@ void CMushRoom::Start()
 	m_IsGround = true;
 
 	m_IsGroundObject = true;
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("MushRoom")); //
+		}
+	}
 }
 
 bool CMushRoom::Init()

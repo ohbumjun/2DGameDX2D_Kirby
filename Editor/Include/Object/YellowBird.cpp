@@ -13,6 +13,18 @@ CYellowBird::~CYellowBird()
 void CYellowBird::Start()
 {
 	CNormalMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Bird")); //
+		}
+	}
 }
 
 bool CYellowBird::Init()

@@ -13,6 +13,18 @@ CPurpleBeatle::~CPurpleBeatle()
 void CPurpleBeatle::Start()
 {
 	CGameObject::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Beatle")); //
+		}
+	}
 }
 
 bool CPurpleBeatle::Init()

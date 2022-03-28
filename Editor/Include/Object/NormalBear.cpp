@@ -13,6 +13,18 @@ CNormalBear::~CNormalBear()
 void CNormalBear::Start()
 {
 	CNormalMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("NormalBear")); //
+		}
+	}
 }
 
 bool CNormalBear::Init()

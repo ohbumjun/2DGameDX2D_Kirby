@@ -16,6 +16,18 @@ CFireMonster::~CFireMonster()
 void CFireMonster::Start()
 {
 	CAbilityMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Fire")); //
+		}
+	}
 }
 
 bool CFireMonster::Init()

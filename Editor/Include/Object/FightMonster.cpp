@@ -16,6 +16,18 @@ CFightMonster::~CFightMonster()
 void CFightMonster::Start()
 {
 	CAbilityMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Fight")); //
+		}
+	}
 }
 
 bool CFightMonster::Init()

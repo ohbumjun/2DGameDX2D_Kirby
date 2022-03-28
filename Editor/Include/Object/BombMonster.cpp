@@ -18,6 +18,18 @@ CBombMonster::~CBombMonster()
 void CBombMonster::Start()
 {
 	CAbilityMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Bomb")); //
+		}
+	}
 }
 
 bool CBombMonster::Init()

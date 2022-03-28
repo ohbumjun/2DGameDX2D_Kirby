@@ -13,6 +13,18 @@ CSwordMonster::~CSwordMonster()
 void CSwordMonster::Start()
 {
 	CAbilityMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Sword")); //
+		}
+	}
 }
 
 bool CSwordMonster::Init()
