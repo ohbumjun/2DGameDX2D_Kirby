@@ -106,27 +106,89 @@ void CBombKirbyState::GoUpAttack()
 
 void CBombKirbyState::SpecialAttack()
 {
-	// 가운데
-	CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-
-	AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
-
-	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
-
+	// 오른쪽 위에서 왼쪽 아래로 3개가 떨어지게 세팅한다.
 	if (m_Player->GetObjectMoveDir().x < 0.f)
 	{
+		// 위
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
 		AttackEffect->SetLeftAttackDir(-1.f);
 
-		AttackEffect->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y + 400.f, 0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y + 700.f, 0.f);
+
+		AttackEffect->SetKirbyOwner(this);
+
+		// 가운데 
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
+		AttackEffect->SetLeftAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y + 500.f, 0.f);
+
+		AttackEffect->SetKirbyOwner(this);
+
+		// 아래
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
+		AttackEffect->SetLeftAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y + 300.f, 0.f);
+
+		AttackEffect->SetKirbyOwner(this);
 	}
+	// 왼쪽 위에서 오른쪽 아래로 3개가 떨어지게 세팅한다.
 	else
 	{
+		// 위
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
 		AttackEffect->SetRightAttackDir(-1.f);
 
-		AttackEffect->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y + 400.f, 0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y + 700.f, 0.f);
+
+		AttackEffect->SetKirbyOwner(this);
+
+		// 가운데
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
+		AttackEffect->SetRightAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y + 500.f, 0.f);
+
+		// 아래
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BombSpecial);
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
+		AttackEffect->SetRightAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y + 300.f, 0.f);
+
+		AttackEffect->SetKirbyOwner(this);
 	}
 
-	AttackEffect->SetKirbyOwner(this);
 
 	m_Player->SetAttackEnd();
 

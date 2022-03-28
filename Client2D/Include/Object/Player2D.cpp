@@ -2403,7 +2403,19 @@ void CPlayer2D::ChangePlayerSwimAnimation()
 
 void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 {
+	if (!m_KirbyState)
+		return;
+
 	if (m_IsAttacking)
+		return;
+
+	if (m_IsLadderGoingUp)
+		return;
+
+	if (m_IsSwimming)
+		return;
+
+	if (!m_IsSpecialStateChanged)
 		return;
 
 	StopPlayer();
@@ -3022,25 +3034,9 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 
 void CPlayer2D::SpecialAttack()
 {
-	if (!m_KirbyState)
-		return;
-
-	if (m_IsAttacking)
-		return;
-
-	if (m_IsLadderGoingUp)
-		return;
-
-	if (m_IsSwimming)
-		return;
-
-	if (!m_IsSpecialStateChanged)
-		return;
-
 	m_IsAttacking = true;
 
 	ResetMoveInfo();
-
 
 	UndoSpecialAction();
 

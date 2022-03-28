@@ -114,6 +114,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 	case KirbyAttackEffect_Type::Beam:
 	{
 		m_MainSprite->SetWorldScale(40.f, 40.f, 1.f);
+
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 		m_AttackDistLimitMax = 700.f;
@@ -128,11 +129,11 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 	}
 	case KirbyAttackEffect_Type::BeamSpecial:
 	{
-		m_MainSprite->SetWorldScale(150.f, 150.f, 1.f);
+		m_MainSprite->SetWorldScale(200.f, 200.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
-		m_AttackDistLimitMax = 1100.f;
-		m_AttackObjectSpeed = 800.f;
+		m_AttackDistLimitMax = 900.f;
+		m_AttackObjectSpeed = 900.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyNormalBeamAttackEffect", TEXT("Kirby_Beam_Effect_NormalAttack.anim"));
@@ -140,6 +141,8 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->SetAnimationInstance(AnimationInstance);
 
 		m_SideCollisionApplied = false;
+
+		m_BottomCollisionApplied = true;
 	}
 		break;
 	case KirbyAttackEffect_Type::BeamSpark:
@@ -231,7 +234,7 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		break;
 	case KirbyAttackEffect_Type::BombSpecial:
 	{
-		m_MainSprite->SetWorldScale(350.f, 350.f, 1.f);
+		m_MainSprite->SetWorldScale(220.f, 220.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.5f);
 
 		m_AttackDistLimitMax = 1000.f;
@@ -325,7 +328,7 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 
 		BackEffect->SetWorldPos(GetWorldPos());
 
-		BackEffect->SetWorldScale(60.f, 60.f, 1.f);
+		BackEffect->SetWorldScale(GetWorldScale().x * 0.8f, GetWorldScale().y * 0.8f, 1.f);
 
 		BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.5f);
 

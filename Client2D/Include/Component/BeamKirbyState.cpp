@@ -153,7 +153,82 @@ void CBeamKirbyState::GoUpAttack()
 }
 
 void CBeamKirbyState::SpecialAttack()
-{}
+{
+	// 왼쪽을 보고 있다면
+	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
+
+	// 왼쪽 공격
+	if (PlayerMoveDir.x < 0.f)
+	{
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack1");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y + 500.f, GetWorldPos().z);
+		AttackEffect->SetLeftAttackDir(-1.f);
+		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->AddRelativeRotationZ(90.f);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
+
+		// 가운데
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 350.f, GetWorldPos().y + 600.f, GetWorldPos().z);
+		AttackEffect->SetLeftAttackDir(-1.f);
+		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->AddRelativeRotationZ(90.f);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
+
+		// 아래
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack3");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetWorldPos(GetWorldPos().x - 600.f, GetWorldPos().y + 700.f, GetWorldPos().z);
+		AttackEffect->SetLeftAttackDir(-1.f);
+		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->AddRelativeRotationZ(90.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
+	}
+	// 오른쪽으로 보고 있다면 --> 오른쪽 공격
+	else
+	{
+		// 위
+		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack1");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y + 500.f, GetWorldPos().z);
+		AttackEffect->SetRightAttackDir(-1.f);
+		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->AddRelativeRotationZ(-90.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
+
+		// 가운데 
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetRightAttackDir(-1.f);
+		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 350.f, GetWorldPos().y + 600.f, GetWorldPos().z);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->AddRelativeRotationZ(-90.f);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
+
+		// 아래
+		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack3");
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetWorldPos(GetWorldPos().x + 600.f, GetWorldPos().y + 700.f, GetWorldPos().z);
+		AttackEffect->SetRightAttackDir(-1.f);
+		AttackEffect->SetAttackDirX(0.f);
+		AttackEffect->SetKirbyOwner(this);
+		AttackEffect->AddRelativeRotationZ(-90.f);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
+	}
+
+	m_Player->SetAttackEnable(false);
+
+	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
+	m_Player->ChangePlayerIdleAnimation();
+
+}
 
 void CBeamKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
@@ -339,9 +414,9 @@ void CBeamKirbyState::NormalAttackCallback()
 		// 가운데 
 		AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack2");
 		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Beam);
-		AttackEffect->SetRightAttackDir(0.f);
 		AttackEffect->SetWorldPos(GetWorldPos().x + GetWorldScale().x * 0.5f,
 			GetWorldPos().y, GetWorldPos().z);
+		AttackEffect->SetRightAttackDir(0.f);
 		AttackEffect->SetKirbyOwner(this);
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
