@@ -27,7 +27,7 @@ bool CFireMonster::Init()
 	SetCurrentAnimation("RightIdle");
 
 	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("Fire"));
+	MonsterHUD->SetText(TEXT("Fire")); //
 
 	return true;
 }
