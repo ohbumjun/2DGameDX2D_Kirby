@@ -26,8 +26,12 @@ bool CFightMonster::Init()
 	LoadAnimationInstance("Fight", TEXT("Ability_Fight.anim"));
 	SetCurrentAnimation("RightIdle");
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("Fight"));
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
+
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("Fight"));
+	}
 
 	return true;
 }

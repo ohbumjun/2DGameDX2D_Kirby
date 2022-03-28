@@ -26,11 +26,11 @@ bool CMonsterEditorHUD::Init()
 	m_NameText = CreateUIWidget<CUIText>("NameText");
 
 	m_NameText->SetText(TEXT("Name!"));
-	m_NameText->SetPos(0.f, 20.f);
-	m_NameText->SetSize(100.f, 30.f);
-	m_NameText->SetFontSize(13.f);
+	m_NameText->SetPos(-150.f, 35.f);
+	m_NameText->SetSize(300.f, 100.f);
+	m_NameText->SetFontSize(35.f);
 	m_NameText->SetZOrder(1);
-	m_NameText->SetColor(1.f, 1.f, 1.f);
+	m_NameText->SetColor(0.5f, 0.5f, 0.5f);
 	m_NameText->SetAlignH(TEXT_ALIGN_H::Center);
 
 	return true;

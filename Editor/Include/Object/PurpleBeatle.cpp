@@ -23,20 +23,24 @@ bool CPurpleBeatle::Init()
 	LoadAnimationInstance("Normal_PurpleBeatle", TEXT("Normal_PurpleBeatle.anim"));
 	SetCurrentAnimation("RightIdle");
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("Beatle"));
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
+
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("Beatle"));
+	}
 
 	return true;
 }
 
 void CPurpleBeatle::Update(float DeltaTime)
 {
-	CGameObject::Update(DeltaTime);
+	CNormalMonster::Update(DeltaTime);
 }
 
 void CPurpleBeatle::PostUpdate(float DeltaTime)
 {
-	CGameObject::PostUpdate(DeltaTime);
+	CNormalMonster::PostUpdate(DeltaTime);
 }
 
 CPurpleBeatle* CPurpleBeatle::Clone()

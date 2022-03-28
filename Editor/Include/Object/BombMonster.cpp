@@ -28,8 +28,12 @@ bool CBombMonster::Init()
 	LoadAnimationInstance("BombMonster", TEXT("Ability_Bomb.anim"));
 	SetCurrentAnimation("RightIdle");
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("Bomb"));
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
+
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("Bomb"));
+	}
 
 	return true;
 }

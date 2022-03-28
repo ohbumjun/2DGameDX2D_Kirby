@@ -23,8 +23,12 @@ bool CSwordMonster::Init()
 	LoadAnimationInstance("SwordMonster", TEXT("Ability_Sword.anim"));
 	SetCurrentAnimation("RightIdle");
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("Sword"));
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
+
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("Sword"));
+	}
 
 	return true;
 }

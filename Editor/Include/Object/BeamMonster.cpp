@@ -28,9 +28,12 @@ bool CBeamMonster::Init()
 	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
 	SetCurrentAnimation("RightIdle");
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("Beam"));
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
 
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("Beam"));
+	}
 	return true;
 }
 

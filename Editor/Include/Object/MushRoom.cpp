@@ -32,8 +32,13 @@ bool CMushRoom::Init()
 	LoadAnimationInstance("Normal_MushRoom", TEXT("Normal_MushRoom.anim"));
 	SetCurrentAnimation("RightIdle");
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
-	MonsterHUD->SetText(TEXT("MushRoom"));
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
+
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("MushRoom"));
+	}
+
 
 	return true;
 }

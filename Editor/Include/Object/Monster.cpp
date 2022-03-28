@@ -108,9 +108,6 @@ CMonster* CMonster::Clone()
 
 void CMonster::Save(FILE* pFile)
 {
-	// 저장은 하되, 실제 게임 상에서는 보이지 않게 세팅한다.
-	FindComponentByType<CWidgetComponent>()->Enable(false);
-
 	CLifeObject::Save(pFile);
 
 	fwrite(&m_HPMax, sizeof(float), 1, pFile);
@@ -118,6 +115,8 @@ void CMonster::Save(FILE* pFile)
 	fwrite(&m_DeathAccTime, sizeof(float), 1, pFile);
 	fwrite(&m_DeathFinishTime, sizeof(float), 1, pFile);
 	fwrite(&m_DeathStart, sizeof(bool), 1, pFile);
+
+	
 }
 
 void CMonster::Load(FILE* pFile)
@@ -129,4 +128,12 @@ void CMonster::Load(FILE* pFile)
 	fread(&m_DeathAccTime, sizeof(float), 1, pFile);
 	fread(&m_DeathFinishTime, sizeof(float), 1, pFile);
 	fread(&m_DeathStart, sizeof(bool), 1, pFile);
+
+	// Widget Component 는 존재하지만, 그 안에 Window 가 존재하지 않는다면
+	// 해당 Window를 다시 만들어낸다.
+	// 그리고, 파생 클래스 들에서 다시 이름 등을 Start 에서 세팅해준다.
+	if (!FindComponentByType<CWidgetComponent>()->GetWidgetWindow())
+	{
+		FindComponentByType<CWidgetComponent>()->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+	}
 }

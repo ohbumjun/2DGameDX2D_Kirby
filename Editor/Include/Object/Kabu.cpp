@@ -13,6 +13,19 @@ CKabu::~CKabu()
 void CKabu::Start()
 {
 	CNormalMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Kabu"));
+		}
+	}
+
 }
 
 bool CKabu::Init()
@@ -24,10 +37,14 @@ bool CKabu::Init()
 	// LoadAnimationInstance("Normal_YellowBird", TEXT("Kirby_Fight.anim"));
 	SetCurrentAnimation("RightIdle");
 
+	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(FindComponentByType<CWidgetComponent>()->GetWidgetWindow());
 
-	CMonsterEditorHUD* MonsterHUD = (CMonsterEditorHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+	if (MonsterHUD)
+	{
+		MonsterHUD->SetText(TEXT("Kabu"));
+	}
 
-	MonsterHUD->SetText(TEXT("Kabu"));
+
 	return true;
 }
 
