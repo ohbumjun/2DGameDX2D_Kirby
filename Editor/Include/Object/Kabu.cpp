@@ -22,7 +22,7 @@ void CKabu::Start()
 
 		if (MonsterHUD)
 		{
-			MonsterHUD->SetText(TEXT("Kabu"));
+			MonsterHUD->SetText(TEXT("Kabu")); //
 		}
 	}
 
