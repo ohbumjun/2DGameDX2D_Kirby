@@ -149,6 +149,8 @@ void CMonster::Load(FILE* pFile)
 
 	if (!FindComponentByType<CWidgetComponent>()->GetWidgetWindow())
 	{
-		FindComponentByType<CWidgetComponent>()->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+		m_SimpleHUDWidget = FindComponentByType<CWidgetComponent>();
+		m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+		m_RootComponent->AddChild(m_SimpleHUDWidget);
 	}
 }

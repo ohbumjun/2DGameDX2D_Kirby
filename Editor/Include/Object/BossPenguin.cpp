@@ -1,4 +1,6 @@
 #include "BossPenguin.h"
+#include "UI/MonsterEditorHUD.h"
+#include "Component/WidgetComponent.h"
 
 class CAnimationSequence2DInstance;
 
@@ -17,6 +19,18 @@ CBossPenguin::~CBossPenguin()
 void CBossPenguin::Start()
 {
 	CBossMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Penguin")); //
+		}
+	}
 }
 
 bool CBossPenguin::Init()

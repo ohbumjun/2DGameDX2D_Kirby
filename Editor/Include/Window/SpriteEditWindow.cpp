@@ -1202,28 +1202,43 @@ void CSpriteEditWindow::DeleteFrameButton()
 	// Empty
 	if (m_AnimationList->GetItemCount() <= 0)
 		return;
+
 	if (m_AnimationFrameList->GetItemCount() <= 0)
 		return;
 
 	// Not Selected
 	if (m_AnimationList->GetSelectIndex() < 0)
 		return;
+
 	if (m_AnimationFrameList->GetSelectIndex() < 0)
 		return;
 
 	// Delete Actual Frame Data
 	CSceneResource*       Resource         = CSceneManager::GetInst()->GetScene()->GetResource();
+
 	CAnimationSequence2D* Sequence         = Resource->FindAnimationSequence2D(m_AnimationList->GetSelectItem());
+
 	int                   SelectedFrameIdx = std::stoi(m_AnimationFrameList->GetSelectItem());
+
 	Sequence->DeleteFrame(SelectedFrameIdx);
+
+	// 다시 FrameList 에 해당 Frame 들을 처음부터 다시 채워준다.
+	m_AnimationFrameList->Clear();
+
+	int TotalFrameCount = Sequence->GetFrameCount();
+
+	for (int i = 0; i < TotalFrameCount; i++)
+	{
+		m_AnimationFrameList->AddItem(std::to_string(i));
+	}
 
 	// Update Select Idx Info Of m_AnimationFrameList
 	int SelectedFrameListIndex = m_AnimationFrameList->GetSelectIndex();
 
-
 	if (SelectedFrameIdx == 0)
 	{
-		if (m_AnimationFrameList->GetItemCount() > 1)
+		// if (m_AnimationFrameList->GetItemCount() > 1)
+		if (m_AnimationFrameList->GetItemCount() >= 1)
 		{
 			// 0 이라면, 만약 2개 이상의 Frame이 Add된 상태라면, 지운 다음 녀석, 즉, 다시 0을 가리키게 한다 ( 1에서 0이 된 녀석 )
 			// 아무것도 안하면 0을 가리키게 될 것이다. 
@@ -1245,8 +1260,10 @@ void CSpriteEditWindow::DeleteFrameButton()
 	// Set FrameData To 0
 	if (m_Animation && m_Animation->GetCurrentAnimation())
 	{
+		// 다시 현재 Animation 처음 부터 진행되기 하기 위해서, m_Frame 을 0 으로 해놓는다.
 		m_Animation->GetCurrentAnimation()->SetFrame(0);
 
+		// 삭제된 Frame 이전 Frame 혹은 처음 Idx 로 m_AnimationFrameList 의 Idx 가 세팅되게 해두었다.
 		int UpdatedSelectIndex = m_AnimationFrameList->GetSelectIndex();
 
 		AnimationFrameData NFrameData = m_Animation->GetCurrentAnimation()->GetFrameData(UpdatedSelectIndex);
@@ -1273,6 +1290,8 @@ void CSpriteEditWindow::DeleteFrameButton()
 		m_SpriteSampled->SetTexture("DefaultUI");
 	}
 
+	/*
+	아래 내용은 더 이상 필요 없지 않을까 ? --> 위에서 아예 새로 다시 Reset 하고 Add 해줬기 때문에
 	// Delete Text
 	m_AnimationFrameList->DeleteItem(SelectedFrameIdx);
 
@@ -1284,6 +1303,7 @@ void CSpriteEditWindow::DeleteFrameButton()
 			continue;
 		m_AnimationFrameList->SetItem(i, std::to_string(i));
 	}
+	*/
 
 	// Stop Animation
 	if (m_Animation)
@@ -1958,8 +1978,10 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
 	// CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2DData(SequenceName);
 	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+
 	if (!Sequence)
 		return;
+
 	CTexture*             SequenceTexture = Sequence->GetTexture();
 	AnimationFrameData    FrameData       = Sequence->GetFrameData(Index);
 

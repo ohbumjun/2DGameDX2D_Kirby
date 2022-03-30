@@ -1,4 +1,6 @@
 #include "MiddleBossHammer.h"
+#include "UI/MonsterEditorHUD.h"
+#include "Component/WidgetComponent.h"
 
 class CAnimationSequence2DInstance;
 
@@ -13,6 +15,18 @@ CMiddleBossHammer::~CMiddleBossHammer()
 void CMiddleBossHammer::Start()
 {
 	CBossMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Hammer")); //
+		}
+	}
 }
 
 bool CMiddleBossHammer::Init()

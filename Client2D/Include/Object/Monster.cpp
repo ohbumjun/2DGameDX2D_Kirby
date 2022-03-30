@@ -102,8 +102,10 @@ void CMonster::Damage(float Damage)
 	m_HP -= Damage;
 	
 	// Widget HP Bar 조정하기
+	/*
 	CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
 	HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);
+	*/
 }
 
 void CMonster::SetHPMax(float HPMax)
@@ -362,22 +364,28 @@ void CMonster::Start()
 
 	// PaperBurn
 	m_PaperBurn = (CPaperBurnComponent*)FindComponent("PaperBurn");
+	if (!m_PaperBurn)
+	{
+		m_PaperBurn = CreateComponent<CPaperBurnComponent>("PaperBurn");
+	}
 	m_PaperBurn->SetFinishCallback(this, &CMonster::PaperBurnEnd);
 	m_PaperBurn->SetMaterial(m_Sprite->GetMaterial());
 
 	// UIWindow
+	m_SimpleHUDWidget = FindComponentByType<CWidgetComponent>();
 	/*
 	m_SimpleHUDWidget = (CWidgetComponent*)FindComponent("MonsterHUD");
+	*/
 
 	if (!m_SimpleHUDWidget)
 	{
 		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
+		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
+		m_RootComponent->AddChild(m_SimpleHUDWidget);
+		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+		m_SimpleHUDWidget->Enable(false); // 존재는 하되 보이지는 않게 한다.
 	}
 
-	m_SimpleHUDWidget->CreateUIWindow<CMonster>("SimpleHUDWindow");
-	m_Sprite->AddChild(m_SimpleHUDWidget);
-	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-	*/
 
 	SetRandomTargetDir();
 }

@@ -16,13 +16,17 @@ void CEffectChangeToFloat2_1::Start()
 {
 	CGameObject::Start();
 
-
-	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
-
-	if (Component)
+	// Monster 에서의 Start 와 마찬가지로, WidgetComponent 의 World Pos를
+	// RootComponent 의 상대적인 위치에 세팅하기 위한 코드이다
+	if (m_RootComponent)
 	{
-		m_SimpleHUDWidget = Component;
+		m_RootComponent->SetRelativePos(GetWorldPos());
+	}
 
+	m_SimpleHUDWidget = FindComponentByType<CWidgetComponent>();
+
+	if (m_SimpleHUDWidget)
+	{
 		if (!m_SimpleHUDWidget->GetWidgetWindow())
 		{
 			m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
@@ -65,4 +69,21 @@ void CEffectChangeToFloat2_1::Update(float DeltaTime)
 void CEffectChangeToFloat2_1::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
+}
+
+void CEffectChangeToFloat2_1::Load(FILE* pFile)
+{
+	CGameObject::Load(pFile);
+
+	if (!FindComponentByType<CWidgetComponent>())
+	{
+		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
+		m_SimpleHUDWidget->CreateUIWindow<CMonsterEditorHUD>("SimpleHUDWindow");
+
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
+
+		MonsterHUD->SetText(TEXT("Float2_1")); //
+
+		m_RootComponent->AddChild(m_SimpleHUDWidget);
+	}
 }

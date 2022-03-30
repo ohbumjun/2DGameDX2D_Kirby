@@ -1,4 +1,6 @@
 #include "MiddleBossScissorBug.h"
+#include "UI/MonsterEditorHUD.h"
+#include "Component/WidgetComponent.h"
 
 class CAnimationSequence2DInstance;
 
@@ -13,6 +15,18 @@ CMiddleBossScissorBug::~CMiddleBossScissorBug()
 void CMiddleBossScissorBug::Start()
 {
 	CBossMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("ScissorBug")); //
+		}
+	}
 }
 
 bool CMiddleBossScissorBug::Init()

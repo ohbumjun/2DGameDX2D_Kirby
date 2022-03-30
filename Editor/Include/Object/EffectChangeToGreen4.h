@@ -17,6 +17,7 @@ public:
     virtual bool Init() override;
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
+    virtual void Load(FILE* pFile) override;
     virtual CEffectChangeToGreen4* Clone() override;
 };
 

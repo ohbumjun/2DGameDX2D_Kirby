@@ -1,4 +1,6 @@
 #include "BossTree.h"
+#include "UI/MonsterEditorHUD.h"
+#include "Component/WidgetComponent.h"
 
 class CAnimationSequence2DInstance;
 
@@ -17,6 +19,18 @@ CBossTree::~CBossTree()
 void CBossTree::Start()
 {
 	CBossMonster::Start();
+
+	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
+
+	if (Component)
+	{
+		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
+
+		if (MonsterHUD)
+		{
+			MonsterHUD->SetText(TEXT("Tree")); //
+		}
+	}
 }
 
 bool CBossTree::Init()
