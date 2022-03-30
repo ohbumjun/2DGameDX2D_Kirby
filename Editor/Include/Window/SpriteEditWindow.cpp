@@ -1137,13 +1137,13 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 
 	// 위에서 가져온 Animation Sequence 2D를 세팅하면 될 것 같다
 	CAnimationSequence2DData* Animation = m_Animation->GetCurrentAnimation();
+	// CAnimationSequence2DData* Animation = m_Animation->FindAnimationSequence2DData(m_AnimationList->GetSelectItem());
+
 	if (!Animation)
 		return;
 
 	// Animation --> 중복해서 Animation이 들어가게 된다.
 	// Animation->AddFrame(StartPos, EndPos - StartPos);
-
-
 	float                 XDiff           = -1, YDiff = -1;
 
 	CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
@@ -1152,9 +1152,12 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	Vector2				  FrameEndPos = CEditorManager::GetInst()->GetDragObject()->GetEndPos();
 
 	std::pair<Vector2, Vector2> FinalStartEndPos = GetFinalFrameStartEndPos(FrameStartPos, FrameEndPos);
+
 	Vector2 FinalStartPos = FinalStartEndPos.first;
 	Vector2 FinalEndPos   = FinalStartEndPos.second;
+
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
+
 	CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2D(SequenceName);
 	
 	Vector2 FrameSize = FinalEndPos - FinalStartPos;
@@ -1180,10 +1183,12 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 	char FrameName[1024] = {};
 	int  AnimItemCount   = m_AnimationFrameList->GetItemCount();
 	sprintf_s(FrameName, "%d", AnimItemCount);
+
 	m_AnimationFrameList->AddItem(FrameName);
 
 	// Sampled에 Image 세팅해주기 
 	CSpriteComponent* SpriteObjectComponent = dynamic_cast<CSpriteComponent*>(m_SpriteObject->GetRootComponent());
+
 	m_SpriteSampled->SetTexture(SpriteObjectComponent->GetTextureName());
 
 	// Image, End 세팅 
@@ -1192,7 +1197,10 @@ void CSpriteEditWindow::AddAnimationFrameButton()
 
 	// AnimationFrameListBox 내의 SelectIdx 정보도 바꿔주기 
 	m_AnimationFrameList->SetSelectIndex(AnimItemCount);
-	
+
+	// Animation 상에서 현재 Current Animation 정보 바꿔주기
+	m_Animation->SetCurrentAnimation(m_AnimationList->GetSelectItem());
+		
 	// Stop Animation
 	m_Animation->Play();
 }
@@ -1974,10 +1982,10 @@ void CSpriteEditWindow::SelectAnimationSequence(int Index, const char* TextureNa
 void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 {
 	// SceneResource가 아니라, 해당 m_Animation 으로부터 찾을 것이다 
-	// CSceneResource*       Resource        = CSceneManager::GetInst()->GetScene()->GetResource();
 	std::string           SequenceName    = m_AnimationList->GetSelectItem();
-	// CAnimationSequence2D* Sequence        = Resource->FindAnimationSequence2DData(SequenceName);
-	CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+
+	// CAnimationSequence2D* Sequence = m_Animation->GetCurrentAnimation()->GetAnimationSequence();
+	CAnimationSequence2D* Sequence = m_Animation->FindAnimationSequence2DData(SequenceName)->GetAnimationSequence();
 
 	if (!Sequence)
 		return;
@@ -2002,11 +2010,13 @@ void CSpriteEditWindow::SelectAnimationFrame(int Index, const char* Name)
 	EndPos.y   = ImageSize.y - EndPos.y;
 
 	Vector2 SpriteObject2DPos = Vector2(m_SpriteObject->GetWorldPos().x, m_SpriteObject->GetWorldPos().y);
+
 	StartPos += SpriteObject2DPos;
 	EndPos += SpriteObject2DPos;
 
 	// 해당 Sequece 가 Reverse인지, 아닌지에 따라서, SpriteEdit Object에 대해서도 Mode를 Reverse로 세팅해주기
 	bool SeqFrameReverse = m_Animation->FindAnimationSequence2DData(SequenceName)->IsFrameReverse();
+
 	if (SeqFrameReverse)
 		SetReverseMode();
 	else
