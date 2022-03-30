@@ -32,7 +32,7 @@ bool CFish::Init()
 	if (!CWaterMonster::Init())
 		return false;
 
-	LoadAnimationInstance("Fish", TEXT("Fish.anim"));
+	LoadAnimationInstance("Fish", TEXT("Normal_Fish.anim"));
 	SetCurrentAnimation("RightIdle");
 
 	CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(m_SimpleHUDWidget->GetWidgetWindow());

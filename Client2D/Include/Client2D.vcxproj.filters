@@ -91,6 +91,9 @@
     <Filter Include="02. Object\11. SceneObject">
       <UniqueIdentifier>{77ec9c0b-d777-464e-9851-86d8a95b0765}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Excel">
+      <UniqueIdentifier>{12f936bb-6bc7-40cd-a848-e3d6bc171a3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -447,6 +450,21 @@
     <ClCompile Include="Object\SwordBoomerang.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Chicken.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Frog.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Pig.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Fish.cpp">
+      <Filter>02. Object\03. Monster\04. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Excel.cpp">
+      <Filter>04. Excel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -802,6 +820,21 @@
     </ClInclude>
     <ClInclude Include="Object\SwordBoomerang.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Chicken.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Frog.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Pig.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Fish.h">
+      <Filter>02. Object\03. Monster\04. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Excel.h">
+      <Filter>04. Excel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

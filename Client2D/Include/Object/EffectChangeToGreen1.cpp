@@ -72,7 +72,7 @@ void CEffectChangeToGreen1::ChangeSceneToGreen1Scene()
 		CSceneManager::GetInst()->CreateNewScene(false);
 		CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>(false);
 		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		if (CSceneManager::GetInst()->GetNextScene()->Load("Green1.scn", SCENE_PATH))
+		if (CSceneManager::GetInst()->GetNextScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH))
 		{
 			CSceneManager::GetInst()->ChangeNextScene();
 		}

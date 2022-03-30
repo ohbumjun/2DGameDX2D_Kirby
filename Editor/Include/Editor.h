@@ -8,6 +8,10 @@ const std::string g_YellowBirdName = "YellowBird";
 const std::string g_MushRoomName = "MushRoom";
 const std::string g_Squid = "Squid";
 const std::string g_Kabu = "Kabu";
+const std::string g_Fish = "Fish";
+const std::string g_Frog = "Frog";
+const std::string g_Chicken = "Chicken";
+const std::string g_Pig = "Pig";
 // Ability
 const std::string g_BeamMonsterName = "Beam";
 const std::string g_FireMonsterName    = "Fire";

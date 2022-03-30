@@ -172,7 +172,7 @@ void CEffectKirbyRide::ChangeSceneToGreen3Scene()
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
 
-	if (CSceneManager::GetInst()->GetNextScene()->Load("Green3.scn", SCENE_PATH))
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Green3_MiddleBoss_SecondSpecial.scn", SCENE_PATH))
 	{
 		CSceneManager::GetInst()->ChangeNextScene();
 	}

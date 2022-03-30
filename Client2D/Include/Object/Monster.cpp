@@ -382,10 +382,15 @@ void CMonster::Start()
 		m_SimpleHUDWidget = CreateComponent<CWidgetComponent>("MonsterHUD");
 		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
 		m_RootComponent->AddChild(m_SimpleHUDWidget);
-		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-		m_SimpleHUDWidget->Enable(false); // 존재는 하되 보이지는 않게 한다.
 	}
 
+	if (!m_SimpleHUDWidget->GetWidgetWindow())
+	{
+		m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWindow");
+	}
+
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
+	m_SimpleHUDWidget->Enable(false); // 존재는 하되 보이지는 않게 한다.
 
 	SetRandomTargetDir();
 }

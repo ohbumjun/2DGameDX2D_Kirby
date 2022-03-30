@@ -75,7 +75,7 @@ void CEffectChangeToFloat4::ChangeSceneToFloat4Scene()
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-	if (CSceneManager::GetInst()->GetNextScene()->Load("Float4.scn", SCENE_PATH))
+	if (CSceneManager::GetInst()->GetNextScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH))
 	{
 		CSceneManager::GetInst()->ChangeNextScene();
 	}

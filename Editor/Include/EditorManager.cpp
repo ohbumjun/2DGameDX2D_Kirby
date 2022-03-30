@@ -43,6 +43,10 @@
 #include "Object/TileMapEmpty.h"
 #include "Object/MushRoom.h"
 #include "Object/Kabu.h"
+#include "Object/Pig.h"
+#include "Object/Frog.h"
+#include "Object/Fish.h"
+#include "Object/Chicken.h"
 #include "Object/BackGround.h"
 #include "Object/BeamMonster.h"
 #include "Object/FireMonster.h"
@@ -461,6 +465,23 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CKabu>(NewMonsterName);
 		}
+		else if (strcmp(g_Fish.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFish>(NewMonsterName);
+		}
+		else if (strcmp(g_Frog.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CFrog>(NewMonsterName);
+		}
+		else if (strcmp(g_Chicken.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CChicken>(NewMonsterName);
+		}
+		else if (strcmp(g_Pig.c_str(), SelectObjectName.c_str()) == 0)
+		{
+			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CPig>(NewMonsterName);
+		}
+
 		else if (strcmp(g_BeamMonsterName.c_str(), SelectObjectName.c_str()) == 0)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBeamMonster>(NewMonsterName);
@@ -927,6 +948,26 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	else if (GameObjectTypeID == typeid(CSquid).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CSquid>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CFish).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFish>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CPig).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CPig>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CFrog).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFrog>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CChicken).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CChicken>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())

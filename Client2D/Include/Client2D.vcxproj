@@ -106,10 +106,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\libxl-4.0.3.1\include_cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\libxl-4.0.3.1\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libxl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,10 +137,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\libxl-4.0.3.1\include_cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\libxl-4.0.3.1\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libxl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -184,6 +190,7 @@
     <ClCompile Include="Object\BulletCamera.cpp" />
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\AttackEffect.cpp" />
+    <ClCompile Include="Object\Chicken.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_1.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_2.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat3.cpp" />
@@ -204,11 +211,14 @@
     <ClCompile Include="Object\EffectStar.cpp" />
     <ClCompile Include="Object\EffectWaterAttack.cpp" />
     <ClCompile Include="Object\EffectWaterBlast.cpp" />
+    <ClCompile Include="Object\Excel.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FightMonsterAttack.cpp" />
     <ClCompile Include="Object\FireAttackBackEffect.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
     <ClCompile Include="Object\FireMonsterAttack.cpp" />
+    <ClCompile Include="Object\Fish.cpp" />
+    <ClCompile Include="Object\Frog.cpp" />
     <ClCompile Include="Object\HammerGorillaCloseAttack.cpp" />
     <ClCompile Include="Object\HammerGorillaFarAttack.cpp" />
     <ClCompile Include="Object\HPGreenItem.cpp" />
@@ -228,6 +238,7 @@
     <ClCompile Include="Object\NormalBear.cpp" />
     <ClCompile Include="Object\NormalMonster.cpp" />
     <ClCompile Include="Object\PenguinCloseAttack.cpp" />
+    <ClCompile Include="Object\Pig.cpp" />
     <ClCompile Include="Object\PixelTest.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PlayerAnimation2D.cpp" />
@@ -304,6 +315,7 @@
     <ClInclude Include="Object\Bullet.h" />
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
+    <ClInclude Include="Object\Chicken.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_1.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_2.h" />
     <ClInclude Include="Object\EffectChangeToFloat3.h" />
@@ -324,11 +336,14 @@
     <ClInclude Include="Object\EffectStar.h" />
     <ClInclude Include="Object\EffectWaterAttack.h" />
     <ClInclude Include="Object\EffectWaterBlast.h" />
+    <ClInclude Include="Object\Excel.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FightMonsterAttack.h" />
     <ClInclude Include="Object\FireAttackBackEffect.h" />
     <ClInclude Include="Object\FireMonster.h" />
     <ClInclude Include="Object\FireMonsterAttack.h" />
+    <ClInclude Include="Object\Fish.h" />
+    <ClInclude Include="Object\Frog.h" />
     <ClInclude Include="Object\HammerGorillaCloseAttack.h" />
     <ClInclude Include="Object\HammerGorillaFarAttack.h" />
     <ClInclude Include="Object\HPGreenItem.h" />
@@ -348,6 +363,7 @@
     <ClInclude Include="Object\NormalBear.h" />
     <ClInclude Include="Object\NormalMonster.h" />
     <ClInclude Include="Object\PenguinCloseAttack.h" />
+    <ClInclude Include="Object\Pig.h" />
     <ClInclude Include="Object\PixelTest.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PlayerAnimation2D.h" />

@@ -28,6 +28,10 @@
 #include "Object/NormalBear.h"
 #include "Object/MushRoom.h"
 #include "Object/Kabu.h"
+#include "Object/Fish.h"
+#include "Object/Pig.h"
+#include "Object/Frog.h"
+#include "Object/Chicken.h"
 #include "Object/PurpleBeatle.h"
 #include "Object/TileMapEmpty.h"
 #include "Object/BackGround.h"
@@ -159,9 +163,9 @@ void CClientManager::CreateDefaultSceneMode()
 	// --------------------------------------------------------------------------
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
-	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat7Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat6Scene>();
@@ -176,14 +180,14 @@ void CClientManager::CreateDefaultSceneMode()
 
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("Green1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float7_SecondBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float6.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float3.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("Green3.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green3_MiddleBoss_SecondSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Beginning.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green2_SpecialScene.scn", SCENE_PATH);
@@ -228,6 +232,26 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CMushRoom).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CMushRoom>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CPig).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CPig>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CFish).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFish>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CFrog).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CFrog>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CChicken).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CChicken>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CSquid).hash_code())
