@@ -182,6 +182,7 @@
     <ClCompile Include="Object\BossMonster.cpp" />
     <ClCompile Include="Object\BossPenguin.cpp" />
     <ClCompile Include="Object\BossTree.cpp" />
+    <ClCompile Include="Object\Chicken.cpp" />
     <ClCompile Include="Object\DragObject.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat3.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat4.cpp" />
@@ -194,6 +195,8 @@
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
+    <ClCompile Include="Object\Fish.cpp" />
+    <ClCompile Include="Object\Frog.cpp" />
     <ClCompile Include="Object\HPGreenItem.cpp" />
     <ClCompile Include="Object\HPRedItem.cpp" />
     <ClCompile Include="Object\HPYellowItem.cpp" />
@@ -208,6 +211,7 @@
     <ClCompile Include="Object\MushRoom.cpp" />
     <ClCompile Include="Object\NormalBear.cpp" />
     <ClCompile Include="Object\NormalMonster.cpp" />
+    <ClCompile Include="Object\Pig.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
     <ClCompile Include="Object\ShowObject.cpp" />
@@ -242,6 +246,7 @@
     <ClInclude Include="Object\BossMonster.h" />
     <ClInclude Include="Object\BossPenguin.h" />
     <ClInclude Include="Object\BossTree.h" />
+    <ClInclude Include="Object\Chicken.h" />
     <ClInclude Include="Object\DragObject.h" />
     <ClInclude Include="Object\EffectChangeToFloat3.h" />
     <ClInclude Include="Object\EffectChangeToFloat4.h" />
@@ -254,6 +259,8 @@
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FireMonster.h" />
+    <ClInclude Include="Object\Fish.h" />
+    <ClInclude Include="Object\Frog.h" />
     <ClInclude Include="Object\HPGreenItem.h" />
     <ClInclude Include="Object\HPRedItem.h" />
     <ClInclude Include="Object\HPYellowItem.h" />
@@ -268,6 +275,7 @@
     <ClInclude Include="Object\MushRoom.h" />
     <ClInclude Include="Object\NormalBear.h" />
     <ClInclude Include="Object\NormalMonster.h" />
+    <ClInclude Include="Object\Pig.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
     <ClInclude Include="Object\ShowObject.h" />

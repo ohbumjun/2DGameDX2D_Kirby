@@ -243,6 +243,18 @@
     <ClCompile Include="Object\SwordMonster.cpp">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Fish.cpp">
+      <Filter>03. Object\03. Monster\04. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Chicken.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Frog.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Pig.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -421,6 +433,18 @@
     </ClInclude>
     <ClInclude Include="Object\SwordMonster.h">
       <Filter>03. Object\03. Monster\02. Ability</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Fish.h">
+      <Filter>03. Object\03. Monster\04. Water</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Chicken.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Frog.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Pig.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
