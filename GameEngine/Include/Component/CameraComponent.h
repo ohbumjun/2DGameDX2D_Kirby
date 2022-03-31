@@ -31,6 +31,13 @@ protected:
 	float			m_FollowTargetTime;
 	float			m_FollowTargetTimeMax;
 
+	// Camera Shake
+	float m_CameraShakeTime;
+	float m_CameraShakePassTime; // »Â∏• Ω√∞£
+	float m_CameraShakeTimeMax;
+	bool m_IsCameraShake;
+	bool m_ShakeRight;
+
 public:
 	bool IsAdjustRatio() const
 	{
@@ -137,7 +144,10 @@ public:
 			m_Ratio.y = y;
 		}
 	}
+public :
+	void ApplyShakeEffect();
 private:
+	void UpdateShakeEffect(float DeltaTime);
 	void CreateProjectionMatrix();
 	bool LimitCameraAreaInsideWorld();
 	void AdjustCameraPosToRatio();

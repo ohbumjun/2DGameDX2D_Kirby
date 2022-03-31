@@ -1573,6 +1573,10 @@ void CPlayer2D::Damage(float Damage)
 		return;
 	}
 
+	// Shake Effect 적용하기 
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+
+
 	// Widget HP Bar 조정하기
 	// CSimpleHUD* HUD = dynamic_cast<CSimpleHUD*>(m_SimpleHUDWidget->GetWidgetWindow());
 	// HUD->GetProgressBar()->SetPercent(m_HP / m_HPMax);

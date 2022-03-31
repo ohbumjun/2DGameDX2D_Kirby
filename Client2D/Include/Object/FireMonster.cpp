@@ -1,6 +1,7 @@
 #include "FireMonster.h"
 #include "FireMonsterAttack.h"
 #include <Component/SpriteComponent.h>
+#include <Scene/CameraManager.h>
 #include <Scene/Scene.h>
 #include "Animation/AnimationSequence2DInstance.h"
 
@@ -106,7 +107,6 @@ void CFireMonster::Attack()
 	// 아래
 	Vector3 TraceDownDir = Vector3(PlayerPos.x, PlayerPos.y - 100.f, PlayerPos.z) - GetWorldPos();
 	TraceDownDir.Normalize();
-
 
 	// 왼쪽을 보고 있다면 
 	if (m_ObjectMoveDir.x < 0.f)

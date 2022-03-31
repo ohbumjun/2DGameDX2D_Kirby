@@ -8,7 +8,12 @@ CCameraComponent::CCameraComponent()  :
 	m_FollowPlayer(false),
 	m_FollowTarget(false),
 	m_FollowTargetTime(3.0f),
-	m_FollowTargetTimeMax(3.0f)
+	m_FollowTargetTimeMax(3.0f),
+	m_CameraShakeTime(0.f),
+	// m_CameraShakeTimeMax(0.1f),
+	m_CameraShakeTimeMax(0.5f),
+	m_IsCameraShake(false)
+
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -65,6 +70,50 @@ Matrix CCameraComponent::GetRatioViewMatrix(float ScrollRatio)
 	}
 
 	return matView;
+}
+
+void CCameraComponent::ApplyShakeEffect()
+{
+	m_IsCameraShake = true;
+	m_CameraShakeTime = m_CameraShakeTimeMax;
+	// SetInheritParentWorldPosChange(false);
+}
+
+void CCameraComponent::UpdateShakeEffect(float DeltaTime)
+{
+	if (!m_IsCameraShake)
+		return;
+
+	m_CameraShakeTime -= DeltaTime;
+
+	m_CameraShakePassTime += DeltaTime;
+
+	if (m_CameraShakePassTime >= m_CameraShakeTime * 0.1f)
+	{
+		if (m_ShakeRight)
+			m_ShakeRight = false;
+		else
+			m_ShakeRight = true;
+
+		m_CameraShakePassTime = 0.f;
+	}
+
+	if (m_ShakeRight)
+	{
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 700.f);
+	}
+	else
+	{
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 700.f);
+	}
+
+
+	if (m_CameraShakeTime < 0.f)
+	{
+		m_IsCameraShake = false;
+
+		// SetInheritParentWorldPosChange(true);
+	}
 }
 
 void CCameraComponent::CreateProjectionMatrix()
@@ -361,6 +410,8 @@ void CCameraComponent::Update(float DeltaTime)
 	FollowPlayerPos(DeltaTime);
 
 	FollowTarget(DeltaTime);
+
+	UpdateShakeEffect(DeltaTime);
 }
 
 void CCameraComponent::PostUpdate(float DeltaTime)
