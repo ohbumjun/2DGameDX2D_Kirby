@@ -20,6 +20,8 @@ private:
 private :
     bool m_EnableStart;
     bool m_InitHPReachedEnd;
+    float m_CurrentOpacity;
+    bool m_StartDestroy;
 public:
     CUIProgressBar* GetHPProgressBar() const
     {
@@ -37,6 +39,8 @@ public:
     void EnableBossHUD();
     void SetText(const TCHAR* Text);
     void SetCallback();
+    void StartDestroy();
+    void UpdateDestroyOpacity(float DeltaTime);
 public:
     virtual void Start() override;
     virtual bool Init() override;

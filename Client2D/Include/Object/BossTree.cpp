@@ -1,6 +1,8 @@
 #include "BossTree.h"
 #include "Tornado.h"
 #include <Component/SpriteComponent.h>
+#include <Scene/CameraManager.h>
+
 #include "Component/PaperBurnComponent.h"
 #include <Scene/Scene.h>
 #include "Scene/SceneManager.h"
@@ -147,6 +149,8 @@ void CBossTree::FarAttack()
 void CBossTree::CloseAttack()
 {
 	m_IsAttacking = true;
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	// Attack Back Effect
 	CTornado* AttackEffect = m_Scene->CreateGameObject<CTornado>("AttackEffect");

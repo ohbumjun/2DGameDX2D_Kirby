@@ -4,6 +4,8 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
+#include <Scene/CameraManager.h>
+
 #include "BossTree.h"
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
@@ -47,6 +49,8 @@ void CApple::BottomCollisionSpecificAction()
 	BackEffect->SetLifeTime(0.4f);
 
 	Destroy();
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 }
 
 

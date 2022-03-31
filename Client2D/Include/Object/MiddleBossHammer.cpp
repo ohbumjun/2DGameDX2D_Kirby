@@ -42,9 +42,11 @@ void CMiddleBossHammer::Start()
 	CBossMonster::Start();
 
 	Monster_Stat* Stat = SetExcelStat(L"BossHammer");
+
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
+	m_HP = 100.f;
 
 	m_IsGround = true;
 

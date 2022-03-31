@@ -1,5 +1,6 @@
 #include "BossPenguin.h"
 #include <Component/SpriteComponent.h>
+#include <Scene/CameraManager.h>
 #include <Scene/Scene.h>
 #include "Animation/AnimationSequence2DInstance.h"
 #include "PenguinCloseAttack.h"
@@ -114,6 +115,8 @@ void CBossPenguin::JumpStart()
 	m_JumpAccel = 1.5f;
 	ChangeJumpAttackAnimation();
 	m_InitTraceDir = m_TraceDir;
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 }
 
 void CBossPenguin::FarAttack()
@@ -151,6 +154,8 @@ void CBossPenguin::FarAttackEnd()
 void CBossPenguin::CloseAttack()
 {
 	m_IsAttacking = true;
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	// Attack Back Effect
 	CPenguinCloseAttack* AttackEffect = m_Scene->CreateGameObject<CPenguinCloseAttack>("AttackEffect");

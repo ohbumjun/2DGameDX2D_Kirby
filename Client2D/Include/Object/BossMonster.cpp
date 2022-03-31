@@ -114,6 +114,10 @@ void CBossMonster::AIDeathSpecific(float DeltaTime)
 	m_Scene->SetWorldResolution(m_InitWorldResolution.x, m_InitWorldResolution.y);
 
 	m_Scene->SetBossWorldResolution(0.f, m_InitWorldResolution.y);
+
+	// Boss HUD를 점점 사라지게 세팅한다.
+	CBossHUD* BossHUD = (CBossHUD*)m_Scene->GetBossHUD();
+	BossHUD->StartDestroy();
 }
 
 void CBossMonster::Update(float DeltaTime)

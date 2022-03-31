@@ -4,7 +4,9 @@
 
 CBossHUD::CBossHUD() :
 	m_EnableStart(false),
-	m_InitHPReachedEnd(false)
+	m_InitHPReachedEnd(false),
+	m_StartDestroy(false),
+	m_CurrentOpacity(1.f)
 {}
 
 CBossHUD::~CBossHUD()
@@ -23,6 +25,32 @@ void CBossHUD::SetText(const TCHAR* Text)
 void CBossHUD::SetCallback()
 {
 	m_Scene->GetViewPort()->SetBossHUDStartCallback(this, &CBossHUD::EnableBossHUD);
+}
+
+void CBossHUD::StartDestroy()
+{
+	m_StartDestroy = true;
+}
+
+void CBossHUD::UpdateDestroyOpacity(float DeltaTime)
+{
+	if (!m_StartDestroy)
+		return;
+	
+	m_CurrentOpacity  -= DeltaTime * 0.2f;
+
+	auto iter = m_WidgetList.begin();
+	auto iterEnd = m_WidgetList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		(*iter)->SetOpacity(m_CurrentOpacity);
+	}
+
+	if (m_CurrentOpacity < 0.f)
+	{
+		// Destroy();
+	}
 }
 
 void CBossHUD::Start()
@@ -91,8 +119,9 @@ void CBossHUD::Update(float DeltaTime)
 		}
 
 		m_HPProgressBar->SetPercent(HPPercent + DeltaTime * 0.5f);
-
 	}
+
+	UpdateDestroyOpacity(DeltaTime);
 }
 
 void CBossHUD::PostUpdate(float DeltaTime)
