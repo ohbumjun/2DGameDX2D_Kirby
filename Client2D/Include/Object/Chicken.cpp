@@ -1,4 +1,5 @@
 #include "Chicken.h"
+#include "../Excel/Excel.h"
 
 CChicken::CChicken()
 {
@@ -14,7 +15,9 @@ void CChicken::Start()
 {
 	CNormalMonster::Start();
 
-	m_PhysicsSimulate = false;
+	SetExcelStat(L"Chicken");
+
+	// m_PhysicsSimulate = false;
 }
 
 bool CChicken::Init()

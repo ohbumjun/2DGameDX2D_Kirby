@@ -178,6 +178,10 @@ void CExcel::LoadExcel()
                                     Stat->m_AbilityState = Ability_State::Sword;
                                 }
                             }
+                            else
+                            {
+                                Stat->m_AbilityState = Ability_State::End;
+                            }
                         }
                         break;
                         } // enum ¹®

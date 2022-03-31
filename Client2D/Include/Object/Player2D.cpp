@@ -1540,8 +1540,26 @@ void CPlayer2D::UpdateMP(float DeltaTime)
 {
 	if (m_MP < m_MPMax)
 	{
-		m_MP += DeltaTime * 20.f;
+		m_MP += DeltaTime * 10.f;
+
+		CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
+
+		HUD->GetMPProgressBar()->SetPercent(m_HP / m_HPMax);
 	}
+}
+
+void CPlayer2D::DecreaseMP(float MP)
+{
+	m_MP -= MP;
+
+	if (m_MP < 0.f)
+	{
+		m_MP = 0.f;
+	}
+
+	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
+
+	HUD->GetMPProgressBar()->SetPercent(m_HP / m_HPMax);
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -3018,6 +3036,7 @@ void CPlayer2D::Attack(float DeltaTime)
 			ChangePlayerFallDownAttackAnimation();
 
 			m_KirbyState->FallDownAttack();
+
 		}
 		else if (YDiff > 0)
 		{

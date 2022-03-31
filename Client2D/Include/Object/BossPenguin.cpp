@@ -17,17 +17,7 @@ CBossPenguin::CBossPenguin() :
 	m_FarAttackTime(-1.f)
 {
 	SetTypeID<CBossPenguin>();
-	m_DashDistance = 1200.f;
-	m_JumpVelocity = 60.f;
-	m_AttackDistance = 600.f;
-	m_IsGroundObject = true;
-	m_CloseAttackDistance = 400.f;
-	m_FarAttackDistance = 600.f;
 
-	m_FarAttackLimitTimeMax = 6.0f;
-
-	m_HP = 5000.f;
-	m_HPMax = 5000.f;
 }
 
 CBossPenguin::~CBossPenguin()
@@ -37,14 +27,23 @@ void CBossPenguin::Start()
 {
 	CBossMonster::Start();
 
-	m_HP = 5000.f;
-	m_HPMax = 5000.f;
+	// m_DashDistance = 1200.f;
+	// m_JumpVelocity = 60.f;
+	// m_AttackDistance = 600.f;
+	// m_IsGroundObject = true;
+	// m_CloseAttackDistance = 400.f;
+	// m_FarAttackDistance = 600.f;
+	// m_FarAttackLimitTimeMax = 6.0f;
+	// m_HP = 5000.f;
+	// m_HPMax = 5000.f;
+	// m_PhysicsSimulate = true;
+	// m_IsGroundObject = true;
 
-	m_PhysicsSimulate = true;
+	Monster_Stat* Stat = SetExcelStat(L"BossPenguin");
+	m_FarAttackDistance = Stat->m_FarAttackDist;
+	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
 	m_IsGround = true;
-
-	m_IsGroundObject = true;
 
 	m_Sprite->GetAnimationInstance()->Play();
 

@@ -1,4 +1,5 @@
 #include "YellowBird.h"
+#include "../Excel/Excel.h"
 
 CYellowBird::CYellowBird()
 {
@@ -17,7 +18,9 @@ void CYellowBird::Start()
 {
 	CNormalMonster::Start();
 
-	m_PhysicsSimulate = false;
+	SetExcelStat(L"YellowBird");
+
+	// m_PhysicsSimulate = false;
 }
 
 bool CYellowBird::Init()

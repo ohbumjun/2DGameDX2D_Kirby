@@ -19,19 +19,19 @@ CMiddleBossScissorBug::CMiddleBossScissorBug() :
 	m_SceneChangeLimitTime(-1.f)
 {
 	SetTypeID<CMiddleBossScissorBug>();
-	m_DashDistance = 1400.f;
-	m_JumpVelocity = 60.f;
-	m_AttackDistance = 1005.f;
-	m_IsGroundObject = true;
-	m_CloseAttackDistance = 450.f;
-	m_FarAttackDistance = 1000.f;
-	m_FarAttackLimitTimeMax = 4.f;
+	// m_DashDistance = 1400.f;
+	// m_JumpVelocity = 60.f;
+	// m_AttackDistance = 1005.f;
+	// m_CloseAttackDistance = 450.f;
+	// m_FarAttackDistance = 1000.f;
+	// m_FarAttackLimitTimeMax = 4.f;
+	// m_HP = 3000.f;
+	// m_HPMax = 3000.f;
+	// m_PhysicsSimulate = true;
+	// m_IsGroundObject = true;
 
-	m_HP = 3000.f;
-	m_HPMax = 3000.f;
 
 	m_HitLimitTimeMax = 0.4f;
-
 	m_CameraFollowMaxTime = 6.f;
 }
 
@@ -42,14 +42,14 @@ void CMiddleBossScissorBug::Start()
 {
 	CBossMonster::Start();
 
-	m_HP = 3000.f;
-	m_HPMax = 3000.f;
+	Monster_Stat* Stat = SetExcelStat(L"BossScissor");
 
-	m_PhysicsSimulate = true;
+	m_FarAttackDistance = Stat->m_FarAttackDist;
+	m_CloseAttackDistance = Stat->m_CloseAttackDist;
+
 
 	m_IsGround = true;
 
-	m_IsGroundObject = true;
 
 	m_Sprite->GetAnimationInstance()->Play();
 

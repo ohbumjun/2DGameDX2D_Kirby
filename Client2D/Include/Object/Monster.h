@@ -1,5 +1,10 @@
 #pragma once
 #include "GameObject\LifeObject.h"
+#include "Component/PaperBurnComponent.h"
+#include "Component/WidgetComponent.h"
+#include "Component/ColliderCircle.h"
+#include "Component/SpriteComponent.h"
+#include "UI/UIProgressbar.h"
 #include "../Client.h"
 
 class CMonster :
@@ -12,9 +17,9 @@ public :
 protected: 
     CSharedPtr<class CSpriteComponent> m_Sprite;
     CSharedPtr<class CColliderCircle> m_ColliderBody;
-    CSharedPtr<class CWidgetComponent> m_SimpleHUDWidget;
-    CSharedPtr<class CUIProgressBar> m_HpBar;
-    CSharedPtr<class CPaperBurnComponent> m_PaperBurn;
+    CSharedPtr<CWidgetComponent> m_SimpleHUDWidget;
+    CSharedPtr<CUIProgressBar> m_HpBar;
+    CSharedPtr<CPaperBurnComponent> m_PaperBurn;
     float m_DeathAccTime;
     float m_DeathFinishTime;
     bool m_DeathStart;
@@ -125,6 +130,9 @@ protected:
     virtual void AIAttackSpecific(float DeltaTime){}
     virtual void AIDeathSpecific(float DeltaTime){};
     virtual void AIHitSpecific(float DeltaTime){};
+protected:
+    // Excel Stat Setting
+    Monster_Stat* SetExcelStat(const std::wstring& MonsterName);
 public :
     virtual void Start() override;
     virtual bool Init() override;

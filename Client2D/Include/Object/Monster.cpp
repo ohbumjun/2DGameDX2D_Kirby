@@ -1,9 +1,5 @@
 #include "Monster.h"
-#include "Component/SpriteComponent.h"
-#include "Component/WidgetComponent.h"
 #include "Component/ColliderBox2D.h"
-#include "Component/PaperBurnComponent.h"
-#include "Component/ColliderCircle.h"
 #include "MonsterAnimation.h"
 #include "Engine.h"
 #include "Player2D.h"
@@ -11,6 +7,7 @@
 #include "../UI/SimpleHUD.h"
 #include "UI/MonsterEditorHUD.h"
 #include "UI/UIDamageFont.h"
+#include "../Excel/Excel.h"
 
 CMonster::CMonster() :
 	m_AttackLimitTime(0.f),
@@ -494,6 +491,30 @@ void CMonster::PostUpdate(float DeltaTime)
 CMonster* CMonster::Clone()
 {
 	return new CMonster(*this);
+}
+
+Monster_Stat* CMonster::SetExcelStat(const std::wstring& MonsterName)
+{
+	Monster_Stat* Stat = CExcel::GetInst()->FindMonsterState(MonsterName);
+
+	m_MonsterType = Stat->m_Type;
+	m_MonsterMoveVelocity = Stat->m_MoveVelocity;
+	m_AttackDistance = Stat->m_AttackDist;
+	m_DashDistance = Stat->m_DashDist;
+	m_HPMax = Stat->m_HP;
+	m_HP = Stat->m_HP;
+	m_IsGroundObject = Stat->m_IsGroundObject;
+
+	if (!m_IsGroundObject)
+		m_PhysicsSimulate = false;
+	else
+		m_PhysicsSimulate = true;
+
+	m_AttackAbility = Stat->m_AttackAbility;
+	SetWorldScale(Stat->m_Scale, Stat->m_Scale, 1.f);
+	m_JumpVelocity = Stat->m_JumpVelocity;
+
+	return Stat;
 }
 
 void CMonster::UpdateBeingHit(float DeltaTime)

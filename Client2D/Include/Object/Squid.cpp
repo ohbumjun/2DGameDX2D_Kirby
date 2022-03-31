@@ -28,24 +28,17 @@ void CSquid::Start()
 
 	m_MonsterType = Stat->m_Type;
 	m_MonsterMoveVelocity = Stat->m_MoveVelocity;
-
-	// m_AttackDistance = Stat->m_AttackDist;
-	m_AttackDistance = 50;
+	m_AttackDistance = Stat->m_AttackDist;
 	m_DashDistance = Stat->m_DashDist;
-
 	m_HPMax = Stat->m_HP;
 	m_HP = Stat->m_HP;
-
 	m_IsGroundObject = Stat->m_IsGroundObject;
 	if (!m_IsGroundObject)
 	{
 		m_PhysicsSimulate = false;
 	}
-
 	m_AttackAbility = Stat->m_AttackAbility;
-
 	SetWorldScale(Stat->m_Scale, Stat->m_Scale, 1.f);
-
 	m_JumpVelocity = Stat->m_JumpVelocity;
 	
 	m_IsGround = true;

@@ -19,23 +19,21 @@ CBossTree::CBossTree()  :
 {
 	SetTypeID<CBossTree>();
 
-	m_DashDistance = 1000.f;
-	m_JumpVelocity = 50.f;
-	m_IsGroundObject = false;
-	m_PhysicsSimulate = false;
-
-	m_AttackDistance = 1100.f;
-	m_CloseAttackDistance = 550.f;
-	m_FarAttackDistance = 1100.f;
-
-	m_FarAttackLimitTime = 0.f;
-	m_FarAttackLimitTimeMax = 3.f;
+	// m_DashDistance = 1000.f;
+	// m_JumpVelocity = 50.f;
+	// m_IsGroundObject = false;
+	// m_PhysicsSimulate = false;
+	// m_AttackDistance = 1100.f;
+	// m_CloseAttackDistance = 550.f;
+	// m_FarAttackDistance = 1100.f;
+	// m_FarAttackLimitTime = 0.f;
+	// m_FarAttackLimitTimeMax = 3.f;
+	// m_HitLimitTimeMax = 0.4f;
+	// m_HP = 5000.f;
+	// m_HPMax = 5000.f;
 
 	m_HitLimitTimeMax = 0.4f;
-
-	m_HP = 5000.f;
-	m_HPMax = 5000.f;
-
+	m_FarAttackLimitTime = 0.f;
 	m_CameraFollowMaxTime = 7.f;
 }
 
@@ -49,13 +47,14 @@ void CBossTree::Start()
 {
 	CBossMonster::Start();
 
-	m_PhysicsSimulate = false;
+	Monster_Stat* Stat = SetExcelStat(L"BossTree");
+	m_FarAttackDistance = Stat->m_FarAttackDist;
+	m_CloseAttackDistance = Stat->m_CloseAttackDist;
+	m_MonsterMoveVelocity = 0.f;
+
 
 	m_IsGround = false;
 
-	m_IsGroundObject = false;
-
-	m_MonsterMoveVelocity = 0.f;
 
 	m_Sprite->GetAnimationInstance()->Play();
 

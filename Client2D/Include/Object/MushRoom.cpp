@@ -1,15 +1,5 @@
 #include "MushRoom.h"
-#include "Component/PaperBurnComponent.h"
-#include "UI/UIProgressbar.h"
-#include "Component/SpriteComponent.h"
-#include "Component/WidgetComponent.h"
-#include "Component/ColliderBox2D.h"
-#include "Component/PaperBurnComponent.h"
-#include "Component/ColliderCircle.h"
-#include "MonsterAnimation.h"
-#include "Engine.h"
-#include "Player2D.h"
-#include "../UI/SimpleHUD.h"
+#include "../Excel/Excel.h"
 
 CMushRoom::CMushRoom() :
 	m_IsToggleGoUp(true),
@@ -59,11 +49,12 @@ void CMushRoom::Start()
 {
 	CNormalMonster::Start();
 
-	m_PhysicsSimulate = true;
+	SetExcelStat(L"MushRoom");
 
 	m_IsGround = true;
 
-	m_IsGroundObject = true;
+	// m_PhysicsSimulate = true;
+	// m_IsGroundObject = true;
 }
 
 bool CMushRoom::Init()

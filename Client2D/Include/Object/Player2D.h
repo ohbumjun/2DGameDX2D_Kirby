@@ -248,7 +248,8 @@ private :
 private :
 	// MP
 	void UpdateMP(float DeltaTime);
-public :
+	void DecreaseMP(float MP);
+ public:
 	// Hit
 	void Damage(float Damage);
 private :
@@ -256,6 +257,7 @@ private :
 private :
 	void CheckPlayerWaterCollision();
 private :
+	// Attack Time
 	void UpdateAttackTime(float DeltaTime);
 	void UpdateSlideAttackTime(float DeltaTime);
 private :

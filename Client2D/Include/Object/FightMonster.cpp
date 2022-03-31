@@ -9,12 +9,6 @@ class CAnimationSequence2DInstance;
 CFightMonster::CFightMonster() 
 {
 	SetTypeID<CFightMonster>();
-
-	m_AbilityState = Ability_State::Fight;
-
-	m_DashDistance = 600.f;
-
-	m_AttackDistance = 350.f;
 }
 
 CFightMonster::CFightMonster(const CFightMonster& Monster) : CAbilityMonster(Monster)
@@ -27,11 +21,17 @@ void CFightMonster::Start()
 {
 	CAbilityMonster::Start();
 
-	m_PhysicsSimulate = true;
+	Monster_Stat* Stat = SetExcelStat(L"Fight");
+
+	m_AbilityState = Stat->m_AbilityState;
+
+	// m_PhysicsSimulate = true;
+	// m_AbilityState = Ability_State::Fight;
+	// m_DashDistance = 600.f;
+	// m_AttackDistance = 350.f;
+	// m_IsGroundObject = true;
 
 	m_IsGround = true;
-
-	m_IsGroundObject = true;
 
 	// Ready의 경우, 매우 긴 PlayTime 을 세팅하고
 	m_Sprite->GetAnimationInstance()->Play();

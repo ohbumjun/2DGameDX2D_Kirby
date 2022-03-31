@@ -1,4 +1,5 @@
 #include "PurpleBeatle.h"
+#include "../Excel/Excel.h"
 
 CPurpleBeatle::CPurpleBeatle()
 {
@@ -16,7 +17,9 @@ void CPurpleBeatle::Start()
 {
 	CNormalMonster::Start();
 
-	m_PhysicsSimulate = false;
+	SetExcelStat(L"PurpleBeatle");
+
+	// m_PhysicsSimulate = false;
 }
 
 bool CPurpleBeatle::Init()

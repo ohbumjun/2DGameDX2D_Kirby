@@ -1,4 +1,5 @@
 #include "NormalBear.h"
+#include "../Excel/Excel.h"
 
 CNormalBear::CNormalBear()
 {
@@ -13,16 +14,14 @@ CNormalBear::~CNormalBear()
 
 void CNormalBear::Start()
 {
-	SetWorldScale(180.f, 180.f, 1.f);
+	SetExcelStat(L"NormalBear");
 
 	CNormalMonster::Start();
 
-	m_PhysicsSimulate = true;
-
 	m_IsGround = true;
 
-	m_IsGroundObject = true;
-
+	// SetWorldScale(180.f, 180.f, 1.f);
+	// m_IsGroundObject = true;
 }
 
 bool CNormalBear::Init()

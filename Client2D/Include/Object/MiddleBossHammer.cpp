@@ -14,17 +14,20 @@ CMiddleBossHammer::CMiddleBossHammer() :
 	m_DashRunDistance(800.f)
 {
 	SetTypeID<CMiddleBossHammer>();
-	m_DashDistance = 1000.f;
-	m_JumpVelocity = 60.f;
-	m_AttackDistance = 600.f;
-	m_IsGroundObject = true;
-	m_CloseAttackDistance = 250.f;
-	m_FarAttackDistance = 600.f;
-
-	m_HP = 3000.f;
-	m_HPMax = 3000.f;
+	// m_DashDistance = 1000.f;
+	// m_JumpVelocity = 60.f;
+	// m_AttackDistance = 600.f;
+	// m_CloseAttackDistance = 250.f;
+	// m_FarAttackDistance = 600.f;
+	// m_HP = 3000.f;
+	// m_HPMax = 3000.f;
+	// m_HP = 3000.f;
+	// m_HPMax = 3000.f;
+	// m_PhysicsSimulate = true;
+	// m_IsGroundObject = true;
 
 	m_HitLimitTimeMax = 0.4f;
+
 }
 
 CMiddleBossHammer::CMiddleBossHammer(const CMiddleBossHammer& Monster) : CBossMonster(Monster)
@@ -37,14 +40,12 @@ void CMiddleBossHammer::Start()
 {
 	CBossMonster::Start();
 
-	m_HP = 3000.f;
-	m_HPMax = 3000.f;
+	Monster_Stat* Stat = SetExcelStat(L"BossHammer");
+	m_FarAttackDistance = Stat->m_FarAttackDist;
+	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
-	m_PhysicsSimulate = true;
 
 	m_IsGround = true;
-
-	m_IsGroundObject = true;
 
 	m_Sprite->GetAnimationInstance()->Play();
 

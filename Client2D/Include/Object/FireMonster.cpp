@@ -10,13 +10,7 @@ CFireMonster::CFireMonster()
 {
 	SetTypeID<CFireMonster>();
 
-	m_AbilityState = Ability_State::Fire;
-
-	m_DashDistance = 800.f;
-
-	m_AttackDistance = 450.f;
-
-	m_JumpVelocity = 50.f;
+	
 }
 
 CFireMonster::CFireMonster(const CFireMonster& Monster) : CAbilityMonster(Monster)
@@ -29,11 +23,19 @@ void CFireMonster::Start()
 {
 	CAbilityMonster::Start();
 
-	m_PhysicsSimulate = true;
+	// m_PhysicsSimulate = true;
+	// m_IsGroundObject = true;
+	// m_AbilityState = Ability_State::Fire;
+	// m_DashDistance = 800.f;
+	// m_AttackDistance = 450.f;
+	// m_JumpVelocity = 50.f;
+
+	Monster_Stat* Stat = SetExcelStat(L"Fire");
+
+	m_AbilityState = Stat->m_AbilityState;
+
 
 	m_IsGround = true;
-
-	m_IsGroundObject = true;
 
 	// Ready의 경우, 매우 긴 PlayTime 을 세팅하고
 	m_Sprite->GetAnimationInstance()->Play();

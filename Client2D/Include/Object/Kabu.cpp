@@ -1,4 +1,5 @@
 #include "Kabu.h"
+#include "../Excel/Excel.h"
 
 CKabu::CKabu()
 {
@@ -10,15 +11,16 @@ CKabu::~CKabu()
 
 void CKabu::Start()
 {
-	SetWorldScale(100.f, 100.f, 1.f);
+	SetExcelStat(L"Kabu");
 
 	CNormalMonster::Start();
 
-	m_PhysicsSimulate = true;
+	// m_PhysicsSimulate = true;
+	// SetWorldScale(100.f, 100.f, 1.f);
+	// m_IsGroundObject = true;
 
 	m_IsGround = true;
 
-	m_IsGroundObject = true;
 }
 
 bool CKabu::Init()

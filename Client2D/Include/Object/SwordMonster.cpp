@@ -10,13 +10,7 @@ CSwordMonster::CSwordMonster()
 {
 	SetTypeID<CSwordMonster>();
 
-	m_AbilityState = Ability_State::Sword;
 
-	m_DashDistance = 800.f;
-
-	m_AttackDistance = 550.f;
-
-	m_JumpVelocity = 50.f;
 }
 CSwordMonster::~CSwordMonster()
 {}
@@ -25,11 +19,18 @@ void CSwordMonster::Start()
 {
 	CAbilityMonster::Start();
 
-	m_PhysicsSimulate = true;
+	// m_AbilityState = Ability_State::Sword;
+	// m_DashDistance = 800.f;
+	// m_AttackDistance = 550.f;
+	// m_JumpVelocity = 50.f;
+	// m_PhysicsSimulate = true;
+	// m_IsGroundObject = true;
+
+	Monster_Stat* Stat = SetExcelStat(L"Sword");
+
+	m_AbilityState = Stat->m_AbilityState;
 
 	m_IsGround = true;
-
-	m_IsGroundObject = true;
 
 	// Ready의 경우, 매우 긴 PlayTime 을 세팅하고
 	m_Sprite->GetAnimationInstance()->Play();
