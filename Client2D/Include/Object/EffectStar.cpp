@@ -243,7 +243,7 @@ void CEffectStar::StarCollision(const CollisionResult& Result)
 
 			DestMonster->SetAIState(Monster_AI::Hit);
 
-			if (m_AttackDir.x > 0)
+			if (m_AttackDir.x < 0)
 				DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
 			else
 				DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));

@@ -249,6 +249,9 @@ private :
 	// MP
 	void UpdateMP(float DeltaTime);
 	void DecreaseMP(float MP);
+public :
+	// HP
+	void AddHP(float HP);
  public:
 	// Hit
 	void Damage(float Damage);

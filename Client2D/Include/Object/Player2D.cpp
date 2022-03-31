@@ -158,7 +158,7 @@ void CPlayer2D::Start()
 	SetPhysicsSimulate(true);
 
 	m_Body = (CColliderBox2D*)FindComponent("Body");
-
+	m_Body->SetCollisionProfile("Player");
 	m_Body->SetExtend(GetWorldScale().x * 0.4f, GetWorldScale().y * 0.4f);
 
 	m_Body->EmptyCollisionCallback(Collision_State::Begin);
@@ -1560,6 +1560,20 @@ void CPlayer2D::DecreaseMP(float MP)
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
 
 	HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
+}
+
+void CPlayer2D::AddHP(float HP)
+{
+	m_HP += HP;
+
+	if (m_HP >= m_HPMax)
+	{
+		m_HP = m_HPMax;
+	}
+
+	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
+
+	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
 }
 
 void CPlayer2D::Damage(float Damage)

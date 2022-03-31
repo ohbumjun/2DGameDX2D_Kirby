@@ -2,6 +2,7 @@
 #include <Scene/Scene.h>
 #include "Component/ColliderComponent.h"
 #include "Component/ColliderCircle.h"
+#include "Player2D.h"
 
 CItem::CItem()
 {}
@@ -56,6 +57,10 @@ void CItem::CollisionPlayerCallback(const CollisionResult& Result)
 
 	if (DestObj == m_Scene->GetPlayerObject())
 	{
+		CPlayer2D* Player = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+		Player->AddHP(150.f);
+
 		Destroy();
 	}
 }

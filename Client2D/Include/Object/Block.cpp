@@ -117,6 +117,11 @@ void CBlock::SetCollisionCallback(const CollisionResult& Result)
 {
 	CGameObject* OwnerObject = Result.Dest->GetGameObject();
 
+	Destroy();
+
+	MakeTileTypeAround(false);
+
+	/*
 	if (OwnerObject == m_Scene->GetPlayerObject())
 	{
 		CPlayer2D* PlayerObject = dynamic_cast<CPlayer2D*>(OwnerObject);
@@ -131,4 +136,9 @@ void CBlock::SetCollisionCallback(const CollisionResult& Result)
 			MakeTileTypeAround(false);
 		}
 	}
+	else
+	{
+		
+	}
+	*/
 }
