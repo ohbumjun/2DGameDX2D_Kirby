@@ -179,6 +179,10 @@ void CFightKirbyState::GoUpAttack()
 
 void CFightKirbyState::SpecialAttack()
 {
+	m_InitWorldScale =  GetWorldScale();
+
+	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
+
 	if (m_Player->GetObjectMoveDir().x < 0.f)
 	{
 		m_Player->ChangeAnimation("LeftSpecialEffect");
@@ -292,7 +296,8 @@ void CFightKirbyState::SpecialAttack()
 
 	m_SpecialAttackTime = 0.f;
 
-	m_InitWorldScale = GetWorldScale();
+	// Player 의 Body Collider 를 Player Attack Profile 로 세팅한다.
+	m_Player->GetBodyCollider()->SetCollisionProfile("PlayerAttack");
 }
 
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
@@ -386,6 +391,8 @@ void CFightKirbyState::UpdateSpecialAttack(float DeltaTime)
 		m_Player->SetAttackEnd();
 
 		SetWorldScale(m_InitWorldScale);
+
+		m_Player->GetBodyCollider()->SetCollisionProfile("Player");
 
 		m_Player->ChangePlayerIdleAnimation();
 
