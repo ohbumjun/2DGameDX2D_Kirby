@@ -317,9 +317,12 @@ void CPlayer2D::Start()
 	
 	SetBasicSettingToChangedState();
 
-	m_KirbyState->SetWorldScale(80.f, 80.f, 1.f);
-
 	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightJump");
+
+	// UI Setting
+	SetUIAccordingToKirbyState();
+
+	SetKirbyStateSizeAccordingToKirbyState();
 
 
 	// Player를 한번 멈춘다.
@@ -1606,6 +1609,7 @@ void CPlayer2D::Damage(float Damage)
 	if (!Window)
 		return;
 	*/
+
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
 
 	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
@@ -2717,6 +2721,7 @@ void CPlayer2D::SpecialChange()
 
 	Vector3 BeforeChangePos = GetWorldPos();
 
+	// Set Kirby State
 	switch (AbilityMonster->GetAbilityState())
 	{
 	case Ability_State::Beam:
@@ -2726,14 +2731,6 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
 		m_KirbyState->SetWorldScale(85.f, 95.f, 1.f);
-
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
-		PlayerHUD->GetNameText()->SetText(TEXT("BEAM KIRBY"));
-
-		PlayerHUD->GetIconImage()->SetTexture("BeamKirbyIconTexture", TEXT("Project/UI/Icon_BeamKirby.png"));
-
-		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 
 		m_SpecialAbilityState = Ability_State::Beam;
 	}
@@ -2746,14 +2743,6 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState->SetWorldScale(85.f, 100.f, 1.f);
 
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
-		PlayerHUD->GetNameText()->SetText(TEXT("FIRE KIRBY"));
-
-		PlayerHUD->GetIconImage()->SetTexture("FireKirbyIconTexture", TEXT("Project/UI/Icon_FireKirby.png"));
-
-		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
-
 		m_SpecialAbilityState = Ability_State::Fire;
 	}
 	break;
@@ -2764,14 +2753,6 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
 
 		m_KirbyState->SetWorldScale(90.f, 90.f, 1.f);
-
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
-		PlayerHUD->GetNameText()->SetText(TEXT("FIGHT KIRBY"));
-
-		PlayerHUD->GetIconImage()->SetTexture("FightKirbyIconTexture", TEXT("Project/UI/Icon_FightKirby.png"));
-
-		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
 
 		m_SpecialAbilityState = Ability_State::Fight;
 	}
@@ -2784,14 +2765,6 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
 
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
-		PlayerHUD->GetNameText()->SetText(TEXT("BOMB KIRBY"));
-
-		PlayerHUD->GetIconImage()->SetTexture("BombKirbyIconTexture", TEXT("Project/UI/Icon_BombKirby.png"));
-
-		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
-
 		m_SpecialAbilityState = Ability_State::Bomb;
 	}
 	break;
@@ -2803,22 +2776,20 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState->SetWorldScale(80.f, 105.f, 1.f);
 
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
-		PlayerHUD->GetNameText()->SetText(TEXT("SWORD KIRBY"));
-
-		PlayerHUD->GetIconImage()->SetTexture("SwordKirbyIconTexture", TEXT("Project/UI/Icon_SwordKirby.png"));
-
-		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
-
 		m_SpecialAbilityState = Ability_State::Sword;
 	}
 	break;
 	}
 
-	m_KirbyState->SetPlayer(this);
-
 	m_IsSpecialStateChanged = true;
+
+	// Set UI Info
+	SetUIAccordingToKirbyState();
+
+	// Set Kirby State Scale
+	SetKirbyStateSizeAccordingToKirbyState();
+
+	m_KirbyState->SetPlayer(this);
 
 	SpecialChangeEffect();
 
@@ -3146,6 +3117,112 @@ void CPlayer2D::UndoSpecialAction()
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
 
 	m_RootComponent->SetLayerName("Default");
+}
+
+void CPlayer2D::SetUIAccordingToKirbyState()
+{
+	if (!m_IsSpecialStateChanged)
+	{
+		return;
+	}
+
+	switch (m_SpecialAbilityState)
+	{
+	case Ability_State::Beam:
+	{
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("BEAM KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("BeamKirbyIconTexture", TEXT("Project/UI/Icon_BeamKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+	}
+	break;
+	case Ability_State::Fire:
+	{
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("FIRE KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("FireKirbyIconTexture", TEXT("Project/UI/Icon_FireKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+	}
+	break;
+	case Ability_State::Fight:
+	{
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("FIGHT KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("FightKirbyIconTexture", TEXT("Project/UI/Icon_FightKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+	}
+	break;
+	case Ability_State::Bomb:
+	{
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("BOMB KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("BombKirbyIconTexture", TEXT("Project/UI/Icon_BombKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+	}
+	break;
+	case Ability_State::Sword:
+	{
+		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+		PlayerHUD->GetNameText()->SetText(TEXT("SWORD KIRBY"));
+
+		PlayerHUD->GetIconImage()->SetTexture("SwordKirbyIconTexture", TEXT("Project/UI/Icon_SwordKirby.png"));
+
+		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+	}
+	break;
+	}
+}
+
+void CPlayer2D::SetKirbyStateSizeAccordingToKirbyState()
+{
+	if (!m_IsSpecialStateChanged)
+	{
+		m_KirbyState->SetWorldScale(80.f, 80.f, 1.f);
+
+		return;
+	}
+
+	switch (m_SpecialAbilityState)
+	{
+	case Ability_State::Beam:
+	{
+		m_KirbyState->SetWorldScale(85.f, 95.f, 1.f);
+	}
+	break;
+	case Ability_State::Fire:
+	{
+		m_KirbyState->SetWorldScale(85.f, 100.f, 1.f);
+	}
+	break;
+	case Ability_State::Fight:
+	{
+		m_KirbyState->SetWorldScale(95.f, 95.f, 1.f);
+	}
+	break;
+	case Ability_State::Bomb:
+	{
+		m_KirbyState->SetWorldScale(77.f, 77.f, 1.f);
+	}
+	break;
+	case Ability_State::Sword:
+	{
+		m_KirbyState->SetWorldScale(80.f, 105.f, 1.f);
+	}
+	break;
+	}
 }
 
 void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)

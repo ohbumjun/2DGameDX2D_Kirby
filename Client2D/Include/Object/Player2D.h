@@ -340,7 +340,11 @@ private :
 	void SpecialAttack();
 	void PrepareSpecialAction(float PrepareTime);
 	void UndoSpecialAction();
-	
+private :
+	// UI Setting
+	void SetUIAccordingToKirbyState();
+	// Kirby State Size
+	void SetKirbyStateSizeAccordingToKirbyState();
 private :
 	void PlayerAttackCollisionCallback(const CollisionResult& Result);
 private :
