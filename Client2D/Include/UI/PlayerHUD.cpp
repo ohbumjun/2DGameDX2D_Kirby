@@ -19,7 +19,7 @@ bool CPlayerHUD::Init()
 	if (!CUIWindow::Init())
 		return false;
 
-	SetSize(600.f, 400.f);
+	SetSize(700.f, 400.f);
 
 	SetPos(0.f, 350.f);
 
@@ -28,8 +28,8 @@ bool CPlayerHUD::Init()
 
 	m_NameText->SetText(TEXT("KIRBY"));
 	m_NameText->SetPos(70.f, 300.f);
-	m_NameText->SetSize(200.f, 60.f);
-	m_NameText->SetFontSize(33.f);
+	m_NameText->SetSize(300.f, 60.f);
+	m_NameText->SetFontSize(32.f);
 	m_NameText->SetZOrder(1);
 	m_NameText->SetColor(0.9f, 0.9f, 0.9f);
 	m_NameText->SetAlignH(TEXT_ALIGN_H::Center);

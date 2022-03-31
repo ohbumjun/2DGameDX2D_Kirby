@@ -2774,7 +2774,7 @@ void CPlayer2D::SpecialChange()
 
 		m_KirbyState = CreateComponent<CSwordKirbyState>("SwordKirbyState");
 
-		m_KirbyState->SetWorldScale(80.f, 105.f, 1.f);
+		m_KirbyState->SetWorldScale(80.f, 100.f, 1.f);
 
 		m_SpecialAbilityState = Ability_State::Sword;
 	}

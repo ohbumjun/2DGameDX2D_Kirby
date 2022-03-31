@@ -37,7 +37,7 @@ void CSwordKirbyState::FallDownAttack()
 	if (m_GoUpState)
 		return;
 
-	SetWorldScale(Vector3(m_InitWorldScale.x * 1.8f, m_InitWorldScale.y * 1.8f, m_InitWorldScale.z));
+	SetWorldScale(Vector3(m_InitWorldScale.x * 1.8f, m_InitWorldScale.y * 1.3f, m_InitWorldScale.z));
 
 	m_FallAttackState = true;
 
@@ -126,7 +126,7 @@ void CSwordKirbyState::SpecialAttack()
 	m_Player->ChangePlayerIdleAnimation();
 
 	// 다시 원래의 Size 로 세팅하기 
-	SetWorldScale(80.f, 105.f, 1.f);
+	SetWorldScale(80.f, 100.f, 1.f);
 }
 
 void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
@@ -250,7 +250,7 @@ bool CSwordKirbyState::Init()
 		this, &CSwordKirbyState::NormalAttackCallback);
 
 	// m_InitWorldScale = GetWorldScale();
-	m_InitWorldScale = Vector3(77.f, 77.f, 1.f);
+	m_InitWorldScale = Vector3(80.f, 100.f, 1.f);
 
 	return true;
 }
