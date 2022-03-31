@@ -1056,6 +1056,7 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		SpitOutStar->SetJumpVelocity(100.f);
 		SpitOutStar->SetPhysicsSimulate(true);
 		SpitOutStar->JumpStart();
+		SpitOutStar->SetAttackDamage(m_AttackAbility);
 		SpitOutStar->SetLifeTime(10.f);
 		SpitOutStar->SetNormalBottomCollision(true);
 		SpitOutStar->SetIsPulledAgainStar(true);

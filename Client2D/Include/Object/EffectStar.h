@@ -27,6 +27,8 @@ private :
     bool m_SpecialStarLightToggle;
     float m_SpecialStarLightTime;
     float m_SpecialStarLightTimeMax;
+    // АјАн
+    float m_AttackDamage;
 public :
     Ability_State GetAbilityState() const
 {
@@ -37,6 +39,10 @@ public :
         return m_IsSpecialKirbyStar;
 }
 public :
+    void SetAttackDamage(float Damage)
+{
+        m_AttackDamage;
+}
     void SetIsBeingPulled(bool Enable)
 {
         m_IsBeingPulled = Enable;
