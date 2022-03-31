@@ -28,6 +28,10 @@ protected:
     {
         return m_MainSprite;
     }
+    void SetDestroyWhenCollide(bool Enable)
+    {
+        m_DestroyWhenCollide = Enable;
+    }
     void SetKirbyAttackEffectMoveSpeed(float Speed)
     {
         m_AttackObjectSpeed = Speed;

@@ -200,10 +200,16 @@ void CExcel::LoadExcel()
 
 void CExcel::EditExcel()
 {
-    m_MapMonsterStats[L"Squid"]->m_AttackDist = 65.f;
-    m_MapMonsterStats[L"Squid"]->m_DashDist = 550.f;
-    m_MapMonsterStats[L"Fish"]->m_AttackDist = 65.f;
-    m_MapMonsterStats[L"Fish"]->m_DashDist = 550.f;
+    /*
+    m_MapMonsterStats[L"Pig"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"Chicken"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"YellowBird"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"Frog"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"MushRoom"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"Kabu"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"PurpleBeatle"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"NormalBear"]->m_AttackDist = 80.f;
+    */
 }
 
 void CExcel::SaveExcel()

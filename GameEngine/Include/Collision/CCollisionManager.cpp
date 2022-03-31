@@ -34,7 +34,6 @@ bool CCollisionManager::Init()
 	SetCollisionState("PlayerAttack", Collision_Channel::Player, Collision_Interaction::Ignore);
 	SetCollisionState("PlayerAttack", Collision_Channel::MonsterAttack, Collision_Interaction::Ignore);
 	SetCollisionState("PlayerAttack", Collision_Channel::PlayerEffect, Collision_Interaction::Ignore);
-	SetCollisionState("PlayerAttack", Collision_Channel::Block, Collision_Interaction::Ignore);
 
 	SetCollisionState("PlayerEffect", Collision_Channel::PlayerAttack, Collision_Interaction::Ignore);
 	SetCollisionState("PlayerEffect", Collision_Channel::Monster, Collision_Interaction::Ignore);

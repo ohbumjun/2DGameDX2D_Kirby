@@ -60,8 +60,9 @@ void CCollisionSection::Collision(float DeltaTime)
 			Collision_Profile* SrcProfile = Src->GetCurrentProfile();
 			Collision_Profile* DestProfile = Dest->GetCurrentProfile();
 
+			// 둘중 하나라도 Ignore 이라면 continue
 			if (SrcProfile->vecInteraction[(int)DestProfile->Channel] ==
-				Collision_Interaction::Ignore &&
+				Collision_Interaction::Ignore ||
 				DestProfile->vecInteraction[(int)SrcProfile->Channel] ==
 				Collision_Interaction::Ignore)
 				continue;

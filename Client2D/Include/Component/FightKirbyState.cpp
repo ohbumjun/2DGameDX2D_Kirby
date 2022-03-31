@@ -171,6 +171,7 @@ void CFightKirbyState::GoUpAttack()
 	AttackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), AttackEffect->GetWorldScale().x * 0.5f);
 	AttackEffect->SetKirbyOwner(this);
 	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+	AttackEffect->SetDestroyWhenCollide(false);
 
 	AttackEffect->SetWorldPos(GetWorldPos().x,
 		GetWorldPos().y - GetWorldScale().y, GetWorldPos().z);
