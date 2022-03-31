@@ -15,6 +15,7 @@
 
 CKirbyAttackEffect::CKirbyAttackEffect() :
 	m_AttackDistLimit(0.f),
+	m_DestroyWhenCollide(true),
 	m_AttackDistLimitMax(500.f),
 	m_AttackObjectSpeed(500.f)
 {}
@@ -305,6 +306,10 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpecialEffect")->SetPlayTime(2.0f);
 		m_MainSprite->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialEffect")->SetPlayTime(2.0f);
+
+		m_SideCollisionApplied = false;
+
+		m_DestroyWhenCollide = false;
 	}
 	break;
 	}
@@ -423,7 +428,10 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 {
 	ApplyBombFallAttackEnd();
 
-	Destroy();
+	if (m_DestroyWhenCollide)
+	{
+		Destroy();
+	}
 
 	// 현재 충돌한 물체가 Block 이라면
 	if (Result.Dest->GetGameObject()->CheckType<CBlock>())

@@ -15,6 +15,7 @@ public:
     CKirbyAttackEffect(const CKirbyAttackEffect& Attack);
     virtual ~CKirbyAttackEffect() override;
 private:
+    bool m_DestroyWhenCollide;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
     float m_AttackObjectSpeed;
