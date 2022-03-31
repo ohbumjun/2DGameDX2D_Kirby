@@ -1,5 +1,6 @@
 #include "MiddleBossScissorBug.h"
 #include <Component/SpriteComponent.h>
+#include <Scene/CameraManager.h>
 #include <Scene/Scene.h>
 #include "Scene/SceneManager.h"
 #include "../Scene/Float5Scene.h"
@@ -142,6 +143,9 @@ void CMiddleBossScissorBug::CloseAttack()
 {
 	m_IsAttacking = true;
 
+	// CameraShake
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
 	//
@@ -271,6 +275,8 @@ void CMiddleBossScissorBug::ChangePrepareGrabAnimation()
 
 void CMiddleBossScissorBug::GrabActionStart()
 {
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+
 	m_MonsterMoveVelocity = 700.f;
 
 	m_AttemptGrab = true;

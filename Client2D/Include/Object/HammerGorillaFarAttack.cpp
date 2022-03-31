@@ -8,6 +8,7 @@
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
+#include "Scene/CameraManager.h"
 
 CHammerGorillaFarAttack::CHammerGorillaFarAttack() :
 	m_AttackDistLimit(0.f),
@@ -40,11 +41,13 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 
 	CHammerGorillaFarAttack* AttackEffect = nullptr;
 
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+
 	// 오른쪽 2개
 	for (int i = 0; i < 3;i++)
 	{
 		Vector3 TargetPos = {};
-		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f - 35.f * i)) * 30.f;
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f - 35.f * i + (rand() * 5.f))) * 30.f;
 		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(90.f - 35.f * i) * 30.f);
 
 		Vector3 TraceDir = TargetPos - GetWorldPos();
@@ -74,7 +77,7 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 	{
 		Vector3 TargetPos = {};
 
-		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f + 35.f * i)) * 30.f;
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f + 35.f * i + (rand() * 5.f))) * 30.f;
 		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(90.f + 30.f * i)) * 30.f;
 
 		Vector3 TraceDir = TargetPos - GetWorldPos();

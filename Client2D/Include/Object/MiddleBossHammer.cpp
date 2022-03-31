@@ -4,6 +4,7 @@
 #include <Scene/Scene.h>
 #include "Animation/AnimationSequence2DInstance.h"
 #include "HammerGorillaCloseAttack.h"
+#include "Scene/CameraManager.h"
 
 class CAnimationSequence2DInstance;
 
@@ -164,6 +165,8 @@ void CMiddleBossHammer::FarAttack()
 void CMiddleBossHammer::CloseAttack()
 {
 	m_IsAttacking = true;
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	// Attack Back Effect
 	CHammerGorillaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CHammerGorillaCloseAttack>("AttackEffect");
