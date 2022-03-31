@@ -18,6 +18,10 @@ private :
     CSharedPtr<CUIText> m_NameText;
     CSharedPtr<CUIProgressBar> m_ProgressBar;
 public :
+    CUIText* GetNameText() const
+{
+        return m_NameText;
+}
     CUIProgressBar* GetProgressBar() const
 {
         return m_ProgressBar;

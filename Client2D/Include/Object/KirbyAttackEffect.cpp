@@ -469,7 +469,8 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 
 	if (Owner)
 	{
-		CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+		// CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+		CMonster* DestMonster = (CMonster*)(Owner);
 
 		if (!DestMonster)
 			return;

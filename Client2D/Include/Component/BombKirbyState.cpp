@@ -291,8 +291,8 @@ bool CBombKirbyState::Init()
 	m_Animation->FindAnimationSequence2DData("LeftFall")->SetLoop(false);
 
 	// Attack
-	m_Animation->FindAnimationSequence2DData("RightAttack")->SetPlayTime(0.3f);
-	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(0.3f);
+	m_Animation->FindAnimationSequence2DData("RightAttack")->SetPlayTime(0.2f);
+	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(0.2f);
 
 	m_Animation->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
 		this, &CBombKirbyState::NormalAttackCallback);

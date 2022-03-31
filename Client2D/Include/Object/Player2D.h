@@ -133,6 +133,8 @@ private :
 
 	// Slide Attack
 	bool m_SlideAttack;
+	float m_SlideAttackSpeed;
+	float m_SlideAttackSpeedMax;
 	float m_SlideAttackTime;
 	float m_SlideAttackTimeMax;
 
@@ -340,6 +342,7 @@ private :
 	void SpecialAttack();
 	void PrepareSpecialAction(float PrepareTime);
 	void UndoSpecialAction();
+	void ChangeToIdleAfterAnimation(float DeltaTime);
 private :
 	// UI Setting
 	void SetUIAccordingToKirbyState();

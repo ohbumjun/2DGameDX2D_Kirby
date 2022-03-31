@@ -38,10 +38,11 @@ CPlayer2D::CPlayer2D() :
 	m_LeverMoveAccel(1.6f),
 	m_LeverVelocity(0.f),
 	m_LeverMaxMoveVelocity(270.f),
-	m_SlideAttackTimeMax(0.2f),
+	m_SlideAttackTimeMax(0.8f),
 	m_DashMoveAccel(2.0f),
-	m_DashVelocity(0.f),
+	m_DashVelocity(0.f), 
 	m_DashMaxMoveVelocity(170.f),
+	m_SlideAttackSpeedMax(700.f),
 	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_MPMax(100.f),
@@ -1685,15 +1686,17 @@ void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 		{
 			m_SlideAttackTime -= DeltaTime;
 
+			m_SlideAttackSpeed -= m_DashMoveAccel;
+
 			// 왼쪽 
 			if (m_ObjectMoveDir.x < 0.f)
 			{
-				AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * 800.f);
+				AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * m_SlideAttackSpeed);
 			}
 			// 오른쪽
 			else
 			{
-				AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 800.f);
+				AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * m_SlideAttackSpeed);
 			}
 
 			m_Body->SetCollisionProfile("PlayerAttack");
@@ -2789,6 +2792,10 @@ void CPlayer2D::SpecialChange()
 	// Set Kirby State Scale
 	SetKirbyStateSizeAccordingToKirbyState();
 
+	// 먹고 있던 Monster 를 Null 로 세팅한다
+	m_EatenMonster = nullptr;
+	m_IsEatingMonster = false;
+
 	m_KirbyState->SetPlayer(this);
 
 	SpecialChangeEffect();
@@ -2854,8 +2861,6 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 	StopPlayer();
 
 	PrepareSpecialAction(m_ChangeTimeMax);
-
-
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -2937,6 +2942,23 @@ void CPlayer2D::SetBasicSettingToChangedState()
 		Data->SetPlayTime(m_ChangeTimeMax);
 		Data->SetEndFunction(
 			this, &CPlayer2D::SpecialChange);
+	}
+
+	// Slide Attack
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSlide");
+
+	if (Data)
+	{
+		Data->SetPlayTime(0.8f);
+		Data->SetEndFunction(this, &CPlayer2D::ChangePlayerIdleAnimation);
+	}
+
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSlide");
+
+	if (Data)
+	{
+		Data->SetPlayTime(0.8f);
+		Data->SetEndFunction(this, &CPlayer2D::ChangePlayerIdleAnimation);
 	}
 }
 
@@ -3072,11 +3094,25 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 	if (m_IsLadderGoingUp)
 		return;
 
+	if (m_IsSwimming)
+		return;
+
+	if (m_IsFlying)
+		return;
+
+	if (m_IsFalling)
+		return;
+
+	if (m_IsAttacking)
+		return;
+
 	m_IsAttacking = true;
 
 	m_SlideAttack = true;
 
 	m_SlideAttackTime = m_SlideAttackTimeMax;
+
+	m_SlideAttackSpeed = m_SlideAttackSpeedMax;
 
 	ChangePlayerSlideAttackAnimation();
 }
@@ -3117,6 +3153,11 @@ void CPlayer2D::UndoSpecialAction()
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
 
 	m_RootComponent->SetLayerName("Default");
+}
+
+void CPlayer2D::ChangeToIdleAfterAnimation(float DeltaTime)
+{
+	ChangePlayerIdleAnimation();
 }
 
 void CPlayer2D::SetUIAccordingToKirbyState()

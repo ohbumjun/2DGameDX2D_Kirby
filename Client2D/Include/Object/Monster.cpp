@@ -387,7 +387,15 @@ void CMonster::Start()
 	}
 
 	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
-	m_SimpleHUDWidget->Enable(false); // 존재는 하되 보이지는 않게 한다.
+
+	// MonsterHUD 의 내용은 화면에 보이지 않게 세팅한다,
+	CSimpleHUD* MonsterHUD = (CSimpleHUD*)m_SimpleHUDWidget->GetWidgetWindow();
+
+	MonsterHUD->GetNameText()->Enable(false);
+	MonsterHUD->GetProgressBar()->Enable(false);
+
+	// m_SimpleHUDWidget->Enable(false); // 존재는 하되 보이지는 않게 한다.
+	// 해당 코드를 적용하지 않는 이유는, DamageFont 조차도 안보이게 되기 때문이다.
 
 	SetRandomTargetDir();
 }
