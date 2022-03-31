@@ -75,6 +75,21 @@ void CKirbyAttackEffect::ApplyBombFallAttackEnd()
 	}
 }
 
+void CKirbyAttackEffect::MakeBombExplodeEffect()
+{
+	CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+	AttackEffect->SetAttackType(KirbyAttackEffect_Type::Bomb);
+	AttackEffect->SetRightAttackDir(0.f);
+	AttackEffect->SetAttackDirX(0.f);
+	AttackEffect->m_MainSprite->GetAnimationInstance()->ChangeAnimation("Explode");
+	AttackEffect->m_MainSprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayTime(0.5f);
+	AttackEffect->SetWorldScale(160.f, 180.f, 1.f);
+	AttackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+	AttackEffect->SetKirbyOwner(m_KirbyOwner);
+	AttackEffect->m_Collider->Enable(false);
+	AttackEffect->SetLifeTime(0.5f);
+}
+
 void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 {
 	if (Type == m_AttackType)
@@ -331,17 +346,7 @@ void CKirbyAttackEffect::BottomCollisionSpecificAction()
 		m_AttackType == KirbyAttackEffect_Type::BombFall || 
 		m_AttackType == KirbyAttackEffect_Type::BombSpecial)
 	{
-		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
-		AttackEffect->SetAttackType(KirbyAttackEffect_Type::Bomb);
-		AttackEffect->SetRightAttackDir(0.f);
-		AttackEffect->SetAttackDirX(0.f);
-		AttackEffect->m_MainSprite->GetAnimationInstance()->ChangeAnimation("Explode");
-		AttackEffect->m_MainSprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayTime(0.5f);
-		AttackEffect->SetWorldScale(160.f, 180.f, 1.f);
-		AttackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
-		AttackEffect->SetKirbyOwner(m_KirbyOwner);
-		AttackEffect->m_Collider->Enable(false);
-		AttackEffect->SetLifeTime(0.5f);
+		MakeBombExplodeEffect();
 
 		// BombFall의 경우, Player 에게
 		// 1) 카메라 돌려주고
@@ -415,6 +420,8 @@ void CKirbyAttackEffect::Update(float DeltaTime)
 	{
 		ApplyBombFallAttackEnd();
 
+		MakeBombExplodeEffect();
+
 		Destroy();
 	}
 }
@@ -426,7 +433,11 @@ void CKirbyAttackEffect::PostUpdate(float DeltaTime)
 
 void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 {
+	// Bomb Fall Effect 
 	ApplyBombFallAttackEnd();
+
+	// Bomb Explode Effect
+	MakeBombExplodeEffect();
 
 	if (m_DestroyWhenCollide)
 	{
