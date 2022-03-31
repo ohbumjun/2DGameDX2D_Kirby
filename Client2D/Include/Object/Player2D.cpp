@@ -2436,6 +2436,9 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 	if (m_IsSwimming)
 		return;
 
+	if (m_IsFlying)
+		return;
+
 	if (!m_IsSpecialStateChanged)
 		return;
 
