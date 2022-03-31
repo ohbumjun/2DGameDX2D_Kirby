@@ -73,7 +73,6 @@ void CBossPenguin::Start()
 	// Collider Body Collision Callback 적용하기
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, (CMonster*)this, &CBossPenguin::OnMonsterBodyCollisionBegin);
 
-
 	m_InitMoveVelocity = m_MonsterMoveVelocity;
 
 	m_InitJumpAccel = m_JumpAccel;

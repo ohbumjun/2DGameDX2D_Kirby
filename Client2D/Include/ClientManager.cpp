@@ -18,6 +18,8 @@
 #include "Scene/Float2_1Scene.h"
 #include "Scene/Float2_2Scene.h"
 #include "Scene/SceneManager.h"
+// Excel
+#include "Excel/Excel.h"
 // UI
 #include "UI/MouseNormal.h"
 #include "UI/MouseAttack.h"
@@ -93,10 +95,18 @@ CClientManager::CClientManager()
 CClientManager::~CClientManager()
 {
 	CEngine::DestroyInst();
+
+	// Excel에 현재 정보 저장
+	CExcel::GetInst()->SaveExcel();
+	CExcel::GetInst()->DestroyInst();
 }
 
 bool CClientManager::Init(HINSTANCE hInst)
 {
+	// Excel 파일 읽어오기
+	CExcel::GetInst()->Init();
+	CExcel::GetInst()->LoadExcel();
+
 	if (!CEngine::GetInst()->Init(hInst, TEXT("GameEngine"),
 	                              1280, 720, IDI_ICON1))
 	{
@@ -154,18 +164,19 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CEngine::GetInst()->CreateMouseUIWindow<CMouseNormal>(Mouse_State::Normal, "MouseNormal");
 	CEngine::GetInst()->CreateMouseUIWindow<CMouseAttack>(Mouse_State::State1, "MouseNormal");
 
+
 	return true;
 }
 
 void CClientManager::CreateDefaultSceneMode()
 {
-	// CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
+	CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
 	// --------------------------------------------------------------------------
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat7Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat6Scene>();
@@ -176,12 +187,12 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CBeginningScene>();
 
 
-	CSceneManager::GetInst()->GetScene()->PrepareResources();
+	// CSceneManager::GetInst()->GetScene()->PrepareResources();
 
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float7_SecondBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH);

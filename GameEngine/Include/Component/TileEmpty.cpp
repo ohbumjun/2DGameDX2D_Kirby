@@ -44,10 +44,6 @@ void CTileEmpty::Update(float DeltaTime)
 
 const Vector3& CTileEmpty::GetWorldPos() const
 {
-	Vector3 OwnerWorldPos = m_Owner->GetWorldPos();
-	Vector3 FinalCenterPos = m_Center + m_Owner->GetWorldPos();
-	Vector3 FinalPos = m_Pos + m_Owner->GetWorldPos();
-
 	return m_Pos + m_Owner->GetWorldPos();
 }
 

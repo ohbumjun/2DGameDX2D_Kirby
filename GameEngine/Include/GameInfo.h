@@ -78,6 +78,9 @@
 #define	SEQUENCE_PATH		"Sequence"
 #define	OBJECT_PATH		"Object"
 
+// Excel Path
+#define EXCEL_PATH "C:\\Users\\dhsys\\Desktop\\DX_Project\\CharacterStats.xlsx"
+
 // Object Name
 #define OBJECTNAME_SHOWOBJECT "SceneEditObject"
 

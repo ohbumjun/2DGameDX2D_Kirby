@@ -171,6 +171,7 @@
     <ClCompile Include="Component\KirbyState.cpp" />
     <ClCompile Include="Component\NormalKirbyState.cpp" />
     <ClCompile Include="Component\SwordKirbyState.cpp" />
+    <ClCompile Include="Excel\Excel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\AbilityMonster.cpp" />
     <ClCompile Include="Object\Awl.cpp" />
@@ -211,7 +212,6 @@
     <ClCompile Include="Object\EffectStar.cpp" />
     <ClCompile Include="Object\EffectWaterAttack.cpp" />
     <ClCompile Include="Object\EffectWaterBlast.cpp" />
-    <ClCompile Include="Object\Excel.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
     <ClCompile Include="Object\FightMonsterAttack.cpp" />
     <ClCompile Include="Object\FireAttackBackEffect.cpp" />
@@ -297,6 +297,7 @@
     <ClInclude Include="Component\KirbyState.h" />
     <ClInclude Include="Component\NormalKirbyState.h" />
     <ClInclude Include="Component\SwordKirbyState.h" />
+    <ClInclude Include="Excel\Excel.h" />
     <ClInclude Include="Object\AbilityMonster.h" />
     <ClInclude Include="Object\AttackEffect.h" />
     <ClInclude Include="Object\Awl.h" />
@@ -336,7 +337,6 @@
     <ClInclude Include="Object\EffectStar.h" />
     <ClInclude Include="Object\EffectWaterAttack.h" />
     <ClInclude Include="Object\EffectWaterBlast.h" />
-    <ClInclude Include="Object\Excel.h" />
     <ClInclude Include="Object\FightMonster.h" />
     <ClInclude Include="Object\FightMonsterAttack.h" />
     <ClInclude Include="Object\FireAttackBackEffect.h" />

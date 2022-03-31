@@ -462,7 +462,7 @@
     <ClCompile Include="Object\Fish.cpp">
       <Filter>02. Object\03. Monster\04. Water</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Excel.cpp">
+    <ClCompile Include="Excel\Excel.cpp">
       <Filter>04. Excel</Filter>
     </ClCompile>
   </ItemGroup>
@@ -833,7 +833,7 @@
     <ClInclude Include="Object\Fish.h">
       <Filter>02. Object\03. Monster\04. Water</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Excel.h">
+    <ClInclude Include="Excel\Excel.h">
       <Filter>04. Excel</Filter>
     </ClInclude>
   </ItemGroup>

@@ -55,6 +55,8 @@ void CBossTree::Start()
 
 	m_IsGroundObject = false;
 
+	m_MonsterMoveVelocity = 0.f;
+
 	m_Sprite->GetAnimationInstance()->Play();
 
 	// m_HP = 5000.f;
@@ -105,7 +107,6 @@ void CBossTree::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
 
-	m_MonsterMoveVelocity = 0.f;
 
 	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
 

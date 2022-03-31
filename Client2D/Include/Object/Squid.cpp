@@ -44,9 +44,9 @@ bool CSquid::Init()
 	if (!CWaterMonster::Init())
 		return false;
 
-	LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
+	// LoadAnimationInstance("Beam", TEXT("Ability_Beam.anim"));
 
-	SetCurrentAnimation("RightIdle");
+	// SetCurrentAnimation("RightIdle");
 
 	// m_Sprite->CreateAnimationInstance<CMonsterAnimation>();
 
