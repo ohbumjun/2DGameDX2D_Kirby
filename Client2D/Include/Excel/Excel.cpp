@@ -67,7 +67,7 @@ void CExcel::LoadExcel()
 
                         switch (col)
                         {
-                        case 1:
+                        case (int)ColType::Type:
                         {
                            // std::cout << "Type : ";
                             std::wstring TypeName = std::wstring(sheet->readStr(row, col));
@@ -91,31 +91,31 @@ void CExcel::LoadExcel()
                             }
                         }
                         break;
-                        case 2:
+                        case (int)ColType::HP:
                         {
                             float d = (float)sheet->readNum(row, col);
                             Stat->m_HP = d;
                         }
                         break;
-                        case 3:
+                        case (int)ColType::AttackDist:
                         {
                             float d = (float)sheet->readNum(row, col);
                             Stat->m_AttackDist = d;
                         }
                         break;
-                        case 4:
+                        case (int)ColType::DashDist:
                         {
                             float d = (float)sheet->readNum(row, col);
                             Stat->m_DashDist = d;
                         }
                         break;
-                        case 5:
+                        case (int)ColType::MoveVelocity:
                         {
                             float d = (float)sheet->readNum(row, col);
                             Stat->m_MoveVelocity = d;
                         }
                         break;
-                        case 6:
+                        case (int)ColType::IsGroundObject:
                         {
                             bool d = sheet->readBool(row, col);
                             Stat->m_IsGroundObject = d;
@@ -200,12 +200,10 @@ void CExcel::LoadExcel()
 
 void CExcel::EditExcel()
 {
-    /*
     m_MapMonsterStats[L"Squid"]->m_AttackDist = 65.f;
     m_MapMonsterStats[L"Squid"]->m_DashDist = 550.f;
     m_MapMonsterStats[L"Fish"]->m_AttackDist = 65.f;
     m_MapMonsterStats[L"Fish"]->m_DashDist = 550.f;
-    */
 }
 
 void CExcel::SaveExcel()
@@ -404,7 +402,7 @@ void CExcel::SaveExcel()
                     break;
                     case (int)ColType::IsGroundObject:
                     {
-                        sheet->writeStr(row, col, (Stat->m_IsGroundObject ? L"TRUE" : L"FALSE"), borderFormat);
+                    	sheet->writeBool(row, col, Stat->m_IsGroundObject, borderFormat);
                     }
                     break;
                     case (int)ColType::AttackAbility:
