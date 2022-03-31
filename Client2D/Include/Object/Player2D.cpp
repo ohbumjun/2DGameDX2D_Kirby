@@ -454,7 +454,7 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		{
 			ChangeAnimation("SwimUp");
 
-			AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 350.f);
+			AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 300.f);
 		}
 		else
 		{
@@ -1533,18 +1533,18 @@ void CPlayer2D::UpdateSwimMoveDown(float DeltaTime)
 	if (!m_IsSwimming)
 		return;
 
-	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 200.f);
+	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 100.f);
 }
 
 void CPlayer2D::UpdateMP(float DeltaTime)
 {
 	if (m_MP < m_MPMax)
 	{
-		m_MP += DeltaTime * 10.f;
+		m_MP += DeltaTime * 5.f;
 
 		CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
 
-		HUD->GetMPProgressBar()->SetPercent(m_HP / m_HPMax);
+		HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
 	}
 }
 
@@ -1559,7 +1559,7 @@ void CPlayer2D::DecreaseMP(float MP)
 
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
 
-	HUD->GetMPProgressBar()->SetPercent(m_HP / m_HPMax);
+	HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -2439,6 +2439,9 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 	if (!m_IsSpecialStateChanged)
 		return;
 
+	if (m_MP < 25.f)
+		return;
+
 	m_IsChanging = true;
 
 	m_IsAttacking = true;
@@ -2451,6 +2454,8 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 		ChangeAnimation("LeftSpecialAttack");
 	else
 		ChangeAnimation("RightSpecialAttack");
+
+	DecreaseMP(25.f);
 
 	// Sword 의 경우, 크기를 잠시 키운다.
 	if (m_SpecialAbilityState == Ability_State::Sword)
@@ -3033,14 +3038,24 @@ void CPlayer2D::Attack(float DeltaTime)
 		// 내려가고 있을 때
 		if (m_IsFalling && (!m_Jump || m_Bounced) && !m_IsFlying)
 		{
+			if (m_MP < 15.f)
+				return;
+
 			ChangePlayerFallDownAttackAnimation();
+
+			DecreaseMP(15.f);
 
 			m_KirbyState->FallDownAttack();
 
 		}
 		else if (YDiff > 0)
 		{
+			if (m_MP < 15.f)
+				return;
+
 			ChangePlayerGoUpAttackAnimation();
+
+			DecreaseMP(15.f);
 
 			m_KirbyState->GoUpAttack();
 		}
