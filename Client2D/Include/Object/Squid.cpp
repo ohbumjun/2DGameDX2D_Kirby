@@ -2,6 +2,7 @@
 #include "BeamMonsterAttack.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/Scene.h>
+#include "../Excel/Excel.h"
 
 #include "Animation/AnimationSequence2DInstance.h"
 
@@ -10,10 +11,6 @@ class CAnimationSequence2DInstance;
 CSquid::CSquid()
 {
 	SetTypeID<CSquid>();
-
-	m_DashDistance = 550.f;
-
-	m_AttackDistance = 200.f;
 }
 
 CSquid::CSquid(const CSquid& Monster) : CWaterMonster(Monster)
@@ -27,11 +24,31 @@ void CSquid::Start()
 {
 	CWaterMonster::Start();
 
-	m_PhysicsSimulate = false;
+	Monster_Stat* Stat = CExcel::GetInst()->FindMonsterState(L"Squid");
 
+	m_MonsterType = Stat->m_Type;
+	m_MonsterMoveVelocity = Stat->m_MoveVelocity;
+
+	// m_AttackDistance = Stat->m_AttackDist;
+	m_AttackDistance = 50;
+	m_DashDistance = Stat->m_DashDist;
+
+	m_HPMax = Stat->m_HP;
+	m_HP = Stat->m_HP;
+
+	m_IsGroundObject = Stat->m_IsGroundObject;
+	if (!m_IsGroundObject)
+	{
+		m_PhysicsSimulate = false;
+	}
+
+	m_AttackAbility = Stat->m_AttackAbility;
+
+	SetWorldScale(Stat->m_Scale, Stat->m_Scale, 1.f);
+
+	m_JumpVelocity = Stat->m_JumpVelocity;
+	
 	m_IsGround = true;
-
-	// m_IsGroundObject = true;
 
 	// Ready의 경우, 매우 긴 PlayTime 을 세팅하고
 	m_Sprite->GetAnimationInstance()->Play();

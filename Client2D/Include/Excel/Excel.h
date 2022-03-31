@@ -2,31 +2,33 @@
 #include "GameInfo.h"
 #include "../Client.h"
 
-struct Monster_Stat {
-    std::string m_Name;
-    Monster_Type m_Type;
-    // std::string m_Type;
-    float m_HP;
-    float m_AttackDist;
-    float m_DashDist;
-    float m_MoveVelocity;
-    bool m_IsGroundObject;
-    float m_AttackAbility;
-    float m_Scale;
-    float m_JumpVelocity;
-    float m_CloseAttackDist;
-    float m_FarAttackDist;
-    Ability_State m_AbilityState;
-    // std::string m_AbilityState;
-};
-
 class CExcel
 {
 private :
 	CExcel();
 	~CExcel();
+private :
+	const int m_ContentStartRow;
+	const int m_ContetnEndCol;
+
+	enum class ColType {
+		Name = 0,
+		Type = 1,
+		HP = 2,
+		AttackDist = 3,
+		DashDist = 4,
+		MoveVelocity = 5,
+		IsGroundObject = 6,
+		AttackAbility = 7,
+		Scale = 8,
+		JumpVelocity = 9,
+		CloseAttackDist = 10,
+		FarAttackDist = 11,
+		AbilityState = 12
+	};
 public :
 	void LoadExcel();
+	void EditExcel();
 	void SaveExcel();
 	bool Init();
     Monster_Stat* FindMonsterState(const std::wstring& MonsterName);

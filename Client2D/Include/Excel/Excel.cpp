@@ -5,7 +5,9 @@
 
 CExcel* CExcel::m_Inst = nullptr;
 
-CExcel::CExcel()
+CExcel::CExcel() :
+    m_ContentStartRow(8),
+m_ContetnEndCol(13)
 {}
 
 CExcel::~CExcel()
@@ -192,8 +194,20 @@ void CExcel::LoadExcel()
     }
 }
 
+void CExcel::EditExcel()
+{
+    /*
+    m_MapMonsterStats[L"Squid"]->m_AttackDist = 65.f;
+    m_MapMonsterStats[L"Squid"]->m_DashDist = 550.f;
+    m_MapMonsterStats[L"Fish"]->m_AttackDist = 65.f;
+    m_MapMonsterStats[L"Fish"]->m_DashDist = 550.f;
+    */
+}
+
 void CExcel::SaveExcel()
 {
+    EditExcel();
+
     // Lib
     using namespace libxl;
 
@@ -204,71 +218,71 @@ void CExcel::SaveExcel()
         // Logo ÀÌ¹ÌÁö¸¦ ³Ö´Â´Ù
         int logoId = book->addPicture(L"C:\\Users\\dhsys\\Desktop\\Kirby.jpg");
 
+        Font* textFont = book->addFont();
+
+        // fontTitle->setName(L"¸¼Àº °íµñ");
+        textFont->setName(L"Century Gothic");
+        textFont->setBold(true);
+        textFont->setSize(10);
+
+        Font* dateFont = book->addFont();
+
+        // fontTitle->setName(L"¸¼Àº °íµñ");
+        dateFont->setName(L"Century Gothic");
+        dateFont->setBold(true);
+        dateFont->setSize(8);
+
+        Font* titleFont = book->addFont(textFont);
+        titleFont->setSize(38);
+        titleFont->setColor(COLOR_GRAY25);
+
+        Font* font12 = book->addFont(textFont);
+        font12->setSize(14);
+
+        Font* font10 = book->addFont(textFont);
+        font10->setSize(12);
+
+        // Formats
+        Format* textFormat = book->addFormat();
+        textFormat->setFont(textFont);
+        textFormat->setAlignH(ALIGNH_LEFT);
+
+
+        Format* titleFormat = book->addFormat();
+        titleFormat->setFont(titleFont);
+        titleFormat->setAlignH(ALIGNH_RIGHT);
+
+        Format* companyFormat = book->addFormat();
+        companyFormat->setFont(font12);
+
+
+        Format* dateFormat = book->addFormat();
+        dateFormat->setFont(dateFont);
+        dateFormat->setAlignH(ALIGNH_LEFT);
+        dateFormat->setNumFormat(book->addCustomNumFormat(L"[$-409]mmmm\\ d\\,\\ yyyy;@"));
+
+        Format* borderFormat = book->addFormat(textFormat);
+        borderFormat->setBorder();
+        borderFormat->setBorderColor(COLOR_GRAY25);
+        borderFormat->setAlignV(ALIGNV_CENTER);
+
+        Format* textRightFormat = book->addFormat(textFormat);
+        textRightFormat->setAlignH(ALIGNH_RIGHT);
+        textRightFormat->setAlignV(ALIGNV_CENTER);
+
+        Format* thankFormat = book->addFormat();
+        thankFormat->setFont(font10);
+        thankFormat->setAlignH(ALIGNH_CENTER);
+
         // ÀÌÁ¦ ¿¢¼¿ ¾È¿¡ Sheet À» ¸¸µé°Ô µÉ °ÍÀÌ´Ù.
         Sheet* sheet = book->addSheet(L"MonsterStat");
 
-
+        // Monster Stat
         if (sheet)
         {
             // 2 ÄÞ¸¶ 1 ¹øÁö 
             // sheet->writeStr(2, 1, L"Hello, World !");
             // sheet->writeNum(3, 1, 1000);
-
-            Font* textFont = book->addFont();
-
-            // fontTitle->setName(L"¸¼Àº °íµñ");
-            textFont->setName(L"Century Gothic");
-            textFont->setBold(true);
-            textFont->setSize(10);
-
-            Font* dateFont = book->addFont();
-
-            // fontTitle->setName(L"¸¼Àº °íµñ");
-            dateFont->setName(L"Century Gothic");
-            dateFont->setBold(true);
-            dateFont->setSize(8);
-
-            Font* titleFont = book->addFont(textFont);
-            titleFont->setSize(38);
-            titleFont->setColor(COLOR_GRAY25);
-
-            Font* font12 = book->addFont(textFont);
-            font12->setSize(14);
-
-            Font* font10 = book->addFont(textFont);
-            font10->setSize(12);
-
-            // Formats
-            Format* textFormat = book->addFormat();
-            textFormat->setFont(textFont);
-            textFormat->setAlignH(ALIGNH_LEFT);
-
-
-            Format* titleFormat = book->addFormat();
-            titleFormat->setFont(titleFont);
-            titleFormat->setAlignH(ALIGNH_RIGHT);
-
-            Format* companyFormat = book->addFormat();
-            companyFormat->setFont(font12);
-
-
-            Format* dateFormat = book->addFormat();
-            dateFormat->setFont(dateFont);
-            dateFormat->setAlignH(ALIGNH_LEFT);
-            dateFormat->setNumFormat(book->addCustomNumFormat(L"[$-409]mmmm\\ d\\,\\ yyyy;@"));
-
-            Format* borderFormat = book->addFormat(textFormat);
-            borderFormat->setBorder();
-            borderFormat->setBorderColor(COLOR_GRAY25);
-            borderFormat->setAlignV(ALIGNV_CENTER);
-
-            Format* textRightFormat = book->addFormat(textFormat);
-            textRightFormat->setAlignH(ALIGNH_RIGHT);
-            textRightFormat->setAlignV(ALIGNV_CENTER);
-
-            Format* thankFormat = book->addFormat();
-            thankFormat->setFont(font10);
-            thankFormat->setAlignH(ALIGNH_CENTER);
 
             // actions
             sheet->setDisplayGridlines(false);
@@ -308,25 +322,165 @@ void CExcel::SaveExcel()
             sheet->writeStr(7, 11, L"FarAttackDist", textFormat);
             sheet->writeStr(7, 12, L"AbilityState", textFormat);
 
-            for (int row = 8; row < 30; ++row)
+            // Blank ÀÛ¼ºÇÏ±â
+            for (int row = m_ContentStartRow; row < 30; ++row)
             {
                 sheet->setRow(row, 28);
 
-                for (int col = 0; col < 13; ++col)
+                for (int col = 0; col < m_ContetnEndCol; ++col)
                 {
                     sheet->writeBlank(row, col, borderFormat);
                 }
             }
 
+            // ³»¿ë ÀÛ¼ºÇÏ±â
+            auto iter = m_MapMonsterStats.begin();
+            auto iterEnd = m_MapMonsterStats.end();
+
+            int row = m_ContentStartRow - 1;
+
+            for (; iter != iterEnd; ++iter)
+            {
+                row += 1;
+
+                Monster_Stat* Stat = iter->second;
+
+                for (int col = 0; col < m_ContetnEndCol; ++col)
+                {
+                    switch (col)
+                    {
+                    case (int)ColType::Name:
+                    {
+                        sheet->writeStr(row, col, iter->first.c_str(), borderFormat);
+                    }
+                    break;
+                    case (int)ColType::Type:
+                    {
+                        std::wstring MonsterType = {};
+
+                        if (Stat->m_Type == Monster_Type::Normal)
+                        {
+                            MonsterType = L"Normal";
+                        }
+                        if (Stat->m_Type == Monster_Type::Ability)
+                        {
+                            MonsterType = L"Ability";
+                        }
+                        if (Stat->m_Type == Monster_Type::Water)
+                        {
+                            MonsterType = L"Water";
+                        }
+                        if (Stat->m_Type == Monster_Type::Boss)
+                        {
+                            MonsterType = L"Boss";
+                        }
+
+                        sheet->writeStr(row, col, MonsterType.c_str(), borderFormat);
+                    }
+                    break;
+                    case (int)ColType::HP:
+                    {
+                        sheet->writeNum(row, col, Stat->m_HP, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::AttackDist:
+                    {
+                        sheet->writeNum(row, col, Stat->m_AttackDist, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::DashDist:
+                    {
+                        sheet->writeNum(row, col, Stat->m_DashDist, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::MoveVelocity:
+                    {
+                        sheet->writeNum(row, col, Stat->m_MoveVelocity, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::IsGroundObject:
+                    {
+                        sheet->writeStr(row, col, (Stat->m_IsGroundObject ? L"TRUE" : L"FALSE"), borderFormat);
+                    }
+                    break;
+                    case (int)ColType::AttackAbility:
+                    {
+                        sheet->writeNum(row, col, Stat->m_AttackAbility, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::Scale:
+                    {
+                        sheet->writeNum(row, col, Stat->m_Scale, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::JumpVelocity:
+                    {
+                        sheet->writeNum(row, col, Stat->m_JumpVelocity, borderFormat);
+                    }
+                    break;
+                    case (int)ColType::CloseAttackDist:
+                    {
+                        if (Stat->m_Type == Monster_Type::Boss)
+                        {
+                            sheet->writeNum(row, col, Stat->m_CloseAttackDist, borderFormat);
+                        }
+                    }
+                    break;
+                    case (int)ColType::FarAttackDist:
+                    {
+                        if (Stat->m_Type == Monster_Type::Boss)
+                        {
+                            sheet->writeNum(row, col, Stat->m_FarAttackDist, borderFormat);
+                        }
+                    }
+                    break;
+                    case (int)ColType::AbilityState:
+                    {
+                        if (Stat->m_Type == Monster_Type::Ability)
+                        {
+                            std::wstring Ability = {};
+                            if (Stat->m_AbilityState == Ability_State::Bomb)
+                            {
+                                Ability = L"Bomb";
+                                sheet->writeStr(row, col, Ability.c_str(), borderFormat);
+                            }
+                            if (Stat->m_AbilityState == Ability_State::Beam)
+                            {
+                                Ability = L"Beam";
+                                sheet->writeStr(row, col, Ability.c_str(), borderFormat);
+                            }
+                            if (Stat->m_AbilityState == Ability_State::Sword)
+                            {
+                                Ability = L"Sword";
+                                sheet->writeStr(row, col, Ability.c_str(), borderFormat);
+                            }
+                            if (Stat->m_AbilityState == Ability_State::Fire)
+                            {
+                                Ability = L"Fire";
+                                sheet->writeStr(row, col, Ability.c_str(), borderFormat);
+                            }
+                            if (Stat->m_AbilityState == Ability_State::Fight)
+                            {
+                                Ability = L"Fight";
+                                sheet->writeStr(row, col, Ability.c_str(), borderFormat);
+                            }
+                        }
+                    }
+                    break;
+                    }
+                }
+            }
+
+            TCHAR LExcel_Path[MAX_PATH] = {};
+
+            int ConvertLength = MultiByteToWideChar(CP_ACP, 0, EXCEL_PATH, -1, 0, 0);
+
+            MultiByteToWideChar(CP_ACP, 0, EXCEL_PATH, -1, LExcel_Path, ConvertLength);
+
+            // book->save(L"C:\\Users\\dhsys\\\Desktop\\TextExcel.xlsx");
+            book->save(LExcel_Path);
+            book->release();
         }
-
-        // ´Ù¸¥ Sheet ¿¡´Â Kirby Sheet ¼¼ÆÃÇÏ±â 
-
-        // book->save(L"C:\\Users\\dhsys\\\Desktop\\TextExcel.xlsx");
-        book->save(L"C:\\Users\\dhsys\\DX_Project\\TextExcel.xlsx");
-        book->release();
-
-        getchar();
     }
 }
 

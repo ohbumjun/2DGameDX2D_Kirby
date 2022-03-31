@@ -170,10 +170,10 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 void CClientManager::CreateDefaultSceneMode()
 {
-	CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
+	// CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
 	// --------------------------------------------------------------------------
 
-	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
@@ -187,10 +187,10 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CBeginningScene>();
 
 
-	// CSceneManager::GetInst()->GetScene()->PrepareResources();
+	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
+	CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
