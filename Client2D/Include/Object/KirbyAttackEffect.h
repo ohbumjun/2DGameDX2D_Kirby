@@ -22,7 +22,7 @@ protected:
     KirbyAttackEffect_Type m_AttackType;
     class CKirbyState* m_KirbyOwner;
     float m_AttackDamage;
-    CSharedPtr<class CCameraComponent> m_Camera;
+    CSharedPtr<class CCameraComponent> m_Camera; //
 private :
     bool m_CollideShakeEffect;
 protected:
