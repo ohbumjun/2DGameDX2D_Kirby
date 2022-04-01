@@ -302,6 +302,9 @@ void CFightKirbyState::SpecialAttack()
 	m_Player->GetBodyCollider()->SetCollisionProfile("PlayerAttack");
 }
 
+void CFightKirbyState::UltimateAttack()
+{}
+
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpTime > 0.f)

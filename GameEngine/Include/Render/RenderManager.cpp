@@ -128,6 +128,12 @@ bool CRenderManager::Init()
 	Layer->LayerPriority = 5;
 	m_RenderLayerList.push_back(Layer);
 
+	// Ultimate Attack UI
+	Layer = new RenderLayer;
+	Layer->Name = "UltimateAttackUI";
+	Layer->LayerPriority = 6;
+	m_RenderLayerList.push_back(Layer);
+
 	// Tile Layer --> 가장 뒤쪽에 그릴 것이다.
 	Layer = new RenderLayer;
 	Layer->Name = "Tile";

@@ -131,6 +131,10 @@ private :
 	float m_AttackTimeLimit;
 	float m_AttackTime;
 
+	// Ultimate Attack
+	bool m_UltimateAttack;
+	class CUltimateAttackWidget* m_UltimateAttackWindow;
+
 	// Slide Attack
 	bool m_SlideAttack;
 	float m_SlideAttackSpeed;
@@ -311,6 +315,7 @@ private:
 	void ChangePlayerChangeAnimation();
 	void ChangePlayerSwimAnimation();
 	void ChangePlayerSpecialAttackAnimation(float DeltaTime);
+	void ChangePlayerUltimateAttackAnimation(float DeltaTime);
 private :
 	// Spit Out & Pull
 	void SpitOut(float DeltaTime);
@@ -340,7 +345,8 @@ private :
 	void Attack(float DeltaTime);
 	void SlideAttack(float DeltaTime);
 	void SpecialAttack();
-	void PrepareSpecialAction(float PrepareTime);
+	void UltimateAttack();
+	void PrepareSpecialAction(float PrepareTime, bool IsUltimate = false);
 	void UndoSpecialAction();
 	void ChangeToIdleAfterAnimation(float DeltaTime);
 private :

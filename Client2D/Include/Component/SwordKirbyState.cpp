@@ -129,6 +129,9 @@ void CSwordKirbyState::SpecialAttack()
 	SetWorldScale(80.f, 100.f, 1.f);
 }
 
+void CSwordKirbyState::UltimateAttack()
+{}
+
 void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpState)

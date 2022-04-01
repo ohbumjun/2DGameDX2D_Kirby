@@ -210,6 +210,7 @@
     <ClCompile Include="Object\EffectSceneChangeStar.cpp" />
     <ClCompile Include="Object\EffectSpitOut.cpp" />
     <ClCompile Include="Object\EffectStar.cpp" />
+    <ClCompile Include="Object\EffectUltimateAttackUI.cpp" />
     <ClCompile Include="Object\EffectWaterAttack.cpp" />
     <ClCompile Include="Object\EffectWaterBlast.cpp" />
     <ClCompile Include="Object\FightMonster.cpp" />
@@ -286,6 +287,7 @@
     <ClCompile Include="UI\PlayerHUD.cpp" />
     <ClCompile Include="UI\SimpleHUD.cpp" />
     <ClCompile Include="UI\StartWidget.cpp" />
+    <ClCompile Include="UI\UltimateAttackWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
@@ -335,6 +337,7 @@
     <ClInclude Include="Object\EffectSceneChangeStar.h" />
     <ClInclude Include="Object\EffectSpitOut.h" />
     <ClInclude Include="Object\EffectStar.h" />
+    <ClInclude Include="Object\EffectUltimateAttackUI.h" />
     <ClInclude Include="Object\EffectWaterAttack.h" />
     <ClInclude Include="Object\EffectWaterBlast.h" />
     <ClInclude Include="Object\FightMonster.h" />
@@ -411,6 +414,7 @@
     <ClInclude Include="UI\PlayerHUD.h" />
     <ClInclude Include="UI\SimpleHUD.h" />
     <ClInclude Include="UI\StartWidget.h" />
+    <ClInclude Include="UI\UltimateAttackWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client2D.rc" />

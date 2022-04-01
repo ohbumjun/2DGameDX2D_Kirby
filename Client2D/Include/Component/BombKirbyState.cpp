@@ -195,6 +195,9 @@ void CBombKirbyState::SpecialAttack()
 	m_Player->ChangePlayerIdleAnimation();
 }
 
+void CBombKirbyState::UltimateAttack()
+{}
+
 void CBombKirbyState::MakeFallDownBomb()
 {
 	if (m_FallDownBombMade)

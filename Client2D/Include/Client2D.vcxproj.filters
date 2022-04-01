@@ -94,6 +94,12 @@
     <Filter Include="04. Excel">
       <UniqueIdentifier>{12f936bb-6bc7-40cd-a848-e3d6bc171a3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. UI\02. Player">
+      <UniqueIdentifier>{8d06e47b-f2d1-4a8c-b6e0-dc380cf1f2ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. UI\03. Monster">
+      <UniqueIdentifier>{fd73c6ec-0795-4bf4-a518-5a9883d9d1e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -438,15 +444,6 @@
     <ClCompile Include="Scene\IntroScene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PlayerHUD.cpp">
-      <Filter>03. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\EmptyObjectHUD.cpp">
-      <Filter>03. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\BossHUD.cpp">
-      <Filter>03. UI</Filter>
-    </ClCompile>
     <ClCompile Include="Object\SwordBoomerang.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClCompile>
@@ -464,6 +461,21 @@
     </ClCompile>
     <ClCompile Include="Excel\Excel.cpp">
       <Filter>04. Excel</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\EffectUltimateAttackUI.cpp">
+      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PlayerHUD.cpp">
+      <Filter>03. UI\02. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\BossHUD.cpp">
+      <Filter>03. UI\03. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\EmptyObjectHUD.cpp">
+      <Filter>03. UI\03. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UltimateAttackWidget.cpp">
+      <Filter>03. UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -809,15 +821,6 @@
     <ClInclude Include="Scene\IntroScene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PlayerHUD.h">
-      <Filter>03. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\EmptyObjectHUD.h">
-      <Filter>03. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\BossHUD.h">
-      <Filter>03. UI</Filter>
-    </ClInclude>
     <ClInclude Include="Object\SwordBoomerang.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClInclude>
@@ -835,6 +838,21 @@
     </ClInclude>
     <ClInclude Include="Excel\Excel.h">
       <Filter>04. Excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectUltimateAttackUI.h">
+      <Filter>02. Object\07. Effect\03. DecorateEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PlayerHUD.h">
+      <Filter>03. UI\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\EmptyObjectHUD.h">
+      <Filter>03. UI\03. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BossHUD.h">
+      <Filter>03. UI\03. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UltimateAttackWidget.h">
+      <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

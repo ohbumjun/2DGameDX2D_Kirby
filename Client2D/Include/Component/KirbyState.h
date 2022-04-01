@@ -16,6 +16,7 @@ protected:
     virtual void FallDownAttack() = 0;
     virtual void GoUpAttack() = 0;
     virtual void SpecialAttack() = 0;
+    virtual void UltimateAttack() = 0;
 protected :
    class  CPlayer2D* m_Player;
    float m_ExtraAttackAbility;

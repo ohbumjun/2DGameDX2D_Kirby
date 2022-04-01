@@ -14,6 +14,7 @@ protected:
     virtual void FallDownAttack();
     virtual void GoUpAttack();
     virtual void SpecialAttack();
+    virtual void UltimateAttack() override;
 protected :
     void MakeFallDownBomb();
 private:

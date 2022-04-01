@@ -123,6 +123,9 @@ void CFireKirbyState::SpecialAttack()
 
 }
 
+void CFireKirbyState::UltimateAttack()
+{}
+
 void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {
 	if (m_GoUpTime > 0.f)

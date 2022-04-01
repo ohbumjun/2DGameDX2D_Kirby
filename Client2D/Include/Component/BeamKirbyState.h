@@ -15,6 +15,7 @@ protected:
     virtual void FallDownAttack();
     virtual void GoUpAttack();
     virtual void SpecialAttack() override;
+    virtual void UltimateAttack() override;
 private:
     // Go Up
     bool m_GoUpState;

@@ -5,6 +5,7 @@
 #include "../UI/EmptyObjectHUD.h"
 #include "../UI/PlayerHUD.h"
 #include "Ui/UIDamageFont.h"
+#include "../UI/UltimateAttackWidget.h"
 // Scene
 #include "Scene/Scene.h"
 #include "Scene/ViewPort.h"
@@ -30,6 +31,7 @@
 #include "EffectStar.h"
 #include "BubbleParticle.h"
 #include "EffectSceneChangeAlpha.h"
+#include "EffectUltimateAttackUI.h"
 #include "../Object/Monster.h"
 #include "EffectWaterAttack.h"
 #include "EffectWaterBlast.h"
@@ -50,6 +52,7 @@ CPlayer2D::CPlayer2D() :
 	m_MP(100.f),
 	m_RightMove(false),
 	m_IsBackToSceneChangeDoorPos(false),
+	m_UltimateAttack(false),
 	m_Bounced(false),
 	m_IsSwimming(false),
 	m_ToLeftWhenRightMove(false),
@@ -294,8 +297,12 @@ void CPlayer2D::Start()
 		KeyState_Down, this, &CPlayer2D::Attack);
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SlideAttack", 
 		KeyState_Down, this, &CPlayer2D::SlideAttack);
+
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("SpecialAttack",
 		KeyState_Down, this, &CPlayer2D::ChangePlayerSpecialAttackAnimation);
+
+	CInput::GetInst()->SetKeyCallback<CPlayer2D>("UltimateAttack",
+		KeyState_Down, this, &CPlayer2D::ChangePlayerUltimateAttackAnimation);
 
 	/*
 	CInput::GetInst()->SetKeyCallback<CPlayer2D>("Skill1", 
@@ -1807,6 +1814,8 @@ void CPlayer2D::SimpleJump()
 			ChangePlayerWalkAnimation();
 		else
 			ChangePlayerJumpAnimation();
+
+
 	}
 }
 
@@ -2486,6 +2495,75 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 
 	PrepareSpecialAction(1.f);
 
+	CAnimationSequence2DData* Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialAttack");
+
+	if (Data)
+	{
+		Data->SetEndFunction(this, &CPlayer2D::SpecialAttack);
+	}
+
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpecialAttack");
+
+	if (Data)
+	{
+		Data->SetEndFunction(this, &CPlayer2D::SpecialAttack);
+	}
+
+	if (m_ObjectMoveDir.x < 0.f)
+		ChangeAnimation("LeftSpecialAttack");
+	else
+		ChangeAnimation("RightSpecialAttack");
+
+	DecreaseMP(25.f);
+
+	// Sword 의 경우, 크기를 잠시 키운다.
+	if (m_SpecialAbilityState == Ability_State::Sword)
+	{
+		m_KirbyState->SetWorldScale(110.f, 110.f, 1.f);
+	}
+}
+
+void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
+{
+	if (!m_KirbyState)
+		return;
+
+	if (m_IsAttacking)
+		return;
+
+	if (m_IsLadderGoingUp)
+		return;
+
+	if (m_IsSwimming)
+		return;
+
+	if (m_IsFlying)
+		return;
+
+	if (!m_IsSpecialStateChanged)
+		return;
+
+	if (m_MP < 25.f)
+		return;
+
+	m_IsChanging = true;
+
+	m_IsAttacking = true;
+
+	StopPlayer();
+
+	PrepareSpecialAction(1.f, true);
+
+	CAnimationSequence2DData* Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialAttack");
+
+	if (Data)
+		Data->SetEndFunction(this, &CPlayer2D::UltimateAttack);
+
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSpecialAttack");
+
+	if (Data)
+		Data->SetEndFunction(this, &CPlayer2D::UltimateAttack);
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftSpecialAttack");
 	else
@@ -3146,7 +3224,20 @@ void CPlayer2D::SpecialAttack()
 	m_KirbyState->SpecialAttack();
 }
 
-void CPlayer2D::PrepareSpecialAction(float PrepareTime)
+void CPlayer2D::UltimateAttack()
+{
+	m_IsChanging = false;
+
+	ResetMoveInfo();
+
+	UndoSpecialAction();
+
+	m_KirbyState->UltimateAttack();
+
+	m_IsAttacking = false;
+}
+
+void CPlayer2D::PrepareSpecialAction(float PrepareTime, bool IsUltimate)
 {
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
 
@@ -3164,6 +3255,16 @@ void CPlayer2D::PrepareSpecialAction(float PrepareTime)
 	m_RootComponent->SetLayerName("PlayerChange");
 
 	m_ChangeTime = m_ChangeTimeMax + 0.001f;
+
+	// 필살기라면, UI 도 세팅한다.
+	if (IsUltimate)
+	{
+		m_UltimateAttackWindow = m_Scene->GetViewPort()->CreateUIWindow<CUltimateAttackWidget>("UltimateAttackWindow");
+
+		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Beam_Ultimate.jpg"));
+
+		m_UltimateAttackWindow->SetUIProceedTime(PrepareTime);
+	}
 }
 
 void CPlayer2D::UndoSpecialAction()
