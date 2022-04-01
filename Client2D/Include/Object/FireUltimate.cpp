@@ -64,7 +64,7 @@ void CFireUltimate::Update(float DeltaTime)
 		m_MainSprite->GetMaterial()->SetOpacity(1.f);
 	}
 
-	if (m_MoveReadyTime < m_MoveStartTime || m_InitHideTime > 0.f )
+	if (m_MoveReadyTime < m_MoveStartTime || m_InitHideTime > 0.f ) //
 		return;
 
 	if (!m_MoveStart)
