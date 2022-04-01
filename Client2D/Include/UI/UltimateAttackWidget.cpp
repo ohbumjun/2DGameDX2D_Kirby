@@ -13,6 +13,7 @@ CUltimateAttackWidget::~CUltimateAttackWidget()
 void CUltimateAttackWidget::SetUITexture(const char* Name, const TCHAR* FileName)
 {
 	m_FrontImage->SetTexture(Name, FileName);
+	m_FrontImage->SetSize(800.f, 720.f);
 }
 
 
@@ -27,8 +28,7 @@ bool CUltimateAttackWidget::Init()
 	m_FrontImage = CreateUIWidget<CUIImage>("AddImage");
 	m_FrontImage->SetTexture("LoadingBackImage", TEXT("Project/Item/WhiteBack.png"));
 	m_FrontImage->SetSize(800.f, 720.f);
-	m_FrontImage->SetPos((float)RS.Width, 
-		m_Scene->GetCameraManager()->GetCurrentCamera()->GetWorldPos().y);
+	m_FrontImage->SetPos((float)RS.Width, 10.f);
 	m_FrontImage->SetZOrder(1);
 
 	return true;

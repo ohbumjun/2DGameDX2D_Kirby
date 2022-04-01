@@ -3261,7 +3261,34 @@ void CPlayer2D::PrepareSpecialAction(float PrepareTime, bool IsUltimate)
 	{
 		m_UltimateAttackWindow = m_Scene->GetViewPort()->CreateUIWindow<CUltimateAttackWidget>("UltimateAttackWindow");
 
-		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Beam_Ultimate.jpg"));
+		switch(m_SpecialAbilityState)
+		{
+		case Ability_State::Bomb :
+			{
+			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Bomb_Ultimate.png"));
+			}
+			break;
+		case Ability_State::Beam:
+		{
+			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Beam_Ultimate.png"));
+		}
+		break;
+		case Ability_State::Fight:
+		{
+			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fight_Ultimate.png"));
+		}
+		break;
+		case Ability_State::Fire:
+		{
+			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fire_Ultimate.png"));
+		}
+		break;
+		case Ability_State::Sword:
+		{
+			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Sword_Ultimate.png"));
+		}
+		break;
+		}
 
 		m_UltimateAttackWindow->SetUIProceedTime(PrepareTime);
 	}
