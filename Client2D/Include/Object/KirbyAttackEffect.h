@@ -54,6 +54,7 @@ protected :
     void ApplyFallEffect();
     void ApplyBombFallAttackEnd();
     void MakeBombExplodeEffect();
+    void CreateAttackBackEffect();
 public:
     virtual void Start() override;
     virtual bool Init() override;

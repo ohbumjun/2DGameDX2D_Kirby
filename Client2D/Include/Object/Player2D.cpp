@@ -179,15 +179,15 @@ void CPlayer2D::Start()
 		m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 		m_PullRightCollider->SetCollisionProfile("Player");
 
-		m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
-			(m_KirbyState->GetWorldScale().y * 2.f));
+		m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 3.f) * 0.5f,
+			(m_KirbyState->GetWorldScale().y * 3.f));
 		m_KirbyState->AddChild(m_PullRightCollider);
 
 		// PullLeftCollider
 		m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 		m_PullLeftCollider->SetCollisionProfile("Player");
-		m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 1.5f) * 0.5f,
-			(m_KirbyState->GetWorldScale().y * 2.f));
+		m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 3.f) * 0.5f,
+			(m_KirbyState->GetWorldScale().y * 3.f));
 		m_KirbyState->AddChild(m_PullLeftCollider);
 	}
 
@@ -1056,7 +1056,6 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		SpitOutStar->SetJumpVelocity(100.f);
 		SpitOutStar->SetPhysicsSimulate(true);
 		SpitOutStar->JumpStart();
-		SpitOutStar->SetAttackDamage(m_AttackAbility);
 		SpitOutStar->SetLifeTime(10.f);
 		SpitOutStar->SetNormalBottomCollision(true);
 		SpitOutStar->SetIsPulledAgainStar(true);
@@ -1064,6 +1063,10 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 		// Prev Eaten Monster에 정보세팅
 		m_PrevAbilityEatenMonster = m_EatenMonster;
+	}
+	else
+	{
+		SpitOutStar->SetAttackDamage(m_AttackAbility);
 	}
 
 	// todo : 이거는 필요할 수도 있다.
@@ -2536,7 +2539,7 @@ void CPlayer2D::FallDownAttackCallback(const CollisionResult& Result)
 {
 	Vector3 CurrentPos = GetWorldPos();
 
-	if (m_FallStartY > CurrentPos.y && !m_IsGround)
+	if (m_FallStartY > CurrentPos.y && !m_IsGround && !m_IsSwimming)
 	{
 		CColliderComponent* DestCollider = Result.Dest;
 
@@ -2793,9 +2796,8 @@ void CPlayer2D::SpecialChange()
 	// Set Kirby State Scale
 	SetKirbyStateSizeAccordingToKirbyState();
 
-	// 먹고 있던 Monster 를 Null 로 세팅한다
-	m_EatenMonster = nullptr;
-	m_IsEatingMonster = false;
+	// 아래 코드는 그대로 둔다. --> 변화 이후에도, 현재 먹고 있던 Star 는 다시 내뱉을 수 있어야 하기 때문이다.
+	// m_IsEatingMonster = false;
 
 	m_KirbyState->SetPlayer(this);
 
@@ -2866,14 +2868,14 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 
 void CPlayer2D::SetBasicSettingToChangedState()
 {
-	// Swim Animation 은 Loop 처리
+	// LeftSwim
 	CAnimationSequence2DData* Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftSwim");
-
 	if (Data)
 	{
 		Data->SetLoop(true);
 	}
 
+	// Right Swim
 	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSwim");
 
 	if (Data)
@@ -2924,7 +2926,7 @@ void CPlayer2D::SetBasicSettingToChangedState()
 		Data->SetPlayTime(2.f);
 	}
 
-	// Animation Loop 여부 세팅
+	// RightChange
 	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightChange");
 
 	if (Data)
@@ -2935,6 +2937,7 @@ void CPlayer2D::SetBasicSettingToChangedState()
 			this, &CPlayer2D::SpecialChange);
 	}
 
+	// LeftChange
 	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftChange");
 
 	if (Data)
@@ -2959,6 +2962,21 @@ void CPlayer2D::SetBasicSettingToChangedState()
 	if (Data)
 	{
 		Data->SetPlayTime(0.8f);
+		Data->SetEndFunction(this, &CPlayer2D::ChangePlayerIdleAnimation);
+	}
+
+	// Pull
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightPull");
+
+	if (Data)
+	{
+		Data->SetEndFunction(this, &CPlayer2D::ChangePlayerIdleAnimation);
+	}
+
+	Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("LeftPull");
+
+	if (Data)
+	{
 		Data->SetEndFunction(this, &CPlayer2D::ChangePlayerIdleAnimation);
 	}
 }
@@ -3011,6 +3029,7 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (m_IsLadderGoingUp)
 		return;
 
+	m_IsAttacking = true;
 
 	if (m_IsSwimming)
 	{
@@ -3041,8 +3060,6 @@ void CPlayer2D::Attack(float DeltaTime)
 	{
 		if (!m_IsSpecialStateChanged)
 			return;
-
-		m_IsAttacking = true;
 
 		ResetMoveInfo();
 
@@ -3085,10 +3102,6 @@ void CPlayer2D::Attack(float DeltaTime)
 
 void CPlayer2D::SlideAttack(float DeltaTime)
 {
-	// 몬스터를 먹고 있는 상태라면 Xu
-	if (m_IsEatingMonster)
-		return;
-
 	if (m_IsSwimming)
 		return;
 

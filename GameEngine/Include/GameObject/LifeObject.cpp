@@ -86,7 +86,7 @@ void CLifeObject::UpdateWhileOffGround(float DeltaTime)
 
 		// 점프 이후 일정 시간이 지났다면 --> FallTime이 어느정도 시간이 지났다면, 다시 false로 세팅
 		// Line Collision 이후, 해당 자리에서 점프를 허용해주기 위함이다
-		if (m_FallTime >= 0.5f)
+		if (m_FallTime >= 1.f)
 		{
 			if (m_JumpStart)
 			{

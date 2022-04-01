@@ -41,7 +41,7 @@ public :
 public :
     void SetAttackDamage(float Damage)
 {
-        m_AttackDamage;
+        m_AttackDamage = Damage;
 }
     void SetIsBeingPulled(bool Enable)
 {

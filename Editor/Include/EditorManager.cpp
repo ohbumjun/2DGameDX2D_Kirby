@@ -307,12 +307,12 @@ bool CEditorManager::Init(HINSTANCE hInst)//
 	CSceneManager::GetInst()->SetCreateAnimInstanceCallback(this, &CEditorManager::CreateAnimationInstance);
 
 	// IMGUI로 에디터에서 사용할 윈도우를 만들어준다.
-	m_SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteEditWindow>("SpriteEditWindow");
 	m_EditorMenu        = CIMGUIManager::GetInst()->AddWindow<CEditorMenu>("EditorMenu");
 	m_ObjectHierarchy = CIMGUIManager::GetInst()->AddWindow<CObjectHierarchy>("ObjectHierarchy");
+	m_BackGroundWindow = CIMGUIManager::GetInst()->AddWindow<CBackGroundWindow>("BackGroundWindow");
+	m_SpriteWindow = CIMGUIManager::GetInst()->AddWindow<CSpriteEditWindow>("SpriteEditWindow");
 	m_DetailInfoWindow = CIMGUIManager::GetInst()->AddWindow<CDetailInfoWindow>("DetailInfoWindow");
 	m_TileMapWindow = CIMGUIManager::GetInst()->AddWindow<CTileMapWindow>("TileMapWindow");
-	m_BackGroundWindow = CIMGUIManager::GetInst()->AddWindow<CBackGroundWindow>("BackGroundWindow");
 	m_LineEditWindow = CIMGUIManager::GetInst()->AddWindow<CLineEditWindow>("LineEditWindow");
 
 	// SceneMode 에 중력 적용 X 를 세팅한다.

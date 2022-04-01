@@ -350,7 +350,8 @@ void CMonster::Start()
 	m_ColliderBody->AddCollisionMouseCallback(Collision_State::End, this,
 		&CMonster::OnMouseEnd);
 	m_ColliderBody->SetInheritScale(true);
-	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
+	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnCollisionBegin);
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CMonster::OnMonsterBodyCollisionBegin);
 
 	float ParentWorldScaleX = m_ColliderBody->GetTransform()->GetTransformParent()->GetWorldScale().x;
 

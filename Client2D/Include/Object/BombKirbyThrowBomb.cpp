@@ -15,8 +15,8 @@ CBombKirbyThrowBomb::~CBombKirbyThrowBomb()
 void CBombKirbyThrowBomb::SetLeft()
 {
 	m_IsSetRight = false;
-	m_Bomb->AddRelativeRotationZ(70.f);
-	m_Bomb->SetRelativePos(-45.f, 0.f, 0.f);
+	m_Bomb->AddRelativeRotationZ(110.f);
+	m_Bomb->SetRelativePos(-60.f, 0.f, 0.f);
 }
 
 void CBombKirbyThrowBomb::SetRight()

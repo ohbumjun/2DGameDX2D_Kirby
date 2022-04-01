@@ -259,6 +259,8 @@ void CMiddleBossHammer::AITraceSpecific(float DeltaTime)
 			m_JumpAccel = 1.5f;
 			ChangeJumpAttackAnimation();
 			m_InitTraceDir = m_TraceDir;
+
+			m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 		}
 	}
 	else if (DistToPlayer < m_DashRunDistance)

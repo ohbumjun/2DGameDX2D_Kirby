@@ -10,7 +10,8 @@
 #include "UI/UIDamageFont.h"
 #include "FireAttackBackEffect.h"
 
-CEffectWaterAttack::CEffectWaterAttack()
+CEffectWaterAttack::CEffectWaterAttack() :
+	m_EffectDistMax(700.f)
 {}
 
 
@@ -55,7 +56,7 @@ bool CEffectWaterAttack::Init()
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.5f);
 	// m_Collider->AddCollisionCallback(Collision_State::Begin, (CAttackEffect*)this, &CAttackEffect::MonsterAttackCollisionCallback);
 
-	SetLifeTime(0.7f);
+	// SetLifeTime(0.7f);
 
 	return true;
 }
@@ -64,7 +65,20 @@ void CEffectWaterAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
+	float Dist = (Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 400.f).Length();
+
 	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 400.f);
+
+	m_EffectDist += Dist;
+
+	if (m_EffectDist >= m_EffectDistMax)
+	{
+		Destroy();
+
+		CPlayer2D* Player = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+		Player->SetAttackEnd();
+	}
 }
 
 void CEffectWaterAttack::PostUpdate(float DeltaTime)

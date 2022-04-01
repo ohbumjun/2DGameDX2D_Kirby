@@ -36,7 +36,7 @@ void CBombKirbyState::Attack()
 
 			m_ThrowReadyBomb->SetLeft();
 
-			m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
+			// m_ThrowReadyBomb->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y, GetWorldPos().z);
 
 			m_Player->GetRootComponent()->AddChild(m_ThrowReadyBomb->GetRootComponent());
 
@@ -50,7 +50,7 @@ void CBombKirbyState::Attack()
 
 			m_ThrowReadyBomb->SetRight();
 
-			m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
+			// m_ThrowReadyBomb->SetWorldPos(GetWorldPos());
 
 			m_Player->GetRootComponent()->AddChild(m_ThrowReadyBomb->GetRootComponent());
 

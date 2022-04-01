@@ -9,6 +9,9 @@ public:
     CEffectWaterAttack();
     CEffectWaterAttack(const CEffectWaterAttack& Attack);
     virtual ~CEffectWaterAttack() override;
+private :
+    float m_EffectDistMax;
+    float m_EffectDist;
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;
