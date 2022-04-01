@@ -48,7 +48,7 @@ void CUltimateAttackWidget::Update(float DeltaTime)
 		// 0.1 초 동안, 30% 정도를 가야 한다.
 		Vector2 CurrentPos = m_FrontImage->GetWindowPos();
 
-		m_FrontImage->SetPos(CurrentPos.x + DeltaTime * SpeedPerSec * 3.f * -1.f,
+		m_FrontImage->SetPos(CurrentPos.x + DeltaTime * SpeedPerSec * 6.f * -1.f,
 			CurrentPos.y);
 	}
 	else if (m_UIProceedTimeMax * 0.1f < m_UIProceedTime &&
@@ -58,7 +58,7 @@ void CUltimateAttackWidget::Update(float DeltaTime)
 		// 즉, 0.1초에 3.8xx% 정도를 가야 한다.
 		Vector2 CurrentPos = m_FrontImage->GetWindowPos();
 
-		m_FrontImage->SetPos(CurrentPos.x + DeltaTime * SpeedPerSec * 0.38f,
+		m_FrontImage->SetPos(CurrentPos.x + DeltaTime * SpeedPerSec * 0.38f * -1.f,
 			CurrentPos.y);
 	}
 
