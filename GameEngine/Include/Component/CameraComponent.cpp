@@ -124,7 +124,7 @@ void CCameraComponent::CreateProjectionMatrix()
 		m_matProj = XMMatrixOrthographicOffCenterLH(0.f, (float)m_RS.Width, 0.f, (float)m_RS.Height, 0.f, 1000.f);
 		break;
 	case Camera_Type::Camera3D:
-		m_matProj = XMMatrixPerspectiveFovLH(DegreeToRadian(m_ViewAngle),
+		m_matProj = XMMatrixPerspectiveFovLH(DegreeToRadian(m_ViewAngle * 1.8),
 			m_RS.Width / (float)m_RS.Height, 0.1f, m_Distance);
 		break;
 	case Camera_Type::CameraUI:
@@ -305,6 +305,7 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 {
 	if (m_FollowTarget && m_FollowTargetBoss)
 	{
+		// Vector3  TargetWorldPos = Vector3(m_FollowTargetBoss->GetWorldPos().x + 00.f, m_FollowTargetBoss->GetWorldPos().y + 500.f, 0.f);
 		Vector3  TargetWorldPos = m_FollowTargetBoss->GetWorldPos();
 
 		Resolution RS = CEngine::GetInst()->GetResolution();
@@ -412,6 +413,8 @@ void CCameraComponent::Update(float DeltaTime)
 	FollowTarget(DeltaTime);
 
 	UpdateShakeEffect(DeltaTime);
+
+	SetWorldPos(GetWorldPos().x, GetWorldPos().y, -50.f);
 }
 
 void CCameraComponent::PostUpdate(float DeltaTime)

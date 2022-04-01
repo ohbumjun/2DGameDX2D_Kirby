@@ -32,6 +32,7 @@ protected:
 protected:
     virtual void AIDeathSpecific(float DeltaTime) override;
     void StartPaperBurnEffect();
+    void PaperBurnEndCallback();
     virtual void Damage(float Damage) override;
 public:
     virtual void Start() override;

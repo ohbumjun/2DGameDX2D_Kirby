@@ -69,6 +69,8 @@ void CScene::Start()
 	{
 		CCameraComponent* Camera = m_Mode->GetPlayerObject()->FindComponentByType<CCameraComponent>();
 
+		// Camera->SetCameraType(Camera_Type::Camera3D);
+
 		if (Camera)
 		{
 			m_CameraManager->SetCurrentCamera(Camera);

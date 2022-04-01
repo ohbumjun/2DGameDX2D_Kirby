@@ -24,6 +24,7 @@
 #include "AbilityMonster.h"
 #include "EffectDash.h"
 #include "EffectSpitOut.h"
+#include "EffectJumpAir.h"
 #include "EffectRandomStar.h"
 #include "SpecialChangeParticle.h"
 #include "EffectStar.h"
@@ -486,7 +487,8 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		m_IsFlying = false;
 
 		// Air Effect를 하나 만들어낸다.
-		CEffectSpitOut* EffectSpitOut = m_Scene->CreateGameObject<CEffectSpitOut>("DashEffect");
+		// CEffectSpitOut* EffectSpitOut = m_Scene->CreateGameObject<CEffectSpitOut>("DashEffect");
+		CEffectJumpAir* EffectSpitOut = m_Scene->CreateGameObject<CEffectJumpAir>("DashEffect");
 
 		Vector3 EffectPos = {};
 
@@ -494,17 +496,19 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		{
 			EffectPos = Vector3(GetWorldPos().x + (GetWorldScale().x * GetPivot().x * 1.3f),GetWorldPos().y, GetWorldPos().z);
 
-			EffectSpitOut->SetDirGoRight(true);
+			EffectSpitOut->SetRightEffect();
 		}
 		else // 왼쪽
 		{
 			EffectPos = Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x * 1.5f),GetWorldPos().y, GetWorldPos().z);
 
-			EffectSpitOut->SetDirGoRight(false);
+			EffectSpitOut->SetLeftEffect();
 		}
 
-		EffectSpitOut->SetWorldPos(EffectPos);
+		EffectSpitOut->SetMoveVelocity(500.f);
 
+		EffectSpitOut->SetLifeTime(0.3f);
+		EffectSpitOut->SetWorldPos(EffectPos);
 
 		ChangePlayerSpitOutAnimation();
 		// ChangePlayerFallAnimation();

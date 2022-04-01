@@ -36,6 +36,8 @@ void CBossMonster::Start()
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetEndFunction(this, &CBossMonster::StartPaperBurnEffect);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetEndFunction(this, &CBossMonster::StartPaperBurnEffect);
+
+	m_PaperBurn->SetFinishCallback(this, &CBossMonster::PaperBurnEndCallback);
 }
 
 bool CBossMonster::Init()
@@ -49,6 +51,15 @@ bool CBossMonster::Init()
 void CBossMonster::StartPaperBurnEffect()
 {
 	m_PaperBurn->StartPaperBurn();
+}
+
+void CBossMonster::PaperBurnEndCallback()
+{
+	m_Scene->SetWorldResolution(m_InitWorldResolution.x, m_InitWorldResolution.y);
+
+	m_Scene->SetBossWorldResolution(0.f, m_InitWorldResolution.y);
+
+	Destroy();
 }
 
 void CBossMonster::Damage(float Damage)
@@ -111,10 +122,6 @@ void CBossMonster::UpdateAttackLimitTimes(float DeltaTime)
 
 void CBossMonster::AIDeathSpecific(float DeltaTime)
 {
-	m_Scene->SetWorldResolution(m_InitWorldResolution.x, m_InitWorldResolution.y);
-
-	m_Scene->SetBossWorldResolution(0.f, m_InitWorldResolution.y);
-
 	// Boss Monster 를 Stop 시킨다
 	m_MonsterMoveVelocity = 0.f;
 

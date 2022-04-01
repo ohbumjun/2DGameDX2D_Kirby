@@ -8,7 +8,8 @@
 #include "Animation/AnimationSequence2DInstance.h"
 
 CEffectJumpAir::CEffectJumpAir() :
-	m_MoveDir(1.f)
+	m_MoveDir(1.f),
+	m_EffectMoveSpeed(100.f)
 {
 }
 
@@ -53,7 +54,7 @@ void CEffectJumpAir::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	AddWorldPos(Vector3(m_MoveDir, 0.f, 0.f) * 100.f * DeltaTime);
+	AddWorldPos(Vector3(m_MoveDir, 0.f, 0.f) * m_EffectMoveSpeed * DeltaTime);
 }
 
 void CEffectJumpAir::PostUpdate(float DeltaTime)

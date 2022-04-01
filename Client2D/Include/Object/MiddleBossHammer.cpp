@@ -104,6 +104,8 @@ void CMiddleBossHammer::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
 
+	SetWorldPos(GetWorldPos().x, GetWorldPos().y, 1.f);
+
 	UpdateJumpAction(DeltaTime);
 }
 

@@ -161,6 +161,8 @@ void CFightKirbyState::GoUpAttack()
 
 	m_InitColliderLength = m_Player->GetBodyCollider()->GetInfo().Length;
 
+	m_Player->GetBodyCollider()->SetCollisionProfile("PlayerAttack");
+
 	// 위 방향으로 크게 쏜다
 	CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
 	AttackEffect->SetAttackType(KirbyAttackEffect_Type::Fight);
@@ -332,6 +334,8 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			m_Player->SetAttackEnable(false);
 
 			m_ExtraAttackAbility = m_InitAttackAbility;
+
+			m_Player->GetBodyCollider()->SetCollisionProfile("Player");
 		}
 	}
 }
