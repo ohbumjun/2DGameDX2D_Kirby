@@ -72,11 +72,21 @@ Matrix CCameraComponent::GetRatioViewMatrix(float ScrollRatio)
 	return matView;
 }
 
-void CCameraComponent::ApplyShakeEffect()
+void CCameraComponent::ApplyShakeEffect(bool HardShake)
 {
 	m_IsCameraShake = true;
 	m_CameraShakeTime = m_CameraShakeTimeMax;
-	// SetInheritParentWorldPosChange(false);
+
+	if (HardShake)
+	{
+		m_CameraShakeTime *= 2.f;
+	}
+}
+
+void CCameraComponent::ApplyWeakShakeEffect()
+{
+	m_IsCameraShake = true;
+	m_CameraShakeTime = m_CameraShakeTimeMax * 0.5f;
 }
 
 void CCameraComponent::UpdateShakeEffect(float DeltaTime)

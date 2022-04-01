@@ -1,13 +1,12 @@
 #include "BeamKirbyState.h"
-
 #include <Resource/Mesh/StaticMesh.h>
-
 #include "Scene/Scene.h"
+#include "Engine.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
-#include "../Object/FireAttackBackEffect.h"
+#include "../Object/BeamUltimate.h"
 
 CBeamKirbyState::CBeamKirbyState() :
 	m_GoUpTimeMax(1.5f),
@@ -146,7 +145,6 @@ void CBeamKirbyState::GoUpAttack()
 
 			AttackEffect->SetKirbyOwner(this);
 		}
-
 	}
 }
 
@@ -225,11 +223,76 @@ void CBeamKirbyState::SpecialAttack()
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	m_Player->ChangePlayerIdleAnimation();
-
 }
 
 void CBeamKirbyState::UltimateAttack()
-{}
+{
+	float XLeftEnd = -1.f, XRightEnd = -1.f;
+
+	float XDiffStep = -1.f, YDiffStep = -1.f;
+
+	float YStart = -1.f, YEnd = -1.f;
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	// 왼쪽을 보고 있었다면
+	if (m_Player->GetObjectMoveDir().x < 0.f)
+	{
+		// 왼쪽 끝
+		XLeftEnd = GetWorldPos().x - (float)RS.Width * 0.5f ;
+		// 오른쪽 끝보다 훨씬 더 
+		XRightEnd = GetWorldPos().x + (float)RS.Width * 2.5f;
+	}
+	// 오른쪽으로 보고 있었다면
+	else
+	{
+		// 왼쪽 끝보다 훨씬 더
+		XLeftEnd = GetWorldPos().x - (float)RS.Width * 2.5f;
+		// 오른쪽 끝
+		XRightEnd = GetWorldPos().x + (float)RS.Width * 0.5f ;
+	}
+
+	XDiffStep = (XRightEnd - XLeftEnd) * 0.05f; // 20로 나눈다.
+
+	YStart = m_Player->GetWorldPos().y + (float)RS.Height * 3.0f;
+	YEnd = m_Player->GetWorldPos().y - (float)RS.Height * 0.5f;
+
+	YDiffStep = (YStart - YEnd) * 0.025f; // 40로 나눈다.
+
+
+	for (int row = 0; row < 40; row++)
+	{
+		for (int col = 0;  col < 20; col++)
+		{
+			float LittleDiff = ((float)rand() / (float)RAND_MAX) * 50.f;
+
+			bool DiffDir = col & 1 ? -1.f : 1.f;
+
+			CBeamUltimate* AttackEffect = m_Scene->CreateGameObject<CBeamUltimate>("Attack3");
+
+			AttackEffect->SetWorldPos(XLeftEnd + XDiffStep * col + (LittleDiff * DiffDir),
+				YEnd + YDiffStep * row + (LittleDiff  * DiffDir),
+				GetWorldPos().z);
+
+			AttackEffect->SetKirbyOwner(this);
+
+			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+
+			// 왼쪽을 보고 있었다면
+			if (m_Player->GetObjectMoveDir().x < 0.f)
+			{
+				AttackEffect->SetLeftAttackDir(-1.f);
+				AttackEffect->AddRelativeRotationZ(135.f);
+			}
+			// 오른쪽으로 보고 있었다면
+			else
+			{
+				AttackEffect->SetRightAttackDir(-1.f);
+				AttackEffect->AddRelativeRotationZ(-40.f);
+			}
+		}
+	}
+}
 
 void CBeamKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {

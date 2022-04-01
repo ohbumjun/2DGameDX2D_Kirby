@@ -145,7 +145,8 @@ public:
 		}
 	}
 public :
-	void ApplyShakeEffect();
+	void ApplyShakeEffect(bool HardShake = false);
+	void ApplyWeakShakeEffect();
 private:
 	void UpdateShakeEffect(float DeltaTime);
 	void CreateProjectionMatrix();

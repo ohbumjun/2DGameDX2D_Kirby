@@ -100,6 +100,9 @@
     <Filter Include="03. UI\03. Monster">
       <UniqueIdentifier>{fd73c6ec-0795-4bf4-a518-5a9883d9d1e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\07. Effect\07. UltimateAttack">
+      <UniqueIdentifier>{8832f229-c711-4707-8bcf-4beb0d38454c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -477,6 +480,12 @@
     <ClCompile Include="UI\UltimateAttackWidget.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BeamUltimate.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\FireUltimate.cpp">
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -853,6 +862,12 @@
     </ClInclude>
     <ClInclude Include="UI\UltimateAttackWidget.h">
       <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BeamUltimate.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\FireUltimate.h">
+      <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

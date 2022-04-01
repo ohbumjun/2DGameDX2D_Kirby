@@ -189,8 +189,8 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 		m_MainSprite->SetWorldScale(30.f, 30.f, 1.f);
 		m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
-		m_AttackDistLimitMax = 400.f;
-		m_AttackObjectSpeed = 200.f;
+		m_AttackDistLimitMax = 700.f;
+		m_AttackObjectSpeed = 500.f;
 
 		AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 			"KirbyBeamFallAttackEffect", TEXT("Kirby_Beam_Effect_UpAttackEffect.anim"));

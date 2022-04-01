@@ -1,6 +1,7 @@
 #pragma once
 #include "Component/SpriteComponent.h"
 #include "GameObject\GameObject.h"
+#include "../Client.h"
 
 class CEffectSceneChangeAlpha :
     public CGameObject
@@ -38,6 +39,7 @@ public :
         m_Sprite->SetOpacity(Opacity);
     }
     void SetBlackTexture();
+    void SetUltimateAttackTexture(Ability_State State);
 private :
     void UpdateSceneChangeTime(float DeltaTime);
 public:

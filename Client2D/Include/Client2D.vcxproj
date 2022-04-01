@@ -178,6 +178,7 @@
     <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\BeamMonster.cpp" />
     <ClCompile Include="Object\BeamMonsterAttack.cpp" />
+    <ClCompile Include="Object\BeamUltimate.cpp" />
     <ClCompile Include="Object\Block.cpp" />
     <ClCompile Include="Object\BombKirbyThrowBomb.cpp" />
     <ClCompile Include="Object\BombMonster.cpp" />
@@ -218,6 +219,7 @@
     <ClCompile Include="Object\FireAttackBackEffect.cpp" />
     <ClCompile Include="Object\FireMonster.cpp" />
     <ClCompile Include="Object\FireMonsterAttack.cpp" />
+    <ClCompile Include="Object\FireUltimate.cpp" />
     <ClCompile Include="Object\Fish.cpp" />
     <ClCompile Include="Object\Frog.cpp" />
     <ClCompile Include="Object\HammerGorillaCloseAttack.cpp" />
@@ -306,6 +308,7 @@
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\BeamMonster.h" />
     <ClInclude Include="Object\BeamMonsterAttack.h" />
+    <ClInclude Include="Object\BeamUltimate.h" />
     <ClInclude Include="Object\Block.h" />
     <ClInclude Include="Object\BombKirbyThrowBomb.h" />
     <ClInclude Include="Object\BombMonster.h" />
@@ -345,6 +348,7 @@
     <ClInclude Include="Object\FireAttackBackEffect.h" />
     <ClInclude Include="Object\FireMonster.h" />
     <ClInclude Include="Object\FireMonsterAttack.h" />
+    <ClInclude Include="Object\FireUltimate.h" />
     <ClInclude Include="Object\Fish.h" />
     <ClInclude Include="Object\Frog.h" />
     <ClInclude Include="Object\HammerGorillaCloseAttack.h" />

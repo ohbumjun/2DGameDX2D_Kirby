@@ -6,6 +6,7 @@
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
 #include "../Object/FireAttackBackEffect.h"
+#include "../Object/FireUltimate.h"
 #include "Component/ColliderBox2D.h"
 
 class CFightMonsterAttack;
@@ -119,12 +120,49 @@ void CFireKirbyState::GoUpAttack()
 void CFireKirbyState::SpecialAttack()
 {
 	m_IsSpecialAttack = true;
-
-
 }
 
 void CFireKirbyState::UltimateAttack()
-{}
+{
+	for (int j = 1; j <= 6; j++)
+	{
+		float Angle = -1.f;
+		float StartAngle = 12.5f * j;
+		float StartDist = 120.f;
+
+		for (int i = 0; i < 8.f; i++)
+		{
+			Vector3 TargetPos = {};
+
+			Vector3 TraceDir = {};
+
+			Angle = StartAngle + 45.f * i;
+
+			TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(Angle)) * (StartDist + (j - 1) * 30.f);
+			TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(Angle)) * (StartDist + (j - 1) * 30);
+
+			TraceDir = TargetPos - GetWorldPos();
+
+			TraceDir.Normalize();
+
+			CFireUltimate* AttackEffect = m_Scene->CreateGameObject<CFireUltimate>("Attack");
+
+			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4.f);
+
+			AttackEffect->SetRightAttackDir(TraceDir.y);
+
+			AttackEffect->SetAttackDirX(TraceDir.x);
+
+			AttackEffect->SetWorldPos(TargetPos);
+
+			AttackEffect->SetKirbyOwner(this);
+
+			AttackEffect->SetInitHideTime(0.1f * (i + j));
+
+			AttackEffect->SetMoveStartTime(2.4f);
+		}
+	}
+}
 
 void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {

@@ -3232,9 +3232,15 @@ void CPlayer2D::UltimateAttack()
 
 	UndoSpecialAction();
 
+	// 카메라 흔들림
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect(true);
+
 	m_KirbyState->UltimateAttack();
 
 	m_IsAttacking = false;
+
+	ChangePlayerIdleAnimation();
+
 }
 
 void CPlayer2D::PrepareSpecialAction(float PrepareTime, bool IsUltimate)

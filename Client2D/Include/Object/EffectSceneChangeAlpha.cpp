@@ -15,7 +15,43 @@ void CEffectSceneChangeAlpha::SetBlackTexture()
 {
 	m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
 		TEXT("Project/Item/BlackBack.jpg"));
+}
 
+void CEffectSceneChangeAlpha::SetUltimateAttackTexture(Ability_State State)
+{
+	switch(State)
+	{
+	case Ability_State::Beam :
+		{
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
+			TEXT("Project/Item/BlackBack.jpg"));
+		}
+		break;
+	case Ability_State::Bomb:
+		{
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
+			TEXT("Project/Item/BlackBack.jpg"));
+		}
+		break;
+	case Ability_State::Fire:
+		{
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
+			TEXT("Project/Item/BlackBack.jpg"));
+		}
+		break;
+	case Ability_State::Fight:
+		{
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
+			TEXT("Project/Item/BlackBack.jpg"));
+		}
+		break;
+	case Ability_State::Sword:
+		{
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
+			TEXT("Project/Item/BlackBack.jpg"));
+		}
+		break;
+	}
 }
 
 void CEffectSceneChangeAlpha::UpdateSceneChangeTime(float DeltaTime)
