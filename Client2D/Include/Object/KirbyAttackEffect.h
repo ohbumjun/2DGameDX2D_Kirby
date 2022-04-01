@@ -23,6 +23,8 @@ protected:
     class CKirbyState* m_KirbyOwner;
     float m_AttackDamage;
     CSharedPtr<class CCameraComponent> m_Camera;
+private :
+    bool m_CollideShakeEffect;
 protected:
     CSpriteComponent* GetMainSprite() const
     {
@@ -31,6 +33,10 @@ protected:
     void SetDestroyWhenCollide(bool Enable)
     {
         m_DestroyWhenCollide = Enable;
+    }
+    void SetEnableCollideShakeEffect(bool Enable)
+    {
+        m_CollideShakeEffect = Enable;
     }
     void SetKirbyAttackEffectMoveSpeed(float Speed)
     {

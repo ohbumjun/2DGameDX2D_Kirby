@@ -346,8 +346,10 @@ private :
 	void SlideAttack(float DeltaTime);
 	void SpecialAttack();
 	void UltimateAttack();
-	void PrepareSpecialAction(float PrepareTime, bool IsUltimate = false);
+	void PrepareSpecialAction(float PrepareTime);
 	void UndoSpecialAction();
+	void PrepareUltimateAction(float PrepareTime);
+	void UndoUltimateAction();
 	void ChangeToIdleAfterAnimation(float DeltaTime);
 private :
 	// UI Setting

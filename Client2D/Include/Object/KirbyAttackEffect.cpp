@@ -16,6 +16,7 @@
 CKirbyAttackEffect::CKirbyAttackEffect() :
 	m_AttackDistLimit(0.f),
 	m_DestroyWhenCollide(true),
+	m_CollideShakeEffect(false),
 	m_AttackDistLimitMax(500.f),
 	m_AttackObjectSpeed(500.f)
 {}
@@ -498,6 +499,11 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 
 		// Create Damage Font
 		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
+		if (m_CollideShakeEffect)
+		{
+			m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+		}
 
 		if (ObjectWindow)
 		{

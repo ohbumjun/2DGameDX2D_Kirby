@@ -2552,7 +2552,7 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 
 	StopPlayer();
 
-	PrepareSpecialAction(1.f, true);
+	PrepareUltimateAction(4.f);
 
 	CAnimationSequence2DData* Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialAttack");
 
@@ -3230,7 +3230,7 @@ void CPlayer2D::UltimateAttack()
 
 	ResetMoveInfo();
 
-	UndoSpecialAction();
+	UndoUltimateAction();
 
 	// 카메라 흔들림
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect(true);
@@ -3243,13 +3243,14 @@ void CPlayer2D::UltimateAttack()
 
 }
 
-void CPlayer2D::PrepareSpecialAction(float PrepareTime, bool IsUltimate)
+void CPlayer2D::PrepareSpecialAction(float PrepareTime)
 {
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
 
 	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
 
 	m_ChangeBlackBackGround->SetBlackTexture();
+	m_ChangeBlackBackGround->SetUltimateAttackTexture(Ability_State::Fire);
 
 	m_ChangeBlackBackGround->SetLifeTime(PrepareTime);
 
@@ -3261,46 +3262,72 @@ void CPlayer2D::PrepareSpecialAction(float PrepareTime, bool IsUltimate)
 	m_RootComponent->SetLayerName("PlayerChange");
 
 	m_ChangeTime = m_ChangeTimeMax + 0.001f;
-
-	// 필살기라면, UI 도 세팅한다.
-	if (IsUltimate)
-	{
-		m_UltimateAttackWindow = m_Scene->GetViewPort()->CreateUIWindow<CUltimateAttackWidget>("UltimateAttackWindow");
-
-		switch(m_SpecialAbilityState)
-		{
-		case Ability_State::Bomb :
-			{
-			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Bomb_Ultimate.png"));
-			}
-			break;
-		case Ability_State::Beam:
-		{
-			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Beam_Ultimate.png"));
-		}
-		break;
-		case Ability_State::Fight:
-		{
-			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fight_Ultimate.png"));
-		}
-		break;
-		case Ability_State::Fire:
-		{
-			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fire_Ultimate.png"));
-		}
-		break;
-		case Ability_State::Sword:
-		{
-			m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Sword_Ultimate.png"));
-		}
-		break;
-		}
-
-		m_UltimateAttackWindow->SetUIProceedTime(PrepareTime);
-	}
 }
 
 void CPlayer2D::UndoSpecialAction()
+{
+	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
+
+	m_RootComponent->SetLayerName("Default");
+}
+
+void CPlayer2D::PrepareUltimateAction(float PrepareTime)
+{
+	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
+
+	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+	m_ChangeBlackBackGround->SetUltimateAttackTexture(m_SpecialAbilityState);
+
+	m_ChangeBlackBackGround->SetApplyDecreaseDestroy(true);
+
+	m_ChangeBlackBackGround->SetStartDestroyTime(PrepareTime);
+
+	m_ChangeBlackBackGround->SetOpacity(0.7f);
+
+	m_ChangeBlackBackGround->SetMaintainOpacity(true);
+
+	// 화면 가장 앞에 보이게 세팅한다.
+	m_RootComponent->SetLayerName("PlayerChange");
+
+	m_ChangeTime = m_ChangeTimeMax + 0.001f;
+
+	// 필살기라면, UI 도 세팅한다.
+	m_UltimateAttackWindow = m_Scene->GetViewPort()->CreateUIWindow<CUltimateAttackWidget>("UltimateAttackWindow");
+
+	switch (m_SpecialAbilityState)
+	{
+	case Ability_State::Bomb:
+	{
+		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Bomb_Ultimate.png"));
+	}
+	break;
+	case Ability_State::Beam:
+	{
+		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Beam_Ultimate.png"));
+	}
+	break;
+	case Ability_State::Fight:
+	{
+		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fight_Ultimate.png"));
+	}
+	break;
+	case Ability_State::Fire:
+	{
+		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fire_Ultimate.png"));
+	}
+	break;
+	case Ability_State::Sword:
+	{
+		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Sword_Ultimate.png"));
+	}
+	break;
+	}
+
+	m_UltimateAttackWindow->SetUIProceedTime(PrepareTime);
+}
+
+void CPlayer2D::UndoUltimateAction()
 {
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), false);
 
