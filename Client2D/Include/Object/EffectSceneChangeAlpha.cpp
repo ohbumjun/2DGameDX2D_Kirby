@@ -25,32 +25,32 @@ void CEffectSceneChangeAlpha::SetUltimateAttackTexture(Ability_State State)
 	{
 	case Ability_State::Beam :
 		{
-		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
-			TEXT("Project/Item/BlackBack.jpg"));
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "UltimateBlueAlpha",
+			TEXT("Project/Item/UltimateBlue.jpg"));
 		}
 		break;
 	case Ability_State::Bomb:
 		{
-		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
-			TEXT("Project/Item/BlackBack.jpg"));
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "UltimatePurpleAlpha",
+			TEXT("Project/Item/UltimatePurple.jpg"));
 		}
 		break;
 	case Ability_State::Fire:
 		{
-		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
-			TEXT("Project/Item/UltimateRed.jpg"));
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "UltimateOrangeAlpha",
+			TEXT("Project/Item/UltimateOrange.jpg"));
 		}
 		break;
 	case Ability_State::Fight:
 		{
-		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
-			TEXT("Project/Item/BlackBack.jpg"));
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "UltimateRedAlpha",
+			TEXT("Project/Item/UltimateRed.jpg"));
 		}
 		break;
 	case Ability_State::Sword:
 		{
-		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "SceneChangeBlackAlpha",
-			TEXT("Project/Item/BlackBack.jpg"));
+		m_Sprite->SetTexture(0, 0, (int)Buffer_Shader_Type::Graphic, "UltimateYellowAlpha",
+			TEXT("Project/Item/UltimateYellow.jpg"));
 		}
 		break;
 	}

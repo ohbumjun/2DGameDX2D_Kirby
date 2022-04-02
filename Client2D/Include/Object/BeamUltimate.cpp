@@ -23,7 +23,7 @@
 	 if (!CKirbyAttackEffect::Init())
 		 return false;
 
-	 m_MainSprite->SetWorldScale(80.f, 80.f, 1.f);
+	 m_MainSprite->SetWorldScale(100.f, 100.f, 1.f);
 	 m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
 
 	 m_AttackDistLimitMax = 4100.f;

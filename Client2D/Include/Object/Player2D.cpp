@@ -2552,7 +2552,7 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 
 	StopPlayer();
 
-	PrepareUltimateAction(4.f);
+	PrepareUltimateAction(4.f, 1.f);
 
 	CAnimationSequence2DData* Data = m_KirbyState->GetAnimationInstance()->FindAnimationSequence2DData("RightSpecialAttack");
 
@@ -3232,6 +3232,8 @@ void CPlayer2D::UltimateAttack()
 
 	UndoUltimateAction();
 
+	SpecialChangeEffect();
+
 	// 카메라 흔들림
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect(true);
 
@@ -3250,7 +3252,6 @@ void CPlayer2D::PrepareSpecialAction(float PrepareTime)
 	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
 
 	m_ChangeBlackBackGround->SetBlackTexture();
-	m_ChangeBlackBackGround->SetUltimateAttackTexture(Ability_State::Fire);
 
 	m_ChangeBlackBackGround->SetLifeTime(PrepareTime);
 
@@ -3271,7 +3272,7 @@ void CPlayer2D::UndoSpecialAction()
 	m_RootComponent->SetLayerName("Default");
 }
 
-void CPlayer2D::PrepareUltimateAction(float PrepareTime)
+void CPlayer2D::PrepareUltimateAction(float BackGroundDestroyTime, float UIProceedTime)
 {
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
 
@@ -3281,9 +3282,9 @@ void CPlayer2D::PrepareUltimateAction(float PrepareTime)
 
 	m_ChangeBlackBackGround->SetApplyDecreaseDestroy(true);
 
-	m_ChangeBlackBackGround->SetStartDestroyTime(PrepareTime);
+	m_ChangeBlackBackGround->SetStartDestroyTime(BackGroundDestroyTime);
 
-	m_ChangeBlackBackGround->SetOpacity(0.7f);
+	m_ChangeBlackBackGround->SetOpacity(0.6f);
 
 	m_ChangeBlackBackGround->SetMaintainOpacity(true);
 
@@ -3324,7 +3325,7 @@ void CPlayer2D::PrepareUltimateAction(float PrepareTime)
 	break;
 	}
 
-	m_UltimateAttackWindow->SetUIProceedTime(PrepareTime);
+	m_UltimateAttackWindow->SetUIProceedTime(UIProceedTime);
 }
 
 void CPlayer2D::UndoUltimateAction()

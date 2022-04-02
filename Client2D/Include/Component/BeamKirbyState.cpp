@@ -254,17 +254,17 @@ void CBeamKirbyState::UltimateAttack()
 
 	XDiffStep = (XRightEnd - XLeftEnd) * 0.05f; // 20·Î ³ª´«´Ù.
 
-	YStart = m_Player->GetWorldPos().y + (float)RS.Height * 3.0f;
+	YStart = m_Player->GetWorldPos().y + (float)RS.Height * 5.0f;
 	YEnd = m_Player->GetWorldPos().y - (float)RS.Height * 0.5f;
 
-	YDiffStep = (YStart - YEnd) * 0.025f; // 40·Î ³ª´«´Ù.
+	YDiffStep = (YStart - YEnd) * 0.05f; // 20·Î ³ª´«´Ù.
 
 
-	for (int row = 0; row < 40; row++)
+	for (int row = 0; row < 20; row++)
 	{
 		for (int col = 0;  col < 20; col++)
 		{
-			float LittleDiff = ((float)rand() / (float)RAND_MAX) * 50.f;
+			float LittleDiff = ((float)rand() / (float)RAND_MAX) * 150.f;
 
 			bool DiffDir = col & 1 ? -1.f : 1.f;
 

@@ -30,7 +30,7 @@ bool CSpecialChangeParticle::Init()
 
 	m_Particle->SetParticle("SpecialChange");
 
-	SetLifeTime(6.f);
+	SetLifeTime(0.5f);
 
 	return true;
 }

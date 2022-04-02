@@ -218,7 +218,7 @@ public :
 	void SetIsBeingHit();
 	void SetCameraFollowMaxTime(float Time);
 	void SetCameraFollowBossMonster(class CGameObject* Boss);
-private:
+public:
 	void SetAttackEnable(bool Enable);
 public:
 	virtual bool       Init() override;
@@ -348,7 +348,7 @@ private :
 	void UltimateAttack();
 	void PrepareSpecialAction(float PrepareTime);
 	void UndoSpecialAction();
-	void PrepareUltimateAction(float PrepareTime);
+	void PrepareUltimateAction(float BackGroundDestroyTime, float UIProceedTime);
 	void UndoUltimateAction();
 	void ChangeToIdleAfterAnimation(float DeltaTime);
 private :

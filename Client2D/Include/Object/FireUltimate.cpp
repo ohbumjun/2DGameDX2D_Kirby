@@ -6,6 +6,7 @@
 #include "Scene/Scene.h"
 #include "Scene/CameraManager.h"
 #include "Scene/SceneResource.h"
+#include "Player2D.h"
 
 CFireUltimate::CFireUltimate()  :
 	m_MoveStart(false)
@@ -56,6 +57,10 @@ void CFireUltimate::Update(float DeltaTime)
 	{
 		m_InitHideTime -= DeltaTime;
 
+		CPlayer2D* Player = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+		Player->SetAttackEnable(true);
+
 		return;
 	}
 
@@ -64,7 +69,7 @@ void CFireUltimate::Update(float DeltaTime)
 		m_MainSprite->GetMaterial()->SetOpacity(1.f);
 	}
 
-	if (m_MoveReadyTime < m_MoveStartTime || m_InitHideTime > 0.f ) //
+	if (m_MoveReadyTime < m_MoveStartTime || m_InitHideTime > 0.f ) 
 		return;
 
 	if (!m_MoveStart)
@@ -72,6 +77,10 @@ void CFireUltimate::Update(float DeltaTime)
 		m_MoveStart = true;
 
 		m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect(true);
+
+		CPlayer2D* Player = (CPlayer2D*)m_Scene->GetPlayerObject();
+
+		Player->SetAttackEnable(false);
 	}
 
 	CKirbyAttackEffect::Update(DeltaTime);

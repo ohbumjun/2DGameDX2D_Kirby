@@ -50,6 +50,7 @@ void CSceneMode::CreateMaterial()
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("SpecialChangeMaterial");
 	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
 	SpecialChangeParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SpecialChangeParticleTexture", TEXT("Particle/Sparks.png"));
+	// SpecialChangeParticleMaterial->AddTexture(0, (int)Buffer_Shader_Type::Pixel, "SpecialChangeParticleTexture", TEXT("Particle/HardRain.png"));
 	SpecialChangeParticleMaterial->SetShader("ParticleRenderShader");
 	SpecialChangeParticleMaterial->SetRenderState("AlphaBlend");
 
@@ -105,20 +106,20 @@ void CSceneMode::CreateParticle()
 	CParticle* SpecialChangeParticle = m_Scene->GetResource()->FindParticle("SpecialChange");
 	CMaterial* SpecialChangeParticleMaterial = m_Scene->GetResource()->FindMaterial("SpecialChangeMaterial");
 
-	SpecialChangeParticle->SetMaterial(ParticleMaterial);
-	SpecialChangeParticle->SetSpawnCountMax(100);
-	SpecialChangeParticle->SetScaleMin(Vector3(20.f, 20.f, 1.f));
-	SpecialChangeParticle->SetScaleMax(Vector3(50.f, 50.f, 1.f));
-	SpecialChangeParticle->SetSpeedMin(50.f);
-	SpecialChangeParticle->SetSpeedMax(400.f);
-	SpecialChangeParticle->SetLifeTimeMin(0.6f);
-	SpecialChangeParticle->SetLifeTimeMax(1.3f);
+	SpecialChangeParticle->SetMaterial(SpecialChangeParticleMaterial);
+	SpecialChangeParticle->SetSpawnCountMax(500);
+	SpecialChangeParticle->SetScaleMin(Vector3(10.f, 10.f, 1.f));
+	SpecialChangeParticle->SetScaleMax(Vector3(30.f, 30.f, 1.f));
+	SpecialChangeParticle->SetSpeedMin(700.f);
+	SpecialChangeParticle->SetSpeedMax(1200.f);
+	SpecialChangeParticle->SetLifeTimeMin(0.1f);
+	SpecialChangeParticle->SetLifeTimeMax(0.3f);
 	SpecialChangeParticle->SetMoveDir(Vector3(0.f, 1.f, 0.f));
-	SpecialChangeParticle->SetStartMin(Vector3(-200.f, 0.f, 0.f));
-	SpecialChangeParticle->SetStartMax(Vector3(200.f, 10.f, 0.f));
-	SpecialChangeParticle->SetColorMin(Vector4(0.6f, 0.8f, 1.0f, 1.f));
-	SpecialChangeParticle->SetColorMax(Vector4(0.1f, 0.1f, 1.0f, 1.f));
-	SpecialChangeParticle->SetMoveAngle(Vector3(0.f, 0.f, -50.f));
+	SpecialChangeParticle->SetStartMin(Vector3(-20.f, -50.f, 0.f));
+	SpecialChangeParticle->SetStartMax(Vector3(20.f, 0.f, 0.f));
+	SpecialChangeParticle->SetColorMin(Vector4(1.0f, 0.4f, 0.4f, 1.f));
+	SpecialChangeParticle->SetColorMax(Vector4(1.0f, 0.0f, 0.0f, 1.f));
+	SpecialChangeParticle->SetMoveAngle(Vector3(0.f, 0.f, -90.f));
 	// BubbleParticle->SetGravity(true);
 	SpecialChangeParticle->SetMove(true);
 
