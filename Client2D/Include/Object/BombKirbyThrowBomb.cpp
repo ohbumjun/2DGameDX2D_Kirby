@@ -47,7 +47,7 @@ bool CBombKirbyThrowBomb::Init()
 	m_Bomb->SetRelativePos(60.f, 0.f, 0.f);
 	m_Bomb->AddRelativeRotationZ(-70.f);
 	m_Bomb->SetWorldScale(80.f, 80.f, 1.f);
-	m_Bomb->SetPivot(0.5f, 0.5f, 0.f);
+	m_Bomb->SetPivot(0.5f, 0.5f, 0.f); //
 	m_Bomb->SetInheritRotZ(true);
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
