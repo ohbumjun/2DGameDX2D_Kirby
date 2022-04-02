@@ -104,6 +104,10 @@ private :
 	// ∏ÛΩ∫≈Õ ∏‘±‚
 	bool m_IsEatingMonster;
 	bool m_IsPulling;
+	float m_PullColliderXMaxScale;
+	float m_PullColliderXInitScale;
+	float m_PullColliderYMaxScale;
+	float m_PullColliderYInitScale;
 	float m_PullDistance;
 	class CMonster* m_PullingMonster;
 	class CEffectStar* m_PullingStar;

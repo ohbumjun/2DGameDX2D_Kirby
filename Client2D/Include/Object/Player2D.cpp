@@ -185,16 +185,20 @@ void CPlayer2D::Start()
 		m_PullRightCollider = CreateComponent<CColliderBox2D>("PullRightCollider");
 		m_PullRightCollider->SetCollisionProfile("Player");
 
-		m_PullRightCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 3.f) * 0.5f,
-			(m_KirbyState->GetWorldScale().y * 3.f));
+		m_PullRightCollider->SetExtend(100.f, 100.f);
 		m_KirbyState->AddChild(m_PullRightCollider);
 
 		// PullLeftCollider
 		m_PullLeftCollider = CreateComponent<CColliderBox2D>("PullLeftCollider");
 		m_PullLeftCollider->SetCollisionProfile("Player");
-		m_PullLeftCollider->SetExtend((m_PullDistance + m_Body->GetWorldScale().x * 3.f) * 0.5f,
-			(m_KirbyState->GetWorldScale().y * 3.f));
+		m_PullLeftCollider->SetExtend(100.f, 100.f);
 		m_KirbyState->AddChild(m_PullLeftCollider);
+
+		m_PullColliderXInitScale = 100.f;
+		m_PullColliderYInitScale = 100.f;
+
+		m_PullColliderXMaxScale = (m_PullDistance + m_Body->GetWorldScale().x * 3.f) * 0.8f;
+		m_PullColliderYMaxScale = (m_PullDistance + m_Body->GetWorldScale().y * 3.f) * 0.8f;
 	}
 
 	m_KirbyState->Start();
@@ -2710,6 +2714,20 @@ void CPlayer2D::PullRight(float DeltaTime)
 
 	m_PullRightCollider->Enable(true);
 
+	float XScale = m_PullRightCollider->GetInfo().Length.x;
+	float YScale = m_PullRightCollider->GetInfo().Length.y;
+
+	if (XScale < m_PullColliderXMaxScale)
+	{
+		XScale += DeltaTime * 300.f;
+	}
+	if (YScale < m_PullColliderYMaxScale)
+	{
+		YScale += DeltaTime * 300.f;
+	}
+
+	m_PullRightCollider->SetExtend(XScale, YScale);
+
 	m_IsPulling = true;
 
 	m_ObjectMoveDir.x = 1.f;
@@ -3625,6 +3643,8 @@ void CPlayer2D::PullRightEnd(float DeltaTime)
 		m_PullingMonster = nullptr;
 	}
 
+	m_PullRightCollider->SetExtend(m_PullColliderXInitScale, m_PullColliderYInitScale);
+
 	ChangePlayerIdleAnimation();
 
 	m_IsPulling = false;
@@ -3654,6 +3674,20 @@ void CPlayer2D::PullLeft(float DeltaTime)
 	// 충돌체의 크기를 늘려볼까 ?
 	m_PullLeftCollider->Enable(true);
 
+	float XScale = m_PullLeftCollider->GetInfo().Length.x;
+	float YScale = m_PullLeftCollider->GetInfo().Length.y;
+
+	if (XScale < m_PullColliderXMaxScale)
+	{
+		XScale += DeltaTime * 300.f;
+	}
+	if (YScale < m_PullColliderYMaxScale)
+	{
+		YScale += DeltaTime * 300.f;
+	}
+
+	m_PullLeftCollider->SetExtend(XScale, YScale);
+
 	m_IsPulling = true;
 
 	m_ObjectMoveDir.x = 1.f * -1;
@@ -3672,6 +3706,8 @@ void CPlayer2D::PullLeftEnd(float DeltaTime)
 		m_PullingMonster->ResetPulledInfo();
 		m_PullingMonster = nullptr;
 	}
+
+	m_PullLeftCollider->SetExtend(m_PullColliderXInitScale, m_PullColliderYInitScale);
 
 	ChangePlayerIdleAnimation();
 

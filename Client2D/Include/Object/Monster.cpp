@@ -20,8 +20,8 @@ CMonster::CMonster() :
 	m_IsBeingPulled(false),
 	m_IsDeathAfterPaperBurn(true),
 	m_IsBeingHit(false),
-	m_BeginPulledAccel(2.2f),
-	m_BeginPulledAccelSum(0.f),
+	m_BeginPulledAccel(3.2f),
+	m_BeginPulledAccelSum(200.f),
 	m_AttackDistance(150.f),
 	m_DashDistance(500.f),
 	m_MonsterMoveVelocity(100.f),
@@ -56,7 +56,7 @@ CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)
 	// Player 에게 끌어당겨지기
 	m_IsBeingPulled = false;
 	m_BeginPulledAccel = Monster.m_BeginPulledAccel;
-	m_BeginPulledAccelSum = 0.f;
+	m_BeginPulledAccelSum = 200.f;
 
 	// AI
 	m_AttackDistance = Monster.m_AttackDistance;
@@ -91,7 +91,7 @@ void CMonster::SetCurrentAnimation(const std::string& Name)
 
 void CMonster::ResetPulledInfo()
 {
-	m_BeginPulledAccelSum = 0.f;
+	m_BeginPulledAccelSum = 200.f;
 }
 
 void CMonster::Damage(float Damage)
