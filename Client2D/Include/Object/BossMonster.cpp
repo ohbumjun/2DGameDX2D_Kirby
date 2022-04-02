@@ -1,4 +1,6 @@
 #include "BossMonster.h"
+
+#include <Scene/CameraManager.h>
 #include <Scene/Scene.h>
 #include "Engine.h"
 #include "Player2D.h"
@@ -59,6 +61,8 @@ void CBossMonster::PaperBurnEndCallback()
 
 	m_Scene->SetBossWorldResolution(0.f, m_InitWorldResolution.y);
 
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect(true);
+
 	Destroy();
 }
 
@@ -93,6 +97,8 @@ void CBossMonster::MakeBossStartEffect()
 	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
 	m_Scene->SetBossWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	m_StartBossStage = true;
 

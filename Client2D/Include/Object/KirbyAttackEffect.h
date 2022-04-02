@@ -30,6 +30,15 @@ protected:
     {
         return m_MainSprite;
     }
+protected:
+    void SetAttackObjectSpeed(float Speed)
+    {
+        m_AttackObjectSpeed = Speed;
+    }
+    void SetAttackObjectMaxSpeed(float Speed)
+    {
+        m_AttackDistLimitMax = Speed;
+    }
     void SetDestroyWhenCollide(bool Enable)
     {
         m_DestroyWhenCollide = Enable;

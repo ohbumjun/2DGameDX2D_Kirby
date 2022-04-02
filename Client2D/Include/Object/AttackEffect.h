@@ -63,6 +63,10 @@ public :
 {
 		m_BottomCollisionApplied = Enable;
 }
+	void SetSideCollisionEnable(bool Enable)
+	{
+		m_SideCollisionApplied = Enable;
+	}
 protected :
 	virtual void BottomCollisionSpecificAction();
 	virtual void SideCollisionSpecificAction();

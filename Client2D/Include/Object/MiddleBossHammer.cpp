@@ -78,6 +78,7 @@ void CMiddleBossHammer::Start()
 		&CMonster::ChangeIdleAnimation);
 		*/
 
+
 	m_InitMoveVelocity = m_MonsterMoveVelocity;
 
 	m_InitJumpAccel = m_JumpAccel;

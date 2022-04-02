@@ -201,14 +201,14 @@ void CExcel::LoadExcel()
 void CExcel::EditExcel()
 {
     /*
-    m_MapMonsterStats[L"Pig"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"Chicken"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"YellowBird"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"Frog"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"MushRoom"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"Kabu"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"PurpleBeatle"]->m_AttackDist = 80.f;
-    m_MapMonsterStats[L"NormalBear"]->m_AttackDist = 80.f;
+    m_MapMonsterStats[L"Sword"]->m_HP = 300.f;
+    m_MapMonsterStats[L"BossTree"]->m_AttackDist = 900.f;
+    m_MapMonsterStats[L"BossTree"]->m_HP = 5000.f;
+    m_MapMonsterStats[L"Sword"]->m_DashDist = 700.f;
+    m_MapMonsterStats[L"BossHammer"]->m_MoveVelocity = 150.f;
+    m_MapMonsterStats[L"Fire"]->m_AttackAbility = 150.f;
+    m_MapMonsterStats[L"BossTree"]->m_AttackAbility = 50.f;
+    m_MapMonsterStats[L"BossHammer"]->m_AttackAbility = 50.f;
     */
 }
 

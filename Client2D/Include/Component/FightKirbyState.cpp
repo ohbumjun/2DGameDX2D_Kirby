@@ -6,6 +6,7 @@
 #include "Animation/AnimationSequence2DInstance.h"
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
+#include "Engine.h"
 
 CFightKirbyState::CFightKirbyState() :
 	m_GoUpTimeMax(0.4f),
@@ -303,7 +304,71 @@ void CFightKirbyState::SpecialAttack()
 }
 
 void CFightKirbyState::UltimateAttack()
-{}
+{
+	float XLeftEnd = -1.f, XRightEnd = -1.f;
+
+	float XDiffStep = -1.f, YDiffStep = -1.f;
+
+	float YStart = -1.f, YEnd = -1.f;
+
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
+	XLeftEnd = GetWorldPos().x - (float)RS.Width * 0.55f;
+	// 오른쪽 끝보다 훨씬 더 
+	XRightEnd = GetWorldPos().x + (float)RS.Width * 0.55f;
+
+	XDiffStep = (XRightEnd - XLeftEnd) * 0.1f; // 20로 나눈다.
+
+	YStart = m_Player->GetWorldPos().y + (float)RS.Height * 7.0f;
+	YEnd = m_Player->GetWorldPos().y + (float)RS.Height * 1.0f;
+
+	YDiffStep = (YStart - YEnd) * 0.05f; // 20로 나눈다.
+
+	for (int row = 0; row < 20; row++)
+	{
+		for (int col = 0; col < 10; col++)
+		{
+			float LittleDiff = ((float)rand() / (float)RAND_MAX) * 1000.f;
+
+			bool DiffDir = col & 1 ? -1.f : 1.f;
+
+			CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack");
+
+			AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
+
+			AttackEffect->SetWorldPos(XLeftEnd + XDiffStep * col + (LittleDiff * DiffDir),
+				YEnd + YDiffStep * row + (LittleDiff * DiffDir),
+				GetWorldPos().z);
+
+			AttackEffect->SetAttackObjectSpeed(5000.f);
+
+			AttackEffect->SetAttackObjectMaxSpeed(6000.f);
+
+			AttackEffect->SetKirbyOwner(this);
+
+			AttackEffect->SetBottomCollisionEnable(false);
+
+			AttackEffect->SetSideCollisionEnable(false);
+
+			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+
+			// AttackEffect->AddRelativeRotationZ(-40.f);
+
+			// 왼쪽을 보고 있었다면
+			if (m_Player->GetObjectMoveDir().x < 0.f)
+			{
+				AttackEffect->SetLeftAttackDir(-1.f);
+			}
+			// 오른쪽으로 보고 있었다면
+			else
+			{
+				AttackEffect->SetRightAttackDir(-1.f);
+			}
+
+			AttackEffect->SetAttackDirX(0.f);
+		}
+	}
+}
 
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {

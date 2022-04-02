@@ -130,7 +130,45 @@ void CSwordKirbyState::SpecialAttack()
 }
 
 void CSwordKirbyState::UltimateAttack()
-{}
+{
+	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
+
+	float YPosStart = m_Player->GetWorldPos().y + 510.f;
+
+	for (int i = 1; i <= 5; i++)
+	{
+		CSwordBoomerang* AttackEffect = m_Scene->CreateGameObject<CSwordBoomerang>("Attack1");
+
+		float YPos = YPosStart - (i * 1) * 170.f;
+
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+
+		if (PlayerMoveDir.x < 0.f)
+		{
+			AttackEffect->SetAttackDir(-1.f);
+
+			float XPos = GetWorldPos().x - ((float)rand() / (float)RAND_MAX) * 500.f;
+
+			AttackEffect->SetWorldPos(XPos, YPos, GetWorldPos().z);
+		}
+		else
+		{
+			AttackEffect->SetAttackDir(1.f);
+
+			float XPos = GetWorldPos().x + ((float)rand() / (float)RAND_MAX) * 500.f;
+
+			AttackEffect->SetWorldPos(XPos, YPos, GetWorldPos().z);
+		}
+	}
+
+	m_Player->SetAttackEnable(false);
+
+	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
+	m_Player->ChangePlayerIdleAnimation();
+
+	// 다시 원래의 Size 로 세팅하기 
+	SetWorldScale(80.f, 100.f, 1.f);
+}
 
 void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 {

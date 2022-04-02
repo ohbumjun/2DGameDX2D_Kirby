@@ -1,9 +1,9 @@
-#include "CameraComponent.h"
+ï»¿#include "CameraComponent.h"
 #include "../Engine.h"
 #include "../Scene/Scene.h"
 #include "../GameObject/LifeObject.h"
 
-CCameraComponent::CCameraComponent()  :
+CCameraComponent::CCameraComponent() :
 	m_AdjustRatio(true),
 	m_FollowPlayer(false),
 	m_FollowTarget(false),
@@ -13,7 +13,6 @@ CCameraComponent::CCameraComponent()  :
 	// m_CameraShakeTimeMax(0.1f),
 	m_CameraShakeTimeMax(0.5f),
 	m_IsCameraShake(false)
-
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -30,12 +29,12 @@ CCameraComponent::CCameraComponent()  :
 CCameraComponent::CCameraComponent(const CCameraComponent& Camera)
 {
 	m_CameraType = Camera.m_CameraType;
-	m_ViewAngle    = Camera.m_ViewAngle;
-	m_Distance      = Camera.m_Distance;
-	m_matView      = Camera.m_matView;
-	m_matProj       = Camera.m_matProj;
-	m_RS              = Camera.m_RS;
-	m_Ratio           = Camera.m_Ratio;
+	m_ViewAngle = Camera.m_ViewAngle;
+	m_Distance = Camera.m_Distance;
+	m_matView = Camera.m_matView;
+	m_matProj = Camera.m_matProj;
+	m_RS = Camera.m_RS;
+	m_Ratio = Camera.m_Ratio;
 }
 
 CCameraComponent::~CCameraComponent()
@@ -45,21 +44,20 @@ Matrix CCameraComponent::GetRatioViewMatrix(float ScrollRatio)
 {
 	Matrix matView = m_matView;
 
-	// View Transform ÁøÇàÇÏ±â
-	// basis¸¦ ¼¼ÆÃÇÏ±â À§ÇØ, ´ÜÀ§ Çà·Ä·Î ¸¸µé¾îÁØ´Ù.
+	// View Transform ì§„í–‰í•˜ê¸°
+	// basisë¥¼ ì„¸íŒ…í•˜ê¸° ìœ„í•´, ë‹¨ìœ„ í–‰ë ¬ë¡œ ë§Œë“¤ì–´ì¤€ë‹¤.
 	matView.Identity();
 
-	// °¢ Row¸¦ ÇàÀ¸·Î ÇÏ´Â Çà·Ä ÀÛ¼º
+	// ê° Rowë¥¼ í–‰ìœ¼ë¡œ í•˜ëŠ” í–‰ë ¬ ì‘ì„±
 	for (int i = 0; i < AXIS_MAX; i++)
 	{
 		Vector3 Axis = GetWorldAxis((AXIS)i);
 		memcpy(&matView[i][0], &Axis, sizeof(Vector3));
 	}
 
-	// Transpose ½ÃÄÑÁÖ±â
 	matView.Transpose();
 
-	// ÀÌµ¿Çà·Ä ±îÁö Àû¿ë = ¸¶Áö¸· Çà ÀÛ¼º == °¢ Ãà°ú ÇöÀç À§Ä¡ÀÇ ³»Àû ÇüÅÂ
+	// ì´ë™í–‰ë ¬ ê¹Œì§€ ì ìš© = ë§ˆì§€ë§‰ í–‰ ì‘ì„± == ê° ì¶•ê³¼ í˜„ì¬ ìœ„ì¹˜ì˜ ë‚´ì  í˜•íƒœ
 	// Vector3 Pos = GetWorldPos() * ScrollRatio * -1.f;
 	Vector3 Pos = Vector3(GetWorldPos().x * -1.f * ScrollRatio, GetWorldPos().y * -1.f * ScrollRatio, GetWorldPos().z * -1.f);
 
@@ -72,60 +70,6 @@ Matrix CCameraComponent::GetRatioViewMatrix(float ScrollRatio)
 	return matView;
 }
 
-void CCameraComponent::ApplyShakeEffect(bool HardShake)
-{
-	m_IsCameraShake = true;
-	m_CameraShakeTime = m_CameraShakeTimeMax;
-
-	if (HardShake)
-	{
-		m_CameraShakeTime *= 2.f;
-	}
-}
-
-void CCameraComponent::ApplyWeakShakeEffect()
-{
-	m_IsCameraShake = true;
-	m_CameraShakeTime = m_CameraShakeTimeMax * 0.5f;
-}
-
-void CCameraComponent::UpdateShakeEffect(float DeltaTime)
-{
-	if (!m_IsCameraShake)
-		return;
-
-	m_CameraShakeTime -= DeltaTime;
-
-	m_CameraShakePassTime += DeltaTime;
-
-	if (m_CameraShakePassTime >= m_CameraShakeTime * 0.1f)
-	{
-		if (m_ShakeRight)
-			m_ShakeRight = false;
-		else
-			m_ShakeRight = true;
-
-		m_CameraShakePassTime = 0.f;
-	}
-
-	if (m_ShakeRight)
-	{
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 700.f);
-	}
-	else
-	{
-		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 700.f);
-	}
-
-
-	if (m_CameraShakeTime < 0.f)
-	{
-		m_IsCameraShake = false;
-
-		// SetInheritParentWorldPosChange(true);
-	}
-}
-
 void CCameraComponent::CreateProjectionMatrix()
 {
 	switch (m_CameraType)
@@ -134,7 +78,7 @@ void CCameraComponent::CreateProjectionMatrix()
 		m_matProj = XMMatrixOrthographicOffCenterLH(0.f, (float)m_RS.Width, 0.f, (float)m_RS.Height, 0.f, 1000.f);
 		break;
 	case Camera_Type::Camera3D:
-		m_matProj = XMMatrixPerspectiveFovLH(DegreeToRadian(m_ViewAngle * 1.8),
+		m_matProj = XMMatrixPerspectiveFovLH(DegreeToRadian(m_ViewAngle),
 			m_RS.Width / (float)m_RS.Height, 0.1f, m_Distance);
 		break;
 	case Camera_Type::CameraUI:
@@ -202,7 +146,7 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 
 void CCameraComponent::AdjustCameraPosToRatio()
 {
-	// ÇöÀç Player¸¦ µû¶ó°¡°í ÀÖ´Â ÁßÀÌ¶ó¸é X
+	// í˜„ì¬ Playerë¥¼ ë”°ë¼ê°€ê³  ìˆëŠ” ì¤‘ì´ë¼ë©´ X
 	if (m_FollowPlayer)
 		return;
 
@@ -212,7 +156,7 @@ void CCameraComponent::AdjustCameraPosToRatio()
 	if (!m_AdjustRatio)
 		return;
 
-	// Player°¡ Is Ground È¤Àº Side Collision ÀÏ¶§´Â ºñÀ² Á¶Á¤ X
+	// Playerê°€ Is Ground í˜¹ì€ Side Collision ì¼ë•ŒëŠ” ë¹„ìœ¨ ì¡°ì • X
 	if (GetGameObject() == m_Scene->GetPlayerObject())
 	{
 		CLifeObject* OwnerObject = (CLifeObject*)GetGameObject();
@@ -221,7 +165,7 @@ void CCameraComponent::AdjustCameraPosToRatio()
 			return;
 	}
 
-	// ÀÚ±â ¹üÀ§¿¡ µµ´ŞÇÒ ¶§±îÁö ¿©±â¼­ ±â´Ù¸®°Ô ÇØ¾ß ÇÑ´Ù .. ?
+	// Playerê°€ Is Ground í˜¹ì€ Side Collision ì¼ë•ŒëŠ” ë¹„ìœ¨ ì¡°ì • X
 	Resolution RS = CEngine::GetInst()->GetResolution();
 
 	Vector3 CurRelativePos = GetRelativePos();
@@ -239,31 +183,31 @@ void CCameraComponent::AdjustCameraPosToRatio()
 		return;
 		*/
 
-		// ¿À¸¥ÂÊ °æ°è¿¡ °É¸®¸é RelativeX ´Â ´õ - °¡ µÈ´Ù.
-		// ¿À¸¥ÂÊ °æ°è¿¡ ¸·Çû´ø »óÈ² --> ÀÌÀüº¸´Ù ¿ŞÂÊÀ¸·Î ¿Â »óÈ²
-		// ¿ŞÂÊÀ¸·Î ¿Â ¸¸Å­, ±âÁ¸ RelativeX °ª¿¡ + ÇØÁØ´Ù.
+	// ì˜¤ë¥¸ìª½ ê²½ê³„ì— ê±¸ë¦¬ë©´ RelativeX ëŠ” ë” - ê°€ ëœë‹¤.
+	// ì˜¤ë¥¸ìª½ ê²½ê³„ì— ë§‰í˜”ë˜ ìƒí™© --> ì´ì „ë³´ë‹¤ ì™¼ìª½ìœ¼ë¡œ ì˜¨ ìƒí™©
+	// ì™¼ìª½ìœ¼ë¡œ ì˜¨ ë§Œí¼, ê¸°ì¡´ RelativeX ê°’ì— + í•´ì¤€ë‹¤.
 	if (CurRelativePos.x < m_RS.Width * m_Ratio.x * -1.f - m_RatioAdjustOffSet)
 	{
 		NewRelativePos.x = m_PrevRelativePos.x + WorldPosDiff;
 	}
-	// ¿ŞÂÊ °æ°è¿¡ °É¸®¸é ReleativeX ´Â ´õ + °¡ µÈ´Ù ( ´ú - °¡ µÈ´Ù. )
-	// ¿ŞÂÊ °æ°è¿¡ ¸·Çû´ø »óÈ² --> ÀÌÀüº¸´Ù ¿À¸¥ÂÊÀ¸·Î ¿Â »óÈ²
-	// ¿À¸¥ÂÊÀ¸·Î ¿Â¸¸Å­ ±âÁ¸ RelativeX °ª¿¡ - ÇØÁØ´Ù.
+	// ì™¼ìª½ ê²½ê³„ì— ê±¸ë¦¬ë©´ ReleativeX ëŠ” ë” + ê°€ ëœë‹¤ ( ëœ - ê°€ ëœë‹¤. )
+	// ì™¼ìª½ ê²½ê³„ì— ë§‰í˜”ë˜ ìƒí™© --> ì´ì „ë³´ë‹¤ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì˜¨ ìƒí™©
+	// ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì˜¨ë§Œí¼ ê¸°ì¡´ RelativeX ê°’ì— - í•´ì¤€ë‹¤.
 	else if (CurRelativePos.x > m_RS.Width * m_Ratio.x * -1.f + m_RatioAdjustOffSet)
 	{
 		NewRelativePos.x = m_PrevRelativePos.x - WorldPosDiff;
 	}
 
-	// À§ÂÊ °æ°è¿¡ °É¸®¸é, ReleativeY´Â ´õ - °¡ µÈ´Ù
-	// À§ÂÊ °æ°è¿¡ ¸·Çû´ø »óÈ² --> ÀÌÀüº¸´Ù ¾Æ·¡·Î ¿Â »óÈ²
-	// ¾Æ·¡·Î ¿Â ¸¸Å­, ±âÁ¸ RelativeY °ª¿¡ + ÇØÁØ´Ù.
+	// ìœ„ìª½ ê²½ê³„ì— ê±¸ë¦¬ë©´, ReleativeYëŠ” ë” - ê°€ ëœë‹¤
+	// ìœ„ìª½ ê²½ê³„ì— ë§‰í˜”ë˜ ìƒí™© --> ì´ì „ë³´ë‹¤ ì•„ë˜ë¡œ ì˜¨ ìƒí™©
+	// ì•„ë˜ë¡œ ì˜¨ ë§Œí¼, ê¸°ì¡´ RelativeY ê°’ì— + í•´ì¤€ë‹¤.
 	if (CurRelativePos.y < m_RS.Height * m_Ratio.y * -1.f - m_RatioAdjustOffSet)
 	{
 		NewRelativePos.y = m_PrevRelativePos.y + WorldPosDiff;
 	}
-	// ¾Æ·¡ÂÊ °æ°è¿¡ °É¸®¸é RelativeY ´Â ´õ + °¡ µÈ´Ù ( ´ú + °¡ µÈ´Ù. )
-	// ¾Æ·¡ÂÊ °æ°è¿¡ ¸·Çû´ø »óÈ² --> ÀÌÀüº¸´Ù À§·Î ¿Â »óÈ²
-	// À§·Î ¿Â ¸¸Å­, ±âÁ¸ RelativeY °ª¿¡ - ÇØÁØ´Ù.
+	// ì•„ë˜ìª½ ê²½ê³„ì— ê±¸ë¦¬ë©´ RelativeY ëŠ” ë” + ê°€ ëœë‹¤ ( ëœ + ê°€ ëœë‹¤. )
+	// ì•„ë˜ìª½ ê²½ê³„ì— ë§‰í˜”ë˜ ìƒí™© --> ì´ì „ë³´ë‹¤ ìœ„ë¡œ ì˜¨ ìƒí™©
+	// ìœ„ë¡œ ì˜¨ ë§Œí¼, ê¸°ì¡´ RelativeY ê°’ì— - í•´ì¤€ë‹¤.
 	else if (CurRelativePos.y > m_RS.Height * m_Ratio.y * -1.f + m_RatioAdjustOffSet)
 	{
 		NewRelativePos.y = m_PrevRelativePos.y - WorldPosDiff;
@@ -315,7 +259,6 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 {
 	if (m_FollowTarget && m_FollowTargetBoss)
 	{
-		// Vector3  TargetWorldPos = Vector3(m_FollowTargetBoss->GetWorldPos().x + 00.f, m_FollowTargetBoss->GetWorldPos().y + 500.f, 0.f);
 		Vector3  TargetWorldPos = m_FollowTargetBoss->GetWorldPos();
 
 		Resolution RS = CEngine::GetInst()->GetResolution();
@@ -346,7 +289,7 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 			}
 			else
 			{
-				// ´Ù½Ã Player·Î µ¹¾Æ°¡°Ô ¼¼ÆÃÇÑ´Ù.
+				// ï¿½Ù½ï¿½ Playerï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 				m_FollowTargetTime = m_FollowTargetTimeMax;
 
 				m_FollowTargetBoss = nullptr;
@@ -354,7 +297,7 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 
 				m_FollowPlayer = true;
 
-				// ±×¸®°í ÀÌÁ¦´Â BossHUD¸¦ º¸ÀÌ°Ô ¼¼ÆÃÇÑ´Ù.
+				// ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ BossHUDï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 				m_Scene->GetViewPort()->StartBossHUDCallback();
 			}
 		}
@@ -415,7 +358,7 @@ void CCameraComponent::Update(float DeltaTime)
 		AdjustCameraPosToRatio();
 	}
 
-	// Camera ¹üÀ§ Á¦ÇÑÀ» 2¹ø ÇÑ´Ù.
+	// Camera ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½Ñ´ï¿½.
 	LimitCameraAreaInsideWorld();
 
 	FollowPlayerPos(DeltaTime);
@@ -423,8 +366,6 @@ void CCameraComponent::Update(float DeltaTime)
 	FollowTarget(DeltaTime);
 
 	UpdateShakeEffect(DeltaTime);
-
-	SetWorldPos(GetWorldPos().x, GetWorldPos().y, -50.f);
 }
 
 void CCameraComponent::PostUpdate(float DeltaTime)
@@ -451,10 +392,65 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 	}
 
 	m_PrevRelativePos = GetRelativePos();
-	m_PrevWorldPos    = GetWorldPos();
+	m_PrevWorldPos = GetWorldPos();
 }
 
 CCameraComponent* CCameraComponent::Clone()
 {
 	return new CCameraComponent(*this);
+}
+
+
+void CCameraComponent::ApplyShakeEffect(bool HardShake)
+{
+	m_IsCameraShake = true;
+	m_CameraShakeTime = m_CameraShakeTimeMax;
+
+	if (HardShake)
+	{
+		m_CameraShakeTime *= 2.f;
+	}
+}
+
+void CCameraComponent::ApplyWeakShakeEffect()
+{
+	m_IsCameraShake = true;
+	m_CameraShakeTime = m_CameraShakeTimeMax * 0.5f;
+}
+
+void CCameraComponent::UpdateShakeEffect(float DeltaTime)
+{
+	if (!m_IsCameraShake)
+		return;
+
+	m_CameraShakeTime -= DeltaTime;
+
+	m_CameraShakePassTime += DeltaTime;
+
+	if (m_CameraShakePassTime >= m_CameraShakeTime * 0.1f)
+	{
+		if (m_ShakeRight)
+			m_ShakeRight = false;
+		else
+			m_ShakeRight = true;
+
+		m_CameraShakePassTime = 0.f;
+	}
+
+	if (m_ShakeRight)
+	{
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 700.f);
+	}
+	else
+	{
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 700.f);
+	}
+
+
+	if (m_CameraShakeTime < 0.f)
+	{
+		m_IsCameraShake = false;
+
+		// SetInheritParentWorldPosChange(true);
+	}
 }

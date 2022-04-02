@@ -43,6 +43,8 @@ void CSwordMonster::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(this, &CSwordMonster::Attack);
 
 	m_IsAttacking = false;
+
+	SetWorldPos(GetWorldPos().x, GetWorldPos().y, 0.f);
 }
 
 bool CSwordMonster::Init()
