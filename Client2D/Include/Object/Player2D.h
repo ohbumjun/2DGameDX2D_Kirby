@@ -232,6 +232,9 @@ public:
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;
+private :
+	// Resolution
+	void CheckWithinBossWorldResolution();
 private:
 	// Move 
 	void MoveUp(float DeltaTime);

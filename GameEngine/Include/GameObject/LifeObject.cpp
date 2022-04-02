@@ -585,7 +585,7 @@ void CLifeObject::CheckSideCollision()
 
 						SetWorldPos(m_Pos);
 
-						// 여기는 YPos도 같이 처리해준다 ( Bottom Collision
+						// 여기는 YPos도 같이 처리해준다 ( Bottom Collision )
 
 						break;
 					}
@@ -633,6 +633,7 @@ void CLifeObject::CheckOutsideWorldResolution()
 		OriginalPos.x = WorldResolution.x - WorldScale.x * Pivot.x - m_CollisionOffset;
 		SetWorldPos(OriginalPos);
 	}
+	
 }
 
 void CLifeObject::UpdateGameDelayTime(float DeltaTime)

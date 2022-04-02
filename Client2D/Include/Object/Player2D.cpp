@@ -356,6 +356,8 @@ void CPlayer2D::Update(float DeltaTime)
 
 	CheckIsSwimming();
 
+	CheckWithinBossWorldResolution();
+
 	UpdateBeingHit(DeltaTime);
 
 	UpdateAttackTime(DeltaTime);
@@ -434,6 +436,27 @@ void CPlayer2D::SetCameraFollowMaxTime(float Time)
 void CPlayer2D::SetAttackEnable(bool Enable)
 {
 	m_IsAttacking = Enable;
+}
+
+void CPlayer2D::CheckWithinBossWorldResolution()
+{
+	if (m_Scene->GetBossWorldResolution().x > 0.f)
+	{
+		float RightPosX = GetWorldPos().x + GetWorldScale().x * GetPivot().x;
+
+		if (RightPosX >= m_Scene->GetBossWorldResolution().x)
+		{
+			SetWorldPos(m_Scene->GetBossWorldResolution().x - GetWorldScale().x * GetPivot().x - 0.001f,
+				GetWorldPos().y, GetWorldPos().z);
+		}
+
+		float LeftPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+
+		if (LeftPosX <= 0.f)
+		{
+			SetWorldPos(0.001f, GetWorldPos().y, GetWorldPos().z);
+		}
+	}
 }
 
 void CPlayer2D::MoveUp(float DeltaTime)

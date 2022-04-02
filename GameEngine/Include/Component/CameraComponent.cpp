@@ -97,6 +97,8 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 	// Limit Area
 	Vector2 WorldRS = m_Scene->GetWorldResolution();
 
+	Vector2 BossWorldResolution = m_Scene->GetBossWorldResolution();
+
 	Resolution RS = CEngine::GetInst()->GetResolution();
 
 	Vector3 CameraOriginPos = GetWorldPos();
@@ -139,6 +141,19 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 		SetWorldPos(CameraOriginPos);
 
 		Outside = true;
+	}
+
+	// Boss World Resolution 고려하기
+	if (m_Scene->GetBossWorldResolution().x > 0.f)
+	{
+		if (CameraOriginPos.x + RS.Width >= m_Scene->GetBossWorldResolution().x)
+		{
+			CameraOriginPos.x = m_Scene->GetBossWorldResolution().x - RS.Width - 0.0001f;
+
+			SetWorldPos(CameraOriginPos);
+
+			Outside = true;
+		}
 	}
 
 	return Outside;

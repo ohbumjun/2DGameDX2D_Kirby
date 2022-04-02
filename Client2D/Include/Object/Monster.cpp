@@ -787,7 +787,7 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 
 					float CurYPos = GetWorldPos().y;
 
-					float NYPos = Tile->GetWorldPos().y - Tile->GetSize().y * 2;
+					float NYPos = Tile->GetWorldPos().y - Tile->GetSize().y * 2.f;
 
 					SetWorldPos(GetWorldPos().x, NYPos - 0.01f, GetWorldPos().z);
 
@@ -800,13 +800,13 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 
 void CMonster::CheckWithinBossWorldResolution()
 {
+	// Boss Monster 가 세팅하지 않았다면
+// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 ).
 	if (m_Scene->GetBossWorldResolution().x > 0.f)
 	{
-		if (m_MonsterType == Monster_Type::Boss)
+		if (m_MonsterType == Monster_Type::Boss) // 
 		{
-			// Boss Monster 가 세팅하지 않았다면
-		// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 )
-			float RightPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+			float RightPosX = GetWorldPos().x + GetWorldScale().x * GetPivot().x;
 
 			if (RightPosX >= m_Scene->GetBossWorldResolution().x)
 			{
@@ -816,8 +816,6 @@ void CMonster::CheckWithinBossWorldResolution()
 		}
 		else
 		{
-			// Boss Monster 가 세팅하지 않았다면
-		// Boss Resolution 의 x 값은 0일 것이다 ( 기본값 )
 			float LeftPosX = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
 
 			if (LeftPosX <= m_Scene->GetBossWorldResolution().x)

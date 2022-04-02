@@ -94,7 +94,7 @@ void CBossMonster::MakeBossStartEffect()
 		WorldRightEnd = m_Scene->GetWorldResolution().x;
 	}
 
-	m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
+	// m_Scene->SetWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
 	m_Scene->SetBossWorldResolution(WorldRightEnd, m_Scene->GetWorldResolution().y);
 
