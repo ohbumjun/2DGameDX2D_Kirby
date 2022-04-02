@@ -7,6 +7,7 @@
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
 #include "../Object/BeamUltimate.h"
+#include "../Object/BombUltimate.h"
 
 CBeamKirbyState::CBeamKirbyState() :
 	m_GoUpTimeMax(1.5f),

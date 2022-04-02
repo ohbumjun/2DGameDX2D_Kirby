@@ -7,6 +7,7 @@
 #include "../Object/Player2D.h"
 #include "../Object/KirbyAttackEffect.h"
 #include "../Object/BombKirbyThrowBomb.h"
+#include "../Object/BombUltimate.h"
 
 CBombKirbyState::CBombKirbyState() :
 	m_GoUpTimeMax(0.4f),
@@ -196,7 +197,32 @@ void CBombKirbyState::SpecialAttack()
 }
 
 void CBombKirbyState::UltimateAttack()
-{}
+{
+	CBombUltimate* AttackEffect = m_Scene->CreateGameObject<CBombUltimate>("Attack");
+
+	if (m_Player->GetObjectMoveDir().x < 0.f)
+	{
+		AttackEffect->SetLeftAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x - 300.f, GetWorldPos().y + 700.f, 0.f);
+	}
+	else
+	{
+		AttackEffect->SetRightAttackDir(-1.f);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x + 300.f, GetWorldPos().y + 700.f, 0.f);
+	}
+
+	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 5);
+
+	AttackEffect->SetAttackDirX(0.f);
+
+	AttackEffect->SetKirbyOwner(this);
+
+	AttackEffect->GetColliderBody()->Enable(false);
+
+	AttackEffect->ApplyCameraMove();
+}
 
 void CBombKirbyState::MakeFallDownBomb()
 {
@@ -379,6 +405,8 @@ void CBombKirbyState::NormalAttackCallback()
 
 		AttackEffect->ApplyJumpEffect();
 
+		AttackEffect->SetJumpVelocity(40.f + ((float)rand() / (float)(RAND_MAX)) * 30.f);
+
 		AttackEffect->SetKirbyOwner(this);
 	}
 	// 오른쪽으로 보고 있다면 
@@ -395,6 +423,8 @@ void CBombKirbyState::NormalAttackCallback()
 		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
 
 		AttackEffect->ApplyJumpEffect();
+
+		AttackEffect->SetJumpVelocity(40.f + ((float)rand() / (float)(RAND_MAX)) * 30.f);
 
 		AttackEffect->SetKirbyOwner(this);
 	}
