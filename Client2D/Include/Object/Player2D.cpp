@@ -22,6 +22,7 @@
 #include "Bullet.h"
 #include "BulletTornaido.h"
 #include "Player2D.h"
+#include "PlayerClone.h"
 #include "AbilityMonster.h"
 #include "EffectDash.h"
 #include "EffectSpitOut.h"
@@ -45,7 +46,7 @@ CPlayer2D::CPlayer2D() :
 	m_DashMoveAccel(2.0f),
 	m_DashVelocity(0.f), 
 	m_DashMaxMoveVelocity(170.f),
-	m_SlideAttackSpeedMax(700.f),
+	m_SlideAttackSpeedMax(1000.f),
 	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_SlideAttackEffectToggleTime(0.1f),
@@ -759,6 +760,8 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 
 			m_MoveDashEffectMade = true;
 
+			MakePlayerCloneEffect();
+
 			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
 		}
 	}
@@ -973,6 +976,8 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 			EffectDash->SetDirGoRight(false);
 
 			m_MoveDashEffectMade = true;
+
+			MakePlayerCloneEffect();
 
 			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
 		}
@@ -1729,54 +1734,9 @@ void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 
 		if (m_SlideAttackEffectCurTime >= m_SlideAttackEffectToggleTime)
 		{
-			// 현재 Animation 의 Time 을 알아낸다
-			float CurrentFrameTime = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrameTime();
+			MakePlayerCloneEffect();
 
-			CKirbyState* KirbyState = nullptr;
-
-			if (!m_IsSpecialStateChanged)
-			{
-				KirbyState = CreateComponent<CNormalKirbyState>("BeamKirbyState");
-			}
-			else
-			{
-				switch (m_SpecialAbilityState)
-				{
-					case Ability_State::Beam:
-					{
-						KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
-					}
-					break;
-					case Ability_State::Fire:
-					{
-						KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
-					}
-					break;
-					case Ability_State::Fight:
-					{
-						KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
-					}
-					break;
-					case Ability_State::Bomb:
-					{
-						KirbyState = CreateComponent<CBombKirbyState>("BombKirbyState");
-					}
-					break;
-					case Ability_State::Sword:
-					{
-						KirbyState = CreateComponent<CSwordKirbyState>("SwordKirbyState");
-					}
-					break;
-				}
-			}
-
-			KirbyState->SetWorldScale(m_KirbyState->GetWorldScale());
-
-			KirbyState->GetAnimationInstance()->ChangeAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
-
-			KirbyState->GetAnimationInstance()->GetCurrentAnimation()->SetCurrentFrameTime(CurrentFrameTime);
-
-			// KirbyState->SetLifeTime(0.2f);
+			m_SlideAttackEffectCurTime -= m_SlideAttackEffectToggleTime;
 		}
 
 		if (m_SlideAttackTime <= 0.f)
@@ -3171,6 +3131,12 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (m_IsLadderGoingUp)
 		return;
 
+	if (m_IsPulling)
+		return;
+
+	if (m_IsChanging)
+		return;
+
 	m_IsAttacking = true;
 
 	if (m_IsSwimming)
@@ -3271,6 +3237,43 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 	m_SlideAttackSpeed = m_SlideAttackSpeedMax;
 
 	ChangePlayerSlideAttackAnimation();
+}
+
+void CPlayer2D::MakePlayerCloneEffect()
+{
+	// 현재 Animation 의 Time 을 알아낸다
+	float CurrentFrameTime = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrameTime();
+
+	CPlayerClone* KirbyClone = m_Scene->CreateGameObject<CPlayerClone>("KirbyClone");
+
+	if (m_IsSpecialStateChanged)
+	{
+		KirbyClone->SetKirbyState(m_SpecialAbilityState);
+	}
+
+	KirbyClone->SetWorldScale(m_KirbyState->GetWorldScale());
+
+	KirbyClone->GetAnimationInstance()->ChangeAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
+
+	KirbyClone->GetAnimationInstance()->GetCurrentAnimation()->SetCurrentFrameTime(CurrentFrameTime);
+
+	KirbyClone->SetLifeTime(0.2f);
+
+	KirbyClone->SetObjectMoveSpeed(m_SlideAttackSpeed - 50.f);
+
+	KirbyClone->SetObjectMoveDir(m_ObjectMoveDir.x);
+
+	KirbyClone->SetOpacityDecreaseTime(0.2f);
+	
+
+	if (m_ObjectMoveDir.x < 0.f)
+	{
+		KirbyClone->SetWorldPos(GetWorldPos().x + 20.f, GetWorldPos().y, GetWorldPos().z);
+	}
+	else
+	{
+		KirbyClone->SetWorldPos(GetWorldPos().x - 20.f, GetWorldPos().y, GetWorldPos().z);
+	}
 }
 
 void CPlayer2D::SpecialAttack()

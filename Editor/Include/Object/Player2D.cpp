@@ -65,7 +65,6 @@ bool CPlayer2D::Init()
 	m_KirbyState->SetRelativePos(100.f, 50.f, 0.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
-	// Sprite 크기 세팅
 	return true;
 }
 

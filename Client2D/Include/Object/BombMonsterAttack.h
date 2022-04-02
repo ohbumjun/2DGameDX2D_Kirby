@@ -11,6 +11,7 @@ public:
 private:
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
+    bool m_ExplodeByCollision;
 protected:
     virtual void SetRightAttackDir(float YDir = 0.f) override;
     virtual void SetLeftAttackDir(float YDir = 0.f) override;

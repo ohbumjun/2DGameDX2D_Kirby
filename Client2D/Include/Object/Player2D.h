@@ -345,7 +345,6 @@ public :
 private :
 	// Special Action
 	void Attack(float DeltaTime);
-	void SlideAttack(float DeltaTime);
 	void SpecialAttack();
 	void UltimateAttack();
 	void PrepareSpecialAction(float PrepareTime);
@@ -353,6 +352,9 @@ private :
 	void PrepareUltimateAction(float BackGroundDestroyTime, float UIProceedTime);
 	void UndoUltimateAction();
 	void ChangeToIdleAfterAnimation(float DeltaTime);
+private:
+	void SlideAttack(float DeltaTime);
+	void MakePlayerCloneEffect();
 private :
 	// UI Setting
 	void SetUIAccordingToKirbyState();
