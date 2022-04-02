@@ -141,11 +141,11 @@ void CSwordKirbyState::UltimateAttack()
 
 		float YPos = YPosStart - (i * 1) * 170.f;
 
-		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 2);
+		AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
 
 		if (PlayerMoveDir.x < 0.f)
 		{
-			AttackEffect->SetAttackDir(-1.f);
+			AttackEffect->SetAttackDir(-1.f); //
 
 			float XPos = GetWorldPos().x - ((float)rand() / (float)RAND_MAX) * 500.f;
 

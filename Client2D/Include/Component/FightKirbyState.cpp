@@ -350,7 +350,7 @@ void CFightKirbyState::UltimateAttack()
 
 			AttackEffect->SetSideCollisionEnable(false);
 
-			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
+			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
 
 			// AttackEffect->AddRelativeRotationZ(-40.f);
 
