@@ -47,7 +47,7 @@ CPlayer2D::CPlayer2D() :
 	m_DashVelocity(0.f), 
 	m_DashMaxMoveVelocity(170.f),
 	m_SlideAttackSpeedMax(1000.f),
-	m_AttackTimeLimit(1.f),
+	m_AttackTimeLimit(4.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_SlideAttackEffectToggleTime(0.1f),
 	m_MPMax(100.f),
@@ -760,8 +760,6 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 
 			m_MoveDashEffectMade = true;
 
-			MakePlayerCloneEffect();
-
 			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
 		}
 	}
@@ -976,8 +974,6 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 			EffectDash->SetDirGoRight(false);
 
 			m_MoveDashEffectMade = true;
-
-			MakePlayerCloneEffect();
 
 			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
 		}

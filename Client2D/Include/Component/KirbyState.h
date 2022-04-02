@@ -20,6 +20,8 @@ protected:
 protected :
    class  CPlayer2D* m_Player;
    float m_ExtraAttackAbility;
+   float m_CloneEffectToggleMaxTime;
+   float m_CloneEffectToggleTime;
 public :
     class  CPlayer2D* GetPlayer() const
 {

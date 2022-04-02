@@ -389,6 +389,14 @@ void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			AddWorldPos(Vector3(0.5f * -1.f, 1.f, 0.f) * DeltaTime * 500.f);
 		}
 
+		m_CloneEffectToggleTime += DeltaTime;
+
+		if (m_CloneEffectToggleTime >= m_CloneEffectToggleMaxTime)
+		{
+			m_Player->MakePlayerCloneEffect();
+			m_CloneEffectToggleTime = 0.f;
+		}
+
 		m_Player->GetBodyCollider()->SetExtend(m_InitColliderLength.x * 3.f, m_InitColliderLength.y * 2.f);
 
 		if (m_GoUpTime <= 0.f)
@@ -425,6 +433,14 @@ void CFightKirbyState::UpdateFallAttack(float DeltaTime)
 		else
 		{
 			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+		}
+
+		m_CloneEffectToggleTime += DeltaTime;
+
+		if (m_CloneEffectToggleTime >= m_CloneEffectToggleMaxTime)
+		{
+			m_Player->MakePlayerCloneEffect();
+			m_CloneEffectToggleTime = 0.f;
 		}
 
 		if (m_FallAttackTime <= 0.f)

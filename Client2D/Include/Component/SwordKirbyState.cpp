@@ -187,13 +187,17 @@ void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			if (m_GoUpDist >= 500.f)
 			{
 				m_GoUpReachedTop = true;
+
+				m_GoUpDist = 0.f;
 			}
 		}
 		else
 		{
 			AddWorldPos(Vector3(0.f, -1.f, 0.f) * Dist);
 
-			if (m_Player->IsBottomCollided())
+			m_GoUpDist += Dist;
+
+			if (m_Player->IsBottomCollided() || m_GoUpDist >= 900.f)
 			{
 				m_GoUpState = false;
 
@@ -212,6 +216,14 @@ void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 				// 한번 더 공격 
 				NormalAttackCallback();
 			}
+		}
+
+		m_CloneEffectToggleTime += DeltaTime;
+
+		if (m_CloneEffectToggleTime >= m_CloneEffectToggleMaxTime)
+		{
+			m_Player->MakePlayerCloneEffect();
+			m_CloneEffectToggleTime = 0.f;
 		}
 	}
 }
@@ -233,6 +245,14 @@ void CSwordKirbyState::UpdateFallAttack(float DeltaTime)
 		else
 		{
 			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+		}
+
+		m_CloneEffectToggleTime += DeltaTime;
+
+		if (m_CloneEffectToggleTime >= m_CloneEffectToggleMaxTime)
+		{
+			m_Player->MakePlayerCloneEffect();
+			m_CloneEffectToggleTime = 0.f;
 		}
 
 		if (m_FallAttackTime <= 0.f)

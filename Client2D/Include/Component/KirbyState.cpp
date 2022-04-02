@@ -1,7 +1,8 @@
 #include "KirbyState.h"
 
 CKirbyState::CKirbyState() :
-	m_ExtraAttackAbility(0.f)
+	m_ExtraAttackAbility(0.f),
+	m_CloneEffectToggleMaxTime(0.1f)
 {}
 
 CKirbyState::CKirbyState(const CKirbyState& Kirby) : CSpriteComponent(Kirby)

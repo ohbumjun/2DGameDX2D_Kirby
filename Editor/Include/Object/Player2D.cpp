@@ -12,7 +12,6 @@
 #include "Component/KirbyState.cpp"
 
 
-
 CPlayer2D::CPlayer2D() 
 {
 	SetTypeID<CPlayer2D>();

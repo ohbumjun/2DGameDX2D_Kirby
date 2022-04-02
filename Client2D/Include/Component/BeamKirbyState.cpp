@@ -335,6 +335,14 @@ void CBeamKirbyState::UpdateFallAttack(float DeltaTime)
 			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
 		}
 
+		m_CloneEffectToggleTime += DeltaTime;
+
+		if (m_CloneEffectToggleTime >= m_CloneEffectToggleMaxTime)
+		{
+			m_Player->MakePlayerCloneEffect();
+			m_CloneEffectToggleTime = 0.f;
+		}
+
 		if (m_FallAttackTime <= 0.f)
 		{
 			m_FallAttackState = false;
