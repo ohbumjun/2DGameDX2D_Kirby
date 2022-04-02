@@ -1591,8 +1591,17 @@ void CPlayer2D::AddHP(float HP)
 	}
 
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
-
 	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
+
+	// Random Star Effect
+	CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+	RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
+
+	RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+	RandomStar->SetWorldPos(Vector3(GetWorldPos().x + (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
+
+	RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+	RandomStar->SetWorldPos(Vector3(GetWorldPos().x , GetWorldPos().y, GetWorldPos().z));
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -2166,7 +2175,6 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 			m_Bounced = true;
 
 			CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
-
 			RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
 		}
 
@@ -2186,7 +2194,6 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 					ChangePlayerNormalIdleAnimation();
 
 				CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
-
 				RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
 			}
 		}
@@ -2569,7 +2576,7 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 	else
 		ChangeAnimation("RightSpecialAttack");
 
-	DecreaseMP(25.f);
+	DecreaseMP(m_MPMax);
 
 	// Sword 의 경우, 크기를 잠시 키운다.
 	if (m_SpecialAbilityState == Ability_State::Sword)
