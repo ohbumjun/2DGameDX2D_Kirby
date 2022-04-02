@@ -200,16 +200,15 @@ void CExcel::LoadExcel()
 
 void CExcel::EditExcel()
 {
-    /*
-    m_MapMonsterStats[L"Sword"]->m_HP = 300.f;
-    m_MapMonsterStats[L"BossTree"]->m_AttackDist = 900.f;
-    m_MapMonsterStats[L"BossTree"]->m_HP = 5000.f;
-    m_MapMonsterStats[L"Sword"]->m_DashDist = 700.f;
-    m_MapMonsterStats[L"BossHammer"]->m_MoveVelocity = 150.f;
-    m_MapMonsterStats[L"Fire"]->m_AttackAbility = 150.f;
-    m_MapMonsterStats[L"BossTree"]->m_AttackAbility = 50.f;
-    m_MapMonsterStats[L"BossHammer"]->m_AttackAbility = 50.f;
-    */
+    m_MapMonsterStats[L"Beam"]->m_AttackAbility = 90.f;;
+    m_MapMonsterStats[L"Fire"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"Bomb"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"Fight"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"Sword"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"BossPenguin"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"BossTree"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"BossScissor"]->m_AttackAbility = 90.f;
+    m_MapMonsterStats[L"BossHammer"]->m_AttackAbility = 90.f;
 }
 
 void CExcel::SaveExcel()

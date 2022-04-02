@@ -42,6 +42,8 @@ protected:
 	bool m_ApplyBottomCollision;
 	bool m_LineCollided;
 protected:
+	// Death
+	bool m_IsDead;
 	// Ability
 	float m_HP;
 	float m_HPMax;

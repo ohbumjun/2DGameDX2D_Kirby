@@ -1562,7 +1562,6 @@ void CPlayer2D::UpdateMP(float DeltaTime)
 		m_MP += DeltaTime * 5.f;
 
 		CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
-
 		HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
 	}
 }
@@ -1577,7 +1576,6 @@ void CPlayer2D::DecreaseMP(float MP)
 	}
 
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
-
 	HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
 }
 

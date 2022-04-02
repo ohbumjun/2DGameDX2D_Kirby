@@ -35,9 +35,9 @@ void CNormalMonster::Start()
 	m_HP = 100.f;
 
 	// Death Animation 이후 바로 Destroy 세팅한다
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetPlayTime(1.5f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetPlayTime(0.3f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetEndFunction((CRef*)this, &CRef::Destroy);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetPlayTime(1.5f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetPlayTime(0.3f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetEndFunction((CRef*)this, &CRef::Destroy);
 
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin,(CMonster*)this, &CNormalMonster::OnMonsterBodyCollisionBegin);

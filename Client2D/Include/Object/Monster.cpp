@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Player2D.h"
 #include "Component/TileEmptyComponent.h"
+#include "EffectRandomStar.h"
 #include "../UI/SimpleHUD.h"
 #include "UI/MonsterEditorHUD.h"
 #include "UI/UIDamageFont.h"
@@ -316,6 +317,11 @@ void CMonster::AIAttack(float DeltaTime, Vector3 PlayerPos)
 
 void CMonster::AIDeath(float DeltaTime)
 {
+	if (m_IsDead)
+		return;
+
+	m_IsDead = true;
+
 	ChangeDeathAnimation();
 
 	m_DeathFinishTime = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetPlayTime();
@@ -325,6 +331,13 @@ void CMonster::AIDeath(float DeltaTime)
 	// DeathStart();
 
 	AIDeathSpecific(DeltaTime);
+
+	// Random Start ¸¸µé±â
+	for (int i = 0; i < 5; i++)
+	{
+		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+		RandomStar->SetWorldPos(Vector3(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z));
+	}
 }
 
 void CMonster::AIHit(float DeltaTime)

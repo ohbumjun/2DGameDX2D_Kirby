@@ -6,6 +6,7 @@
 #include "../Scene/CameraManager.h"
 
 CLifeObject::CLifeObject():
+	m_IsDead(false),
 	m_MoveSpeed(200.f),
 	m_HP(100.f),
 	m_HPMax(100.f),

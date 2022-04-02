@@ -3,6 +3,7 @@
 #include "Component/Tile.h"
 #include "Scene/Scene.h"
 #include "Player2D.h"
+#include "EffectRandomStar.h"
 
 CBlock::CBlock()
 {
@@ -118,6 +119,13 @@ void CBlock::SetCollisionCallback(const CollisionResult& Result)
 	CGameObject* OwnerObject = Result.Dest->GetGameObject();
 
 	Destroy();
+
+	// Random Start ¸¸µé±â
+	for (int i = 0; i < 5; i++)
+	{
+		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+		RandomStar->SetWorldPos(Vector3(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z));
+	}
 
 	MakeTileTypeAround(false);
 

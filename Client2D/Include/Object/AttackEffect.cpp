@@ -6,6 +6,7 @@
 #include "Scene/Scene.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
+#include "FireAttackBackEffect.h"
 
 CAttackEffect::CAttackEffect()  :
 	m_SideCollisionApplied(true),
@@ -352,7 +353,18 @@ void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result
 		else
 			Player->SetBeingHitDirection(m_AttackDir.x);
 
-		// DestMonster->Damage(2.f);
+		// 특수효과 만들어내기
+		CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
+
+		BackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z);
+
+		BackEffect->SetWorldScale(GetWorldScale().x * 0.5f, GetWorldScale().y * 0.5f, 1.f);
+
+		BackEffect->GetColliderBody()->SetInfo(Vector2(0.f, 0.f), BackEffect->GetWorldScale().x * 0.8f);
+
+		BackEffect->AddRelativeRotationZ(90.f);
+
+		BackEffect->SetLifeTime(0.4f);
 
 		// Create Damage Font
 		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
