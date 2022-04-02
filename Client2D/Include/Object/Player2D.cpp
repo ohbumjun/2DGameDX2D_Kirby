@@ -48,6 +48,7 @@ CPlayer2D::CPlayer2D() :
 	m_SlideAttackSpeedMax(700.f),
 	m_AttackTimeLimit(1.f),
 	m_TriangleJumpVelocityRatio(0.8f),
+	m_SlideAttackEffectToggleTime(0.1f),
 	m_MPMax(100.f),
 	m_MP(100.f),
 	m_RightMove(false),
@@ -1722,6 +1723,60 @@ void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 			}
 
 			m_Body->SetCollisionProfile("PlayerAttack");
+		}
+
+		m_SlideAttackEffectCurTime += DeltaTime;
+
+		if (m_SlideAttackEffectCurTime >= m_SlideAttackEffectToggleTime)
+		{
+			// 현재 Animation 의 Time 을 알아낸다
+			float CurrentFrameTime = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrameTime();
+
+			CKirbyState* KirbyState = nullptr;
+
+			if (!m_IsSpecialStateChanged)
+			{
+				KirbyState = CreateComponent<CNormalKirbyState>("BeamKirbyState");
+			}
+			else
+			{
+				switch (m_SpecialAbilityState)
+				{
+					case Ability_State::Beam:
+					{
+						KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
+					}
+					break;
+					case Ability_State::Fire:
+					{
+						KirbyState = CreateComponent<CFireKirbyState>("FireKirbyState");
+					}
+					break;
+					case Ability_State::Fight:
+					{
+						KirbyState = CreateComponent<CFightKirbyState>("FightKirbyState");
+					}
+					break;
+					case Ability_State::Bomb:
+					{
+						KirbyState = CreateComponent<CBombKirbyState>("BombKirbyState");
+					}
+					break;
+					case Ability_State::Sword:
+					{
+						KirbyState = CreateComponent<CSwordKirbyState>("SwordKirbyState");
+					}
+					break;
+				}
+			}
+
+			KirbyState->SetWorldScale(m_KirbyState->GetWorldScale());
+
+			KirbyState->GetAnimationInstance()->ChangeAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
+
+			KirbyState->GetAnimationInstance()->GetCurrentAnimation()->SetCurrentFrameTime(CurrentFrameTime);
+
+			// KirbyState->SetLifeTime(0.2f);
 		}
 
 		if (m_SlideAttackTime <= 0.f)
@@ -3492,6 +3547,12 @@ void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
 		}
 
 		m_IsAttacking = false;
+
+		// Slide Attack 중이었다면 반대 방향으로
+		if (m_SlideAttack)
+		{
+			SimpleJump();
+		}
 	}
 }
 

@@ -329,8 +329,6 @@ bool CAttackEffect::UpdateGravityEffect(float DeltaTime)
 
 void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result)
 {
-	Destroy();
-
 	CColliderComponent* CollisionDest = Result.Dest;
 
 	CGameObject* Owner = CollisionDest->GetGameObject();
@@ -341,12 +339,22 @@ void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result
 	{
 		CPlayer2D* Player = (CPlayer2D*)Owner;
 
+		// Scene Change 가 일어나고 있다면
+		if (Player->IsSceneChanging())
+			return;
+
+		// Player 의 본체일 때만 Damage --> Pull Right, Left Collider 일 때는 X
+		if (Player->GetBodyCollider() != (CColliderBox2D*)Result.Dest)
+			return;
+
 		// HP Bar 달게 하기
 		float DamageFloat = m_MonsterOwner->GetAttackAbility();
 
 		Player->Damage(m_MonsterOwner->GetAttackAbility());
 
 		Player->SetIsBeingHit();
+
+		Destroy();
 
 		if (m_AttackDir.x > 0)
 			Player->SetBeingHitDirection(m_AttackDir.x);

@@ -77,7 +77,7 @@ bool CBossHUD::Init()
 	// Icon
 	m_IconImage = CreateUIWidget<CUIImage>("IconImage");
 	m_IconImage->SetTexture("BossIconImage", TEXT("Project/UI/Icon_Hammer_Big.png"));
-	m_IconImage->SetSize(50.f, 50.f);
+	m_IconImage->SetSize(60.f, 60.f);
 	m_IconImage->SetPos(20.f, 120.f);
 	m_IconImage->SetZOrder(1);
 

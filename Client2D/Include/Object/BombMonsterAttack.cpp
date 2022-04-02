@@ -110,6 +110,23 @@ void CBombMonsterAttack::ApplyJumpEffect()
 
 void CBombMonsterAttack::ExplodeEffect(const CollisionResult& Result)
 {
+	CColliderComponent* CollisionDest = Result.Dest;
+
+	CGameObject* Owner = CollisionDest->GetGameObject();
+
+	if (Owner && Owner == m_Scene->GetPlayerObject())
+	{
+		CPlayer2D* Player = (CPlayer2D*)Owner;
+
+		// Scene Change 가 일어나고 있다면
+		if (Player->IsSceneChanging())
+			return;
+
+		// Player 의 본체일 때만 Damage --> Pull Right, Left Collider 일 때는 X
+		if (Player->GetBodyCollider() != (CColliderBox2D*)Result.Dest)
+			return;
+	}
+
 	CBombMonsterAttack* ExplodeEffect = m_Scene->CreateGameObject<CBombMonsterAttack>("Explode");
 	ExplodeEffect->SetRightAttackDir();
 	ExplodeEffect->SetAttackDirX(0.f);

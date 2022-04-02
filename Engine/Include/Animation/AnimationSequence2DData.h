@@ -39,6 +39,10 @@ private:
 	std::function<void()>                  m_EndFunction;
 	std::vector<Animation2DNotify*>        m_vecNotify;
 public :
+	float GetCurrentFrameTime() const
+{
+		return m_Time;
+}
 	bool IsFrameReverse() const
 {
 		return m_Sequence->IsFrameReverse();
@@ -86,6 +90,10 @@ public :
 		return m_InitPauseTime;
 	}
 public :
+	void SetCurrentFrameTime(float Time)
+{
+		m_Time = Time;
+}
 	void SetInitPauseTime(float Time)
 	{
 		m_InitPauseTime = Time;

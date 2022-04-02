@@ -27,7 +27,7 @@ bool CPlayerHUD::Init()
 	m_NameText = CreateUIWidget<CUIText>("NameText");
 
 	m_NameText->SetText(TEXT("KIRBY"));
-	m_NameText->SetPos(70.f, 300.f);
+	m_NameText->SetPos(40.f, 300.f);
 	m_NameText->SetSize(300.f, 60.f);
 	m_NameText->SetFontSize(32.f);
 	m_NameText->SetZOrder(1);
@@ -37,7 +37,7 @@ bool CPlayerHUD::Init()
 	// Icon
 	m_IconImage = CreateUIWidget<CUIImage>("IconImage");
 	m_IconImage->SetTexture("NormalKirbyIconImage", TEXT("Project/UI/Icon_NormalKirby.png"));
-	m_IconImage->SetSize(50.f, 50.f);
+	m_IconImage->SetSize(60.f, 60.f);
 	m_IconImage->SetPos(20.f, 300.f);
 	m_IconImage->SetZOrder(1);
 

@@ -141,6 +141,8 @@ private :
 	float m_SlideAttackSpeedMax;
 	float m_SlideAttackTime;
 	float m_SlideAttackTimeMax;
+	float m_SlideAttackEffectToggleTime;
+	float m_SlideAttackEffectCurTime;
 
 	// Change
 	bool m_IsChanging;

@@ -489,6 +489,9 @@
     <ClCompile Include="Object\BombUltimate.cpp">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\PlayerClone.cpp">
+      <Filter>02. Object\01. Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -874,6 +877,9 @@
     </ClInclude>
     <ClInclude Include="Object\BombUltimate.h">
       <Filter>02. Object\07. Effect\05. SpecialPlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PlayerClone.h">
+      <Filter>02. Object\01. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
