@@ -2482,6 +2482,12 @@ void CPlayer2D::ChangePlayerSlideAttackAnimation()
 	if (m_IsChanging)
 		return;
 
+	if (m_IsAttacking)
+		return;
+
+	if (m_IsFlying)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 		ChangeAnimation("LeftSlide");
 	else

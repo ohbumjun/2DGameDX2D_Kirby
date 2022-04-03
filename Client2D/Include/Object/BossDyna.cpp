@@ -263,24 +263,33 @@ void CBossDyna::CloseAttack()
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
-	// Attack Back Effect
-	CDynaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CDynaCloseAttack>("AttackEffect");
-
-	AttackEffect->SetWorldPos(
-		GetWorldPos().x + GetWorldScale().x * 0.3f,
-		GetWorldPos().y - GetWorldScale().y * 0.4f,
-		0.f);
-
-	AttackEffect->SetMonsterOwner(this);
-	AttackEffect->SetLifeTime(2.0f);
-
-	if (m_ObjectMoveDir.x < 0.f)
+	for (int i = 0; i < 3; i++)
 	{
-		AttackEffect->SetLeftAttackDir();
-	}
-	else
-	{
-		AttackEffect->SetRightAttackDir();
+		float Number0To1 = (float)rand() / (float)RAND_MAX;
+
+		// Attack Back Effect
+		CDynaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CDynaCloseAttack>("AttackEffect");
+
+		float XPos = -1.f;
+
+		if (m_ObjectMoveDir.x < 0.f)
+		{
+			AttackEffect->SetLeftAttackDir();
+
+			XPos = GetWorldPos().x - Number0To1 * 300.f;
+		}
+		else
+		{
+			AttackEffect->SetRightAttackDir();
+
+			XPos = GetWorldPos().x + Number0To1 * 300.f;
+		}
+
+		AttackEffect->SetWorldPos(XPos, GetWorldPos().y - 200.f + 400.f * Number0To1, GetWorldPos().z);
+
+		AttackEffect->SetMonsterOwner(this);
+		AttackEffect->SetLifeTime(2.0f);
+		
 	}
 
 	m_IsAttacking = false;
