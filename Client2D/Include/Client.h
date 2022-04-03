@@ -9,7 +9,8 @@ struct LoadingMessage {
 
 enum class LoadingSceneType {
 	Green1,
-	Float1
+	Float1,
+	Dyna1
 };
 
 enum class Monster_AI {

@@ -84,7 +84,7 @@ bool CObjectHierarchy::Init()
 	// m_mapVecObject ¼¼ÆÃ
 	std::vector<std::string>  vecNormalMonsters = { g_NormalBearName,
 		g_PurpleBeatlesName, g_YellowBirdName, g_MushRoomName, g_Squid, g_Kabu, g_Fish, g_Frog,
-		g_Chicken, g_Pig};
+		g_Chicken, g_Pig, g_Scary};
 
 	std::vector<std::string>  vecAbilityMonsters = { g_BeamMonsterName, g_FireMonsterName,
 	g_FightMonsterName, g_BombMonsterName, g_SwordMonsterName };

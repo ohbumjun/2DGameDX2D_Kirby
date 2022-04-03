@@ -2,6 +2,7 @@
 #include "Scene/SceneManager.h"
 #include "MainScene.h"
 #include "Float1Scene.h"
+#include "DynaBlade1.h"
 
 CLoadingThread::CLoadingThread() :
 	m_LoadingSceneType(LoadingSceneType::Green1)
@@ -57,5 +58,24 @@ void CLoadingThread::Run()
 		}
 	}
 		break;
+
+	case LoadingSceneType::Dyna1:
+	{
+		CSceneManager::GetInst()->CreateNewScene(false);
+
+		CDynaBlade1* Float1Scene = CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade1>(false);
+
+		Float1Scene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
+
+		// CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+		Float1Scene->PrepareResources();
+
+		if (CSceneManager::GetInst()->GetNextScene()->Load("Dyna1.scn", SCENE_PATH))
+		{
+			AddMessage(true, 1.f);
+			// CSceneManager::GetInst()->ChangeNextScene();
+		}
+	}
+	break;
 	}
 }

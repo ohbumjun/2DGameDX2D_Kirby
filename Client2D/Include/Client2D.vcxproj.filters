@@ -501,6 +501,9 @@
     <ClCompile Include="Scene\DynaBlade1.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Dyna1LoadingScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -897,6 +900,9 @@
       <Filter>01. SceneMode</Filter>
     </ClInclude>
     <ClInclude Include="Scene\DynaBlade1.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Dyna1LoadingScene.h">
       <Filter>01. SceneMode</Filter>
     </ClInclude>
   </ItemGroup>
