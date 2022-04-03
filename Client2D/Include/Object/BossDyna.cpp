@@ -36,7 +36,7 @@ CBossDyna::CBossDyna() :
 
 	m_HitLimitTimeMax = 0.4f;
 	m_FarAttackLimitTime = 0.f;
-	m_CameraFollowMaxTime = 7.f;
+	m_CameraFollowMaxTime = 5.f;
 }
 
 CBossDyna::~CBossDyna()
@@ -56,22 +56,24 @@ void CBossDyna::Start()
 	m_Sprite->GetAnimationInstance()->Play();
 
 	// m_HP = 5000.f;
-	m_HP = 50.f;
+	m_HP = 500.f;
 	// m_HPMax = 5000.f;
-	m_HPMax = 50.f;
+	m_HPMax = 500.f;
 
 
 	// Collider 세팅
-	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.3f);
+	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.35f);
 
 	m_ColliderBody->SetRelativePos(0.f, 100.f, 0.f);
 
 	// Head
 	m_DynaHead = (CSpriteComponent*)FindComponent("DynaHead");
 
-	m_DynaHead->SetWorldScale(110.f, 110.f, 1.f);
+	m_DynaHead->SetWorldScale(130.f, 130.f, 1.f);
 
-	m_DynaHead->SetRelativePos(-80.f, m_RootComponent->GetWorldScale().y * 0.f, 0.f);
+	m_InitHeadYRelativePos = m_RootComponent->GetWorldScale().y * 0.36f;
+
+	m_DynaHead->SetRelativePos(-80.f, m_InitHeadYRelativePos, 0.f);
 
 	// Right Foot
 	m_DynaRightFoot = (CSpriteComponent*)FindComponent("DynaRightFoot");
@@ -83,11 +85,16 @@ void CBossDyna::Start()
 
 	m_DynaLeftFoot->SetWorldScale(50.f, 50.f, 1.f);
 
+
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetLoop(false);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetLoop(false);
+
 	// Close Attack
 	/*
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetEndFunction(this, &CBossDyna::CloseAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightHit")->SetEndFunction(this, &CBossDyna::CloseAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftHit")->SetEndFunction(this, &CBossDyna::CloseAttack);
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(1.3f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetLoop(false);
@@ -140,7 +147,7 @@ void CBossDyna::Update(float DeltaTime)
 		}
 
 		if (m_DynaHead)
-			m_DynaHead->SetRelativePos(-80.f, m_DynaHead->GetRelativePos().y, 0.f);
+			m_DynaHead->SetRelativePos(-120.f, m_DynaHead->GetRelativePos().y, 0.f);
 		if (m_DynaLeftFoot)
 			m_DynaLeftFoot->SetRelativePos(-115.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
 		if (m_DynaRightFoot)
@@ -198,6 +205,14 @@ void CBossDyna::Update(float DeltaTime)
 
 			m_HeadToggleUp = true;
 		}
+	}
+
+	// Hit 인 동안에는 머리, 발을 안보이게 한다
+	if (!m_IsBeingHit)
+	{
+		m_DynaHead->GetMaterial()->SetOpacity(1.f);
+		m_DynaRightFoot->GetMaterial()->SetOpacity(1.f);
+		m_DynaLeftFoot->GetMaterial()->SetOpacity(1.f);
 	}
 
 }
@@ -350,6 +365,15 @@ void CBossDyna::AIIdleSpecific(float DeltaTime)
 	}
 }
 
+void CBossDyna::AIHitSpecific(float DeltaTime)
+{
+	CBossMonster::AIHitSpecific(DeltaTime);
+
+	m_DynaHead->GetMaterial()->SetOpacity(0.f);
+	m_DynaRightFoot->GetMaterial()->SetOpacity(0.f);
+	m_DynaLeftFoot->GetMaterial()->SetOpacity(0.f);
+}
+
 void CBossDyna::AIDeathSpecific(float DeltaTime)
 {
 	if (m_SceneChangeLimitTime > 0.f)
@@ -411,7 +435,6 @@ void CBossDyna::ChangeSceneToFloat1Scene()
 	}
 	*/
 }
-
 
 void CBossDyna::ChangeTraceAnimation()
 {

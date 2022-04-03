@@ -123,31 +123,6 @@ bool CViewPort::CollisionMouse()
 		}
 	}
 
-	/*
-	for (; iter != iterEnd; ++iter)
-	{
-		if (!(*iter)->IsEnable())
-		{
-			continue;
-		}
-
-		if ((*iter)->CollisionMouse(MousePos))
-			return true;
-	}
-
-	for (; iter != iterEnd;)
-	{
-		if (!(*iter)->IsActive())
-		{
-			iter = m_WindowList.erase(iter);
-			iterEnd = m_WindowList.end();
-			continue;
-		}
-
-		++iter;
-	}
-	 */
-
 	return false;
 }
 

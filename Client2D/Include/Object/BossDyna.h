@@ -22,6 +22,7 @@ private :
     float m_HeadToggleMaxTime;
     float m_HeadToggleTime;
     bool m_HeadToggleUp;
+    float m_InitHeadYRelativePos;
 private:
     void FarAttack();
     void CloseAttack();
@@ -36,6 +37,7 @@ private:
     virtual void AITraceSpecific(float DeltaTime) override;
     virtual void AIWalkSpecific(float DeltaTime) override;
     virtual void AIIdleSpecific(float DeltaTime) override;
+    virtual void AIHitSpecific(float DeltaTime) override;
     virtual void AIDeathSpecific(float DeltaTime) override;
 };
 
