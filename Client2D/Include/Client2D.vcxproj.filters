@@ -507,6 +507,9 @@
     <ClCompile Include="Object\EffectChangeToDyna2.cpp">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BossDyna.cpp">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -910,6 +913,9 @@
     </ClInclude>
     <ClInclude Include="Object\EffectChangeToDyna2.h">
       <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossDyna.h">
+      <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

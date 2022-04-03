@@ -9,6 +9,8 @@
 #include "Scene/Green3Scene.h"
 #include "Scene/Green5Scene.h"
 #include "Scene/StartScene.h"
+#include "Scene/DynaBlade1.h"
+#include "Scene/DynaBlade2.h"
 #include "Scene/Float1Scene.h"
 #include "Scene/Float4Scene.h"
 #include "Scene/Float3Scene.h"
@@ -55,6 +57,7 @@
 #include "Object/MiddleBossScissorBug.h"
 #include "Object/BossTree.h"
 #include "Object/BossPenguin.h"
+#include "Object/BossDyna.h"
 #include "Object/WaterFloat1.h"
 #include "Object/WaterFloat2_2.h"
 #include "Object/Squid.h"
@@ -70,6 +73,7 @@
 #include "Object/EffectChangeToFloat4.h"
 #include "Object/EffectChangeToFloat6.h"
 #include "Object/EffectChangeToFloat7.h"
+#include "Object/EffectChangeToDyna2.h"
 // SceneComponent
 #include "Component/StaticMeshComponent.h"
 #include "Component/SpriteComponent.h"
@@ -178,7 +182,7 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat4Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat7Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat6Scene>();
@@ -186,15 +190,18 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade1>();
+	CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade2>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CBeginningScene>();
 
 
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
+	CSceneManager::GetInst()->GetScene()->Load("Dyna2_FinalBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float4_MiddleBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float7_SecondBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH);
@@ -300,6 +307,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	else if (GameObjectTypeID == typeid(CBossPenguin).hash_code())
 	{
 		CGameObject* Obj = Scene->LoadGameObject<CBossPenguin>();
+		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CBossDyna).hash_code())
+	{
+		CGameObject* Obj = Scene->LoadGameObject<CBossDyna>();
 		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CHPYellowItem).hash_code())
@@ -445,6 +457,11 @@ CGameObject* CClientManager::CreateObject(CScene* Scene, size_t GameObjectTypeID
 	if (GameObjectTypeID == typeid(CWaterFloat2_2).hash_code())
 	{
 		CWaterFloat2_2* Obj = Scene->LoadGameObject<CWaterFloat2_2>();
+		return Obj;
+	}
+	if (GameObjectTypeID == typeid(CEffectChangeToDyna2).hash_code())
+	{
+		CEffectChangeToDyna2* Obj = Scene->LoadGameObject<CEffectChangeToDyna2>();
 		return Obj;
 	}
 

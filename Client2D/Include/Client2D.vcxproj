@@ -184,6 +184,7 @@
     <ClCompile Include="Object\BombMonster.cpp" />
     <ClCompile Include="Object\BombMonsterAttack.cpp" />
     <ClCompile Include="Object\BombUltimate.cpp" />
+    <ClCompile Include="Object\BossDyna.cpp" />
     <ClCompile Include="Object\BossMonster.cpp" />
     <ClCompile Include="Object\BossPenguin.cpp" />
     <ClCompile Include="Object\BossTree.cpp" />
@@ -321,6 +322,7 @@
     <ClInclude Include="Object\BombMonster.h" />
     <ClInclude Include="Object\BombMonsterAttack.h" />
     <ClInclude Include="Object\BombUltimate.h" />
+    <ClInclude Include="Object\BossDyna.h" />
     <ClInclude Include="Object\BossMonster.h" />
     <ClInclude Include="Object\BossPenguin.h" />
     <ClInclude Include="Object\BossTree.h" />
