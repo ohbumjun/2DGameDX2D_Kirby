@@ -194,6 +194,7 @@
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\AttackEffect.cpp" />
     <ClCompile Include="Object\Chicken.cpp" />
+    <ClCompile Include="Object\EffectChangeToDyna2.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_1.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_2.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat3.cpp" />
@@ -329,6 +330,7 @@
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\Chicken.h" />
+    <ClInclude Include="Object\EffectChangeToDyna2.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_1.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_2.h" />
     <ClInclude Include="Object\EffectChangeToFloat3.h" />

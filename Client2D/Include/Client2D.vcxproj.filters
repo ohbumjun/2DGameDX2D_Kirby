@@ -504,6 +504,9 @@
     <ClCompile Include="Scene\Dyna1LoadingScene.cpp">
       <Filter>01. SceneMode</Filter>
     </ClCompile>
+    <ClCompile Include="Object\EffectChangeToDyna2.cpp">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -904,6 +907,9 @@
     </ClInclude>
     <ClInclude Include="Scene\Dyna1LoadingScene.h">
       <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\EffectChangeToDyna2.h">
+      <Filter>02. Object\07. Effect\01. SceneChange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

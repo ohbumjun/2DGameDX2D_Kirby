@@ -76,6 +76,7 @@
 #include "Object/EffectChangeToFloat4.h"
 #include "Object/EffectChangeToFloat6.h"
 #include "Object/EffectChangeToFloat7.h"
+#include "Object/EffectChangeToDyna2.h"
 #include "Object/MiddleBossHammer.h"
 #include "Object/MiddleBossScissorBug.h"
 #include "Object/BossTree.h"
@@ -1094,6 +1095,11 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	{
 		CEffectChangeToGreen1* Obj = Scene->LoadGameObject<CEffectChangeToGreen1>();
 		return Obj;
+	}
+	else if (GameObjectTypeID == typeid(CEffectChangeToDyna2).hash_code())
+	{
+	CEffectChangeToDyna2* Obj = Scene->LoadGameObject<CEffectChangeToDyna2>();
+	return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CEffectChangeToGreen4).hash_code())
 	{
