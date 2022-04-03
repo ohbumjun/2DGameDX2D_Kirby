@@ -249,6 +249,7 @@
     <ClCompile Include="Object\PlayerClone.cpp" />
     <ClCompile Include="Object\PlayerOld.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
+    <ClCompile Include="Object\Scary.cpp" />
     <ClCompile Include="Object\SpecialChangeParticle.cpp" />
     <ClCompile Include="Object\Squid.cpp" />
     <ClCompile Include="Object\SquidAttack.cpp" />
@@ -380,6 +381,7 @@
     <ClInclude Include="Object\PlayerClone.h" />
     <ClInclude Include="Object\PlayerOld.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
+    <ClInclude Include="Object\Scary.h" />
     <ClInclude Include="Object\SpecialChangeParticle.h" />
     <ClInclude Include="Object\Squid.h" />
     <ClInclude Include="Object\SquidAttack.h" />

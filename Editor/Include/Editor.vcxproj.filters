@@ -255,6 +255,9 @@
     <ClCompile Include="Object\Pig.cpp">
       <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Scary.cpp">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorManager.h">
@@ -444,6 +447,9 @@
       <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
     <ClInclude Include="Object\Pig.h">
+      <Filter>03. Object\03. Monster\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Scary.h">
       <Filter>03. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>

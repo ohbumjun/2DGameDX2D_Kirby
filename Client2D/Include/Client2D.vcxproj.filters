@@ -492,6 +492,9 @@
     <ClCompile Include="Object\PlayerClone.cpp">
       <Filter>02. Object\01. Player</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Scary.cpp">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -880,6 +883,9 @@
     </ClInclude>
     <ClInclude Include="Object\PlayerClone.h">
       <Filter>02. Object\01. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Scary.h">
+      <Filter>02. Object\03. Monster\01. Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

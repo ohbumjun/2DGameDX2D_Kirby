@@ -12,6 +12,7 @@ const std::string g_Fish = "Fish";
 const std::string g_Frog = "Frog";
 const std::string g_Chicken = "Chicken";
 const std::string g_Pig = "Pig";
+const std::string g_Scary = "Scary";
 // Ability
 const std::string g_BeamMonsterName = "Beam";
 const std::string g_FireMonsterName    = "Fire";

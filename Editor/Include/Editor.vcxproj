@@ -214,6 +214,7 @@
     <ClCompile Include="Object\Pig.cpp" />
     <ClCompile Include="Object\Player2D.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
+    <ClCompile Include="Object\Scary.cpp" />
     <ClCompile Include="Object\ShowObject.cpp" />
     <ClCompile Include="Object\SpriteEditObject.cpp" />
     <ClCompile Include="Object\Squid.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="Object\Pig.h" />
     <ClInclude Include="Object\Player2D.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
+    <ClInclude Include="Object\Scary.h" />
     <ClInclude Include="Object\ShowObject.h" />
     <ClInclude Include="Object\SpriteEditObject.h" />
     <ClInclude Include="Object\Squid.h" />
