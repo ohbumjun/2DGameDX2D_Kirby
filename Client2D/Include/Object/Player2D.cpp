@@ -93,8 +93,8 @@ CPlayer2D::CPlayer2D() :
 	m_WDistance = 0.f;
 	m_Opacity   = 1.f;
 
-	m_HP = 800.f;
-	m_HPMax = 800.f;
+	m_HP = 1200.f;
+	m_HPMax = 1200.f;
 	m_AttackAbility = 50.f;
 
 	m_InitJumpVelocity = m_JumpVelocity;
@@ -233,9 +233,9 @@ void CPlayer2D::Start()
 		m_KirbyState->AddChild(m_SimpleHUDWidget);
 	}
 
+	// 처음 Player가 만들어지는 것이라면
 	if (!CSceneManager::GetStaticPlayerInfo())
 	{
-		// m_SimpleHUDWidget->CreateUIWindow<CSimpleHUD>("SimpleHUDWidget");
 		m_SimpleHUDWidget->CreateUIWindow<CEmptyObjectHUD>("SimpleHUDWidget");
 		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 	}

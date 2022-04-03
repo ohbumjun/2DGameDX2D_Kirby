@@ -59,7 +59,7 @@ void CItem::CollisionPlayerCallback(const CollisionResult& Result)
 	{
 		CPlayer2D* Player = (CPlayer2D*)m_Scene->GetPlayerObject();
 
-		Player->AddHP(150.f);
+		Player->AddHP(300.f);
 
 		Destroy();
 	}

@@ -16,7 +16,9 @@ private:
     CSharedPtr<CUIText> m_NameText;
     CSharedPtr<CUIImage> m_IconImage;
     CSharedPtr<CUIProgressBar> m_HPProgressBar;
+    CSharedPtr<CUIImage> m_HPProgressBarBack;
     CSharedPtr<CUIProgressBar> m_MPProgressBar;
+    CSharedPtr<CUIImage> m_MPProgressBarBack;
 public :
     CUIProgressBar* GetHPProgressBar() const
 	{

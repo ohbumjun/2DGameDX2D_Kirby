@@ -25,7 +25,6 @@ bool CPlayerHUD::Init()
 
 	// Name
 	m_NameText = CreateUIWidget<CUIText>("NameText");
-
 	m_NameText->SetText(TEXT("KIRBY"));
 	m_NameText->SetPos(40.f, 300.f);
 	m_NameText->SetSize(300.f, 60.f);
@@ -48,12 +47,24 @@ bool CPlayerHUD::Init()
 	m_HPProgressBar->SetTexture("PlayerHPProgressBar", TEXT("HPBar.png"));
 	// m_HPProgressBar->SetTextureTint(255, 0, 0, 255);
 
+	// HP ProgressBar Back
+	m_HPProgressBarBack = CreateUIWidget<CUIImage>("HPBarBack");
+	m_HPProgressBarBack->SetSize(590.f, 110.f);
+	m_HPProgressBarBack->SetPos(15.f, 255.f);
+	m_HPProgressBarBack->SetTexture("PlayerHPProgressBarBack", TEXT("BarBack_Silver.png"));
+
 	// MP ProgressBar
 	m_MPProgressBar = CreateUIWidget<CUIProgressBar>("MPBar");
 	m_MPProgressBar->SetSize(600.f, 90.f);
-	m_MPProgressBar->SetPos(20.f, 220.f);
+	m_MPProgressBar->SetPos(20.f, 215.f);
 	m_MPProgressBar->SetTexture("PlayerMPProgressBar", TEXT("MPBar.png"));
 	// m_MPProgressBar->SetTextureTint(255, 0, 0, 255);
+
+	// MP ProgressBar Back
+	m_MPProgressBarBack = CreateUIWidget<CUIImage>("MPBarBack");
+	m_MPProgressBarBack->SetSize(590.f, 110.f);
+	m_MPProgressBarBack->SetPos(15.f, 210.f);
+	m_MPProgressBarBack->SetTexture("PlayerMPProgressBarBack", TEXT("BarBack_Silver.png"));
 
 	return true;
 }

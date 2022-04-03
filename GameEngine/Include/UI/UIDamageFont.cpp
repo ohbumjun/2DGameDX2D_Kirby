@@ -56,7 +56,7 @@ void CUIDamageFont::SetTexture(const std::string& Name, const std::vector<TCHAR*
 {
 	CTexture* Texture = nullptr;
 
-	if (m_Owner && m_Owner->GetViewPort())
+	if (m_Owner && m_Owner->GetViewPort() && m_Owner->GetViewPort()->GetScene())
 	{
 		m_Owner->GetViewPort()->GetScene()->GetResource()->LoadTexture(Name, vecFileName, PathName);
 		Texture = m_Owner->GetViewPort()->GetScene()->GetResource()->FindTexture(Name);
@@ -122,7 +122,7 @@ bool CUIDamageFont::Init()
 	if (!CUIWidget::Init())
 		return false;
 
-	if (m_Owner && m_Owner->GetViewPort())
+	if (m_Owner && m_Owner->GetViewPort() && m_Owner->GetViewPort()->GetScene())
 		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("NumberShader");
 	else
 		m_Shader = CResourceManager::GetInst()->FindShader("NumberShader");

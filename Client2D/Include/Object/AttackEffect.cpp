@@ -380,6 +380,7 @@ void CAttackEffect::MonsterAttackCollisionCallback(const CollisionResult& Result
 		if (ObjectWindow)
 		{
 			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+
 			DamageFont->SetDamage((int)m_MonsterOwner->GetAttackAbility());
 		}
 	}
