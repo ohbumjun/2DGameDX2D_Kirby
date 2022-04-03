@@ -61,7 +61,7 @@ bool CDynaFarAttack::Init()
 		return false;
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
-		"BossTreeApple", TEXT("Boss_Tree_AttackFar_Apple.anim"));
+		"BossDynaFarAttack", TEXT("Boss_Dyna_FarAttack.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
 	m_MainSprite->SetWorldScale(120.f, 120.f, 1.f);

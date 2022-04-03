@@ -516,6 +516,12 @@
     <ClCompile Include="Object\DynaFarAttack.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\DynaCloseAttack.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\DynaNest.cpp">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -927,6 +933,12 @@
       <Filter>02. Object\03. Monster\03. Boss</Filter>
     </ClInclude>
     <ClInclude Include="Object\DynaFarAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\DynaCloseAttack.h">
+      <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\DynaNest.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClInclude>
   </ItemGroup>

@@ -196,7 +196,9 @@
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\AttackEffect.cpp" />
     <ClCompile Include="Object\Chicken.cpp" />
+    <ClCompile Include="Object\DynaCloseAttack.cpp" />
     <ClCompile Include="Object\DynaFarAttack.cpp" />
+    <ClCompile Include="Object\DynaNest.cpp" />
     <ClCompile Include="Object\EffectChangeToDyna2.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_1.cpp" />
     <ClCompile Include="Object\EffectChangeToFloat2_2.cpp" />
@@ -335,7 +337,9 @@
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\Chicken.h" />
+    <ClInclude Include="Object\DynaCloseAttack.h" />
     <ClInclude Include="Object\DynaFarAttack.h" />
+    <ClInclude Include="Object\DynaNest.h" />
     <ClInclude Include="Object\EffectChangeToDyna2.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_1.h" />
     <ClInclude Include="Object\EffectChangeToFloat2_2.h" />

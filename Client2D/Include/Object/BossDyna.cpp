@@ -7,7 +7,7 @@
 #include "Scene/SceneManager.h"
 #include "Engine.h"
 #include "Animation/AnimationSequence2DInstance.h"
-#include "Apple.h"
+#include "DynaFarAttack.h"
 #include "Component/ColliderCircle.h"
 #include "EffectSceneChangeAlpha.h"
 #include "../Scene/Float1Scene.h"
@@ -231,11 +231,16 @@ void CBossDyna::FarAttack()
 		float XPos = ((float)(rand()) / (float)(RAND_MAX)) * (float)CEngine::GetInst()->GetResolution().Width;
 		float YPos = (float)CEngine::GetInst()->GetResolution().Height;
 
-		CApple* AttackEffect = m_Scene->CreateGameObject<CApple>("Attack");
+		CDynaFarAttack* AttackEffect = m_Scene->CreateGameObject<CDynaFarAttack>("Attack");
 
 		AttackEffect->SetWorldPos(XPos, YPos, GetWorldPos().z);
 		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetPhysicsSimulate(true);
+
+		if (m_ObjectMoveDir.x < 0.f)
+			AttackEffect->m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
+		else
+			AttackEffect->m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
 	}
 
 	m_IsAttacking = false;
