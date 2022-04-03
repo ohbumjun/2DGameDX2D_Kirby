@@ -454,7 +454,7 @@ void CPlayer2D::CheckWithinBossWorldResolution()
 
 		if (LeftPosX <= 0.f)
 		{
-			SetWorldPos(0.001f, GetWorldPos().y, GetWorldPos().z);
+			SetWorldPos(GetWorldScale().x * GetPivot().x + 0.001f, GetWorldPos().y, GetWorldPos().z);
 		}
 	}
 }
@@ -3180,10 +3180,10 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (m_IsChanging)
 		return;
 
-	m_IsAttacking = true;
-
 	if (m_IsSwimming)
 	{
+		m_IsAttacking = true;
+
 		CEffectWaterAttack* WaterAttack = m_Scene->CreateGameObject<CEffectWaterAttack>("Attack");
 
 		if (m_ObjectMoveDir.x < 0.f)
@@ -3211,6 +3211,7 @@ void CPlayer2D::Attack(float DeltaTime)
 	{
 		if (!m_IsSpecialStateChanged)
 			return;
+
 
 		ResetMoveInfo();
 

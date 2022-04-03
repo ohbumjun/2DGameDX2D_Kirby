@@ -98,8 +98,17 @@ void CBossDyna::Start()
 
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetPlayTime(2.0f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetLoop(false);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
+	this, &CBossDyna::CloseAttack);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(2.0f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetLoop(false);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
+		this, &CBossDyna::CloseAttack);
+
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetEndFunction(
+		this, &CBossDyna::FarAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetEndFunction(
+		this, &CBossDyna::CloseAttack);
 
 	m_IsAttacking = false;
 
@@ -116,7 +125,7 @@ void CBossDyna::Start()
 	m_ColliderBody->Enable(false);
 
 	// 처음에는 오른쪽에서 왼쪽으로 이동하게 세팅해야 한다.
-	SetWorldPos(m_Scene->GetWorldResolution().x - 50.f, m_Scene->GetWorldResolution().y * 0.2f, 0.f);
+	SetWorldPos(m_Scene->GetWorldResolution().x + 200.f, m_Scene->GetWorldResolution().y * 0.2f, 0.f);
 
 	// 몸을 제외한 나머지 부위는 안보이게 세팅
 	m_DynaRightFoot->GetMaterial()->SetOpacity(0.f);
@@ -235,7 +244,7 @@ void CBossDyna::CloseAttack()
 		AttackEffect->SetWorldPos(XPos, GetWorldPos().y - 200.f + 400.f * Number0To1, GetWorldPos().z);
 
 		AttackEffect->SetMonsterOwner(this);
-		AttackEffect->SetLifeTime(2.0f);
+		AttackEffect->SetLifeTime(1.3f);
 		
 	}
 
@@ -364,15 +373,10 @@ void CBossDyna::ChangeFarAttackAnimation()
 	if (m_IsAppearing)
 		return;
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
-		this, &CBossDyna::FarAttack);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
-		this, &CBossDyna::FarAttack);
-
 	if (m_ObjectMoveDir.x < 0.f)
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftFarAttack");
 	else
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightFarAttack");
 }
 
 void CBossDyna::ChangeCloseAttackAnimation()
@@ -545,9 +549,11 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 
 			m_MovementTargetXPos = GetWorldPos().x - GetWorldScale().x * 0.5f - ((float)rand() / (float)RAND_MAX) * 1500.f;
 
-			if (m_MovementTargetXPos <= GetWorldScale().x * 1.1f)
+			// 최대 크기가 700.f 로 세팅되어 있다
+			// GetWorldScale 로 하면, Frame마다 크기가 달라서, 화면에서 확 이동하게 되는 이상한 느낌이 날 것이다.
+			if (m_MovementTargetXPos <= 370.f)
 			{
-				m_MovementTargetXPos = GetWorldScale().x * 1.1f;
+				m_MovementTargetXPos = 370.f;
 			}
 		}
 	}
@@ -557,13 +563,13 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 
 		if (GetWorldPos().x <= m_MovementTargetXPos)
 		{
-			m_MovementRight = false;
+			m_MovementRight = true;
 
 			m_MovementTargetXPos = GetWorldPos().x + GetWorldScale().x * 0.5f + ((float)rand() / (float)RAND_MAX) * 1500.f;
 
-			if (m_MovementTargetXPos >= m_Scene->GetBossWorldResolution().x - GetWorldScale().x * 1.1f)
+			if (m_MovementTargetXPos >= m_Scene->GetBossWorldResolution().x - 370.f)
 			{
-				m_MovementTargetXPos = m_Scene->GetBossWorldResolution().x - GetWorldScale().x * 1.1f;
+				m_MovementTargetXPos = m_Scene->GetBossWorldResolution().x - 370.f;
 			}
 		}
 	}
@@ -609,7 +615,7 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 		return;
 
 	// 크기를 점점 증가시킨다.
-	m_ScaleIncreasing += 15.f * DeltaTime;
+	m_ScaleIncreasing += 20.f * DeltaTime;
 
 	if (m_ScaleIncreasing >= 350.f)
 	{
@@ -619,7 +625,7 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 	// 흐른 시간을 누적시킨다.
 	m_AppearFlowTime += DeltaTime;
 
-	SetWorldScale(m_ScaleIncreasing, m_ScaleIncreasing, 1.f);
+	SetWorldScale(m_ScaleIncreasing * 2.0f, m_ScaleIncreasing, 1.f);
 
 	if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "LeftBlackAppear")
 	{
@@ -638,39 +644,44 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 
 		if (GetWorldPos().x >= m_Scene->GetWorldResolution().x)
 		{
-			m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
+			m_Sprite->GetAnimationInstance()->ChangeAnimation("AppearFront");
 
-			SetWorldPos(m_Scene->GetWorldResolution().x, GetWorldPos().y, 0.f);
+			/// SetWorldPos(m_Scene->GetWorldResolution().x, GetWorldPos().y, 0.f);
+			SetWorldPos(1300.f, GetWorldPos().y, 0.f);
 
 			// 이후 점점 왼쪽으로 오게 세팅한다.
 			m_MovementRight = false;
 
-			m_MovementTargetXPos = 200.f;
+			m_MovementTargetXPos = 400.f;
 
-			// m_ScaleIncreasing = 10.f;
+			// 다시 World Resolution 범위 안에 제한되도록 세팅한다.
+			m_ApplyLimitPosResolution = true;
 		}
 	}
-	// else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "AppearFront")
-	else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "RightIdle")
+	else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "AppearFront")
 	{
 		// 해당 위치에서 점점 Scale만 커지게 세팅한다.
 		UpdateMovement(DeltaTime);
 
-		if (m_AppearFlowTime >= 12.f)
+		if (m_AppearFlowTime >= 15.f)
 		{
 			m_CameraFollowMaxTime = m_AppearFlowTime;
 
 			SetWorldScale(350.f, 350.f, 350.f);
 
-			m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
+			if (m_Scene->GetPlayerObject()->GetWorldPos().x  < GetWorldPos().x)
+			{
+				m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftIdle");
+			}
+			else
+			{
+				m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
+			}
 
 			m_IsAppearing = false;
 
 			// 다시 Collider Body가 동작하게 세팅한다.
 			m_ColliderBody->Enable(true);
-
-			// 다시 World Resolution 범위 안에 제한되도록 세팅한다.
-			m_ApplyLimitPosResolution = true;
 
 			// 혹시 모르니, 머리의 상대적 위치를 다시 세팅한다.
 			m_DynaHead->SetRelativePos(-80.f, m_InitHeadYRelativePos, 0.f);

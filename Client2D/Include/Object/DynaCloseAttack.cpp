@@ -55,7 +55,7 @@ void CDynaCloseAttack::Update(float DeltaTime)
 
 	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
 
-	AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * 700.f);
+	AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * 500.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{

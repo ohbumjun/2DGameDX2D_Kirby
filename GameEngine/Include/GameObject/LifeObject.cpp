@@ -626,8 +626,7 @@ void CLifeObject::CheckOutsideWorldResolution()
 	// Left
 	if (OriginalPos.x - WorldScale.x * Pivot.x < 0.f)
 	{
-		OriginalPos.x = WorldScale.x * Pivot.x + m_CollisionOffset;
-		SetWorldPos(OriginalPos);
+		OriginalPos.x = WorldScale.x * Pivot.x + m_CollisionOffset;SetWorldPos(OriginalPos);
 	}
 
 	// Right
