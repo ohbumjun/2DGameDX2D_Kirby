@@ -282,10 +282,6 @@ void CBossDyna::AIAttackSpecific(float DeltaTime)
 		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
 	}
 
-	/*
-	if (m_Jump)
-		return;
-
 	if (m_IsAttacking)
 		return;
 
@@ -309,7 +305,6 @@ void CBossDyna::AIAttackSpecific(float DeltaTime)
 
 		ChangeCloseAttackAnimation();
 	}
-	*/
 
 }
 
