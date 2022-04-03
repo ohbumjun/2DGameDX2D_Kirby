@@ -342,7 +342,7 @@ void CFightKirbyState::UltimateAttack()
 
 			AttackEffect->SetAttackObjectSpeed(5000.f);
 
-			AttackEffect->SetAttackObjectMaxSpeed(6000.f);
+			AttackEffect->SetAttackObjectMaxLimit(6000.f);
 
 			AttackEffect->SetKirbyOwner(this);
 

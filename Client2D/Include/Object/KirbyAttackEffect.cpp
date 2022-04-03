@@ -182,7 +182,9 @@ void CKirbyAttackEffect::SetAttackType(KirbyAttackEffect_Type Type)
 
 		m_SideCollisionApplied = false;
 
-		m_BottomCollisionApplied = true;
+		m_BottomCollisionApplied = false;
+
+		m_DestroyWhenCollide = false;
 	}
 		break;
 	case KirbyAttackEffect_Type::BeamSpark:

@@ -35,7 +35,7 @@ protected:
     {
         m_AttackObjectSpeed = Speed;
     }
-    void SetAttackObjectMaxSpeed(float Speed)
+    void SetAttackObjectMaxLimit(float Speed)
     {
         m_AttackDistLimitMax = Speed;
     }

@@ -76,6 +76,10 @@ public :
 {
         return m_Angle;
 }
+    float GetOpacity() const
+{
+        return m_Opacity;
+}
 
 public :
     void SetOpacity(float Opacity)

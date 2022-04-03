@@ -56,6 +56,7 @@ void CUIDamageFont::SetTexture(const std::string& Name, const std::vector<TCHAR*
 {
 	CTexture* Texture = nullptr;
 
+	/*
 	if (m_Owner && m_Owner->GetViewPort() && m_Owner->GetViewPort()->GetScene())
 	{
 		m_Owner->GetViewPort()->GetScene()->GetResource()->LoadTexture(Name, vecFileName, PathName);
@@ -66,6 +67,10 @@ void CUIDamageFont::SetTexture(const std::string& Name, const std::vector<TCHAR*
 		CResourceManager::GetInst()->LoadTexture(Name, vecFileName, PathName);
 		Texture = CResourceManager::GetInst()->FindTexture(Name);
 	}
+	*/
+
+	CResourceManager::GetInst()->LoadTexture(Name, vecFileName, PathName);
+	Texture = CResourceManager::GetInst()->FindTexture(Name);
 
 	if (Texture)
 	{

@@ -1,6 +1,8 @@
 #include "PlayerHUD.h"
 
-CPlayerHUD::CPlayerHUD()
+CPlayerHUD::CPlayerHUD() :
+	m_MPBarToggleMaxTime(0.5f),
+	m_IsOpacityToggle(false)
 {}
 
 CPlayerHUD::~CPlayerHUD()
@@ -66,12 +68,48 @@ bool CPlayerHUD::Init()
 	m_MPProgressBarBack->SetPos(15.f, 210.f);
 	m_MPProgressBarBack->SetTexture("PlayerMPProgressBarBack", TEXT("BarBack_Silver.png"));
 
+	// m_MPProgressBarWhiteBack
+	m_MPProgressBarWhiteBack = CreateUIWidget<CUIImage>("MPBarWhiteBack");
+	m_MPProgressBarWhiteBack->SetSize(590.f, 110.f);
+	m_MPProgressBarWhiteBack->SetPos(15.f, 210.f);
+	m_MPProgressBarWhiteBack->SetTexture("PlayerMPProgressBarWhiteBack", TEXT("BarBack_White.png"));
+	m_MPProgressBarWhiteBack->SetZOrder(1);
+	m_MPProgressBarWhiteBack->SetOpacity(0.f);
+
 	return true;
 }
 
 void CPlayerHUD::Update(float DeltaTime)
 {
 	CUIWindow::Update(DeltaTime);
+
+	// 만약 MP가 가득 찼다면 주기적으로 반짝이게 해준다. (Opacity)
+	if (m_MPProgressBar->GetPercent() == 1.f)
+	{
+		if (m_IsOpacityToggle)
+		{
+			m_MPProgressBarWhiteBack->SetOpacity(m_MPProgressBarWhiteBack->GetOpacity() - DeltaTime * 2.f);
+
+			if (m_MPProgressBarWhiteBack->GetOpacity() <= 0.1f)
+			{
+				m_IsOpacityToggle = false;
+			}
+		}
+		else
+		{
+			m_MPProgressBarWhiteBack->SetOpacity(m_MPProgressBarWhiteBack->GetOpacity() + DeltaTime * 2.f);
+
+			if (m_MPProgressBarWhiteBack->GetOpacity() >= 0.99f)
+			{
+				m_IsOpacityToggle = true;
+			}
+		}
+	}
+	else
+	{
+		m_MPProgressBarWhiteBack->SetOpacity(0.f);
+	}
+
 }
 
 void CPlayerHUD::PostUpdate(float DeltaTime)

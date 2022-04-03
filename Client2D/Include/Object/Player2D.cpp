@@ -1588,7 +1588,7 @@ void CPlayer2D::UpdateMP(float DeltaTime)
 {
 	if (m_MP < m_MPMax)
 	{
-		m_MP += DeltaTime * 5.f;
+		m_MP += DeltaTime * 20.f;
 
 		CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
 		HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
@@ -2586,7 +2586,7 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 	if (!m_IsSpecialStateChanged)
 		return;
 
-	if (m_MP < 25.f)
+	if (m_MP < 99.f)
 		return;
 
 	m_IsChanging = true;

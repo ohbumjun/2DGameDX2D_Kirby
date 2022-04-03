@@ -19,6 +19,11 @@ private:
     CSharedPtr<CUIImage> m_HPProgressBarBack;
     CSharedPtr<CUIProgressBar> m_MPProgressBar;
     CSharedPtr<CUIImage> m_MPProgressBarBack;
+    CSharedPtr<CUIImage> m_MPProgressBarWhiteBack;
+private :
+    float m_MPBarToggleMaxTime;
+    float m_MPBarToggleTime;
+    bool m_IsOpacityToggle;
 public :
     CUIProgressBar* GetHPProgressBar() const
 	{
