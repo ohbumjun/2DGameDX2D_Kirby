@@ -57,6 +57,7 @@ protected:
 
     // Trace
     Vector3 m_TraceDir;
+    bool m_IsTracingMonster;
 
     // Monster Type
     Monster_Type m_MonsterType;

@@ -54,10 +54,15 @@ void CBossDyna::Start()
 
 	m_Sprite->GetAnimationInstance()->Play();
 
+	m_MovementTargetYPos = GetWorldPos().y;
+
 	// m_HP = 5000.f;
 	m_HP = 500.f;
 	// m_HPMax = 5000.f;
 	m_HPMax = 500.f;
+
+	// Trace를 별도로 하지 않는다
+	m_IsTracingMonster = false;
 
 
 	// Collider 세팅
@@ -129,85 +134,13 @@ void CBossDyna::Update(float DeltaTime)
 
 	UpdateSceneChangeLimitTime(DeltaTime);
 
-	// Frame 에 따른 크기 조정
-	if (m_ObjectMoveDir.x < 0.f)
-	{
-		int CurFrame = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrame();
-
-		if (CurFrame == 0) // 쭉 뻗기
-		{
-			SetWorldScale(700.f, 350.f, 1.f);
-		}
-		else if (CurFrame == 2)
-		{
-			SetWorldScale(450.f, 350.f, 1.f); // 중간 뻗기
-		}
-		else // 아래로 
-		{
-			SetWorldScale(350.f, 350.f, 1.f);
-		}
-
-		if (m_DynaHead)
-			m_DynaHead->SetRelativePos(-120.f, m_DynaHead->GetRelativePos().y, 0.f);
-		if (m_DynaLeftFoot)
-			m_DynaLeftFoot->SetRelativePos(-115.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-		if (m_DynaRightFoot)
-			m_DynaRightFoot->SetRelativePos(-15.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-	}
-	else
-	{
-		int CurFrame = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrame();
-
-		if (CurFrame == 0) // 쭉 뻗기
-		{
-			SetWorldScale(700.f, 350.f, 1.f);
-		}
-		else if (CurFrame == 2)
-		{
-			SetWorldScale(450.f, 350.f, 1.f); // 중간 뻗기
-		}
-		else // 아래로 
-		{
-			SetWorldScale(350.f, 350.f, 1.f);
-		}
-
-		if (m_DynaHead)
-			m_DynaHead->SetRelativePos(-10.f, m_DynaHead->GetRelativePos().y, 0.f);
-		if (m_DynaRightFoot)
-			m_DynaRightFoot->SetRelativePos(65.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-		if (m_DynaLeftFoot)
-			m_DynaLeftFoot->SetRelativePos(-35.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-	}
+	UpdateScale(DeltaTime);
 
 	// Head 의 경우, 위 아래로 이동시키기
-	m_HeadToggleTime += DeltaTime;
+	UpdateHeadToggle(DeltaTime);
 
-	float CurYRelativePos = m_DynaHead->GetRelativePos().y;
-	float CurXRelativePos = m_DynaHead->GetRelativePos().x;
-
-	if (m_HeadToggleUp)
-	{
-		m_DynaHead->SetRelativePos(CurXRelativePos, CurYRelativePos + 20.f * DeltaTime, 0.f);
-
-		if (m_HeadToggleTime >= m_HeadToggleMaxTime)
-		{
-			m_HeadToggleTime = 0.f;
-
-			m_HeadToggleUp = false;
-		}
-	}
-	else
-	{
-		m_DynaHead->SetRelativePos(CurXRelativePos, CurYRelativePos - 20.f * DeltaTime, 0.f);
-
-		if (m_HeadToggleTime >= m_HeadToggleMaxTime)
-		{
-			m_HeadToggleTime = 0.f;
-
-			m_HeadToggleUp = true;
-		}
-	}
-
+	UpdateMovement(DeltaTime);
+	
 	// Hit 인 동안에는 머리, 발을 안보이게 한다
 	if (!m_IsBeingHit)
 	{
@@ -456,19 +389,6 @@ void CBossDyna::UpdateSceneChangeLimitTime(float DeltaTime)
 void CBossDyna::ChangeSceneToFloat1Scene()
 {
 	Destroy();
-
-	// CSceneManager::GetInst()->CreateNewScene();
-	//CSceneManager::GetInst()->CreateSceneMode<CFloat1LoadingScene>(false);
-
-	/*
-	CSceneManager::GetInst()->CreateNewScene(false);
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
-	CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-	if (CSceneManager::GetInst()->GetNextScene()->Load("Float1.scn", SCENE_PATH))
-	{
-		CSceneManager::GetInst()->ChangeNextScene();
-	}
-	*/
 }
 
 void CBossDyna::ChangeTraceAnimation()
@@ -478,4 +398,152 @@ void CBossDyna::ChangeTraceAnimation()
 
 	CBossMonster::ChangeTraceAnimation();
 }
+
+void CBossDyna::UpdateScale(float DeltaTime)
+{
+	// Frame 에 따른 크기 조정
+	if (m_ObjectMoveDir.x < 0.f)
+	{
+		int CurFrame = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrame();
+
+		if (CurFrame == 0) // 쭉 뻗기
+		{
+			SetWorldScale(700.f, 350.f, 1.f);
+		}
+		else if (CurFrame == 2)
+		{
+			SetWorldScale(450.f, 350.f, 1.f); // 중간 뻗기
+		}
+		else // 아래로 
+		{
+			SetWorldScale(350.f, 350.f, 1.f);
+		}
+
+		if (m_DynaHead)
+			m_DynaHead->SetRelativePos(-120.f, m_DynaHead->GetRelativePos().y, 0.f);
+		if (m_DynaLeftFoot)
+			m_DynaLeftFoot->SetRelativePos(-115.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+		if (m_DynaRightFoot)
+			m_DynaRightFoot->SetRelativePos(-15.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+	}
+	else
+	{
+		int CurFrame = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrame();
+
+		if (CurFrame == 0) // 쭉 뻗기
+		{
+			SetWorldScale(700.f, 350.f, 1.f);
+		}
+		else if (CurFrame == 2)
+		{
+			SetWorldScale(450.f, 350.f, 1.f); // 중간 뻗기
+		}
+		else // 아래로 
+		{
+			SetWorldScale(350.f, 350.f, 1.f);
+		}
+
+		if (m_DynaHead)
+			m_DynaHead->SetRelativePos(-10.f, m_DynaHead->GetRelativePos().y, 0.f);
+		if (m_DynaRightFoot)
+			m_DynaRightFoot->SetRelativePos(65.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+		if (m_DynaLeftFoot)
+			m_DynaLeftFoot->SetRelativePos(-35.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+	}
+}
+
+void CBossDyna::UpdateHeadToggle(float DeltaTime)
+{
+	m_HeadToggleTime += DeltaTime;
+
+	float CurYRelativePos = m_DynaHead->GetRelativePos().y;
+	float CurXRelativePos = m_DynaHead->GetRelativePos().x;
+
+	if (m_HeadToggleUp)
+	{
+		m_DynaHead->SetRelativePos(CurXRelativePos, CurYRelativePos + 20.f * DeltaTime, 0.f);
+
+		if (m_HeadToggleTime >= m_HeadToggleMaxTime)
+		{
+			m_HeadToggleTime = 0.f;
+
+			m_HeadToggleUp = false;
+		}
+	}
+	else
+	{
+		m_DynaHead->SetRelativePos(CurXRelativePos, CurYRelativePos - 20.f * DeltaTime, 0.f);
+
+		if (m_HeadToggleTime >= m_HeadToggleMaxTime)
+		{
+			m_HeadToggleTime = 0.f;
+
+			m_HeadToggleUp = true;
+		}
+	}
+}
+
+void CBossDyna::UpdateMovement(float DeltaTime)
+{
+	// if (m_IsAppearing)
+	//	return;
+
+
+	// 좌우 이동
+	if (m_MovementRight)
+	{
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 150.f);
+
+		if (GetWorldPos().x + GetWorldScale().x * 0.5f + 200.f >= m_Scene->GetWorldResolution().x)
+		{
+			m_MovementRight = false;
+		}
+	}
+	else
+	{
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 150.f);
+
+		if (GetWorldPos().x - GetWorldScale().x * 0.5f <= 100.f)
+		{
+			m_MovementRight = true;
+		}
+	}
+
+	// 상하 이동
+	if (m_MovementUp)
+	{
+		AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 150.f);
+
+		if (GetWorldPos().y + GetWorldScale().y * 0.5f >= m_MovementTargetYPos)
+		{
+			m_MovementUp = false;
+
+			m_MovementTargetYPos = GetWorldPos().y - GetWorldScale().y * 0.5f - ((float)rand() / (float)RAND_MAX) * 1000.f;
+
+			if (m_MovementTargetYPos <= 200.f)
+			{
+				m_MovementTargetYPos = 200.f + GetWorldScale().y * 0.7f;
+			}
+		}
+	}
+	else
+	{
+		AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 150.f);
+
+		if (GetWorldPos().y - GetWorldScale().y * 0.5f <= m_MovementTargetYPos)
+		{
+			m_MovementUp = true;
+
+			m_MovementTargetYPos = GetWorldPos().y + GetWorldScale().y * 0.5f + ((float)rand() / (float)RAND_MAX) * 1000.f;
+
+			if (m_MovementTargetYPos >= m_Scene->GetWorldResolution().y - GetWorldScale().y * 0.7f)
+			{
+				m_MovementTargetYPos = m_Scene->GetWorldResolution().y - GetWorldScale().y * 0.7f;
+			}
+		}
+	}
+}
+
+void CBossDyna::UpdateAppearance(float DeltaTime)
+{}
 

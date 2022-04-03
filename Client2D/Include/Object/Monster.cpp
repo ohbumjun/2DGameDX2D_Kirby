@@ -276,13 +276,17 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 		if (!Player)
 			return;
 
-		if (!Player->IsSwimming())
+		if (!Player->IsSwimming()) // 
 			return;
 
 		AddWorldPos(Vector3(m_TraceDir) * DeltaTime * m_MonsterMoveVelocity);
 
 		Trace = true;
 	}
+
+	// Trace 자체를 안하는 Monster 의 경우, Trace를 하지 않는다.
+	if (!m_IsTracingMonster)
+		Trace = false;
 
 	if (Trace)
 	{

@@ -24,6 +24,12 @@ private :
     bool m_HeadToggleUp;
     float m_InitHeadYRelativePos;
 private:
+    // Movement
+    bool m_IsAppearing;
+    bool m_MovementRight;
+    bool m_MovementUp;
+    float m_MovementTargetYPos;
+private:
     void FarAttack();
     void CloseAttack();
     void ChangeFarAttackAnimation();
@@ -32,6 +38,10 @@ private:
     void ChangeSceneToFloat1Scene();
 protected:
     virtual void ChangeTraceAnimation() override;
+    void UpdateScale(float DeltaTime);
+    void UpdateHeadToggle(float DeltaTime);
+    void UpdateMovement(float DeltaTime);
+    void UpdateAppearance(float DeltaTime);
 private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;
