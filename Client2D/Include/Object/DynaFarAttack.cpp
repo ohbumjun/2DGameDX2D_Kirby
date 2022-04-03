@@ -64,7 +64,7 @@ bool CDynaFarAttack::Init()
 		"BossDynaFarAttack", TEXT("Boss_Dyna_FarAttack.anim"));
 
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
-	m_MainSprite->SetWorldScale(120.f, 120.f, 1.f);
+	m_MainSprite->SetWorldScale(150.f, 150.f, 1.f);
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.4f);
@@ -78,6 +78,8 @@ bool CDynaFarAttack::Init()
 void CDynaFarAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
+
+	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 700.f);
 }
 
 void CDynaFarAttack::PostUpdate(float DeltaTime)

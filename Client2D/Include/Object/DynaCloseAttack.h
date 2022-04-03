@@ -4,7 +4,7 @@
 class CDynaCloseAttack :
     public CAttackEffect
 {
-    friend class CFightMonster;
+    friend class CBossDyna;
 public:
     CDynaCloseAttack();
     virtual ~CDynaCloseAttack() override;

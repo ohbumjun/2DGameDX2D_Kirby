@@ -2,13 +2,9 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
-#include "Animation/AnimationSequence2DData.h"
 #include <Component/SpriteComponent.h>
-#include "BeamMonster.h"
-#include "FightMonster.h"
 #include "Player2D.h"
 #include "Component/ColliderCircle.h"
-#include "UI/UIDamageFont.h"
 
 CDynaCloseAttack::CDynaCloseAttack() :
 	m_AttackDistLimit(0.f),
@@ -43,11 +39,8 @@ bool CDynaCloseAttack::Init()
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
 		"DynaCloseAttackEffect", TEXT("Boss_Dyna_CloseAttack.anim"));
 
-	float AnimDelayTime = AnimationInstance->GetCurrentAnimation()->GetPlayTime()
-		/ AnimationInstance->GetCurrentAnimation()->GetFrameCount();
-
 	m_MainSprite->SetAnimationInstance(AnimationInstance);
-	m_MainSprite->SetWorldScale(200.f, 200.f, 1.f);
+	m_MainSprite->SetWorldScale(150.f, 150.f, 1.f);
 
 	m_Collider->SetCollisionProfile("MonsterAttack");
 	m_Collider->SetInfo(Vector2(0.f, 0.f), m_MainSprite->GetWorldScale().x * 0.3f);
@@ -62,7 +55,7 @@ void CDynaCloseAttack::Update(float DeltaTime)
 
 	float MoveDist = std::abs(m_AttackDir.x) * DeltaTime * 500.f;
 
-	AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * 500.f);
+	AddWorldPos(Vector3(m_AttackDir.x, 0.f, 0.f) * DeltaTime * 700.f);
 
 	if (m_AttackDistLimit < m_AttackDistLimitMax)
 	{

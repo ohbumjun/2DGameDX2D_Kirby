@@ -8,10 +8,9 @@
 #include "Engine.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "DynaFarAttack.h"
+#include "DynaCloseAttack.h"
 #include "Component/ColliderCircle.h"
 #include "EffectSceneChangeAlpha.h"
-#include "../Scene/Float1Scene.h"
-#include "../Scene/Float1LoadingScene.h"
 
 class CAnimationSequence2DInstance;
 
@@ -89,10 +88,12 @@ void CBossDyna::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetLoop(false);
 
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetPlayTime(2.0f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetLoop(false);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(2.0f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetLoop(false);
 	// Close Attack
 	/*
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightHit")->SetEndFunction(this, &CBossDyna::CloseAttack);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftHit")->SetEndFunction(this, &CBossDyna::CloseAttack);
 
@@ -226,21 +227,28 @@ void CBossDyna::FarAttack()
 {
 	m_IsAttacking = true;
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		float XPos = ((float)(rand()) / (float)(RAND_MAX)) * (float)CEngine::GetInst()->GetResolution().Width;
-		float YPos = (float)CEngine::GetInst()->GetResolution().Height;
+		float XAddPos = ((float)(rand()) / (float)(RAND_MAX)) * (float)CEngine::GetInst()->GetResolution().Width;
+		float YPos = (float)CEngine::GetInst()->GetResolution().Height + 300.f;
 
 		CDynaFarAttack* AttackEffect = m_Scene->CreateGameObject<CDynaFarAttack>("Attack");
 
-		AttackEffect->SetWorldPos(XPos, YPos, GetWorldPos().z);
 		AttackEffect->SetMonsterOwner(this);
-		AttackEffect->SetPhysicsSimulate(true);
+		// AttackEffect->SetPhysicsSimulate(true);
 
 		if (m_ObjectMoveDir.x < 0.f)
+		{
 			AttackEffect->m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectLeft");
+			AttackEffect->SetLeftAttackDir(-1.f);
+			AttackEffect->SetWorldPos(600.f + XAddPos, YPos, GetWorldPos().z);
+		}
 		else
+		{
 			AttackEffect->m_MainSprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
+			AttackEffect->SetRightAttackDir(-1.f);
+			AttackEffect->SetWorldPos(-600.f + XAddPos, YPos, GetWorldPos().z);
+		}
 	}
 
 	m_IsAttacking = false;
@@ -256,16 +264,24 @@ void CBossDyna::CloseAttack()
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	// Attack Back Effect
-	CTornado* AttackEffect = m_Scene->CreateGameObject<CTornado>("AttackEffect");
+	CDynaCloseAttack* AttackEffect = m_Scene->CreateGameObject<CDynaCloseAttack>("AttackEffect");
 
 	AttackEffect->SetWorldPos(
 		GetWorldPos().x + GetWorldScale().x * 0.3f,
 		GetWorldPos().y - GetWorldScale().y * 0.4f,
 		0.f);
 
-	AttackEffect->SetLeftAttackDir();
 	AttackEffect->SetMonsterOwner(this);
-	AttackEffect->SetLifeTime(3.0f);
+	AttackEffect->SetLifeTime(2.0f);
+
+	if (m_ObjectMoveDir.x < 0.f)
+	{
+		AttackEffect->SetLeftAttackDir();
+	}
+	else
+	{
+		AttackEffect->SetRightAttackDir();
+	}
 
 	m_IsAttacking = false;
 
@@ -386,18 +402,28 @@ void CBossDyna::AIDeathSpecific(float DeltaTime)
 
 void CBossDyna::ChangeFarAttackAnimation()
 {
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
+		this, &CBossDyna::FarAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
+		this, &CBossDyna::FarAttack);
+
 	if (m_ObjectMoveDir.x < 0.f)
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttackFar");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
 	else
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttackFar");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");
 }
 
 void CBossDyna::ChangeCloseAttackAnimation()
 {
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
+		this, &CBossDyna::CloseAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
+		this, &CBossDyna::CloseAttack);
+
 	if (m_ObjectMoveDir.x < 0.f)
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttackClose");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
 	else
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttackClose");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");
 }
 
 void CBossDyna::UpdateSceneChangeLimitTime(float DeltaTime)
@@ -422,8 +448,8 @@ void CBossDyna::ChangeSceneToFloat1Scene()
 {
 	Destroy();
 
-	CSceneManager::GetInst()->CreateNewScene();
-	CSceneManager::GetInst()->CreateSceneMode<CFloat1LoadingScene>(false);
+	// CSceneManager::GetInst()->CreateNewScene();
+	//CSceneManager::GetInst()->CreateSceneMode<CFloat1LoadingScene>(false);
 
 	/*
 	CSceneManager::GetInst()->CreateNewScene(false);
