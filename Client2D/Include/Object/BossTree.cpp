@@ -2,7 +2,6 @@
 #include "Tornado.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/CameraManager.h>
-
 #include "Component/PaperBurnComponent.h"
 #include <Scene/Scene.h>
 #include "Scene/SceneManager.h"

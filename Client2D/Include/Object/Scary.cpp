@@ -45,7 +45,7 @@ void CScary::Start()
 {
 	CNormalMonster::Start();
 
-	SetExcelStat(L"MushRoom");
+	SetExcelStat(L"Scary");
 
 	m_IsGround = true;
 

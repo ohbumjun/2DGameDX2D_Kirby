@@ -6,6 +6,10 @@
 #include "PenguinCloseAttack.h"
 #include "Component/ColliderCircle.h"
 #include "EffectJumpAir.h"
+#include "EffectSceneChangeAlpha.h"
+#include "../Scene/Dyna1LoadingScene.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
 
 class CAnimationSequence2DInstance;
 
@@ -15,7 +19,8 @@ CBossPenguin::CBossPenguin() :
 	m_JumpDistance(1200.f),
 	m_DashRunDistance(700.f),
 	m_FarAttackTimeMax(4.5f),
-	m_FarAttackTime(-1.f)
+	m_FarAttackTime(-1.f),
+	m_SceneChangeLimitTime(-1.f)
 {
 	SetTypeID<CBossPenguin>();
 
@@ -27,22 +32,13 @@ CBossPenguin::~CBossPenguin()
 void CBossPenguin::Start()
 {
 	CBossMonster::Start();
-
-	// m_DashDistance = 1200.f;
-	// m_JumpVelocity = 60.f;
-	// m_AttackDistance = 600.f;
-	// m_IsGroundObject = true;
-	// m_CloseAttackDistance = 400.f;
-	// m_FarAttackDistance = 600.f;
-	// m_FarAttackLimitTimeMax = 6.0f;
-	// m_HP = 5000.f;
-	// m_HPMax = 5000.f;
-	// m_PhysicsSimulate = true;
-	// m_IsGroundObject = true;
-
+	
 	Monster_Stat* Stat = SetExcelStat(L"BossPenguin");
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
+
+	m_HP = 50.f;
+	// m_HPMax = 5000.f;
 
 	m_IsGround = true;
 
@@ -95,6 +91,8 @@ void CBossPenguin::Update(float DeltaTime)
 	UpdateJumpAction(DeltaTime);
 
 	UpdateFarAttackAction(DeltaTime);
+
+	UpdateSceneChangeLimitTime(DeltaTime);
 }
 
 void CBossPenguin::PostUpdate(float DeltaTime)
@@ -252,6 +250,16 @@ void CBossPenguin::AITraceSpecific(float DeltaTime)
 	}
 }
 
+void CBossPenguin::AIDeathSpecific(float DeltaTime)
+{
+	if (m_SceneChangeLimitTime > 0.f)
+		return;
+
+	CBossMonster::AIDeathSpecific(DeltaTime);
+
+	m_SceneChangeLimitTime = 5.f;
+}
+
 void CBossPenguin::ChangeFarAttackAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)
@@ -339,3 +347,29 @@ void CBossPenguin::ChangeTraceAnimation()
 	CBossMonster::ChangeTraceAnimation();
 }
 
+void CBossPenguin::ChangeSceneToDyna1Scene()
+{
+	Destroy();
+
+	CSceneManager::GetInst()->CreateNewScene();
+	CSceneManager::GetInst()->CreateSceneMode<CDyna1LoadingScene>(false);
+}
+
+
+void CBossPenguin::UpdateSceneChangeLimitTime(float DeltaTime)
+{
+	if (m_SceneChangeLimitTime > 0.f)
+	{
+		m_SceneChangeLimitTime -= DeltaTime;
+
+		if (m_SceneChangeLimitTime <= 0.f)
+		{
+			// Scene Change 를 진행하는 Object를 만들어낸다.
+			CEffectSceneChangeAlpha* Alpha = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+
+			Alpha->SetSceneStart(false);
+
+			Alpha->SetSceneChangeCallback(this, &CBossPenguin::ChangeSceneToDyna1Scene);
+		}
+	}
+}

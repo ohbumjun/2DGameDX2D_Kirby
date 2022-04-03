@@ -600,6 +600,10 @@ void CEditorManager::MouseRButtonDown(float DeltaTime)
 		{
 			CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CWaterFloat2_2>(NewMonsterName);
 		}
+		else if (strcmp(g_SceneChangeToDyna2.c_str(), SelectObjectName.c_str()) == 0)
+		{
+		CreatedObject = CSceneManager::GetInst()->GetScene()->CreateGameObject<CEffectChangeToDyna2>(NewMonsterName);
+		}
 
 		if (!CreatedObject)
 			return;
@@ -1098,8 +1102,8 @@ CGameObject* CEditorManager::CreateGameObject(CScene* Scene, const size_t GameOb
 	}
 	else if (GameObjectTypeID == typeid(CEffectChangeToDyna2).hash_code())
 	{
-	CEffectChangeToDyna2* Obj = Scene->LoadGameObject<CEffectChangeToDyna2>();
-	return Obj;
+		CEffectChangeToDyna2* Obj = Scene->LoadGameObject<CEffectChangeToDyna2>();
+		return Obj;
 	}
 	else if (GameObjectTypeID == typeid(CEffectChangeToGreen4).hash_code())
 	{

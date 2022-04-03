@@ -24,6 +24,8 @@ private:
     float m_FarAttackTime;
     float m_FarAttackTimeMax;
     Vector3 m_FarAttackTraceDir;
+    // Scene Change
+    float m_SceneChangeLimitTime;
 public:
     virtual void Start() override;
     virtual bool Init() override;
@@ -39,12 +41,15 @@ private:
     void ChangeJumpAttackAnimation();
     void UpdateJumpAction(float DeltaTime);
     void UpdateFarAttackAction(float DeltaTime);
+    void UpdateSceneChangeLimitTime(float DeltaTime);
     void MakeJumpAirEffect();
 protected:
     virtual void SetObjectLand() override;
     virtual void ChangeTraceAnimation() override;
+    void ChangeSceneToDyna1Scene();
 private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;
+    virtual void AIDeathSpecific(float DeltaTime) override;
 };
 

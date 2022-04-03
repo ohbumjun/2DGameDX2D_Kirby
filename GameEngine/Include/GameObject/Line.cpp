@@ -340,6 +340,11 @@ void CLine::Start()
 	m_StartPosBox = (CStaticMeshComponent*)FindComponent("DrawStartPosMesh");
 	m_EndPosBox = (CStaticMeshComponent*)FindComponent("DrawEndPosMesh");
 
+	// 화면 뒤쪽으로 보낸다.
+	m_StartPosBox->SetLayerName("Back");
+	m_EndPosBox->SetLayerName("Back");
+	m_MeshComponent->SetLayerName("Back");
+
 	CalculateFinalPosInfo();
 }
 
