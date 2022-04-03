@@ -35,7 +35,8 @@ CBossDyna::CBossDyna() :
 
 	m_HitLimitTimeMax = 0.4f;
 	m_FarAttackLimitTime = 0.f;
-	m_CameraFollowMaxTime = 5.f;
+	// m_CameraFollowMaxTime = 10.f; // 처음에는 무한정 세팅하고 --> Apper 가 마무리 되면 그때 Player로
+	m_CameraFollowMaxTime = FLT_MAX; // 처음에는 무한정 세팅하고 --> Apper 가 마무리 되면 그때 Player로
 }
 
 CBossDyna::~CBossDyna()
@@ -63,7 +64,6 @@ void CBossDyna::Start()
 
 	// Trace를 별도로 하지 않는다
 	m_IsTracingMonster = false;
-
 
 	// Collider 세팅
 	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.35f);
@@ -93,31 +93,40 @@ void CBossDyna::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightDeath")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetLoop(false);
 
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightBlackAppear")->SetLoop(true);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftBlackAppear")->SetLoop(true);
+
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetPlayTime(2.0f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetPlayTime(2.0f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetLoop(false);
-	// Close Attack
-	/*
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightHit")->SetEndFunction(this, &CBossDyna::CloseAttack);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftHit")->SetEndFunction(this, &CBossDyna::CloseAttack);
-
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetPlayTime(1.3f);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetLoop(false);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackClose")->SetEndFunction(this, &CBossDyna::CloseAttack);
-
-	// Far Attack
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetPlayTime(1.3f);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetLoop(false);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackFar")->SetEndFunction(this, &CBossDyna::FarAttack);
-
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetPlayTime(1.3f);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetLoop(false);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttackFar")->SetEndFunction(this, &CBossDyna::FarAttack);
-	*/
-
 
 	m_IsAttacking = false;
+
+	// 처음에는 LeftBlackAppearance 로 시작
+	
+	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("LeftBlackAppear");
+
+	// 크기도 작게 + 이후 점점 크게 할 것
+	SetWorldScale(10.f, 10.f, 1.f);
+
+	m_ScaleIncreasing = 10.f;
+
+	// Collider Body는 처음 등장 때는 동작하지 않게 세팅한다
+	m_ColliderBody->Enable(false);
+
+	// 처음에는 오른쪽에서 왼쪽으로 이동하게 세팅해야 한다.
+	SetWorldPos(m_Scene->GetWorldResolution().x - 50.f, m_Scene->GetWorldResolution().y * 0.2f, 0.f);
+
+	// 몸을 제외한 나머지 부위는 안보이게 세팅
+	m_DynaRightFoot->GetMaterial()->SetOpacity(0.f);
+	m_DynaLeftFoot->GetMaterial()->SetOpacity(0.f);
+	m_DynaHead->GetMaterial()->SetOpacity(0.f);
+
+	// 초반에는 Resolution 범위 밖을 벗어나게끔 허용한다
+	m_ApplyLimitPosResolution = false;
+	
+	m_IsAppearing = true;
 }
 
 bool CBossDyna::Init()
@@ -139,15 +148,20 @@ void CBossDyna::Update(float DeltaTime)
 	// Head 의 경우, 위 아래로 이동시키기
 	UpdateHeadToggle(DeltaTime);
 
-	UpdateMovement(DeltaTime);
+	if (!m_IsAppearing)
+	{
+		UpdateMovement(DeltaTime);
+	}
 	
 	// Hit 인 동안에는 머리, 발을 안보이게 한다
-	if (!m_IsBeingHit)
+	if (!m_IsBeingHit && !m_IsAppearing)
 	{
 		m_DynaHead->GetMaterial()->SetOpacity(1.f);
 		m_DynaRightFoot->GetMaterial()->SetOpacity(1.f);
 		m_DynaLeftFoot->GetMaterial()->SetOpacity(1.f);
 	}
+
+	UpdateAppearance(DeltaTime);
 
 }
 
@@ -232,6 +246,9 @@ void CBossDyna::CloseAttack()
 
 void CBossDyna::AIAttackSpecific(float DeltaTime)
 {
+	if (m_IsAppearing)
+		return;
+
 	if (m_ObjectMoveDir.x < 0.f)
 	{
 		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftAttack");
@@ -344,6 +361,9 @@ void CBossDyna::AIDeathSpecific(float DeltaTime)
 
 void CBossDyna::ChangeFarAttackAnimation()
 {
+	if (m_IsAppearing)
+		return;
+
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CBossDyna::FarAttack);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
@@ -357,6 +377,9 @@ void CBossDyna::ChangeFarAttackAnimation()
 
 void CBossDyna::ChangeCloseAttackAnimation()
 {
+	if (m_IsAppearing)
+		return;
+
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CBossDyna::CloseAttack);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
@@ -393,14 +416,37 @@ void CBossDyna::ChangeSceneToFloat1Scene()
 
 void CBossDyna::ChangeTraceAnimation()
 {
-	if (m_Jump)
+	if (m_IsAppearing)
 		return;
-
 	CBossMonster::ChangeTraceAnimation();
+}
+
+void CBossDyna::ChangeAttackAnimation()
+{
+	if (m_IsAppearing)
+		return;
+	CBossMonster::ChangeAttackAnimation();
+}
+
+void CBossDyna::ChangeWalkAnimation()
+{
+	if (m_IsAppearing)
+		return;
+	CBossMonster::ChangeWalkAnimation();
+}
+
+void CBossDyna::ChangeIdleAnimation()
+{
+	if (m_IsAppearing)
+		return;
+	CBossMonster::ChangeIdleAnimation();
 }
 
 void CBossDyna::UpdateScale(float DeltaTime)
 {
+	if (m_IsAppearing)
+		return;
+
 	// Frame 에 따른 크기 조정
 	if (m_ObjectMoveDir.x < 0.f)
 	{
@@ -454,6 +500,9 @@ void CBossDyna::UpdateScale(float DeltaTime)
 
 void CBossDyna::UpdateHeadToggle(float DeltaTime)
 {
+	if (m_IsAppearing)
+		return;
+
 	m_HeadToggleTime += DeltaTime;
 
 	float CurYRelativePos = m_DynaHead->GetRelativePos().y;
@@ -485,27 +534,37 @@ void CBossDyna::UpdateHeadToggle(float DeltaTime)
 
 void CBossDyna::UpdateMovement(float DeltaTime)
 {
-	// if (m_IsAppearing)
-	//	return;
-
-
 	// 좌우 이동
 	if (m_MovementRight)
 	{
 		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 150.f);
 
-		if (GetWorldPos().x + GetWorldScale().x * 0.5f + 200.f >= m_Scene->GetWorldResolution().x)
+		if (GetWorldPos().x >= m_MovementTargetXPos)
 		{
 			m_MovementRight = false;
+
+			m_MovementTargetXPos = GetWorldPos().x - GetWorldScale().x * 0.5f - ((float)rand() / (float)RAND_MAX) * 1500.f;
+
+			if (m_MovementTargetXPos <= GetWorldScale().x * 1.1f)
+			{
+				m_MovementTargetXPos = GetWorldScale().x * 1.1f;
+			}
 		}
 	}
 	else
 	{
 		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 150.f);
 
-		if (GetWorldPos().x - GetWorldScale().x * 0.5f <= 100.f)
+		if (GetWorldPos().x <= m_MovementTargetXPos)
 		{
-			m_MovementRight = true;
+			m_MovementRight = false;
+
+			m_MovementTargetXPos = GetWorldPos().x + GetWorldScale().x * 0.5f + ((float)rand() / (float)RAND_MAX) * 1500.f;
+
+			if (m_MovementTargetXPos >= m_Scene->GetBossWorldResolution().x - GetWorldScale().x * 1.1f)
+			{
+				m_MovementTargetXPos = m_Scene->GetBossWorldResolution().x - GetWorldScale().x * 1.1f;
+			}
 		}
 	}
 
@@ -520,9 +579,9 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 
 			m_MovementTargetYPos = GetWorldPos().y - GetWorldScale().y * 0.5f - ((float)rand() / (float)RAND_MAX) * 1000.f;
 
-			if (m_MovementTargetYPos <= 200.f)
+			if (m_MovementTargetYPos <= GetWorldScale().y)
 			{
-				m_MovementTargetYPos = 200.f + GetWorldScale().y * 0.7f;
+				m_MovementTargetYPos = GetWorldScale().y + 0.001f;;
 			}
 		}
 	}
@@ -536,14 +595,88 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 
 			m_MovementTargetYPos = GetWorldPos().y + GetWorldScale().y * 0.5f + ((float)rand() / (float)RAND_MAX) * 1000.f;
 
-			if (m_MovementTargetYPos >= m_Scene->GetWorldResolution().y - GetWorldScale().y * 0.7f)
+			if (m_MovementTargetYPos >= m_Scene->GetBossWorldResolution().y - GetWorldScale().y * 0.7f)
 			{
-				m_MovementTargetYPos = m_Scene->GetWorldResolution().y - GetWorldScale().y * 0.7f;
+				m_MovementTargetYPos = m_Scene->GetBossWorldResolution().y - GetWorldScale().y * 0.7f;
 			}
 		}
 	}
 }
 
 void CBossDyna::UpdateAppearance(float DeltaTime)
-{}
+{
+	if (!m_IsAppearing)
+		return;
+
+	// 크기를 점점 증가시킨다.
+	m_ScaleIncreasing += 15.f * DeltaTime;
+
+	if (m_ScaleIncreasing >= 350.f)
+	{
+		m_ScaleIncreasing = 350.f;
+	}
+
+	// 흐른 시간을 누적시킨다.
+	m_AppearFlowTime += DeltaTime;
+
+	SetWorldScale(m_ScaleIncreasing, m_ScaleIncreasing, 1.f);
+
+	if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "LeftBlackAppear")
+	{
+		// 왼쪽으로 이동하게 세팅한다.
+		AddWorldPos(Vector3(-1.f, 0.1f, 0.f) * DeltaTime * 500.f);
+
+		if (GetWorldPos().x <= -100.f)
+		{
+			m_Sprite->GetAnimationInstance()->ChangeAnimation("RightBlackAppear");
+		}
+	}
+	else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "RightBlackAppear")
+	{
+		// 서서히 오른쪽으로 이동하게 세팅한다.
+		AddWorldPos(Vector3(1.f, 0.1f, 0.f) * DeltaTime * 500.f);
+
+		if (GetWorldPos().x >= m_Scene->GetWorldResolution().x)
+		{
+			m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
+
+			SetWorldPos(m_Scene->GetWorldResolution().x, GetWorldPos().y, 0.f);
+
+			// 이후 점점 왼쪽으로 오게 세팅한다.
+			m_MovementRight = false;
+
+			m_MovementTargetXPos = 200.f;
+
+			// m_ScaleIncreasing = 10.f;
+		}
+	}
+	// else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "AppearFront")
+	else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "RightIdle")
+	{
+		// 해당 위치에서 점점 Scale만 커지게 세팅한다.
+		UpdateMovement(DeltaTime);
+
+		if (m_AppearFlowTime >= 12.f)
+		{
+			m_CameraFollowMaxTime = m_AppearFlowTime;
+
+			SetWorldScale(350.f, 350.f, 350.f);
+
+			m_Sprite->GetAnimationInstance()->ChangeAnimation("RightIdle");
+
+			m_IsAppearing = false;
+
+			// 다시 Collider Body가 동작하게 세팅한다.
+			m_ColliderBody->Enable(true);
+
+			// 다시 World Resolution 범위 안에 제한되도록 세팅한다.
+			m_ApplyLimitPosResolution = true;
+
+			// 혹시 모르니, 머리의 상대적 위치를 다시 세팅한다.
+			m_DynaHead->SetRelativePos(-80.f, m_InitHeadYRelativePos, 0.f);
+
+			m_Scene->GetCameraManager()->GetCurrentCamera()->CancleTargetBossFollow();
+		}
+	}
+}
 

@@ -24,6 +24,11 @@ void CBossDyna::Start()
 
 	CWidgetComponent* Component = FindComponentByType<CWidgetComponent>();
 
+	m_Sprite = (CSpriteComponent*)m_RootComponent.Get();
+	m_DynaHead = (CSpriteComponent*)FindComponent("DynaHead");
+	m_DynaRightFoot = (CSpriteComponent*)FindComponent("DynaRightFoot");
+	m_DynaLeftFoot = (CSpriteComponent*)FindComponent("DynaLeftFoot");
+
 	if (Component)
 	{
 		CMonsterEditorHUD* MonsterHUD = dynamic_cast<CMonsterEditorHUD*>(Component->GetWidgetWindow());
@@ -48,7 +53,6 @@ bool CBossDyna::Init()
 	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.4f);
 
 	m_ColliderBody->SetRelativePos(0.f, 50.f, 0.f);
-
 
 	m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayTime(6.f);
 
@@ -91,9 +95,21 @@ bool CBossDyna::Init()
 	m_RootComponent->AddChild(m_DynaLeftFoot);
 
 	// Left
-	// m_DynaHead->SetRelativePos(-80.f, m_RootComponent->GetWorldScale().y * 0.25f, 0.f);
-	// m_DynaRightFoot->SetRelativePos(-15.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-	// m_DynaLeftFoot->SetRelativePos(-115.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+	/*
+	if (m_DynaHead)
+		m_DynaHead->SetRelativePos(-80.f, m_RootComponent->GetWorldScale().y * 0.28f, 0.f);
+	if (m_DynaLeftFoot)
+		m_DynaLeftFoot->SetRelativePos(-115.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+	if (m_DynaRightFoot)
+		m_DynaRightFoot->SetRelativePos(-15.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+	 */
+
+	if (m_DynaHead)
+		m_DynaHead->SetRelativePos(-10.f, m_RootComponent->GetWorldScale().y * 0.28f, 0.f);
+	if (m_DynaRightFoot)
+		m_DynaRightFoot->SetRelativePos(65.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
+	if (m_DynaLeftFoot)
+		m_DynaLeftFoot->SetRelativePos(-35.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
 
 	return true;
 }
@@ -101,57 +117,6 @@ bool CBossDyna::Init()
 void CBossDyna::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
-
-	const std::string CurrentAnim = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName();
-
-	if (CurrentAnim == "LeftIdle")
-	{
-		int CurFrame = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrame();
-
-		if (CurFrame == 0) // Âß »¸±â
-		{
-			SetWorldScale(700.f, 350.f, 1.f);
-		}
-		else if (CurFrame == 2)
-		{
-			SetWorldScale(450.f, 350.f, 1.f); // Áß°£ »¸±â
-		}
-		else // ¾Æ·¡·Î 
-		{
-			SetWorldScale(350.f, 350.f, 1.f);
-		}
-
-		if (m_DynaHead)
-			m_DynaHead->SetRelativePos(-80.f, m_RootComponent->GetWorldScale().y * 0.28f, 0.f);
-		if (m_DynaLeftFoot)
-			m_DynaLeftFoot->SetRelativePos(-115.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-		if (m_DynaRightFoot)
-			m_DynaRightFoot->SetRelativePos(-15.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-	}
-	else if (CurrentAnim == "RightIdle")
-	{
-		int CurFrame = m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetCurrentFrame();
-
-		if (CurFrame == 0) // Âß »¸±â
-		{
-			SetWorldScale(700.f, 350.f, 1.f);
-		}
-		else if (CurFrame == 2)
-		{
-			SetWorldScale(450.f, 350.f, 1.f); // Áß°£ »¸±â
-		}
-		else // ¾Æ·¡·Î 
-		{
-			SetWorldScale(350.f, 350.f, 1.f);
-		}
-
-		if (m_DynaHead)
-			m_DynaHead->SetRelativePos(-10.f, m_RootComponent->GetWorldScale().y * 0.28f, 0.f);
-		if (m_DynaRightFoot)
-			m_DynaRightFoot->SetRelativePos(65.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-		if (m_DynaLeftFoot)
-			m_DynaLeftFoot->SetRelativePos(-35.f, m_RootComponent->GetWorldScale().y * 0.12f * -1.f, 0.f);
-	}
 }
 
 void CBossDyna::PostUpdate(float DeltaTime)

@@ -48,6 +48,9 @@ protected:
 	float m_HP;
 	float m_HPMax;
 	float m_AttackAbility;
+protected:
+	// Resolution
+	bool m_ApplyLimitPosResolution;
 protected :
 	// Attack
 	bool m_IsAttacking;

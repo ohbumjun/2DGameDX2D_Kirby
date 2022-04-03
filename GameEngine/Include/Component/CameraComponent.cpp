@@ -304,7 +304,6 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 			}
 			else
 			{
-				// �ٽ� Player�� ���ư��� �����Ѵ�.
 				m_FollowTargetTime = m_FollowTargetTimeMax;
 
 				m_FollowTargetBoss = nullptr;
@@ -431,6 +430,15 @@ void CCameraComponent::ApplyWeakShakeEffect()
 {
 	m_IsCameraShake = true;
 	m_CameraShakeTime = m_CameraShakeTimeMax * 0.5f;
+}
+
+void CCameraComponent::CancleTargetBossFollow()
+{
+	m_FollowTarget = false;
+	m_FollowTargetBoss = nullptr;
+
+	// 다시 Player를 따라가게 세팅한다.
+	m_FollowPlayer = true;
 }
 
 void CCameraComponent::UpdateShakeEffect(float DeltaTime)

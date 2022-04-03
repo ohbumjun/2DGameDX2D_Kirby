@@ -601,6 +601,9 @@ void CLifeObject::CheckSideCollision()
 
 void CLifeObject::CheckOutsideWorldResolution()
 {
+	if (!m_ApplyLimitPosResolution)
+		return;
+
 	// todo : Up
 	Vector3 OriginalPos = GetWorldPos();
 	Vector3 WorldScale = GetWorldScale();

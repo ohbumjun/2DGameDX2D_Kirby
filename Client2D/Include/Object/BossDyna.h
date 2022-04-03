@@ -25,10 +25,14 @@ private :
     float m_InitHeadYRelativePos;
 private:
     // Movement
-    bool m_IsAppearing;
     bool m_MovementRight;
     bool m_MovementUp;
     float m_MovementTargetYPos;
+    float m_MovementTargetXPos;
+private :
+    bool m_IsAppearing;
+    float m_ScaleIncreasing;
+    float m_AppearFlowTime;
 private:
     void FarAttack();
     void CloseAttack();
@@ -37,11 +41,15 @@ private:
     void UpdateSceneChangeLimitTime(float DeltaTime);
     void ChangeSceneToFloat1Scene();
 protected:
-    virtual void ChangeTraceAnimation() override;
     void UpdateScale(float DeltaTime);
     void UpdateHeadToggle(float DeltaTime);
     void UpdateMovement(float DeltaTime);
     void UpdateAppearance(float DeltaTime);
+private :
+    virtual void ChangeTraceAnimation() override;
+    virtual void ChangeAttackAnimation() override;
+    virtual void ChangeWalkAnimation() override;
+    virtual void ChangeIdleAnimation() override;
 private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;

@@ -243,7 +243,9 @@ void CMonster::AIWalk(float DeltaTime)
 
 void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 {
-	// todo : Attack Distance 안에 있으면, 이동을 막아야 하나 ?
+	// Trace 자체를 안하는 Monster 의 경우, Trace를 하지 않는다. 
+	if (!m_IsTracingMonster)
+		return;
 
 	Vector3 MonsterPos = GetWorldPos();
 
@@ -283,10 +285,6 @@ void CMonster::AITrace(float DeltaTime, Vector3 PlayerPos)
 
 		Trace = true;
 	}
-
-	// Trace 자체를 안하는 Monster 의 경우, Trace를 하지 않는다.
-	if (!m_IsTracingMonster)
-		Trace = false;
 
 	if (Trace)
 	{
@@ -804,6 +802,9 @@ void CMonster::CheckWaterCollision(float DeltaTime)
 
 void CMonster::CheckWithinBossWorldResolution()
 {
+	if (!m_ApplyLimitPosResolution)
+		return;
+
 	// Boss Monster 가 세팅하지 않았다면
 // Boss Resolution 의 x 값은 0일 것이다 ( 기본값 ).
 	if (m_Scene->GetBossWorldResolution().x > 0.f)
@@ -824,7 +825,7 @@ void CMonster::CheckWithinBossWorldResolution()
 
 			if (LeftPosX <= m_Scene->GetBossWorldResolution().x)
 			{
-				SetWorldPos(m_Scene->GetBossWorldResolution().x + 300.f, GetWorldPos().y, GetWorldPos().z);
+				SetWorldPos(LeftPosX + 0.001f, GetWorldPos().y, GetWorldPos().z);
 			}
 		}
 	}

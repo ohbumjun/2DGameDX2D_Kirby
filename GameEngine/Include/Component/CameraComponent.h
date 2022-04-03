@@ -103,21 +103,18 @@ public:
 		if (m_CameraType == Camera_Type::Camera3D)
 			CreateProjectionMatrix();
 	}
-
 	void SetDistance(float Distance)
 	{
 		m_Distance = Distance;
 
 		CreateProjectionMatrix();
 	}
-
 	void SetCameraType(Camera_Type Type)
 	{
 		m_CameraType = Type;
 
 		CreateProjectionMatrix();
 	}
-
 	// 2D 전용
 	void OnViewportCenter()
 	{
@@ -130,7 +127,6 @@ public:
 			m_Ratio.y = 0.5f;
 		}
 	}
-
 	// 2D 전용
 	void SetViewportRatio(float x, float y)
 	{
@@ -147,6 +143,7 @@ public:
 public :
 	void ApplyShakeEffect(bool HardShake = false);
 	void ApplyWeakShakeEffect();
+	void CancleTargetBossFollow();
 private:
 	void UpdateShakeEffect(float DeltaTime);
 	void CreateProjectionMatrix();

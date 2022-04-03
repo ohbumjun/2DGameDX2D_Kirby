@@ -200,9 +200,10 @@ void CExcel::LoadExcel()
 
 void CExcel::EditExcel()
 {
-    // m_MapMonsterStats[L"BossDyna"]->m_AttackDist = 800.f;;
-    // m_MapMonsterStats[L"BossDyna"]->m_CloseAttackDist = 500.f;
-    // m_MapMonsterStats[L"BossDyna"]->m_FarAttackDist = 800.f;
+    m_MapMonsterStats[L"BossDyna"]->m_AttackDist = 650.f;;
+    m_MapMonsterStats[L"BossDyna"]->m_CloseAttackDist = 400.f;
+    m_MapMonsterStats[L"BossDyna"]->m_FarAttackDist = 650.f;
+    m_MapMonsterStats[L"BossDyna"]->m_AttackAbility = 10.f;
 }
 
 void CExcel::SaveExcel()
