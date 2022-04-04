@@ -377,6 +377,14 @@ void CBossDyna::AIDeathSpecific(float DeltaTime)
 
 	CBossMonster::AIDeathSpecific(DeltaTime);
 
+	// 머리, 발은 안보이게 세팅하고
+	m_DynaHead->Enable(false);
+	m_DynaRightFoot->Enable(false);
+	m_DynaLeftFoot->Enable(false);
+
+	// 모든 Boss Dyna Baby는 제거한다.
+	m_Scene->DeleteAllGameObjectsByType<CBossDynaBaby>();
+
 	m_SceneChangeLimitTime = 5.f;
 }
 

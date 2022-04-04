@@ -83,9 +83,6 @@ void CEffectChangeToGreen1::ChangeSceneToGreen1Scene()
 			CSceneManager::GetInst()->ChangeNextScene();
 		}
 	}
-
-	/*
-	*/
 }
 
 

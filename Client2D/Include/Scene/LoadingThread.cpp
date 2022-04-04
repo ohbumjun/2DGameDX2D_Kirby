@@ -33,7 +33,7 @@ void CLoadingThread::Run()
 
 			MainScene->PrepareResources();
 
-			if (CSceneManager::GetInst()->GetNextScene()->Load("Green1.scn", SCENE_PATH))
+			if (CSceneManager::GetInst()->GetNextScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH))
 			{
 				AddMessage(true, 1.f);
 			}

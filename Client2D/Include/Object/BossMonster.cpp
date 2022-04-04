@@ -1,9 +1,7 @@
 #include "BossMonster.h"
-
 #include <Scene/CameraManager.h>
 #include <Scene/Scene.h>
 #include <Scene/SceneManager.h>
-
 #include "Engine.h"
 #include "Player2D.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -12,6 +10,9 @@
 #include "../UI/BossHUD.h"
 #include "BossFightParticle.h"
 #include "../Object/EffectRandomStar.h"
+#include "../Object/HPRedItem.h"
+#include "../Object/HPYellowItem.h"
+#include "../Object/HPGreenItem.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
@@ -19,7 +20,8 @@ CBossMonster::CBossMonster() :
 	m_CloseAttackLimitTimeMax(2.5f),
 	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
 	m_IsRoundStarted(false),
-	m_BossAngry(false)
+	m_BossAngry(false),
+	m_MakeHPItemTimeMax(20.f)
 {
 	m_MonsterType = Monster_Type::Boss;
 	m_AttackAbility = 60.f;
@@ -171,6 +173,58 @@ void CBossMonster::MakeBossFightParticleEffect()
 	BossFightParticle->SetWorldPos(Vector3(0.f, 0.f, 0.f));
 }
 
+void CBossMonster::UpdateMakeHPItemEffect(float DeltaTime)
+{
+	m_MakeHPItemTime += DeltaTime;
+
+	if (m_MakeHPItemTime >= m_MakeHPItemTimeMax)
+	{
+		m_MakeHPItemTime = 0.f;
+
+		float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
+
+		// 총 5개의 Item 을 주기적으로 만들 것이다.
+		for (int i = 0; i < 5; i++)
+		{
+			int ItemType = (int)(rand()) % 3;
+
+			float XPos = NumberFrom0To1 * m_Scene->GetBossWorldResolution().x;
+			float YPos = 250.f + NumberFrom0To1 * m_Scene->GetBossWorldResolution().y * 0.3f;
+
+			CItem* Item = nullptr;
+
+			switch(ItemType)
+			{
+				case 0:
+				{
+					Item = m_Scene->CreateGameObject<CHPYellowItem>("Item");
+					Item->SetWorldPos(XPos, YPos, 0.f);
+				}
+				break;
+				case 1 :
+				{
+					Item = m_Scene->CreateGameObject<CHPRedItem>("Item");
+					Item->SetWorldPos(XPos, YPos, 0.f);
+				}
+				break;
+				case 2:
+				{
+					Item = m_Scene->CreateGameObject<CHPGreenItem>("Item");
+					Item->SetWorldPos(XPos, YPos, 0.f);
+				}
+				break;
+			}
+
+			// 그리고 각 Item 위치에 Random Star 들도 만들 것이다
+			for (int i = 0; i < 3; i++)
+			{
+				CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+				Star->SetWorldPos(Item->GetWorldPos());
+			}
+		}
+	}
+}
+
 void CBossMonster::AIDeathSpecific(float DeltaTime)
 {
 	// Boss Monster 를 Stop 시킨다
@@ -210,6 +264,7 @@ void CBossMonster::Update(float DeltaTime)
 
 	UpdateBossAngryEffect(DeltaTime);
 
+	UpdateMakeHPItemEffect(DeltaTime);
 }
 
 void CBossMonster::PostUpdate(float DeltaTime)

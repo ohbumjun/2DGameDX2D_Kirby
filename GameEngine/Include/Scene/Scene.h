@@ -138,6 +138,8 @@ public :
 	}
 	template<typename T>
 	void DeleteGameObjectByType();
+	template<typename T>
+	void DeleteAllGameObjectsByType();
 	void DeleteGameObject(const std::string& Name);
 private :
 	void ClearGameObjects();
@@ -245,6 +247,24 @@ void CScene::DeleteGameObjectByType()
 			iter = m_ObjList.erase(iter);
 			return;
 		}
+	}
+}
+
+template <typename T>
+void CScene::DeleteAllGameObjectsByType()
+{
+	auto iter = m_ObjList.begin();
+	auto iterEnd = m_ObjList.end();
+
+	for (; iter != iterEnd;)
+	{
+		if ((*iter)->CheckType<T>())
+		{
+			iter = m_ObjList.erase(iter);
+			iterEnd = m_ObjList.end();
+			continue;
+		}
+		++iter;
 	}
 }
 
