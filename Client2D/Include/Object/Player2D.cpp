@@ -1758,6 +1758,15 @@ void CPlayer2D::UpdateSlideAttackTime(float DeltaTime)
 				AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * m_SlideAttackSpeed);
 			}
 
+			if (GetWorldPos().x - GetWorldScale().x * GetPivot().x < 0.f)
+			{
+				SetWorldPos(GetWorldScale().x * GetPivot().x + 0.001f, GetWorldPos().y, 0.f);
+			}
+			if (GetWorldPos().x + GetWorldScale().x * GetPivot().x >= m_Scene->GetWorldResolution().x)
+			{
+				SetWorldPos(m_Scene->GetWorldResolution().x - GetWorldScale().x * GetPivot().x - 0.001f, GetWorldPos().y, 0.f);
+			}
+
 			m_Body->SetCollisionProfile("PlayerAttack");
 		}
 
