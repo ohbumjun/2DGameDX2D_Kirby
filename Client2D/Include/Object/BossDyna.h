@@ -47,6 +47,7 @@ private:
     void ChangeCloseAttackAnimation();
     void UpdateSceneChangeLimitTime(float DeltaTime);
     void ChangeSceneToFloat1Scene();
+    virtual void MakeBossAngry() override;
 protected:
     void UpdateScale(float DeltaTime);
     void UpdateHeadToggle(float DeltaTime);

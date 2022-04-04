@@ -14,7 +14,8 @@ CBossMonster::CBossMonster() :
 	m_FarAttackLimitTimeMax(3.5f),
 	m_CloseAttackLimitTimeMax(2.5f),
 	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
-	m_IsRoundStarted(false)
+	m_IsRoundStarted(false),
+	m_BossAngry(false)
 {
 	m_MonsterType = Monster_Type::Boss;
 	m_AttackAbility = 60.f;
@@ -126,6 +127,20 @@ void CBossMonster::UpdateAttackLimitTimes(float DeltaTime)
 	}
 }
 
+void CBossMonster::MakeBossAngry()
+{
+	if (m_BossAngry)
+		return;
+
+	m_BossAngry = true;
+
+	m_Sprite->SetBaseColor(1.f, 0.3f, 0.3f, 1.f);
+
+	m_AttackAbility *= m_AttackAbility * 1.5f;
+
+	m_MonsterMoveVelocity = m_MonsterMoveVelocity * 2.0f;
+}
+
 void CBossMonster::AIDeathSpecific(float DeltaTime)
 {
 	// Boss Monster 를 Stop 시킨다
@@ -158,6 +173,11 @@ void CBossMonster::Update(float DeltaTime)
 	CMonster::Update(DeltaTime);
 
 	UpdateAttackLimitTimes(DeltaTime);
+
+	if (m_HP < m_HPMax * 0.35f)
+	{
+		MakeBossAngry();
+	}
 }
 
 void CBossMonster::PostUpdate(float DeltaTime)

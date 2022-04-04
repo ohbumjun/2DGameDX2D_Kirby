@@ -4,6 +4,7 @@
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "BossDynaBaby.h"
+#include "Scene/CameraManager.h"
 
 CDynaNest::CDynaNest() :
 	m_GenerateDynaBabyTime(2.f)
@@ -16,8 +17,10 @@ void CDynaNest::MakeDynaBabyEffect()
 {
 	float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
 
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+
 	// 오른쪽 2개
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		float XPos = i & 1 ? GetWorldPos().x + NumberFrom0To1 * 100.f : GetWorldPos().x - NumberFrom0To1 * 100.f;
 

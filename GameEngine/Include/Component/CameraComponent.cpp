@@ -311,7 +311,6 @@ void CCameraComponent::FollowTarget(float DeltaTime)
 
 				m_FollowPlayer = true;
 
-				// �׸��� ������ BossHUD�� ���̰� �����Ѵ�.
 				m_Scene->GetViewPort()->StartBossHUDCallback();
 			}
 		}

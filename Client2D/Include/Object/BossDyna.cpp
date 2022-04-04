@@ -54,16 +54,15 @@ void CBossDyna::Start()
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
 	m_IsGround = false;
-	m_MonsterMoveVelocity = 0.f;
 
 	m_Sprite->GetAnimationInstance()->Play();
 
 	m_MovementTargetYPos = GetWorldPos().y;
 
 	// m_HP = 5000.f;d
-	m_HP = 500.f;
+	m_HP = 200.f;
 	// m_HPMax = 5000.f;
-	m_HPMax = 500.f;
+	m_HPMax = 200.f;
 
 	// Trace를 별도로 하지 않는다
 	m_IsTracingMonster = false;
@@ -189,6 +188,8 @@ void CBossDyna::PostUpdate(float DeltaTime)
 void CBossDyna::FarAttack()
 {
 	m_IsAttacking = true;
+
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -437,6 +438,16 @@ void CBossDyna::ChangeSceneToFloat1Scene()
 {
 	Destroy();
 }
+
+void CBossDyna::MakeBossAngry()
+{
+	CBossMonster::MakeBossAngry();
+
+	m_DynaHead->SetBaseColor(1.f, 0.3f, 0.3f, 1.f);
+	m_DynaRightFoot->SetBaseColor(1.f, 0.3f, 0.3f, 1.f);
+	m_DynaLeftFoot->SetBaseColor(1.f, 0.3f, 0.3f, 1.f);
+}
+
 void CBossDyna::UpdateMakeNestTime(float DeltaTime)
 {
 	if (m_IsAppearing)
@@ -592,7 +603,7 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 	// 좌우 이동
 	if (m_MovementRight)
 	{
-		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * 150.f);
+		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * m_MonsterMoveVelocity);
 
 		if (GetWorldPos().x >= m_MovementTargetXPos)
 		{
@@ -610,7 +621,7 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 	}
 	else
 	{
-		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * 150.f);
+		AddWorldPos(Vector3(-1.f, 0.f, 0.f) * DeltaTime * m_MonsterMoveVelocity);
 
 		if (GetWorldPos().x <= m_MovementTargetXPos)
 		{
@@ -628,7 +639,7 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 	// 상하 이동
 	if (m_MovementUp)
 	{
-		AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * 150.f);
+		AddWorldPos(Vector3(0.f, 1.f, 0.f) * DeltaTime * m_MonsterMoveVelocity);
 
 		if (GetWorldPos().y + GetWorldScale().y * 0.5f >= m_MovementTargetYPos)
 		{
@@ -644,7 +655,7 @@ void CBossDyna::UpdateMovement(float DeltaTime)
 	}
 	else
 	{
-		AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 150.f);
+		AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * m_MonsterMoveVelocity);
 
 		if (GetWorldPos().y - GetWorldScale().y * 0.5f <= m_MovementTargetYPos)
 		{
@@ -746,6 +757,9 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 
 			// 다시 원래의 Layer 로 세팅
 			m_Sprite->SetLayerName("Default");
+
+			// Boss HUD가 등장하게 세팅한다
+			m_Scene->GetViewPort()->StartBossHUDCallback();
 		}
 	}
 }
