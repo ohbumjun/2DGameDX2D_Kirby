@@ -61,6 +61,14 @@ void CSceneMode::CreateMaterial()
 	MoonAboveParticleMaterial->SetShader("ParticleRenderShader");
 	MoonAboveParticleMaterial->SetRenderState("AlphaBlend");
 
+	// - Boss Fight
+	m_Scene->GetResource()->CreateMaterial<CMaterial>("BossFightMaterial");
+	CMaterial* BossFightParticleMaterial = m_Scene->GetResource()->FindMaterial("BossFightMaterial");
+	BossFightParticleMaterial->AddTexture(0,
+		(int)Buffer_Shader_Type::Pixel, "BossFightParticleTexture", TEXT("Particle/HardRain.png"));
+	BossFightParticleMaterial->SetShader("ParticleRenderShader");
+	BossFightParticleMaterial->SetRenderState("AlphaBlend");
+
 	// TileMap
 	m_Scene->GetResource()->CreateMaterial<CMaterial>("DiabloTileMap");
 	CMaterial* TileMapMaterial = m_Scene->GetResource()->FindMaterial("DiabloTileMap");
@@ -79,6 +87,29 @@ void CSceneMode::CreateMaterial()
 
 void CSceneMode::CreateParticle()
 {
+	// Boss Fight
+	// Boss 가 만들어낼 것이다.
+	m_Scene->GetResource()->CreateParticle("BossFight");
+	CParticle* BossFightParticle = m_Scene->GetResource()->FindParticle("BossFight");
+	CMaterial* BossFightParticleMaterial = m_Scene->GetResource()->FindMaterial("BossFightMaterial");
+
+	BossFightParticle->SetMaterial(BossFightParticleMaterial);
+	BossFightParticle->SetSpawnCountMax(1000);
+	BossFightParticle->SetScaleMin(Vector3(30.f, 30.f, 1.f));
+	BossFightParticle->SetScaleMax(Vector3(60.f, 60.f, 1.f));
+	BossFightParticle->SetSpeedMin(900.f);
+	BossFightParticle->SetSpeedMax(1300.f);
+	BossFightParticle->SetLifeTimeMin(3.0f);
+	BossFightParticle->SetLifeTimeMax(6.0f);
+	BossFightParticle->SetMoveDir(Vector3(1.f, -1.f, 0.f));
+	BossFightParticle->SetStartMin(Vector3(-600.f, 100.f, 0.f));
+	BossFightParticle->SetStartMax(Vector3(-300.f, 3000.f, 0.f));
+	BossFightParticle->SetColorMin(Vector4(0.5f, 0.4f, 0.4f, 1.f));
+	BossFightParticle->SetColorMax(Vector4(0.8f, 0.2f, 0.2f, 1.f));
+	BossFightParticle->SetMoveAngle(Vector3(0.f, 0.f, -50.f));
+	// BubbleParticle->SetGravity(true);
+	BossFightParticle->SetMove(true);
+
 	// Bubble
 	m_Scene->GetResource()->CreateParticle("Bubble");
 	CParticle* BubbleParticle = m_Scene->GetResource()->FindParticle("Bubble");

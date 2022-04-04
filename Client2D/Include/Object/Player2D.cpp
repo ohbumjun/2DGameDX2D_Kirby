@@ -2943,7 +2943,7 @@ void CPlayer2D::SpecialChange()
 
 	m_KirbyState->SetPlayer(this);
 
-	SpecialChangeEffect();
+	// SpecialChangeEffect();
 
 	SetRootComponent(m_KirbyState);
 

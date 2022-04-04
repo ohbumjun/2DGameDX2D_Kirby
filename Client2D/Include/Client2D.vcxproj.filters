@@ -522,6 +522,9 @@
     <ClCompile Include="Object\DynaNest.cpp">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
     </ClCompile>
+    <ClCompile Include="Object\BossFightParticle.cpp">
+      <Filter>02. Object\05. Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -940,6 +943,9 @@
     </ClInclude>
     <ClInclude Include="Object\DynaNest.h">
       <Filter>02. Object\07. Effect\04. MonsterAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\BossFightParticle.h">
+      <Filter>02. Object\05. Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

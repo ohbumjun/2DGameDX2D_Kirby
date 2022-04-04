@@ -8,11 +8,13 @@
 #include "Component/ColliderCircle.h"
 #include "Component/PaperBurnComponent.h"
 #include "../UI/BossHUD.h"
+#include "BossFightParticle.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
 	m_FarAttackLimitTimeMax(3.5f),
 	m_CloseAttackLimitTimeMax(2.5f),
+	m_BossParticleMaxTime(3.f),
 	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
 	m_IsRoundStarted(false),
 	m_BossAngry(false)
@@ -127,6 +129,25 @@ void CBossMonster::UpdateAttackLimitTimes(float DeltaTime)
 	}
 }
 
+void CBossMonster::UpdateBossAngryEffect(float DeltaTime)
+{
+	if (m_HP < m_HPMax * 0.35f)
+	{
+		MakeBossAngry();
+
+		// 주기적으로 Particle을 만들어준다.
+	}
+
+	m_BossParticleTime += DeltaTime;
+
+	if (m_BossParticleTime >= m_BossParticleMaxTime)
+	{
+		m_BossParticleTime = 0.f;
+
+		MakeBossFightParticleEffect();
+	}
+}
+
 void CBossMonster::MakeBossAngry()
 {
 	if (m_BossAngry)
@@ -139,6 +160,16 @@ void CBossMonster::MakeBossAngry()
 	m_AttackAbility *= m_AttackAbility * 1.5f;
 
 	m_MonsterMoveVelocity = m_MonsterMoveVelocity * 2.0f;
+}
+
+void CBossMonster::MakeBossFightParticleEffect()
+{
+	CBossFightParticle* BossFightParticle = m_Scene->CreateGameObject<CBossFightParticle>("BossFightParticle");
+
+	// m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
+
+	BossFightParticle->SetWorldPos(Vector3(0.f, 0.f, 0.f));
+	// BossFightParticle->SetWorldPos(GetWorldPos());
 }
 
 void CBossMonster::AIDeathSpecific(float DeltaTime)
@@ -174,10 +205,8 @@ void CBossMonster::Update(float DeltaTime)
 
 	UpdateAttackLimitTimes(DeltaTime);
 
-	if (m_HP < m_HPMax * 0.35f)
-	{
-		MakeBossAngry();
-	}
+	UpdateBossAngryEffect(DeltaTime);
+
 }
 
 void CBossMonster::PostUpdate(float DeltaTime)

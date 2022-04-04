@@ -28,11 +28,15 @@ protected : // Boss 에 따라서 Camera Follow Time을 세팅할 수 있게 한다.
     float m_CameraFollowMaxTime;
 protected :
     bool m_BossAngry;
+    float m_BossParticleMaxTime;
+    float m_BossParticleTime;
 protected:
     void MakeBossStartEffect();
     void UpdateAttackLimitTimes(float DeltaTime);
+    void UpdateBossAngryEffect(float DeltaTime);
     virtual void MakeBossAngry();
-protected:
+    void MakeBossFightParticleEffect();
+ protected:
     virtual void AIDeathSpecific(float DeltaTime) override;
     void StartPaperBurnEffect();
     void PaperBurnEndCallback();

@@ -19,7 +19,7 @@ class CAnimationSequence2DInstance;
 CBossDyna::CBossDyna() :
 	m_SceneChangeLimitTime(-1.f),
 	m_HeadToggleMaxTime(0.5f),
-	m_MakeDynaNestTime(5.f)
+	m_MakeDynaNestTime(15.f)
 {
 	SetTypeID<CBossDyna>();
 

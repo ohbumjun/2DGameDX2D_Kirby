@@ -1,5 +1,5 @@
 #pragma once
-#include "C:\Users\dhsys\Desktop\DX_Project\Engine\Include\GameObject\GameObject.h"
+#include "GameObject\GameObject.h"
 
 class CSpecialChangeParticle :
     public CGameObject

@@ -17,8 +17,6 @@ void CDynaNest::MakeDynaBabyEffect()
 {
 	float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
-
 	// 오른쪽 2개
 	for (int i = 0; i < 2; i++)
 	{
