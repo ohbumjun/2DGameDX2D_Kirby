@@ -30,9 +30,16 @@ private:
     float m_MovementTargetYPos;
     float m_MovementTargetXPos;
 private :
+    // Appear
     bool m_IsAppearing;
     float m_ScaleIncreasing;
     float m_AppearFlowTime;
+private :
+    // Hit
+    float m_YPosBeforeHit;
+protected :
+    float m_MakeDynaNestTime;
+    float m_MakeDynaNestFlowTime;
 private:
     void FarAttack();
     void CloseAttack();
@@ -45,11 +52,14 @@ protected:
     void UpdateHeadToggle(float DeltaTime);
     void UpdateMovement(float DeltaTime);
     void UpdateAppearance(float DeltaTime);
+    void UpdateMakeNestTime(float DeltaTime);
 private :
     virtual void ChangeTraceAnimation() override;
     virtual void ChangeAttackAnimation() override;
     virtual void ChangeWalkAnimation() override;
     virtual void ChangeIdleAnimation() override;
+private :
+    virtual void SpecificActionAfterHitTimeEnd() override;
 private:
     virtual void AIAttackSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;

@@ -11,12 +11,15 @@
 #include "DynaCloseAttack.h"
 #include "Component/ColliderCircle.h"
 #include "EffectSceneChangeAlpha.h"
+#include "BossDynaBaby.h"
+#include "DynaNest.h"
 
 class CAnimationSequence2DInstance;
 
 CBossDyna::CBossDyna() :
 	m_SceneChangeLimitTime(-1.f),
-	m_HeadToggleMaxTime(0.5f)
+	m_HeadToggleMaxTime(0.5f),
+	m_MakeDynaNestTime(5.f)
 {
 	SetTypeID<CBossDyna>();
 
@@ -57,7 +60,7 @@ void CBossDyna::Start()
 
 	m_MovementTargetYPos = GetWorldPos().y;
 
-	// m_HP = 5000.f;
+	// m_HP = 5000.f;d
 	m_HP = 500.f;
 	// m_HPMax = 5000.f;
 	m_HPMax = 500.f;
@@ -75,7 +78,7 @@ void CBossDyna::Start()
 
 	m_DynaHead->SetWorldScale(130.f, 130.f, 1.f);
 
-	m_InitHeadYRelativePos = m_RootComponent->GetWorldScale().y * 0.36f;
+	m_InitHeadYRelativePos = m_DynaHead->GetRelativePos().y;
 
 	m_DynaHead->SetRelativePos(-80.f, m_InitHeadYRelativePos, 0.f);
 
@@ -105,11 +108,18 @@ void CBossDyna::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CBossDyna::CloseAttack);
 
+	/*
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetPlayTime(2.0f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetEndFunction(
 		this, &CBossDyna::FarAttack);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetEndFunction(
-		this, &CBossDyna::CloseAttack);
 
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetPlayTime(0.5f);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetLoop(false);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetEndFunction(
+		this, &CBossDyna::FarAttack);
+		*/
+	
 	m_IsAttacking = false;
 
 	// 처음에는 LeftBlackAppearance 로 시작
@@ -134,6 +144,9 @@ void CBossDyna::Start()
 
 	// 초반에는 Resolution 범위 밖을 벗어나게끔 허용한다
 	m_ApplyLimitPosResolution = false;
+
+	// 처음에는 저 화면 뒤쪽에 그린 느낌을 위해 Layer 를 뒤쪽에 있는 Tile 로 세팅
+	m_Sprite->SetLayerName("Tile");
 	
 	m_IsAppearing = true;
 }
@@ -161,16 +174,10 @@ void CBossDyna::Update(float DeltaTime)
 	{
 		UpdateMovement(DeltaTime);
 	}
-	
-	// Hit 인 동안에는 머리, 발을 안보이게 한다
-	if (!m_IsBeingHit && !m_IsAppearing)
-	{
-		m_DynaHead->GetMaterial()->SetOpacity(1.f);
-		m_DynaRightFoot->GetMaterial()->SetOpacity(1.f);
-		m_DynaLeftFoot->GetMaterial()->SetOpacity(1.f);
-	}
 
 	UpdateAppearance(DeltaTime);
+
+	UpdateMakeNestTime(DeltaTime);
 
 }
 
@@ -301,15 +308,15 @@ void CBossDyna::AITraceSpecific(float DeltaTime)
 {
 	if (m_ObjectMoveDir.x < 0.f)
 	{
-		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftAttack");
-		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("LeftAttack");
-		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("LeftAttack");
+		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftRun");
+		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("LeftRun");
+		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("LeftRun");
 	}
 	else
 	{
-		m_DynaHead->GetAnimationInstance()->ChangeAnimation("RightAttack");
-		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
-		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
+		m_DynaHead->GetAnimationInstance()->ChangeAnimation("RightRun");
+		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("RightRun");
+		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightRun");
 	}
 }
 
@@ -319,15 +326,15 @@ void CBossDyna::AIWalkSpecific(float DeltaTime)
 
 	if (m_ObjectMoveDir.x < 0.f)
 	{
-		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftAttack");
-		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("LeftAttack");
-		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("LeftAttack");
+		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftWalk");
+		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("LeftWalk");
+		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("LeftWalk");
 	}
 	else
 	{
-		m_DynaHead->GetAnimationInstance()->ChangeAnimation("RightAttack");
-		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
-		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
+		m_DynaHead->GetAnimationInstance()->ChangeAnimation("RightWalk");
+		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("RightWalk");
+		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightWalk");
 	}
 }
 
@@ -337,15 +344,15 @@ void CBossDyna::AIIdleSpecific(float DeltaTime)
 
 	if (m_ObjectMoveDir.x < 0.f)
 	{
-		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftAttack");
-		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("LeftAttack");
-		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("LeftAttack");
+		m_DynaHead->GetAnimationInstance()->ChangeAnimation("LeftIdle");
+		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("LeftIdle");
+		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("LeftIdle");
 	}
 	else
 	{
-		m_DynaHead->GetAnimationInstance()->ChangeAnimation("RightAttack");
-		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
-		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightAttack");
+		m_DynaHead->GetAnimationInstance()->ChangeAnimation("RightIdle");
+		m_DynaRightFoot->GetAnimationInstance()->ChangeAnimation("RightIdle");
+		m_DynaLeftFoot->GetAnimationInstance()->ChangeAnimation("RightIdle");
 	}
 }
 
@@ -356,6 +363,10 @@ void CBossDyna::AIHitSpecific(float DeltaTime)
 	m_DynaHead->GetMaterial()->SetOpacity(0.f);
 	m_DynaRightFoot->GetMaterial()->SetOpacity(0.f);
 	m_DynaLeftFoot->GetMaterial()->SetOpacity(0.f);
+
+	m_YPosBeforeHit = GetWorldPos().y;
+
+	SetWorldPos(GetWorldPos().x, GetWorldPos().y + 50.f, 1.f);
 }
 
 void CBossDyna::AIDeathSpecific(float DeltaTime)
@@ -373,10 +384,17 @@ void CBossDyna::ChangeFarAttackAnimation()
 	if (m_IsAppearing)
 		return;
 
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
+		this, &CBossDyna::FarAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
+		this, &CBossDyna::FarAttack);
+
+	m_IsAttacking = true;
+	
 	if (m_ObjectMoveDir.x < 0.f)
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftFarAttack");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
 	else
-		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightFarAttack");
+		m_Sprite->GetAnimationInstance()->ChangeAnimation("RightAttack");
 }
 
 void CBossDyna::ChangeCloseAttackAnimation()
@@ -384,10 +402,12 @@ void CBossDyna::ChangeCloseAttackAnimation()
 	if (m_IsAppearing)
 		return;
 
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
-		this, &CBossDyna::CloseAttack);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttack")->SetEndFunction(
 		this, &CBossDyna::CloseAttack);
+	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
+		this, &CBossDyna::CloseAttack);
+
+	m_IsAttacking = true;
 
 	if (m_ObjectMoveDir.x < 0.f)
 		m_Sprite->GetAnimationInstance()->ChangeAnimation("LeftAttack");
@@ -417,6 +437,22 @@ void CBossDyna::ChangeSceneToFloat1Scene()
 {
 	Destroy();
 }
+void CBossDyna::UpdateMakeNestTime(float DeltaTime)
+{
+	if (m_IsAppearing)
+		return;
+
+	m_MakeDynaNestFlowTime += DeltaTime;
+
+	if (m_MakeDynaNestFlowTime >= m_MakeDynaNestTime)
+	{
+		m_MakeDynaNestFlowTime = 0.f;
+
+		CDynaNest* DynaNest = m_Scene->CreateGameObject<CDynaNest>("DynaNest");
+
+		DynaNest->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+	}
+}
 
 void CBossDyna::ChangeTraceAnimation()
 {
@@ -444,6 +480,18 @@ void CBossDyna::ChangeIdleAnimation()
 	if (m_IsAppearing)
 		return;
 	CBossMonster::ChangeIdleAnimation();
+}
+
+void CBossDyna::SpecificActionAfterHitTimeEnd()
+{
+	if (m_IsAppearing)
+		return;
+
+	m_DynaHead->GetMaterial()->SetOpacity(1.f);
+	m_DynaRightFoot->GetMaterial()->SetOpacity(1.f);
+	m_DynaLeftFoot->GetMaterial()->SetOpacity(1.f);
+
+	SetWorldPos(GetWorldPos().x, m_YPosBeforeHit, GetWorldPos().z);
 }
 
 void CBossDyna::UpdateScale(float DeltaTime)
@@ -538,6 +586,9 @@ void CBossDyna::UpdateHeadToggle(float DeltaTime)
 
 void CBossDyna::UpdateMovement(float DeltaTime)
 {
+	if (m_IsDead)
+		return;
+
 	// 좌우 이동
 	if (m_MovementRight)
 	{
@@ -630,7 +681,7 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 	if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "LeftBlackAppear")
 	{
 		// 왼쪽으로 이동하게 세팅한다.
-		AddWorldPos(Vector3(-1.f, 0.1f, 0.f) * DeltaTime * 500.f);
+		AddWorldPos(Vector3(-1.f, 0.12f, 0.f) * DeltaTime * 500.f);
 
 		if (GetWorldPos().x <= -100.f)
 		{
@@ -640,7 +691,7 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 	else if (m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->GetName() == "RightBlackAppear")
 	{
 		// 서서히 오른쪽으로 이동하게 세팅한다.
-		AddWorldPos(Vector3(1.f, 0.1f, 0.f) * DeltaTime * 500.f);
+		AddWorldPos(Vector3(1.f, 0.12f, 0.f) * DeltaTime * 500.f);
 
 		if (GetWorldPos().x >= m_Scene->GetWorldResolution().x)
 		{
@@ -687,6 +738,14 @@ void CBossDyna::UpdateAppearance(float DeltaTime)
 			m_DynaHead->SetRelativePos(-80.f, m_InitHeadYRelativePos, 0.f);
 
 			m_Scene->GetCameraManager()->GetCurrentCamera()->CancleTargetBossFollow();
+
+			// 다시 Head, Foot들을 보이게 세팅한다.
+			m_DynaHead->GetMaterial()->SetOpacity(1.f);
+			m_DynaRightFoot->GetMaterial()->SetOpacity(1.f);
+			m_DynaLeftFoot->GetMaterial()->SetOpacity(1.f);
+
+			// 다시 원래의 Layer 로 세팅
+			m_Sprite->SetLayerName("Default");
 		}
 	}
 }

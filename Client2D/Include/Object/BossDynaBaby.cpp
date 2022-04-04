@@ -39,16 +39,28 @@ void CBossDynaBaby::UpdateToggle(float DeltaTime)
 	}
 }
 
+void CBossDynaBaby::JumpStart()
+{
+	m_Jump = true;
+	m_IsGround = false;
+
+	m_FallTime = 0.f;
+	m_FallStartY = GetWorldPos().y;
+
+	m_JumpStart = true;
+}
+
 void CBossDynaBaby::Start()
 {
 	CNormalMonster::Start();
 
-	SetExcelStat(L"MushRoom");
+	SetExcelStat(L"Kabu");
 
-	m_IsGround = true;
+	m_GamePlayDelayTime = -1.f;
 
-	// m_PhysicsSimulate = true;
-	// m_IsGroundObject = true;
+	m_IsGround = false;
+
+	m_IsTracingMonster = true;
 }
 
 bool CBossDynaBaby::Init()
@@ -57,6 +69,7 @@ bool CBossDynaBaby::Init()
 		return false;
 
 	LoadAnimationInstance("DynaBaby", TEXT("Boss_Dyna_Baby.anim"));
+
 	SetCurrentAnimation("RightIdle");
 
 	return true;

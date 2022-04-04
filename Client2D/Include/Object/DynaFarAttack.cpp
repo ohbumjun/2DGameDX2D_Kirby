@@ -79,7 +79,7 @@ void CDynaFarAttack::Update(float DeltaTime)
 {
 	CAttackEffect::Update(DeltaTime);
 
-	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 500.f);
+	AddWorldPos(Vector3(m_AttackDir.x, m_AttackDir.y, 0.f) * DeltaTime * 400.f);
 }
 
 void CDynaFarAttack::PostUpdate(float DeltaTime)

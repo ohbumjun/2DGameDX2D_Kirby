@@ -373,7 +373,7 @@ void CScene::DeleteGameObject(const std::string& Name)
 		{
 			// (*iter)->Destroy();
 
-			m_ObjList.erase(iter);
+			iter = m_ObjList.erase(iter);
 
 			break;
 		}

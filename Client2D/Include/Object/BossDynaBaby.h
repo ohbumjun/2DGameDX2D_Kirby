@@ -5,6 +5,7 @@ class CBossDynaBaby :
     public CNormalMonster
 {
     friend class CScene;
+    friend class CDynaNest;
 protected:
     CBossDynaBaby();
     virtual ~CBossDynaBaby();
@@ -17,6 +18,7 @@ private:
     virtual void AITraceSpecific(float DeltaTime) override;
 private:
     void UpdateToggle(float DeltaTime);
+    void JumpStart();
 public:
     virtual void Start() override;
     virtual bool Init() override;

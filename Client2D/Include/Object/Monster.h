@@ -156,13 +156,16 @@ protected:
     void OnMouseEnd(const CollisionResult& Result);
     void CreateDamageFont(const CollisionResult& Result);
     void OnCollisionBegin(const CollisionResult& Result);
-protected: // Animation
+protected:
+	// Animation
     virtual void ChangeIdleAnimation();
     virtual void ChangeWalkAnimation();
     virtual void ChangeHitAnimation();
     virtual void ChangeTraceAnimation();
     virtual void ChangeDeathAnimation();
     virtual void ChangeAttackAnimation();
+protected :
+    virtual void SpecificActionAfterHitTimeEnd() {};
 protected:
     // Body Collider Collision Callback
     void OnMonsterBodyCollisionBegin(const CollisionResult& Result);

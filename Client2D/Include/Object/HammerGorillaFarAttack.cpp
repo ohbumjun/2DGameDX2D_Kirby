@@ -43,12 +43,14 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
+	float Number0To1 = (float)rand() / (float)RAND_MAX;
+
 	// 오른쪽 2개
 	for (int i = 0; i < 3;i++)
 	{
 		Vector3 TargetPos = {};
-		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f - 35.f * i + (rand() * 5.f))) * 30.f;
-		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(90.f - 35.f * i) * 30.f);
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian((90.f - 35.f * i + Number0To1 * 40.f))) * 30.f;
+		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian((90.f - 35.f * i + Number0To1 * 40.f))) * 30.f;
 
 		Vector3 TraceDir = TargetPos - GetWorldPos();
 
@@ -77,7 +79,7 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 	{
 		Vector3 TargetPos = {};
 
-		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f + 35.f * i + (rand() * 5.f))) * 30.f;
+		TargetPos.x = GetWorldPos().x + cosf(DegreeToRadian(90.f + 35.f * i + Number0To1 * 40.f)) * 30.f;
 		TargetPos.y = GetWorldPos().y + sinf(DegreeToRadian(90.f + 30.f * i)) * 30.f;
 
 		Vector3 TraceDir = TargetPos - GetWorldPos();

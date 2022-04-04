@@ -9,7 +9,10 @@
 
 class CAnimationSequence2DInstance;
 
-CBossDyna::CBossDyna()
+CBossDyna::CBossDyna() :
+	m_DynaHead(nullptr),
+	m_DynaRightFoot(nullptr),
+	m_DynaLeftFoot(nullptr)
 {
 	SetTypeID<CBossDyna>();
 }

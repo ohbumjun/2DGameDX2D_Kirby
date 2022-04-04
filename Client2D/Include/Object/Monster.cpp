@@ -557,6 +557,9 @@ void CMonster::UpdateBeingHit(float DeltaTime)
 		if (m_HitLimitTime < 0)
 		{
 			m_HitLimitTime = m_HitLimitTimeMax;
+
+			SpecificActionAfterHitTimeEnd();
+
 			m_IsBeingHit = false;
 
 			m_Sprite->SetOpacity(1.f);
