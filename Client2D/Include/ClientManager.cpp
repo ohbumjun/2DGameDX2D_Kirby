@@ -178,7 +178,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
-	// --------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
