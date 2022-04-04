@@ -272,7 +272,7 @@ public:
 
 	Vector3 GetWorldPos() const
 	{
-		return m_Transform->GetWorldPos();
+		return m_Transform->GetWorldPos(); //
 	}
 
 	Vector3 GetPivot() const
