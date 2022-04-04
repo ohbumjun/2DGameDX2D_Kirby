@@ -1679,6 +1679,15 @@ void CPlayer2D::UpdateBeingHit(float DeltaTime)
 
 		AddWorldPos(Vector3(m_ObjectMoveDir.x, 0.f, 0.f) * DeltaTime * 450.f);
 
+		if (GetWorldPos().x - GetWorldScale().x * GetPivot().x < 0.f)
+		{
+			SetWorldPos(GetWorldScale().x * GetPivot().x + 0.001f, GetWorldPos().y, 0.f);
+		}
+		if (GetWorldPos().x + GetWorldScale().x * GetPivot().x >= m_Scene->GetWorldResolution().x)
+		{
+			SetWorldPos(m_Scene->GetWorldResolution().x - GetWorldScale().x * GetPivot().x - 0.001f, GetWorldPos().y, 0.f);
+		}
+
 		ChangePlayerHitAnimation();
 			
 		if (m_BeingHitTime < 0.f)
@@ -3017,6 +3026,8 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 
 	m_IsChanging = true;
 
+	SpecialChangeEffect();
+
 	ChangePlayerChangeAnimation();
 
 	StopPlayer();
@@ -3150,7 +3161,7 @@ void CPlayer2D::SpecialChangeEffect()
 	for (int i = 0; i < 10; i++)
 	{
 		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
-		RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
+		RandomStar->SetWorldPos(Vector3(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z));
 	}
 }
 
