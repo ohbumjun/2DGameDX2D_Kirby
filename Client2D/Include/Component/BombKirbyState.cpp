@@ -246,7 +246,7 @@ void CBombKirbyState::MakeFallDownBomb()
 
 	AttackEffect->SetWorldPos(GetWorldPos());
 
-	AttackEffect->ApplyCameraMove();
+	// AttackEffect->ApplyCameraMove();
 
 	AttackEffect->SetKirbyOwner(this);
 }

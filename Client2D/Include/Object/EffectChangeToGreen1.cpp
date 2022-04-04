@@ -26,6 +26,7 @@ void CEffectChangeToGreen1::Start()
 
 	m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen1Body");
 	m_ColliderBody = (CColliderBox2D*)(m_RootComponent.Get());
+	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 
 	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::ChangeSceneToGreen1Scene);
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen1::SetSceneChangeCallbackToPlayer);

@@ -8,14 +8,13 @@ class CFightKirbyState :
     friend class CGameObject;
 public :
     CFightKirbyState();
-    CFightKirbyState(const CFightKirbyState& Kirby);
     virtual ~CFightKirbyState();
 protected:
-        virtual void Attack();
-        virtual void FallDownAttack();
-        virtual void GoUpAttack();
-        virtual void SpecialAttack();
-        virtual void UltimateAttack() override;
+    virtual void Attack();
+    virtual void FallDownAttack();
+    virtual void GoUpAttack();
+    virtual void SpecialAttack();
+    virtual void UltimateAttack() override;
 private :
     // Go Up
     bool m_GoUpState;

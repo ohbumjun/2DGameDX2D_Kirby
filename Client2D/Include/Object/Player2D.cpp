@@ -36,6 +36,14 @@
 #include "../Object/Monster.h"
 #include "EffectWaterAttack.h"
 #include "EffectWaterBlast.h"
+// KirbyState
+#include "../Component/FightKirbyState.h"
+#include "../Component/BeamKirbyState.h"
+#include "../Component/FireKirbyState.h"
+#include "../Component/BombKirbyState.h"
+#include "../Component/SwordKirbyState.h"
+#include "../Component/NormalKirbyState.h"
+
 
 CPlayer2D::CPlayer2D() :
 	m_MoveVelocity(0.f),
@@ -97,6 +105,8 @@ CPlayer2D::CPlayer2D() :
 	m_HP = 1200.f;
 	m_HPMax = 1200.f;
 	m_AttackAbility = 50.f;
+
+	m_ApplyLimitPosResolution = true;
 
 	m_InitJumpVelocity = m_JumpVelocity;
 
@@ -235,15 +245,19 @@ void CPlayer2D::Start()
 	}
 
 	// 처음 Player가 만들어지는 것이라면
+	/*
 	if (!CSceneManager::GetStaticPlayerInfo())
 	{
 		m_SimpleHUDWidget->CreateUIWindow<CEmptyObjectHUD>("SimpleHUDWidget");
 		m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 	}
+	*/
 
-	// Scene 정보 다시 세팅
+	// 매번 WidgetComponent의 Window는 그냥 새로 만들어준다
+	// 어차피 Widget Component의 Window는 Shared Ptr 이기 때문이다.
+	m_SimpleHUDWidget->CreateUIWindow<CEmptyObjectHUD>("SimpleHUDWidget");
+	m_SimpleHUDWidget->SetRelativePos(-50.f, 50.f, 0.f);
 	m_SimpleHUDWidget->GetWidgetWindow()->SetScene(m_Scene);
-
 	m_SimpleHUDWidget->GetWidgetWindow()->GetViewPort()->SetScene(m_Scene);
 	
 
@@ -340,11 +354,12 @@ void CPlayer2D::Start()
 
 	SetKirbyStateSizeAccordingToKirbyState();
 
-
 	// Player를 한번 멈춘다.
 	StopPlayer();
 
 	m_SceneChange = false;
+
+	LoadChangeImagesInAdvance();
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -1592,6 +1607,10 @@ void CPlayer2D::UpdateMP(float DeltaTime)
 		m_MP += DeltaTime * 20.f;
 
 		CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
+
+		if (!HUD)
+			return;
+
 		HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
 	}
 }
@@ -1606,7 +1625,9 @@ void CPlayer2D::DecreaseMP(float MP)
 	}
 
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
-	HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
+
+	if (!HUD)
+		HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
 }
 
 void CPlayer2D::AddHP(float HP)
@@ -1619,7 +1640,11 @@ void CPlayer2D::AddHP(float HP)
 	}
 
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
-	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
+
+	if (HUD)
+	{
+		HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
+	}
 
 	// Random Star Effect
 	for (int i = 0; i < 3; i++)
@@ -1663,7 +1688,10 @@ void CPlayer2D::Damage(float Damage)
 
 	CPlayerHUD* HUD = dynamic_cast<CPlayerHUD*>(m_Scene->GetPlayerHUD());
 
-	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
+	if (HUD)
+	{
+		HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
+	}
 }
 
 void CPlayer2D::UpdateBeingHit(float DeltaTime)
@@ -2609,11 +2637,11 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 	if (m_MP < 99.f)
 		return;
 
-	m_IsChanging = true;
+	// m_IsChanging = true;
 
 	m_IsAttacking = true;
 
-	StopPlayer();
+	WeakJump();
 
 	PrepareUltimateAction(4.f, 1.f);
 
@@ -2639,6 +2667,10 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 	{
 		m_KirbyState->SetWorldScale(110.f, 110.f, 1.f);
 	}
+
+	m_PhysicsSimulate = false;
+
+	StopPlayer();
 }
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
@@ -3198,6 +3230,15 @@ void CPlayer2D::UpdateChangeState(float DeltaTime)
 	*/
 }
 
+void CPlayer2D::LoadChangeImagesInAdvance()
+{
+	m_Scene->GetResource()->LoadTexture("UltimateBombUI", TEXT("Project/UI/Bomb_Ultimate.png"));
+	m_Scene->GetResource()->LoadTexture("UltimateBeamUI", TEXT("Project/UI/Beam_Ultimate.png"));
+	m_Scene->GetResource()->LoadTexture("UltimateFightUI", TEXT("Project/UI/Fight_Ultimate.png"));
+	m_Scene->GetResource()->LoadTexture("UltimateFireUI", TEXT("Project/UI/Fire_Ultimate.png"));
+	m_Scene->GetResource()->LoadTexture("UltimateSwordUI", TEXT("Project/UI/Sword_Ultimate.png"));
+}
+
 void CPlayer2D::Attack(float DeltaTime)
 {
 	if (!m_KirbyState)
@@ -3247,6 +3288,7 @@ void CPlayer2D::Attack(float DeltaTime)
 		if (!m_IsSpecialStateChanged)
 			return;
 
+		m_IsAttacking = true;
 
 		ResetMoveInfo();
 
@@ -3368,12 +3410,17 @@ void CPlayer2D::SpecialAttack()
 
 void CPlayer2D::UltimateAttack()
 {
-	m_IsChanging = false;
+	// 원인은 모르지만, UltimateAttack 으로 맨 처음 Animation을 Change 한 이후에
+	// m_IsGround가 false로 세팅되고, 계속 내려가게 된다.
+	// 이를 방지하기 위해, UltimateAttack Animation 변환시
+	// m_PhysicsSimulate 를 false 로 하고
+	// 여기서 다시 원상태로 세팅
+	m_PhysicsSimulate = true;
 
 	ResetMoveInfo();
 
 	UndoUltimateAction();
-
+	
 	SpecialChangeEffect();
 
 	// 카메라 흔들림
@@ -3383,7 +3430,9 @@ void CPlayer2D::UltimateAttack()
 
 	m_IsAttacking = false;
 
-	ChangePlayerIdleAnimation();
+	m_IsChanging = false;
+
+	ChangePlayerNormalIdleAnimation();
 
 }
 
@@ -3442,27 +3491,27 @@ void CPlayer2D::PrepareUltimateAction(float BackGroundDestroyTime, float UIProce
 	{
 	case Ability_State::Bomb:
 	{
-		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Bomb_Ultimate.png"));
+		m_UltimateAttackWindow->SetUITexture("UltimateBombUI", TEXT("Project/UI/Bomb_Ultimate.png"));
 	}
 	break;
 	case Ability_State::Beam:
 	{
-		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Beam_Ultimate.png"));
+		m_UltimateAttackWindow->SetUITexture("UltimateBeamUI", TEXT("Project/UI/Beam_Ultimate.png"));
 	}
 	break;
 	case Ability_State::Fight:
 	{
-		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fight_Ultimate.png"));
+		m_UltimateAttackWindow->SetUITexture("UltimateFightUI", TEXT("Project/UI/Fight_Ultimate.png"));
 	}
 	break;
 	case Ability_State::Fire:
 	{
-		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Fire_Ultimate.png"));
+		m_UltimateAttackWindow->SetUITexture("UltimateFireUI", TEXT("Project/UI/Fire_Ultimate.png"));
 	}
 	break;
 	case Ability_State::Sword:
 	{
-		m_UltimateAttackWindow->SetUITexture("UltimateUI", TEXT("Project/UI/Sword_Ultimate.png"));
+		m_UltimateAttackWindow->SetUITexture("UltimateSwordUI", TEXT("Project/UI/Sword_Ultimate.png"));
 	}
 	break;
 	}

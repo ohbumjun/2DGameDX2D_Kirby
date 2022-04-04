@@ -18,11 +18,9 @@ CFightKirbyState::CFightKirbyState() :
 	m_IsSpecialAttack(false),
 	m_GoUpState(false)
 {
-	m_ExtraAttackAbility = 15.f;
+	m_ExtraAttackAbility = 15.f;//
 }
 
-CFightKirbyState::CFightKirbyState(const CFightKirbyState& Kirby) : CKirbyState(Kirby)
-{}
 
 CFightKirbyState::~CFightKirbyState()
 {}
@@ -40,6 +38,8 @@ void CFightKirbyState::FallDownAttack()
 	m_FallAttackState = true;
 
 	m_FallAttackTime = m_FallAttackTimeMax;
+
+	m_InitWorldScale = GetWorldScale();
 
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
@@ -342,7 +342,7 @@ void CFightKirbyState::UltimateAttack()
 
 			AttackEffect->SetAttackObjectSpeed(5000.f);
 
-			AttackEffect->SetAttackObjectMaxLimit(6000.f);
+			AttackEffect->SetAttackObjectMaxLimit(5000.f);
 
 			AttackEffect->SetKirbyOwner(this);
 
@@ -426,13 +426,15 @@ void CFightKirbyState::UpdateFallAttack(float DeltaTime)
 
 		m_Player->SetAttackEnable(true);
 
+		SetWorldScale(Vector3(m_InitWorldScale.x * 1.2f, m_InitWorldScale.y * 1.2f, m_InitWorldScale.z));
+
 		if (m_Player->GetObjectMoveDir().x > 0)
 		{
-			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 650.f);
 		}
 		else
 		{
-			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 650.f);
 		}
 
 		m_CloneEffectToggleTime += DeltaTime;
@@ -448,6 +450,8 @@ void CFightKirbyState::UpdateFallAttack(float DeltaTime)
 			m_FallAttackState = false;
 
 			m_Player->SetAttackEnable(false);
+
+			SetWorldScale(m_InitWorldScale);
 		}
 	}
 }
@@ -543,6 +547,7 @@ void CFightKirbyState::Update(float DeltaTime)
 	UpdateFallAttack(DeltaTime);
 
 	UpdateSpecialAttack(DeltaTime);
+
 }
 
 void CFightKirbyState::PostUpdate(float DeltaTime)

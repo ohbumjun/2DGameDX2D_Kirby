@@ -63,9 +63,9 @@ void CKirbyAttackEffect::ApplyBombFallAttackEnd()
 		// 2) Physics 다시 세팅한다.
 	if (m_AttackType == KirbyAttackEffect_Type::BombFall)
 	{
-		m_Scene->GetCameraManager()->ReturnCamera();
+		// m_Scene->GetCameraManager()->ReturnCamera();
 
-		m_Camera = nullptr;
+		// m_Camera = nullptr;
 
 		CBombKirbyState* OwnerKirby = dynamic_cast<CBombKirbyState*>(m_KirbyOwner);
 

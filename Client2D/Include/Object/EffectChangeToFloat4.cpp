@@ -26,7 +26,7 @@ void CEffectChangeToFloat4::Start()
 
 	// m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen2Body");
 	m_ColliderBody = (CColliderBox2D*)m_RootComponent.Get();
-	m_ColliderBody->SetCollisionProfile("Monster");
+	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToFloat4::ChangeSceneToGreen2Scene);
 
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToFloat4::SetSceneChangeCallbackToPlayer);
@@ -43,7 +43,7 @@ bool CEffectChangeToFloat4::Init()
 
 	SetRootComponent(m_ColliderBody);
 
-	m_ColliderBody->SetCollisionProfile("Monster");
+	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
 
 	// 자기 위에 Door Above Particle을 만들어낸다

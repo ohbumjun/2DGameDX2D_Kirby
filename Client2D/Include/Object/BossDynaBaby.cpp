@@ -61,6 +61,8 @@ void CBossDynaBaby::Start()
 	m_IsGround = false;
 
 	m_IsTracingMonster = true;
+
+	m_ApplyLimitPosResolution = false;
 }
 
 bool CBossDynaBaby::Init()

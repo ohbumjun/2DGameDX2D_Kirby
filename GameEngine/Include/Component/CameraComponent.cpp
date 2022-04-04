@@ -89,8 +89,8 @@ void CCameraComponent::CreateProjectionMatrix()
 
 bool CCameraComponent::LimitCameraAreaInsideWorld()
 {
-	if (!m_AdjustRatio)
-		return false;
+	// if (!m_AdjustRatio)
+	//	return false;
 
 	bool Outside = false;
 

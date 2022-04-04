@@ -127,7 +127,7 @@ bool CUIDamageFont::Init()
 	if (!CUIWidget::Init())
 		return false;
 
-	if (m_Owner && m_Owner->GetViewPort() && m_Owner->GetViewPort()->GetScene())
+	if (m_Owner && m_Owner->GetViewPort())
 		m_Shader = m_Owner->GetViewPort()->GetScene()->GetResource()->FindShader("NumberShader");
 	else
 		m_Shader = CResourceManager::GetInst()->FindShader("NumberShader");

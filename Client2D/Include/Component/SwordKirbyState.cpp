@@ -240,11 +240,11 @@ void CSwordKirbyState::UpdateFallAttack(float DeltaTime)
 
 		if (m_Player->GetObjectMoveDir().x > 0)
 		{
-			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 650.f);
 		}
 		else
 		{
-			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 650.f);
 		}
 
 		m_CloneEffectToggleTime += DeltaTime;

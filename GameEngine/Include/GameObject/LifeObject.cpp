@@ -388,7 +388,6 @@ void CLifeObject::CheckCeilingCollision(float DeltaTime)
 					m_Scene->GetCameraManager()->GetCurrentCamera()->SetAdjustRatio(false);
 				}
 
-
 				CeilingCollision = true;
 
 				break;

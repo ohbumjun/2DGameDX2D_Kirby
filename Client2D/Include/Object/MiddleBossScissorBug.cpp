@@ -48,11 +48,11 @@ void CMiddleBossScissorBug::Start()
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
-
 	m_IsGround = true;
 
-
 	m_Sprite->GetAnimationInstance()->Play();
+
+	m_HP = 500.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(0.5f);

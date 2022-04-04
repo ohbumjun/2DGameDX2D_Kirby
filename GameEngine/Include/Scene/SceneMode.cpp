@@ -100,10 +100,10 @@ void CSceneMode::CreateParticle()
 	BossFightParticle->SetSpeedMin(1200.f);
 	BossFightParticle->SetSpeedMax(1600.f);
 	BossFightParticle->SetLifeTimeMin(1.0f);
-	BossFightParticle->SetLifeTimeMax(4.0f);
+	BossFightParticle->SetLifeTimeMax(5.0f);
 	BossFightParticle->SetMoveDir(Vector3(1.f, -1.f, 0.f));
 	BossFightParticle->SetStartMin(Vector3(-1000.f, 300.f, 0.f));
-	BossFightParticle->SetStartMax(Vector3(000.f, 3000.f, 0.f));
+	BossFightParticle->SetStartMax(Vector3(000.f, 4000.f, 0.f));
 	BossFightParticle->SetColorMin(Vector4(0.5f, 0.4f, 0.4f, 1.f));
 	BossFightParticle->SetColorMax(Vector4(0.9f, 0.2f, 0.2f, 1.f));
 	BossFightParticle->SetMoveAngle(Vector3(0.f, 0.f, -50.f));

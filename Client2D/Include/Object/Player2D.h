@@ -2,13 +2,7 @@
 #include "GameObject/LifeObject.h"
 #include "Component/WidgetComponent.h"
 #include "Component/NavAgent.h"
-#include "../Component/FightKirbyState.h"
 #include "../Component/KirbyState.h"
-#include "../Component/BeamKirbyState.h"
-#include "../Component/FireKirbyState.h"
-#include "../Component/BombKirbyState.h"
-#include "../Component/SwordKirbyState.h"
-#include "../Component/NormalKirbyState.h"
 #include "../Client.h"
 
 class CPlayer2D :
@@ -348,6 +342,7 @@ private :
 	void SetBasicSettingToChangedState();
 	void SpecialChangeEffect();
 	void UpdateChangeState(float DeltaTime);
+	void LoadChangeImagesInAdvance();
 public :
 	void SetIsEatingMonster(bool Enable);
 	void SetEatenMonster(class CMonster* Monster);

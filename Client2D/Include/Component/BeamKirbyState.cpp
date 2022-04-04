@@ -228,73 +228,6 @@ void CBeamKirbyState::SpecialAttack()
 
 void CBeamKirbyState::UltimateAttack()
 {
-	/*
-	float XLeftEnd = -1.f, XRightEnd = -1.f;
-
-	float XDiffStep = -1.f, YDiffStep = -1.f;
-
-	float YStart = -1.f, YEnd = -1.f;
-
-	Resolution RS = CEngine::GetInst()->GetResolution();
-
-	// 왼쪽을 보고 있었다면
-	if (m_Player->GetObjectMoveDir().x < 0.f)
-	{
-		// 왼쪽 끝
-		XLeftEnd = GetWorldPos().x - (float)RS.Width * 0.5f ;
-		// 오른쪽 끝보다 훨씬 더 
-		XRightEnd = GetWorldPos().x + (float)RS.Width * 2.5f;
-	}
-	// 오른쪽으로 보고 있었다면
-	else
-	{
-		// 왼쪽 끝보다 훨씬 더
-		XLeftEnd = GetWorldPos().x - (float)RS.Width * 2.5f;
-		// 오른쪽 끝
-		XRightEnd = GetWorldPos().x + (float)RS.Width * 0.5f ;
-	}
-
-	XDiffStep = (XRightEnd - XLeftEnd) * 0.1f; // 20로 나눈다.
-
-	YStart = m_Player->GetWorldPos().y + (float)RS.Height * 5.0f;
-	YEnd = m_Player->GetWorldPos().y - (float)RS.Height * 0.5f;
-
-	YDiffStep = (YStart - YEnd) * 0.1f; // 20로 나눈다.
-
-
-	for (int row = 0; row < 10; row++)
-	{
-		for (int col = 0;  col < 10; col++)
-		{
-			float LittleDiff = ((float)rand() / (float)RAND_MAX) * 650.f;
-
-			bool DiffDir = col & 1 ? -1.f : 1.f;
-
-			CBeamUltimate* AttackEffect = m_Scene->CreateGameObject<CBeamUltimate>("Attack3");
-
-			AttackEffect->SetWorldPos(XLeftEnd + XDiffStep * col + (LittleDiff * DiffDir),
-				YEnd + YDiffStep * row + (LittleDiff  * DiffDir),
-				GetWorldPos().z);
-
-			AttackEffect->SetKirbyOwner(this);
-
-			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility());
-
-			// 왼쪽을 보고 있었다면
-			if (m_Player->GetObjectMoveDir().x < 0.f)
-			{
-				AttackEffect->SetLeftAttackDir(-1.f);
-				AttackEffect->AddRelativeRotationZ(135.f);
-			}
-			// 오른쪽으로 보고 있었다면
-			else
-			{
-				AttackEffect->SetRightAttackDir(-1.f);
-				AttackEffect->AddRelativeRotationZ(-40.f);
-			}
-		}
-	}
-	*/
 	// 왼쪽을 보고 있다면
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
@@ -378,13 +311,14 @@ void CBeamKirbyState::UltimateAttack()
 			AttackEffect->AddRelativeRotationZ(-90.f);
 			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
 		}
-		
 	}
 
 	m_Player->SetAttackEnable(false);
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
-	m_Player->ChangePlayerIdleAnimation();
+	m_Player->ChangePlayerNormalIdleAnimation();
+
+	m_Player->SetWorldPos(m_Player->GetWorldPos());
 }
 
 void CBeamKirbyState::UpdateAttackGoUpState(float DeltaTime)
@@ -420,11 +354,11 @@ void CBeamKirbyState::UpdateFallAttack(float DeltaTime)
 
 		if (m_Player->GetObjectMoveDir().x > 0)
 		{
-			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f, 1.f * -1.f, 0.f) * DeltaTime * 650.f);
 		}
 		else
 		{
-			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 500.f);
+			AddWorldPos(Vector3(1.f * -1.f, 1.f * -1.f, 0.f) * DeltaTime * 650.f);
 		}
 
 		m_CloneEffectToggleTime += DeltaTime;

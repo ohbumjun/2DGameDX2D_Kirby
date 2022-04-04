@@ -35,6 +35,8 @@ public:
 	}
 	void ReturnCamera()
 	{
+		if (!m_KeepCamera)
+			return;
 		m_CurrentCamera = m_KeepCamera;
 		m_KeepCamera = nullptr;
 	}

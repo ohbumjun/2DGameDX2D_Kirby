@@ -26,6 +26,7 @@ void CEffectChangeToFloat2_1::Start()
 
 	// m_ColliderBody = (CColliderBox2D*)FindComponent("EffectSceneChangeToGreen2Body");
 	m_ColliderBody = (CColliderBox2D*)m_RootComponent.Get();
+	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 
 	// m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToFloat2_1::ChangeSceneToGreen2Scene);
 
