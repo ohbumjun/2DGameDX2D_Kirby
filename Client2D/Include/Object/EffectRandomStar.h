@@ -13,6 +13,7 @@ protected:
 private:
     Vector3 m_RandomDir;
     CSharedPtr<class CSpriteComponent> m_Sprite;
+    float m_MoveSpeed;
 private :
     void SetAttackXDir(float XDir);
 public:

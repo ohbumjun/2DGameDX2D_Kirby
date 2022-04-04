@@ -36,6 +36,8 @@ bool CEffectRandomStar::Init()
 
 	SetRootComponent(m_Sprite);
 
+	SetPivot(0.5, 0.5f, 0.f);
+
 	m_Sprite->SetRenderState("AlphaBlend");
 
 	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
@@ -64,6 +66,8 @@ bool CEffectRandomStar::Init()
 
 	SetWorldScale(CurWorldScale.x * 1.8f, CurWorldScale.y * 1.8f, 1.f);
 
+	m_MoveSpeed = 200.f + ((float)rand() / (float)RAND_MAX) * 200.f;
+
 	return true;
 }
 
@@ -71,13 +75,15 @@ void CEffectRandomStar::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
+	Vector3 WorldPos = GetWorldPos();
+
+	m_Sprite->AddWorldPos(Vector3(m_RandomDir.x, m_RandomDir.y, 0.f) * m_MoveSpeed * DeltaTime);
 }
 
 void CEffectRandomStar::PostUpdate(float DeltaTime)
 {
 	CGameObject::PostUpdate(DeltaTime);
 
-	m_Sprite->AddWorldPos(m_RandomDir * 200.f * DeltaTime);
 }
 
 CEffectRandomStar* CEffectRandomStar::Clone()

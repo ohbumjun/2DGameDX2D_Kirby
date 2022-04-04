@@ -113,6 +113,8 @@ private :
 	class CEffectStar* m_PullingStar;
 	CSharedPtr<class CMonster> m_EatenMonster;
 	CSharedPtr<class CMonster> m_PrevAbilityEatenMonster;
+	float m_PullRandomStarMakeTime;
+	float m_PullRandomStarMakeTimeMax;
 
 	// Change ¿©ºÎ
 	bool m_IsSpecialStateChanged;

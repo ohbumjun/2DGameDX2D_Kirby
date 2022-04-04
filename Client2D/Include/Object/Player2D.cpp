@@ -86,7 +86,8 @@ CPlayer2D::CPlayer2D() :
 	m_SceneChangeCallback(nullptr),
 	m_IsBeingHit(false),
 	m_BeingHitTime(0.f),
-	m_BeingHitTimeMax(0.5f)
+	m_BeingHitTimeMax(0.5f),
+	m_PullRandomStarMakeTimeMax(0.1f)
 {
 	SetTypeID<CPlayer2D>();
 	m_SolW      = false;
@@ -2756,9 +2757,22 @@ void CPlayer2D::PullRight(float DeltaTime)
 
 	m_ObjectMoveDir.x = 1.f;
 
-	CEffectRandomStar* PullStar = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
-	PullStar->SetAttackXDir(1.f);
-	PullStar->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y, 0.f);
+	m_PullRandomStarMakeTime += DeltaTime;
+
+	Vector3 WorldPos = GetWorldPos();
+	float LeftXPos = GetWorldPos().x - GetWorldScale().x * GetPivot().x;
+	float RightXPos = GetWorldPos().x + GetWorldScale().x * GetPivot().x;
+
+	if (m_PullRandomStarMakeTime >= m_PullRandomStarMakeTimeMax)
+	{
+		m_PullRandomStarMakeTime = 0.f;
+
+		CEffectRandomStar* PullStar = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+
+		PullStar->SetAttackXDir(1.f);
+
+		PullStar->SetWorldPos(GetWorldPos().x + GetWorldScale().x * GetPivot().x, GetWorldPos().y, 0.f);
+	}
 }
 
 void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
@@ -3718,9 +3732,18 @@ void CPlayer2D::PullLeft(float DeltaTime)
 
 	m_ObjectMoveDir.x = 1.f * -1;
 
-	CEffectRandomStar* PullStar = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
-	PullStar->SetAttackXDir(-1.f);
-	PullStar->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y, 0.f);
+	m_PullRandomStarMakeTime += DeltaTime;
+
+	if (m_PullRandomStarMakeTime >= m_PullRandomStarMakeTimeMax)
+	{
+		m_PullRandomStarMakeTime = 0.f;
+
+		CEffectRandomStar* PullStar = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+
+		PullStar->SetAttackXDir(-1.f);
+
+		PullStar->SetWorldPos(GetWorldPos().x - GetWorldScale().x * GetPivot().x, GetWorldPos().y, 0.f);
+	}
 }
 
 void CPlayer2D::PullLeftEnd(float DeltaTime)
