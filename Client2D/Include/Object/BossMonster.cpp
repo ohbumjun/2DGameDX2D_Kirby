@@ -2,6 +2,8 @@
 
 #include <Scene/CameraManager.h>
 #include <Scene/Scene.h>
+#include <Scene/SceneManager.h>
+
 #include "Engine.h"
 #include "Player2D.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -9,12 +11,12 @@
 #include "Component/PaperBurnComponent.h"
 #include "../UI/BossHUD.h"
 #include "BossFightParticle.h"
+#include "../Object/EffectRandomStar.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
 	m_FarAttackLimitTimeMax(3.5f),
 	m_CloseAttackLimitTimeMax(2.5f),
-	m_BossParticleMaxTime(3.f),
 	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
 	m_IsRoundStarted(false),
 	m_BossAngry(false)
@@ -134,17 +136,7 @@ void CBossMonster::UpdateBossAngryEffect(float DeltaTime)
 	if (m_HP < m_HPMax * 0.35f)
 	{
 		MakeBossAngry();
-
 		// 주기적으로 Particle을 만들어준다.
-	}
-
-	m_BossParticleTime += DeltaTime;
-
-	if (m_BossParticleTime >= m_BossParticleMaxTime)
-	{
-		m_BossParticleTime = 0.f;
-
-		MakeBossFightParticleEffect();
 	}
 }
 
@@ -157,19 +149,26 @@ void CBossMonster::MakeBossAngry()
 
 	m_Sprite->SetBaseColor(1.f, 0.3f, 0.3f, 1.f);
 
-	m_AttackAbility *= m_AttackAbility * 1.5f;
+	m_AttackAbility *=  1.5f;
 
 	m_MonsterMoveVelocity = m_MonsterMoveVelocity * 2.0f;
+
+	// Particle을 하나 만들어낸다
+	MakeBossFightParticleEffect();
+
+	// Random Star Effect
+	for (int i = 0; i < 10; i++)
+	{
+		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+		RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
+	}
 }
 
 void CBossMonster::MakeBossFightParticleEffect()
 {
 	CBossFightParticle* BossFightParticle = m_Scene->CreateGameObject<CBossFightParticle>("BossFightParticle");
 
-	// m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
-
 	BossFightParticle->SetWorldPos(Vector3(0.f, 0.f, 0.f));
-	// BossFightParticle->SetWorldPos(GetWorldPos());
 }
 
 void CBossMonster::AIDeathSpecific(float DeltaTime)
@@ -181,6 +180,10 @@ void CBossMonster::AIDeathSpecific(float DeltaTime)
 	CBossHUD* BossHUD = (CBossHUD*)m_Scene->GetBossHUD();
 
 	BossHUD->StartDestroy();
+
+	// Scene 에서 Boss Fight Particle을 제외한다
+	CSceneManager::GetInst()->GetScene()->DeleteGameObjectByType<CBossFightParticle>();
+	// m_Scene->DeleteGameObjectByType<CBossFightParticle>();
 }
 
 void CBossMonster::Update(float DeltaTime)

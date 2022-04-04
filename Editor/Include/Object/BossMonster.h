@@ -12,6 +12,7 @@ protected:
 protected:
     virtual void AIDeathSpecific(float DeltaTime) {};
     virtual void Damage(float Damage) override{}
+    virtual void MakeBossAngry(){}
 public:
     virtual void Start() override;
     virtual bool Init() override;

@@ -47,14 +47,12 @@ void CLoadingThread::Run()
 		CFloat1Scene* Float1Scene = CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>(false);
 
 		Float1Scene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
-		
-		// CSceneManager::GetInst()->GetNextScene()->PrepareResources();
+
 		Float1Scene->PrepareResources();
 
 		if (CSceneManager::GetInst()->GetNextScene()->Load("Float1.scn", SCENE_PATH))
 		{
 			AddMessage(true, 1.f);
-			// CSceneManager::GetInst()->ChangeNextScene();
 		}
 	}
 		break;
@@ -63,12 +61,11 @@ void CLoadingThread::Run()
 	{
 		CSceneManager::GetInst()->CreateNewScene(false);
 
-		CDynaBlade1* Float1Scene = CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade1>(false);
+		CDynaBlade1* Dyna1Scene = CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade1>(false);
 
-		Float1Scene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
+		Dyna1Scene->SetLoadingFunction(this, &CLoadingThread::AddMessage);
 
-		// CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		Float1Scene->PrepareResources();
+		Dyna1Scene->PrepareResources();
 
 		if (CSceneManager::GetInst()->GetNextScene()->Load("Dyna1.scn", SCENE_PATH))
 		{

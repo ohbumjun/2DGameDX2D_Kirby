@@ -189,7 +189,7 @@ void CBossDyna::FarAttack()
 {
 	m_IsAttacking = true;
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+	// m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -225,7 +225,7 @@ void CBossDyna::CloseAttack()
 {
 	m_IsAttacking = true;
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+	// m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	for (int i = 0; i < 3; i++)
 	{

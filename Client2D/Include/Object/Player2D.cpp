@@ -1621,14 +1621,12 @@ void CPlayer2D::AddHP(float HP)
 	HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
 
 	// Random Star Effect
-	CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
-	RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
-
-	RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
-	RandomStar->SetWorldPos(Vector3(GetWorldPos().x + (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
-
-	RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
-	RandomStar->SetWorldPos(Vector3(GetWorldPos().x , GetWorldPos().y, GetWorldPos().z));
+	for (int i = 0; i < 3; i++)
+	{
+		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+		RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
+	}
+	
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -2943,7 +2941,7 @@ void CPlayer2D::SpecialChange()
 
 	m_KirbyState->SetPlayer(this);
 
-	// SpecialChangeEffect();
+	SpecialChangeEffect();
 
 	SetRootComponent(m_KirbyState);
 
@@ -3125,15 +3123,17 @@ void CPlayer2D::SetBasicSettingToChangedState()
 
 void CPlayer2D::SpecialChangeEffect()
 {
-	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
-
-	// m_RootComponent->AddChild(SpecialChangeParticle->GetRootComponent());
-
-	SpecialChangeParticle->SetWorldPos(GetWorldPos());
 	/*
-	CBubbleParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CBubbleParticle>("Special Change");
-	SpecialChangeParticle->SetRelativePos(0.f, m_KirbyState->GetWorldPos().y + m_KirbyState->GetWorldScale().y, 0.f);
+	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("Special Change");
+	SpecialChangeParticle->SetWorldPos(GetWorldPos());
 	*/
+
+	// Random Star Effect
+	for (int i = 0; i < 10; i++)
+	{
+		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+		RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
+	}
 }
 
 void CPlayer2D::UpdateChangeState(float DeltaTime)
@@ -3451,12 +3451,15 @@ void CPlayer2D::SetUIAccordingToKirbyState()
 		return;
 	}
 
+	CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
+
+	if (!PlayerHUD)
+		return;
+
 	switch (m_SpecialAbilityState)
 	{
 	case Ability_State::Beam:
 	{
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
 		PlayerHUD->GetNameText()->SetText(TEXT("BEAM KIRBY"));
 
 		PlayerHUD->GetIconImage()->SetTexture("BeamKirbyIconTexture", TEXT("Project/UI/Icon_BeamKirby.png"));
@@ -3466,8 +3469,6 @@ void CPlayer2D::SetUIAccordingToKirbyState()
 	break;
 	case Ability_State::Fire:
 	{
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
 		PlayerHUD->GetNameText()->SetText(TEXT("FIRE KIRBY"));
 
 		PlayerHUD->GetIconImage()->SetTexture("FireKirbyIconTexture", TEXT("Project/UI/Icon_FireKirby.png"));
@@ -3477,8 +3478,6 @@ void CPlayer2D::SetUIAccordingToKirbyState()
 	break;
 	case Ability_State::Fight:
 	{
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
 		PlayerHUD->GetNameText()->SetText(TEXT("FIGHT KIRBY"));
 
 		PlayerHUD->GetIconImage()->SetTexture("FightKirbyIconTexture", TEXT("Project/UI/Icon_FightKirby.png"));
@@ -3488,8 +3487,6 @@ void CPlayer2D::SetUIAccordingToKirbyState()
 	break;
 	case Ability_State::Bomb:
 	{
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
 		PlayerHUD->GetNameText()->SetText(TEXT("BOMB KIRBY"));
 
 		PlayerHUD->GetIconImage()->SetTexture("BombKirbyIconTexture", TEXT("Project/UI/Icon_BombKirby.png"));
@@ -3499,8 +3496,6 @@ void CPlayer2D::SetUIAccordingToKirbyState()
 	break;
 	case Ability_State::Sword:
 	{
-		CPlayerHUD* PlayerHUD = (CPlayerHUD*)m_Scene->GetPlayerHUD();
-
 		PlayerHUD->GetNameText()->SetText(TEXT("SWORD KIRBY"));
 
 		PlayerHUD->GetIconImage()->SetTexture("SwordKirbyIconTexture", TEXT("Project/UI/Icon_SwordKirby.png"));

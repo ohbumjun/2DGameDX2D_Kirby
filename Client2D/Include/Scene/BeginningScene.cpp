@@ -72,7 +72,9 @@ void CBeginningScene::CreateSound()
 {}
 
 void CBeginningScene::CreateParticle()
-{}
+{
+	CSceneMode::CreateParticle();
+}
 
 void CBeginningScene::PrepareResources()
 {

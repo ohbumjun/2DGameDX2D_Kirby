@@ -8,6 +8,7 @@
 #include "../Scene/Green4Scene.h"
 #include "Player2D.h"
 #include "../Object/EffectSceneChangeAlpha.h"
+#include "MoonAboveParticle.h"
 
 class CLoadingScene;
 
@@ -34,6 +35,9 @@ void CEffectChangeToGreen4::Start()
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen4::SetSceneChangeCallbackToPlayer);
 	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToGreen4::ResetSceneChangeCallbackToPlayer);
 
+	// 자기 위에 Door Above Particle을 만들어낸다
+	CMoonAboveParticle* Particle = m_Scene->CreateGameObject<CMoonAboveParticle>("Particle");
+	Particle->SetWorldPos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, 0.f);
 }
 
 bool CEffectChangeToGreen4::Init()
@@ -79,21 +83,7 @@ void CEffectChangeToGreen4::MakeSceneChangeEffect(const CollisionResult& Result)
 
 void CEffectChangeToGreen4::ChangeSceneToGreen4Scene()
 {
-	/*
-	CGameObject* DestObject = Result.Dest->GetGameObject();
-
-	if (m_Scene->GetPlayerObject() == DestObject)
-	{
-		// Next Scene 에 세팅해둔다.
-		CSceneManager::GetInst()->CreateNewScene(false);
-		CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen2Scene>(false);
-		CSceneManager::GetInst()->GetNextScene()->PrepareResources();
-		if (CSceneManager::GetInst()->GetNextScene()->Load("Green2_SpecialScene.scn", SCENE_PATH))
-		{
-			CSceneManager::GetInst()->ChangeNextScene();
-		}
-	}
-	*/
+	
 	// Next Scene 에 세팅해둔다.
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen4Scene>(false);

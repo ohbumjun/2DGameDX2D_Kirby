@@ -136,13 +136,13 @@ public :
 	{
 		m_Mode->PrepareResources();
 	}
-private :
-	void ClearGameObjects();
-	void DeleteGameObject(const std::string& Name);
-	void DeletePlayerFromScene();
-	void RemoveDuplicateObject(const std::string& Name);
 	template<typename T>
 	void DeleteGameObjectByType();
+	void DeleteGameObject(const std::string& Name);
+private :
+	void ClearGameObjects();
+	void DeletePlayerFromScene();
+	void RemoveDuplicateObject(const std::string& Name);
 public :
 	void SetStopEnableObjectsExceptPlayer(size_t TypeID, bool Enable);
 public :

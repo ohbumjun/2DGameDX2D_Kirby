@@ -8,6 +8,7 @@
 #include "../Scene/Float4Scene.h"
 #include "Player2D.h"
 #include "../Object/EffectSceneChangeAlpha.h"
+#include "MoonAboveParticle.h"
 
 class CLoadingScene;
 
@@ -44,6 +45,10 @@ bool CEffectChangeToFloat4::Init()
 
 	m_ColliderBody->SetCollisionProfile("Monster");
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
+
+	// 자기 위에 Door Above Particle을 만들어낸다
+	CMoonAboveParticle* Particle = m_Scene->CreateGameObject<CMoonAboveParticle>("Particle");
+	Particle->SetWorldPos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, 0.f);
 
 	return true;
 }

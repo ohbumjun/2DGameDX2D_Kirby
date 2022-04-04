@@ -23,6 +23,7 @@ bool CBossFightParticle::Init()
 	// m_Particle->SetRelativePos(200.f, 50.f, 0.f);
 
 	m_Particle->SetParticle("BossFight");
+	// m_Particle->SetParticle("Bubble");
 
 	return true;
 }

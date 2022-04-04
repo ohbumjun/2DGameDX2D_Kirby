@@ -30,12 +30,15 @@ CMonster::CMonster() :
 	m_IsBeingSpitOut(false),
 	m_SpitOutDistanceMax(500.f),
 	m_HitLimitTime(1.f),
-	m_HitLimitTimeMax(1.f)
+	m_HitLimitTimeMax(1.f),
+	m_IsTracingMonster(true)
 {
 	SetTypeID<CMonster>();
 	m_MonsterType = Monster_Type::Normal;
 	m_HPMax = 100.f;
 	m_HP = 100.f;
+	m_ApplyLimitPosResolution = true;
+
 }
 
 CMonster::CMonster(const CMonster& Monster) : CLifeObject(Monster)
@@ -828,7 +831,7 @@ void CMonster::CheckWithinBossWorldResolution()
 
 			if (LeftPosX <= m_Scene->GetBossWorldResolution().x)
 			{
-				SetWorldPos(LeftPosX + 0.001f, GetWorldPos().y, GetWorldPos().z);
+				SetWorldPos(m_Scene->GetBossWorldResolution().x + GetWorldScale().x * GetPivot().x + 0.001f, GetWorldPos().y, GetWorldPos().z);
 			}
 		}
 	}

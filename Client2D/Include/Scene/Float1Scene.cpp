@@ -30,7 +30,6 @@ void CFloat1Scene::Start()
 
 	Alpha->SetSceneStart(true);
 
-
 	CGameObject* TileMapEmtpyObject = m_Scene->FindGameObjectByTypeID(typeid(CTileMapEmpty).hash_code());
 
 	SetTileMapEmptyObject(TileMapEmtpyObject);

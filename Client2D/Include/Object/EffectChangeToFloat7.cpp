@@ -8,6 +8,7 @@
 #include "../Scene/Float7Scene.h"
 #include "Player2D.h"
 #include "../Object/EffectSceneChangeAlpha.h"
+#include "MoonAboveParticle.h"
 
 class CLoadingScene;
 
@@ -32,6 +33,9 @@ void CEffectChangeToFloat7::Start()
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToFloat7::SetSceneChangeCallbackToPlayer);
 	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToFloat7::ResetSceneChangeCallbackToPlayer);
 
+	// 자기 위에 Door Above Particle을 만들어낸다
+	CMoonAboveParticle* Particle = m_Scene->CreateGameObject<CMoonAboveParticle>("Particle");
+	Particle->SetWorldPos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, 0.f);
 }
 
 bool CEffectChangeToFloat7::Init()

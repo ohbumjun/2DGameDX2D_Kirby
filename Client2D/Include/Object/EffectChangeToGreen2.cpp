@@ -8,6 +8,7 @@
 #include "../Scene/Green2Scene.h"
 #include "Player2D.h"
 #include "EffectSceneChangeAlpha.h"
+#include "MoonAboveParticle.h"
 
 class CLoadingScene;
 
@@ -33,7 +34,10 @@ void CEffectChangeToGreen2::Start()
 
 	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectChangeToGreen2::SetSceneChangeCallbackToPlayer);
 	m_ColliderBody->AddCollisionCallback(Collision_State::End, this, &CEffectChangeToGreen2::ResetSceneChangeCallbackToPlayer);
-	
+
+	// 자기 위에 Door Above Particle을 만들어낸다
+	CMoonAboveParticle* Particle = m_Scene->CreateGameObject<CMoonAboveParticle>("Particle");
+	Particle->SetWorldPos(GetWorldPos().x, GetWorldPos().y + GetWorldScale().y, 0.f);
 }
 
 bool CEffectChangeToGreen2::Init()
@@ -47,7 +51,6 @@ bool CEffectChangeToGreen2::Init()
 
 	m_ColliderBody->SetCollisionProfile("PlayerEffect");
 	m_ColliderBody->SetPivot(0.5f, 0.5f, 0.0f);
-
 
 	return true;
 }

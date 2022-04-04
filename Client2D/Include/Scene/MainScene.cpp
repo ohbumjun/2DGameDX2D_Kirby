@@ -105,6 +105,7 @@ bool CMainScene::Init()
 	CreateAnimationSequence();
 
 	CreateParticle();
+
 	CTileMapEmpty* TileMapEmpty = m_Scene->LoadGameObject<CTileMapEmpty>();
 	TileMapEmpty->LoadByFileName("TileMapText.gobj", OBJECT_PATH);
 	TileMapEmpty->SetEditMode(false);
@@ -142,8 +143,8 @@ bool CMainScene::Init()
 	// CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 	// BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
 
-	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
-	SpecialChangeParticle->SetRelativePos(900.f, 200.f, 0.f);
+	// CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");
+	// SpecialChangeParticle->SetRelativePos(900.f, 200.f, 0.f);
 
 	/*
 	BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
