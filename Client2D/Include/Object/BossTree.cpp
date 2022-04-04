@@ -105,9 +105,9 @@ bool CBossTree::Init()
 
 void CBossTree::Update(float DeltaTime)
 {
-	CBossMonster::Update(DeltaTime);
-
 	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
+
+	CBossMonster::Update(DeltaTime);
 
 	UpdateSceneChangeLimitTime(DeltaTime);
 }
@@ -174,6 +174,8 @@ void CBossTree::AIAttackSpecific(float DeltaTime)
 
 	if (m_IsAttacking)
 		return;
+
+	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
 
 	float DistToPlayer = m_Scene->GetPlayerObject()->GetWorldPos().Distance(GetWorldPos());
 

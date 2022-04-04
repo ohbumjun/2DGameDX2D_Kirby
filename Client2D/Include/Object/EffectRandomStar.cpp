@@ -17,6 +17,11 @@ CEffectRandomStar::CEffectRandomStar(const CEffectRandomStar& Beatle)
 CEffectRandomStar::~CEffectRandomStar()
 {}
 
+void CEffectRandomStar::SetAttackXDir(float XDir)
+{
+	m_RandomDir = Vector3(XDir, m_RandomDir.y, 0.f);
+}
+
 void CEffectRandomStar::Start()
 {
 	CGameObject::Start();
@@ -46,7 +51,9 @@ bool CEffectRandomStar::Init()
 	m_Sprite->SetAnimationInstance(AnimationInstance);
 
 	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("EffectRight");
-	m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayScale(m_LifeTime);
+
+	m_Sprite->GetAnimationInstance()->GetCurrentAnimation()->SetPlayScale(
+		m_LifeTime + ((float)rand() / (float)RAND_MAX));
 
 	Vector3 CurWorldScale = GetWorldScale();
 
@@ -56,8 +63,6 @@ bool CEffectRandomStar::Init()
 	m_RandomDir = Vector3(DirX, DirY, 0.f);
 
 	SetWorldScale(CurWorldScale.x * 1.8f, CurWorldScale.y * 1.8f, 1.f);
-
-
 
 	return true;
 }

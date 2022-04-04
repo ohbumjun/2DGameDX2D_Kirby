@@ -1144,8 +1144,6 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 		m_KirbyState = CreateComponent<CNormalKirbyState>("NormalKirbyState");
 
-		ChangePlayerIdleAnimation();
-
 		SetRootComponent(m_KirbyState);
 
 		m_KirbyState->SetWorldPos(OriginalPos);
@@ -1175,6 +1173,8 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		PlayerHUD->GetIconImage()->SetTexture("NormalKirbyIconImage", TEXT("Project/UI/Icon_NormalKirby.png"));
 
 		PlayerHUD->GetIconImage()->SetSize(50.f, 50.f);
+
+		ChangePlayerNormalIdleAnimation();
 	}
 }
 
@@ -2755,6 +2755,10 @@ void CPlayer2D::PullRight(float DeltaTime)
 	m_IsPulling = true;
 
 	m_ObjectMoveDir.x = 1.f;
+
+	CEffectRandomStar* PullStar = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+	PullStar->SetAttackXDir(1.f);
+	PullStar->SetWorldPos(GetWorldPos().x + 100.f, GetWorldPos().y, 0.f);
 }
 
 void CPlayer2D::PullRightCollisionBeginCallback(const CollisionResult& Result)
@@ -3713,6 +3717,10 @@ void CPlayer2D::PullLeft(float DeltaTime)
 	m_IsPulling = true;
 
 	m_ObjectMoveDir.x = 1.f * -1;
+
+	CEffectRandomStar* PullStar = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+	PullStar->SetAttackXDir(-1.f);
+	PullStar->SetWorldPos(GetWorldPos().x - 100.f, GetWorldPos().y, 0.f);
 }
 
 void CPlayer2D::PullLeftEnd(float DeltaTime)

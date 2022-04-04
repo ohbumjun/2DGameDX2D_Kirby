@@ -5,6 +5,7 @@ class CEffectRandomStar :
     public CGameObject
 {
     friend class CScene;
+    friend class CPlayer2D;
 protected:
     CEffectRandomStar();
     CEffectRandomStar(const CEffectRandomStar& Dash);
@@ -12,6 +13,8 @@ protected:
 private:
     Vector3 m_RandomDir;
     CSharedPtr<class CSpriteComponent> m_Sprite;
+private :
+    void SetAttackXDir(float XDir);
 public:
     virtual void Start() override;
     virtual bool Init() override;
