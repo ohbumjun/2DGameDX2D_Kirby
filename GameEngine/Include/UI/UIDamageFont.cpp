@@ -267,7 +267,7 @@ void CUIDamageFont::Render()
 
 		m_Tint = m_Info.m_Tint;
 
-		m_RenderPos.x += (i * m_Size.x);
+		m_RenderPos.x += m_Size.x;
 
 		CUIWidget::Render();
 

@@ -107,7 +107,6 @@ void CBossTree::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
 
-
 	m_ObjectMoveDir = Vector3(-1.f, 0.f, 0.f);
 
 	UpdateSceneChangeLimitTime(DeltaTime);
