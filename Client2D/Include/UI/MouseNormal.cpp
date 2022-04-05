@@ -25,12 +25,22 @@ bool CMouseNormal::Init()
 
 	std::vector<TCHAR*> vecFileName;
 
+	/*
 	for (int i = 0; i <= 12; ++i)
 	{
 		TCHAR *FilePath = new TCHAR[MAX_PATH];
 		memset(FilePath, 0, sizeof(TCHAR) * MAX_PATH);
 		wsprintf(FilePath, TEXT("Mouse/Default/%d.png"), i);
 		vecFileName.push_back(FilePath);
+	}
+	*/
+
+	for (int i = 1; i <= 1; i++)
+	{
+		TCHAR* FileName = new TCHAR[MAX_PATH];
+		memset(FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		wsprintf(FileName, TEXT("Mouse/Kirby/%d.png"), i);
+		vecFileName.push_back(FileName);
 	}
 
 	m_Image->SetTexture("MouseNormal", vecFileName);
@@ -41,7 +51,8 @@ bool CMouseNormal::Init()
 	float Height = (float)m_Image->GetTexture()->GetHeight();
 	SetSize(Width, Height);
 
-	for (int i = 0; i < 13; i++)
+	// for (int i = 0; i < 13; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		SAFE_DELETE(vecFileName[i]);
 	}

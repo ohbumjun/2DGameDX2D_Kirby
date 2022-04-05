@@ -16,6 +16,7 @@ bool CMouseAttack::Init()
 
 	std::vector<TCHAR*> vecFileName;
 
+	/*
 	for (int i = 0; i < 7; i++)
 	{
 		TCHAR* FileName = new TCHAR[MAX_PATH];
@@ -23,6 +24,15 @@ bool CMouseAttack::Init()
 		wsprintf(FileName, TEXT("Mouse/Temp/Attack/000%d.png"), i);
 		vecFileName.push_back(FileName);
 	}
+	*/
+for (int i = 1; i <= 1; i++)
+	{
+		TCHAR* FileName = new TCHAR[MAX_PATH];
+		memset(FileName, 0, sizeof(TCHAR) * MAX_PATH);
+		wsprintf(FileName, TEXT("Mouse/Kirby/%d.png"), i);
+		vecFileName.push_back(FileName);
+	}
+	
 
 	m_Image = CreateUIWidget<CUIImage>("MouseAttack");
 	m_Image->SetTexture("MouseAttack", vecFileName);
@@ -32,7 +42,8 @@ bool CMouseAttack::Init()
 
 	SetSize(Width, Height);
 
-	for (int i = 0; i < 7; i++)
+	// for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		SAFE_DELETE(vecFileName[i]);
 	}
