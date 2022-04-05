@@ -9,7 +9,7 @@
 #include "../Object/PixelTest.h"
 #include "Scene/ViewPort.h"
 #include "../UI/MainWidget.h"
-#include "../UI/IntroWidget.h"
+#include "../UI/EndingWidget.h"
 #include "../Object/LineContainer.h"
 #include "../Object/EffectSceneChangeAlpha.h"
 
@@ -34,28 +34,26 @@ void CEndingScene::Start()
 
 	SetTileMapEmptyObject(TileMapEmtpyObject);
 
-	m_Scene->SetWorldResolution(TileMapEmtpyObject->GetWorldScale().x, TileMapEmtpyObject->GetWorldScale().y);
+	if (TileMapEmtpyObject)
+	{
+		m_Scene->SetWorldResolution(TileMapEmtpyObject->GetWorldScale().x, TileMapEmtpyObject->GetWorldScale().y);
+	}
 
 	CGameObject* Player2D = m_Scene->FindGameObjectByTypeID(typeid(CPlayer2D).hash_code());
 
 	SetPlayerObject(Player2D);
 
 	// 여기서는 더이상 Player 가 안보여도 된다.
-	Player2D->Enable(false);
-
+	Player2D->Destroy();
+	
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 
 	SetLineContainerObject(LineContainer);
+}
 
-	if (CSceneManager::GetStaticPlayerInfo())
-	{
-		if (m_Scene->GetSceneChangeObject())
-		{
-			Vector3 PlayerSpawnBasePos = m_Scene->GetSceneChangeObject()->GetWorldPos();
-
-			Player2D->SetWorldPos(PlayerSpawnBasePos.x, PlayerSpawnBasePos.y + 100.f, PlayerSpawnBasePos.z);
-		}
-	}
+void CEndingScene::Update(float DeltaTime)
+{
+	CSceneMode::Update(DeltaTime);
 }
 
 bool CEndingScene::Init()
@@ -63,7 +61,7 @@ bool CEndingScene::Init()
 	if (!CSceneMode::Init())
 		return false;
 
-	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CIntroWidget>("IntroWidget");
+	m_MainWidget = m_Scene->GetViewPort()->CreateUIWindow<CEndingWidget>("EndingWidget");
 
 	return true;
 }

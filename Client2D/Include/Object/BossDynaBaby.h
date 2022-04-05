@@ -6,6 +6,7 @@ class CBossDynaBaby :
 {
     friend class CScene;
     friend class CDynaNest;
+    friend class CBossDyna;
 protected:
     CBossDynaBaby();
     virtual ~CBossDynaBaby();
@@ -13,9 +14,12 @@ private:
     bool m_IsToggleGoUp;
     float m_ToggleLimitTime;
     float m_ToggleLimitTimeMax;
+private :
+    class CBossDyna* m_BossDyna;
 private:
     virtual void AIWalkSpecific(float DeltaTime) override;
     virtual void AITraceSpecific(float DeltaTime) override;
+    virtual void AIDeathSpecific(float DeltaTime) override;
 private:
     void UpdateToggle(float DeltaTime);
     void JumpStart();

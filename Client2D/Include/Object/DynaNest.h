@@ -5,6 +5,7 @@ class CDynaNest :
     public CGameObject
 {
     friend class CScene;
+    friend class CBossDyna;
 private :
     CDynaNest();
     ~CDynaNest();
@@ -13,6 +14,8 @@ private :
 private :
     float m_TimeFlowed;
     float m_GenerateDynaBabyTime;
+private :
+    class CBossDyna* m_BossDyna;
 private :
     void MakeDynaBabyEffect();
 public :

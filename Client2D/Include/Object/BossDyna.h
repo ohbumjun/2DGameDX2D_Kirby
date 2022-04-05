@@ -13,6 +13,16 @@ public:
     virtual bool Init() override;
     virtual void Update(float DeltaTime);
     virtual void PostUpdate(float DeltaTime);
+private :
+    // BossDynaBaby 목록들을 List 형태로 들고 있게 한다.
+    std::list <CSharedPtr<class CBossDynaBaby>> m_BabiesList;
+public :
+    std::list <CSharedPtr<class CBossDynaBaby>>* GetBossDynaBabyList()
+{
+        return &m_BabiesList;
+}
+    void AddBossDynaBaby(class CBossDynaBaby* Baby);
+    void DeleteDynaBaby(class CBossDynaBaby* Baby);
 private:
     float m_SceneChangeLimitTime;
     CSharedPtr<class CSpriteComponent> m_DynaHead;
@@ -46,7 +56,7 @@ private:
     void ChangeFarAttackAnimation();
     void ChangeCloseAttackAnimation();
     void UpdateSceneChangeLimitTime(float DeltaTime);
-    void ChangeSceneToFloat1Scene();
+    void ChangeSceneToEndingScene();
     virtual void MakeBossAngry() override;
 protected:
     void UpdateScale(float DeltaTime);

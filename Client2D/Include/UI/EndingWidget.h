@@ -21,8 +21,6 @@ public:
     virtual void Update(float DeltaTime) override;
     virtual void PostUpdate(float DeltaTime) override;
     virtual void Render() override;
-private:
-    void StartGameButtonClick();
 };
 
 

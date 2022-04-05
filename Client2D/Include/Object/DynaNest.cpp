@@ -1,4 +1,6 @@
 #include "DynaNest.h"
+
+#include "BossDyna.h"
 #include "Component/SpriteComponent.h"
 #include "Animation/AnimationSequence2DInstance.h"
 #include "Scene/Scene.h"
@@ -34,6 +36,11 @@ void CDynaNest::MakeDynaBabyEffect()
 		DynaBaby->JumpStart();
 
 		DynaBaby->SetWorldScale(70.f, 70.f, 1.f);
+
+		DynaBaby->m_BossDyna = m_BossDyna;
+
+		// Boss Dyna 의 Baby List 에 추가 
+		m_BossDyna->AddBossDynaBaby(DynaBaby);
 	}
 }
 

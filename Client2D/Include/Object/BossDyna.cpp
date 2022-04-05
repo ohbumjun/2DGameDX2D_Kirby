@@ -1,5 +1,4 @@
 #include "BossDyna.h"
-#include "Tornado.h"
 #include <Component/SpriteComponent.h>
 #include <Scene/CameraManager.h>
 #include "Component/PaperBurnComponent.h"
@@ -13,6 +12,7 @@
 #include "EffectSceneChangeAlpha.h"
 #include "BossDynaBaby.h"
 #include "DynaNest.h"
+#include "../Scene/EndingScene.h"
 
 class CAnimationSequence2DInstance;
 
@@ -60,7 +60,7 @@ void CBossDyna::Start()
 	m_MovementTargetYPos = GetWorldPos().y;
 
 	// m_HP = 5000.f;d
-	// m_HP = 200.f;
+	m_HP = 40.f;
 	// m_HPMax = 5000.f;
 	// m_HPMax = 200.f;
 
@@ -106,18 +106,6 @@ void CBossDyna::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetLoop(false);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CBossDyna::CloseAttack);
-
-	/*
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetPlayTime(2.0f);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetLoop(false);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightFarAttack")->SetEndFunction(
-		this, &CBossDyna::FarAttack);
-
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetPlayTime(0.5f);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetLoop(false);
-	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftFarAttack")->SetEndFunction(
-		this, &CBossDyna::FarAttack);
-		*/
 	
 	m_IsAttacking = false;
 
@@ -185,11 +173,37 @@ void CBossDyna::PostUpdate(float DeltaTime)
 	CBossMonster::PostUpdate(DeltaTime);
 }
 
+void CBossDyna::AddBossDynaBaby(CBossDynaBaby* Baby)
+{
+	// 중복 방지
+	auto iter = std::find(m_BabiesList.begin(), m_BabiesList.end(), Baby);
+
+	if (iter != m_BabiesList.end())
+		return;
+
+	m_BabiesList.push_back(Baby);
+}
+
+void CBossDyna::DeleteDynaBaby(CBossDynaBaby* Baby)
+{
+	auto iter = m_BabiesList.begin();
+	auto iterEnd = m_BabiesList.end();
+
+	for (; iter != iterEnd; ++iter)
+	{
+		if ((*iter) == Baby)
+		{
+			m_BabiesList.erase(iter);
+			return;
+		}
+	}
+}
+
 void CBossDyna::FarAttack()
 {
 	m_IsAttacking = true;
 
-	// m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -225,7 +239,7 @@ void CBossDyna::CloseAttack()
 {
 	m_IsAttacking = true;
 
-	// m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -383,7 +397,14 @@ void CBossDyna::AIDeathSpecific(float DeltaTime)
 	m_DynaLeftFoot->Enable(false);
 
 	// 모든 Boss Dyna Baby는 제거한다.
-	m_Scene->DeleteAllGameObjectsByType<CBossDynaBaby>();
+	auto iter = m_BabiesList.begin();
+	auto iterEnd = m_BabiesList.end();
+
+	for (; iter != iterEnd;)
+	{
+		(*iter)->m_HP = -1.f;
+		iter = m_BabiesList.erase(iter);
+	}
 
 	m_SceneChangeLimitTime = 5.f;
 }
@@ -437,13 +458,21 @@ void CBossDyna::UpdateSceneChangeLimitTime(float DeltaTime)
 
 			Alpha->SetSceneStart(false);
 
-			Alpha->SetSceneChangeCallback(this, &CBossDyna::ChangeSceneToFloat1Scene);
+			Alpha->SetSceneChangeCallback(this, &CBossDyna::ChangeSceneToEndingScene);
 		}
 	}
 }
 
-void CBossDyna::ChangeSceneToFloat1Scene()
+void CBossDyna::ChangeSceneToEndingScene()
 {
+	CSceneManager::GetInst()->CreateNewScene();
+	CSceneManager::GetInst()->CreateSceneMode<CEndingScene>(false);
+
+	if (m_Scene->GetPlayerHUD() && m_Scene->GetPlayerHUD()->IsEnable())
+	{
+		m_Scene->GetPlayerHUD()->Enable(false);
+	}
+
 	Destroy();
 }
 
@@ -476,6 +505,8 @@ void CBossDyna::UpdateMakeNestTime(float DeltaTime)
 		CDynaNest* DynaNest = m_Scene->CreateGameObject<CDynaNest>("DynaNest");
 
 		DynaNest->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+
+		DynaNest->m_BossDyna = this;
 	}
 }
 

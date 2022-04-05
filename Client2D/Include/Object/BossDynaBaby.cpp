@@ -1,5 +1,6 @@
 #include "BossDynaBaby.h"
 #include "../Excel/Excel.h"
+#include "BossDyna.h"
 
 CBossDynaBaby::CBossDynaBaby() :
 	m_IsToggleGoUp(true),
@@ -23,6 +24,14 @@ void CBossDynaBaby::AIWalkSpecific(float DeltaTime)
 void CBossDynaBaby::AITraceSpecific(float DeltaTime)
 {
 	UpdateToggle(DeltaTime);
+}
+
+void CBossDynaBaby::AIDeathSpecific(float DeltaTime)
+{
+	CNormalMonster::AIDeathSpecific(DeltaTime);
+
+	// Boss Dyna 의 Baby List 에 추가 
+	m_BossDyna->DeleteDynaBaby(this);
 }
 
 void CBossDynaBaby::UpdateToggle(float DeltaTime)
