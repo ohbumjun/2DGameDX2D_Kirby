@@ -60,9 +60,9 @@ void CBossDyna::Start()
 	m_MovementTargetYPos = GetWorldPos().y;
 
 	// m_HP = 5000.f;d
-	m_HP = 200.f;
+	// m_HP = 200.f;
 	// m_HPMax = 5000.f;
-	m_HPMax = 200.f;
+	// m_HPMax = 200.f;
 
 	// Trace를 별도로 하지 않는다
 	m_IsTracingMonster = false;
@@ -458,6 +458,12 @@ void CBossDyna::MakeBossAngry()
 
 void CBossDyna::UpdateMakeNestTime(float DeltaTime)
 {
+	if (m_AI == Monster_AI::Death)
+	{
+		m_MakeDynaNestFlowTime = 0.f;
+		return;
+	}
+
 	if (m_IsAppearing)
 		return;
 

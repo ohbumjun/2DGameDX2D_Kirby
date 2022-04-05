@@ -22,7 +22,7 @@ CBossMonster::CBossMonster() :
 	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
 	m_IsRoundStarted(false),
 	m_BossAngry(false),
-	m_MakeHPItemTimeMax(15.f)
+	m_MakeHPItemTimeMax(20.f)
 {
 	m_MonsterType = Monster_Type::Boss;
 	m_AttackAbility = 60.f;
@@ -184,12 +184,12 @@ void CBossMonster::UpdateMakeHPItemEffect(float DeltaTime)
 
 
 		// 총 5개의 Item 을 주기적으로 만들 것이다.
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			float XNumberFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 			float YNumberFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 
-			int ItemType = (int)(rand()) % 3;
+			int ItemType = (int)(XNumberFrom0To1) % 3;
 
 			float XPos =  100 + XNumberFrom0To1 * m_Scene->GetBossWorldResolution().x * 0.9f;
 			float YPos = 250.f + YNumberFrom0To1 * m_Scene->GetBossWorldResolution().y * 0.3f;

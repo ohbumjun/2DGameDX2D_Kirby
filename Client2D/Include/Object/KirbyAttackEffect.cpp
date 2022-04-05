@@ -96,11 +96,14 @@ void CKirbyAttackEffect::MakeBombExplodeEffect()
 	}
 }
 
-void CKirbyAttackEffect::CreateAttackBackEffect()
+void CKirbyAttackEffect::CreateAttackBackEffect(CGameObject* Object)
 {
 	CFireAttackBackEffect* BackEffect = m_Scene->CreateGameObject<CFireAttackBackEffect>("BackFire");
 
-	BackEffect->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+	float XPos = min(GetWorldPos().x ,Object->GetWorldPos().x) + std::abs(GetWorldPos().x - Object->GetWorldPos().x) * 0.5f;
+	float YPos = min(GetWorldPos().y ,Object->GetWorldPos().y) + std::abs(GetWorldPos().y - Object->GetWorldPos().y) * 0.5f;
+
+	BackEffect->SetWorldPos(XPos, YPos, 0.f);
 
 	BackEffect->SetWorldScale(60.f, 60.f, 1.f);
 
@@ -461,7 +464,7 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 	if (Result.Dest->GetGameObject()->CheckType<CBlock>())
 	{
 		// Attack Back Effect
-		CreateAttackBackEffect();
+		CreateAttackBackEffect(Result.Dest->GetGameObject());
 		return;
 	}
 
@@ -486,7 +489,7 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 			return;
 
 		// Attack Back Effect
-		CreateAttackBackEffect();
+		CreateAttackBackEffect(Result.Dest->GetGameObject());
 
 		DestMonster->Damage(m_AttackDamage);
 

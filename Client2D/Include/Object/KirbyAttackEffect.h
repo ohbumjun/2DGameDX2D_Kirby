@@ -69,7 +69,7 @@ protected :
     void ApplyFallEffect();
     void ApplyBombFallAttackEnd();
     void MakeBombExplodeEffect();
-    void CreateAttackBackEffect();
+    void CreateAttackBackEffect(CGameObject* Object);
 public:
     virtual void Start() override;
     virtual bool Init() override;
