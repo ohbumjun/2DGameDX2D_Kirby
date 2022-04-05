@@ -402,7 +402,7 @@ void CBossDyna::AIDeathSpecific(float DeltaTime)
 
 	for (; iter != iterEnd;)
 	{
-		(*iter)->m_HP = -1.f;
+		(*iter)->Destroy();
 		iter = m_BabiesList.erase(iter);
 	}
 
