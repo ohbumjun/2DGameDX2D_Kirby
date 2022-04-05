@@ -1,4 +1,7 @@
 #include "HPRedItem.h"
+#include "Animation/AnimationSequence2DInstance.h"
+#include "Scene/Scene.h"
+#include "Component/SpriteComponent.h"
 
 CHPRedItem::CHPRedItem()
 {
@@ -21,6 +24,13 @@ bool CHPRedItem::Init()
 {
 	if (!CItem::Init())
 		return false;
+
+	CAnimationSequence2DInstance* AnimationInstance = m_Scene->GetResource()->LoadAnimationInstance(
+		"GreenItem", TEXT("Item_HP_Red.anim"));
+
+	// Clone 해서 세팅해줘야 한다.
+	m_Sprite->SetAnimationInstance(AnimationInstance);
+	m_Sprite->GetAnimationInstance()->SetCurrentAnimation("ItemRight");
 
 	return true;
 }

@@ -11,7 +11,12 @@ protected:
 	virtual ~CItem() = 0;
 protected:
 	Item_Type m_ItemType;
+	CSharedPtr<class CSpriteComponent> m_Sprite;
 	CSharedPtr<class CColliderCircle> m_ColliderBody;
+protected :
+	float m_ToggleCurTime;
+	float m_ToggleCurTimeMax;
+	bool m_ToggleUp;
 public:
 	virtual void   Start() override;
 	virtual bool   Init() override;
@@ -20,6 +25,7 @@ public:
 public:
 	virtual void Load(FILE* pFile) override;
 private :
+	void UpdateToggleTime(float DeltaTime);
 	void CollisionPlayerCallback(const CollisionResult& Result);
 };
 

@@ -13,6 +13,7 @@
 #include "../Object/HPRedItem.h"
 #include "../Object/HPYellowItem.h"
 #include "../Object/HPGreenItem.h"
+#include "../ClientManager.h"
 
 CBossMonster::CBossMonster() :
 	m_StartBossStage(false),
@@ -21,7 +22,7 @@ CBossMonster::CBossMonster() :
 	m_CameraFollowMaxTime(3.f), // 실제 Camera Component의 Max Time
 	m_IsRoundStarted(false),
 	m_BossAngry(false),
-	m_MakeHPItemTimeMax(20.f)
+	m_MakeHPItemTimeMax(15.f)
 {
 	m_MonsterType = Monster_Type::Boss;
 	m_AttackAbility = 60.f;
@@ -181,15 +182,17 @@ void CBossMonster::UpdateMakeHPItemEffect(float DeltaTime)
 	{
 		m_MakeHPItemTime = 0.f;
 
-		float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
 
 		// 총 5개의 Item 을 주기적으로 만들 것이다.
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 3; i++)
 		{
+			float XNumberFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+			float YNumberFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+
 			int ItemType = (int)(rand()) % 3;
 
-			float XPos = NumberFrom0To1 * m_Scene->GetBossWorldResolution().x;
-			float YPos = 250.f + NumberFrom0To1 * m_Scene->GetBossWorldResolution().y * 0.3f;
+			float XPos =  100 + XNumberFrom0To1 * m_Scene->GetBossWorldResolution().x * 0.9f;
+			float YPos = 250.f + YNumberFrom0To1 * m_Scene->GetBossWorldResolution().y * 0.3f;
 
 			CItem* Item = nullptr;
 
@@ -199,27 +202,41 @@ void CBossMonster::UpdateMakeHPItemEffect(float DeltaTime)
 				{
 					Item = m_Scene->CreateGameObject<CHPYellowItem>("Item");
 					Item->SetWorldPos(XPos, YPos, 0.f);
+
+					// 그리고 각 Item 위치에 Random Star 들도 만들 것이다
+					for (int i = 0; i < 3; i++)
+					{
+						CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+						Star->SetWorldPos(Item->GetWorldPos());
+					}
 				}
 				break;
 				case 1 :
 				{
 					Item = m_Scene->CreateGameObject<CHPRedItem>("Item");
 					Item->SetWorldPos(XPos, YPos, 0.f);
+
+					// 그리고 각 Item 위치에 Random Star 들도 만들 것이다
+					for (int i = 0; i < 3; i++)
+					{
+						CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+						Star->SetWorldPos(Item->GetWorldPos());
+					}
 				}
 				break;
 				case 2:
 				{
 					Item = m_Scene->CreateGameObject<CHPGreenItem>("Item");
 					Item->SetWorldPos(XPos, YPos, 0.f);
+
+					// 그리고 각 Item 위치에 Random Star 들도 만들 것이다
+					for (int i = 0; i < 3; i++)
+					{
+						CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
+						Star->SetWorldPos(Item->GetWorldPos());
+					}
 				}
 				break;
-			}
-
-			// 그리고 각 Item 위치에 Random Star 들도 만들 것이다
-			for (int i = 0; i < 3; i++)
-			{
-				CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("Star");
-				Star->SetWorldPos(Item->GetWorldPos());
 			}
 		}
 	}

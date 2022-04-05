@@ -94,7 +94,7 @@
 
 DEFINITION_SINGLE(CClientManager)
 
-CClientManager::CClientManager()
+CClientManager::CClientManager() : m_RandomEngine((std::random_device())())
 {
 }
 
@@ -105,6 +105,13 @@ CClientManager::~CClientManager()
 	// Excel에 현재 정보 저장
 	CExcel::GetInst()->SaveExcel();
 	CExcel::GetInst()->DestroyInst();
+}
+
+float CClientManager::GenerateRandomNumberFrom0To1()
+{
+	std::uniform_real_distribution<float> Dis(0.f, 1.f);
+
+	return Dis(m_RandomEngine);
 }
 
 bool CClientManager::Init(HINSTANCE hInst)
@@ -171,6 +178,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 	CEngine::GetInst()->CreateMouseUIWindow<CMouseNormal>(Mouse_State::Normal, "MouseNormal");
 	CEngine::GetInst()->CreateMouseUIWindow<CMouseAttack>(Mouse_State::State1, "MouseNormal");
 
+	// Random Number 생성을 위한 세팅
 
 	return true;
 }
