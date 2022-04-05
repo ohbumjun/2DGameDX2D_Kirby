@@ -274,6 +274,7 @@
     <ClCompile Include="Scene\Dyna1LoadingScene.cpp" />
     <ClCompile Include="Scene\DynaBlade1.cpp" />
     <ClCompile Include="Scene\DynaBlade2.cpp" />
+    <ClCompile Include="Scene\EndingScene.cpp" />
     <ClCompile Include="Scene\Float1LoadingScene.cpp" />
     <ClCompile Include="Scene\Float1Scene.cpp" />
     <ClCompile Include="Scene\Float2_1Scene.cpp" />
@@ -294,6 +295,7 @@
     <ClCompile Include="Scene\StartScene.cpp" />
     <ClCompile Include="UI\BossHUD.cpp" />
     <ClCompile Include="UI\EmptyObjectHUD.cpp" />
+    <ClCompile Include="UI\EndingWidget.cpp" />
     <ClCompile Include="UI\IntroWidget.cpp" />
     <ClCompile Include="UI\LoadingWidget.cpp" />
     <ClCompile Include="UI\MainWidget.cpp" />
@@ -416,6 +418,7 @@
     <ClInclude Include="Scene\Dyna1LoadingScene.h" />
     <ClInclude Include="Scene\DynaBlade1.h" />
     <ClInclude Include="Scene\DynaBlade2.h" />
+    <ClInclude Include="Scene\EndingScene.h" />
     <ClInclude Include="Scene\Float1LoadingScene.h" />
     <ClInclude Include="Scene\Float1Scene.h" />
     <ClInclude Include="Scene\Float2_1Scene.h" />
@@ -436,6 +439,7 @@
     <ClInclude Include="Scene\StartScene.h" />
     <ClInclude Include="UI\BossHUD.h" />
     <ClInclude Include="UI\EmptyObjectHUD.h" />
+    <ClInclude Include="UI\EndingWidget.h" />
     <ClInclude Include="UI\IntroWidget.h" />
     <ClInclude Include="UI\LoadingWidget.h" />
     <ClInclude Include="UI\MainWidget.h" />

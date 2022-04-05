@@ -2610,7 +2610,7 @@ void CPlayer2D::ChangePlayerSpecialAttackAnimation(float DeltaTime)
 	// Sword 의 경우, 크기를 잠시 키운다.
 	if (m_SpecialAbilityState == Ability_State::Sword)
 	{
-		m_KirbyState->SetWorldScale(110.f, 110.f, 1.f);
+		m_KirbyState->SetWorldScale(140.f, 140.f, 1.f);
 	}
 }
 
@@ -2665,7 +2665,7 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 	// Sword 의 경우, 크기를 잠시 키운다.
 	if (m_SpecialAbilityState == Ability_State::Sword)
 	{
-		m_KirbyState->SetWorldScale(110.f, 110.f, 1.f);
+		m_KirbyState->SetWorldScale(140.f, 140.f, 1.f);
 	}
 
 	m_PhysicsSimulate = false;

@@ -525,6 +525,12 @@
     <ClCompile Include="Object\BossFightParticle.cpp">
       <Filter>02. Object\05. Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\EndingScene.cpp">
+      <Filter>01. SceneMode</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\EndingWidget.cpp">
+      <Filter>03. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -946,6 +952,12 @@
     </ClInclude>
     <ClInclude Include="Object\BossFightParticle.h">
       <Filter>02. Object\05. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\EndingScene.h">
+      <Filter>01. SceneMode</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\EndingWidget.h">
+      <Filter>03. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
