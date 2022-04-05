@@ -19,7 +19,7 @@ class CAnimationSequence2DInstance;
 CBossDyna::CBossDyna() :
 	m_SceneChangeLimitTime(-1.f),
 	m_HeadToggleMaxTime(0.5f),
-	m_MakeDynaNestTime(15.f)
+	m_MakeDynaNestTime(5.f)
 {
 	SetTypeID<CBossDyna>();
 
@@ -239,7 +239,7 @@ void CBossDyna::CloseAttack()
 {
 	m_IsAttacking = true;
 
-	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+	// m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 
 	for (int i = 0; i < 3; i++)
 	{

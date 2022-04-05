@@ -35,7 +35,7 @@ bool CEndingWidget::Init()
 	m_TrophyKirbyImage->SetZOrder(2);
 
 	m_NormalKirbyRightImage = CreateUIWidget<CUIImage>("NormalKirbyImage");
-	m_NormalKirbyRightImage->SetPos(900.f, 200.f);
+	m_NormalKirbyRightImage->SetPos(960.f, 200.f);
 	m_NormalKirbyRightImage->SetTexture("NormalUIKirby", TEXT("Project/UI/UIKirby.png"));
 	m_NormalKirbyRightImage->SetAnimationFrameData("NormalUIKirbyAnim", TEXT("UI_Kirby_End_Normal.anim"));
 	m_NormalKirbyRightImage->SetSize(200.f, 200.f);

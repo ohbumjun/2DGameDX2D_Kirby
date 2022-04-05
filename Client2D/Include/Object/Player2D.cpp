@@ -542,6 +542,8 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		// CEffectSpitOut* EffectSpitOut = m_Scene->CreateGameObject<CEffectSpitOut>("DashEffect");
 		CEffectJumpAir* EffectSpitOut = m_Scene->CreateGameObject<CEffectJumpAir>("DashEffect");
 
+		EffectSpitOut->SetPlayerAttackCollider();
+
 		Vector3 EffectPos = {};
 
 		if (m_ObjectMoveDir.x > 0) // 오른쪽 

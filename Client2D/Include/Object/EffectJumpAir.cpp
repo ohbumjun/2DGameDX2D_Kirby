@@ -31,6 +31,53 @@ void CEffectJumpAir::SetLeftEffect()
 	m_Sprite->GetAnimationInstance()->ChangeAnimation("EffectLeft");
 }
 
+void CEffectJumpAir::SetPlayerAttackCollider()
+{
+	m_ColliderBody->Enable(true);
+}
+
+void CEffectJumpAir::PlayerAttackCallback(const CollisionResult& Result)
+{
+	CColliderComponent* CollisionDest = Result.Dest;
+
+	CGameObject* Owner = CollisionDest->GetGameObject();
+
+	CWidgetComponent* ObjectWindow = nullptr;
+
+	if (Owner)
+	{
+		CMonster* DestMonster = dynamic_cast<CMonster*>(Owner);
+
+		if (!DestMonster)
+			return;
+
+		// 이미 맞은 상태였다면
+		if (DestMonster->IsBeingHit())
+			return;
+
+		DestMonster->Damage(30.f);
+
+		DestMonster->SetBeingHit(true);
+
+		DestMonster->SetAIState(Monster_AI::Hit);
+
+		if (m_MoveDir < 0)
+			DestMonster->SetObjectMoveDir(Vector3(-1.f, 0.f, 0.f));
+		else
+			DestMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
+
+		// Create Damage Font
+		ObjectWindow = Owner->FindComponentByType<CWidgetComponent>();
+
+		if (ObjectWindow)
+		{
+			CUIDamageFont* DamageFont = ObjectWindow->GetWidgetWindow()->CreateUIWidget<CUIDamageFont>("DamageFont");
+
+			DamageFont->SetDamage(30);
+		}
+	}
+}
+
 bool CEffectJumpAir::Init()
 {
 	m_Sprite = CreateComponent<CSpriteComponent>("JumpAirEffect");
@@ -46,6 +93,14 @@ bool CEffectJumpAir::Init()
 	m_Sprite->SetPivot(0.5f, 0.5f, 0.f);
 
 	SetLifeTime(0.7f);
+
+	m_ColliderBody = CreateComponent<CColliderCircle>("Body");
+	m_RootComponent->AddChild(m_ColliderBody);
+
+	m_ColliderBody->SetCollisionProfile("PlayerAttack");
+	m_ColliderBody->AddCollisionCallback(Collision_State::Begin, this, &CEffectJumpAir::PlayerAttackCallback);
+	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), 40.f);
+	m_ColliderBody->Enable(false);
 
 	return true;
 }
