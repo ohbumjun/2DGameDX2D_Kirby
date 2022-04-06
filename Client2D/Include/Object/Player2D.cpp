@@ -3388,13 +3388,13 @@ void CPlayer2D::MakePlayerCloneEffect()
 
 	KirbyClone->GetAnimationInstance()->GetCurrentAnimation()->SetCurrentFrameTime(CurrentFrameTime);
 
-	KirbyClone->SetLifeTime(0.2f);
+	KirbyClone->SetLifeTime(0.4f);
 
-	KirbyClone->SetObjectMoveSpeed(m_SlideAttackSpeed - 50.f);
+	// KirbyClone->SetObjectMoveSpeed(m_SlideAttackSpeed - 50.f);
 
 	KirbyClone->SetObjectMoveDir(m_ObjectMoveDir.x);
 
-	KirbyClone->SetOpacityDecreaseTime(0.2f);
+	KirbyClone->SetOpacityDecreaseTime(0.4f);
 	
 
 	if (m_ObjectMoveDir.x < 0.f)

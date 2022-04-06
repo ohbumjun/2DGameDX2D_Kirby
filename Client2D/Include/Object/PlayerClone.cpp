@@ -76,7 +76,8 @@ void CPlayerClone::Update(float DeltaTime)
 {
 	CGameObject::Update(DeltaTime);
 
-	// ¿ÞÂÊ 
+	// ¿ÞÂÊ
+	/*
 	if (m_ObjectMoveDir < 0.f)
 	{
 		AddWorldPos(Vector3(1.f * -1.f, 0.f, 0.f) * DeltaTime * m_ObjectMoveSpeed);
@@ -86,6 +87,7 @@ void CPlayerClone::Update(float DeltaTime)
 	{
 		AddWorldPos(Vector3(1.f, 0.f, 0.f) * DeltaTime * m_ObjectMoveSpeed);
 	}
+	*/
 
 	// Opacity °¨¼Ò
 	m_OpacityDecreaseTime += DeltaTime;
