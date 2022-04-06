@@ -48,6 +48,12 @@ bool CIntroWidget::Init()
 	m_KirbyBackGroundImage->SetTexture("BackGround", TEXT("Project/UI/IntroBackGround.jpg"));
 	m_KirbyBackGroundImage->SetSize(1280.f, 720.f);
 
+	m_StartLogo = CreateUIWidget<CUIImage>("StartLogo");
+	m_StartLogo->SetTexture("StartLogo", TEXT("Project/UI/KirbyIntroLogo.png"));
+	m_StartLogo->SetSize(500.f, 200.f);
+	m_StartLogo->SetPos(350.f, 200.f);
+	m_StartLogo->SetZOrder(1);
+
 	// Start Button
 	m_StartButton = CreateUIWidget<CUIButton>("StartButton");
 

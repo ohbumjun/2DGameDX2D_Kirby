@@ -64,6 +64,12 @@ bool CEndingWidget::Init()
 	m_BlackToRight->SetPos(640.f, 0.f);
 	m_BlackToRight->SetZOrder(5);
 
+	m_EndingLogo = CreateUIWidget<CUIImage>("EndingLogo");
+	m_EndingLogo->SetTexture("EndingLogo", TEXT("Project/UI/KirbyIntroLogo.png"));
+	m_EndingLogo->SetSize(500.f, 200.f);
+	m_EndingLogo->SetPos(350.f, 200.f);
+	m_EndingLogo->SetZOrder(1);
+
 	return true;
 }
 

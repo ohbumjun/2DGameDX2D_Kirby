@@ -78,7 +78,6 @@ void CMiddleBossHammer::Start()
 		&CMonster::ChangeIdleAnimation);
 		*/
 
-
 	m_InitMoveVelocity = m_MonsterMoveVelocity;
 
 	m_InitJumpAccel = m_JumpAccel;
@@ -104,8 +103,6 @@ bool CMiddleBossHammer::Init()
 void CMiddleBossHammer::Update(float DeltaTime)
 {
 	CBossMonster::Update(DeltaTime);
-
-	SetWorldPos(GetWorldPos().x, GetWorldPos().y, 1.f);
 
 	UpdateJumpAction(DeltaTime);
 }

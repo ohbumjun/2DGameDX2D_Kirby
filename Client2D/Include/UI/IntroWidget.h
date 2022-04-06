@@ -15,6 +15,8 @@ protected :
     CSharedPtr<CUIImage> m_RadioKirbyImage;
     CSharedPtr<CUIImage> m_MovieKirbyImage;
     CSharedPtr<CUIImage> m_KirbyWithPenguinImage;
+private:
+    CSharedPtr<CUIImage> m_StartLogo;
 protected:
     CSharedPtr<CUIImage> m_KirbyBackGroundImage;
     CSharedPtr<CUIButton> m_StartButton;

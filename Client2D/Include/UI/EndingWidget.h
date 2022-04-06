@@ -16,6 +16,8 @@ protected:
 protected:
     CSharedPtr<CUIImage> m_FightBackGroundImage;
     CSharedPtr<CUIImage> m_FightForeGroundImage;
+private :
+    CSharedPtr<CUIImage> m_EndingLogo;
 protected :
     CSharedPtr<CUIImage> m_BlackToLeft;
 	CSharedPtr<CUIImage> m_BlackToRight;
