@@ -433,6 +433,11 @@ int CTileEmptyComponent::GetTileEmptyRenderIndexY(const Vector3& Pos)
 void CTileEmptyComponent::Start()
 {
 	CSceneComponent::Start();
+
+	if(m_TileImageMaterial)
+	{
+		m_TileImageMaterial->SetTransparency(true);
+	}
 }
 
 bool CTileEmptyComponent::Init()
@@ -451,7 +456,6 @@ bool CTileEmptyComponent::Init()
 	m_TileImageMaterial = m_Scene->GetResource()->FindMaterial("TileBaseMaterial");
 
 	m_TileImageMaterial->SetShader("Mesh2DShader");
-
 
 	// Tile
 	m_TileMesh = m_Scene->GetResource()->FindMesh("Box2D");
@@ -540,6 +544,8 @@ void CTileEmptyComponent::Render()
 	// Tile Image ±×¸®°í
 	if (m_TileImageMaterial)
 	{
+		// m_TileImageMaterial->SetTransparency(true);
+
 		m_TileImageMaterial->Render();
 
 		m_ImageMesh->Render();

@@ -23,7 +23,7 @@ CBossPenguin::CBossPenguin() :
 	m_SceneChangeLimitTime(-1.f)
 {
 	SetTypeID<CBossPenguin>();
-	m_CameraFollowMaxTime = 4.f;
+	m_CameraFollowMaxTime = 1.f;
 }
 
 CBossPenguin::~CBossPenguin()

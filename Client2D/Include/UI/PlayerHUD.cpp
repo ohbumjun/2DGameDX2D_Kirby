@@ -1,4 +1,5 @@
 #include "PlayerHUD.h"
+#include "Engine.h"
 
 CPlayerHUD::CPlayerHUD() :
 	m_MPBarToggleMaxTime(0.5f),
@@ -76,6 +77,16 @@ bool CPlayerHUD::Init()
 	m_MPProgressBarWhiteBack->SetZOrder(1);
 	m_MPProgressBarWhiteBack->SetOpacity(0.f);
 
+	// Frame Text
+	m_FPSText = CreateUIWidget<CUIText>("FPSText");
+	m_FPSText->SetText(TEXT("Button1"));
+	m_FPSText->SetPos(900.f, 300.f);
+	m_FPSText->SetSize(300.f, 40.f);
+	m_FPSText->SetZOrder(1);
+	m_FPSText->SetColor(1.f, 0.f, 0.f);
+	m_FPSText->SetAlignH(TEXT_ALIGN_H::Center);
+	m_FPSText->SetShadowAlphaEnable(true);
+
 	return true;
 }
 
@@ -110,6 +121,18 @@ void CPlayerHUD::Update(float DeltaTime)
 		m_MPProgressBarWhiteBack->SetOpacity(0.f);
 	}
 
+	// Show Real Time FPS
+	float FPS = CEngine::GetInst()->GetFPS();
+
+	char FPSText[MAX_PATH] = {};
+	sprintf_s(FPSText, "FPS : %.5f", FPS);
+
+	TCHAR WFPSText[MAX_PATH] = {};
+
+	int ConvertLength = MultiByteToWideChar(CP_ACP, 0, FPSText, -1, 0, 0);
+	MultiByteToWideChar(CP_ACP, 0, FPSText, -1, WFPSText, MAX_PATH);
+
+	m_FPSText->SetText(WFPSText);
 }
 
 void CPlayerHUD::PostUpdate(float DeltaTime)

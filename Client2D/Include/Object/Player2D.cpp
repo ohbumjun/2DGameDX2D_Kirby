@@ -3234,11 +3234,19 @@ void CPlayer2D::UpdateChangeState(float DeltaTime)
 
 void CPlayer2D::LoadChangeImagesInAdvance()
 {
+	// Ultimate Attack
 	m_Scene->GetResource()->LoadTexture("UltimateBombUI", TEXT("Project/UI/Bomb_Ultimate.png"));
 	m_Scene->GetResource()->LoadTexture("UltimateBeamUI", TEXT("Project/UI/Beam_Ultimate.png"));
 	m_Scene->GetResource()->LoadTexture("UltimateFightUI", TEXT("Project/UI/Fight_Ultimate.png"));
 	m_Scene->GetResource()->LoadTexture("UltimateFireUI", TEXT("Project/UI/Fire_Ultimate.png"));
 	m_Scene->GetResource()->LoadTexture("UltimateSwordUI", TEXT("Project/UI/Sword_Ultimate.png"));
+
+	// Ultimate Attack
+	m_Scene->GetResource()->LoadTexture("UltimateBlueAlpha", TEXT("Project/UI/UltimateBlue.jpg"));
+	m_Scene->GetResource()->LoadTexture("UltimatePurpleAlpha", TEXT("Project/UI/UltimatePurple.jpg"));
+	m_Scene->GetResource()->LoadTexture("UltimateOrangeAlpha", TEXT("Project/UI/UltimateOrange.jpg"));
+	m_Scene->GetResource()->LoadTexture("UltimateRedAlpha", TEXT("Project/UI/UltimateRed.jpg"));
+	m_Scene->GetResource()->LoadTexture("UltimateYellowAlpha", TEXT("Project/UI/UltimateYellow.jpg"));
 }
 
 void CPlayer2D::Attack(float DeltaTime)
@@ -3469,17 +3477,17 @@ void CPlayer2D::PrepareUltimateAction(float BackGroundDestroyTime, float UIProce
 {
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
 
-	m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
-
-	m_ChangeBlackBackGround->SetUltimateAttackTexture(m_SpecialAbilityState);
-
-	m_ChangeBlackBackGround->SetApplyDecreaseDestroy(true);
-
-	m_ChangeBlackBackGround->SetStartDestroyTime(BackGroundDestroyTime);
-
-	m_ChangeBlackBackGround->SetOpacity(0.6f);
-
-	m_ChangeBlackBackGround->SetMaintainOpacity(true);
+	// m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
+	// 
+	// m_ChangeBlackBackGround->SetUltimateAttackTexture(m_SpecialAbilityState);
+	// 
+	// m_ChangeBlackBackGround->SetApplyDecreaseDestroy(true);
+	// 1
+	// m_ChangeBlackBackGround->SetStartDestroyTime(BackGroundDestroyTime);
+	// 
+	// m_ChangeBlackBackGround->SetOpacity(0.6f);
+	// 
+	// m_ChangeBlackBackGround->SetMaintainOpacity(true);
 
 	// 화면 가장 앞에 보이게 세팅한다.
 	m_RootComponent->SetLayerName("PlayerChange");

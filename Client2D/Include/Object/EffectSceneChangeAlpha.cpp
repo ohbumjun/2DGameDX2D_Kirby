@@ -136,7 +136,9 @@ void CEffectSceneChangeAlpha::UpdateOpacityDestroy(float DeltaTime)
 		m_Sprite->SetOpacity(NewOpacity);
 
 		if (End)
+		{
 			Destroy();
+		}
 	}
 }
 

@@ -4,7 +4,8 @@
 #include "Engine.h"
 #include "Component/SpriteComponent.h"
 
-CUltimateAttackWidget::CUltimateAttackWidget()
+CUltimateAttackWidget::CUltimateAttackWidget() :
+	m_UIProceedTime(0.f)
 {}
 
 CUltimateAttackWidget::~CUltimateAttackWidget()
@@ -40,31 +41,43 @@ void CUltimateAttackWidget::Update(float DeltaTime)
 
 	m_UIProceedTime += DeltaTime;
 
-	float SpeedPerSec = (float)m_RS.Width;
+	float SpeedPerSec = (float)m_RS.Width * 1.5f;
 
-	// if (m_UIProceedTime <= m_UIProceedTimeMax * 0.1f ||
-	if (m_UIProceedTime <= m_UIProceedTimeMax * 0.2f ||
-		m_UIProceedTime > m_UIProceedTimeMax * 0.9f)
+	// if (m_UIProceedTime < m_UIProceedTimeMax)
+	if (m_FrontImage->GetWindowPos().x > -800.f)
 	{
-		// 0.1 초 동안, 30% 정도를 가야 한다.
+		float MoveSpeed = -1.f;
+
 		Vector2 CurrentPos = m_FrontImage->GetWindowPos();
 
-		m_FrontImage->SetPos(CurrentPos.x + DeltaTime * SpeedPerSec * 3.f * -1.f,
-			CurrentPos.y);
-	}
-	else if (m_UIProceedTimeMax * 0.1f < m_UIProceedTime &&
-		m_UIProceedTime <= m_UIProceedTimeMax * 0.9f)
-	{
-		// 반대로 0.8초 동안, 40% 정도를 가야 한다.
-		// 즉, 0.1초에 5.xx% 정도를 가야 한다.
-		// 1초에 0.5% 를 가야 한다.
-		Vector2 CurrentPos = m_FrontImage->GetWindowPos();
+		// if (m_UIProceedTime <= m_UIProceedTimeMax * 0.1f ||
+		if (m_UIProceedTime <= m_UIProceedTimeMax * 0.1f ||
+			m_UIProceedTime > m_UIProceedTimeMax * 0.9f)
+		{
+			// 0.1 초 동안, 30% 정도를 가야 한다.
 
-		m_FrontImage->SetPos(CurrentPos.x + DeltaTime * SpeedPerSec * 0.5f * -1.f,
-			CurrentPos.y);
-	}
+			if (m_UIProceedTime >= m_UIProceedTimeMax * 0.1f)
+			{
+				Vector2 CurrentPos = m_FrontImage->GetWindowPos();
+			}
 
-	if (m_UIProceedTime >= m_UIProceedTimeMax)
+			MoveSpeed = DeltaTime * SpeedPerSec * 3.f * -1.f;
+
+		}
+		else if (m_UIProceedTimeMax * 0.1f < m_UIProceedTime &&
+			m_UIProceedTime <= m_UIProceedTimeMax * 0.9f)
+		{
+			// 반대로 0.8초 동안, 40% 정도를 가야 한다.
+			// 즉, 0.1초에 5.xx% 정도를 가야 한다.
+			// 1초에 0.5% 를 가야 한다.
+			Vector2 CurrentPos = m_FrontImage->GetWindowPos();
+
+			MoveSpeed = DeltaTime * SpeedPerSec * 0.5f * -1.f;
+		}
+
+		m_FrontImage->SetPos(CurrentPos.x + MoveSpeed,CurrentPos.y);
+	}
+	else
 	{
 		Destroy();
 	}

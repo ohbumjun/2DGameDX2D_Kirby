@@ -20,6 +20,8 @@ private:
     CSharedPtr<CUIProgressBar> m_MPProgressBar;
     CSharedPtr<CUIImage> m_MPProgressBarBack;
     CSharedPtr<CUIImage> m_MPProgressBarWhiteBack;
+private:
+    CSharedPtr<CUIText> m_FPSText;
 private :
     float m_MPBarToggleMaxTime;
     float m_MPBarToggleTime;
