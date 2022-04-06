@@ -82,6 +82,8 @@ void CMiddleBossHammer::Start()
 
 	m_InitJumpAccel = m_JumpAccel;
 
+	Vector3 WorldScale = GetWorldScale();
+
 	m_IsAttacking = false;
 }
 
