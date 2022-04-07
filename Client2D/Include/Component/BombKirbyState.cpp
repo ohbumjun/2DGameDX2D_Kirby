@@ -8,6 +8,7 @@
 #include "../Object/KirbyAttackEffect.h"
 #include "../Object/BombKirbyThrowBomb.h"
 #include "../Object/BombUltimate.h"
+#include "../Object/EffectRandomStar.h"
 
 CBombKirbyState::CBombKirbyState() :
 	m_GoUpTimeMax(0.4f),
@@ -95,6 +96,12 @@ void CBombKirbyState::FallDownAttack()
 		m_Player->SetPhysicsSimulate(false);
 
 		m_Player->ChangePlayerFallDownAttackAnimation();
+
+		for (int i = 0; i < 3; i++)
+		{
+			CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+			Star->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+		}
 	}
 }
 
@@ -252,6 +259,12 @@ void CBombKirbyState::MakeFallDownBomb()
 	// AttackEffect->ApplyCameraMove();
 
 	AttackEffect->SetKirbyOwner(this);
+
+	for (int i = 0; i < 3; i++)
+	{
+		CEffectRandomStar* Star = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
+		Star->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+	}
 }
 
 void CBombKirbyState::SetFallAttackEnd()

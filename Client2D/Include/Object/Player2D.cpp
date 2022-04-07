@@ -1958,6 +1958,9 @@ void CPlayer2D::Jump(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_IsSwimming)
 		return;
 
@@ -3268,7 +3271,7 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (!m_KirbyState)
 		return;
 
-	if (m_IsAttacking && m_AttackReady)
+	if (m_IsAttacking && !m_AttackReady)
 		return;
 
 	if (m_IsLadderGoingUp)
