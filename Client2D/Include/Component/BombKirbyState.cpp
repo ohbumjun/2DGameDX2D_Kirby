@@ -27,7 +27,7 @@ CBombKirbyState::~CBombKirbyState()
 
 void CBombKirbyState::Attack()
 {
-	if (!m_AttackReady)
+	if (!m_AttackReady) //
 	{
 		if (m_Player->GetObjectMoveDir().x < 0.f)
 		{
