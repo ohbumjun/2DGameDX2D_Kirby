@@ -61,13 +61,16 @@ void CBombKirbyState::Attack()
 		m_AttackReady = true;
 
 		// 다시 공격 버튼을 누를 수 있어야 하기 때문이다.
-		m_Player->SetAttackEnd();
+		// m_Player->SetAttackEnd();
+		m_Player->SetAttackReady(true);
 	}
 	else
 	{
 		m_Player->ChangePlayerAttackAnimation();
 
 		m_AttackReady = false;
+
+		m_Player->SetAttackReady(false);
 	}
 }
 

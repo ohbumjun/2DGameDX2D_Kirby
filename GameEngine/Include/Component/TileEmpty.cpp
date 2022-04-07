@@ -42,7 +42,7 @@ void CTileEmpty::Update(float DeltaTime)
 	m_matWorld = matScale * matTranslate;
 }
 
-const Vector3& CTileEmpty::GetWorldPos() const
+Vector3 CTileEmpty::GetWorldPos() const
 {
 	return m_Pos + m_Owner->GetWorldPos();
 }

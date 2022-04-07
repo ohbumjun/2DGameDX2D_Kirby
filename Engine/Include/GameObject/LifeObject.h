@@ -103,6 +103,10 @@ public :
 {
 		return m_ObjectMoveDir;
 }
+	bool IsAttacking() const
+	{
+		return m_IsAttacking;
+	}
 public :
 	void SetAttackEnd()
 	{

@@ -42,7 +42,7 @@ public:
 		return m_Pos;
 	}
 
-	const Vector3& GetWorldPos() const;
+	Vector3 GetWorldPos() const;
 
 	const Matrix&  GetWorldMatrix()	const
 	{

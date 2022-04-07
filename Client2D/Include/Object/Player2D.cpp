@@ -61,6 +61,7 @@ CPlayer2D::CPlayer2D() :
 	m_MPMax(100.f),
 	m_MP(100.f),
 	m_RightMove(false),
+	m_AttackReady(false),
 	m_IsBackToSceneChangeDoorPos(false),
 	m_UltimateAttack(false),
 	m_Bounced(false),
@@ -486,6 +487,9 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	// if (m_SceneChangeCallback && m_FallTime < 0.1f && !m_IsFlying)
 	// if (m_SceneChangeCallback && m_FallTime < 0.1f)
 	if (m_SceneChangeCallback)
@@ -716,6 +720,9 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_IsLadderGoingUp)
 		return;
 
@@ -737,7 +744,6 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 				return;
 			m_KirbyState->AddRelativePos(m_KirbyState->GetWorldAxis(AXIS_X) * m_MoveVelocity * DeltaTime * -1.f * m_TriangleJumpVelocityRatio);
 		}
-
 		return;
 	}
 
@@ -749,7 +755,6 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 
 	// 방향 왼쪽 표시
 	m_ObjectMoveDir.x = 1.f * -1;
-
 
 	if (m_RightMove)
 	{
@@ -935,6 +940,9 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 	if (m_IsAttacking)
 		return;
 
+	if (m_IsChanging)
+		return;
+
 	if (m_IsLadderGoingUp)
 		return;
 
@@ -1083,6 +1091,12 @@ void CPlayer2D::SpitOut(float DeltaTime)
 		return;
 
 	if (m_IsBeingHit)
+		return;
+
+	if (m_IsChanging)
+		return;
+
+	if (m_IsAttacking)
 		return;
 
 	if (m_IsSwimming)
@@ -3254,7 +3268,7 @@ void CPlayer2D::Attack(float DeltaTime)
 	if (!m_KirbyState)
 		return;
 
-	if (m_IsAttacking)
+	if (m_IsAttacking && m_AttackReady)
 		return;
 
 	if (m_IsLadderGoingUp)

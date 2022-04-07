@@ -144,6 +144,9 @@ private :
 	float m_SlideAttackEffectToggleTime;
 	float m_SlideAttackEffectCurTime;
 
+	// Attack Ready
+	bool m_AttackReady;
+
 	// Change
 	bool m_IsChanging;
 	float m_ChangeTime;
@@ -153,6 +156,10 @@ private :
 	Ability_State m_SpecialAbilityState;
 
 public :
+	bool IsAttackReady() const
+{
+		return m_AttackReady;
+}
 	float GetMP() const
 {
 		return m_MP;
@@ -177,10 +184,6 @@ public :
 {
 		return m_IsSwimming;
 }
-	bool IsAttacking() const
-{
-		return m_IsAttacking;
-}
 	Vector3 GetInitWorldPos() const
 {
 		return m_InitPlayerPos;
@@ -194,6 +197,10 @@ public :
 		return m_IsBackToSceneChangeDoorPos;
 }
 public :
+	void SetAttackReady(bool Ready)
+{
+		m_AttackReady = Ready;
+}
 	void SetLadderState(bool Enable)
 {
 		m_IsLadderGoingUp = Enable;

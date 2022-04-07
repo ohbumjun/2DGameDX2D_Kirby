@@ -208,7 +208,7 @@ void CExcel::EditExcel()
     // m_MapMonsterStats[L"BossHammer"]->m_HP = 1500.f;
     // m_MapMonsterStats[L"BossScissor"]->m_HP = 2000.f;
 
-    // m_MapMonsterStats[L"Fight"]->m_AbilityState = Ability_State::Fight;
+    m_MapMonsterStats[L"Fight"]->m_Scale = 100.f;
     // m_MapMonsterStats[L"Fight"]->m_Type = Monster_Type::Ability;
 }
 
