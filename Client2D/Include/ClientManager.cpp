@@ -5,6 +5,7 @@
 // Scene
 #include "Scene/MainScene.h"
 #include "Scene/IntroScene.h"
+#include "Scene/EndingScene.h"
 #include "Scene/BeginningScene.h"
 #include "Scene/Green3Scene.h"
 #include "Scene/Green4Scene.h"
@@ -186,9 +187,10 @@ bool CClientManager::Init(HINSTANCE hInst)
 void CClientManager::CreateDefaultSceneMode()
 {
 	// CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
+	CSceneManager::GetInst()->CreateSceneMode<CEndingScene>();
 	// ----------------------------------------------------------------------------
 
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_1Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat2_2Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CMainScene>();
@@ -209,7 +211,7 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("Dyna1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Dyna2_FinalBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
-	CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1_FirstSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green1_OnlyBear.scn", SCENE_PATH);

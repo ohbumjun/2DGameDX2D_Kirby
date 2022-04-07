@@ -28,7 +28,7 @@ bool CEndingWidget::Init()
 	m_NormalKirbyLeftImage->SetZOrder(2);
 
 	m_TrophyKirbyImage = CreateUIWidget<CUIImage>("RadioKirbyImage");
-	m_TrophyKirbyImage->SetPos(550.f, 200.f);
+	m_TrophyKirbyImage->SetPos(550.f, 10.f);
 	m_TrophyKirbyImage->SetTexture("RadioKirby", TEXT("Project/UI/UIKirby.png"));
 	m_TrophyKirbyImage->SetAnimationFrameData("RadioUIKirbyAnim", TEXT("UI_Kirby_End_Trophy.anim"));
 	m_TrophyKirbyImage->SetSize(300.f, 300.f);
@@ -65,10 +65,21 @@ bool CEndingWidget::Init()
 	m_BlackToRight->SetZOrder(5);
 
 	m_EndingLogo = CreateUIWidget<CUIImage>("EndingLogo");
-	m_EndingLogo->SetTexture("EndingLogo", TEXT("Project/UI/KirbyIntroLogo.png"));
-	m_EndingLogo->SetSize(500.f, 200.f);
-	m_EndingLogo->SetPos(350.f, 200.f);
-	m_EndingLogo->SetZOrder(1);
+	m_EndingLogo->SetTexture("EndingLogo", TEXT("Project/UI/KirbyEndingLogo.png"));
+	m_EndingLogo->SetSize(600.f, 300.f);
+	m_EndingLogo->SetPos(350.f, 400.f);
+	m_EndingLogo->SetZOrder(5);
+
+	m_NameText = CreateUIWidget<CUIText>("NameText");
+	m_NameText->SetText(TEXT("BY   O.B.J"));d
+	m_NameText->SetPos(430.f, 250.f);
+	m_NameText->SetSize(400.f, 200.f);
+	m_NameText->SetZOrder(5);
+	m_NameText->SetFontSize(80.f);
+	m_NameText->SetColor(1.f, 1.f, 1.f);
+	m_NameText->SetAlignH(TEXT_ALIGN_H::Center);
+	m_NameText->SetShadowAlphaEnable(true);
+
 
 	return true;
 }

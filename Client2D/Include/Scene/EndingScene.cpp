@@ -44,7 +44,10 @@ void CEndingScene::Start()
 	SetPlayerObject(Player2D);
 
 	// 여기서는 더이상 Player 가 안보여도 된다.
-	Player2D->Enable(false);
+	if (Player2D)
+	{
+		Player2D->Enable(false);
+	}
 	
 	CGameObject* LineContainer = m_Scene->FindGameObjectByTypeID(typeid(CLineContainer).hash_code());
 

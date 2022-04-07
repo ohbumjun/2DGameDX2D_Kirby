@@ -1,6 +1,7 @@
 #pragma once
 #include "UI\UIWindow.h"
 #include "UI/UIImage.h"
+#include "UI/UIText.h"
 
 class CEndingWidget :
     public CUIWindow
@@ -21,6 +22,8 @@ private :
 protected :
     CSharedPtr<CUIImage> m_BlackToLeft;
 	CSharedPtr<CUIImage> m_BlackToRight;
+private:
+    CSharedPtr<CUIText> m_NameText;
 public:
     virtual void Start() override;
     virtual bool Init() override;
