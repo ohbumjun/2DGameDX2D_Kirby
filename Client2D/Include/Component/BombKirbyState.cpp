@@ -226,8 +226,6 @@ void CBombKirbyState::UltimateAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x + 300.f, GetWorldPos().y + 700.f, 0.f);
 	}
 
-	
-
 	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 5);
 
 	AttackEffect->SetAttackDirX(0.f);

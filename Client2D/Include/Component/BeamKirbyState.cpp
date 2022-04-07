@@ -419,6 +419,7 @@ void CBeamKirbyState::Update(float DeltaTime)
 	UpdateAttackGoUpState(DeltaTime);
 
 	UpdateFallAttack(DeltaTime);
+
 }
 
 void CBeamKirbyState::PostUpdate(float DeltaTime)

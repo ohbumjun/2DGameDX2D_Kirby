@@ -490,6 +490,10 @@ void CPlayer2D::MoveUp(float DeltaTime)
 	if (m_IsChanging)
 		return;
 
+	// 혹시나 미세한 차이로 인해 갑자기 Swim 아닌 상태로 바뀔 가능성이 있다.
+	// 따라서 MoveUp 하기 전에 한번 더 검사해주는 것이다.
+	CheckIsSwimming();
+
 	// if (m_SceneChangeCallback && m_FallTime < 0.1f && !m_IsFlying)
 	// if (m_SceneChangeCallback && m_FallTime < 0.1f)
 	if (m_SceneChangeCallback)
@@ -2965,6 +2969,8 @@ void CPlayer2D::SpecialChange()
 		m_KirbyState = CreateComponent<CBeamKirbyState>("BeamKirbyState");
 
 		m_KirbyState->SetWorldScale(85.f, 95.f, 1.f);
+
+		m_KirbyState->SetInitWorldScale(Vector3(85.f, 95.f, 1.f));
 
 		m_SpecialAbilityState = Ability_State::Beam;
 	}

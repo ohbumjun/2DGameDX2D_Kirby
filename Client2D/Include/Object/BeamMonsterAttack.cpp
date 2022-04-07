@@ -11,7 +11,7 @@
 
 CBeamMonsterAttack::CBeamMonsterAttack() :
 	m_AttackImageSize(65.f),
-	m_RotationSpeed(120.f)
+	m_RotationSpeed(200.f)
 {
 }
 

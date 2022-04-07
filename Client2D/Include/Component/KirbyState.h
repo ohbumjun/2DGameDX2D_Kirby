@@ -22,12 +22,17 @@ protected :
    float m_ExtraAttackAbility;
    float m_CloneEffectToggleMaxTime;
    float m_CloneEffectToggleTime;
+   Vector3 m_InitWorldScale;
 public :
     class  CPlayer2D* GetPlayer() const
 {
         return m_Player;
 }
 public :
+    void SetInitWorldScale(const Vector3& WorldScale)
+{
+        m_InitWorldScale = WorldScale;
+}
     void SetPlayer(class CPlayer2D* Player)
 {
         m_Player = Player;
