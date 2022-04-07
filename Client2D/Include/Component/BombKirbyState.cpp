@@ -1,6 +1,7 @@
 #include "BombKirbyState.h"
-#include <Component/ColliderBox2D.h>
+#include "Engine.h"
 #include "Component/ColliderCircle.h"
+#include "Component/CameraComponent.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneResource.h"
 #include "Animation/AnimationSequence2DInstance.h"
@@ -210,6 +211,8 @@ void CBombKirbyState::UltimateAttack()
 {
 	CBombUltimate* AttackEffect = m_Scene->CreateGameObject<CBombUltimate>("Attack");
 
+	Resolution RS = CEngine::GetInst()->GetResolution();
+
 	if (m_Player->GetObjectMoveDir().x < 0.f)
 	{
 		AttackEffect->SetLeftAttackDir(-1.f);
@@ -223,6 +226,8 @@ void CBombKirbyState::UltimateAttack()
 		AttackEffect->SetWorldPos(GetWorldPos().x + 300.f, GetWorldPos().y + 700.f, 0.f);
 	}
 
+	
+
 	AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 5);
 
 	AttackEffect->SetAttackDirX(0.f);
@@ -231,7 +236,16 @@ void CBombKirbyState::UltimateAttack()
 
 	AttackEffect->GetColliderBody()->Enable(false);
 
+	if (AttackEffect->GetWorldPos().x - (float)RS.Width * 0.5f < 0.f ||
+		AttackEffect->GetWorldPos().x + (float)RS.Width * 0.5f >= m_Scene->GetWorldResolution().x ||
+		AttackEffect->GetWorldPos().y - (float)RS.Height * 0.5f < 0.f ||
+		AttackEffect->GetWorldPos().y + (float)RS.Height * 0.5f >= m_Scene->GetWorldResolution().y)
+	{
+		return;
+	}
+
 	AttackEffect->ApplyCameraMove();
+
 }
 
 void CBombKirbyState::MakeFallDownBomb()

@@ -3495,15 +3495,15 @@ void CPlayer2D::PrepareUltimateAction(float BackGroundDestroyTime, float UIProce
 	m_Scene->SetStopEnableObjectsExceptPlayer(GetTypeID(), true);
 
 	// m_ChangeBlackBackGround = m_Scene->CreateGameObject<CEffectSceneChangeAlpha>("Alpha");
-	// 
+	
 	// m_ChangeBlackBackGround->SetUltimateAttackTexture(m_SpecialAbilityState);
-	// 
+	
 	// m_ChangeBlackBackGround->SetApplyDecreaseDestroy(true);
-	// 1
+	
 	// m_ChangeBlackBackGround->SetStartDestroyTime(BackGroundDestroyTime);
-	// 
+	
 	// m_ChangeBlackBackGround->SetOpacity(0.6f);
-	// 
+	
 	// m_ChangeBlackBackGround->SetMaintainOpacity(true);
 
 	// 화면 가장 앞에 보이게 세팅한다.

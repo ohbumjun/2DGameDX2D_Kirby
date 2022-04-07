@@ -26,6 +26,10 @@ protected:
 private :
     bool m_CollideShakeEffect;
 protected:
+    CCameraComponent* GetAttackCamera() const
+    {
+        return m_Camera;
+    }
     CSpriteComponent* GetMainSprite() const
     {
         return m_MainSprite;

@@ -12,7 +12,8 @@ CCameraComponent::CCameraComponent() :
 	m_CameraShakeTime(0.f),
 	// m_CameraShakeTimeMax(0.1f),
 	m_CameraShakeTimeMax(0.5f),
-	m_IsCameraShake(false)
+	m_IsCameraShake(false),
+	m_ApplyResolutionLimit(true)
 {
 	SetTypeID<CCameraComponent>();
 	m_ComponentType = Component_Type::SceneComponent;
@@ -91,6 +92,8 @@ bool CCameraComponent::LimitCameraAreaInsideWorld()
 {
 	// if (!m_AdjustRatio)
 	//	return false;
+	if (!m_ApplyResolutionLimit)
+		return false;
 
 	bool Outside = false;
 

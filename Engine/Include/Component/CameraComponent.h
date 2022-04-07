@@ -38,6 +38,9 @@ protected:
 	bool m_IsCameraShake;
 	bool m_ShakeRight;
 
+	// Camera Resolution Limit
+	bool m_ApplyResolutionLimit;
+
 public:
 	bool IsAdjustRatio() const
 	{
@@ -47,7 +50,6 @@ public:
 	{
 		return m_RS;
 	}
-
 	Camera_Type GetCameraType()	const
 	{
 		return m_CameraType;
@@ -76,6 +78,10 @@ public:
 	Matrix GetRatioViewMatrix(float ScrollRatio);
 
 public:
+	void SetResolutionLimit(bool Limit)
+	{
+		m_ApplyResolutionLimit = Limit;
+	}
 	void SetFollowTargetCameraTime(float Time)
 	{
 		m_FollowTargetTime = Time;
