@@ -86,6 +86,9 @@ private :
 
 	// 수영
 	bool m_IsSwimming;
+	bool m_IsSwimSoundOn;
+	float m_SwimSoundTime;
+	float m_SwimSoundTimeMax;
 
 	// 날기 
 	bool m_IsFlying;
@@ -111,6 +114,8 @@ private :
 	CSharedPtr<class CMonster> m_PrevAbilityEatenMonster;
 	float m_PullRandomStarMakeTime;
 	float m_PullRandomStarMakeTimeMax;
+	float m_PullSoundTime;
+	float m_PullSoundTimeMax;
 
 	// Change 여부
 	bool m_IsSpecialStateChanged;
@@ -263,8 +268,8 @@ private:
 	void StopPlayer();
 private :
 	// Swim
-	void CheckIsSwimming();
-	void UpdateSwimMoveDown(float DeltaTime);
+	void CheckIsSwimming(float DeltaTime);
+	void UpdateSwimAction(float DeltaTime);
 private :
 	// MP
 	void UpdateMP(float DeltaTime);

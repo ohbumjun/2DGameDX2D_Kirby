@@ -188,8 +188,12 @@ void CMainScene::CreateAnimationSequence()
 
 void CMainScene::CreateSound()
 {
-	m_Scene->GetResource()->LoadSound("UI", "Teemo", false, TEXT("Skill.wav"));
-	m_Scene->GetResource()->LoadSound("UI", "Fire", false, TEXT("Fire1.wav"));
+	CSceneMode::CreateSound();
+
+	m_Scene->GetResource()->LoadSound("BGM", "BG_Green", 
+		true, TEXT("BG_Green.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_Green");
+	// m_Scene->GetResource()->LoadSound("UI", "Fire", false, TEXT("Fire1.wav"));
 }
 
 void CMainScene::CreateParticle()

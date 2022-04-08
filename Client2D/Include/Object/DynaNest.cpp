@@ -42,6 +42,8 @@ void CDynaNest::MakeDynaBabyEffect()
 		// Boss Dyna 의 Baby List 에 추가 
 		m_BossDyna->AddBossDynaBaby(DynaBaby);
 	}
+
+	m_Scene->GetResource()->SoundPlay("BossDynaBabyMake");
 }
 
 void CDynaNest::Start()

@@ -491,6 +491,8 @@ void CKirbyAttackEffect::CollisionCallback(const CollisionResult& Result)
 		// Attack Back Effect
 		CreateAttackBackEffect(Result.Dest->GetGameObject());
 
+		m_Scene->GetResource()->SoundPlay("PlayerDamageMonster");
+
 		DestMonster->Damage(m_AttackDamage);
 
 		DestMonster->SetBeingHit(true);

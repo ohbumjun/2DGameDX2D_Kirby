@@ -87,7 +87,12 @@ void CGreen2Scene::CreateAnimationSequence()
 {}
 
 void CGreen2Scene::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_Green2",
+		true, TEXT("BG_Green2.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_Green2");
+}
 
 void CGreen2Scene::CreateParticle()
 {

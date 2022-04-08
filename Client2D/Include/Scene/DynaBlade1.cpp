@@ -86,7 +86,12 @@ void CDynaBlade1::CreateAnimationSequence()
 {}
 
 void CDynaBlade1::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_ConCave1",
+		true, TEXT("BG_ConCave1.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_ConCave1");
+}
 
 void CDynaBlade1::CreateParticle()
 {

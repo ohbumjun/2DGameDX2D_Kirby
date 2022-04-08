@@ -71,6 +71,8 @@ void CBossMonster::PaperBurnEndCallback()
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect(true);
 
+	m_Scene->GetResource()->SoundPlay("BossWorldResolutionEnd");
+
 	Destroy();
 }
 
@@ -165,6 +167,10 @@ void CBossMonster::MakeBossAngry()
 		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
 		RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
 	}
+
+	m_Scene->GetResource()->SoundStop("BG_SubBossFight");
+	m_Scene->GetResource()->SoundStop("BG_BossFight");
+	m_Scene->GetResource()->SoundPlay("BG_BossFightAngry");
 }
 
 void CBossMonster::MakeBossFightParticleEffect()

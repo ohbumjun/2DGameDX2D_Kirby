@@ -175,6 +175,8 @@ void CMiddleBossScissorBug::CloseAttack()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossCloseAttack");
 }
 
 void CMiddleBossScissorBug::AIAttackSpecific(float DeltaTime)
@@ -209,6 +211,8 @@ void CMiddleBossScissorBug::AIAttackSpecific(float DeltaTime)
 			ChangeJumpAttackAnimation();
 			m_InitTraceDir = m_TraceDir;
 			m_InitMoveVelocity = m_MonsterMoveVelocity;
+
+			m_Scene->GetResource()->SoundPlay("BossJump");
 		}
 	}
 	else if (DistToPlayer <= m_CloseAttackDistance)
@@ -288,6 +292,8 @@ void CMiddleBossScissorBug::GrabActionStart()
 	m_GrabTraceDir = m_Scene->GetPlayerObject()->GetWorldPos() - GetWorldPos();
 
 	m_GrabTraceDir.Normalize();
+
+	m_Scene->GetResource()->SoundPlay("ScissorStartJump");
 }
 
 void CMiddleBossScissorBug::ChangeAttemptGrabAnimation()
@@ -394,6 +400,8 @@ void CMiddleBossScissorBug::UpdateSceneChangeLimitTime(float DeltaTime)
 
 void CMiddleBossScissorBug::ChangeSceneToFloat5Scene()
 {
+	m_Scene->GetResource()->SoundPlay("PlayerChangeSceneStart");
+
 	CSceneManager::GetInst()->CreateNewScene(false);
 	CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat5Scene>(false);
 	CSceneManager::GetInst()->GetNextScene()->PrepareResources();

@@ -47,6 +47,8 @@ void CAbilityMonster::Attack()
 	m_IsAttacking = true;
 
 	m_AttackLimitTime = m_AttackLimitTimeMax;
+
+	m_Scene->GetResource()->SoundPlay("AbilityAttack");
 }
 
 void CAbilityMonster::ChangeAttackAnimation()

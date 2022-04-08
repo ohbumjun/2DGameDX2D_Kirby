@@ -119,7 +119,12 @@ void CGreen3Scene::CreateAnimationSequence()
 {}
 
 void CGreen3Scene::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_SubBossFight",
+		true, TEXT("BG_SubBossFight.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_SubBossFight");
+}
 
 void CGreen3Scene::CreateParticle()
 {

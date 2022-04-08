@@ -39,6 +39,8 @@ void CHammerGorillaFarAttack::MakeMultipleAttackEffect()
 	if (!m_CreateMultipleAfter)
 		return;
 
+	m_Scene->GetResource()->SoundPlay("PlayerDamaged");
+
 	CHammerGorillaFarAttack* AttackEffect = nullptr;
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();

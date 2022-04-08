@@ -60,9 +60,9 @@ void CBossTree::Start()
 	m_Sprite->GetAnimationInstance()->Play();
 
 	// m_HP = 5000.f;
-	m_HP = 50.f;
+	m_HP = 300.f;
 	// m_HPMax = 5000.f;
-	m_HPMax = 50.f;
+	m_HPMax = 300.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
@@ -142,6 +142,8 @@ void CBossTree::FarAttack()
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossFarAttack");
 }
 
 void CBossTree::CloseAttack()
@@ -165,6 +167,8 @@ void CBossTree::CloseAttack()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossCloseAttack");
 }
 
 void CBossTree::AIAttackSpecific(float DeltaTime)
@@ -251,6 +255,8 @@ void CBossTree::UpdateSceneChangeLimitTime(float DeltaTime)
 void CBossTree::ChangeSceneToFloat1Scene()
 {
 	Destroy();
+
+	m_Scene->GetResource()->SoundPlay("PlayerChangeSceneStart");
 
 	CSceneManager::GetInst()->CreateNewScene();
 	CSceneManager::GetInst()->CreateSceneMode<CFloat1LoadingScene>(false);

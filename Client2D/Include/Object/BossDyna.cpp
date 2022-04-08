@@ -60,7 +60,7 @@ void CBossDyna::Start()
 	m_MovementTargetYPos = GetWorldPos().y;
 
 	// m_HP = 5000.f;d
-	m_HP = 40.f;
+	m_HP = 400.f;
 	// m_HPMax = 5000.f;
 	// m_HPMax = 200.f;
 
@@ -233,6 +233,8 @@ void CBossDyna::FarAttack()
 
 	// 연속적으로 뿜어져 나오는 것을 방지하기 위하여 Animation을 한번 바꿔준다.
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossFarAttack");
 }
 
 void CBossDyna::CloseAttack()
@@ -273,6 +275,8 @@ void CBossDyna::CloseAttack()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossCloseAttack");
 }
 
 void CBossDyna::AIAttackSpecific(float DeltaTime)

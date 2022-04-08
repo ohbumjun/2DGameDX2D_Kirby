@@ -114,6 +114,8 @@ void CBossPenguin::JumpStart()
 	ChangeJumpAttackAnimation();
 	m_InitTraceDir = m_TraceDir;
 
+	m_Scene->GetResource()->SoundPlay("ScissorStartJump");
+
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 }
 
@@ -138,6 +140,8 @@ void CBossPenguin::FarAttack()
 	m_FarAttackTraceDir.Normalize();
 
 	MakeJumpAirEffect();
+
+	m_Scene->GetResource()->SoundPlay("BossFarAttack");
 }
 
 void CBossPenguin::FarAttackEnd()
@@ -186,6 +190,8 @@ void CBossPenguin::CloseAttack()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossCloseAttack");
 }
 
 void CBossPenguin::AIAttackSpecific(float DeltaTime)
@@ -349,6 +355,8 @@ void CBossPenguin::ChangeTraceAnimation()
 
 void CBossPenguin::ChangeSceneToDyna1Scene()
 {
+	m_Scene->GetResource()->SoundPlay("PlayerChangeSceneStart");
+
 	Destroy();
 
 	CSceneManager::GetInst()->CreateNewScene();

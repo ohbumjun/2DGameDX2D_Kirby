@@ -58,12 +58,15 @@ CPlayer2D::CPlayer2D() :
 	m_AttackTimeLimit(4.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_SlideAttackEffectToggleTime(0.1f),
+	m_SwimSoundTimeMax(1.0f),
+	m_PullSoundTimeMax(0.3f),
 	m_MPMax(100.f),
 	m_MP(100.f),
 	m_RightMove(false),
 	m_AttackReady(false),
 	m_FlySoundTimeMax(0.5f),
 	m_IsBackToSceneChangeDoorPos(false),
+	m_IsSwimSoundOn(false),
 	m_UltimateAttack(false),
 	m_Bounced(false),
 	m_IsSwimming(false),
@@ -372,7 +375,7 @@ void CPlayer2D::Update(float DeltaTime)
 
 	FallFromCliff();
 
-	CheckIsSwimming();
+	CheckIsSwimming(DeltaTime);
 
 	CheckWithinBossWorldResolution();
 
@@ -384,7 +387,7 @@ void CPlayer2D::Update(float DeltaTime)
 
 	UpdateSlideAttackTime(DeltaTime);
 
-	UpdateSwimMoveDown(DeltaTime);
+	UpdateSwimAction(DeltaTime);
 
 	UpdateActionWhenReachGroundAfterFall();
 
@@ -493,7 +496,7 @@ void CPlayer2D::MoveUp(float DeltaTime)
 
 	// 혹시나 미세한 차이로 인해 갑자기 Swim 아닌 상태로 바뀔 가능성이 있다.
 	// 따라서 MoveUp 하기 전에 한번 더 검사해주는 것이다.
-	CheckIsSwimming();
+	CheckIsSwimming(DeltaTime);
 
 	// if (m_SceneChangeCallback && m_FallTime < 0.1f && !m_IsFlying)
 	// if (m_SceneChangeCallback && m_FallTime < 0.1f)
@@ -510,6 +513,8 @@ void CPlayer2D::MoveUp(float DeltaTime)
 		StopPlayer();
 
 		m_PhysicsSimulate = false;
+
+		m_Scene->GetResource()->SoundPlay("PlayerChangeSceneStart");
 	}
 	else
 	{
@@ -574,6 +579,8 @@ void CPlayer2D::MoveUpEnd(float DeltaTime)
 		EffectSpitOut->SetWorldPos(EffectPos);
 
 		ChangePlayerSpitOutAnimation();
+
+		m_Scene->GetResource()->SoundPlay("PlayerSpitOut");
 		// ChangePlayerFallAnimation();
 	}
 
@@ -816,6 +823,8 @@ void CPlayer2D::MoveDashLeft(float DeltaTime)
 			m_MoveDashEffectMade = true;
 
 			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
+
+			m_Scene->GetResource()->SoundPlay("PlayerDash");
 		}
 	}
 }
@@ -1034,6 +1043,8 @@ void CPlayer2D::MoveDashRight(float DeltaTime)
 			m_MoveDashEffectMade = true;
 
 			m_MoveDashEffectLimitTime -= m_MoveDashEffectLimitTimeMax;
+
+			m_Scene->GetResource()->SoundPlay("PlayerDash");
 		}
 	}
 }
@@ -1213,6 +1224,8 @@ void CPlayer2D::SpitOut(float DeltaTime)
 
 		ChangePlayerNormalIdleAnimation();
 	}
+
+	m_Scene->GetResource()->SoundPlay("PlayerSpitOut");
 }
 
 float CPlayer2D::CalculateLeverMoveSpeed(float DeltaTime)
@@ -1399,7 +1412,6 @@ void CPlayer2D::PlayerMoveUpdate(float DeltaTime)
 		float WorldPosLeftX = GetWorldPos().x - GetPivot().x * GetWorldScale().x;
 		float WorldPosRightX = GetWorldPos().x + GetPivot().x * GetWorldScale().x;
 
-
 		// 감속 중임에도 이동은 시켜줘야 한다.
 		if (m_RightMove)
 		{
@@ -1490,7 +1502,7 @@ void CPlayer2D::StopPlayer()
 	m_MoveVelocity = 0.f;
 }
 
-void CPlayer2D::CheckIsSwimming()
+void CPlayer2D::CheckIsSwimming(float DeltaTime)
 {
 	CTileEmptyComponent* TileMap = m_Scene->GetTileEmptyComponent();
 
@@ -1522,7 +1534,8 @@ void CPlayer2D::CheckIsSwimming()
 			return;
 
 		// 나는 중이 아닐 때 --> 그냥 확 떨어질 때만 검사한다.
-		if (!m_IsFlying)
+		// if (!m_IsFlying)
+		//	return;
 
 		ResultLeft = CurLeft < PrevLeft ? CurLeft : PrevLeft;
 		ResultRight = CurRight > PrevRight ? CurRight : PrevRight;
@@ -1546,6 +1559,12 @@ void CPlayer2D::CheckIsSwimming()
 				if (TileMap->GetTileEmpty(col, row)->GetTileType() == Tile_Type::Water)
 				{
 					m_IsSwimming = true;
+
+					if (!m_IsSwimSoundOn)
+					{
+						m_Scene->GetResource()->SoundPlay("PlayerEnterWater");
+						m_IsSwimSoundOn = true;
+					}
 
 					ChangePlayerSwimAnimation();
 
@@ -1596,6 +1615,12 @@ void CPlayer2D::CheckIsSwimming()
 				{
 					m_IsSwimming = false;
 
+					if (m_IsSwimSoundOn)
+					{
+						m_Scene->GetResource()->SoundStop("PlayerEnterWater");
+						m_IsSwimSoundOn = false;
+					}
+
 					m_PhysicsSimulate = true;
 
 					CEffectWaterBlast* BlastEffect = m_Scene->CreateGameObject<CEffectWaterBlast>("WaterBlast");
@@ -1604,21 +1629,31 @@ void CPlayer2D::CheckIsSwimming()
 						GetWorldPos().y - GetWorldScale().y * GetPivot().y,
 						GetWorldPos().z);
 
+					m_Scene->GetResource()->SoundPlay("PlayerGetOutOfWater");
+
 					return;
 				}
 			}
 		}
 	}
-
-	
 }
 
-void CPlayer2D::UpdateSwimMoveDown(float DeltaTime)
+void CPlayer2D::UpdateSwimAction(float DeltaTime)
 {
 	if (!m_IsSwimming)
 		return;
 
 	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 100.f);
+
+	// SwimTime Update
+	m_SwimSoundTime += DeltaTime;
+
+	if (m_SwimSoundTime >= m_SwimSoundTimeMax)
+	{
+		m_SwimSoundTime = 0.f;
+
+		m_Scene->GetResource()->SoundPlay("WaterSwim");
+	}
 }
 
 void CPlayer2D::UpdateMP(float DeltaTime)
@@ -1649,6 +1684,8 @@ void CPlayer2D::DecreaseMP(float MP)
 
 	if (!HUD)
 		HUD->GetMPProgressBar()->SetPercent(m_MP / m_MPMax);
+
+	m_Scene->GetResource()->SoundPlay("PlayerItemGet");
 }
 
 void CPlayer2D::AddHP(float HP)
@@ -1673,7 +1710,8 @@ void CPlayer2D::AddHP(float HP)
 		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
 		RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
 	}
-	
+
+	m_Scene->GetResource()->SoundPlay("PlayerItemGet");
 }
 
 void CPlayer2D::Damage(float Damage)
@@ -1713,6 +1751,8 @@ void CPlayer2D::Damage(float Damage)
 	{
 		HUD->GetHPProgressBar()->SetPercent(m_HP / m_HPMax);
 	}
+
+	m_Scene->GetResource()->SoundPlay("PlayerDamaged");
 }
 
 void CPlayer2D::UpdateBeingHit(float DeltaTime)
@@ -1934,7 +1974,7 @@ void CPlayer2D::SimpleJump()
 		else
 			ChangePlayerJumpAnimation();
 
-
+		m_Scene->GetResource()->SoundPlay("PlayerJump");
 	}
 }
 
@@ -1957,6 +1997,8 @@ void CPlayer2D::WeakJump()
 		m_JumpStart = true;
 
 		m_JumpVelocity = 30.f;
+
+		m_Scene->GetResource()->SoundPlay("PlayerJump");
 	}
 }
 
@@ -2156,6 +2198,8 @@ void CPlayer2D::TriangleJumpLeft(float DeltaTime)
 
 	m_ToLeftWhenRightMove = false;
 	m_ToRightWhenLeftMove = false;
+
+	m_Scene->GetResource()->SoundPlay("PlayerJump");
 }
 
 void CPlayer2D::TriangleJumpRight(float DeltaTime)
@@ -2176,6 +2220,8 @@ void CPlayer2D::TriangleJumpRight(float DeltaTime)
 
 	m_ToLeftWhenRightMove = false;
 	m_ToRightWhenLeftMove = false;
+
+	m_Scene->GetResource()->SoundPlay("PlayerJump");
 }
 
 void CPlayer2D::JumpDown(float DeltaTime)
@@ -2197,6 +2243,8 @@ void CPlayer2D::JumpDown(float DeltaTime)
 			m_FallStartY = GetWorldPos().y;
 
 			m_JumpDown = true;
+
+			m_Scene->GetResource()->SoundPlay("PlayerJump");
 		}
 	}
 }
@@ -2305,6 +2353,8 @@ void CPlayer2D::UpdateActionWhenReachGroundAfterFall()
 					ChangePlayerEatIdleAnimation();
 				else
 					ChangePlayerNormalIdleAnimation();
+
+				m_Scene->GetResource()->SoundPlay("PlayerJump");
 
 				CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
 				RandomStar->SetWorldPos(Vector3(GetWorldPos().x - (GetWorldScale().x * GetPivot().x) * 2.f, GetWorldPos().y, GetWorldPos().z));
@@ -2703,6 +2753,8 @@ void CPlayer2D::ChangePlayerUltimateAttackAnimation(float DeltaTime)
 	m_PhysicsSimulate = false;
 
 	StopPlayer();
+
+	m_Scene->GetResource()->SoundPlay("PlayerUltimateAttack");
 }
 
 void CPlayer2D::ChangePlayerEatIdleAnimation()
@@ -2787,6 +2839,8 @@ void CPlayer2D::FallDownAttackCallback(const CollisionResult& Result)
 		{
 			OwnerMonster->SetObjectMoveDir(Vector3(1.f, 0.f, 0.f));
 		}
+
+		m_Scene->GetResource()->SoundPlay("PlayerDamageMonster");
 	}
 }
 
@@ -2854,6 +2908,14 @@ void CPlayer2D::PullRight(float DeltaTime)
 		PullStar->SetAttackXDir(1.f);
 
 		PullStar->SetWorldPos(GetWorldPos().x + GetWorldScale().x * GetPivot().x, GetWorldPos().y, 0.f);
+	}
+
+	m_PullSoundTime += DeltaTime;
+
+	if (m_PullSoundTime >= m_PullSoundTimeMax)
+	{
+		m_PullSoundTime = 0.f;
+		m_Scene->GetResource()->SoundPlay("PlayerPull");
 	}
 }
 
@@ -3081,6 +3143,8 @@ void CPlayer2D::SpecialChange()
 	*/
 
 	ChangePlayerIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("PlayerChange");
 }
 
 void CPlayer2D::SpecialChangeStart(float DeltaTime)
@@ -3108,6 +3172,8 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 	StopPlayer();
 
 	PrepareSpecialAction(m_ChangeTimeMax);
+
+	m_Scene->GetResource()->SoundPlay("PlayerChange");
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -3324,6 +3390,8 @@ void CPlayer2D::Attack(float DeltaTime)
 			WaterAttack->GetColliderBody()->AddCollisionCallback(Collision_State::Begin,
 				this, &CPlayer2D::PlayerAttackCollisionCallback);
 		}
+
+		m_Scene->GetResource()->SoundPlay("PlayerNormalAttack");
 	}
 	else
 	{
@@ -3350,6 +3418,7 @@ void CPlayer2D::Attack(float DeltaTime)
 
 			m_KirbyState->FallDownAttack();
 
+			m_Scene->GetResource()->SoundPlay("PlayerFallDownAttack");
 		}
 		else if (YDiff > 0)
 		{
@@ -3361,12 +3430,16 @@ void CPlayer2D::Attack(float DeltaTime)
 			DecreaseMP(15.f);
 
 			m_KirbyState->GoUpAttack();
+
+			m_Scene->GetResource()->SoundPlay("PlayerGoUpAttack");
 		}
 		else
 		{
 			// ChangePlayerAttackAnimation();
 
 			m_KirbyState->Attack();
+
+			m_Scene->GetResource()->SoundPlay("PlayerNormalAttack");
 		}
 	}
 }
@@ -3400,6 +3473,8 @@ void CPlayer2D::SlideAttack(float DeltaTime)
 	m_SlideAttackSpeed = m_SlideAttackSpeedMax;
 
 	ChangePlayerSlideAttackAnimation();
+
+	m_Scene->GetResource()->SoundPlay("PlayerSlide");
 }
 
 void CPlayer2D::MakePlayerCloneEffect()
@@ -3437,6 +3512,8 @@ void CPlayer2D::MakePlayerCloneEffect()
 	{
 		KirbyClone->SetWorldPos(GetWorldPos().x - 20.f, GetWorldPos().y, GetWorldPos().z);
 	}
+
+	m_Scene->GetResource()->SoundPlay("PlayerCloneEffect");
 }
 
 void CPlayer2D::SpecialAttack()
@@ -3448,6 +3525,8 @@ void CPlayer2D::SpecialAttack()
 	UndoSpecialAction();
 
 	m_KirbyState->SpecialAttack();
+
+	m_Scene->GetResource()->SoundPlay("PlayerSpecialAttack");
 }
 
 void CPlayer2D::UltimateAttack()
@@ -3476,6 +3555,7 @@ void CPlayer2D::UltimateAttack()
 
 	ChangePlayerNormalIdleAnimation();
 
+	m_Scene->GetResource()->SoundPlay("PlayerUltimateAttack");
 }
 
 void CPlayer2D::PrepareSpecialAction(float PrepareTime)
@@ -3692,6 +3772,8 @@ void CPlayer2D::PlayerAttackCollisionCallback(const CollisionResult& Result)
 			// HP Bar 달게 하기
 			DestMonster->Damage(m_AttackAbility);
 
+			m_Scene->GetResource()->SoundPlay("PlayerDamageMonster");
+
 			DestMonster->SetBeingHit(true);
 
 			DestMonster->SetAIState(Monster_AI::Hit);
@@ -3854,6 +3936,14 @@ void CPlayer2D::PullLeft(float DeltaTime)
 		PullStar->SetAttackXDir(-1.f);
 
 		PullStar->SetWorldPos(GetWorldPos().x - GetWorldScale().x * GetPivot().x, GetWorldPos().y, 0.f);
+	}
+
+	m_PullSoundTime += DeltaTime;
+
+	if (m_PullSoundTime >= m_PullSoundTimeMax)
+	{
+		m_PullSoundTime = 0.f;
+		m_Scene->GetResource()->SoundPlay("PlayerPull");
 	}
 }
 

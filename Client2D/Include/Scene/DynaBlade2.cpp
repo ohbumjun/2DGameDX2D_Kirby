@@ -105,7 +105,16 @@ void CDynaBlade2::CreateAnimationSequence()
 {}
 
 void CDynaBlade2::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_BossDyna",
+		true, TEXT("BG_BossDyna.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_BossDyna");
+
+	m_Scene->GetResource()->LoadSound("BGM", "BossDynaBabyMake",
+		true, TEXT("BossDynaBabyMake.wav"));
+	
+}
 
 void CDynaBlade2::CreateParticle()
 {

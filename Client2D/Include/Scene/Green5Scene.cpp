@@ -101,7 +101,12 @@ void CGreen5Scene::CreateAnimationSequence()
 {}
 
 void CGreen5Scene::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_BossFight",
+		true, TEXT("BG_BossFight.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_BossFight");
+}
 
 void CGreen5Scene::CreateParticle()
 {

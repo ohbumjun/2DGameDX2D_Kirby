@@ -105,7 +105,12 @@ void CFloat7Scene::CreateAnimationSequence()
 {}
 
 void CFloat7Scene::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_BossFight",
+		true, TEXT("BG_BossFight.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_BossFight");
+}
 
 void CFloat7Scene::CreateParticle()
 {

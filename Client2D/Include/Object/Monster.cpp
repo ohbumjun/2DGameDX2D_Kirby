@@ -163,6 +163,9 @@ void CMonster::AIStateUpdate(float DeltaTime)
 			{
 				// Trace AT ¼¼ÆÃ
 				m_AI = Monster_AI::Trace;
+
+				// m_Scene->GetResource()->SoundPlay("MonsterTraceStart");
+
 				return;
 			}
 		}
@@ -343,6 +346,8 @@ void CMonster::AIDeath(float DeltaTime)
 		CEffectRandomStar* RandomStar = m_Scene->CreateGameObject<CEffectRandomStar>("RandomStar");
 		RandomStar->SetWorldPos(Vector3(GetWorldPos().x, GetWorldPos().y, GetWorldPos().z));
 	}
+
+	m_Scene->GetResource()->SoundPlay("MonsterDeath");
 }
 
 void CMonster::AIHit(float DeltaTime)

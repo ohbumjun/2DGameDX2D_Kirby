@@ -227,9 +227,14 @@ void CSceneMode::CreateSound()
 	m_Scene->GetResource()->LoadSound("Scene",
 		"SceneChange", false, TEXT("SceneStart.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
-		"SceneChangeStar", true, TEXT("SceneChangeStar.wav"));
+		"SceneChangeStar", false, TEXT("SceneChangeStar.wav"));
 
 	// Player
+	// true
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"WaterSwim", true, TEXT("WaterSwim.mp3"));
+
+	// false
 	m_Scene->GetResource()->LoadSound("PlayerEffect", 
 		"PlayerSpitOut", false, TEXT("PlayerSpitout.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
@@ -239,11 +244,11 @@ void CSceneMode::CreateSound()
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
 		"PlayerPull", false, TEXT("PlayerPull.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
-		"WaterSwim", true, TEXT("WaterSwim.mp3"));
-	m_Scene->GetResource()->LoadSound("PlayerEffect",
 		"PlayerJump", false, TEXT("PlayerJump.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
-		"PlayerNormalAttack", false, TEXT("PlayerNormalAttack.wav"));
+		"PlayerNormalAttack", false, TEXT("PlayerNormalAttack.wav")); //
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerUltimateAttack", false, TEXT("PlayerUltimateAttack.wav")); //
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
 		"PlayerGoUpAttack", false, TEXT("PlayerGoUpAttack.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
@@ -271,7 +276,9 @@ void CSceneMode::CreateSound()
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
 		"PlayerItemGet", false, TEXT("Item_Get.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
-		"PlayerEat", false, TEXT("PlayerEat.wav"));
+		"PlayerCloneEffect", false, TEXT("PlayerCloneEffect.wav"));
+	
+	/*
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
 		"PlayerEat", false, TEXT("PlayerEat.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
@@ -284,7 +291,9 @@ void CSceneMode::CreateSound()
 		"PlayerEat", false, TEXT("PlayerEat.wav"));
 	m_Scene->GetResource()->LoadSound("PlayerEffect",
 		"PlayerEat", false, TEXT("PlayerEat.wav"));
-
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	*/
 
 
 	// Monster
@@ -299,8 +308,11 @@ void CSceneMode::CreateSound()
 	m_Scene->GetResource()->LoadSound("Monster",
 		"BossJump", false, TEXT("BossJump.wav"));
 	m_Scene->GetResource()->LoadSound("Monster",
-		"Boss_CloseAttack", false, TEXT("Boss_CloseAttack.wav"));
+		"BossCloseAttack", false, TEXT("Boss_CloseAttack.wav"));
 	m_Scene->GetResource()->LoadSound("Monster",
 		"BossFarAttack", false, TEXT("BossFarAttack.wav"));
-
+	m_Scene->GetResource()->LoadSound("Monster",
+		"BossWorldResolutionEnd", false, TEXT("BossWorldResolutionEnd.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"BG_BossFightAngry", true, TEXT("BG_BossFightAngry.mp3"));
 }

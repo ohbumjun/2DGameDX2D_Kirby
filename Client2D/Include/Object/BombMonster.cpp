@@ -110,4 +110,6 @@ void CBombMonster::Attack()
 		AttackEffect->SetRightAttackDir();
 		AttackEffect->ApplyJumpEffect();
 	}
+
+	m_Scene->GetResource()->SoundPlay("AbilityAttack");
 }

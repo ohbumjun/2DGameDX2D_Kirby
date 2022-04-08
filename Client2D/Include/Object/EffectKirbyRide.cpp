@@ -157,6 +157,8 @@ void CEffectKirbyRide::PostUpdate(float DeltaTime)
 			Vector3 StarScale =  SpitOutStar->GetWorldScale();
 
 			SpitOutStar->SetWorldScale(StarScale.x * 0.5f, StarScale.y * 0.5f, StarScale.z);
+
+			m_Scene->GetResource()->SoundPlay("SceneChangeStar");
 		}
 	}
 }

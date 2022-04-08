@@ -47,6 +47,8 @@ void CDynaFarAttack::BottomCollisionSpecificAction()
 	Destroy();
 
 	m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
+
+	m_Scene->GetResource()->SoundPlay("PlayerDamaged");
 }
 
 

@@ -112,4 +112,6 @@ void CBeamMonster::Attack()
 		AttackEffect->SetMonsterOwner(this);
 		AttackEffect->SetRightAttackDir();
 	}
+
+	m_Scene->GetResource()->SoundPlay("AbilityAttack");
 }

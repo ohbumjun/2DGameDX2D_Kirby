@@ -86,7 +86,12 @@ void CFloat6Scene::CreateAnimationSequence()
 {}
 
 void CFloat6Scene::CreateSound()
-{}
+{
+	CSceneMode::CreateSound();
+	m_Scene->GetResource()->LoadSound("BGM", "BG_Float6",
+		true, TEXT("BG_Float6.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_Float6");
+}
 
 void CFloat6Scene::CreateParticle()
 {

@@ -46,7 +46,8 @@ void CMiddleBossHammer::Start()
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
-	m_HP = 100.f;
+	m_HP = 300.f;
+	m_HPMax = 300.f;
 
 	m_IsGround = true;
 
@@ -164,6 +165,8 @@ void CMiddleBossHammer::FarAttack()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossFarAttack");
 }
 
 void CMiddleBossHammer::CloseAttack()
@@ -204,6 +207,8 @@ void CMiddleBossHammer::CloseAttack()
 	m_IsAttacking = false;
 
 	ChangeIdleAnimation();
+
+	m_Scene->GetResource()->SoundPlay("BossCloseAttack");
 }
 
 void CMiddleBossHammer::AIAttackSpecific(float DeltaTime)
@@ -261,6 +266,8 @@ void CMiddleBossHammer::AITraceSpecific(float DeltaTime)
 			m_JumpAccel = 1.5f;
 			ChangeJumpAttackAnimation();
 			m_InitTraceDir = m_TraceDir;
+
+			m_Scene->GetResource()->SoundPlay("BossJump");
 
 			m_Scene->GetCameraManager()->GetCurrentCamera()->ApplyShakeEffect();
 		}
