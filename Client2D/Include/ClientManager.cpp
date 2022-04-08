@@ -223,7 +223,7 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->GetScene()->Load("Float7_SecondBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float5_FourthSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float6.scn", SCENE_PATH);
-	// CSceneManager::GetInst()->GetScene()->Load("Float3.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Float3.scn", SCENE_PATH); //
 	CSceneManager::GetInst()->GetScene()->Load("Green3_MiddleBoss_SecondSpecial.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green5.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Green4.scn", SCENE_PATH);
