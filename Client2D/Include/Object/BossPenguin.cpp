@@ -37,9 +37,6 @@ void CBossPenguin::Start()
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
-	m_HP = 50.f;
-	// m_HPMax = 5000.f;
-
 	m_IsGround = true;
 
 	m_Sprite->GetAnimationInstance()->Play();

@@ -46,9 +46,6 @@ void CMiddleBossHammer::Start()
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
-	m_HP = 300.f;
-	m_HPMax = 300.f;
-
 	m_IsGround = true;
 
 	m_Sprite->GetAnimationInstance()->Play();

@@ -81,9 +81,9 @@ void CFloat2_2Scene::CreateAnimationSequence()
 void CFloat2_2Scene::CreateSound()
 {
 	CSceneMode::CreateSound();
-	m_Scene->GetResource()->LoadSound("BGM", "BG_Float",
-		true, TEXT("BG_Float.mp3"));
-	m_Scene->GetResource()->SoundPlay("BG_Float");
+	m_Scene->GetResource()->LoadSound("BGM", "BG_Float2",
+		true, TEXT("BG_Float2.mp3"));
+	m_Scene->GetResource()->SoundPlay("BG_Float2");
 }
 
 void CFloat2_2Scene::CreateParticle()

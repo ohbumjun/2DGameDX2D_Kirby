@@ -82,4 +82,7 @@ void CEndingScene::PrepareResources()
 }
 
 void CEndingScene::CreateSound()
-{}
+{
+	m_Scene->GetResource()->LoadSound("BGM", "EndBGM", true, TEXT("BG_Ending.mp3"));
+	m_Scene->GetResource()->SoundPlay("EndBGM");
+}

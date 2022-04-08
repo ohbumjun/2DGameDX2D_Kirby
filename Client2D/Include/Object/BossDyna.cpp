@@ -53,16 +53,14 @@ void CBossDyna::Start()
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
+	m_HP = 2200.f;
+	m_HPMax = 2200.f;
+
 	m_IsGround = false;
 
 	m_Sprite->GetAnimationInstance()->Play();
 
 	m_MovementTargetYPos = GetWorldPos().y;
-
-	// m_HP = 5000.f;d
-	m_HP = 400.f;
-	// m_HPMax = 5000.f;
-	// m_HPMax = 200.f;
 
 	// Trace를 별도로 하지 않는다
 	m_IsTracingMonster = false;

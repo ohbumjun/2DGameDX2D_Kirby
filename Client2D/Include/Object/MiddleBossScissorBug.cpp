@@ -33,7 +33,7 @@ CMiddleBossScissorBug::CMiddleBossScissorBug() :
 
 
 	m_HitLimitTimeMax = 0.4f;
-	m_CameraFollowMaxTime = 6.f;
+	m_CameraFollowMaxTime = 4.f;
 }
 
 CMiddleBossScissorBug::~CMiddleBossScissorBug()
@@ -51,8 +51,6 @@ void CMiddleBossScissorBug::Start()
 	m_IsGround = true;
 
 	m_Sprite->GetAnimationInstance()->Play();
-
-	m_HP = 500.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(0.5f);

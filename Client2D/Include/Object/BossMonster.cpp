@@ -170,6 +170,8 @@ void CBossMonster::MakeBossAngry()
 
 	m_Scene->GetResource()->SoundStop("BG_SubBossFight");
 	m_Scene->GetResource()->SoundStop("BG_BossFight");
+	m_Scene->GetResource()->SoundStop("BG_BossDyna");
+
 	m_Scene->GetResource()->SoundPlay("BG_BossFightAngry");
 }
 

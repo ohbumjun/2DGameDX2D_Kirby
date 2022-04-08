@@ -6,6 +6,7 @@ CBossHUD::CBossHUD() :
 	m_EnableStart(false),
 	m_InitHPReachedEnd(false),
 	m_StartDestroy(false),
+	m_InitHPIncreaseStart(false),
 	m_CurrentOpacity(1.f)
 {}
 
@@ -119,6 +120,12 @@ void CBossHUD::Update(float DeltaTime)
 		}
 
 		m_HPProgressBar->SetPercent(HPPercent + DeltaTime * 0.5f);
+
+		if (!m_InitHPIncreaseStart)
+		{
+			m_Scene->GetResource()->SoundPlay("PlayerItemGet");
+			m_InitHPIncreaseStart = true;
+		}
 	}
 
 	UpdateDestroyOpacity(DeltaTime);

@@ -112,7 +112,7 @@ void CDynaBlade2::CreateSound()
 	m_Scene->GetResource()->SoundPlay("BG_BossDyna");
 
 	m_Scene->GetResource()->LoadSound("BGM", "BossDynaBabyMake",
-		true, TEXT("BossDynaBabyMake.wav"));
+		false, TEXT("BossDynaBabyMake.wav"));
 	
 }
 

@@ -87,8 +87,6 @@ private :
 	// 수영
 	bool m_IsSwimming;
 	bool m_IsSwimSoundOn;
-	float m_SwimSoundTime;
-	float m_SwimSoundTimeMax;
 
 	// 날기 
 	bool m_IsFlying;

@@ -22,6 +22,7 @@ private :
     bool m_InitHPReachedEnd;
     float m_CurrentOpacity;
     bool m_StartDestroy;
+    bool m_InitHPIncreaseStart;
 public:
     CUIProgressBar* GetHPProgressBar() const
     {

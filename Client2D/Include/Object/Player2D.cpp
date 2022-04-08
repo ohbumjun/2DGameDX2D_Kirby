@@ -58,7 +58,6 @@ CPlayer2D::CPlayer2D() :
 	m_AttackTimeLimit(4.f),
 	m_TriangleJumpVelocityRatio(0.8f),
 	m_SlideAttackEffectToggleTime(0.1f),
-	m_SwimSoundTimeMax(1.0f),
 	m_PullSoundTimeMax(0.3f),
 	m_MPMax(100.f),
 	m_MP(100.f),
@@ -1636,6 +1635,15 @@ void CPlayer2D::CheckIsSwimming(float DeltaTime)
 			}
 		}
 	}
+
+	if (!m_IsSwimming)
+	{
+		if (m_IsSwimSoundOn)
+		{
+			m_Scene->GetResource()->SoundStop("PlayerEnterWater");
+			m_IsSwimSoundOn = false;
+		}
+	}
 }
 
 void CPlayer2D::UpdateSwimAction(float DeltaTime)
@@ -1644,16 +1652,6 @@ void CPlayer2D::UpdateSwimAction(float DeltaTime)
 		return;
 
 	AddWorldPos(Vector3(0.f, -1.f, 0.f) * DeltaTime * 100.f);
-
-	// SwimTime Update
-	m_SwimSoundTime += DeltaTime;
-
-	if (m_SwimSoundTime >= m_SwimSoundTimeMax)
-	{
-		m_SwimSoundTime = 0.f;
-
-		m_Scene->GetResource()->SoundPlay("WaterSwim");
-	}
 }
 
 void CPlayer2D::UpdateMP(float DeltaTime)

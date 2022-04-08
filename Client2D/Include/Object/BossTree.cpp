@@ -60,9 +60,6 @@ void CBossTree::Start()
 	m_Sprite->GetAnimationInstance()->Play();
 
 	// m_HP = 5000.f;
-	m_HP = 300.f;
-	// m_HPMax = 5000.f;
-	m_HPMax = 300.f;
 
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
