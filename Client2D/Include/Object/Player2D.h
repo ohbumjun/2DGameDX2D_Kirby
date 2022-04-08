@@ -91,6 +91,8 @@ private :
 	bool m_IsFlying;
 	float m_FlySpeed;
 	bool m_SceneChange;
+	float m_FlySoundTime;
+	float m_FlySoundTimeMax;
 
 	// 사다리 타기
 	bool m_IsLadderGoingUp;

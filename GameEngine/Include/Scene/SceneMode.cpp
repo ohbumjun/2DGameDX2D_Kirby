@@ -220,3 +220,87 @@ void CSceneMode::PrepareResources()
 		Mtrl->AddTexture(0, static_cast<int>(Buffer_Shader_Type::Pixel), "EngineTexture", Texture);
 	}
 }
+
+void CSceneMode::CreateSound()
+{
+	// Scene
+	m_Scene->GetResource()->LoadSound("Scene",
+		"SceneChange", false, TEXT("SceneStart.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"SceneChangeStar", true, TEXT("SceneChangeStar.wav"));
+
+	// Player
+	m_Scene->GetResource()->LoadSound("PlayerEffect", 
+		"PlayerSpitOut", false, TEXT("PlayerSpitout.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerSpecialAttack", false, TEXT("PlayerSpecialAttack.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerSlide", false, TEXT("PlayerSlid.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerPull", false, TEXT("PlayerPull.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"WaterSwim", true, TEXT("WaterSwim.mp3"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerJump", false, TEXT("PlayerJump.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerNormalAttack", false, TEXT("PlayerNormalAttack.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerGoUpAttack", false, TEXT("PlayerGoUpAttack.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerGetOutOfWater", false, TEXT("PlayerGetOutOfWater.mp3"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerFly", false, TEXT("PlayerFly.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerFallDownAttack", false, TEXT("PlayerFallDownAttack.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEnterWater", false, TEXT("PlayerEnterWater.mp3"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerDeath", false, TEXT("PlayerDeath.mp3"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerDash", false, TEXT("PlayerDash.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerDamageMonster", false, TEXT("PlayerDamageMonster.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerDamaged", false, TEXT("PlayerDamaged.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerChangeSceneStart", false, TEXT("PlayerChangeSceneStart.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerChange", false, TEXT("PlayerChange.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerItemGet", false, TEXT("Item_Get.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+	m_Scene->GetResource()->LoadSound("PlayerEffect",
+		"PlayerEat", false, TEXT("PlayerEat.wav"));
+
+
+
+	// Monster
+	m_Scene->GetResource()->LoadSound("Monster",
+		"AbilityAttack", false, TEXT("SpecialAttack.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"ScissorStartJump", false, TEXT("ScissorStartJump.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"MonsterDeath", false, TEXT("MonsterDeath.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"MonsterTraceStart", false, TEXT("Monster_Trace_Start.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"BossJump", false, TEXT("BossJump.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"Boss_CloseAttack", false, TEXT("Boss_CloseAttack.wav"));
+	m_Scene->GetResource()->LoadSound("Monster",
+		"BossFarAttack", false, TEXT("BossFarAttack.wav"));
+
+}

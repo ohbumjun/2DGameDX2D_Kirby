@@ -20,6 +20,7 @@ protected:
 	CSharedPtr<class CGameObject> m_SceneChangeObject;
 protected:
 	bool m_IsEditMode;
+	int m_SceneIndex;
 public:
 	void SetPlayerObject(class CGameObject* Obj);
 	void SetTileMapEmptyObject(class CGameObject* Obj);
@@ -34,6 +35,10 @@ public :
 		m_Enable = Enable;
 }
 public :
+	int GetSceneIndex() const
+{
+		return m_SceneIndex;
+}
 	bool IsEditMode () const
 {
 		return m_IsEditMode;
@@ -69,4 +74,5 @@ public:
 	virtual void PostUpdate(float DeltaTime);
 public :
 	virtual void PrepareResources();
+	virtual void CreateSound();
 };

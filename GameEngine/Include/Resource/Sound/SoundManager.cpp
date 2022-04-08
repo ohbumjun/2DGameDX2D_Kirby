@@ -57,10 +57,12 @@ CSound* CSoundManager::LoadSound(const std::string& GroupName,
 		return Sound;
 
 	FMOD::ChannelGroup* Group = FindGroup(GroupName);
+
 	if (!Group)
 		return nullptr;
 
 	Sound = new CSound;
+
 	if (!Sound->LoadSound(SoundName, m_System, Group, Loop, FileName, PathName))
 	{
 		SAFE_DELETE(Sound);

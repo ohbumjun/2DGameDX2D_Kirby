@@ -95,7 +95,18 @@ CSceneResource::~CSceneResource()
 	}
 
 	// Sound Ã³¸®
-	m_mapSound.clear();
+	{
+		auto iterSound = m_mapSound.begin();
+		auto iterEndSound = m_mapSound.end();
+
+		for (; iterSound != iterEndSound;)
+		{
+			std::string Name = iterSound->first;
+			iterSound->second->Stop();
+			iterSound = m_mapSound.erase(iterSound);
+			CResourceManager::GetInst()->ReleaseSound(Name);
+		}
+	}
 }
 
 CMesh* CSceneResource::FindMesh(const std::string& Name)
@@ -471,6 +482,7 @@ CSound* CSceneResource::LoadSound(const std::string& GroupName, const std::strin
 								  const TCHAR* FileName, const std::string& PathName)
 {
 	CSound* Sound = FindSound(SoundName);
+
 	if (Sound)
 		return Sound;
 

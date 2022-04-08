@@ -174,6 +174,10 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 	// Sound
 	CResourceManager::GetInst()->CreateChannelGroup("UI");
+	CResourceManager::GetInst()->CreateChannelGroup("PlayerEffect");
+	CResourceManager::GetInst()->CreateChannelGroup("Monster");
+	CResourceManager::GetInst()->CreateChannelGroup("Scene");
+	CResourceManager::GetInst()->CreateChannelGroup("BGM");
 
 	// Mouse Á¦ÀÛ
 	CEngine::GetInst()->CreateMouseUIWindow<CMouseNormal>(Mouse_State::Normal, "MouseNormal");
@@ -186,8 +190,8 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 void CClientManager::CreateDefaultSceneMode()
 {
-	// CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
-	CSceneManager::GetInst()->CreateSceneMode<CEndingScene>();
+	CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
+	// CSceneManager::GetInst()->CreateSceneMode<CEndingScene>();
 	// ----------------------------------------------------------------------------
 
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CFloat1Scene>();
@@ -596,3 +600,4 @@ void CClientManager::CreateAnimationInstance(CSpriteComponent* Component, const 
 	*/
 	Component->LoadAnimationInstance<CAnimationSequence2DInstance>();
 }
+

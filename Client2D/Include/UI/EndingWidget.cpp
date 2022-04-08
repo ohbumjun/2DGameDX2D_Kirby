@@ -71,7 +71,7 @@ bool CEndingWidget::Init()
 	m_EndingLogo->SetZOrder(5);
 
 	m_NameText = CreateUIWidget<CUIText>("NameText");
-	m_NameText->SetText(TEXT("BY   O.B.J"));d
+	m_NameText->SetText(TEXT("BY   O.B.J"));
 	m_NameText->SetPos(430.f, 250.f);
 	m_NameText->SetSize(400.f, 200.f);
 	m_NameText->SetZOrder(5);
@@ -79,7 +79,6 @@ bool CEndingWidget::Init()
 	m_NameText->SetColor(1.f, 1.f, 1.f);
 	m_NameText->SetAlignH(TEXT_ALIGN_H::Center);
 	m_NameText->SetShadowAlphaEnable(true);
-
 
 	return true;
 }

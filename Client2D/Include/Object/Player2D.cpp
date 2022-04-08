@@ -62,6 +62,7 @@ CPlayer2D::CPlayer2D() :
 	m_MP(100.f),
 	m_RightMove(false),
 	m_AttackReady(false),
+	m_FlySoundTimeMax(0.5f),
 	m_IsBackToSceneChangeDoorPos(false),
 	m_UltimateAttack(false),
 	m_Bounced(false),
@@ -1899,6 +1900,14 @@ void CPlayer2D:: FlyAfterJump(float DeltaTime)
 		// 중력 적용 방지
 		m_Jump = false;
 		m_IsGround = true;
+	}
+
+	m_FlySoundTime += DeltaTime;
+
+	if (m_FlySoundTime >= m_FlySoundTimeMax)
+	{
+		m_FlySoundTime = 0.f;
+		m_Scene->GetResource()->SoundPlay("PlayerFly");
 	}
 }
 

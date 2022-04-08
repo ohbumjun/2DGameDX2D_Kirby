@@ -69,8 +69,10 @@ bool CIntroWidget::Init()
 	m_StartButton->SetTextureTint(Button_State::MouseOn, 255, 255, 255, 255);
 	m_StartButton->SetTextureTint(Button_State::Click, 150, 150, 150, 255);
 
-	m_StartButton->SetClickCallback<CIntroWidget>(this, &CIntroWidget::StartGameButtonClick);
+	m_StartButton->SetMouseSound(Button_SoundState::BtnHover, "UI", "ButtonMouseOn", false,TEXT("UIButtonUp.wav"));
+	m_StartButton->SetMouseSound(Button_SoundState::BtnClick, "UI", "ButtonMouseClick", false,TEXT("UIButtonClick.wav"));
 
+	m_StartButton->SetClickCallback<CIntroWidget>(this, &CIntroWidget::StartGameButtonClick);
 
 	return true;
 }
