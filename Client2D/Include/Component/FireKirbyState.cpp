@@ -189,6 +189,19 @@ void CFireKirbyState::UpdateAttackGoUpState(float DeltaTime)
 			m_CloneEffectToggleTime = 0.f;
 		}
 
+		if (m_Animation->GetCurrentAnimation()->GetName() != "RightUpAttack" &&
+			m_Animation->GetCurrentAnimation()->GetName() != "LeftUpAttack")
+		{
+			if (m_Player->GetObjectMoveDir().x < 0.f)
+			{
+				m_Animation->ChangeAnimation("LeftUpAttack");
+			}
+			else
+			{
+				m_Animation->ChangeAnimation("RightUpAttack");
+			}
+		}
+
 		if (m_GoUpTime <= 0.f)
 		{
 			m_GoUpState = false;

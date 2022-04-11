@@ -178,6 +178,19 @@ void CSwordKirbyState::UpdateAttackGoUpState(float DeltaTime)
 
 		m_Player->SetAttackEnable(true);
 
+		if (m_Animation->GetCurrentAnimation()->GetName() != "RightUpAttack" &&
+			m_Animation->GetCurrentAnimation()->GetName() != "LeftUpAttack")
+		{
+			if (m_Player->GetObjectMoveDir().x < 0.f)
+			{
+				m_Animation->ChangeAnimation("LeftUpAttack");
+			}
+			else
+			{
+				m_Animation->ChangeAnimation("RightUpAttack");
+			}
+		}
+
 		if (!m_GoUpReachedTop)
 		{
 			AddWorldPos(Vector3(0.f, 1.f, 0.f) * Dist);
