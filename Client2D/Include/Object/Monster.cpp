@@ -976,8 +976,11 @@ void CMonster::OnMonsterBodyCollisionBegin(const CollisionResult& Result)
 	if (m_IsBeingPulled)
 		return;
 
-	// Player 의 본체일 때만 Damage --> Pull Right, Left Collider 일 때는 X
+	// Player 의 본체일 때 + Player Collision Profile 일만 Damage --> Pull Right, Left Collider 일 때는 X
 	if (Player->GetBodyCollider() != Result.Dest)
+		return;
+
+	if (Player->GetBodyCollider()->GetCurrentProfile()->Channel != Collision_Channel::Player)
 		return;
 
 	Player->Damage(m_AttackAbility);

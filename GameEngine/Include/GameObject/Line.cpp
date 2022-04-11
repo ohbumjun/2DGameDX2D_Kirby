@@ -328,6 +328,21 @@ void CLine::Update(float DeltaTime)
 		m_EndPosBox->SetWorldPos(m_FinalWorldRightPos.x, m_FinalWorldRightPos.y, 1.f);
 		m_EndPosBox->SetWorldScale(20.f, 20.f, 1.f);
 	}
+
+#ifdef DEBUG
+
+	# else
+	if (m_StartPosBox)
+	{
+		m_StartPosBox->SetOpacity(0.f);
+	}
+	if (m_EndPosBox)
+	{
+		m_EndPosBox->SetOpacity(0.f);
+	}
+
+#endif
+
 }
 
 void CLine::Start()

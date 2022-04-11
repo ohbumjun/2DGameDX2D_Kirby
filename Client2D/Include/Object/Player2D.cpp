@@ -364,6 +364,8 @@ void CPlayer2D::Start()
 	m_SceneChange = false;
 
 	LoadChangeImagesInAdvance();
+
+	m_AttackAbility = 500.f;
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -1719,7 +1721,8 @@ void CPlayer2D::Damage(float Damage)
 
 	if (m_HP < 0.f)
 	{
-		Destroy();
+		m_HP = 1.f;
+		
 		return;
 	}
 
@@ -3130,15 +3133,8 @@ void CPlayer2D::SpecialChange()
 	// Player 외 모든 Object 들을 멈춘다.
 	UndoSpecialAction();
 
-
-	// Change 할 때 생긴 Black BackGround를 제거한다.
-	/*
-	if (m_ChangeBlackBackGround)
-	{
-		m_ChangeBlackBackGround->Destroy();
-		// m_ChangeBlackBackGround = nullptr;
-	}
-	*/
+	// 다시 중력 적용
+	m_PhysicsSimulate = true;
 
 	ChangePlayerIdleAnimation();
 
@@ -3172,6 +3168,13 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 	PrepareSpecialAction(m_ChangeTimeMax);
 
 	m_Scene->GetResource()->SoundPlay("PlayerChange");
+
+	// 원인은 모르지만, UltimateAttack 으로 맨 처음 Animation을 Change 한 이후에
+	// m_IsGround가 false로 세팅되고, 계속 내려가게 된다.
+	// 이를 방지하기 위해, UltimateAttack Animation 변환시
+	// m_PhysicsSimulate 를 false 로 하고
+	// 여기서 다시 원상태로 세팅
+	m_PhysicsSimulate = true;
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -3489,6 +3492,7 @@ void CPlayer2D::MakePlayerCloneEffect()
 
 	KirbyClone->SetWorldScale(m_KirbyState->GetWorldScale());
 
+	// KirbyClone->GetAnimationInstance()->SetCurrentAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
 	KirbyClone->GetAnimationInstance()->ChangeAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
 
 	KirbyClone->GetAnimationInstance()->GetCurrentAnimation()->SetCurrentFrameTime(CurrentFrameTime);
