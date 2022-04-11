@@ -263,6 +263,11 @@ void CBossPenguin::AIDeathSpecific(float DeltaTime)
 	m_SceneChangeLimitTime = 5.f;
 }
 
+void CBossPenguin::AIHitSpecific(float DeltaTime)
+{
+	m_MonsterMoveVelocity = m_InitMoveVelocity;
+}
+
 void CBossPenguin::ChangeFarAttackAnimation()
 {
 	if (m_ObjectMoveDir.x < 0.f)

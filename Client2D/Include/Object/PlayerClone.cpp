@@ -38,6 +38,7 @@ void CPlayerClone::SetKirbyState(Ability_State State)
 	break;
 	}
 
+	// 너무 앞쪽에 안그려지게 세팅할 것이다...?
 	m_KirbyState->SetLayerName("Tile");
 
 	m_KirbyState->SetTransparency(true);
