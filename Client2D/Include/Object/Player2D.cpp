@@ -483,6 +483,8 @@ void CPlayer2D::InitBeamKirbyObjectPool()
 {
 	const std::vector<CSharedPtr<CKirbyAttackEffect>> vecAttackEffects = m_mapObjectPool[m_SpecialAbilityState]->GetVecKirbyAttackEffects();
 
+	m_mapObjectPool[m_SpecialAbilityState]->ExtendPool(60);
+
 	size_t TotSize = vecAttackEffects.size();
 
 	for (size_t i = 0; i < TotSize; ++i)

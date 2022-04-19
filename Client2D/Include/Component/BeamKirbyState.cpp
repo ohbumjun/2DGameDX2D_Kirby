@@ -232,7 +232,7 @@ void CBeamKirbyState::UltimateAttack()
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
 	m_Player->GetObjectPool(Ability_State::Beam)->SetObjectsPoolEnable(true);
-	m_Player->GetObjectPool(Ability_State::Beam)->SetInitObjectAlive(40);
+	m_Player->GetObjectPool(Ability_State::Beam)->SetInitObjectAlive(10);
 
 	/*
 	// ПоТЪ АјАн

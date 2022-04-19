@@ -168,17 +168,20 @@ void CKirbyAttackObjectPool::SetObjectTrait(KirbyAttackEffect_Type Type, int Ali
 	// Beam Kirby
 	if (Type == KirbyAttackEffect_Type::BeamSpecial)
 	{
-		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(1000.f);
+		const float NumFrom0To1First = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+		const float NumFrom0To1Sec = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 
-		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+		Vector3 CameraWorldPos = m_Scene->GetCameraManager()->GetCurrentCamera()->GetWorldPos();
 
 		m_vecAttackEffects[AliveIndex]->SetWorldPos(
-			m_Scene->GetPlayerObject()->GetWorldPos().x - 400.f + (800.f * NumFrom0To1),
-			m_Scene->GetPlayerObject()->GetWorldPos().y - 200.f + (900.f * NumFrom0To1),
-			m_Scene->GetPlayerObject()->GetWorldPos().z);
+			CameraWorldPos.x + (600.f * NumFrom0To1First) + (600.f * NumFrom0To1Sec),
+			CameraWorldPos.y + (500.f * NumFrom0To1First) + (600.f * NumFrom0To1Sec),
+			0.f);
 
 		if (m_vecAttackEffects[AliveIndex]->GetWorldPos().x <= 0.f)
-			m_vecAttackEffects[AliveIndex]->SetWorldPos(600.f * NumFrom0To1, m_vecAttackEffects[AliveIndex]->GetWorldPos().y, 0.f);
+			m_vecAttackEffects[AliveIndex]->SetWorldPos(600.f * NumFrom0To1First, m_vecAttackEffects[AliveIndex]->GetWorldPos().y, 0.f);
+
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(200.f + 800.f * NumFrom0To1First);
 
 		m_vecAttackEffects[AliveIndex]->SetLeftAttackDir(-1.f);
 		m_vecAttackEffects[AliveIndex]->SetAttackDirX(0.f);
@@ -192,15 +195,15 @@ void CKirbyAttackObjectPool::SetObjectTrait(KirbyAttackEffect_Type Type, int Ali
 	// Fight Kirby
 	else
 	{
-		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+		const float NumFrom0To1First = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 
-		const float NumFrom0To2 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+		const float NumFrom0To1Sec = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 
 		Vector3 CameraWorldPos =  m_Scene->GetCameraManager()->GetCurrentCamera()->GetWorldPos();
 
 		m_vecAttackEffects[AliveIndex]->SetWorldPos(
-			CameraWorldPos.x  + (NumFrom0To1 * 1200.f),
-			CameraWorldPos.y + 300.f + (NumFrom0To2 * 500.f) + ( NumFrom0To1 * 500.f),
+			CameraWorldPos.x  + (NumFrom0To1First * 1200.f),
+			CameraWorldPos.y + 300.f + (NumFrom0To1Sec * 500.f) + (NumFrom0To1First * 500.f),
 			0.f);
 		/*
 		m_vecAttackEffects[AliveIndex]->SetWorldPos(
@@ -211,9 +214,9 @@ void CKirbyAttackObjectPool::SetObjectTrait(KirbyAttackEffect_Type Type, int Ali
 
 		Vector3 WorldPos = m_vecAttackEffects[AliveIndex]->GetWorldPos();
 
-		m_vecAttackEffects[AliveIndex]->SetAttackObjectSpeed(1200 + (600.f * NumFrom0To1));
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectSpeed(1200 + (600.f * NumFrom0To1First));
 
-		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(200.f + (900.f * NumFrom0To1));
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(200.f + (900.f * NumFrom0To1Sec));
 
 		m_vecAttackEffects[AliveIndex]->SetBottomCollisionEnable(false);
 
@@ -236,7 +239,7 @@ bool CKirbyAttackObjectPool::Init()
 		return false;
 
 	// 처음에는 200개의 Kirby Attack Object 들을 만들어낸다.
-	ExtendPool(100);
+	ExtendPool(30);
 		
 	return true;
 }
