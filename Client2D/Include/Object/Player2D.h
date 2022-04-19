@@ -39,6 +39,10 @@ private:
 	float m_WDistance;
 	float m_Opacity;
 private :
+	// Object Pool
+	std::unordered_map<Ability_State, CSharedPtr<class CKirbyAttackObjectPool>> m_mapObjectPool;
+
+private :
 	// 전체 움직임 속도 ( 레버 + 대쉬 )
 	float m_MoveVelocity;
 	float m_MoveVelocityMax;
@@ -161,6 +165,10 @@ private :
 	Ability_State m_SpecialAbilityState;
 
 public :
+	CKirbyAttackObjectPool* GetObjectPool(Ability_State State) 
+{
+		return m_mapObjectPool[State];
+}
 	bool IsAttackReady() const
 {
 		return m_AttackReady;
@@ -240,6 +248,10 @@ public:
 	virtual void       Update(float DeltaTime) override;
 	virtual void       PostUpdate(float DeltaTime) override;
 	virtual CPlayer2D* Clone() override;
+private :
+	// Object Pool
+	void InitObjectPoolSetting();
+	void InitBeamKirbyObjectPool();
 private :
 	// Resolution
 	void CheckWithinBossWorldResolution();

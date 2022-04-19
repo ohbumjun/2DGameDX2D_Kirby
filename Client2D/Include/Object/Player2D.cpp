@@ -1,5 +1,6 @@
 ﻿// Engine
 #include "Input.h"
+#include "../ClientManager.h"
 // UI
 #include "../UI/SimpleHUD.h"
 #include "../UI/EmptyObjectHUD.h"
@@ -36,6 +37,7 @@
 #include "../Object/Monster.h"
 #include "EffectWaterAttack.h"
 #include "EffectWaterBlast.h"
+#include "KirbyAttackObjectPool.h"
 // KirbyState
 #include "../Component/FightKirbyState.h"
 #include "../Component/BeamKirbyState.h"
@@ -458,6 +460,38 @@ void CPlayer2D::SetCameraFollowMaxTime(float Time)
 void CPlayer2D::SetAttackEnable(bool Enable)
 {
 	m_IsAttacking = Enable;
+}
+
+void CPlayer2D::InitObjectPoolSetting()
+{
+	if (m_SpecialAbilityState == Ability_State::Beam)
+	{
+		InitBeamKirbyObjectPool();
+
+		m_mapObjectPool[Ability_State::Beam]->SetPoolInitializeFunction(this, &CPlayer2D::InitBeamKirbyObjectPool);
+	}
+
+	if (m_SpecialAbilityState == Ability_State::Fight)
+	{
+		
+	}
+}
+
+void CPlayer2D::InitBeamKirbyObjectPool()
+{
+	const std::vector<CSharedPtr<CKirbyAttackEffect>> vecAttackEffects = m_mapObjectPool[m_SpecialAbilityState]->GetVecKirbyAttackEffects();
+
+	size_t TotSize = vecAttackEffects.size();
+
+	for (size_t i = 0; i < TotSize; ++i)
+	{
+		CKirbyAttackEffect* AttackEffect = vecAttackEffects[i];
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+		AttackEffect->SetPoolOwner(m_mapObjectPool[m_SpecialAbilityState]);
+		AttackEffect->SetKirbyOwner(m_KirbyState);
+		AttackEffect->SetAttackDamage(m_KirbyState->GetExtraAttackAbility() + m_AttackAbility * 4);
+	}
 }
 
 void CPlayer2D::CheckWithinBossWorldResolution()
@@ -3094,6 +3128,17 @@ void CPlayer2D::SpecialChange()
 	}
 
 	m_IsSpecialStateChanged = true;
+
+	// Object Pool 만들기
+	auto iter = m_mapObjectPool.find(m_SpecialAbilityState);
+
+	if (iter == m_mapObjectPool.end())
+	{
+		CKirbyAttackObjectPool* ObjectPool = m_Scene->CreateGameObject<CKirbyAttackObjectPool>("AttackObjectPool");
+		m_mapObjectPool.insert(std::make_pair(m_SpecialAbilityState, ObjectPool));
+	}
+
+	InitObjectPoolSetting();
 
 	// Set UI Info
 	SetUIAccordingToKirbyState();

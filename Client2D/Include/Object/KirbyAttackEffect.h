@@ -10,11 +10,14 @@ class CKirbyAttackEffect :
     friend class CBeamKirbyState;
     friend class CBombKirbyState;
     friend class CSwordKirbyState;
+    friend class CPlayer2D;
+    friend class CKirbyAttackObjectPool;
 public:
     CKirbyAttackEffect();
     CKirbyAttackEffect(const CKirbyAttackEffect& Attack);
     virtual ~CKirbyAttackEffect() override;
 protected:
+    bool m_BelongToObjectPool;
     bool m_DestroyWhenCollide;
     float m_AttackDistLimit;
     float m_AttackDistLimitMax;
@@ -22,7 +25,8 @@ protected:
     KirbyAttackEffect_Type m_AttackType;
     class CKirbyState* m_KirbyOwner;
     float m_AttackDamage;
-    CSharedPtr<class CCameraComponent> m_Camera; //
+    CSharedPtr<class CCameraComponent> m_Camera;
+    class CKirbyAttackObjectPool* m_PoolOwner;
 private :
     bool m_CollideShakeEffect;
 protected:
@@ -62,6 +66,10 @@ protected:
     void SetKirbyOwner(class CKirbyState* Owner)
     {
         m_KirbyOwner = Owner;
+    }
+    void SetPoolOwner(class CKirbyAttackObjectPool* Pool)
+    {
+        m_PoolOwner = Pool;
     }
     void SetAttackType(KirbyAttackEffect_Type Type);
     void ApplyCameraMove();

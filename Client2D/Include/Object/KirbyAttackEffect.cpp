@@ -12,10 +12,12 @@
 #include "FireAttackBackEffect.h"
 #include "Component/ColliderCircle.h"
 #include "UI/UIDamageFont.h"
+#include "KirbyAttackObjectPool.h"
 
 CKirbyAttackEffect::CKirbyAttackEffect() :
 	m_AttackDistLimit(0.f),
 	m_DestroyWhenCollide(true),
+	m_BelongToObjectPool(false),
 	m_CollideShakeEffect(false),
 	m_AttackDistLimitMax(500.f),
 	m_AttackObjectSpeed(500.f)
@@ -444,11 +446,22 @@ void CKirbyAttackEffect::Update(float DeltaTime)
 	}
 	if (m_AttackDistLimit >= m_AttackDistLimitMax)
 	{
+		m_AttackDistLimit = 0.f;
+
 		ApplyBombFallAttackEnd();
 
 		MakeBombExplodeEffect();
 
-		Destroy();
+		// Object Pool 에 해당하지 않는 녀석만 Destroy 시킨다
+		if (!m_BelongToObjectPool)
+		{
+			Destroy();
+		}
+		else if (m_PoolOwner)
+		{
+			m_PoolOwner->AddAliveObject();
+			Enable(false);
+		}
 	}
 }
 

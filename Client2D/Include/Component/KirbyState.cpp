@@ -1,5 +1,7 @@
 #include "KirbyState.h"
 
+#include <Scene/Scene.h>
+
 CKirbyState::CKirbyState() :
 	m_ExtraAttackAbility(0.f),
 	m_CloneEffectToggleMaxTime(0.1f)
@@ -9,7 +11,8 @@ CKirbyState::CKirbyState(const CKirbyState& Kirby) : CSpriteComponent(Kirby)
 {}
 
 CKirbyState::~CKirbyState()
-{}
+{
+}
 
 void CKirbyState::Start()
 {
@@ -20,7 +23,6 @@ bool CKirbyState::Init()
 {
 	if (!CSpriteComponent::Init())
 		return false;
-
 	return true;
 }
 

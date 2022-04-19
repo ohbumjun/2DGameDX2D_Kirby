@@ -1,26 +1,51 @@
 #pragma once
 #include "GameInfo.h"
 #include "KirbyAttackEffect.h"
+#include <queue>
 
 class CKirbyAttackObjectPool : public CGameObject
 {
-	friend class CFightKirbyState;
+	friend class CKirbyState;
 	friend class CBeamKirbyState;
+	friend class CFightKirbyState;
+	friend class CPlayer2D;
+	friend class CScene;
+	friend class CKirbyAttackEffect;
 private:
 	CKirbyAttackObjectPool();
 	~CKirbyAttackObjectPool();
 private :
-	std::vector<CKirbyAttackEffect> m_vecAttackEffects;
-	bool m_IsPoolBeingUsed;
-	int m_UseIndex;
-private :
-	void SetPoolBeingUsed(bool Use)
+	std::vector<CSharedPtr<CKirbyAttackEffect>> m_vecAttackEffects;
+	std::queue<int> m_vecReadyIndex;
+	bool m_ExecuteObjectPool;
+	int   m_UsedObjectsNum;
+	std::function<void()> m_FuncInitializePool;
+public :
+	const std::vector<CSharedPtr<CKirbyAttackEffect>>& GetVecKirbyAttackEffects () const
 {
-		m_IsPoolBeingUsed = Use;
+		return m_vecAttackEffects;
 }
-	void SetAttackType(KirbyAttackEffect_Type Type);
+public :
+	void SetObjectsPoolEnable(bool Enable)
+{
+		m_ExecuteObjectPool = Enable;
+}
+private :
+	CKirbyAttackEffect* GetPoolObject();
+	void                ExtendPool(int NewSize);
+	void				ReFillObjectPool();
+	void                SetAttackType(KirbyAttackEffect_Type Type, int EnableSize);
+	void                SetAttackType(KirbyAttackEffect_Type Type);
+	void				  SetInitObjectAlive(int ObjectSize);
+	void				  AddAliveObject();
 public :
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;
+public :
+	template<typename T>
+	void SetPoolInitializeFunction(T* Obj, void(T::*Func)())
+{
+		m_FuncInitializePool = std::bind(Func, Obj);
+}
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Component\SpriteComponent.h"
+#include "../Object/KirbyAttackObjectPool.h"
 
 // State 패턴 의 Interface 에 해당하는 추상 클래스 
 class CKirbyState :

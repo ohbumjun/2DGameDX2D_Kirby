@@ -231,6 +231,10 @@ void CBeamKirbyState::UltimateAttack()
 	// 왼쪽을 보고 있다면
 	const Vector3& PlayerMoveDir = m_Player->GetObjectMoveDir();
 
+	m_Player->GetObjectPool(Ability_State::Beam)->SetObjectsPoolEnable(true);
+	m_Player->GetObjectPool(Ability_State::Beam)->SetInitObjectAlive(40);
+
+	/*
 	// 왼쪽 공격
 	if (PlayerMoveDir.x < 0.f)
 	{
@@ -312,7 +316,7 @@ void CBeamKirbyState::UltimateAttack()
 			AttackEffect->SetAttackDamage(m_ExtraAttackAbility + m_Player->GetAttackAbility() * 4);
 		}
 	}
-
+	*/
 
 	m_Player->SetAttackEnable(false);
 
