@@ -1,4 +1,7 @@
 #include "KirbyAttackObjectPool.h"
+
+#include <Scene/CameraManager.h>
+
 #include "Scene/Scene.h"
 #include "Player2D.h"
 #include "../ClientManager.h"
@@ -47,10 +50,25 @@ void CKirbyAttackObjectPool::ExtendPool(int NewSize)
 		CKirbyAttackEffect* AttackEffect = m_Scene->CreateGameObject<CKirbyAttackEffect>("Attack1");
 		AttackEffect->Enable(false);
 		AttackEffect->m_BelongToObjectPool = true;
+		AttackEffect->SetPoolOwner(this);
 		m_vecAttackEffects[i] = AttackEffect;
 
+		switch(m_PoolAbilityState)
+		{
+		case Ability_State::Beam :
+			{
+			AttackEffect->SetAttackType(KirbyAttackEffect_Type::BeamSpecial);
+			}
+			break;
+		case Ability_State::Fight:
+			{
+				AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
+			}
+			break;
+		}
+
 		// 사용 가능한 Index 목록들을 넣어준다.
-		m_vecReadyIndex.push(i);
+		m_vecReadyIndex.push((int)i);
 	}
 
 }
@@ -63,7 +81,7 @@ void CKirbyAttackObjectPool::ReFillObjectPool()
 	for (size_t i = 0; i < CurrentSize; ++i)
 	{
 		// 사용 가능한 Index 목록들을 넣어준다.
-		m_vecReadyIndex.push(i);
+		m_vecReadyIndex.push((int)i);
 	}
 }
 
@@ -101,6 +119,11 @@ void CKirbyAttackObjectPool::SetInitObjectAlive(int ObjectSize)
 			m_FuncInitializePool();
 	}
 
+	if (m_vecReadyIndex.size() <= ObjectSize)
+	{
+		ExtendPool(ObjectSize);
+	}
+
 	m_UsedObjectsNum = ObjectSize;
 
 	for (int i = 0; i < ObjectSize; ++i)
@@ -112,8 +135,9 @@ void CKirbyAttackObjectPool::SetInitObjectAlive(int ObjectSize)
 		m_vecAttackEffects[AliveIndex]->Enable(true);
 
 		SetObjectTrait(m_vecAttackEffects[AliveIndex]->GetAttackType(), AliveIndex);
-	}
+	};
 }
+
 
 void CKirbyAttackObjectPool::AddAliveObject()
 {
@@ -170,13 +194,26 @@ void CKirbyAttackObjectPool::SetObjectTrait(KirbyAttackEffect_Type Type, int Ali
 	{
 		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 
-		m_vecAttackEffects[AliveIndex]->SetWorldPos(m_Scene->GetPlayerObject()->GetWorldPos().x - 600.f + (NumFrom0To1 * 1200.f),
-			m_Scene->GetPlayerObject()->GetWorldPos().y - 300.f + (1000.f * NumFrom0To1),
+		const float NumFrom0To2 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+
+		Vector3 CameraWorldPos =  m_Scene->GetCameraManager()->GetCurrentCamera()->GetWorldPos();
+
+		m_vecAttackEffects[AliveIndex]->SetWorldPos(
+			CameraWorldPos.x  + (NumFrom0To1 * 1200.f),
+			CameraWorldPos.y + 300.f + (NumFrom0To2 * 500.f) + ( NumFrom0To1 * 500.f),
 			0.f);
+		/*
+		m_vecAttackEffects[AliveIndex]->SetWorldPos(
+			(m_Scene->GetPlayerObject()->GetWorldPos().x - 600.f) + (NumFrom0To1 * 1200.f),
+			(m_Scene->GetPlayerObject()->GetWorldPos().y - 300.f) + (1000g.f * NumFrom0To1),
+			0.f);
+			*/
 
-		m_vecAttackEffects[AliveIndex]->SetAttackObjectSpeed(1800.f);
+		Vector3 WorldPos = m_vecAttackEffects[AliveIndex]->GetWorldPos();
 
-		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(1000.f);
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectSpeed(1200 + (600.f * NumFrom0To1));
+
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(200.f + (900.f * NumFrom0To1));
 
 		m_vecAttackEffects[AliveIndex]->SetBottomCollisionEnable(false);
 

@@ -21,6 +21,7 @@ private :
 	int   m_UsedObjectsNum;
 	std::function<void()> m_FuncInitializePool;
 	class CPlayer2D* m_PlayerOwner;
+	Ability_State m_PoolAbilityState;
 public :
 	const std::vector<CSharedPtr<CKirbyAttackEffect>>& GetVecKirbyAttackEffects () const
 {
@@ -30,6 +31,10 @@ public :
 	void SetObjectsPoolEnable(bool Enable)
 {
 		m_ExecuteObjectPool = Enable;
+}
+	void SetPoolAbilityState(Ability_State State)
+{
+		m_PoolAbilityState = State;
 }
 private :
 	CKirbyAttackEffect* GetPoolObject();

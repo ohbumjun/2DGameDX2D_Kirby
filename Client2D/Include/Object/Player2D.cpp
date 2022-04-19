@@ -500,13 +500,15 @@ void CPlayer2D::InitFightKirbyObjectPool()
 {
 	const std::vector<CSharedPtr<CKirbyAttackEffect>> vecAttackEffects = m_mapObjectPool[m_SpecialAbilityState]->GetVecKirbyAttackEffects();
 
-	m_mapObjectPool[m_SpecialAbilityState]->ExtendPool(200);
+	m_mapObjectPool[m_SpecialAbilityState]->ExtendPool(100);
 
 	size_t TotSize = vecAttackEffects.size();
 
 	for (size_t i = 0; i < TotSize; ++i)
 	{
 		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+
+		const float NumFrom0To2 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
 
 		CKirbyAttackEffect* AttackEffect = vecAttackEffects[i];
 
@@ -518,9 +520,14 @@ void CPlayer2D::InitFightKirbyObjectPool()
 
 		AttackEffect->SetAttackDamage(m_KirbyState->GetExtraAttackAbility() + m_AttackAbility * 4);
 
-		AttackEffect->SetWorldPos(GetWorldPos().x - 500.f + (NumFrom0To1 * 1000.f), GetWorldPos().y - 300.f + (1000.f * NumFrom0To1), 0.f);
+		Vector3 CameraWorldPos = m_Scene->GetCameraManager()->GetCurrentCamera()->GetWorldPos();
 
-		AttackEffect->SetAttackObjectSpeed(500.f);
+		AttackEffect->SetWorldPos(
+			CameraWorldPos.x + (NumFrom0To1 * 1200.f),
+			CameraWorldPos.y + (300.f * NumFrom0To2) + (500.f * NumFrom0To1),
+			0.f);
+
+		AttackEffect->SetAttackObjectSpeed(1800 + (1000.f * NumFrom0To1));
 
 		AttackEffect->SetAttackObjectMaxLimit(1000.f);
 
@@ -3181,6 +3188,7 @@ void CPlayer2D::SpecialChange()
 	{
 		CKirbyAttackObjectPool* ObjectPool = m_Scene->CreateGameObject<CKirbyAttackObjectPool>("AttackObjectPool");
 		ObjectPool->m_PlayerOwner = this;
+		ObjectPool->SetPoolAbilityState(State);
 		m_mapObjectPool.insert(std::make_pair(m_SpecialAbilityState, ObjectPool));
 	}
 
