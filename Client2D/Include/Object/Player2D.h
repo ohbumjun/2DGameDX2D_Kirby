@@ -252,6 +252,7 @@ private :
 	// Object Pool
 	void InitObjectPoolSetting();
 	void InitBeamKirbyObjectPool();
+	void InitFightKirbyObjectPool();
 private :
 	// Resolution
 	void CheckWithinBossWorldResolution();

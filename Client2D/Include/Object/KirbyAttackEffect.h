@@ -30,6 +30,10 @@ protected:
 private :
     bool m_CollideShakeEffect;
 protected:
+    KirbyAttackEffect_Type GetAttackType() const
+    {
+        return m_AttackType;
+    }
     CCameraComponent* GetAttackCamera() const
     {
         return m_Camera;

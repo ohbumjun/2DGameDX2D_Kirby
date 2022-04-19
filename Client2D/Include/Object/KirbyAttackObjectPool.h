@@ -20,6 +20,7 @@ private :
 	bool m_ExecuteObjectPool;
 	int   m_UsedObjectsNum;
 	std::function<void()> m_FuncInitializePool;
+	class CPlayer2D* m_PlayerOwner;
 public :
 	const std::vector<CSharedPtr<CKirbyAttackEffect>>& GetVecKirbyAttackEffects () const
 {
@@ -33,11 +34,12 @@ public :
 private :
 	CKirbyAttackEffect* GetPoolObject();
 	void                ExtendPool(int NewSize);
-	void				ReFillObjectPool();
+	void				  ReFillObjectPool();
 	void                SetAttackType(KirbyAttackEffect_Type Type, int EnableSize);
 	void                SetAttackType(KirbyAttackEffect_Type Type);
 	void				  SetInitObjectAlive(int ObjectSize);
 	void				  AddAliveObject();
+	void				  SetObjectTrait(KirbyAttackEffect_Type Type, int AliveIndex);
 public :
 	virtual bool Init() override;
 	virtual void Update(float DeltaTime) override;

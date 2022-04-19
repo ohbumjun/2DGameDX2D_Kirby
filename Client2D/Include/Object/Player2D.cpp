@@ -473,7 +473,9 @@ void CPlayer2D::InitObjectPoolSetting()
 
 	if (m_SpecialAbilityState == Ability_State::Fight)
 	{
-		
+		InitFightKirbyObjectPool();
+
+		m_mapObjectPool[Ability_State::Fight]->SetPoolInitializeFunction(this, &CPlayer2D::InitFightKirbyObjectPool);
 	}
 }
 
@@ -491,6 +493,49 @@ void CPlayer2D::InitBeamKirbyObjectPool()
 		AttackEffect->SetPoolOwner(m_mapObjectPool[m_SpecialAbilityState]);
 		AttackEffect->SetKirbyOwner(m_KirbyState);
 		AttackEffect->SetAttackDamage(m_KirbyState->GetExtraAttackAbility() + m_AttackAbility * 4);
+	}
+}
+
+void CPlayer2D::InitFightKirbyObjectPool()
+{
+	const std::vector<CSharedPtr<CKirbyAttackEffect>> vecAttackEffects = m_mapObjectPool[m_SpecialAbilityState]->GetVecKirbyAttackEffects();
+
+	m_mapObjectPool[m_SpecialAbilityState]->ExtendPool(200);
+
+	size_t TotSize = vecAttackEffects.size();
+
+	for (size_t i = 0; i < TotSize; ++i)
+	{
+		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+
+		CKirbyAttackEffect* AttackEffect = vecAttackEffects[i];
+
+		AttackEffect->SetAttackType(KirbyAttackEffect_Type::FightFall);
+
+		AttackEffect->SetPoolOwner(m_mapObjectPool[m_SpecialAbilityState]);
+
+		AttackEffect->SetKirbyOwner(m_KirbyState);
+
+		AttackEffect->SetAttackDamage(m_KirbyState->GetExtraAttackAbility() + m_AttackAbility * 4);
+
+		AttackEffect->SetWorldPos(GetWorldPos().x - 500.f + (NumFrom0To1 * 1000.f), GetWorldPos().y - 300.f + (1000.f * NumFrom0To1), 0.f);
+
+		AttackEffect->SetAttackObjectSpeed(500.f);
+
+		AttackEffect->SetAttackObjectMaxLimit(1000.f);
+
+		AttackEffect->SetBottomCollisionEnable(false);
+
+		AttackEffect->SetSideCollisionEnable(false);
+
+		// 왼쪽을 보고 있었다면
+		if (GetObjectMoveDir().x < 0.f)
+			AttackEffect->SetLeftAttackDir(-1.f);
+		// 오른쪽으로 보고 있었다면
+		else
+			AttackEffect->SetRightAttackDir(-1.f);
+
+		AttackEffect->SetAttackDirX(0.f);
 	}
 }
 
@@ -3135,6 +3180,7 @@ void CPlayer2D::SpecialChange()
 	if (iter == m_mapObjectPool.end())
 	{
 		CKirbyAttackObjectPool* ObjectPool = m_Scene->CreateGameObject<CKirbyAttackObjectPool>("AttackObjectPool");
+		ObjectPool->m_PlayerOwner = this;
 		m_mapObjectPool.insert(std::make_pair(m_SpecialAbilityState, ObjectPool));
 	}
 

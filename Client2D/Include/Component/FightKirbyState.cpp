@@ -305,6 +305,10 @@ void CFightKirbyState::SpecialAttack()
 
 void CFightKirbyState::UltimateAttack()
 {
+	m_Player->GetObjectPool(Ability_State::Fight)->SetObjectsPoolEnable(true);
+	m_Player->GetObjectPool(Ability_State::Fight)->SetInitObjectAlive(40);
+
+	/*
 	float XLeftEnd = -1.f, XRightEnd = -1.f;
 
 	float XDiffStep = -1.f, YDiffStep = -1.f;
@@ -368,6 +372,7 @@ void CFightKirbyState::UltimateAttack()
 			AttackEffect->SetAttackDirX(0.f);
 		}
 	}
+	*/
 }
 
 void CFightKirbyState::UpdateAttackGoUpState(float DeltaTime)

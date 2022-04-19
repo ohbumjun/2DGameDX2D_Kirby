@@ -1,6 +1,8 @@
 #include "KirbyAttackObjectPool.h"
 #include "Scene/Scene.h"
+#include "Player2D.h"
 #include "../ClientManager.h"
+#include "Engine.h"
 
 CKirbyAttackObjectPool::CKirbyAttackObjectPool()  :
 	m_ExecuteObjectPool(false),
@@ -32,6 +34,9 @@ void CKirbyAttackObjectPool::ExtendPool(int NewSize)
 {
 	// 현재 기존의 크기 
 	size_t  CurrentSize = m_vecAttackEffects.size();
+
+	if (CurrentSize >= NewSize)
+		return;
 
 	// 사용가능한 Object 크기 확장
 	m_vecAttackEffects.resize(NewSize);
@@ -106,22 +111,7 @@ void CKirbyAttackObjectPool::SetInitObjectAlive(int ObjectSize)
 
 		m_vecAttackEffects[AliveIndex]->Enable(true);
 
-		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(1000.f);
-
-		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
-
-		m_vecAttackEffects[AliveIndex]->SetWorldPos(
-			m_Scene->GetPlayerObject()->GetWorldPos().x - 300.f + (600.f * NumFrom0To1),
-			m_Scene->GetPlayerObject()->GetWorldPos().y + 300.f + (500 * NumFrom0To1),
-			m_Scene->GetPlayerObject()->GetWorldPos().z);
-
-		if (m_vecAttackEffects[AliveIndex]->GetWorldPos().x <= 0.f)
-			m_vecAttackEffects[AliveIndex]->SetWorldPos(600.f * NumFrom0To1, m_vecAttackEffects[AliveIndex]->GetWorldPos().y, 0.f);
-
-		m_vecAttackEffects[AliveIndex]->SetLeftAttackDir(-1.f);
-		m_vecAttackEffects[AliveIndex]->SetAttackDirX(0.f);
-		m_vecAttackEffects[AliveIndex]->AddRelativeRotationZ(90.f);
-
+		SetObjectTrait(m_vecAttackEffects[AliveIndex]->GetAttackType(), AliveIndex);
 	}
 }
 
@@ -143,24 +133,64 @@ void CKirbyAttackObjectPool::AddAliveObject()
 	// Attack Effect 특성 세팅하기
 	m_vecAttackEffects[AliveIndex]->Enable(true);
 
-	const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
-
-	m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(1000.f);
-	// m_vecAttackEffects[AliveIndex]->SetWorldPos(m_Scene->GetPlayerObject()->GetWorldPos());
-	m_vecAttackEffects[AliveIndex]->SetWorldPos(
-		m_Scene->GetPlayerObject()->GetWorldPos().x - 300.f + (600.f * NumFrom0To1),
-		m_Scene->GetPlayerObject()->GetWorldPos().y + 300.f + (500 * NumFrom0To1),
-		m_Scene->GetPlayerObject()->GetWorldPos().z);
-
-	if (m_vecAttackEffects[AliveIndex]->GetWorldPos().x <= 0.f)
-		m_vecAttackEffects[AliveIndex]->SetWorldPos(600.f * NumFrom0To1, m_vecAttackEffects[AliveIndex]->GetWorldPos().y, 0.f);
-
-	m_vecAttackEffects[AliveIndex]->SetLeftAttackDir(-1.f);
-	m_vecAttackEffects[AliveIndex]->SetAttackDirX(0.f);
-	m_vecAttackEffects[AliveIndex]->AddRelativeRotationZ(90.f);
+	SetObjectTrait(m_vecAttackEffects[AliveIndex]->GetAttackType(), AliveIndex);
 
 	// 사용 개수 증가
 	m_UsedObjectsNum += 1;
+}
+
+void CKirbyAttackObjectPool::SetObjectTrait(KirbyAttackEffect_Type Type, int AliveIndex)
+{
+	// Beam Kirby
+	if (Type == KirbyAttackEffect_Type::BeamSpecial)
+	{
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(1000.f);
+
+		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+
+		m_vecAttackEffects[AliveIndex]->SetWorldPos(
+			m_Scene->GetPlayerObject()->GetWorldPos().x - 400.f + (800.f * NumFrom0To1),
+			m_Scene->GetPlayerObject()->GetWorldPos().y - 200.f + (900.f * NumFrom0To1),
+			m_Scene->GetPlayerObject()->GetWorldPos().z);
+
+		if (m_vecAttackEffects[AliveIndex]->GetWorldPos().x <= 0.f)
+			m_vecAttackEffects[AliveIndex]->SetWorldPos(600.f * NumFrom0To1, m_vecAttackEffects[AliveIndex]->GetWorldPos().y, 0.f);
+
+		m_vecAttackEffects[AliveIndex]->SetLeftAttackDir(-1.f);
+		m_vecAttackEffects[AliveIndex]->SetAttackDirX(0.f);
+
+		if (m_PlayerOwner->GetObjectMoveDir().x < 0.f)
+			m_vecAttackEffects[AliveIndex]->AddRelativeRotationZ(90.f);
+		else
+			m_vecAttackEffects[AliveIndex]->AddRelativeRotationZ(-90.f);
+
+	}
+	// Fight Kirby
+	else
+	{
+		const float NumFrom0To1 = CClientManager::GetInst()->GenerateRandomNumberFrom0To1();
+
+		m_vecAttackEffects[AliveIndex]->SetWorldPos(m_Scene->GetPlayerObject()->GetWorldPos().x - 600.f + (NumFrom0To1 * 1200.f),
+			m_Scene->GetPlayerObject()->GetWorldPos().y - 300.f + (1000.f * NumFrom0To1),
+			0.f);
+
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectSpeed(1800.f);
+
+		m_vecAttackEffects[AliveIndex]->SetAttackObjectMaxLimit(1000.f);
+
+		m_vecAttackEffects[AliveIndex]->SetBottomCollisionEnable(false);
+
+		m_vecAttackEffects[AliveIndex]->SetSideCollisionEnable(false);
+
+		// 왼쪽을 보고 있었다면
+		if (m_PlayerOwner->GetObjectMoveDir().x < 0.f)
+			m_vecAttackEffects[AliveIndex]->SetLeftAttackDir(-1.f);
+		// 오른쪽으로 보고 있었다면
+		else
+			m_vecAttackEffects[AliveIndex]->SetRightAttackDir(-1.f);
+
+		m_vecAttackEffects[AliveIndex]->SetAttackDirX(0.f);
+	}
 }
 
 bool CKirbyAttackObjectPool::Init()
@@ -169,7 +199,7 @@ bool CKirbyAttackObjectPool::Init()
 		return false;
 
 	// 처음에는 200개의 Kirby Attack Object 들을 만들어낸다.
-	ExtendPool(200);
+	ExtendPool(100);
 		
 	return true;
 }
