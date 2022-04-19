@@ -122,7 +122,6 @@ bool CCollision::CollisionBox2DToBox2D(CollisionResult& SrcResult,
 	r1 = Src.Length.x;
 	r2 = abs(Dest.Axis[0].Dot(Axis) * Dest.Length.x) +
 		abs(Dest.Axis[1].Dot(Axis) * Dest.Length.y);
-
 	if (CenterProjDist > r1 + r2)
 		return false;
 
@@ -255,6 +254,7 @@ bool CCollision::CollisionBox2DToPixel(CollisionResult& SrcResult, CollisionResu
 			// 현재 인덱스의 픽셀이 상대방 박스 안에 존재하는지를 판단한다.
 			// 현재 픽셀의 월드공간에서의 위치를 구해준다.
 			Vector2	PixelWorldPos = LB + Vector2((float)x, (float)Dest.Height - (float)y);
+
 			if (!CollisionBox2DToPoint(SrcResult, DestResult, Src, PixelWorldPos))
 				continue;
 

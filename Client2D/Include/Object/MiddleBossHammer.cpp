@@ -83,6 +83,9 @@ void CMiddleBossHammer::Start()
 	Vector3 WorldScale = GetWorldScale();
 
 	m_IsAttacking = false;
+
+	m_HP -= 1000.f;
+	m_HPMax -= 1000.f;
 }
 
 bool CMiddleBossHammer::Init()

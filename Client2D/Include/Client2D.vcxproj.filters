@@ -103,6 +103,9 @@
     <Filter Include="02. Object\07. Effect\07. UltimateAttack">
       <UniqueIdentifier>{8832f229-c711-4707-8bcf-4beb0d38454c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\01. Player\02. AttackEffectObjectPool">
+      <UniqueIdentifier>{ec9d9f06-82e2-406f-872f-916b11e482d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -531,6 +534,9 @@
     <ClCompile Include="UI\EndingWidget.cpp">
       <Filter>03. UI</Filter>
     </ClCompile>
+    <ClCompile Include="Object\KirbyAttackObjectPool.cpp">
+      <Filter>02. Object\01. Player\02. AttackEffectObjectPool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -958,6 +964,9 @@
     </ClInclude>
     <ClInclude Include="UI\EndingWidget.h">
       <Filter>03. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\KirbyAttackObjectPool.h">
+      <Filter>02. Object\01. Player\02. AttackEffectObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

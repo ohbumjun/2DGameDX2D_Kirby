@@ -53,8 +53,8 @@ void CBossDyna::Start()
 	m_FarAttackDistance = Stat->m_FarAttackDist;
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 
-	m_HP = 2200.f;
-	m_HPMax = 2200.f;
+	m_HP -= 1500.f;
+	m_HPMax -= 1500.f;
 
 	m_IsGround = false;
 

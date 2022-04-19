@@ -53,14 +53,9 @@ void CBossTree::Start()
 	m_CloseAttackDistance = Stat->m_CloseAttackDist;
 	m_MonsterMoveVelocity = 0.f;
 
-
 	m_IsGround = false;
-
-
 	m_Sprite->GetAnimationInstance()->Play();
-
-	// m_HP = 5000.f;
-
+	
 	// Close Attack
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetPlayTime(1.3f);
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("RightAttackClose")->SetLoop(false);
@@ -90,6 +85,9 @@ void CBossTree::Start()
 	m_ColliderBody->SetInfo(Vector2(0.f, 0.f), m_RootComponent->GetWorldScale().x * 0.7f);
 
 	m_IsAttacking = false;
+
+	m_HP -= 1500.f;
+	m_HPMax -= 1500.f;
 }
 
 bool CBossTree::Init()

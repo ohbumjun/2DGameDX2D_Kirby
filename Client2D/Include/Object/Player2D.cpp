@@ -49,11 +49,11 @@ CPlayer2D::CPlayer2D() :
 	m_MoveVelocity(0.f),
 	m_LeverMoveAccel(1.6f),
 	m_LeverVelocity(0.f),
-	m_LeverMaxMoveVelocity(270.f),
+	m_LeverMaxMoveVelocity(300.f),
 	m_SlideAttackTimeMax(0.8f),
 	m_DashMoveAccel(2.0f),
 	m_DashVelocity(0.f), 
-	m_DashMaxMoveVelocity(170.f),
+	m_DashMaxMoveVelocity(200.f),
 	m_SlideAttackSpeedMax(1000.f),
 	m_AttackTimeLimit(4.f),
 	m_TriangleJumpVelocityRatio(0.8f),
@@ -365,7 +365,7 @@ void CPlayer2D::Start()
 
 	LoadChangeImagesInAdvance();
 
-	m_AttackAbility = 500.f;
+	m_AttackAbility = 150.f;
 }
 
 void CPlayer2D::Update(float DeltaTime)
@@ -3138,6 +3138,8 @@ void CPlayer2D::SpecialChange()
 
 	ChangePlayerIdleAnimation();
 
+	WeakJump();
+
 	m_Scene->GetResource()->SoundPlay("PlayerChange");
 }
 
@@ -3174,7 +3176,7 @@ void CPlayer2D::SpecialChangeStart(float DeltaTime)
 	// 이를 방지하기 위해, UltimateAttack Animation 변환시
 	// m_PhysicsSimulate 를 false 로 하고
 	// 여기서 다시 원상태로 세팅
-	m_PhysicsSimulate = true;
+	m_PhysicsSimulate = false;
 }
 
 void CPlayer2D::SetBasicSettingToChangedState()
@@ -3492,8 +3494,10 @@ void CPlayer2D::MakePlayerCloneEffect()
 
 	KirbyClone->SetWorldScale(m_KirbyState->GetWorldScale());
 
-	// KirbyClone->GetAnimationInstance()->SetCurrentAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
-	KirbyClone->GetAnimationInstance()->ChangeAnimation(m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName());
+	const std::string& CurAnimName = m_KirbyState->GetAnimationInstance()->GetCurrentAnimation()->GetName();
+
+	// KirbyClone->GetAnimationInstance()->SetCurrentAnimation(CurAnimName);
+	KirbyClone->GetAnimationInstance()->ChangeAnimation(CurAnimName);
 
 	KirbyClone->GetAnimationInstance()->GetCurrentAnimation()->SetCurrentFrameTime(CurrentFrameTime);
 

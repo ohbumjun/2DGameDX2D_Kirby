@@ -190,7 +190,7 @@ bool CClientManager::Init(HINSTANCE hInst)
 
 void CClientManager::CreateDefaultSceneMode()
 {
-	// CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
+	CSceneManager::GetInst()->CreateSceneMode<CIntroScene>();
 	// CSceneManager::GetInst()->CreateSceneMode<CEndingScene>();
 	// ----------------------------------------------------------------------------
 
@@ -206,13 +206,13 @@ void CClientManager::CreateDefaultSceneMode()
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen3Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen4Scene>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CGreen5Scene>();
-	CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade1>();
+	// CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade1>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CDynaBlade2>();
 	// CSceneManager::GetInst()->CreateSceneModeEmpty<CBeginningScene>();
 
 	CSceneManager::GetInst()->GetScene()->PrepareResources();
 
-	CSceneManager::GetInst()->GetScene()->Load("Dyna1.scn", SCENE_PATH);
+	// CSceneManager::GetInst()->GetScene()->Load("Dyna1.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Dyna2_FinalBoss.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float2_2.scn", SCENE_PATH);
 	// CSceneManager::GetInst()->GetScene()->Load("Float1.scn", SCENE_PATH);

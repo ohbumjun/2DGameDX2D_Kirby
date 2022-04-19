@@ -422,7 +422,9 @@ void CAnimationSequence2DInstance::ChangeAnimation(const std::string& Name)
 	if (m_CurrentAnimation->m_Name == Name)
 		return;
 
-	if (!FindAnimationSequence2DData(Name))
+	CAnimationSequence2DData* NewAnim = FindAnimationSequence2DData(Name);
+
+	if (!NewAnim)
 		return;
 
 	m_CurrentAnimation->m_Frame = 0;

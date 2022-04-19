@@ -244,6 +244,7 @@
     <ClCompile Include="Object\Item.cpp" />
     <ClCompile Include="Object\Kabu.cpp" />
     <ClCompile Include="Object\KirbyAttackEffect.cpp" />
+    <ClCompile Include="Object\KirbyAttackObjectPool.cpp" />
     <ClCompile Include="Object\Ladder.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
     <ClCompile Include="Object\MiddleBossHammer.cpp" />
@@ -388,6 +389,7 @@
     <ClInclude Include="Object\Item.h" />
     <ClInclude Include="Object\Kabu.h" />
     <ClInclude Include="Object\KirbyAttackEffect.h" />
+    <ClInclude Include="Object\KirbyAttackObjectPool.h" />
     <ClInclude Include="Object\Ladder.h" />
     <ClInclude Include="Object\LineContainer.h" />
     <ClInclude Include="Object\MiddleBossHammer.h" />

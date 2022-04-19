@@ -533,6 +533,8 @@ bool CFightKirbyState::Init()
 	m_Animation->FindAnimationSequence2DData("LeftAttack")->SetEndFunction(
 		this, &CFightKirbyState::NormalAttackCallback);
 
+	m_Animation->SetCurrentAnimation("RightIdle");
+
 	m_Animation->Play();
 
 	return true;

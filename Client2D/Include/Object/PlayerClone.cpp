@@ -46,6 +46,8 @@ void CPlayerClone::SetKirbyState(Ability_State State)
 	m_KirbyState->SetRelativePos(100.f, 50.f, 0.f);
 	m_KirbyState->SetPivot(0.5f, 0.5f, 0.f);
 
+	m_KirbyState->GetAnimationInstance()->SetCurrentAnimation("RightIdle");
+
 	SetRootComponent(m_KirbyState);
 }
 

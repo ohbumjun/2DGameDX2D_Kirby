@@ -71,6 +71,9 @@ void CBossPenguin::Start()
 	m_InitJumpAccel = m_JumpAccel;
 
 	m_IsAttacking = false;
+
+	m_HP -= 1500.f;
+	m_HPMax -= 1500.f;
 }
 
 bool CBossPenguin::Init()
