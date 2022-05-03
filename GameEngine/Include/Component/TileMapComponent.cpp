@@ -867,6 +867,7 @@ void CTileMapComponent::PrevRender()
 	}
 
 	Matrix	matView, matProj;
+
 	matView = Camera->GetViewMatrix();
 	matProj = Camera->GetProjMatrix();
 

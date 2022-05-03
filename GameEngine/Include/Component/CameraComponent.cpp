@@ -370,11 +370,8 @@ void CCameraComponent::Update(float DeltaTime)
 	bool IsOutSideWorld = LimitCameraAreaInsideWorld();
 
 	if (!IsOutSideWorld && m_Parent)
-	{
 		AdjustCameraPosToRatio();
-	}
 
-	// Camera ���� ������ 2�� �Ѵ�.
 	LimitCameraAreaInsideWorld();
 
 	FollowPlayerPos(DeltaTime);
@@ -396,7 +393,7 @@ void CCameraComponent::PostUpdate(float DeltaTime)
 		memcpy(&m_matView[i][0], &Axis, sizeof(Vector3));
 	}
 
-	m_matView.Transpose();
+	m_matView.Transpose();//
 
 	Vector3	Pos = GetWorldPos() * -1.f;
 

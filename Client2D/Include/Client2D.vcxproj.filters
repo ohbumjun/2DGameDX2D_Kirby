@@ -106,6 +106,9 @@
     <Filter Include="02. Object\01. Player\02. AttackEffectObjectPool">
       <UniqueIdentifier>{ec9d9f06-82e2-406f-872f-916b11e482d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\12. Pool">
+      <UniqueIdentifier>{dd505954-13f4-43f0-ac95-846e1bbf9546}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -537,6 +540,12 @@
     <ClCompile Include="Object\KirbyAttackObjectPool.cpp">
       <Filter>02. Object\01. Player\02. AttackEffectObjectPool</Filter>
     </ClCompile>
+    <ClCompile Include="Object\PracticeMemoryPool.cpp">
+      <Filter>02. Object\12. Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\MemoryPool.cpp">
+      <Filter>02. Object\12. Pool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\MainScene.h">
@@ -967,6 +976,12 @@
     </ClInclude>
     <ClInclude Include="Object\KirbyAttackObjectPool.h">
       <Filter>02. Object\01. Player\02. AttackEffectObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\PracticeMemoryPool.h">
+      <Filter>02. Object\12. Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\MemoryPool.h">
+      <Filter>02. Object\12. Pool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

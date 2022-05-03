@@ -88,8 +88,7 @@ void CMainScene::Start()
 		}
 	}
 	/*
-	
-	 *	CBubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
+	BubbleParticle* BubbleParticle = m_Scene->CreateGameObject<CBubbleParticle>("BubbleParticle");
 	BubbleParticle->SetRelativePos(400.f, 200.f, 0.f);
 
 	CSpecialChangeParticle* SpecialChangeParticle = m_Scene->CreateGameObject<CSpecialChangeParticle>("SpecialChangeParticle");

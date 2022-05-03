@@ -17,12 +17,12 @@ protected:
 	size_t m_TypeID;
 	std::string m_Name;
 	bool                                                       m_PlayAnimation;
-	class CSpriteComponent*                                    m_Owner;
-	class CScene*                                              m_Scene;
+	class CSpriteComponent* m_Owner;
+	class CScene* m_Scene;
 	std::unordered_map<std::string, CAnimationSequence2DData*> m_mapAnimation;
-	CAnimationSequence2DData*                                  m_CurrentAnimation;
-	class CAnimation2DConstantBuffer*                          m_CBuffer;
-public :
+	CAnimationSequence2DData* m_CurrentAnimation;
+	class CAnimation2DConstantBuffer* m_CBuffer;
+public:
 	void Stop()
 	{
 		m_PlayAnimation = false;
@@ -50,7 +50,7 @@ public :
 		return m_CurrentAnimation->IsFrameReverse();
 	}
 	CAnimationSequence2DData* GetCurrentAnimation() const;
-public :
+public:
 	void SetScene(class CScene* Scene)
 	{
 		m_Scene = Scene;
@@ -60,13 +60,13 @@ public :
 		m_Owner = Owner;
 	}
 	void SetFrameReverse(bool Reverse)
-{
+	{
 		if (!m_CurrentAnimation)
 			return;
 		m_CurrentAnimation->SetFrameReverse(Reverse);
-}
+	}
 	void SetPlayScaleOfAllAnimation(float PlayScale);
-public :
+public:
 	int GetCurrentAnimationOrder();
 	void GatherSequenceNames(std::vector<std::string>& vecNames);
 	void GatherAnimationNames(std::vector<std::string>& vecNames);
@@ -76,15 +76,15 @@ public :
 	void EditSequence2DName(const std::string& PrevName, const std::string& NewName);
 	void AdjustSequence2DKeyName();
 public:
-	void SetFrameData(const Vector2& StartPos, const Vector2& Size,int Index = 0);
+	void SetFrameData(const Vector2& StartPos, const Vector2& Size, int Index = 0);
 	void AddAnimation(const std::string& AnimationName, CAnimationSequence2DData* Animation);
 	void AddAnimation(const std::string& AnimationName, const std::string& SequenceName,
 		CAnimationSequence2D* Sequence2D, bool Loop = true, float  PlayTime = 1.f,
 		float PlayScale = 1.f, bool Reverse = false);
-	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true, 
+	void AddAnimation(const std::string& SequenceName, const std::string& AnimationName, bool Loop = true,
 		float PlayTime = 1.f,
-	                  float              PlayScale                                        = 1.f, bool Reverse = false);
-	void AddAnimation(const TCHAR* FileName, const std::string& PathName, 
+		float              PlayScale = 1.f, bool Reverse = false);
+	void AddAnimation(const TCHAR* FileName, const std::string& PathName,
 		const std::string& Name, bool Loop = true, float PlayTime = 1.f,
 		float              PlayScale = 1.f, bool Reverse = false);
 	void                      SetPlayTime(const std::string& Name, float PlayTime);
@@ -103,7 +103,7 @@ public:
 	void                                  SetShader();
 	void                                  ResetShader();
 	virtual CAnimationSequence2DInstance* Clone();
-public :
+public:
 	bool                      SaveFullPath(const char* FullPath);
 	bool						SaveAllSequencesFullPath(const char* FullPath);
 	bool						LoadFullPath(const char* FullPath);
@@ -112,7 +112,7 @@ public :
 
 public:
 	template <typename T>
-	void SetEndFunction(const std::string& Name, T* Obj, void (T::*Func)())
+	void SetEndFunction(const std::string& Name, T* Obj, void (T::* Func)())
 	{
 		CAnimationSequence2DData* Data = FindAnimationSequence2DData(Name);
 
@@ -124,7 +124,7 @@ public:
 
 	template <typename T>
 	void AddNotify(const std::string& Name, const std::string& NotifyName, int Frame,
-	               T*                 Obj, void (T::*          Func)())
+		T* Obj, void (T::* Func)())
 	{
 		CAnimationSequence2DData* Data = FindAnimationSequence2DData(Name);
 
