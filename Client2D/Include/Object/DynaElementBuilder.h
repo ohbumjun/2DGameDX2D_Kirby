@@ -22,7 +22,7 @@ private :
 	CDynaBabyBuilder* SetJumpVelocity(float Velocity);
 private:
 	void DeleteDynaBaby(CBossDynaBaby* Baby);
-
+	void DestroyAllBabies();
 };
 
 class CDynaNestBuilder {

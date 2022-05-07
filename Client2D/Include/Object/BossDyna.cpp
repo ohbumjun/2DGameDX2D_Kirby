@@ -59,6 +59,8 @@ void CBossDyna::Start()
 	m_HP -= 1500.f;
 	m_HPMax -= 1500.f;
 
+	m_HP = 50.f;
+
 	m_IsGround = false;
 
 	m_Sprite->GetAnimationInstance()->Play();
@@ -182,16 +184,7 @@ void CBossDyna::PostUpdate(float DeltaTime)
 	CBossMonster::PostUpdate(DeltaTime);
 }
 
-void CBossDyna::AddBossDynaBaby(CBossDynaBaby* Baby)
-{
-	// 중복 방지
-	auto iter = std::find(m_BabiesList.begin(), m_BabiesList.end(), Baby);
 
-	if (iter != m_BabiesList.end())
-		return;
-
-	m_BabiesList.push_back(Baby);
-}
 
 void CBossDyna::DeleteDynaBaby(CBossDynaBaby* Baby)
 {
@@ -400,14 +393,8 @@ void CBossDyna::AIDeathSpecific(float DeltaTime)
 	m_DynaLeftFoot->Enable(false);
 
 	// 모든 Boss Dyna Baby는 제거한다.
-	auto iter = m_BabiesList.begin();
-	auto iterEnd = m_BabiesList.end();
+	m_BabyBuilder->DestroyAllBabies();
 
-	for (; iter != iterEnd;)
-	{
-		(*iter)->Destroy();
-		iter = m_BabiesList.erase(iter);
-	}
 
 	m_SceneChangeLimitTime = 5.f;
 }

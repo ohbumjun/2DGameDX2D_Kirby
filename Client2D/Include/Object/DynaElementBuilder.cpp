@@ -10,7 +10,7 @@ CBossDynaBaby* CDynaBabyBuilder::CreateBaby(const std::string& Name)
 
 	m_CurrentDynaBaby->JumpStart();
 
-	// m_BabiesList.push_back(DynaBaby);
+	m_BabiesList.push_back(m_CurrentDynaBaby);
 
 	return m_CurrentDynaBaby;
 }
@@ -54,6 +54,17 @@ void CDynaBabyBuilder::DeleteDynaBaby(CBossDynaBaby* Baby)
 	}
 }
 
+void CDynaBabyBuilder::DestroyAllBabies()
+{
+	auto iter = m_BabiesList.begin();
+	auto iterEnd = m_BabiesList.end();
+
+	for (; iter != iterEnd;)
+	{
+		(*iter)->Destroy();
+		iter = m_BabiesList.erase(iter);
+	}
+}
 
 // Nest Builder
 CDynaNest*   CDynaNestBuilder::CreateNest()
