@@ -15,7 +15,6 @@ private:
     bool m_IsToggleGoUp;
     float m_ToggleLimitTime;
     float m_ToggleLimitTimeMax;
-private :
     class CBossDyna* m_BossDyna;
 private:
     virtual void AIWalkSpecific(float DeltaTime) override;

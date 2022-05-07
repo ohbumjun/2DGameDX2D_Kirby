@@ -16,11 +16,12 @@ private :
 	CBossDynaBaby* m_CurrentDynaBaby;
 private :
 	CBossDynaBaby* CreateBaby(const std::string& Name);
-	CBossDynaBaby* SetWorldPos(float x, float y, float z);
-	CBossDynaBaby* SetWorldScale(float x, float y, float z);
-	CBossDynaBaby* SetObjectMoveDir(float Dir);
-	CBossDynaBaby* SetJumpVelocity(float Velocity);
-
+	CDynaBabyBuilder* SetWorldPos(float x, float y, float z);
+	CDynaBabyBuilder* SetWorldScale(float x, float y, float z);
+	CDynaBabyBuilder* SetObjectMoveDir(float Dir);
+	CDynaBabyBuilder* SetJumpVelocity(float Velocity);
+private:
+	void DeleteDynaBaby(CBossDynaBaby* Baby);
 
 };
 

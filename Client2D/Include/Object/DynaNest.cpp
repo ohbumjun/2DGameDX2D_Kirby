@@ -17,7 +17,8 @@ CDynaNest::~CDynaNest()
 
 void CDynaNest::MakeDynaBabyEffect()
 {
-
+	m_CreateBossDynaFunction();
+	/*
 	float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
 
 	// 오른쪽 2개
@@ -45,6 +46,7 @@ void CDynaNest::MakeDynaBabyEffect()
 	}
 
 	m_Scene->GetResource()->SoundPlay("BossDynaBabyMake");
+	*/
 }
 
 void CDynaNest::Start()

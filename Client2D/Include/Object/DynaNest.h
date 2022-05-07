@@ -16,7 +16,9 @@ private :
     float m_TimeFlowed;
     float m_GenerateDynaBabyTime;
 private :
-    class CBossDyna* m_BossDyna;
+    // class CBossDyna* m_BossDyna;
+    std::function<void()> m_CreateBossDynaFunction;
+
 private :
     void MakeDynaBabyEffect();
 public :
@@ -24,5 +26,11 @@ public :
     virtual bool Init() override;
     virtual void Update(float DeltaTime) override;
     virtual void PostUpdate(float DeltaTime) override;
+private :
+    template<typename T>
+    void SetCreateBossDynaFunction(T* Obj, void(T::*Func)())
+{
+        m_CreateBossDynaFunction = std::bind(Func, Obj);
+}
 };
 

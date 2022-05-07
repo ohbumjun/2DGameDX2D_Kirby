@@ -195,17 +195,7 @@ void CBossDyna::AddBossDynaBaby(CBossDynaBaby* Baby)
 
 void CBossDyna::DeleteDynaBaby(CBossDynaBaby* Baby)
 {
-	auto iter = m_BabiesList.begin();
-	auto iterEnd = m_BabiesList.end();
-
-	for (; iter != iterEnd; ++iter)
-	{
-		if ((*iter) == Baby)
-		{
-			m_BabiesList.erase(iter);
-			return;
-		}
-	}
+	m_BabyBuilder->DeleteDynaBaby(Baby);
 }
 
 void CBossDyna::FarAttack()
@@ -515,14 +505,27 @@ void CBossDyna::UpdateMakeNestTime(float DeltaTime)
 	{
 		m_MakeDynaNestFlowTime = 0.f;
 
-		m_NestBuilder->CreateNest()->m_BossDyna = this;
+		m_NestBuilder->CreateNest()->SetCreateBossDynaFunction(this, &CBossDyna::CreateBossDynaBaby);
 		m_NestBuilder->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
-		// DynaNest->m_BossDyna = this;
 	}
 }
 
 void CBossDyna::CreateBossDynaBaby()
-{}
+{
+	float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
+
+	// 오른쪽 2개
+	for (int i = 0; i < 2; i++)
+	{
+		float XPos = i & 1 ? GetWorldPos().x + NumberFrom0To1 * 100.f : GetWorldPos().x - NumberFrom0To1 * 100.f;
+
+		m_BabyBuilder->CreateBaby("BabyDyna")->m_BossDyna = this;
+		m_BabyBuilder->SetWorldPos(XPos, GetWorldPos().y, 0.f);
+		m_BabyBuilder->SetJumpVelocity(40.f + NumberFrom0To1 * 10.f)->SetObjectMoveDir(i & 1 ? 1.f : -1.f)->SetWorldScale(70.f, 70.f, 1.f);
+		// Boss Dyna 의 Baby List 에 추가 
+		// m_BossDyna->AddBossDynaBaby(DynaBaby);
+	}
+}
 
 void CBossDyna::ChangeTraceAnimation()
 {
