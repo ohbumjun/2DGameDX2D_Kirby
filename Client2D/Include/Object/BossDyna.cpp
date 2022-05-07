@@ -43,7 +43,10 @@ CBossDyna::CBossDyna() :
 }
 
 CBossDyna::~CBossDyna()
-{}
+{
+	SAFE_DELETE(m_NestBuilder);
+	SAFE_DELETE(m_BabyBuilder);
+}
 
 void CBossDyna::Start()
 {
@@ -134,6 +137,11 @@ void CBossDyna::Start()
 	m_Sprite->SetLayerName("Tile");
 	
 	m_IsAppearing = true;
+
+	if (!m_NestBuilder)
+		m_NestBuilder = new CDynaNestBuilder;
+	if (!m_BabyBuilder)
+		m_BabyBuilder = new CDynaBabyBuilder;
 }
 
 bool CBossDyna::Init()
