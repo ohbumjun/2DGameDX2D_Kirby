@@ -68,6 +68,8 @@ protected:
     void UpdateAppearance(float DeltaTime);
     void UpdateMakeNestTime(float DeltaTime);
 private :
+    void CreateBossDynaBaby();
+private :
     virtual void ChangeTraceAnimation() override;
     virtual void ChangeAttackAnimation() override;
     virtual void ChangeWalkAnimation() override;

@@ -7,6 +7,7 @@ class CBossDynaBaby :
     friend class CScene;
     friend class CDynaNest;
     friend class CBossDyna;
+    friend class CDynaBabyBuilder;
 protected:
     CBossDynaBaby();
     virtual ~CBossDynaBaby();

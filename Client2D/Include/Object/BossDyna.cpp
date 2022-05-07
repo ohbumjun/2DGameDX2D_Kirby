@@ -521,6 +521,9 @@ void CBossDyna::UpdateMakeNestTime(float DeltaTime)
 	}
 }
 
+void CBossDyna::CreateBossDynaBaby()
+{}
+
 void CBossDyna::ChangeTraceAnimation()
 {
 	if (m_IsAppearing)

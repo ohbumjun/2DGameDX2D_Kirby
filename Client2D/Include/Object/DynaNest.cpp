@@ -17,6 +17,7 @@ CDynaNest::~CDynaNest()
 
 void CDynaNest::MakeDynaBabyEffect()
 {
+
 	float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
 
 	// 오른쪽 2개
