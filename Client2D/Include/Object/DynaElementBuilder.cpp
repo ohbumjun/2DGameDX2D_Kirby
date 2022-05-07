@@ -4,7 +4,7 @@
 
 CBossDynaBaby* CDynaBabyBuilder::CreateBaby(const std::string& Name)
 {
-	m_CurrentDynaBaby = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossDynaBaby>("Attack");
+	m_CurrentDynaBaby = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossDynaBaby>(Name);
 
 	CSceneManager::GetInst()->GetScene()->GetResource()->SoundPlay("BossDynaBabyMake");
 

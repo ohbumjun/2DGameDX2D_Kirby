@@ -18,35 +18,7 @@ CDynaNest::~CDynaNest()
 void CDynaNest::MakeDynaBabyEffect()
 {
 	m_CreateBossDynaFunction();
-	/*
-	float NumberFrom0To1 = (float)rand() / (float)RAND_MAX;
 
-	// 오른쪽 2개
-	for (int i = 0; i < 2; i++)
-	{
-		float XPos = i & 1 ? GetWorldPos().x + NumberFrom0To1 * 100.f : GetWorldPos().x - NumberFrom0To1 * 100.f;
-
-		CBossDynaBaby* DynaBaby = m_Scene->CreateGameObject<CBossDynaBaby>("Attack");
-
-		DynaBaby->SetWorldPos(XPos, GetWorldPos().y, 0.f);
-
-		DynaBaby->m_ObjectMoveDir.x = i & 1 ? 1.f : -1.f;
-		// AttackEffect->SetRightAttackDir(0.f);
-
-		DynaBaby->m_JumpVelocity = 40.f + NumberFrom0To1 * 10.f;
-
-		DynaBaby->JumpStart();
-
-		DynaBaby->SetWorldScale(70.f, 70.f, 1.f);
-
-		DynaBaby->m_BossDyna = m_BossDyna;
-
-		// Boss Dyna 의 Baby List 에 추가 
-		m_BossDyna->AddBossDynaBaby(DynaBaby);
-	}
-
-	m_Scene->GetResource()->SoundPlay("BossDynaBabyMake");
-	*/
 }
 
 void CDynaNest::Start()
