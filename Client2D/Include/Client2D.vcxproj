@@ -248,8 +248,6 @@
     <ClCompile Include="Object\KirbyAttackObjectPool.cpp" />
     <ClCompile Include="Object\Ladder.cpp" />
     <ClCompile Include="Object\LineContainer.cpp" />
-    <ClCompile Include="Object\MemoryPool.cpp" />
-    <ClCompile Include="Object\PracticeMemoryPool.cpp" />
     <ClCompile Include="Object\MiddleBossHammer.cpp" />
     <ClCompile Include="Object\MiddleBossScissorBug.cpp" />
     <ClCompile Include="Object\Monster.cpp" />
@@ -267,6 +265,7 @@
     <ClCompile Include="Object\PlayerOld.cpp" />
     <ClCompile Include="Object\PurpleBeatle.cpp" />
     <ClCompile Include="Object\Scary.cpp" />
+    <ClCompile Include="Object\SimplePoolAllocator.cpp" />
     <ClCompile Include="Object\SpecialChangeParticle.cpp" />
     <ClCompile Include="Object\Squid.cpp" />
     <ClCompile Include="Object\SquidAttack.cpp" />
@@ -396,8 +395,6 @@
     <ClInclude Include="Object\KirbyAttackObjectPool.h" />
     <ClInclude Include="Object\Ladder.h" />
     <ClInclude Include="Object\LineContainer.h" />
-    <ClInclude Include="Object\MemoryPool.h" />
-    <ClInclude Include="Object\PracticeMemoryPool.h" />
     <ClInclude Include="Object\MiddleBossHammer.h" />
     <ClInclude Include="Object\MiddleBossScissorBug.h" />
     <ClInclude Include="Object\Monster.h" />
@@ -415,6 +412,7 @@
     <ClInclude Include="Object\PlayerOld.h" />
     <ClInclude Include="Object\PurpleBeatle.h" />
     <ClInclude Include="Object\Scary.h" />
+    <ClInclude Include="Object\SimplePoolAllocator.h" />
     <ClInclude Include="Object\SpecialChangeParticle.h" />
     <ClInclude Include="Object\Squid.h" />
     <ClInclude Include="Object\SquidAttack.h" />

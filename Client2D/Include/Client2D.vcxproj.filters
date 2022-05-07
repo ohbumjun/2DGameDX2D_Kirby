@@ -543,14 +543,11 @@
     <ClCompile Include="Object\KirbyAttackObjectPool.cpp">
       <Filter>02. Object\01. Player\02. AttackEffectObjectPool</Filter>
     </ClCompile>
-    <ClCompile Include="Object\PracticeMemoryPool.cpp">
-      <Filter>02. Object\12. Pool</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\MemoryPool.cpp">
-      <Filter>02. Object\12. Pool</Filter>
-    </ClCompile>
     <ClCompile Include="Object\DynaElementBuilder.cpp">
       <Filter>05. CreatorPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\SimplePoolAllocator.cpp">
+      <Filter>02. Object\12. Pool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -983,14 +980,11 @@
     <ClInclude Include="Object\KirbyAttackObjectPool.h">
       <Filter>02. Object\01. Player\02. AttackEffectObjectPool</Filter>
     </ClInclude>
-    <ClInclude Include="Object\PracticeMemoryPool.h">
-      <Filter>02. Object\12. Pool</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\MemoryPool.h">
-      <Filter>02. Object\12. Pool</Filter>
-    </ClInclude>
     <ClInclude Include="Object\DynaElementBuilder.h">
       <Filter>05. CreatorPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SimplePoolAllocator.h">
+      <Filter>02. Object\12. Pool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
