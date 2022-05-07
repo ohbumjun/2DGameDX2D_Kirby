@@ -29,8 +29,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -42,8 +42,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -203,6 +203,7 @@
     <ClCompile Include="Object\BulletTornaido.cpp" />
     <ClCompile Include="Object\AttackEffect.cpp" />
     <ClCompile Include="Object\Chicken.cpp" />
+    <ClCompile Include="Object\DynaElementBuilder.cpp" />
     <ClCompile Include="Object\DynaCloseAttack.cpp" />
     <ClCompile Include="Object\DynaFarAttack.cpp" />
     <ClCompile Include="Object\DynaNest.cpp" />
@@ -350,6 +351,7 @@
     <ClInclude Include="Object\BulletCamera.h" />
     <ClInclude Include="Object\BulletTornaido.h" />
     <ClInclude Include="Object\Chicken.h" />
+    <ClInclude Include="Object\DynaElementBuilder.h" />
     <ClInclude Include="Object\DynaCloseAttack.h" />
     <ClInclude Include="Object\DynaFarAttack.h" />
     <ClInclude Include="Object\DynaNest.h" />

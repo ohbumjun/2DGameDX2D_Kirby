@@ -5,6 +5,7 @@ class CDynaNest :
     public CGameObject
 {
     friend class CScene;
+    friend class CDynaNestBuilder;
     friend class CBossDyna;
 private :
     CDynaNest();

@@ -1010,9 +1010,6 @@
     <ClCompile Include="Resource\Particle\ParticleRenderShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\ComputeShader.cpp">
-      <Filter>02. Resource\02. Shader\02. ShaderClass\05. Particle</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Shader\PaperBurnConstantBuffer.cpp">
       <Filter>02. Resource\02. Shader\03. ConstantBuffer\09. PaperBurn</Filter>
     </ClCompile>
@@ -1066,6 +1063,9 @@
     </ClCompile>
     <ClCompile Include="UI\MonsterEditorHUD.cpp">
       <Filter>09. UI\01. Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Shader\ComputeShader.cpp">
+      <Filter>02. Resource\02. Shader\02. ShaderClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

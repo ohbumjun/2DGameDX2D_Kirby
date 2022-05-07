@@ -141,6 +141,9 @@ bool CBossDyna::Init()
 	if (!CBossMonster::Init())
 		return false;
 
+	m_NestBuilder = new CDynaNestBuilder;
+	m_BabyBuilder = new CDynaBabyBuilder;
+
 	return true;
 }
 
@@ -504,11 +507,9 @@ void CBossDyna::UpdateMakeNestTime(float DeltaTime)
 	{
 		m_MakeDynaNestFlowTime = 0.f;
 
-		CDynaNest* DynaNest = m_Scene->CreateGameObject<CDynaNest>("DynaNest");
-
-		DynaNest->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
-
-		DynaNest->m_BossDyna = this;
+		m_NestBuilder->CreateNest()->m_BossDyna = this;
+		m_NestBuilder->SetWorldPos(GetWorldPos().x, GetWorldPos().y - GetWorldScale().y * GetPivot().y, GetWorldPos().z);
+		// DynaNest->m_BossDyna = this;
 	}
 }
 

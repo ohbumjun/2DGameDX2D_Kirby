@@ -1,5 +1,6 @@
 #pragma once
 #include "BossMonster.h"
+#include "DynaElementBuilder.h"
 
 class CBossDyna :
     public CBossMonster
@@ -16,6 +17,8 @@ public:
 private :
     // BossDynaBaby 목록들을 List 형태로 들고 있게 한다.
     std::list <CSharedPtr<class CBossDynaBaby>> m_BabiesList;
+    CDynaBabyBuilder* m_BabyBuilder;
+    CDynaNestBuilder* m_NestBuilder;
 public :
     std::list <CSharedPtr<class CBossDynaBaby>>* GetBossDynaBabyList()
 {
