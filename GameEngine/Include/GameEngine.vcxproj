@@ -211,6 +211,7 @@
     <ClInclude Include="fmod_output.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameObject\GameObject.h" />
+    <ClInclude Include="GameObject\GameObjectManager.h" />
     <ClInclude Include="GameObject\LifeObject.h" />
     <ClInclude Include="GameObject\Line.h" />
     <ClInclude Include="imconfig.h" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="PathManager.h" />
+    <ClInclude Include="Pool\SimplePoolAllocator.h" />
     <ClInclude Include="Ref.h" />
     <ClInclude Include="Render\BlendState.h" />
     <ClInclude Include="Render\DepthStencilState.h" />
@@ -348,6 +350,7 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\GameObjectManager.cpp" />
     <ClCompile Include="GameObject\LifeObject.cpp" />
     <ClCompile Include="GameObject\Line.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -372,6 +375,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="PathManager.cpp" />
+    <ClCompile Include="Pool\SimplePoolAllocator.cpp" />
     <ClCompile Include="Ref.cpp" />
     <ClCompile Include="Render\BlendState.cpp" />
     <ClCompile Include="Render\DepthStencilState.cpp" />

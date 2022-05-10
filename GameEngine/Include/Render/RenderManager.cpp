@@ -176,6 +176,7 @@ void CRenderManager::Render()
 		}
 	}
 
+	// Scene 내의 Object 들
 	// 아래 PrevRender 에서 실제 그릴 녀석들을 추가한다. 
 	{
 		auto iter    = m_ObjectList->begin();
@@ -212,6 +213,9 @@ void CRenderManager::Render()
 			}
 		}
 	}
+
+	// Pool 내에서 별도로 관리되는 Object 들 처리하기
+
 
 	// 각종 Widget 출력 ---
 	// Widget 출력시 Alpha Blending 처리하기

@@ -8,9 +8,9 @@ class CBossDynaBaby :
     friend class CDynaNest;
     friend class CBossDyna;
     friend class CDynaBabyBuilder;
-protected:
+public:
     CBossDynaBaby();
-    virtual ~CBossDynaBaby();
+    virtual ~CBossDynaBaby() override;
 private:
     bool m_IsToggleGoUp;
     float m_ToggleLimitTime;

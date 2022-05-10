@@ -48,6 +48,8 @@ void CBossMonster::Start()
 	m_Sprite->GetAnimationInstance()->FindAnimationSequence2DData("LeftDeath")->SetEndFunction(this, &CBossMonster::StartPaperBurnEffect);
 
 	m_PaperBurn->SetFinishCallback(this, &CBossMonster::PaperBurnEndCallback);
+
+	m_Scene->GetSceneMode()->SetBossObject(this);
 }
 
 bool CBossMonster::Init()

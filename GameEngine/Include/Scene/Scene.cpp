@@ -94,8 +94,6 @@ void CScene::Start()
 			// 이 경우, 제일 왼쪽 위 까지 세팅한다.
 
 			Camera->SetWorldPos(CameraPos);
-
-
 		}
 	}
 }

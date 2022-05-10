@@ -19,11 +19,13 @@ private :
     std::list <CSharedPtr<class CBossDynaBaby>> m_BabiesList;
     CDynaBabyBuilder* m_BabyBuilder;
     CDynaNestBuilder* m_NestBuilder;
+    // CObjectManager<CBossDynaBaby>* m_BossDynaBabyManager;
 public :
     std::list <CSharedPtr<class CBossDynaBaby>>* GetBossDynaBabyList()
 {
         return &m_BabiesList;
 }
+public :
     void AddBossDynaBaby(class CBossDynaBaby* Baby);
     void DeleteDynaBaby(class CBossDynaBaby* Baby);
 private:

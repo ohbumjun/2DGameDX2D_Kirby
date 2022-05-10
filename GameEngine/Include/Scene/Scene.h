@@ -63,6 +63,10 @@ public :
 		m_ViewPort->SetBossHUD(Window);
 	}
 public:
+	bool IsStart() const
+	{
+		return m_Start;
+	}
 	bool IsEditMode () const
 	{
 		return m_Mode->IsEditMode();
@@ -127,15 +131,15 @@ public:
 	{
 		return m_Mode->GetSceneChangeObject();
 	}
+	CGameObject* GetBossMonsterObject() const
+	{
+		return m_Mode->GetBossMonsterObject();
+	}
 	class CTileEmptyComponent* GetTileEmptyComponent() const
 	{
 		return m_Mode->GetTileEmptyComponent();
 	}
 public :
-	void PrepareResources()
-	{
-		m_Mode->PrepareResources();
-	}
 	template<typename T>
 	void DeleteGameObjectByType();
 	template<typename T>
@@ -163,6 +167,14 @@ public :
 	bool LoadFullPath(const char* FullPath);
 	bool Load(const char* FileName, const std::string& PathName);
 public:
+	void PrepareResources()
+	{
+		m_Mode->PrepareResources();
+	}
+	void AddObjectToList(CGameObject* Object)
+	{
+		m_ObjList.push_back(Object);
+	}
 	template<typename T>
 	T* CreateSceneModeEmpty()
 	{

@@ -18,6 +18,7 @@ protected:
 	CSharedPtr<class CGameObject> m_TileMapEmptyObject;
 	CSharedPtr<class CGameObject> m_LineContainerObject;
 	CSharedPtr<class CGameObject> m_SceneChangeObject;
+	CSharedPtr<class CGameObject> m_BossMonsterObject;
 protected:
 	bool m_IsEditMode;
 	int m_SceneIndex;
@@ -26,6 +27,7 @@ public:
 	void SetTileMapEmptyObject(class CGameObject* Obj);
 	void SetLineContainerObject(class CGameObject* Obj);
 	void SetSceneChangeObject(class CGameObject* Obj);
+	void SetBossObject(class CGameObject* Obj);
 protected :
 	virtual void CreateMaterial();
 	virtual void CreateParticle();
@@ -46,6 +48,10 @@ public :
 	class CGameObject* GetPlayerObject() const
 	{
 		return m_PlayerObject;
+	}
+	class CGameObject* GetBossMonsterObject() const
+	{
+		return m_BossMonsterObject;
 	}
 	class CGameObject* GetTileMapEmpty() const
 	{

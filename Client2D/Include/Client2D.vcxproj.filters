@@ -112,6 +112,9 @@
     <Filter Include="05. CreatorPattern">
       <UniqueIdentifier>{5ac0641c-93c7-4ec1-a600-378221e00a76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Object\13. Manager">
+      <UniqueIdentifier>{b53b9375-9ec3-4d32-a553-d7c3edb35e77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -546,8 +549,8 @@
     <ClCompile Include="Object\DynaElementBuilder.cpp">
       <Filter>05. CreatorPattern</Filter>
     </ClCompile>
-    <ClCompile Include="Object\SimplePoolAllocator.cpp">
-      <Filter>02. Object\12. Pool</Filter>
+    <ClCompile Include="Object\MonsterAttackEffectFactory.cpp">
+      <Filter>05. CreatorPattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -983,8 +986,8 @@
     <ClInclude Include="Object\DynaElementBuilder.h">
       <Filter>05. CreatorPattern</Filter>
     </ClInclude>
-    <ClInclude Include="Object\SimplePoolAllocator.h">
-      <Filter>02. Object\12. Pool</Filter>
+    <ClInclude Include="Object\MonsterAttackEffectFactory.h">
+      <Filter>05. CreatorPattern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

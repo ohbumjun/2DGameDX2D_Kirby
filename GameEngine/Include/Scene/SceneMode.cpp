@@ -36,6 +36,11 @@ void CSceneMode::SetSceneChangeObject(CGameObject* Obj)
 	m_SceneChangeObject = Obj;
 }
 
+void CSceneMode::SetBossObject(CGameObject* Obj)
+{
+	m_BossMonsterObject = Obj;
+}
+
 void CSceneMode::CreateMaterial()
 {
 	// Particle

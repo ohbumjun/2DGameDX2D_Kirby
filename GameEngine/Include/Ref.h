@@ -14,6 +14,7 @@ protected:
 	bool        m_Enable;
 	bool        m_Active;
 	size_t      m_TypeID;
+	std::function<void(CRef* DeleteObject)> m_DeleteCallback;
 
 public:
 	virtual void Enable(bool bEnable)
@@ -52,7 +53,10 @@ public:
 
 		if (m_RefCount <= 0)
 		{
-			delete this;
+			if (m_DeleteCallback)
+				m_DeleteCallback(this);
+			else 
+				delete this;
 			return 0;
 		}
 
@@ -83,6 +87,11 @@ public:
 	size_t GetTypeID() const
 	{
 		return m_TypeID;
+	}
+	template<typename T>
+	void SetDeleteCallback(T* Obj, void(T::*Func)(CRef* Object))
+	{
+		m_DeleteCallback = std::bind(Func, Obj, std::placeholders::_1);
 	}
 public :
 	void Save(FILE* pFile);

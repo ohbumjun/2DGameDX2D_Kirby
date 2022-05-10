@@ -44,8 +44,9 @@ CBossDyna::CBossDyna() :
 
 CBossDyna::~CBossDyna()
 {
-	SAFE_DELETE(m_NestBuilder);
 	SAFE_DELETE(m_BabyBuilder);
+	SAFE_DELETE(m_NestBuilder);
+	// SAFE_DELETE(m_BossDynaBabyManager);
 }
 
 void CBossDyna::Start()
@@ -144,6 +145,8 @@ void CBossDyna::Start()
 		m_NestBuilder = new CDynaNestBuilder;
 	if (!m_BabyBuilder)
 		m_BabyBuilder = new CDynaBabyBuilder;
+	// if (!m_BossDynaBabyManager)
+	// 	m_BossDynaBabyManager = new CObjectManager<CBossDynaBaby>();
 }
 
 bool CBossDyna::Init()
@@ -534,10 +537,11 @@ void CBossDyna::CreateBossDynaBaby()
 	{
 		float XPos = i & 1 ? GetWorldPos().x + NumberFrom0To1 * 100.f : GetWorldPos().x - NumberFrom0To1 * 100.f;
 
-		m_BabyBuilder->CreateBaby("BabyDyna")->m_BossDyna = this;
-		m_BabyBuilder->SetWorldPos(XPos, GetWorldPos().y, 0.f);
+		CBossDynaBaby* dynaBaby = m_BabyBuilder->CreateBaby("BabyDyna");
+		dynaBaby->m_BossDyna = this;
+		dynaBaby->m_ObjectMoveDir.x = i & 1 ? 1.f : -1.f;
+		m_BabyBuilder->SetWorldPos(XPos, GetWorldPos().y, 0.f)->SetJumpVelocity(40.f + NumberFrom0To1 * 10.f)->SetWorldScale(70.f, 70.f, 1.f);
 		// m_BabyBuilder->SetObjectMoveDir(i & 1 ? 1.f : -1.f)->SetJumpVelocity(40.f + NumberFrom0To1 * 10.f)->SetWorldScale(70.f, 70.f, 1.f);
-		m_BabyBuilder->SetJumpVelocity(40.f + NumberFrom0To1 * 10.f)->SetWorldScale(70.f, 70.f, 1.f);
 	}
 }
 

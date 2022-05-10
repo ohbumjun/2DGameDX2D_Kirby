@@ -235,6 +235,12 @@
     <Filter Include="04. GameObject\03. Line">
       <UniqueIdentifier>{b4eb4d3e-d765-4f10-9a0d-571ed891a6cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\04. ObjectManager">
+      <UniqueIdentifier>{7f1cf031-773b-4f29-8d33-9610161821c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Pool">
+      <UniqueIdentifier>{e5b84ccf-df5c-4640-b1db-4521ac3a7e3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -675,6 +681,12 @@
     <ClInclude Include="UI\MonsterEditorHUD.h">
       <Filter>09. UI\01. Window</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject\GameObjectManager.h">
+      <Filter>04. GameObject\04. ObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Pool\SimplePoolAllocator.h">
+      <Filter>10. Pool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -1066,6 +1078,12 @@
     </ClCompile>
     <ClCompile Include="Resource\Shader\ComputeShader.cpp">
       <Filter>02. Resource\02. Shader\02. ShaderClass</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObjectManager.cpp">
+      <Filter>04. GameObject\04. ObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Pool\SimplePoolAllocator.cpp">
+      <Filter>10. Pool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
