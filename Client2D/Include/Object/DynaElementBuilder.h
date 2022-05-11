@@ -4,22 +4,19 @@
 #include "Pool/SimplePoolAllocator.h"
 #include "GameObject/GameObjectManager.h"
 
-class CDynaElementBuilder {
-	friend class CBossDyna;
-	virtual ~CDynaElementBuilder(){}
-};
 
 class CDynaBabyBuilder : public CGameObjectManager
 {
 	friend class CBossDyna;
+	friend class CScene;
 private :
 	// BossDynaBaby 목록들을 List 형태로 들고 있게 한다.
-	std::list <CSharedPtr<class CBossDynaBaby>> m_BabiesList;
+	// std::list <CSharedPtr<class CBossDynaBaby>> m_BabiesList;
 	CBossDynaBaby* m_CurrentDynaBaby;
 	CSimplePoolAllocator<CBossDynaBaby>* m_BossDynaBabyPool;
 private :
 	CDynaBabyBuilder();
-	~CDynaBabyBuilder();
+	virtual ~CDynaBabyBuilder() override;
 private :
 	CBossDynaBaby* CreateBaby(const std::string& Name);
 	CDynaBabyBuilder* SetWorldPos(float x, float y, float z);
@@ -29,14 +26,14 @@ private :
 private:
 	void DeleteDynaBaby(CBossDynaBaby* Baby);
 	void DestroyAllBabies();
-	void DeAllocate(CRef* m_CurrentDynaBaby);
+	virtual void DeAllocate(CGameObject* m_CurrentDynaBaby) ;
 private :
-	void Update(float DeltaTime);
-	void PostUpdate(float DeltaTime);
+	virtual void Update(float DeltaTime) override;
+	virtual void PostUpdate(float DeltaTime) override;
 	void Render();
 };
 
-class CDynaNestBuilder : public CGameObjectManager {
+class CDynaNestBuilder {
 
 	friend class CBossDyna;
 	friend class CDynaBabyBuilder;

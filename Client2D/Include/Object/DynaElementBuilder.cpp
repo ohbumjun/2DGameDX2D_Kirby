@@ -14,7 +14,7 @@ CDynaBabyBuilder::~CDynaBabyBuilder()
 
 CBossDynaBaby* CDynaBabyBuilder::CreateBaby(const std::string& Name)
 {
-	
+	// m_CurrentDynaBaby = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossDynaBaby>(Name);
 	m_CurrentDynaBaby = m_BossDynaBabyPool->allocate();
 	m_CurrentDynaBaby->SetName(Name);
 	m_CurrentDynaBaby->SetScene(CSceneManager::GetInst()->GetScene());
@@ -28,17 +28,14 @@ CBossDynaBaby* CDynaBabyBuilder::CreateBaby(const std::string& Name)
 	if (CSceneManager::GetInst()->GetScene()->IsStart())
 		m_CurrentDynaBaby->Start();
 
-	// m_CurrentDynaBaby = CSceneManager::GetInst()->GetScene()->CreateGameObject<CBossDynaBaby>(Name);
-
 	m_CurrentDynaBaby->JumpStart();
 
-	m_BabiesList.push_back(m_CurrentDynaBaby);
-
 	// Scene 의 Object List 에 추가하기
-	CSceneManager::GetInst()->GetScene()->AddObjectToList(m_CurrentDynaBaby);
+// CSceneManager::GetInst()->GetScene()->AddObjectToList(m_CurrentDynaBaby);
+	m_ObjectList.push_back(m_CurrentDynaBaby);
 
 	// Delete Call back Function 세팅하기
-	m_CurrentDynaBaby->SetDeleteCallback<CDynaBabyBuilder>(this, &CDynaBabyBuilder::DeAllocate);
+	SetDeleteCallback<CDynaBabyBuilder>(this, &CDynaBabyBuilder::DeAllocate);
 
 	CSceneManager::GetInst()->GetScene()->GetResource()->SoundPlay("BossDynaBabyMake");
 
@@ -71,14 +68,14 @@ CDynaBabyBuilder* CDynaBabyBuilder::SetJumpVelocity(float Velocity)
 
 void CDynaBabyBuilder::DeleteDynaBaby(CBossDynaBaby* Baby)
 {
-	auto iter = m_BabiesList.begin();
-	auto iterEnd = m_BabiesList.end();
+	auto iter = m_ObjectList.begin();
+	auto iterEnd = m_ObjectList.end();
 
 	for (; iter != iterEnd; ++iter)
 	{
 		if ((*iter) == Baby)
 		{
-			m_BabiesList.erase(iter);
+			m_ObjectList.erase(iter);
 			return;
 		}
 	}
@@ -86,33 +83,33 @@ void CDynaBabyBuilder::DeleteDynaBaby(CBossDynaBaby* Baby)
 
 void CDynaBabyBuilder::DestroyAllBabies()
 {
-	auto iter = m_BabiesList.begin();
-	auto iterEnd = m_BabiesList.end();
+	auto iter = m_ObjectList.begin();
+	auto iterEnd = m_ObjectList.end();
 
 	for (; iter != iterEnd;)
 	{
 		(*iter)->Destroy();
-		iter = m_BabiesList.erase(iter);
+		iter = m_ObjectList.erase(iter);
 	}
 }
 
-void CDynaBabyBuilder::DeAllocate(CRef* CurrentDynaBaby)
+void CDynaBabyBuilder::DeAllocate(CGameObject* CurrentDynaBaby)
 {
 	m_BossDynaBabyPool->deallocate(dynamic_cast<CBossDynaBaby*>(CurrentDynaBaby));
 }
 
 void CDynaBabyBuilder::Update(float DeltaTime)
 {
-	auto iter = m_BabiesList.begin();
-	auto iterEnd = m_BabiesList.end();
+	auto iter = m_ObjectList.begin();
+	auto iterEnd = m_ObjectList.end();
 
 	for (; iter != iterEnd;)
 	{
 		if (!(*iter)->IsActive())
 		{
-			m_BossDynaBabyPool->deallocate((*iter));
-			iter = m_BabiesList.erase(iter);
-			iterEnd = m_BabiesList.end();
+			m_BossDynaBabyPool->deallocate(dynamic_cast<CBossDynaBaby*>((* iter)));
+			iter = m_ObjectList.erase(iter);
+			iterEnd = m_ObjectList.end();
 			continue;
 		}
 		if (!(*iter)->IsEnable())
@@ -124,16 +121,16 @@ void CDynaBabyBuilder::Update(float DeltaTime)
 
 void CDynaBabyBuilder::PostUpdate(float DeltaTime)
 {
-	auto iter = m_BabiesList.begin();
-	auto iterEnd = m_BabiesList.end();
+	auto iter = m_ObjectList.begin();
+	auto iterEnd = m_ObjectList.end();
 
 	for (; iter != iterEnd;)
 	{
 		if (!(*iter)->IsActive())
 		{
-			m_BossDynaBabyPool->deallocate((*iter));
-			iter = m_BabiesList.erase(iter);
-			iterEnd = m_BabiesList.end();
+			m_BossDynaBabyPool->deallocate(dynamic_cast<CBossDynaBaby*>((*iter)));
+			iter = m_ObjectList.erase(iter);
+			iterEnd = m_ObjectList.end();
 			continue;
 		}
 		if (!(*iter)->IsEnable())

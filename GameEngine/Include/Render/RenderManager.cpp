@@ -4,6 +4,7 @@
 #include "../Engine.h"
 #include "../Component/SceneComponent.h"
 #include "../GameObject/GameObject.h"
+#include "../GameObject/GameObjectManager.h"
 #include "../Resource/Shader/Standard2DConstantBuffer.h"
 #include "../Scene/SceneManager.h"
 #include "../Scene/Scene.h"
@@ -188,6 +189,16 @@ void CRenderManager::Render()
 		}
 	}
 
+	// Pool 내에서 별도로 관리되는 Object 들 처리하기
+	const std::vector<class CGameObjectManager*>& vecObjectManagers = CSceneManager::GetInst()->GetScene()->GetVecGameObjectManager();
+
+	size_t vecObjMSize = vecObjectManagers.size();
+
+	for (size_t i = 0; i < vecObjMSize; ++i)
+	{
+		vecObjectManagers[i]->PrevRender();
+	}
+
 	{
 		auto iter    = m_RenderLayerList.begin();
 		auto iterEnd = m_RenderLayerList.end();
@@ -214,7 +225,6 @@ void CRenderManager::Render()
 		}
 	}
 
-	// Pool 내에서 별도로 관리되는 Object 들 처리하기
 
 
 	// 각종 Widget 출력 ---

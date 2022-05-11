@@ -19,6 +19,7 @@ private:
 	CSceneResource*                    m_Resource;
 	class CCameraManager* m_CameraManager;
 	std::list<CSharedPtr<CGameObject>> m_ObjList;
+	std::vector<class CGameObjectManager*> m_vecGameObjectManager;
 	class CSceneCollision* m_Collision;
 	class CViewPort* m_ViewPort;
 	class CNavigationManager* m_NavManager;
@@ -70,6 +71,10 @@ public:
 	bool IsEditMode () const
 	{
 		return m_Mode->IsEditMode();
+	}
+	const std::vector<class CGameObjectManager*>& GetVecGameObjectManager() const
+	{
+		return m_vecGameObjectManager;
 	}
 	class CUIWindow* GetPlayerHUD() const
 	{
@@ -174,6 +179,10 @@ public:
 	void AddObjectToList(CGameObject* Object)
 	{
 		m_ObjList.push_back(Object);
+	}
+	void AddGameObjectManager(class CGameObjectManager* Manager)
+	{
+		m_vecGameObjectManager.push_back(Manager);
 	}
 	template<typename T>
 	T* CreateSceneModeEmpty()

@@ -5,6 +5,7 @@
 #include "ViewPort.h"
 #include "NavigationManager.h"
 #include "../PathManager.h"
+#include "../GameObject/GameObjectManager.h"
 
 class CPlayer2D;
 
@@ -102,6 +103,7 @@ void CScene::Update(float DeltaTime)
 {
 	m_Mode->Update(DeltaTime);
 
+	// Obj List
 	auto iter    = m_ObjList.begin();
 	auto iterEnd = m_ObjList.end();
 
@@ -126,6 +128,14 @@ void CScene::Update(float DeltaTime)
 
 		(*iter)->Update(DeltaTime);
 		++iter;
+	}
+
+	// Obj Manager Vector
+	size_t vecManagersSize = m_vecGameObjectManager.size();
+
+	for (size_t i = 0; i < vecManagersSize; ++i)
+	{
+		m_vecGameObjectManager[i]->Update(DeltaTime);
 	}
 
 	m_ViewPort->Update(DeltaTime);
@@ -170,6 +180,25 @@ void CScene::PostUpdate(float DeltaTime)
 	for (; iter != iterEnd; ++iter)
 	{
 		(*iter)->AddCollision();
+	}
+
+	// Obj Manager Vector
+	{
+		size_t vecManagersSize = m_vecGameObjectManager.size();
+
+		for (size_t i = 0; i < vecManagersSize; ++i)
+		{
+			m_vecGameObjectManager[i]->PostUpdate(DeltaTime);
+		}
+	}
+
+	{
+		size_t vecManagersSize = m_vecGameObjectManager.size();
+
+		for (size_t i = 0; i < vecManagersSize; ++i)
+		{
+			m_vecGameObjectManager[i]->AddCollision();
+		}
 	}
 
 	// 포함된 충돌체들을 이용해서 충돌처리를 진행한다.
