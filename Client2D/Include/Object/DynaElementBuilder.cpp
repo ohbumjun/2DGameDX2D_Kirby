@@ -98,47 +98,6 @@ void CDynaBabyBuilder::DeAllocate(CGameObject* CurrentDynaBaby)
 	m_BossDynaBabyPool->deallocate(dynamic_cast<CBossDynaBaby*>(CurrentDynaBaby));
 }
 
-void CDynaBabyBuilder::Update(float DeltaTime)
-{
-	auto iter = m_ObjectList.begin();
-	auto iterEnd = m_ObjectList.end();
-
-	for (; iter != iterEnd;)
-	{
-		if (!(*iter)->IsActive())
-		{
-			m_BossDynaBabyPool->deallocate(dynamic_cast<CBossDynaBaby*>((* iter)));
-			iter = m_ObjectList.erase(iter);
-			iterEnd = m_ObjectList.end();
-			continue;
-		}
-		if (!(*iter)->IsEnable())
-			continue;
-		(*iter)->Update(DeltaTime);
-		++iter;
-	}
-}
-
-void CDynaBabyBuilder::PostUpdate(float DeltaTime)
-{
-	auto iter = m_ObjectList.begin();
-	auto iterEnd = m_ObjectList.end();
-
-	for (; iter != iterEnd;)
-	{
-		if (!(*iter)->IsActive())
-		{
-			m_BossDynaBabyPool->deallocate(dynamic_cast<CBossDynaBaby*>((*iter)));
-			iter = m_ObjectList.erase(iter);
-			iterEnd = m_ObjectList.end();
-			continue;
-		}
-		if (!(*iter)->IsEnable())
-			continue;
-		(*iter)->PostUpdate(DeltaTime);
-		++iter;
-	}
-}
 
 void CDynaBabyBuilder::Render()
 {}

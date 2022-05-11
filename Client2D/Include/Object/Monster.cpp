@@ -492,7 +492,7 @@ void CMonster::Update(float DeltaTime)
 			}
 		}
 	}
-
+	
 	UpdateBeingHit(DeltaTime);
 
 	UpdateBeingPulled(DeltaTime);

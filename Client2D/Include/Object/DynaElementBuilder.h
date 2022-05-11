@@ -28,8 +28,6 @@ private:
 	void DestroyAllBabies();
 	virtual void DeAllocate(CGameObject* m_CurrentDynaBaby) ;
 private :
-	virtual void Update(float DeltaTime) override;
-	virtual void PostUpdate(float DeltaTime) override;
 	void Render();
 };
 

@@ -146,7 +146,6 @@ void CBossDyna::Start()
 	if (!m_BabyBuilder)
 	{
 		m_BabyBuilder = new CDynaBabyBuilder;
-		m_Scene->AddGameObjectManager(m_BabyBuilder);
 	}
 	// if (!m_BossDynaBabyManager)
 	// 	m_BossDynaBabyManager = new CObjectManager<CBossDynaBaby>();

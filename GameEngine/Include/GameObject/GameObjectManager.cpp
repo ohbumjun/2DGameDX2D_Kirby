@@ -1,7 +1,11 @@
 #include "GameObjectManager.h"
+#include "../Scene/Scene.h"
+#include "../Scene/SceneManager.h"
 
 CGameObjectManager::CGameObjectManager()
-{}
+{
+	CSceneManager::GetInst()->GetScene()->AddGameObjectManager(this);
+}
 
 CGameObjectManager::~CGameObjectManager()
 {

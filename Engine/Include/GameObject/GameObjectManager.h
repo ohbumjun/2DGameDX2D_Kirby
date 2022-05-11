@@ -25,8 +25,8 @@ protected:
 		m_DeleteCallback = std::bind(Func, Obj, std::placeholders::_1);
 	}
 public :
-	virtual void Update(float DeltaTime) = 0;
-	virtual void PostUpdate(float DeltaTime) = 0;
+	void Update(float DeltaTime) ;
+	void PostUpdate(float DeltaTime) ;
 	void PrevRender();
 	void AddCollision();
 	virtual void DeAllocate(class CGameObject* m_CurrentDynaBaby) = 0;

@@ -8,7 +8,7 @@ CBossDynaBaby::CBossDynaBaby() :
 	m_ToggleLimitTimeMax(0.2f)
 {
 	m_JumpVelocity = 30.f;
-
+	m_IsBottomCollided = false;
 	SetTypeID<CBossDynaBaby>();
 }
 
